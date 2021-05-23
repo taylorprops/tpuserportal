@@ -1,0 +1,11 @@
+{
+    "cSpell.ignoreWords": [
+        "alpinejs",
+        "customdata",
+        "ocr",
+        "tailwindcss",
+        "tesseract",
+        "tesseract ocr"
+    ],
+    "git.ignoreLimitWarning": true
+}
