@@ -7,8 +7,8 @@ use Illuminate\View\Component;
 class Button extends Component
 {
 
-    public $colorClass; // primary, secondary, danger, success
-    public $size; // sm, md, lg
+    public $buttonClass; // primary, secondary, danger, success
+    public $buttonSize; // sm, md, lg
 
     /**
      * Create a new component instance.
@@ -16,10 +16,11 @@ class Button extends Component
      * @return void
      */
 
-    public function __construct($colorClass, $size)
+    public function __construct($buttonClass, $buttonSize)
     {
-        $this -> colorClass = $colorClass;
-        $this -> size = $size;
+        $this -> buttonClass = $buttonClass;
+        $this -> buttonSize = $buttonSize;
+        //dd($buttonClass);
     }
 
     /**

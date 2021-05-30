@@ -1,0 +1,37 @@
+
+
+input.required,
+select.required,
+textarea.required,
+.file-input-div.required {
+    border-bottom: 1px solid rgb(240, 188, 188);
+}
+
+
+
+/* Slider */
+.range-wrap {
+    position: relative;
+    margin: 10px auto;
+}
+
+.range {
+    width: 100%;
+}
+
+.bubble {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.bubble:after {
+    content: " ";
+    position: absolute;
+    left: 11px;
+    top: -5px;
+    border-top: none;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-bottom: 5px solid gray;
+}
+/* End Slider */

@@ -26,6 +26,19 @@ module.exports = {
                 'screen-80': '80vh',
                 'screen-90': '90vh',
             }),
+            width: theme => ({
+                'screen-10': '10vw',
+                'screen-20': '20vw',
+                'screen-25': '25vw',
+                'screen-30': '30vw',
+                'screen-40': '40vw',
+                'screen-50': '50vw',
+                'screen-60': '60vw',
+                'screen-70': '70vw',
+                'screen-75': '75vw',
+                'screen-80': '80vw',
+                'screen-90': '90vw',
+            }),
             colors: {
                 default: {
                     light: '#64748B',

@@ -2,4 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import './form_elements.css';
+@import 'toastr2/dist/toastr.min.css';
+@import './global.scss';
+@import './form_elements.scss';
+/* @import 'tippy.js/dist/tippy.css'; */

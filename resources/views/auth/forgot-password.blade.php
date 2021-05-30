@@ -21,12 +21,22 @@
 
             <!-- Email Address -->
             <div>
-                <x-label for="email" :value="__('Email')" />
 
-                <x-elements.input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+
+                <x-elements.input
+                    :size="'md'"
+                    id="email"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    data-label="Email"
+                    placeholder="Email"
+                    required autofocus />
+
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center justify-between mt-4">
+                <a href="/login" class="text-primary">Back to Login</a>
                 <x-button type="submit">
                     {{ __('Email Password Reset Link') }}
                 </x-button>

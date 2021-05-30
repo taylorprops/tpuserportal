@@ -1,21 +1,23 @@
 
 
 @php
+
 $classes = '';
 
-if($size == 'sm') {
-    $classes .= 'px-3 py-1 text-xs ';
-} else if($size == 'md') {
-    $classes .= 'px-4 py-2 text-sm ';
-} else if($size == 'lg') {
-    $classes .= 'px-5 py-4 text-md ';
+if($buttonSize == 'sm') {
+    $classes .= 'px-3 py-1 text-xs';
+} else if($buttonSize == 'md') {
+    $classes .= 'px-3 py-2 text-sm';
+} else if($buttonSize == 'lg') {
+    $classes .= 'px-3 py-3 text-base ';
+} else if($buttonSize == 'xl') {
+    $classes .= 'px-3 py-3 text-lg';
 }
 
 
-$classes .= 'bg-'.$colorClass.' hover:bg-'.$colorClass.'-dark active:bg-'.$colorClass.'-dark focus:border-'.$colorClass.'-dark ring-'.$colorClass.'-dark inline-flex items-center border border-transparent rounded-md font-semibold text-white tracking-widest focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow-sm hover:shadow-md ';
-
+$classes .= ' bg-'.$buttonClass.' hover:bg-'.$buttonClass.'-dark active:bg-'.$buttonClass.'-dark focus:border-'.$buttonClass.'-dark ring-'.$buttonClass.'-dark inline-flex items-center border border-transparent rounded font-semibold text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md ';
 @endphp
 
-<button {{ $attributes -> merge(['class' => $classes]) }}>
+<button {{ $attributes -> merge(['class' => $classes]) }} data-default-html="{{ htmlspecialchars($slot) }}">
     {{ $slot }}
 </button>

@@ -12,30 +12,54 @@
         <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
+            <div class="text-default text-lg mb-2">Reset Password</div>
+
             <!-- Password Reset Token -->
             <input type="hidden" name="token" value="{{ $request -> route('token') }}">
 
             <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
+            <div class="mt-5">
 
-                <x-elements.input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request -> email)" required autofocus />
+                <x-elements.input
+                    :size="'md'"
+                    id="email"
+                    type="email"
+                    name="email"
+                    :value="old('email', $request -> email)"
+                    data-label="Email"
+                    placeholder="Email"
+                    required
+                    readonly />
+
             </div>
 
             <!-- Password -->
             <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
 
-                <x-elements.input id="password" class="block mt-1 w-full" type="password" name="password" required />
+                <x-elements.input
+                    :size="'md'"
+                    id="password"
+                    type="password"
+                    name="password"
+                    data-label="Password"
+                    placeholder="Password"
+                    autofocus
+                    required />
+
             </div>
 
             <!-- Confirm Password -->
             <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                <x-elements.input id="password_confirmation" class="block mt-1 w-full"
-                                    type="password"
-                                    name="password_confirmation" required />
+                <x-elements.input
+                    :size="'md'"
+                    id="password_confirmation"
+                    type="password"
+                    name="password_confirmation"
+                    data-label="Confirm Password"
+                    placeholder="Confirm Password"
+                    required />
+
             </div>
 
             <div class="flex items-center justify-end mt-4">

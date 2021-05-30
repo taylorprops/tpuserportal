@@ -15,21 +15,34 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <!-- Email Address -->
-            <div>
-                <x-label for="email" :value="__('Email')" />
+            <div class="text-default text-lg mb-2">Login</div>
 
-                <x-elements.input :size="'md'" id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            <!-- Email Address -->
+            <div class="pt-3">
+
+                <x-elements.input
+                    :size="'md'"
+                    id="email"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    data-label="Email"
+                    placeholder="Email"
+                    required
+                    autofocus />
             </div>
 
             <!-- Password -->
             <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
 
-                <x-elements.input :size="'md'" id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-elements.input
+                    :size="'md'"
+                    id="password"
+                    type="password"
+                    name="password"
+                    data-label="Password"
+                    placeholder="Password"
+                    required autocomplete="current-password" />
             </div>
 
             <!-- Remember Me -->
@@ -48,8 +61,8 @@
                 @endif
 
                 <x-elements.button
-                    :colorClass="'default'"
-                    :size="'md'"
+                    :buttonClass="'default'"
+                    :buttonSize="'md'"
                     type="submit"
                     class="ml-3">
                     Login <i class="fal fa-sign-in ml-2"></i>

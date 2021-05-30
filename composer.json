@@ -12,9 +12,11 @@
         "laravel/framework": "^8.40",
         "laravel/octane": "^1.0",
         "laravel/tinker": "^2.5",
+        "mikehaertl/php-pdftk": "^0.10.0",
         "thiagoalessio/tesseract_ocr": "^2.11"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.2",

@@ -9,7 +9,7 @@
         <title>@yield('title')</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+        {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"> --}}
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -19,7 +19,13 @@
         <link href="/vendor/fontawesome/fontawesome/css/all.css" rel="stylesheet">
     </head>
 
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" x-data="{ show_loading: false }">
+
+        <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50" x-show="show_loading">
+            <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0">
+                <i class="fas fa-circle-notch fa-spin fa-4x"></i>
+            </span>
+        </div>
 
         <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden bg-gray-100">
 

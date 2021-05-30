@@ -8,18 +8,24 @@ class Dropdown extends Component
 {
 
     public $buttonText;
-    public $class;
-    public $size;
+    public $buttonClass;
+    public $buttonSize;
+    public $dropdownClasses;
+    public $align;
+    public $dropdownWidth;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($buttonText, $class, $size)
+    public function __construct($buttonText, $buttonClass, $buttonSize, $dropdownClasses, $align, $dropdownWidth)
     {
         $this -> buttonText = $buttonText;
-        $this -> class = $class;
-        $this -> size = $size;
+        $this -> buttonClass = $buttonClass;
+        $this -> buttonSize = $buttonSize;
+        $this -> dropdownClasses = $dropdownClasses;
+        $this -> align = $align;
+        $this -> dropdownWidth = $dropdownWidth;
     }
 
     /**

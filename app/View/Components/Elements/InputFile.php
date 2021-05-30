@@ -7,15 +7,17 @@ use Illuminate\View\Component;
 class InputFile extends Component
 {
     public $size;
+    public $buttonClass;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($size)
+    public function __construct($size, $buttonClass)
     {
         $this -> size = $size;
+        $this -> buttonClass = $buttonClass;
     }
 
     /**

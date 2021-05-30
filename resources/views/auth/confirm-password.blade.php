@@ -18,12 +18,16 @@
 
             <!-- Password -->
             <div>
-                <x-label for="password" :value="__('Password')" />
 
-                <x-elements.input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-elements.input
+                    :size="'md'"
+                    id="password"
+                    type="password"
+                    name="password"
+                    data-label="Password"
+                    placeholder="Password"
+                    required autocomplete="current-password" />
+
             </div>
 
             <div class="flex justify-end mt-4">

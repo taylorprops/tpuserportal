@@ -8,20 +8,26 @@ class Modal extends Component
 {
 
 
-    public $dispatchId;
-    public $width;
-    public $title;
+    public $modalWidth;
+    public $modalTitle;
+    public $buttonId;
+    public $buttonText;
+    public $buttonClass;
+    public $buttonSize;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($dispatchId, $width, $title)
+    public function __construct($modalWidth, $modalTitle, $buttonId, $buttonText, $buttonClass, $buttonSize)
     {
-        $this -> dispatchId = $dispatchId;
-        $this -> width = $width;
-        $this -> title = $title;
+        $this -> modalWidth = $modalWidth;
+        $this -> modalTitle = $modalTitle;
+        $this -> buttonId = $buttonId;
+        $this -> buttonText = $buttonText;
+        $this -> buttonClass = $buttonClass;
+        $this -> buttonSize = $buttonSize;
     }
 
     /**

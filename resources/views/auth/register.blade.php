@@ -12,37 +12,66 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
+            <div class="text-default text-lg mb-2">Register Account</div>
 
-                <x-elements.input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            <!-- Name -->
+            <div class="pt-5">
+
+                <x-elements.input
+                    :size="'md'"
+                    id="name"
+                    type="text"
+                    name="name"
+                    :value="old('name')"
+                    data-label="Name"
+                    placeholder="name"
+                    required readonly />
+
             </div>
 
             <!-- Email Address -->
             <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
 
-                <x-elements.input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-elements.input
+                    :size="'md'"
+                    id="email"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    data-label="Email"
+                    placeholder="Email"
+                    required readonly />
+
             </div>
 
             <!-- Password -->
             <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
 
-                <x-elements.input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
+                <x-elements.input
+                    :size="'md'"
+                    id="password"
+                    {{-- class="block mt-1 w-full" --}}
+                    type="password"
+                    name="password"
+                    data-label="Password"
+                    placeholder="Password"
+                    required autofocus autocomplete="new-password" />
+
             </div>
 
             <!-- Confirm Password -->
             <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                <x-elements.input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
+                <x-elements.input
+                    :size="'md'"
+                    id="password_confirmation"
+                    {{-- class="block mt-1 w-full" --}}
+                    type="password"
+                    name="password_confirmation"
+                    data-label="Confirm Password"
+                    placeholder="Confirm Password"
+                    required />
+
             </div>
 
             <div class="flex items-center justify-end mt-4">

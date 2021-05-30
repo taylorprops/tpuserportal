@@ -12,7 +12,7 @@
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
-                <div class="p-6 bg-white border-b border-gray-200">
+                {{-- <div class="p-6 bg-white border-b border-gray-200">
 
                     <x-elements.input class="shadow-sm border border-gray-300 focus:ring-indigo-500 focus:border-blue-200 block max-w-md sm:text-sm border-gray-300 rounded-md p-4 placeholder-gray-400" placeholder="Etner Text"/>
 
@@ -117,7 +117,7 @@
                     </div>
 
 
-                </div>
+                </div> --}}
 
                 <div class="h-screen"></div>
 

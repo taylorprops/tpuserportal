@@ -1,11 +1,22 @@
 {
     "cSpell.ignoreWords": [
+        "allowlist",
         "alpinejs",
+        "csrf",
         "customdata",
+        "divs",
+        "dont",
+        "esign",
         "ocr",
+        "pdftk",
+        "renderable",
+        "report",
         "tailwindcss",
+        "templates",
         "tesseract",
-        "tesseract ocr"
+        "tesseract ocr",
+        "thiagoalessio",
+        "toastr"
     ],
     "git.ignoreLimitWarning": true
 }
