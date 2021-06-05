@@ -7082,6 +7082,10 @@ __webpack_require__(/*! ./dashboard/dashboard.js */ "./resources/js/dashboard/da
 
 __webpack_require__(/*! ./doc_management/admin/forms/forms.js */ "./resources/js/doc_management/admin/forms/forms.js");
 
+__webpack_require__(/*! ./doc_management/admin/forms/form_fields.js */ "./resources/js/doc_management/admin/forms/form_fields.js");
+
+__webpack_require__(/*! ./tests/test */ "./resources/js/tests/test.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -7134,17 +7138,420 @@ if (document.URL.match(/dashboard/)) {// let button = document.getElementById('o
 
 /***/ }),
 
+/***/ "./resources/js/doc_management/admin/forms/form_fields.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/doc_management/admin/forms/form_fields.js ***!
+  \****************************************************************/
+/***/ (() => {
+
+if (document.URL.match(/form_fields/)) {
+  var drag_resize = function drag_resize() {
+    var field_divs = document.querySelectorAll('.field-div.drag-resize');
+    field_divs.forEach(function (element) {
+      var resizers = element.querySelectorAll('.resizer');
+      var input_minimum_size = 15;
+      var check_radio_minimum_size = 10;
+      var check_radio_maximum_size = 30;
+      var original_width = 0;
+      var original_height = 0;
+      var original_x = 0;
+      var original_y = 0;
+      var original_mouse_x = 0;
+      var original_mouse_y = 0;
+      var keep_aspect = false;
+      var field_type = element.getAttribute('data-type');
+      draggable(element, field_type);
+
+      var _loop = function _loop(i) {
+        var currentResizer = resizers[i];
+        currentResizer.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          original_width = parseFloat(element.offsetWidth);
+          original_height = parseFloat(element.offsetHeight);
+          original_x = element.offsetLeft;
+          original_y = element.offsetTop;
+          original_mouse_x = e.pageX;
+          original_mouse_y = e.pageY;
+          keep_aspect = field_type == 'radio' || field_type == 'checkbox' ? true : false;
+          window.addEventListener('mousemove', resize);
+          window.addEventListener('mouseup', stopResize);
+        });
+
+        function resize(e) {
+          if (currentResizer.classList.contains('bottom-right')) {
+            var width = original_width + (e.pageX - original_mouse_x);
+            var height = original_height + (e.pageY - original_mouse_y);
+
+            if (keep_aspect == true) {
+              if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
+                element.style.width = width + 'px';
+                element.style.height = width + 'px';
+              }
+            } else {
+              if (width > input_minimum_size) {
+                element.style.width = width + 'px';
+              }
+
+              if (height > input_minimum_size) {
+                element.style.height = height + 'px';
+              }
+            }
+          } else if (currentResizer.classList.contains('bottom-left')) {
+            var _height = original_height + (e.pageY - original_mouse_y);
+
+            var _width = original_width - (e.pageX - original_mouse_x);
+
+            if (keep_aspect == true) {
+              if (_width > check_radio_minimum_size && _width <= check_radio_maximum_size) {
+                element.style.width = _width + 'px';
+                element.style.height = _width + 'px';
+                element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+              }
+            } else {
+              if (_height > input_minimum_size) {
+                element.style.height = _height + 'px';
+              }
+
+              if (_width > input_minimum_size) {
+                element.style.width = _width + 'px';
+                element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+              }
+            }
+          } else if (currentResizer.classList.contains('top-right')) {
+            var _width2 = original_width + (e.pageX - original_mouse_x);
+
+            var _height2 = original_height - (e.pageY - original_mouse_y);
+
+            if (keep_aspect == true) {
+              if (_height2 > check_radio_minimum_size && _height2 <= check_radio_maximum_size) {
+                element.style.width = _height2 + 'px';
+                element.style.height = _height2 + 'px';
+                element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+              }
+            } else {
+              if (_width2 > input_minimum_size) {
+                element.style.width = _width2 + 'px';
+              }
+
+              if (_height2 > input_minimum_size) {
+                element.style.height = _height2 + 'px';
+                element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+              }
+
+              console.log(original_y, e.pageY, original_mouse_y);
+            }
+          } else {
+            var _width3 = original_width - (e.pageX - original_mouse_x);
+
+            var _height3 = original_height - (e.pageY - original_mouse_y);
+
+            if (keep_aspect == true) {
+              if (_height3 > check_radio_minimum_size && _height3 <= check_radio_maximum_size) {
+                element.style.width = _height3 + 'px';
+                element.style.height = _height3 + 'px';
+                element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+              }
+            } else {
+              if (_width3 > input_minimum_size) {
+                element.style.width = _width3 + 'px';
+                element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+              }
+
+              if (_height3 > input_minimum_size) {
+                element.style.height = _height3 + 'px';
+                element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+              }
+            }
+          }
+
+          set_options_side(element);
+        }
+
+        function stopResize() {
+          window.removeEventListener('mousemove', resize);
+          coordinates(null, element, field_type, 'stopResize');
+          draggable(element, field_type);
+        }
+      };
+
+      for (var i = 0; i < resizers.length; i++) {
+        _loop(i);
+      }
+    });
+  };
+
+  var set_options_side = function set_options_side(element) {
+    var width = element.parentNode.offsetWidth;
+    var left = element.offsetLeft;
+
+    if (left > width / 2) {
+      element.__x.$data.options_side = 'right';
+    } else {
+      element.__x.$data.options_side = 'left';
+    }
+  };
+
+  var draggable = function draggable(element, field_type) {
+    if (element.parentNode) {
+      var _draggable = new PlainDraggable(element, {
+        handle: element.querySelector('.draggable-handle'),
+        //autoScroll: true,
+        //containment: document.querySelector('.form-page-container'),
+        leftTop: true,
+        onDrag: function onDrag(newPosition) {
+          set_options_side(element);
+        },
+        onDragEnd: function onDragEnd(newPosition) {
+          coordinates(null, element, field_type, 'onDragEnd');
+        }
+      });
+    }
+  };
+
+  var coordinates = function coordinates(event) {
+    var ele = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var field_type = arguments.length > 2 ? arguments[2] : undefined;
+    var function_name = arguments.length > 3 ? arguments[3] : undefined;
+    //console.log(function_name, event, ele, field_type);
+    var container, x, y; // if from dblclick to add field
+
+    if (event) {
+      container = event.target.parentNode;
+      var page_boundaries = event.target.getBoundingClientRect(); // get target coordinates
+      // subtract bounding box coordinates from target coordinates to get top and left positions
+      // coordinates are relative to bounding box coordinates
+
+      x = parseInt(Math.round(event.clientX - page_boundaries.left));
+      y = parseInt(Math.round(event.clientY - page_boundaries.top)); // coordinates of existing field
+    } else {
+      container = ele.parentNode;
+      x = ele.offsetLeft;
+      y = ele.offsetTop;
+    }
+
+    x = x - 1;
+    y = y - 2; // convert to percent
+
+    if (!container) {
+      //console.log('missing', ele);
+      return false;
+    }
+
+    var x_perc = pix_2_perc('x', x, container);
+    var y_perc = pix_2_perc('y', y, container); //set heights
+
+    var ele_h_perc = 1.3;
+
+    if (field_type == 'radio' || field_type == 'checkbox') {
+      ele_h_perc = 1.1;
+    }
+
+    if (event) {
+      // remove element height from top position
+      y_perc = y_perc - ele_h_perc;
+    } // set w and h for new field
+
+
+    var h_perc, w_perc;
+
+    if (field_type == 'radio' || field_type == 'checkbox') {
+      h_perc = 1.1;
+      w_perc = 1.45;
+    } else {
+      h_perc = 1.3;
+
+      if (ele) {
+        w_perc = ele.offsetWidth / container.offsetWidth * 100;
+      } else {
+        w_perc = 15;
+      }
+    }
+
+    h_perc = parseFloat(h_perc);
+    w_perc = parseFloat(w_perc);
+
+    if (ele) {
+      // field data percents
+      ele.setAttribute('data-h-perc', h_perc);
+      ele.setAttribute('data-w-perc', w_perc);
+      ele.setAttribute('data-x-perc', x_perc);
+      ele.setAttribute('data-y-perc', y_perc);
+      ele.setAttribute('data-y-perc', y_perc);
+      ele.setAttribute('data-x', x);
+      ele.setAttribute('data-y', y);
+    }
+
+    return {
+      h_perc: h_perc,
+      w_perc: w_perc,
+      x_perc: x_perc,
+      y_perc: y_perc
+    };
+  };
+
+  var pix_2_perc = function pix_2_perc(type, px, container) {
+    if (type == 'x') {
+      return 100 * parseFloat(px / parseFloat(container.offsetWidth));
+    } else {
+      return 100 * parseFloat(px / parseFloat(container.offsetHeight));
+    }
+  };
+
+  window.addEventListener('load', function (event) {});
+
+  window.fill_fields = function () {
+    return {
+      selected_field_type: '',
+      active_page: 1,
+      options_side: '',
+      active_field: '',
+      show_selected_field_type: function show_selected_field_type(ele) {
+        var buttons = document.querySelectorAll('.field-button');
+        buttons.forEach(function (button) {
+          button.classList.remove('active', 'bg-secondary', 'border-secondary', 'ring-secondary', 'hover:bg-secondary-dark', 'active:border-secondary', 'focus:border-secondary');
+        });
+        ele.classList.add('active', 'bg-secondary', 'border-secondary', 'ring-secondary', 'hover:bg-secondary-dark', 'active:border-secondary', 'focus:border-secondary');
+      },
+      add_field: function add_field(event) {
+        if (this.selected_field_type != '') {
+          create_field(event);
+        }
+      },
+      copy_field: function copy_field(id) {
+        var field = document.querySelector('[data-id="' + id + '"]');
+        var new_field = field.outerHTML;
+        var old_top = field.offsetTop;
+        var new_id = Math.round(Date.now() * Math.random() * 100);
+        var find_id = new RegExp(id, 'g');
+        var field_type = field.getAttribute('data-type');
+        new_field = new_field.replace(find_id, new_id);
+        field.closest('.form-page-container').innerHTML += new_field;
+        new_field = document.querySelector('[data-id="' + new_id + '"]');
+        new_field.style.top = old_top + 30 + 'px';
+
+        var active_field = document.querySelector('.page-container').__x.$data.active_field;
+
+        setTimeout(function () {
+          console.log(active_field);
+          active_field = new_id;
+          console.log(active_field);
+          coordinates(null, new_field, field_type, 'field_copied');
+          drag_resize();
+          setTimeout(function () {
+            set_options_side(new_field);
+          }, 100);
+        }, 200);
+      },
+      remove_field: function remove_field(id) {
+        document.querySelector('[data-id="' + id + '"]').remove();
+      },
+      go_to_page: function go_to_page(page) {
+        document.querySelector('.page-header-' + page).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        document.querySelector('.thumb-header-' + page).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        active_page = page;
+      },
+      scroll_page: function scroll_page(event) {// let page_container = event.target;
+        // let pages = page_container.querySelectorAll('.form-page-container');
+        // let cont = 'yes';
+        // let c = 0;
+        // pages.forEach(function(page) {
+        //     if(c < 1) {
+        //         c = 1;
+        //         let start = Math.abs(page.getBoundingClientRect().top);
+        //         let end = page.offsetHeight;
+        //         let breakpoint = end * .75;
+        //         console.log(start, breakpoint, end, page_container.scrollTop);
+        //         if (start > breakpoint) {
+        //             if(start > end) {
+        //                 document.querySelector('.page-container').__x.$data.active_page = page;
+        //                 console.log(page);
+        //                 cont = 'no';
+        //             }
+        //         }
+        //     }
+        // });
+        // let active_page = document.querySelector('.page-container').__x.$data.active_page;
+        // let page_container = document.querySelector('.page-container');
+        // let page = document.querySelector('.page-'+active_page);
+        // let cont = 'yes';
+        // let center = window.outerHeight / 2;
+        // let start = page.getBoundingClientRect().top - page_container.getBoundingClientRect().top;
+        // let end = start + page.offsetHeight;
+        // console.log(start, center, end);
+        // if (start < center && end > center) {
+        //     document.querySelector('.page-container').__x.$data.active_page = page;
+        //     console.log(page);
+        //     cont = 'no';
+        // }
+      }
+    };
+  };
+
+  window.create_field = function (event) {
+    var container = event.target.parentNode;
+
+    var field_type = document.querySelector('.page-container').__x.$data.selected_field_type;
+
+    var coords = coordinates(event, null, field_type, 'create_field');
+
+    var active_page = document.querySelector('.page-container').__x.$data.active_page;
+
+    var field_html = document.querySelector('#field_template').innerHTML;
+    var id = Math.round(Date.now() * Math.random() * 100);
+    field_html = field_html.replace(/%%id%%/g, id);
+    field_html = field_html.replace(/%%type%%/g, field_type);
+    field_html = field_html.replace(/%%x_perc%%/g, coords.x_perc);
+    field_html = field_html.replace(/%%y_perc%%/g, coords.y_perc);
+    field_html = field_html.replace(/%%h_perc%%/g, coords.h_perc);
+    field_html = field_html.replace(/%%w_perc%%/g, coords.w_perc);
+    container.innerHTML += field_html;
+    var new_field = document.querySelector('[data-id="' + id + '"]');
+    new_field.classList.add('drag-resize');
+
+    if (field_type == 'radio') {
+      new_field.querySelector('.field-name').classList.add('rounded-full');
+      new_field.querySelector('.resizers').classList.add('rounded-full');
+    }
+
+    coordinates(null, new_field, field_type, 'field_created');
+    drag_resize();
+    setTimeout(function () {
+      set_options_side(new_field);
+    }, 1);
+  };
+
+  window.select_common_name = function (event) {
+    var ele = event.currentTarget;
+    var id = ele.getAttribute('data-id');
+    var name = ele.getAttribute('data-name');
+    var field_div = ele.closest('.field-div');
+    field_div.querySelector('.common-name-input').value = name;
+    field_div.setAttribute('data-common-name-id').value = id;
+    field_div.querySelector('.field-name').innerText = name;
+    document.querySelector('.page-container').__x.$data.active_field = '';
+  };
+}
+
+/***/ }),
+
 /***/ "./resources/js/doc_management/admin/forms/forms.js":
 /*!**********************************************************!*\
   !*** ./resources/js/doc_management/admin/forms/forms.js ***!
   \**********************************************************/
 /***/ (() => {
 
-if (document.URL.match(/forms/)) {
+if (document.URL.match(/forms$/)) {
   window.addEventListener('load', function (event) {
     get_form_groups();
     setTimeout(get_forms, 500);
-    document.querySelector('#open_form_modal').addEventListener('click', clear_form);
   });
 
   window.get_form_groups = function () {
@@ -7169,9 +7576,10 @@ if (document.URL.match(/forms/)) {
       form_group_id = document.querySelector('.page-container').__x.$data.active_tab;
     }
 
-    var sort_by = document.querySelector('#sort_by') ? document.querySelector('#sort_by').value : 'created_at';
-    var published = document.querySelector('#published') ? document.querySelector('#published').value : 'all';
-    var active = document.querySelector('#active') ? document.querySelector('#active').value : 'all';
+    var form_group = document.querySelector('.form-group-li.active');
+    var sort_by = form_group.querySelector('.sort-by') ? form_group.querySelector('.sort-by').value : 'created_at';
+    var published = form_group.querySelector('.show-published') ? form_group.querySelector('.show-published').value : 'all';
+    var active = form_group.querySelector('.show-active') ? form_group.querySelector('.show-active').value : 'all';
     axios.get('/doc_management/admin/forms/get_forms', {
       params: {
         form_group_id: form_group_id,
@@ -7187,14 +7595,12 @@ if (document.URL.match(/forms/)) {
   };
 
   window.get_upload_text = function (event) {
-    event.stopPropagation();
-
     if (event.target.value != '') {
       show_loader();
       var form = document.querySelector('#upload_form');
       var formData = new FormData(form);
       axios.post('/doc_management/admin/forms/get_upload_text', formData).then(function (response) {
-        document.getElementById('upload_form').__x.$data.show_form_names = true;
+        document.querySelector('.page-container').__x.$data.show_form_names = true;
         document.querySelector('.form-names-div').classList.remove('hidden');
         document.querySelector('#form_preview').innerHTML = '<embed src="' + response.data.upload_location + '#view=FitW" width="100%" height="100%">';
         var form_names = document.querySelector('.form-names');
@@ -7210,14 +7616,14 @@ if (document.URL.match(/forms/)) {
   };
 
   window.add_form_name = function (container) {
-    document.getElementById('upload_form').__x.$data.show_form_names = false;
+    document.querySelector('.page-container').__x.$data.show_form_names = false;
     var title = container.querySelector('.form-name-title').value;
     document.querySelector('#form_name_display').value = title;
     document.querySelector('#helper_text').value = title;
   };
 
   window.edit_form = function (ele, form_id, form_name_display, form_location, form_group_id, checklist_group_id, form_tag, state, helper_text) {
-    document.querySelector('#open_form_modal').click();
+    document.querySelector('.page-container').__x.$data.show_modal = true;
     document.querySelector('#current_form').innerHTML = '<span class="text-sm">Current form: <span class="font-bold">' + form_name_display + '</span></span>';
     document.querySelector('#form_id').value = form_id;
     document.querySelector('#form_name_display').value = form_name_display;
@@ -7239,7 +7645,7 @@ if (document.URL.match(/forms/)) {
       }
 
       if (document.querySelector('#form_id').value != '') {
-        document.querySelector('.modal').__x.$data.show_modal = false;
+        document.querySelector('.page-container').__x.$data.show_modal = false;
       }
 
       clear_form();
@@ -7297,7 +7703,7 @@ if (document.URL.match(/forms/)) {
           });
         }
 
-        document.querySelector('.search-container').__x.$data.show_search_results = true;
+        document.querySelector('.page-container').__x.$data.show_search_results = true;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -7307,7 +7713,7 @@ if (document.URL.match(/forms/)) {
   window.show_result = function (form_group_id, form_id) {
     document.querySelector('.form-group-' + form_group_id).click();
     setTimeout(function () {
-      var list = document.querySelector('.form-group-ul.active .form-ul');
+      var list = document.querySelector('.form-group-li.active .form-ul');
       var form = document.querySelector('.form-' + form_id);
       list.insertBefore(form, list.childNodes[0]);
       list.__x.$data.active_form = form_id;
@@ -7324,13 +7730,6 @@ if (document.URL.match(/forms/)) {
     divs.forEach(function (div) {
       div.innerHTML = '';
     });
-  };
-
-  window.hide_menus = function (refs) {
-    console.log(refs); // refs.forEach(function(ref) {
-    //     console.log(ref);
-    //     ref.__x.$data.sub_menu = false;
-    // });
   };
 }
 
@@ -7477,6 +7876,242 @@ window.decode_HTML = function (html) {
   txt.innerHTML = html;
   return txt.value;
 };
+/* window.drag_resize = function() {
+
+    let field_divs = document.querySelectorAll('.field-div.drag-resize');
+
+    field_divs.forEach(function(element) {
+
+        let resizers = element.querySelectorAll('.resizer');
+        let input_minimum_size = 15;
+        let check_radio_minimum_size = 10;
+        let check_radio_maximum_size = 30;
+        let original_width = 0;
+        let original_height = 0;
+        let original_x = 0;
+        let original_y = 0;
+        let original_mouse_x = 0;
+        let original_mouse_y = 0;
+        let keep_aspect = false;
+        let field_type = element.getAttribute('data-type');
+
+        draggable(element, field_type);
+
+        for (let i = 0; i < resizers.length; i++) {
+            let currentResizer = resizers[i];
+            currentResizer.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                original_width = parseFloat(element.offsetWidth);
+                original_height = parseFloat(element.offsetHeight);
+                original_x = element.offsetLeft;
+                original_y = element.offsetTop;
+                original_mouse_x = e.pageX;
+                original_mouse_y = e.pageY;
+                keep_aspect = field_type == 'radio' || field_type == 'checkbox' ? true : false;
+                window.addEventListener('mousemove', resize);
+                window.addEventListener('mouseup', stopResize);
+            })
+
+            function resize(e) {
+                if (currentResizer.classList.contains('bottom-right')) {
+                    const width = original_width + (e.pageX - original_mouse_x);
+                    const height = original_height + (e.pageY - original_mouse_y);
+                    if(keep_aspect == true) {
+                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
+                            element.style.width = width + 'px';
+                            element.style.height = width + 'px';
+                        }
+                    } else {
+                        if (width > input_minimum_size) {
+                            element.style.width = width + 'px';
+                        }
+                        if (height > input_minimum_size) {
+                            element.style.height = height + 'px';
+                        }
+
+                    }
+                }
+                else if (currentResizer.classList.contains('bottom-left')) {
+                    const height = original_height + (e.pageY - original_mouse_y);
+                    const width = original_width - (e.pageX - original_mouse_x);
+                    if(keep_aspect == true) {
+                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
+                            element.style.width = width + 'px';
+                            element.style.height = width + 'px';
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                        }
+                    } else {
+                        if (height > input_minimum_size) {
+                            element.style.height = height + 'px';
+                        }
+                        if (width > input_minimum_size) {
+                            element.style.width = width + 'px';
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                        }
+                    }
+                }
+                else if (currentResizer.classList.contains('top-right')) {
+                    const width = original_width + (e.pageX - original_mouse_x);
+                    const height = original_height - (e.pageY - original_mouse_y);
+                    if(keep_aspect == true) {
+                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
+                            element.style.width = height + 'px';
+                            element.style.height = height + 'px';
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                        }
+                    } else {
+                        if (width > input_minimum_size) {
+                            element.style.width = width + 'px';
+                        }
+                        if (height > input_minimum_size) {
+                            element.style.height = height + 'px';
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                        }
+                    }
+                }
+                else {
+                    const width = original_width - (e.pageX - original_mouse_x)
+                    const height = original_height - (e.pageY - original_mouse_y)
+                    if(keep_aspect == true) {
+                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
+                            element.style.width = height + 'px';
+                            element.style.height = height + 'px';
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                        }
+                    } else {
+                        if (width > input_minimum_size) {
+                            element.style.width = width + 'px'
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                        }
+                        if (height > input_minimum_size) {
+                            element.style.height = height + 'px'
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                        }
+                    }
+                }
+            }
+
+            function stopResize() {
+
+                window.removeEventListener('mousemove', resize);
+                coordinates(null, element, field_type, 'stopResize');
+                draggable(element, field_type);
+            }
+        }
+
+    });
+
+}
+
+window.draggable = function(element, field_type) {
+    element.classList.remove('plain-draggable');
+    let draggable = new PlainDraggable(element, {
+        handle: element.querySelector('.draggable-handle'),
+        //autoScroll: true,
+        leftTop: true,
+        onDragEnd: function(newPosition) {
+            coordinates(null, element, field_type, 'onDragEnd');
+        }
+    });
+}
+
+window.coordinates = function(event, ele = null, field_type, function_name) {
+
+    //console.log(function_name, event, ele, field_type);
+    let container, x, y;
+
+
+    // if from dblclick to add field
+    if (event) {
+
+        container = event.target.parentNode;
+
+        let page_boundaries = event.target.getBoundingClientRect();
+
+        // get target coordinates
+        // subtract bounding box coordinates from target coordinates to get top and left positions
+        // coordinates are relative to bounding box coordinates
+        x = parseInt(Math.round(event.clientX - page_boundaries.left));
+        y = parseInt(Math.round(event.clientY - page_boundaries.top));
+
+        // coordinates of existing field
+    } else {
+
+        container = ele.parentNode;
+
+        x = ele.offsetLeft;
+        y = ele.offsetTop;
+
+    }
+
+    x = x - 1;
+    y = y - 2;
+    // convert to percent
+    if(!container) {
+        //console.log('missing', ele);
+        return false;
+    }
+    let x_perc = pix_2_perc('x', x, container);
+    let y_perc = pix_2_perc('y', y, container);
+
+    //set heights
+    let ele_h_perc = 1.3;
+    if (field_type == 'radio' || field_type == 'checkbox') {
+        ele_h_perc = 1.1;
+    }
+    if (event) {
+        // remove element height from top position
+        y_perc = y_perc - ele_h_perc;
+    }
+
+    // set w and h for new field
+    let h_perc, w_perc;
+    if (field_type == 'radio' || field_type == 'checkbox') {
+        h_perc = 1.1;
+        w_perc = 1.45;
+    } else {
+        h_perc = 1.3;
+        if (ele) {
+            w_perc = (ele.offsetWidth / container.offsetWidth) * 100;
+        } else {
+            w_perc = 15;
+        }
+
+    }
+    h_perc = parseFloat(h_perc);
+    w_perc = parseFloat(w_perc);
+
+    if (ele) {
+
+        // field data percents
+        ele.setAttribute('data-h-perc', h_perc);
+        ele.setAttribute('data-w-perc', w_perc);
+        ele.setAttribute('data-x-perc', x_perc);
+        ele.setAttribute('data-y-perc', y_perc);
+        ele.setAttribute('data-y-perc', y_perc);
+        ele.setAttribute('data-x', x);
+        ele.setAttribute('data-y', y);
+
+    }
+
+    return {
+        h_perc: h_perc,
+        w_perc: w_perc,
+        x_perc: x_perc,
+        y_perc: y_perc
+    }
+
+}
+
+window.pix_2_perc = function(type, px, container) {
+    if (type == 'x') {
+        return (100 * parseFloat(px / parseFloat(container.offsetWidth)));
+    } else {
+        return (100 * parseFloat(px / parseFloat(container.offsetHeight)));
+    }
+} */
 
 /***/ }),
 
@@ -7486,12 +8121,42 @@ window.decode_HTML = function (html) {
   \*********************************/
 /***/ (() => {
 
-// let nav_links = document.querySelectorAll('.nav-link');
-// nav_links.onclick = function(e) {
-//     console.log('clilcke');
-//     nav_links.classList.remove('bg-gray-900');
-//     e.target.classList.add('bg-gray-900');
-// }
+window.hide_menus = function () {
+  var nav_links = document.querySelectorAll('.nav-link');
+  nav_links.forEach(function (link) {
+    if (link.__x.$data) {
+      if (link.__x.$data.sub_menu) {
+        link.__x.$data.sub_menu = false;
+      }
+
+      if (link.__x.$data.sub_menu_2) {
+        link.__x.$data.sub_menu_2 = false;
+      }
+    }
+  });
+};
+
+/***/ }),
+
+/***/ "./resources/js/tests/test.js":
+/*!************************************!*\
+  !*** ./resources/js/tests/test.js ***!
+  \************************************/
+/***/ (() => {
+
+if (document.URL.match(/tests/)) {
+  window.field_buttons = function () {
+    return {
+      active: function active(ele) {
+        buttons = document.querySelectorAll('button');
+        buttons.forEach(function (button) {
+          button.classList.remove('bg-secondary', 'border-secondary');
+        });
+        ele.classList.add('bg-secondary', 'border-secondary');
+      }
+    };
+  };
+}
 
 /***/ }),
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestsController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // Form Elements
     Route::get('/resources/design/form_elements', [ResourcesController::class, 'form_elements']) -> middleware(['admin']);
+
+    Route::get('/tests/test', [TestsController::class, 'test']) -> middleware(['admin']);
+    Route::get('/tests/alpine', [TestsController::class, 'alpine']) -> middleware(['admin']);
 
 });
 

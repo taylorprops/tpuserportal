@@ -21,8 +21,8 @@ if($size == 'sm') {
 
 @endphp
 
-<label class="inline-flex items-center {{ $text_size }}">
-    <input type="radio" class="form-radio {{ $classes }}  {{ $disabled ? 'disabled' : '' }} {!! $attributes -> merge() !!}"><span class="ml-2 text-gray-600">{{ $label }}</span>
+<label class="inline-flex items-center">
+    <input type="radio" class="form-radio {{ $classes }}  {{ $disabled ? 'disabled' : '' }} {!! $attributes -> merge() !!}"><span class="ml-2 text-gray-600 {{ $text_size }}">{{ $label }}</span>
     <div class="relative">
             <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
         </div>

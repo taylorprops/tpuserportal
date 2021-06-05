@@ -1,4 +1,4 @@
-<ul class="w-full border border-gray-100">
+<ul class="w-full border border-gray-100 animate__animated animate__fadeIn">
 
     @foreach($form_groups as $form_group)
 
@@ -7,7 +7,7 @@
         $forms = $form_group -> forms;
         @endphp
 
-        <li class="form-group-ul border border-b p-3 w-full"
+        <li class="form-group-li border border-b p-3 w-full"
             x-show="active_tab === '{{ $form_group_id }}'"
             :class="{ 'active' : active_tab === '{{ $form_group_id }}' }">
 
@@ -21,7 +21,7 @@
 
                     <div>
                         <x-elements.select
-                        id="sort_by"
+                        class="sort-by"
                         name=""
                         data-label="Sort By"
                         :size="'md'"
@@ -33,7 +33,7 @@
 
                     <div class="ml-2">
                         <x-elements.select
-                        id="published"
+                        class="show-published"
                         name=""
                         data-label="Published"
                         :size="'md'"
@@ -46,7 +46,7 @@
 
                     <div class="ml-2">
                         <x-elements.select
-                        id="active"
+                        class="show-active"
                         name=""
                         data-label="Active"
                         :size="'md'"

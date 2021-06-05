@@ -431,14 +431,21 @@
                     </div>
                 </div>
 
-                <div class="mb-4 rounded p-3 bg-white">
+                <div class="mb-4 rounded p-3 bg-white"
+                x-data="{ show_modal: false }">
+
+                    <x-elements.button
+                        :buttonClass="'default'"
+                        :buttonSize="'md'"
+                        type="button"
+                        x-on:click="show_modal = true">
+                        <i class="fal fa-check mr-2"></i> Open Modal
+                    </x-elements.button>
 
                     <x-modals.modal
                         :modalWidth="'w-6/12'"
                         :modalTitle="'Modal Title'"
-                        :buttonClass="'default'"
-                        :buttonSize="'md'"
-                        :buttonText="'<i class=\'fal fa-plus mr-2\'></i> Open Modal'">
+                        x-show="show_modal">
 
                         Stuff goes here
 

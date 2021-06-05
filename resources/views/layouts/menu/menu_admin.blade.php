@@ -37,7 +37,7 @@ $level2 = [
 
 <x-nav.menu
     :level="'2'"
-    :title="'Tranactions'"
+    :title="'Transactions'"
     :icon="'fad fa-sign'"
     :level2="$level2"/>
 

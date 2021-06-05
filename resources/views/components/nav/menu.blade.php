@@ -12,11 +12,11 @@
 
 @if($level == '2')
 
-    @php $sub_menu_id = 'open_'.(time() * rand()); @endphp
+    <div x-data="{ sub_menu: false }" class="nav-link w-full">
 
-    <div x-data="{ sub_menu: false }" class="w-full">
-
-        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700" @click="sub_menu = true;" :class="{ 'bg-gray-700' : sub_menu === true }">
+        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700"
+        @click="hide_menus(); sub_menu = true;"
+        :class="{ 'bg-gray-700' : sub_menu === true }">
 
             <div class="flex justify-between items-center w-full">
 
@@ -33,7 +33,7 @@
 
         </div>
 
-        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu" @click.away="sub_menu = false">
+        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu">
 
             @foreach($level2 as $link)
                 <a href="{{ $link['link'] }}" class="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300">
@@ -51,14 +51,11 @@
 
 @if($level == '3')
 
-    @php
-    $sub_menu_id = 'open_'.(time() * rand());
-    $sub_menu_id2 = 'open_'.(time() * rand());
-    @endphp
+    <div x-data="{ sub_menu: false }" class="nav-link w-full">
 
-    <div x-data="{ sub_menu: false }" class="w-full">
-
-        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700" @click="sub_menu = true" :class="{ 'bg-gray-700' : sub_menu === true }">
+        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700"
+        @click="hide_menus(); sub_menu = true"
+        :class="{ 'bg-gray-700' : sub_menu === true }">
 
             <div class="flex justify-between items-center w-full">
 
@@ -75,7 +72,7 @@
 
         </div>
 
-        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu" @click.away="sub_menu = false">
+        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu">
 
             @foreach($level3 as $link)
 
@@ -87,9 +84,10 @@
 
                 @else
 
-                    <div x-data="{ sub_menu_2: false }" class="w-full">
+                    <div x-data="{ sub_menu_2: false }" class="nav-link w-full">
 
-                        <div class="cursor-pointer w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300" @click="sub_menu_2 = true">
+                        <div class="cursor-pointer w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300"
+                        @click="sub_menu_2 = true">
 
                             <div class="flex justify-between items-center w-full">
 
@@ -105,7 +103,7 @@
 
 
                         <!-- Expandable link section, show/hide based on state. -->
-                        <div class="space-y-1 bg-gray-700 rounded-b pl-8" x-show="sub_menu_2" @click.away="sub_menu_2 = false">
+                        <div class="space-y-1 bg-gray-700 rounded-b pl-8" x-show="sub_menu_2">
                             @foreach($link['sub_links'] as $link)
                                 <a href="{{ $link['link'] }}" class="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300">
                                     {{ $link['title'] }}

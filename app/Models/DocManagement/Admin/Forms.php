@@ -20,4 +20,12 @@ class Forms extends Model
         return $this -> hasOne(\App\Models\DocManagement\Resources\ChecklistGroups::class, 'id', 'checklist_group_id');
     }
 
+    public function pages() {
+        return $this -> hasMany(\App\Models\DocManagement\Admin\FormsPages::class, 'form_id', 'id') -> orderBy('page_number');
+    }
+
+    public function fields() {
+        return $this -> hasMany(\App\Models\DocManagement\Admin\FormsFields::class, 'form_id', 'id');
+    }
+
 }

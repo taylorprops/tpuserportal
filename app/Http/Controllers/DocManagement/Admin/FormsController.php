@@ -283,11 +283,11 @@ class FormsController extends Controller
 
                 $split_pages_directory = Storage::files($storage_dir_pages);
 
-                $c = 1;
                 foreach ($split_pages_directory as $split_page) {
 
+                    $c = str_replace('.pdf', '', basename($split_page));
                     // add individual images to images directory
-                    $create_image = exec('convert -density 200 -quality 80% -resize 1200 '.Storage::path($split_page).' -compress JPEG -background white -alpha remove -strip '.Storage::path($storage_dir_images.'/'.$c.'.jpg'));
+                    $create_image = exec('convert -density 200 -quality 80% '.Storage::path($split_page).' -compress JPEG -background white -alpha remove -strip '.Storage::path($storage_dir_images.'/'.$c.'.jpg')); // removed  -resize 1200
 
                     // add pages to db
                     $upload_pages = new FormsPages();

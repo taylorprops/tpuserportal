@@ -1,6 +1,6 @@
 
 
-<ul class="form-ul pb-20" x-data="{ active_form: '' }">
+<ul class="form-ul pb-20 animate__animated animate__fadeIn" x-data="{ active_form: '' }">
 
     @foreach($forms as $form)
 
@@ -61,7 +61,7 @@
                     :buttonClass="'default'"
                     :buttonSize="'md'"
                     type="button"
-                    @click="edit_form($event.target, `{{ $form_id }}`, `{{ $form_name_display}}`, `{{ $form_location }}`, `{{ $form_group_id }}`, `{{ $checklist_group_id }}`, `{{ $form_tag }}`, `{{ $state }}`, `{{ $helper_text }}`);
+                    @click="clear_form(); edit_form($event.target, `{{ $form_id }}`, `{{ $form_name_display}}`, `{{ $form_location }}`, `{{ $form_group_id }}`, `{{ $checklist_group_id }}`, `{{ $form_tag }}`, `{{ $state }}`, `{{ $helper_text }}`);
                     active_form = `{{ $form_id }}`;">
                         <i class="fad fa-edit mr-2"></i> Edit
                     </x-elements.button>

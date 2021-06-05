@@ -13,7 +13,19 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            inset: {
+                '-1': '-1rem',
+                '-2.5': '-2.5rem',
+                '-3': '-3rem',
+                '-3.5': '-3.5rem',
+                '-4': '-4rem',
+                '-5': '-5rem',
+                '-5.5': '-5.5rem',
+                '-6': '-6rem'
+            },
             height: theme => ({
+                'screen-5': '5vh',
+                'screen-8': '8vh',
                 'screen-10': '10vh',
                 'screen-20': '20vh',
                 'screen-25': '25vh',
@@ -25,6 +37,8 @@ module.exports = {
                 'screen-75': '75vh',
                 'screen-80': '80vh',
                 'screen-90': '90vh',
+                'screen-92': '92vh',
+                'screen-95': '95vh',
             }),
             width: theme => ({
                 'screen-10': '10vw',
@@ -46,9 +60,10 @@ module.exports = {
                     dark: '#334155',
                 },
                 primary: {
-                    light: '#025ba3',
-                    DEFAULT: '#015091',
-                    dark: '#124772',
+                    lighter: '#9bc1ff',
+                    light: '#609bfa',
+                    DEFAULT: '#4286f4',
+                    dark: '#3570ce',
                 },
                 secondary: {
                     light: '#f7863b',

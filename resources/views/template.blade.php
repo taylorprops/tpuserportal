@@ -1,8 +1,8 @@
 <x-app-layout>
-    @section('title') Forms @endsection
+    @section('title') Page Name @endsection
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Forms
+            Page Name
         </h2>
     </x-slot>
 

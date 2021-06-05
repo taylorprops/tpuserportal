@@ -13,10 +13,13 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link href="/vendor/fontawesome/fontawesome/css/all.css" rel="stylesheet">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
-        <link href="/vendor/fontawesome/fontawesome/css/all.css" rel="stylesheet">
+        <script src="{{ asset('js/vendor/draggable.js') }}"></script> {{-- https://anseki.github.io/plain-draggable/ --}}
+
+
     </head>
 
     <body class="font-sans antialiased" x-data="{ show_loading: false }">
@@ -46,12 +49,14 @@
                 </div>
 
                 <!-- Page Heading -->
+                @if($header != 'null')
                 <header class="" :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
                     <div class="max-w-full pb-0 md:pb-5 px-4 sm:px-6 lg:px-8"
                     :class="{ 'mx-auto mt-6' : main_nav_open, 'ml-10 mt-2' : !main_nav_open }">
-                        {{ $header }}
+                        {{ $header ?? null }}
                     </div>
                 </header>
+                @endif
 
                 <!-- Page Content -->
                 <main :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">

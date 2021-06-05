@@ -1,10 +1,9 @@
-if (document.URL.match(/forms/)) {
+if (document.URL.match(/forms$/)) {
 
     window.addEventListener('load', (event) => {
 
         get_form_groups();
         setTimeout(get_forms, 500);
-        document.querySelector('#open_form_modal').addEventListener('click', clear_form);
 
     });
 
@@ -33,9 +32,10 @@ if (document.URL.match(/forms/)) {
         if(!form_group_id) {
             form_group_id = document.querySelector('.page-container').__x.$data.active_tab;
         }
-        let sort_by = document.querySelector('#sort_by') ? document.querySelector('#sort_by').value : 'created_at';
-        let published = document.querySelector('#published') ? document.querySelector('#published').value : 'all';
-        let active = document.querySelector('#active') ? document.querySelector('#active').value : 'all';
+        let form_group = document.querySelector('.form-group-li.active');
+        let sort_by = form_group.querySelector('.sort-by') ? form_group.querySelector('.sort-by').value : 'created_at';
+        let published = form_group.querySelector('.show-published') ? form_group.querySelector('.show-published').value : 'all';
+        let active = form_group.querySelector('.show-active') ? form_group.querySelector('.show-active').value : 'all';
 
         axios.get('/doc_management/admin/forms/get_forms', {
             params: {
@@ -55,8 +55,6 @@ if (document.URL.match(/forms/)) {
 
     window.get_upload_text = function (event) {
 
-        event.stopPropagation();
-
         if(event.target.value != '') {
 
             show_loader();
@@ -67,7 +65,7 @@ if (document.URL.match(/forms/)) {
             axios.post('/doc_management/admin/forms/get_upload_text', formData)
                 .then(function (response) {
 
-                    document.getElementById('upload_form').__x.$data.show_form_names = true;
+                    document.querySelector('.page-container').__x.$data.show_form_names = true;
                     document.querySelector('.form-names-div').classList.remove('hidden');
 
                     document.querySelector('#form_preview').innerHTML = '<embed src="' + response.data.upload_location + '#view=FitW" width="100%" height="100%">';
@@ -93,7 +91,7 @@ if (document.URL.match(/forms/)) {
     }
 
     window.add_form_name = function(container) {
-        document.getElementById('upload_form').__x.$data.show_form_names = false;
+        document.querySelector('.page-container').__x.$data.show_form_names = false;
         let title = container.querySelector('.form-name-title').value;
         document.querySelector('#form_name_display').value = title;
         document.querySelector('#helper_text').value = title;
@@ -101,7 +99,7 @@ if (document.URL.match(/forms/)) {
 
     window.edit_form = function(ele, form_id, form_name_display, form_location, form_group_id, checklist_group_id, form_tag, state, helper_text) {
 
-        document.querySelector('#open_form_modal').click();
+        document.querySelector('.page-container').__x.$data.show_modal = true;
         document.querySelector('#current_form').innerHTML = '<span class="text-sm">Current form: <span class="font-bold">'+form_name_display+'</span></span>';
         document.querySelector('#form_id').value = form_id;
         document.querySelector('#form_name_display').value = form_name_display;
@@ -129,7 +127,7 @@ if (document.URL.match(/forms/)) {
             }
 
             if(document.querySelector('#form_id').value != '') {
-                document.querySelector('.modal').__x.$data.show_modal = false;
+                document.querySelector('.page-container').__x.$data.show_modal = false;
             }
 
             clear_form();
@@ -202,7 +200,7 @@ if (document.URL.match(/forms/)) {
 
                 }
 
-                document.querySelector('.search-container').__x.$data.show_search_results = true;
+                document.querySelector('.page-container').__x.$data.show_search_results = true;
 
             })
             .catch(function (error) {
@@ -217,7 +215,7 @@ if (document.URL.match(/forms/)) {
         document.querySelector('.form-group-'+form_group_id).click();
 
         setTimeout(function() {
-            let list = document.querySelector('.form-group-ul.active .form-ul');
+            let list = document.querySelector('.form-group-li.active .form-ul');
             let form = document.querySelector('.form-'+form_id);
             list.insertBefore(form, list.childNodes[0]);
             list.__x.$data.active_form = form_id;
@@ -237,13 +235,7 @@ if (document.URL.match(/forms/)) {
         });
     }
 
-    window.hide_menus = function(refs) {
-        console.log(refs);
-        // refs.forEach(function(ref) {
-        //     console.log(ref);
-        //     ref.__x.$data.sub_menu = false;
-        // });
-    }
+
 
 
 }

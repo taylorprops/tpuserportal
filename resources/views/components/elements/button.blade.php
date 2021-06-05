@@ -1,5 +1,3 @@
-
-
 @php
 
 $classes = '';
@@ -14,10 +12,8 @@ if($buttonSize == 'sm') {
     $classes .= 'px-3 py-3 text-lg';
 }
 
-
-$classes .= ' bg-'.$buttonClass.' hover:bg-'.$buttonClass.'-dark active:bg-'.$buttonClass.'-dark focus:border-'.$buttonClass.'-dark ring-'.$buttonClass.'-dark inline-flex items-center border border-transparent rounded font-semibold text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md ';
+$classes .= ' bg-'.$buttonClass.' hover:bg-'.$buttonClass.'-dark active:bg-'.$buttonClass.'-dark focus:border-'.$buttonClass.'-dark ring-'.$buttonClass.'-dark inline-flex items-center border border-'.$buttonClass.'-dark rounded font-semibold text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md ';
 @endphp
-
 <button {{ $attributes -> merge(['class' => $classes]) }} data-default-html="{{ htmlspecialchars($slot) }}">
     {{ $slot }}
 </button>

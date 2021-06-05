@@ -13,7 +13,9 @@
     <div class="page-container pt-2"
         x-data="{
             active_tab: '{{ $active_tab }}',
-            show_modal: false
+            show_modal: false,
+            show_search_results: false,
+            show_form_names: true
         }">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-8">
@@ -22,8 +24,7 @@
 
                 <div class="flex justify-between mb-2">
 
-                    <div class="search-container relative"
-                    x-data="{ show_search_results: false }">
+                    <div class="search-container relative">
 
                         <x-elements.input
                             id="search"
@@ -40,183 +41,14 @@
 
                     </div>
 
-                    <x-modals.modal
-                        :modalWidth="'w-9/12'"
-                        :modalTitle="'Add Form'"
-                        :buttonId="'open_form_modal'"
+                    <x-elements.button
+                        class=""
                         :buttonClass="'default'"
                         :buttonSize="'md'"
-                        :buttonText="'<i class=\'fal fa-plus mr-2\'></i> Add Form'">
-
-                        <form id="upload_form" enctype="multipart/form-data" x-data="{ show_form_names: true }">
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                                <div class="border rounded p-3"">
-
-                                    <div class="my-3">
-
-                                        <div id="current_form" class="mb-2 text-gray-600"></div>
-
-                                        <x-elements.input-file
-                                        :size="'md'"
-                                        :buttonClass="'default'"
-                                        :size="'md'"
-                                        name="upload"
-                                        id="upload"
-                                        class="required"
-                                        accept="application/pdf"
-                                        @change="get_upload_text(event)"/>
-
-                                    </div>
-
-                                    <div class="mb-3 mt-5 bg-gray-100 rounded hidden form-names-div">
-
-                                        <div class="flex justify-start">
-                                            <h5 class="text-secondary ml-2 my-1" @click="show_form_names = !show_form_names">Select and/or Edit Form Name</h5>
-                                            <a href="javascript:void(0)" @click="show_form_names = !show_form_names">
-                                                <i class="fal fa-angle-right text-secondary fa-lg ml-3 mt-2" :class="{ '' : !show_form_names, 'fa-rotate-90' : show_form_names }"></i>
-                                            </a>
-                                        </div>
-                                        <div class="form-names p-t-0 p-2" x-show="show_form_names">
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <x-elements.input
-                                        :size="'md'"
-                                        id="form_name_display"
-                                        name="form_name_display"
-                                        class="required"
-                                        type="text"
-                                        data-label="Form Name"/>
-                                    </div>
-
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-
-                                        <div class="mt-4">
-
-                                            <div>
-                                                <x-elements.select
-                                                    :size="'md'"
-                                                    id="checklist_group_id"
-                                                    name="checklist_group_id"
-                                                    class="required"
-                                                    data-label="Checklist Group"
-                                                    placeholder="Checklist Group">
-                                                    <option value=""></option>
-                                                    @foreach($checklist_groups as $checklist_group)
-                                                    <option value="{{ $checklist_group -> id }}">{{ $checklist_group -> group_name }}</option>
-                                                    @endforeach
-                                                </x-elements.select>
-                                            </div>
-
-                                            <div class="mt-4">
-                                                <x-elements.select
-                                                    :size="'md'"
-                                                    id="form_group_id"
-                                                    name="form_group_id"
-                                                    class="required"
-                                                    data-label="Form Group"
-                                                    placeholder="Form Group">
-                                                    <option value=""></option>
-                                                    @foreach($form_groups as $form_group)
-                                                    <option value="{{ $form_group -> id }}"  @if($form_group -> id  == $active_tab) selected @endif>{{ $form_group -> group_name }}</option>
-                                                    @endforeach
-                                                </x-elements.select>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="mt-4">
-
-                                            <div>
-                                                <x-elements.select
-                                                    :size="'md'"
-                                                    id="form_tag"
-                                                    name="form_tag"
-                                                    data-label="Form Tag"
-                                                    placeholder="Form Tag">
-                                                    <option value=""></option>
-                                                    @foreach($form_tags as $form_tag)
-                                                        <option value="{{ $form_tag -> id }}">{{ $form_tag -> tag_name }}</option>
-                                                    @endforeach
-                                                </x-elements.select>
-                                            </div>
-
-                                            <div class="mt-4">
-                                                <x-elements.select
-                                                    :size="'md'"
-                                                    id="state"
-                                                    name="state"
-                                                    class="required"
-                                                    data-label="State"
-                                                    placeholder="State">
-                                                    <option value=""></option>
-                                                    <option value="All">All</option>
-                                                    @foreach($active_states as $active_state)
-                                                    <option value="{{ $active_state }}" @if($active_state == $default_state) selected @endif>{{ $active_state }}</option>
-                                                    @endforeach
-                                                </x-elements.select>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="my-5">
-
-                                        <x-elements.textarea
-                                        id="helper_text"
-                                        name="helper_text"
-                                        class="required"
-                                        placeholder=""
-                                        data-label="Helper Text"
-                                        :size="'md'"/>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="border rounded p-3">
-
-                                    <div id="form_preview" class="h-full"></div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="border-top mt-5 sm:mt-4 ">
-
-                                <x-elements.button
-                                    class="mr-5"
-                                    @click="save_form($event.target); show_modal = false; show_loading_button($event.target, 'Saving Form'); $event.target.disabled = true;"
-                                    :buttonClass="'default'"
-                                    :buttonSize="'lg'"
-                                    type="button">
-                                    <i class="fal fa-check mr-2"></i> Save Form
-                                </x-elements.button>
-
-                                <x-elements.button
-                                    class="ml-5"
-                                    @click="show_modal = false"
-                                    :buttonClass="'danger'"
-                                    :buttonSize="'md'"
-                                    type="button">
-                                    <i class="fal fa-times mr-2"></i> Cancel
-                                </x-elements.button>
-
-
-                            </div>
-
-                            <input type="hidden" name="form_id" id="form_id">
-
-                        </form>
-
-                    </x-modals.modal>
+                        type="button"
+                        x-on:click="show_modal = true; clear_form()">
+                        <i class="fal fa-check mr-2"></i> Add Form
+                    </x-elements.button>
 
                 </div>
 
@@ -270,6 +102,182 @@
             </div>
 
         </div>
+
+
+        <x-modals.modal
+            :modalWidth="'w-9/12'"
+            :modalTitle="'Add Form'"
+            x-show="show_modal">
+
+            <form id="upload_form" enctype="multipart/form-data">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div class="border rounded p-3"">
+
+                        <div class="my-3">
+
+                            <div id="current_form" class="mb-2 text-gray-600"></div>
+
+                            <x-elements.input-file
+                            :size="'md'"
+                            :buttonClass="'default'"
+                            :size="'md'"
+                            name="upload"
+                            id="upload"
+                            class="required"
+                            accept="application/pdf"
+                            x-on:change.stop="get_upload_text(event)"/>
+
+                        </div>
+
+                        <div class="mb-3 mt-5 bg-gray-100 rounded hidden form-names-div">
+
+                            <div class="flex justify-start">
+                                <h5 class="text-secondary ml-2 my-1" @click="show_form_names = !show_form_names">Select and/or Edit Form Name</h5>
+                                <a href="javascript:void(0)" @click="show_form_names = !show_form_names">
+                                    <i class="fal fa-angle-right text-secondary fa-lg ml-3 mt-2" :class="{ '' : !show_form_names, 'fa-rotate-90' : show_form_names }"></i>
+                                </a>
+                            </div>
+                            <div class="form-names p-t-0 p-2" x-show="show_form_names">
+
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4">
+                            <x-elements.input
+                            :size="'md'"
+                            id="form_name_display"
+                            name="form_name_display"
+                            class="required"
+                            type="text"
+                            data-label="Form Name"/>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+
+                            <div class="mt-4">
+
+                                <div>
+                                    <x-elements.select
+                                        :size="'md'"
+                                        id="checklist_group_id"
+                                        name="checklist_group_id"
+                                        class="required"
+                                        data-label="Checklist Group"
+                                        placeholder="Checklist Group">
+                                        <option value=""></option>
+                                        @foreach($checklist_groups as $checklist_group)
+                                        <option value="{{ $checklist_group -> id }}">{{ $checklist_group -> group_name }}</option>
+                                        @endforeach
+                                    </x-elements.select>
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-elements.select
+                                        :size="'md'"
+                                        id="form_group_id"
+                                        name="form_group_id"
+                                        class="required"
+                                        data-label="Form Group"
+                                        placeholder="Form Group">
+                                        <option value=""></option>
+                                        @foreach($form_groups as $form_group)
+                                        <option value="{{ $form_group -> id }}"  @if($form_group -> id  == $active_tab) selected @endif>{{ $form_group -> group_name }}</option>
+                                        @endforeach
+                                    </x-elements.select>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4">
+
+                                <div>
+                                    <x-elements.select
+                                        :size="'md'"
+                                        id="form_tag"
+                                        name="form_tag"
+                                        data-label="Form Tag"
+                                        placeholder="Form Tag">
+                                        <option value=""></option>
+                                        @foreach($form_tags as $form_tag)
+                                            <option value="{{ $form_tag -> id }}">{{ $form_tag -> tag_name }}</option>
+                                        @endforeach
+                                    </x-elements.select>
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-elements.select
+                                        :size="'md'"
+                                        id="state"
+                                        name="state"
+                                        class="required"
+                                        data-label="State"
+                                        placeholder="State">
+                                        <option value=""></option>
+                                        <option value="All">All</option>
+                                        @foreach($active_states as $active_state)
+                                        <option value="{{ $active_state }}" @if($active_state == $default_state) selected @endif>{{ $active_state }}</option>
+                                        @endforeach
+                                    </x-elements.select>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="my-5">
+
+                            <x-elements.textarea
+                            id="helper_text"
+                            name="helper_text"
+                            class="required"
+                            placeholder=""
+                            data-label="Helper Text"
+                            :size="'md'"/>
+
+                        </div>
+
+                    </div>
+
+                    <div class="border rounded p-3">
+
+                        <div id="form_preview" class="h-full"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="border-top mt-5 sm:mt-4 ">
+
+                    <x-elements.button
+                        class="mr-5"
+                        @click="save_form($event.target); show_loading_button($event.target, 'Saving Form'); $event.target.disabled = true;"
+                        :buttonClass="'default'"
+                        :buttonSize="'lg'"
+                        type="button">
+                        <i class="fal fa-check mr-2"></i> Save Form
+                    </x-elements.button>
+
+                    <x-elements.button
+                        class="ml-5"
+                        @click="show_modal = false"
+                        :buttonClass="'danger'"
+                        :buttonSize="'md'"
+                        type="button">
+                        <i class="fal fa-times mr-2"></i> Cancel
+                    </x-elements.button>
+
+
+                </div>
+
+                <input type="hidden" name="form_id" id="form_id">
+
+            </form>
+
+        </x-modals.modal>
 
     </div>
 

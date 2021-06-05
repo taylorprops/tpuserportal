@@ -20,7 +20,6 @@ class Button extends Component
     {
         $this -> buttonClass = $buttonClass;
         $this -> buttonSize = $buttonSize;
-        //dd($buttonClass);
     }
 
     /**
