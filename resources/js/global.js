@@ -3,7 +3,9 @@ window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
 
 
+
 window.addEventListener('load', (event) => {
+
 });
 
 window._token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -42,7 +44,14 @@ window.hide_loader = function() {
     document.querySelector('body').__x.$data.show_loading = false;
 }
 
-
+window.ele_loading = function(ele) {
+    ele.html(' \
+    <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50"> \
+        <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0"> \
+            <i class="fas fa-circle-notch fa-spin fa-4x"></i> \
+        </span> \
+    </div>');
+}
 
 window.show_form_errors = function(errors) {
     Object.entries(errors).forEach(([key, value]) => {
@@ -81,240 +90,160 @@ window.decode_HTML = function (html) {
 	return txt.value;
 };
 
+window.randomHSL = function(){
+    return `hsla(${~~(360 * Math.random())},70%,70%,0.8)`
+}
 
-/* window.drag_resize = function() {
+window.datatable_settings = {
+    "autoWidth": false,
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    "responsive": true,
+    "destroy": true,
+    fixedHeader: true,
+    "language": {
+        search: '',
+        searchPlaceholder: 'Search'
+    },
+    "language": {
+        "info": "_START_ to _END_ of _TOTAL_",
+        "lengthMenu": "Show _MENU_",
+        "search": ""
+    },
 
-    let field_divs = document.querySelectorAll('.field-div.drag-resize');
+}
 
-    field_divs.forEach(function(element) {
+window.data_table = function(src, cols, page_length, table, sort_by, no_sort_cols, hidden_cols, show_buttons, show_search, show_info, show_paging, show_hide_cols = true, hide_header_and_footer = false) {
 
-        let resizers = element.querySelectorAll('.resizer');
-        let input_minimum_size = 15;
-        let check_radio_minimum_size = 10;
-        let check_radio_maximum_size = 30;
-        let original_width = 0;
-        let original_height = 0;
-        let original_x = 0;
-        let original_y = 0;
-        let original_mouse_x = 0;
-        let original_mouse_y = 0;
-        let keep_aspect = false;
-        let field_type = element.getAttribute('data-type');
+    /*
+    src = 'url'
+    table = $('#table_id')
+    sort_by = [1, 'desc'] - col #, dir
+    no_sort_cols = [0, 8] - array of cols
+    hidden_cols = [0, 8] - array of cols
+    show_buttons = true/false
+    show_search = true/false
+    show_info = true/false
+    show_paging = true/false
+    show_hide_cols = true/false
+    hide_header_and_footer = true/false
+    */
 
-        draggable(element, field_type);
+    datatable_settings.ajax = src;
+    datatable_settings.columns = cols;
+    datatable_settings.serverSide = true;
+    datatable_settings.processing = true;
 
-        for (let i = 0; i < resizers.length; i++) {
-            let currentResizer = resizers[i];
-            currentResizer.addEventListener('mousedown', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                original_width = parseFloat(element.offsetWidth);
-                original_height = parseFloat(element.offsetHeight);
-                original_x = element.offsetLeft;
-                original_y = element.offsetTop;
-                original_mouse_x = e.pageX;
-                original_mouse_y = e.pageY;
-                keep_aspect = field_type == 'radio' || field_type == 'checkbox' ? true : false;
-                window.addEventListener('mousemove', resize);
-                window.addEventListener('mouseup', stopResize);
-            })
 
-            function resize(e) {
-                if (currentResizer.classList.contains('bottom-right')) {
-                    const width = original_width + (e.pageX - original_mouse_x);
-                    const height = original_height + (e.pageY - original_mouse_y);
-                    if(keep_aspect == true) {
-                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                            element.style.width = width + 'px';
-                            element.style.height = width + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                        }
+    datatable_settings.pageLength = parseInt(10);
+    if(page_length != '') {
+        datatable_settings.pageLength = parseInt(page_length);
+    }
 
-                    }
+    if(sort_by.length > 0) {
+        datatable_settings.order = [[sort_by[0], sort_by[1]]];
+    }
+
+    if(no_sort_cols.length > 0) {
+        datatable_settings.columnDefs = [{
+            orderable: false,
+            targets: no_sort_cols
+        }];
+    }
+
+    if(hidden_cols.length > 0) {
+        hidden_cols.forEach(function(col) {
+            datatable_settings.columnDefs.push({
+                targets: [col],
+                visible: false
+            });
+        });
+    }
+
+    let buttons = '';
+
+    if(show_buttons == true) {
+
+        if(show_hide_cols == true) {
+            datatable_settings.buttons = [
+                {
+                    extend: 'colvis',
+                    text: 'Hide Columns'
                 }
-                else if (currentResizer.classList.contains('bottom-left')) {
-                    const height = original_height + (e.pageY - original_mouse_y);
-                    const width = original_width - (e.pageX - original_mouse_x);
-                    if(keep_aspect == true) {
-                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                            element.style.width = width + 'px';
-                            element.style.height = width + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                    } else {
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                        }
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                    }
+            ];
+        }
+
+        datatable_settings.buttons.push(
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible'
                 }
-                else if (currentResizer.classList.contains('top-right')) {
-                    const width = original_width + (e.pageX - original_mouse_x);
-                    const height = original_height - (e.pageY - original_mouse_y);
-                    if(keep_aspect == true) {
-                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                            element.style.width = height + 'px';
-                            element.style.height = height + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    }
-                }
-                else {
-                    const width = original_width - (e.pageX - original_mouse_x)
-                    const height = original_height - (e.pageY - original_mouse_y)
-                    if(keep_aspect == true) {
-                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                            element.style.width = height + 'px';
-                            element.style.height = height + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px'
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px'
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: ':visible'
                 }
             }
+        );
+        buttons = '<B>';
 
-            function stopResize() {
 
-                window.removeEventListener('mousemove', resize);
-                coordinates(null, element, field_type, 'stopResize');
-                draggable(element, field_type);
-            }
+    }
+
+
+
+    let search = '';
+    if(show_search == true) {
+        search = '<f>';
+    }
+
+    let info = '';
+    if(show_info == true) {
+        info = '<i>';
+    }
+
+    let paging = '';
+    let length = '';
+    datatable_settings.paging = false;
+    if(show_paging == true) {
+        paging = '<p>';
+        datatable_settings.paging = true;
+        length = '<l>';
+    }
+
+    if(hide_header_and_footer == true) {
+        datatable_settings.drawCallback = function() {
+            $(this.api().table().header()).hide();
+            $(this.api().table().footer()).hide();
         }
+        info = '';
+        paging = '';
+        datatable_settings.paging = false;
+        length = '';
+        search = '';
+        buttons = '';
+        datatable_settings.buttons = [];
+    }
 
-    });
+
+    datatable_settings.dom = '<"flex justify-between flex-wrap items-center text-gray-600"'+search+info+length+buttons+'>rt<"flex justify-between items-center text-gray-600"'+info + paging+'>'
+
+    let dt = table.DataTable(datatable_settings);
+
+
+    style_dt_buttons();
+    dt.on('draw', style_dt_buttons);
+
+
+    return dt;
 
 }
 
-window.draggable = function(element, field_type) {
-    element.classList.remove('plain-draggable');
-    let draggable = new PlainDraggable(element, {
-        handle: element.querySelector('.draggable-handle'),
-        //autoScroll: true,
-        leftTop: true,
-        onDragEnd: function(newPosition) {
-            coordinates(null, element, field_type, 'onDragEnd');
-        }
-    });
+function style_dt_buttons() {
+    $('.dataTables_filter [type="search"]').attr('placeholder', 'Search');
+    $('.dt-button').attr('class', ' buttons-colvis px-2 py-1 bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center border border-primary-dark rounded text-sm text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md');
+
+
+    $('.paginate_button').removeClass('paginate_button').addClass('paginate_button_custom');
 }
-
-window.coordinates = function(event, ele = null, field_type, function_name) {
-
-    //console.log(function_name, event, ele, field_type);
-    let container, x, y;
-
-
-    // if from dblclick to add field
-    if (event) {
-
-        container = event.target.parentNode;
-
-        let page_boundaries = event.target.getBoundingClientRect();
-
-        // get target coordinates
-        // subtract bounding box coordinates from target coordinates to get top and left positions
-        // coordinates are relative to bounding box coordinates
-        x = parseInt(Math.round(event.clientX - page_boundaries.left));
-        y = parseInt(Math.round(event.clientY - page_boundaries.top));
-
-        // coordinates of existing field
-    } else {
-
-        container = ele.parentNode;
-
-        x = ele.offsetLeft;
-        y = ele.offsetTop;
-
-    }
-
-    x = x - 1;
-    y = y - 2;
-    // convert to percent
-    if(!container) {
-        //console.log('missing', ele);
-        return false;
-    }
-    let x_perc = pix_2_perc('x', x, container);
-    let y_perc = pix_2_perc('y', y, container);
-
-    //set heights
-    let ele_h_perc = 1.3;
-    if (field_type == 'radio' || field_type == 'checkbox') {
-        ele_h_perc = 1.1;
-    }
-    if (event) {
-        // remove element height from top position
-        y_perc = y_perc - ele_h_perc;
-    }
-
-    // set w and h for new field
-    let h_perc, w_perc;
-    if (field_type == 'radio' || field_type == 'checkbox') {
-        h_perc = 1.1;
-        w_perc = 1.45;
-    } else {
-        h_perc = 1.3;
-        if (ele) {
-            w_perc = (ele.offsetWidth / container.offsetWidth) * 100;
-        } else {
-            w_perc = 15;
-        }
-
-    }
-    h_perc = parseFloat(h_perc);
-    w_perc = parseFloat(w_perc);
-
-    if (ele) {
-
-        // field data percents
-        ele.setAttribute('data-h-perc', h_perc);
-        ele.setAttribute('data-w-perc', w_perc);
-        ele.setAttribute('data-x-perc', x_perc);
-        ele.setAttribute('data-y-perc', y_perc);
-        ele.setAttribute('data-y-perc', y_perc);
-        ele.setAttribute('data-x', x);
-        ele.setAttribute('data-y', y);
-
-    }
-
-    return {
-        h_perc: h_perc,
-        w_perc: w_perc,
-        x_perc: x_perc,
-        y_perc: y_perc
-    }
-
-}
-
-window.pix_2_perc = function(type, px, container) {
-    if (type == 'x') {
-        return (100 * parseFloat(px / parseFloat(container.offsetWidth)));
-    } else {
-        return (100 * parseFloat(px / parseFloat(container.offsetHeight)));
-    }
-} */

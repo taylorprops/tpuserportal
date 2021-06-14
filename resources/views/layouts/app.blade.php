@@ -15,9 +15,24 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="/vendor/fontawesome/fontawesome/css/all.css" rel="stylesheet">
 
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.25/af-2.3.7/b-1.7.1/b-colvis-1.7.1/b-html5-1.7.1/b-print-1.7.1/cr-1.5.4/fh-3.1.9/kt-2.6.2/r-2.2.9/sp-1.3.0/datatables.min.css"/>
+
+
+
         <!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.25/af-2.3.7/b-1.7.1/b-colvis-1.7.1/b-html5-1.7.1/b-print-1.7.1/cr-1.5.4/fh-3.1.9/kt-2.6.2/r-2.2.9/sp-1.3.0/datatables.min.js"></script>
+
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('js/vendor/draggable.js') }}"></script> {{-- https://anseki.github.io/plain-draggable/ --}}
+
+        <script src="https://maps.googleapis.com/maps/api/js?key={{ config('global.google_api_key') }}&libraries=places&outputFormat=json"></script>
 
 
     </head>
@@ -30,7 +45,7 @@
             </span>
         </div>
 
-        <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden bg-gray-100">
+        <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden bg-gray-50">
 
             {{-- @include('layouts.navigation') --}}
             @include('layouts.menu.menu')
@@ -51,9 +66,11 @@
                 <!-- Page Heading -->
                 @if($header != 'null')
                 <header class="" :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
-                    <div class="max-w-full pb-0 md:pb-5 px-4 sm:px-6 lg:px-8"
+                    <div class="max-w-full pb-3 md:pb-5 px-4 sm:px-6 lg:px-8"
                     :class="{ 'mx-auto mt-6' : main_nav_open, 'ml-10 mt-2' : !main_nav_open }">
-                        {{ $header ?? null }}
+                        <h2 class="font-semibold md:text-2xl md:ml-12 lg:ml-24 text-primary">
+                            {{ $header ?? null }}
+                        </h2>
                     </div>
                 </header>
                 @endif
@@ -66,6 +83,8 @@
             </div>
 
         </div>
+
+        <input type="hidden" id="global_company_active_states" value="{{ implode(',', config('global.company_active_states')) }}">
 
     </body>
 

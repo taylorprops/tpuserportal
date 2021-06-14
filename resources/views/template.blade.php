@@ -1,9 +1,7 @@
 <x-app-layout>
     @section('title') Page Name @endsection
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Page Name
-        </h2>
+        Page Name
     </x-slot>
 
     <div class="pb-12 pt-2">

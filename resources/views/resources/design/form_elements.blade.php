@@ -3,9 +3,7 @@
     @section('title') Form Elements @endsection
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Form Elements
-        </h2>
+        Form Elements
     </x-slot>
 
     <div class="pb-36 pt-2 px-8">
@@ -120,7 +118,7 @@
 
                 <div class="mb-4 rounded p-3 bg-white">
                     <x-dropdown
-                    :buttonClass="'default'"
+                    :buttonClass="'primary'"
                     :buttonText="'Open Dropdown'"
                     :buttonSize="'md'"
                     :dropdownClasses="'p-4 bg-white'"
@@ -435,7 +433,7 @@
                 x-data="{ show_modal: false }">
 
                     <x-elements.button
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
                         x-on:click="show_modal = true">

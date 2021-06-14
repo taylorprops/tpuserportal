@@ -13,3 +13,20 @@
 @empty
     <p>No users</p>
 @endforelse
+
+
+default: {
+    light: '#64748B',
+    DEFAULT: '#475569',
+    dark: '#334155',
+},
+
+/$$$$$$$$$$$$$$$$$$$$$$$  Maintenance $$$$$$$$$$$$$$$$$$$$$$/
+
+laravel-microscope
+https://github.com/imanghafoori1/laravel-microscope
+php artisan check:all
+
+laravel web logs
+https://github.com/mojtabaahn/laravel-web-logs
+go to http://admin-tail/web-logs

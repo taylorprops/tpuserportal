@@ -61,7 +61,7 @@
                 @endif
 
                 <x-elements.button
-                    :buttonClass="'default'"
+                    :buttonClass="'primary'"
                     :buttonSize="'md'"
                     type="submit"
                     class="ml-3">

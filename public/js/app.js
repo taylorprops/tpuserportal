@@ -7084,6 +7084,10 @@ __webpack_require__(/*! ./doc_management/admin/forms/forms.js */ "./resources/js
 
 __webpack_require__(/*! ./doc_management/admin/forms/form_fields.js */ "./resources/js/doc_management/admin/forms/form_fields.js");
 
+__webpack_require__(/*! ./employees/agents.js */ "./resources/js/employees/agents.js");
+
+__webpack_require__(/*! ./doc_management/transactions/create.js */ "./resources/js/doc_management/transactions/create.js");
+
 __webpack_require__(/*! ./tests/test */ "./resources/js/tests/test.js");
 
 /***/ }),
@@ -7145,7 +7149,8 @@ if (document.URL.match(/dashboard/)) {// let button = document.getElementById('o
 /***/ (() => {
 
 if (document.URL.match(/form_fields/)) {
-  var drag_resize = function drag_resize() {
+  var resize = function resize() {
+    //console.log('running resize');
     var field_divs = document.querySelectorAll('.field-div.drag-resize');
     field_divs.forEach(function (element) {
       var resizers = element.querySelectorAll('.resizer');
@@ -7159,8 +7164,7 @@ if (document.URL.match(/form_fields/)) {
       var original_mouse_x = 0;
       var original_mouse_y = 0;
       var keep_aspect = false;
-      var field_type = element.getAttribute('data-type');
-      draggable(element, field_type);
+      var field_category = element.getAttribute('data-category'); //draggable(element, field_category);
 
       var _loop = function _loop(i) {
         var currentResizer = resizers[i];
@@ -7173,7 +7177,7 @@ if (document.URL.match(/form_fields/)) {
           original_y = element.offsetTop;
           original_mouse_x = e.pageX;
           original_mouse_y = e.pageY;
-          keep_aspect = field_type == 'radio' || field_type == 'checkbox' ? true : false;
+          keep_aspect = field_category == 'radio' || field_category == 'checkbox' ? true : false;
           window.addEventListener('mousemove', resize);
           window.addEventListener('mouseup', stopResize);
         });
@@ -7238,8 +7242,6 @@ if (document.URL.match(/form_fields/)) {
                 element.style.height = _height2 + 'px';
                 element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
               }
-
-              console.log(original_y, e.pageY, original_mouse_y);
             }
           } else {
             var _width3 = original_width - (e.pageX - original_mouse_x);
@@ -7271,8 +7273,8 @@ if (document.URL.match(/form_fields/)) {
 
         function stopResize() {
           window.removeEventListener('mousemove', resize);
-          coordinates(null, element, field_type, 'stopResize');
-          draggable(element, field_type);
+          coordinates(null, element, field_category);
+          draggable(element, field_category);
         }
       };
 
@@ -7283,6 +7285,7 @@ if (document.URL.match(/form_fields/)) {
   };
 
   var set_options_side = function set_options_side(element) {
+    //console.log('running set_options_side');
     var width = element.parentNode.offsetWidth;
     var left = element.offsetLeft;
 
@@ -7293,18 +7296,19 @@ if (document.URL.match(/form_fields/)) {
     }
   };
 
-  var draggable = function draggable(element, field_type) {
+  var draggable = function draggable(element, field_category) {
+    //console.log('running draggable');
     if (element.parentNode) {
       var _draggable = new PlainDraggable(element, {
         handle: element.querySelector('.draggable-handle'),
         //autoScroll: true,
-        //containment: document.querySelector('.form-page-container'),
+        //containment: element.parentNode,
         leftTop: true,
         onDrag: function onDrag(newPosition) {
           set_options_side(element);
         },
         onDragEnd: function onDragEnd(newPosition) {
-          coordinates(null, element, field_type, 'onDragEnd');
+          coordinates(null, element, field_category);
         }
       });
     }
@@ -7312,9 +7316,8 @@ if (document.URL.match(/form_fields/)) {
 
   var coordinates = function coordinates(event) {
     var ele = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var field_type = arguments.length > 2 ? arguments[2] : undefined;
-    var function_name = arguments.length > 3 ? arguments[3] : undefined;
-    //console.log(function_name, event, ele, field_type);
+    var field_category = arguments.length > 2 ? arguments[2] : undefined;
+    console.log('running coordinates');
     var container, x, y; // if from dblclick to add field
 
     if (event) {
@@ -7329,10 +7332,8 @@ if (document.URL.match(/form_fields/)) {
       container = ele.parentNode;
       x = ele.offsetLeft;
       y = ele.offsetTop;
-    }
+    } // convert to percent
 
-    x = x - 1;
-    y = y - 2; // convert to percent
 
     if (!container) {
       //console.log('missing', ele);
@@ -7344,7 +7345,7 @@ if (document.URL.match(/form_fields/)) {
 
     var ele_h_perc = 1.3;
 
-    if (field_type == 'radio' || field_type == 'checkbox') {
+    if (field_category == 'radio' || field_category == 'checkbox') {
       ele_h_perc = 1.1;
     }
 
@@ -7356,15 +7357,15 @@ if (document.URL.match(/form_fields/)) {
 
     var h_perc, w_perc;
 
-    if (field_type == 'radio' || field_type == 'checkbox') {
-      h_perc = 1.1;
-      w_perc = 1.45;
+    if (ele) {
+      w_perc = ele.offsetWidth / container.offsetWidth * 100;
+      h_perc = ele.offsetHeight / container.offsetHeight * 100;
     } else {
-      h_perc = 1.3;
-
-      if (ele) {
-        w_perc = ele.offsetWidth / container.offsetWidth * 100;
+      if (field_category == 'radio' || field_category == 'checkbox') {
+        h_perc = 1.1;
+        w_perc = 1.45;
       } else {
+        h_perc = 1.3;
         w_perc = 15;
       }
     }
@@ -7373,14 +7374,15 @@ if (document.URL.match(/form_fields/)) {
     w_perc = parseFloat(w_perc);
 
     if (ele) {
-      // field data percents
+      var h_px = ele.offsetHeight; // field data percents
+
       ele.setAttribute('data-h-perc', h_perc);
       ele.setAttribute('data-w-perc', w_perc);
       ele.setAttribute('data-x-perc', x_perc);
       ele.setAttribute('data-y-perc', y_perc);
-      ele.setAttribute('data-y-perc', y_perc);
       ele.setAttribute('data-x', x);
       ele.setAttribute('data-y', y);
+      ele.setAttribute('data-h-px', h_px);
     }
 
     return {
@@ -7399,15 +7401,30 @@ if (document.URL.match(/form_fields/)) {
     }
   };
 
-  window.addEventListener('load', function (event) {});
+  var unwrap = function unwrap(wrapper) {
+    // place childNodes in document fragment
+    var docFrag = document.createDocumentFragment();
+
+    while (wrapper.firstChild) {
+      var child = wrapper.removeChild(wrapper.firstChild);
+      docFrag.appendChild(child);
+    } // replace wrapper with document fragment
+
+
+    wrapper.parentNode.replaceChild(docFrag, wrapper);
+  };
+
+  window.addEventListener('load', function (event) {
+    get_fields();
+  });
 
   window.fill_fields = function () {
     return {
-      selected_field_type: '',
+      selected_field_category: '',
       active_page: 1,
       options_side: '',
       active_field: '',
-      show_selected_field_type: function show_selected_field_type(ele) {
+      show_selected_field_category: function show_selected_field_category(ele) {
         var buttons = document.querySelectorAll('.field-button');
         buttons.forEach(function (button) {
           button.classList.remove('active', 'bg-secondary', 'border-secondary', 'ring-secondary', 'hover:bg-secondary-dark', 'active:border-secondary', 'focus:border-secondary');
@@ -7415,34 +7432,47 @@ if (document.URL.match(/form_fields/)) {
         ele.classList.add('active', 'bg-secondary', 'border-secondary', 'ring-secondary', 'hover:bg-secondary-dark', 'active:border-secondary', 'focus:border-secondary');
       },
       add_field: function add_field(event) {
-        if (this.selected_field_type != '') {
+        if (this.selected_field_category != '') {
           create_field(event);
         }
       },
-      copy_field: function copy_field(id) {
+      copy_field: function copy_field(id, group) {
         var field = document.querySelector('[data-id="' + id + '"]');
+        var group_id = field.getAttribute('data-group-id');
         var new_field = field.outerHTML;
-        var old_top = field.offsetTop;
-        var new_id = Math.round(Date.now() * Math.random() * 100);
+        var field_category = field.getAttribute('data-category');
+        var options_side = field.__x.$data.options_side;
+        var field_top = field.offsetTop;
+        var field_height = field.offsetHeight;
+        var new_id = Date.now();
         var find_id = new RegExp(id, 'g');
-        var field_type = field.getAttribute('data-type');
         new_field = new_field.replace(find_id, new_id);
-        field.closest('.form-page-container').innerHTML += new_field;
-        new_field = document.querySelector('[data-id="' + new_id + '"]');
-        new_field.style.top = old_top + 30 + 'px';
-
-        var active_field = document.querySelector('.page-container').__x.$data.active_field;
+        var div = document.createElement('div');
+        div.innerHTML = new_field;
+        field.closest('.form-page-container').appendChild(div);
+        unwrap(div); //field.closest('.form-page-container').innerHTML += new_field;
 
         setTimeout(function () {
-          console.log(active_field);
-          active_field = new_id;
-          console.log(active_field);
-          coordinates(null, new_field, field_type, 'field_copied');
-          drag_resize();
-          setTimeout(function () {
-            set_options_side(new_field);
-          }, 100);
-        }, 200);
+          new_field = document.querySelector('[data-id="' + new_id + '"]');
+          new_field.style.top = field_top + field_height + 10 + 'px';
+
+          if (group == false) {
+            new_field.querySelector('.common-field-input').value = '';
+            new_field.querySelector('.field-name').innerText = '';
+            new_field.setAttribute('data-group-id', new_id);
+          } else {
+            document.querySelector('[data-id="' + id + '"]').__x.$data.is_group = true;
+            new_field.__x.$data.is_group = true;
+            new_field.setAttribute('data-group-id', group_id);
+            new_field.setAttribute('data-is-group', 'yes');
+          }
+
+          resize();
+          draggable(new_field, field_category);
+          coordinates(null, new_field, field_category);
+          new_field.__x.$data.options_side = options_side;
+          new_field.click();
+        }, 300);
       },
       remove_field: function remove_field(id) {
         document.querySelector('[data-id="' + id + '"]').remove();
@@ -7495,47 +7525,179 @@ if (document.URL.match(/form_fields/)) {
     };
   };
 
+  window.get_fields = function () {
+    var container = document.querySelector('.forms-container');
+    var form_id = container.getAttribute('data-form-id');
+    axios.get('/doc_management/admin/forms/get_fields', {
+      params: {
+        form_id: form_id
+      }
+    }).then(function (response) {
+      var data = response.data;
+      data.forEach(function (field, index) {
+        var field_html = document.querySelector('#field_template').innerHTML;
+        field_html = field_html.replace(/%%id%%/g, field.field_id);
+        field_html = field_html.replace(/%%category%%/g, field.field_category);
+        field_html = field_html.replace(/%%x_perc%%/g, field.left_perc);
+        field_html = field_html.replace(/%%y_perc%%/g, field.top_perc);
+        field_html = field_html.replace(/%%h_perc%%/g, field.height_perc);
+        field_html = field_html.replace(/%%w_perc%%/g, field.width_perc);
+        var page_container = document.querySelector('.page-' + field.page);
+        var div = document.createElement('div');
+        div.innerHTML = field_html;
+        page_container.appendChild(div);
+        unwrap(div);
+        var new_field = document.querySelector('[data-id="' + field.field_id + '"]');
+        new_field.classList.add('drag-resize');
+        new_field.setAttribute('data-is-group', field.is_group);
+        new_field.setAttribute('data-group-id', field.group_id);
+        new_field.setAttribute('data-page', field.page);
+        new_field.setAttribute('data-number-type', field.number_type);
+        new_field.setAttribute('data-common-field-id', field.common_field_id);
+        new_field.setAttribute('data-common-field-group-id', field.common_field_group_id);
+        new_field.setAttribute('data-common-field-sub-group-id', field.common_field_sub_group_id);
+        new_field.setAttribute('data-field-name', field.field_name);
+        new_field.setAttribute('data-db-column-name', field.db_column_name);
+        new_field.setAttribute('data-field-type', field.field_type); // set common field name
+
+        new_field.querySelector('.common-field-input').value = field.field_name;
+        new_field.querySelector('.field-name').innerText = field.field_name;
+
+        if (field.field_category == 'radio') {
+          new_field.querySelector('.field-name').classList.add('rounded-full');
+          new_field.querySelector('.resizers').classList.add('rounded-full');
+        }
+
+        coordinates(null, new_field, new_field.field_category);
+        draggable(new_field, new_field.field_category);
+        setTimeout(function () {
+          if (document.querySelectorAll('[data-group-id="' + field.group_id + '"]').length > 1) {
+            document.querySelectorAll('[data-group-id="' + field.group_id + '"]').forEach(function (field) {
+              field.__x.$data.is_group = true;
+            });
+          }
+
+          set_options_side(new_field);
+          document.querySelector('.page-container').__x.$data.active_field = '';
+
+          if (index == data.length - 1) {
+            resize();
+          }
+        }, 100);
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  };
+
   window.create_field = function (event) {
     var container = event.target.parentNode;
 
-    var field_type = document.querySelector('.page-container').__x.$data.selected_field_type;
+    var field_category = document.querySelector('.page-container').__x.$data.selected_field_category;
 
-    var coords = coordinates(event, null, field_type, 'create_field');
-
-    var active_page = document.querySelector('.page-container').__x.$data.active_page;
-
+    var coords = coordinates(event, null, field_category);
     var field_html = document.querySelector('#field_template').innerHTML;
-    var id = Math.round(Date.now() * Math.random() * 100);
+    var id = Date.now();
     field_html = field_html.replace(/%%id%%/g, id);
-    field_html = field_html.replace(/%%type%%/g, field_type);
+    field_html = field_html.replace(/%%category%%/g, field_category);
     field_html = field_html.replace(/%%x_perc%%/g, coords.x_perc);
     field_html = field_html.replace(/%%y_perc%%/g, coords.y_perc);
     field_html = field_html.replace(/%%h_perc%%/g, coords.h_perc);
     field_html = field_html.replace(/%%w_perc%%/g, coords.w_perc);
-    container.innerHTML += field_html;
+    var div = document.createElement('div');
+    div.innerHTML = field_html;
+    container.appendChild(div);
+    unwrap(div); // container.innerHTML += field_html;
+
     var new_field = document.querySelector('[data-id="' + id + '"]');
     new_field.classList.add('drag-resize');
 
-    if (field_type == 'radio') {
+    if (field_category == 'radio') {
       new_field.querySelector('.field-name').classList.add('rounded-full');
       new_field.querySelector('.resizers').classList.add('rounded-full');
     }
 
-    coordinates(null, new_field, field_type, 'field_created');
-    drag_resize();
+    coordinates(null, new_field, field_category);
+    resize();
     setTimeout(function () {
+      draggable(new_field, field_category);
       set_options_side(new_field);
     }, 1);
   };
 
-  window.select_common_name = function (event) {
+  window.save_fields = function (ele) {
+    show_loading_button(ele, 'Saving Fields...');
+    var container = document.querySelector('.forms-container');
+    var form_id = container.getAttribute('data-form-id');
+    var fields_data = [];
+
+    if (container.querySelector('.field-div')) {
+      var pages = container.querySelectorAll('.form-page-container');
+      pages.forEach(function (page) {
+        var field_page = page.getAttribute('data-page');
+        var fields = page.querySelectorAll('.field-div');
+
+        if (fields.length > 0) {
+          fields.forEach(function (field) {
+            var data = {
+              'page': field_page,
+              'id': field.getAttribute('data-id'),
+              'group_id': field.getAttribute('data-group-id'),
+              'is_group': field.getAttribute('data-is-group'),
+              'category': field.getAttribute('data-category'),
+              'common_field_id': field.getAttribute('data-common-field-id') || 0,
+              'common_field_group_id': field.getAttribute('data-common-field-group-id') || 0,
+              'common_field_sub_group_id': field.getAttribute('data-common-field-sub-group-id') || 0,
+              'db_column_name': field.getAttribute('data-db-column-name') || '',
+              'field_name': field.getAttribute('data-field-name') || '',
+              'field_type': field.getAttribute('data-field-type') || '',
+              'number_type': field.getAttribute('data-number-type'),
+              'top_perc': field.getAttribute('data-y-perc'),
+              'left_perc': field.getAttribute('data-x-perc'),
+              'height_perc': field.getAttribute('data-h-perc'),
+              'width_perc': field.getAttribute('data-w-perc'),
+              'height_px': field.getAttribute('data-h-px'),
+              'x': field.getAttribute('data-x'),
+              'y': field.getAttribute('data-y')
+            };
+            fields_data.push(data);
+          });
+        }
+      });
+    } else {
+      fields_data = null;
+    }
+
+    var formData = new FormData();
+    formData.append('fields', JSON.stringify(fields_data));
+    formData.append('form_id', form_id);
+    axios.post('/doc_management/admin/forms/save_fields', formData).then(function (response) {
+      toastr.success('Fields successfully saved', 'Success!');
+      ele.innerHTML = 'Save Fields <i class="fal fa-check ml-2"></i>';
+    })["catch"](function (error) {
+      if (error) {
+        alert(error);
+      }
+    });
+  };
+
+  window.select_common_field = function (event) {
     var ele = event.currentTarget;
     var id = ele.getAttribute('data-id');
     var name = ele.getAttribute('data-name');
+    var db_column_name = ele.getAttribute('data-db-column-name');
+    var field_type = ele.getAttribute('data-field-type');
+    var common_field_group_id = ele.getAttribute('data-common-field-group-id');
+    var common_field_sub_group_id = ele.getAttribute('data-common-field-sub-group-id');
     var field_div = ele.closest('.field-div');
-    field_div.querySelector('.common-name-input').value = name;
-    field_div.setAttribute('data-common-name-id').value = id;
+    field_div.querySelector('.common-field-input').value = name;
     field_div.querySelector('.field-name').innerText = name;
+    field_div.setAttribute('data-common-field-id', id);
+    field_div.setAttribute('data-common-field-group-id', common_field_group_id);
+    field_div.setAttribute('data-common-field-sub-group-id', common_field_sub_group_id);
+    field_div.setAttribute('data-field-name', name);
+    field_div.setAttribute('data-db-column-name', db_column_name);
+    field_div.setAttribute('data-field-type', field_type);
     document.querySelector('.page-container').__x.$data.active_field = '';
   };
 }
@@ -7735,6 +7897,234 @@ if (document.URL.match(/forms$/)) {
 
 /***/ }),
 
+/***/ "./resources/js/doc_management/transactions/create.js":
+/*!************************************************************!*\
+  !*** ./resources/js/doc_management/transactions/create.js ***!
+  \************************************************************/
+/***/ (() => {
+
+if (document.URL.match(/transactions\/create/)) {
+  window.addEventListener('load', function (event) {
+    document.getElementById('address_search_input').focus();
+  });
+
+  window.create = function (type) {
+    return {
+      transaction_type: '',
+      search_type: 'address',
+      active_step: '1',
+      steps_complete: '0',
+      address_search_continue: false,
+      show_street_error: false,
+      show_license_state_error: false,
+      show_multiple_error: false,
+      address_search: function address_search() {
+        var scope = this; // search input
+
+        var address_search_street = document.getElementById('address_search_input'); // google address search
+
+        var places = new google.maps.places.Autocomplete(address_search_street);
+        google.maps.event.addListener(places, 'place_changed', function () {
+          var address_details = places.getPlace();
+          var street_number = street_name = city = county = state = zip = '',
+              county = '';
+          scope.show_license_state_error = false;
+          sessionStorage.clear();
+          address_details.address_components.forEach(function (address) {
+            if (address.types.includes('street_number')) {
+              street_number = address.long_name;
+            } else if (address.types.includes('route')) {
+              street_name = address.long_name;
+            } else if (address.types.includes('locality')) {
+              city = address.long_name;
+            } else if (address.types.includes('administrative_area_level_2')) {
+              county = address.long_name.replace(/'/, '');
+              county = county.replace(/\sCounty/, '');
+            } else if (address.types.includes('administrative_area_level_1')) {
+              state = address.short_name;
+            } else if (address.types.includes('postal_code')) {
+              zip = address.long_name;
+            }
+
+            var search_details = {
+              'street_number': street_number,
+              'street_name': street_name,
+              'city': city,
+              'state': state,
+              'zip': zip,
+              'county': county
+            };
+            var property_details = {
+              'prop_street_number': street_number,
+              'prop_street_name': street_name,
+              'prop_city': city,
+              'prop_state': state,
+              'prop_zip': zip,
+              'prop_county': county
+            };
+            sessionStorage.setItem('search_details', JSON.stringify(search_details));
+            sessionStorage.setItem('property_details', JSON.stringify(property_details)); // console.log(JSON.parse(sessionStorage.search_details));
+            // console.log(JSON.parse(sessionStorage.property_details));
+          });
+
+          if (street_number != '') {
+            scope.address_search_continue = true;
+            scope.show_street_error = false;
+          } else {
+            scope.address_search_continue = false;
+            scope.show_street_error = true;
+          }
+        });
+      },
+      get_property_info: function get_property_info(ele, search_type) {
+        var ListingId = document.getElementById('mls_search_input').value;
+        var scope = this;
+        var search_details = JSON.parse(sessionStorage.search_details);
+        var street_number = search_details.street_number;
+        var street_name = search_details.street_name;
+        var city = search_details.city;
+        var state = search_details.state;
+        var zip = search_details.zip;
+        var county = search_details.county;
+        var unit_number = document.getElementById('address_search_unit').value;
+        scope.show_multiple_error = false; // set unit number - not always added until "Continue" clicked
+
+        search_details.unit_number = unit_number;
+        search_details.ListingId = ListingId;
+        sessionStorage.search_details = JSON.stringify(search_details);
+        var address = street_number + ' ' + street_name;
+
+        if (search_details.unit_number != '') {
+          address += ' #' + search_details.unit_number;
+        }
+
+        address += ' ' + city + ' ' + state + ' ' + zip;
+        document.querySelectorAll('.address-header').forEach(function (ele) {
+          ele.innerHTML = address;
+        });
+
+        if (this.transaction_type == 'referral') {
+          this.active_step = '3';
+          return false;
+        } // if not a referral
+
+
+        var active_states = document.getElementById('global_company_active_states').value.split(',');
+
+        if (active_states.includes(state) == false) {
+          this.show_license_state_error = true;
+          return false;
+        }
+
+        show_loading_button(ele, 'Searching...');
+        ele.disabled = true;
+        var search_active = true;
+        axios.get('/transactions/get_property_info', {
+          params: {
+            ListingId: ListingId,
+            transaction_type: this.transaction_type,
+            search_type: this.search_type,
+            street_number: street_number,
+            street_name: street_name,
+            unit: unit_number,
+            city: city,
+            state: state,
+            zip: zip,
+            county: county
+          }
+        }).then(function (response) {
+          var property_details = response.data.property_details;
+          ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
+          ele.disabled = false;
+          search_active = false;
+
+          if (response.data.results.multiple == true) {
+            scope.show_multiple_error = true;
+            var list = document.querySelector('.multiple-results-list');
+            list.innerHTML = '';
+            var html = '';
+            property_details.forEach(function (property) {
+              html += ' \
+                            <li class="text-sm p-2 border-b text-gray-600 flex justify-around items-center"> \
+                                <div class="w-24"> \
+                                    <button class="text-xs px-2 py-1 bg-primary text-white rounded" \
+                                    @click="document.getElementById(\'address_search_unit\').value = \'' + property.UnitNumber + '\'; document.querySelector(\'.get-property-info\').click()"> \
+                                    <i class="fal fa-check mr-2"></i> Select \
+                                    </button> \
+                                </div> \
+                                <div class="flex-grow">' + property.FullStreetAddress + ' ' + property.City + ', ' + property.StateOrProvince + ' ' + property.PostalCode + '</div> \
+                                <div class="w-24">' + property.UnitNumber + '</div> \
+                            </li>';
+            });
+            list.innerHTML += html;
+          } else {
+            if (property_details) {// show result
+              // add to sessionStorage
+            } else {// show no results
+              }
+          } // go to step 2
+
+        })["catch"](function (error) {
+          console.log(error);
+        }); // if no results after 3 seconds resend the request
+
+        setTimeout(function () {
+          if (search_active == true) {
+            ele.disabled = false;
+            ele.click();
+          }
+        }, 3000);
+      }
+    };
+  };
+}
+
+/***/ }),
+
+/***/ "./resources/js/employees/agents.js":
+/*!******************************************!*\
+  !*** ./resources/js/employees/agents.js ***!
+  \******************************************/
+/***/ (() => {
+
+if (document.URL.match(/agents$/)) {
+  var get_agents = function get_agents() {
+    var cols = [{
+      data: 'edit',
+      orderable: false,
+      searchable: false
+    }, {
+      data: 'full_name'
+    }, {
+      data: 'cell_phone'
+    }, {
+      data: 'email'
+    }];
+    data_table('/employees/agents/get_agents', cols, 25, $('#agents_table'), [1, 'asc'], [0], [], true, true, true, true, true);
+    $('#agents_table').show();
+    hide_loader();
+    /* axios.get('/employees/agents/get_agents', {
+        params: {
+         },
+    })
+    .then(function (response) {
+         $('#agents_table').show().find('tbody').html(response.data);
+        hide_loader();
+        data_table('/employees/agents/get_agents', 25, $('#agents_table'), [1, 'asc'], [0], [], true, true, true, true, true);
+    })
+    .catch(function (error) {
+        console.log(error);
+    }); */
+  };
+
+  window.addEventListener('load', function (event) {
+    show_loader();
+    get_agents();
+  });
+}
+
+/***/ }),
+
 /***/ "./resources/js/form_elements/form_elements.js":
 /*!*****************************************************!*\
   !*** ./resources/js/form_elements/form_elements.js ***!
@@ -7785,6 +8175,8 @@ window.show_file_names = function (event) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var toastr2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! toastr2 */ "./node_modules/toastr2/dist/Toastr.es5.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7836,6 +8228,15 @@ window.hide_loader = function () {
   document.querySelector('body').__x.$data.show_loading = false;
 };
 
+window.ele_loading = function (ele) {
+  ele.html(' \
+    <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50"> \
+        <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0"> \
+            <i class="fas fa-circle-notch fa-spin fa-4x"></i> \
+        </span> \
+    </div>');
+};
+
 window.show_form_errors = function (errors) {
   Object.entries(errors).forEach(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
@@ -7876,242 +8277,147 @@ window.decode_HTML = function (html) {
   txt.innerHTML = html;
   return txt.value;
 };
-/* window.drag_resize = function() {
 
-    let field_divs = document.querySelectorAll('.field-div.drag-resize');
+window.randomHSL = function () {
+  return "hsla(".concat(~~(360 * Math.random()), ",70%,70%,0.8)");
+};
 
-    field_divs.forEach(function(element) {
+window.datatable_settings = _defineProperty({
+  "autoWidth": false,
+  "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+  "responsive": true,
+  "destroy": true,
+  fixedHeader: true,
+  "language": {
+    search: '',
+    searchPlaceholder: 'Search'
+  }
+}, "language", {
+  "info": "_START_ to _END_ of _TOTAL_",
+  "lengthMenu": "Show _MENU_",
+  "search": ""
+});
 
-        let resizers = element.querySelectorAll('.resizer');
-        let input_minimum_size = 15;
-        let check_radio_minimum_size = 10;
-        let check_radio_maximum_size = 30;
-        let original_width = 0;
-        let original_height = 0;
-        let original_x = 0;
-        let original_y = 0;
-        let original_mouse_x = 0;
-        let original_mouse_y = 0;
-        let keep_aspect = false;
-        let field_type = element.getAttribute('data-type');
+window.data_table = function (src, cols, page_length, table, sort_by, no_sort_cols, hidden_cols, show_buttons, show_search, show_info, show_paging) {
+  var show_hide_cols = arguments.length > 11 && arguments[11] !== undefined ? arguments[11] : true;
+  var hide_header_and_footer = arguments.length > 12 && arguments[12] !== undefined ? arguments[12] : false;
 
-        draggable(element, field_type);
+  /*
+  src = 'url'
+  table = $('#table_id')
+  sort_by = [1, 'desc'] - col #, dir
+  no_sort_cols = [0, 8] - array of cols
+  hidden_cols = [0, 8] - array of cols
+  show_buttons = true/false
+  show_search = true/false
+  show_info = true/false
+  show_paging = true/false
+  show_hide_cols = true/false
+  hide_header_and_footer = true/false
+  */
+  datatable_settings.ajax = src;
+  datatable_settings.columns = cols;
+  datatable_settings.serverSide = true;
+  datatable_settings.processing = true;
+  datatable_settings.pageLength = parseInt(10);
 
-        for (let i = 0; i < resizers.length; i++) {
-            let currentResizer = resizers[i];
-            currentResizer.addEventListener('mousedown', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                original_width = parseFloat(element.offsetWidth);
-                original_height = parseFloat(element.offsetHeight);
-                original_x = element.offsetLeft;
-                original_y = element.offsetTop;
-                original_mouse_x = e.pageX;
-                original_mouse_y = e.pageY;
-                keep_aspect = field_type == 'radio' || field_type == 'checkbox' ? true : false;
-                window.addEventListener('mousemove', resize);
-                window.addEventListener('mouseup', stopResize);
-            })
+  if (page_length != '') {
+    datatable_settings.pageLength = parseInt(page_length);
+  }
 
-            function resize(e) {
-                if (currentResizer.classList.contains('bottom-right')) {
-                    const width = original_width + (e.pageX - original_mouse_x);
-                    const height = original_height + (e.pageY - original_mouse_y);
-                    if(keep_aspect == true) {
-                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                            element.style.width = width + 'px';
-                            element.style.height = width + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                        }
+  if (sort_by.length > 0) {
+    datatable_settings.order = [[sort_by[0], sort_by[1]]];
+  }
 
-                    }
-                }
-                else if (currentResizer.classList.contains('bottom-left')) {
-                    const height = original_height + (e.pageY - original_mouse_y);
-                    const width = original_width - (e.pageX - original_mouse_x);
-                    if(keep_aspect == true) {
-                        if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                            element.style.width = width + 'px';
-                            element.style.height = width + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                    } else {
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                        }
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                    }
-                }
-                else if (currentResizer.classList.contains('top-right')) {
-                    const width = original_width + (e.pageX - original_mouse_x);
-                    const height = original_height - (e.pageY - original_mouse_y);
-                    if(keep_aspect == true) {
-                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                            element.style.width = height + 'px';
-                            element.style.height = height + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    }
-                }
-                else {
-                    const width = original_width - (e.pageX - original_mouse_x)
-                    const height = original_height - (e.pageY - original_mouse_y)
-                    if(keep_aspect == true) {
-                        if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                            element.style.width = height + 'px';
-                            element.style.height = height + 'px';
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    } else {
-                        if (width > input_minimum_size) {
-                            element.style.width = width + 'px'
-                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                        }
-                        if (height > input_minimum_size) {
-                            element.style.height = height + 'px'
-                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                        }
-                    }
-                }
-            }
+  if (no_sort_cols.length > 0) {
+    datatable_settings.columnDefs = [{
+      orderable: false,
+      targets: no_sort_cols
+    }];
+  }
 
-            function stopResize() {
-
-                window.removeEventListener('mousemove', resize);
-                coordinates(null, element, field_type, 'stopResize');
-                draggable(element, field_type);
-            }
-        }
-
+  if (hidden_cols.length > 0) {
+    hidden_cols.forEach(function (col) {
+      datatable_settings.columnDefs.push({
+        targets: [col],
+        visible: false
+      });
     });
+  }
 
-}
+  var buttons = '';
 
-window.draggable = function(element, field_type) {
-    element.classList.remove('plain-draggable');
-    let draggable = new PlainDraggable(element, {
-        handle: element.querySelector('.draggable-handle'),
-        //autoScroll: true,
-        leftTop: true,
-        onDragEnd: function(newPosition) {
-            coordinates(null, element, field_type, 'onDragEnd');
-        }
+  if (show_buttons == true) {
+    if (show_hide_cols == true) {
+      datatable_settings.buttons = [{
+        extend: 'colvis',
+        text: 'Hide Columns'
+      }];
+    }
+
+    datatable_settings.buttons.push({
+      extend: 'excelHtml5',
+      exportOptions: {
+        columns: ':visible'
+      }
+    }, {
+      extend: 'pdfHtml5',
+      exportOptions: {
+        columns: ':visible'
+      }
     });
+    buttons = '<B>';
+  }
+
+  var search = '';
+
+  if (show_search == true) {
+    search = '<f>';
+  }
+
+  var info = '';
+
+  if (show_info == true) {
+    info = '<i>';
+  }
+
+  var paging = '';
+  var length = '';
+  datatable_settings.paging = false;
+
+  if (show_paging == true) {
+    paging = '<p>';
+    datatable_settings.paging = true;
+    length = '<l>';
+  }
+
+  if (hide_header_and_footer == true) {
+    datatable_settings.drawCallback = function () {
+      $(this.api().table().header()).hide();
+      $(this.api().table().footer()).hide();
+    };
+
+    info = '';
+    paging = '';
+    datatable_settings.paging = false;
+    length = '';
+    search = '';
+    buttons = '';
+    datatable_settings.buttons = [];
+  }
+
+  datatable_settings.dom = '<"flex justify-between flex-wrap items-center text-gray-600"' + search + info + length + buttons + '>rt<"flex justify-between items-center text-gray-600"' + info + paging + '>';
+  var dt = table.DataTable(datatable_settings);
+  style_dt_buttons();
+  dt.on('draw', style_dt_buttons);
+  return dt;
+};
+
+function style_dt_buttons() {
+  $('.dataTables_filter [type="search"]').attr('placeholder', 'Search');
+  $('.dt-button').attr('class', ' buttons-colvis px-2 py-1 bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center border border-primary-dark rounded text-sm text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md');
+  $('.paginate_button').removeClass('paginate_button').addClass('paginate_button_custom');
 }
-
-window.coordinates = function(event, ele = null, field_type, function_name) {
-
-    //console.log(function_name, event, ele, field_type);
-    let container, x, y;
-
-
-    // if from dblclick to add field
-    if (event) {
-
-        container = event.target.parentNode;
-
-        let page_boundaries = event.target.getBoundingClientRect();
-
-        // get target coordinates
-        // subtract bounding box coordinates from target coordinates to get top and left positions
-        // coordinates are relative to bounding box coordinates
-        x = parseInt(Math.round(event.clientX - page_boundaries.left));
-        y = parseInt(Math.round(event.clientY - page_boundaries.top));
-
-        // coordinates of existing field
-    } else {
-
-        container = ele.parentNode;
-
-        x = ele.offsetLeft;
-        y = ele.offsetTop;
-
-    }
-
-    x = x - 1;
-    y = y - 2;
-    // convert to percent
-    if(!container) {
-        //console.log('missing', ele);
-        return false;
-    }
-    let x_perc = pix_2_perc('x', x, container);
-    let y_perc = pix_2_perc('y', y, container);
-
-    //set heights
-    let ele_h_perc = 1.3;
-    if (field_type == 'radio' || field_type == 'checkbox') {
-        ele_h_perc = 1.1;
-    }
-    if (event) {
-        // remove element height from top position
-        y_perc = y_perc - ele_h_perc;
-    }
-
-    // set w and h for new field
-    let h_perc, w_perc;
-    if (field_type == 'radio' || field_type == 'checkbox') {
-        h_perc = 1.1;
-        w_perc = 1.45;
-    } else {
-        h_perc = 1.3;
-        if (ele) {
-            w_perc = (ele.offsetWidth / container.offsetWidth) * 100;
-        } else {
-            w_perc = 15;
-        }
-
-    }
-    h_perc = parseFloat(h_perc);
-    w_perc = parseFloat(w_perc);
-
-    if (ele) {
-
-        // field data percents
-        ele.setAttribute('data-h-perc', h_perc);
-        ele.setAttribute('data-w-perc', w_perc);
-        ele.setAttribute('data-x-perc', x_perc);
-        ele.setAttribute('data-y-perc', y_perc);
-        ele.setAttribute('data-y-perc', y_perc);
-        ele.setAttribute('data-x', x);
-        ele.setAttribute('data-y', y);
-
-    }
-
-    return {
-        h_perc: h_perc,
-        w_perc: w_perc,
-        x_perc: x_perc,
-        y_perc: y_perc
-    }
-
-}
-
-window.pix_2_perc = function(type, px, container) {
-    if (type == 'x') {
-        return (100 * parseFloat(px / parseFloat(container.offsetWidth)));
-    } else {
-        return (100 * parseFloat(px / parseFloat(container.offsetHeight)));
-    }
-} */
 
 /***/ }),
 
@@ -27443,10 +27749,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 /***/ }),
 
-/***/ "./resources/css/app.css":
-/*!*******************************!*\
-  !*** ./resources/css/app.css ***!
-  \*******************************/
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -33322,7 +33628,7 @@ var Toastr = /** @class */ (function () {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/css/app.css")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

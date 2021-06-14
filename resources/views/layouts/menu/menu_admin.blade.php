@@ -13,22 +13,22 @@
 $level2 = [
     [
         'title' => 'View Transactions',
-        'link' => '/doc_management/transactions',
-        'icon' => 'fal fa-eye mr-2'
+        'link' => '/transactions',
+        'icon' => 'fal fa-bars mr-2'
     ],
     [
         'title' => 'Add Listing',
-        'link' => '/doc_management/add_listing',
+        'link' => '/transactions/create/listing',
         'icon' => 'fal fa-plus mr-2'
     ],
     [
         'title' => 'Add Contract',
-        'link' => '/doc_management/add_contract',
+        'link' => '/transactions/create/contract',
         'icon' => 'fal fa-plus mr-2'
     ],
     [
         'title' => 'Add Referral',
-        'link' => '/doc_management/add_referral',
+        'link' => '/transactions/create/referral',
         'icon' => 'fal fa-plus mr-2'
     ]
 ];

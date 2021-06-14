@@ -5,9 +5,7 @@
     @php $active_tab = $form_groups -> first() -> id; $default_state = $form_groups -> first() -> state; @endphp
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Forms
-        </h2>
+        <i class="fad fa-copy mr-3"></i> Forms
     </x-slot>
 
     <div class="page-container pt-2"
@@ -33,8 +31,8 @@
                             :size="'md'"
                             x-on:keyup="search_forms($event.target);"/>
 
-                        <div class="absolute top-10 left-0 bg-white rounded border border-gray-300 shadow-md p-2 w-screen sm:w-screen-70 md:w-screen-50"
-                        x-show="show_search_results"
+                        <div class="absolute top-10 left-0 bg-white rounded border border-gray-300 shadow-md p-2 w-screen sm:w-screen-70 md:w-screen-50 z-10"
+                        x-show.transition="show_search_results"
                         x-on:click.away="show_search_results = false; document.querySelector('#search').value = '';">
                             <ul id="search_results"></ul>
                         </div>
@@ -43,7 +41,7 @@
 
                     <x-elements.button
                         class=""
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
                         x-on:click="show_modal = true; clear_form()">
@@ -66,9 +64,9 @@
                                 $count = $form_group -> forms -> count();
                                 @endphp
 
-                                <li class="form-group-{{ $form_group_id }} border border-b p-3 cursor-pointer hover:bg-gray-600 hover:text-white @if($loop -> first) bg-gray-700 text-white @endif"
+                                <li class="form-group-{{ $form_group_id }} border border-b p-3 cursor-pointer hover:bg-primary hover:text-white @if($loop -> first) bg-primary-dark text-white @endif"
                                     data-form-group-id="{{ $form_group_id }}"
-                                    :class="{ 'bg-gray-700 text-white': active_tab === '{{ $form_group_id }}' }"
+                                    :class="{ 'bg-primary-dark text-white': active_tab === '{{ $form_group_id }}' }"
                                     @click.prevent="active_tab = '{{ $form_group_id }}';
                                     document.querySelector('#form_group_id').value = '{{ $form_group_id }}';
                                     document.querySelector('#state').value = '{{ $state }}';
@@ -121,7 +119,7 @@
 
                             <x-elements.input-file
                             :size="'md'"
-                            :buttonClass="'default'"
+                            :buttonClass="'primary'"
                             :size="'md'"
                             name="upload"
                             id="upload"
@@ -255,7 +253,7 @@
                     <x-elements.button
                         class="mr-5"
                         @click="save_form($event.target); show_loading_button($event.target, 'Saving Form'); $event.target.disabled = true;"
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'lg'"
                         type="button">
                         <i class="fal fa-check mr-2"></i> Save Form
@@ -288,7 +286,7 @@
             <div class="w-1/7 mr-2 flex-none my-3">
                 <x-elements.button
                     class="add-title"
-                    :buttonClass="'default'"
+                    :buttonClass="'primary'"
                     :buttonSize="'sm'"
                     type="button"
                     @click="add_form_name($event.target.closest('.form-name-div'))">

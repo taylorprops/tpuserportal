@@ -27,7 +27,7 @@ if($attributes['id']) {
 }
 @endphp
 
-<label class="text-gray-600 ml-2 block {{ $label_text_size }}">
+<label class="text-gray-600 block {{ $label_text_size }}">
     {{ $label }}
     <input id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"

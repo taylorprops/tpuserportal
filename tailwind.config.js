@@ -55,15 +55,18 @@ module.exports = {
             }),
             colors: {
                 default: {
-                    light: '#64748B',
-                    DEFAULT: '#475569',
-                    dark: '#334155',
+                    lighter: '#4770b3',
+                    light: '#3f629c',
+                    DEFAULT: '#365483',
+                    dark: '#2a4266',
+                    darker: '#273d5e',
                 },
                 primary: {
-                    lighter: '#9bc1ff',
-                    light: '#609bfa',
-                    DEFAULT: '#4286f4',
-                    dark: '#3570ce',
+                    lighter: '#4e84da',
+                    light: '#4a78c2',
+                    DEFAULT: '#3f629c',
+                    dark: '#37578a',
+                    darker: '#2b4670',
                 },
                 secondary: {
                     light: '#f7863b',

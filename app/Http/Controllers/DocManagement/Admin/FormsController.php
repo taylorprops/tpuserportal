@@ -61,6 +61,7 @@ class FormsController extends Controller
                 $query -> where('published', $published);
             }
         })
+        -> with(['fields'])
         -> orderBy($sort_by, $order)
         -> get();
 

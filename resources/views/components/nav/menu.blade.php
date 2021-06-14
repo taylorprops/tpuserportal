@@ -1,8 +1,8 @@
 
 
 @if($level == '1')
-    <a href="{{ $link }}" class="group flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700">
-        <div class="bg-gray-700 p-1 rounded mr-2">
+    <a href="{{ $link }}" class="group flex items-center text-gray-300 hover:bg-default-light hover:text-white px-2 py-2 text-sm font-medium focus:bg-default-light">
+        <div class="bg-default-light h-7 w-7 rounded mr-2 flex justify-center items-center">
             <i class="{{ $icon }}"></i>
         </div>
         {{ $title }}
@@ -14,14 +14,14 @@
 
     <div x-data="{ sub_menu: false }" class="nav-link w-full">
 
-        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700"
+        <div class="cursor-pointer text-gray-300 hover:bg-default-light hover:text-white group flex items-center px-2 py-2 text-sm font-medium focus:bg-default-light"
         @click="hide_menus(); sub_menu = true;"
-        :class="{ 'bg-gray-700' : sub_menu === true }">
+        :class="{ 'bg-default-light' : sub_menu === true }">
 
             <div class="flex justify-between items-center w-full">
 
                 <div class="flex justify-start items-center">
-                    <div class="bg-gray-700 p-1 rounded mr-2">
+                    <div class="bg-default-light h-7 w-7 rounded mr-2 flex justify-center items-center">
                         <i class="{{ $icon }}"></i>
                     </div>
                     {{ $title }}
@@ -33,7 +33,7 @@
 
         </div>
 
-        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu">
+        <div class="space-y-1 bg-default-light" x-show.transition="sub_menu">
 
             @foreach($level2 as $link)
                 <a href="{{ $link['link'] }}" class="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300">
@@ -53,14 +53,14 @@
 
     <div x-data="{ sub_menu: false }" class="nav-link w-full">
 
-        <div class="cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-t focus:bg-gray-700"
+        <div class="cursor-pointer text-gray-300 hover:bg-default-light hover:text-white group flex items-center px-2 py-2 text-sm font-medium focus:bg-default-light"
         @click="hide_menus(); sub_menu = true"
-        :class="{ 'bg-gray-700' : sub_menu === true }">
+        :class="{ 'bg-default-light' : sub_menu === true }">
 
             <div class="flex justify-between items-center w-full">
 
                 <div class="flex justify-start items-center">
-                    <div class="bg-gray-700 p-1 rounded mr-2">
+                    <div class="bg-default-light h-7 w-7 rounded mr-2 flex justify-center items-center">
                         <i class="{{ $icon }}"></i>
                     </div>
                     {{ $title }}
@@ -72,7 +72,7 @@
 
         </div>
 
-        <div class="space-y-1 bg-gray-700 rounded-b" x-show="sub_menu">
+        <div class="space-y-1 bg-default-light" x-show.transition="sub_menu">
 
             @foreach($level3 as $link)
 
@@ -103,7 +103,7 @@
 
 
                         <!-- Expandable link section, show/hide based on state. -->
-                        <div class="space-y-1 bg-gray-700 rounded-b pl-8" x-show="sub_menu_2">
+                        <div class="space-y-1 bg-default-light rounded pl-8" x-show.transition="sub_menu_2">
                             @foreach($link['sub_links'] as $link)
                                 <a href="{{ $link['link'] }}" class="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium rounded-md text-white hover:text-gray-300">
                                     {{ $link['title'] }}

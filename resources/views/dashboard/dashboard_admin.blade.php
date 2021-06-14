@@ -1,9 +1,7 @@
 <x-app-layout>
     @section('title') Dashboard @endsection
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard
-        </h2>
+        Dashboard
     </x-slot>
 
     <div class="pb-12 pt-2">

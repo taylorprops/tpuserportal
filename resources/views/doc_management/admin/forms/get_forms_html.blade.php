@@ -14,16 +14,17 @@
     $state = $form -> state;
     $helper_text = $form -> helper_text;
     $created_at = $form -> created_at;
+    $fields_count = count($form -> fields);
     @endphp
 
-        <li class="form-{{ $form_id }} border border-b p-3 w-full"
-        :class="{ 'bg-gray-700 text-white' : active_form === '{{ $form_id }}' }">
+        <li class="form-{{ $form_id }} text-gray-600 p-3 w-full"
+        :class="{ 'border-yellow-600 border-4 rounded' : active_form === '{{ $form_id }}', 'border-b' : active_form !== '{{ $form_id }}' }">
 
             <div class="flex justify-between items-center">
                 <div>
                     <a href="/storage/{{ $form -> form_location }}" target="_blank">{{ $form -> form_name_display }}</a>
                 </div>
-                <div class="text-xs text-gray-400">
+                <div class="text-xs">
                     Added: {{ date('M jS, Y', strtotime($form -> created_at)) }} {{ date('g:i A', strtotime($form -> created_at)) }}
                 </div>
             </div>
@@ -32,20 +33,20 @@
 
                 <div>
                     <x-elements.button
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'; window.open('/doc_management/admin/forms/form_fields/{{ $form_id }}', '_blank');">
                         <i class="fad fa-rectangle-wide mr-2"></i> Fillable Fields
                         <span class="inline-flex items-center px-2.5 py-0 ml-2 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            12
+                            {{ $fields_count }}
                         </span>
                     </x-elements.button>
                 </div>
 
                 <div class="ml-3">
                     <x-elements.button
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'">
@@ -58,7 +59,7 @@
 
                 <div class="ml-3">
                     <x-elements.button
-                    :buttonClass="'default'"
+                    :buttonClass="'primary'"
                     :buttonSize="'md'"
                     type="button"
                     @click="clear_form(); edit_form($event.target, `{{ $form_id }}`, `{{ $form_name_display}}`, `{{ $form_location }}`, `{{ $form_group_id }}`, `{{ $checklist_group_id }}`, `{{ $form_tag }}`, `{{ $state }}`, `{{ $helper_text }}`);
@@ -69,7 +70,7 @@
 
                 <div class="ml-3">
                     <x-elements.button
-                        :buttonClass="'default'"
+                        :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'; duplicate_form('{{ $form_id }}')">

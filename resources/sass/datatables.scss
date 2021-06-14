@@ -1,0 +1,157 @@
+
+.data-table.responsive {
+    width: 100%;
+}
+
+
+
+.dataTables_wrapper {
+
+
+    .data-table {
+        @apply text-gray-600;
+        margin-top: 15px;
+
+
+        th {
+            padding-left: .8rem;
+            @apply text-gray-700 border-l bg-gray-50;
+            vertical-align: middle !important;
+            text-align: left;
+            font-size: .9rem;
+            font-weight: normal;
+
+        }
+        td {
+            padding: 0.4rem;
+            vertical-align: middle;
+            font-size: .9rem;
+            @apply text-gray-600;
+
+            &.small {
+                font-size: .8rem !important;
+            }
+
+
+        }
+
+
+    }
+
+
+    .dataTables_filter input {
+        font-size: .8rem;
+        width: 150px;
+    }
+    .dataTables_length select {
+        font-size: .8rem;
+        width: 70px;
+    }
+
+
+    .dataTables_info {
+        font-size: .8rem;
+    }
+
+    .dataTables_paginate {
+        font-size: .7rem;
+
+        .paginate_button_custom {
+
+            @apply py-1 px-2 mr-1 text-default rounded cursor-pointer;
+
+            &:hover {
+                @apply bg-primary-light;
+                @apply text-white;
+            }
+
+            &.current,
+            .current:hover {
+                @apply bg-primary;
+                @apply text-white;
+            }
+
+        }
+
+    }
+
+}
+
+.fixedHeader-floating {
+
+    th {
+        //vertical-align: middle !important;
+
+        .form-ele {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .dataTables_wrapper {
+
+        .dataTable {
+
+            &.data-table {
+
+                th {
+                    padding: .3rem 0rem .3rem 0.2rem !important;
+                    font-size: .7rem !important;
+
+
+                }
+                td {
+                    font-size: .7rem !important;
+
+                    &.small {
+                        font-size: .7rem !important;
+                    }
+
+                    &:not(:first-child) {
+                        padding: 0.2rem !important;
+                    }
+
+                    &:before {
+                        top: 50% !important;
+                    }
+
+                    .dtr-details {
+                        width: 100%;
+                    }
+
+
+                }
+
+            }
+
+        }
+
+
+    }
+
+    .dataTables_filter input {
+        width: 120px !important;
+        padding: 4px 0 2px 3px;
+        height: 25px;
+        margin-top: 8px;
+    }
+
+    .dataTables_length label {
+        font-size: .7rem;
+        margin-top: 8px;
+
+        select {
+            padding: 2px 25px 1px 6px;
+        }
+
+    }
+
+    .dataTables_info {
+        margin-bottom: 5px;
+    }
+
+}
