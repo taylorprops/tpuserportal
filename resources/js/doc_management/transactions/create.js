@@ -13,10 +13,14 @@ if(document.URL.match(/transactions\/create/)) {
             search_type: 'address',
             active_step: '1',
             steps_complete: '0',
-            address_search_continue: false,
+            show_no_property_error: false,
             show_street_error: false,
             show_license_state_error: false,
             show_multiple_error: false,
+            final_result: false,
+            property_found_mls: false,
+            property_found_tax_records: false,
+            tax_records_link: false,
             address_search() {
 
                 let scope = this;
@@ -30,9 +34,10 @@ if(document.URL.match(/transactions\/create/)) {
                     let address_details = places.getPlace();
                     let street_number = street_name = city = county = state = zip = '', county = '';
 
-                    scope.show_license_state_error = false;
+
 
                     sessionStorage.clear();
+                    sessionStorage.search_count = 0;
 
                     address_details.address_components.forEach(function (address) {
 
@@ -75,10 +80,8 @@ if(document.URL.match(/transactions\/create/)) {
                     });
 
                     if (street_number != '') {
-                        scope.address_search_continue = true;
                         scope.show_street_error = false;
                     } else {
-                        scope.address_search_continue = false;
                         scope.show_street_error = true;
                     }
 
@@ -86,9 +89,20 @@ if(document.URL.match(/transactions\/create/)) {
             },
             get_property_info(ele, search_type) {
 
+                if(ele.classList.contains('address-search')) {
+                    if(document.getElementById('address_search_input').value == '') {
+                        return false;
+                    }
+                } else if(ele.classList.contains('mls-search')) {
+                    if(document.getElementById('mls_search_input').value == '') {
+                        return false;
+                    }
+                }
+
                 let ListingId = document.getElementById('mls_search_input').value;
 
                 let scope = this;
+
                 let search_details = JSON.parse(sessionStorage.search_details);
                 let street_number = search_details.street_number;
                 let street_name = search_details.street_name;
@@ -99,6 +113,12 @@ if(document.URL.match(/transactions\/create/)) {
                 let unit_number = document.getElementById('address_search_unit').value;
 
                 scope.show_multiple_error = false;
+                scope.final_result = false;
+                scope.show_license_state_error = false;
+                scope.show_no_property_error = false;
+                scope.tax_records_link = false;
+
+                sessionStorage.search_count = parseInt(sessionStorage.search_count) + 1;
 
                 // set unit number - not always added until "Continue" clicked
                 search_details.unit_number = unit_number;
@@ -111,8 +131,8 @@ if(document.URL.match(/transactions\/create/)) {
                     address += ' #'+search_details.unit_number;
                 }
                 address += ' '+city+' '+state+' '+zip;
-                document.querySelectorAll('.address-header').forEach(function(ele) {
-                    ele.innerHTML = address;
+                document.querySelectorAll('.address-header').forEach(function(header) {
+                    header.innerHTML = address;
                 });
 
                 if(this.transaction_type == 'referral') {
@@ -131,8 +151,9 @@ if(document.URL.match(/transactions\/create/)) {
                 }
 
                 show_loading_button(ele, 'Searching...');
-                ele.disabled = true;
+                //ele.disabled = true;
                 let search_active = true;
+
 
                 axios.get('/transactions/get_property_info', {
                     params: {
@@ -153,7 +174,7 @@ if(document.URL.match(/transactions\/create/)) {
                     let property_details = response.data.property_details;
 
                     ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
-                    ele.disabled = false;
+                    //ele.disabled = false;
                     search_active = false;
 
                     if(response.data.results.multiple == true) {
@@ -169,7 +190,7 @@ if(document.URL.match(/transactions\/create/)) {
                             <li class="text-sm p-2 border-b text-gray-600 flex justify-around items-center"> \
                                 <div class="w-24"> \
                                     <button class="text-xs px-2 py-1 bg-primary text-white rounded" \
-                                    @click="document.getElementById(\'address_search_unit\').value = \''+property.UnitNumber+'\'; document.querySelector(\'.get-property-info\').click()"> \
+                                    @click="document.getElementById(\'address_search_unit\').value = \''+property.UnitNumber+'\'; document.querySelector(\'.address-search\').click()"> \
                                     <i class="fal fa-check mr-2"></i> Select \
                                     </button> \
                                 </div> \
@@ -186,11 +207,48 @@ if(document.URL.match(/transactions\/create/)) {
                         if(property_details) {
                             // show result
 
-                            // add to sessionStorage
+                            document.querySelector('#property_address').innerHTML = property_details.FullStreetAddress+'<br>'+property_details.City+', '+property_details.StateOrProvince+' '+property_details.PostalCode;
+                            if(property_details.ListingId) {
+                                document.querySelector('#property_listing_id').innerHTML = property_details.ListingId;
+                                document.querySelector('#property_status').innerHTML = property_details.MlsStatus;
+                                document.querySelector('#property_list_office').innerHTML = property_details.ListOfficeName;
+                                document.querySelector('#property_list_agent').innerHTML = property_details.ListAgentFirstName+' '+property_details.ListAgentLastName;
+                                document.querySelector('#property_list_date').innerHTML = property_details.MLSListDate;
+                                document.querySelector('#property_list_price').innerHTML = '$'+global_format_number(property_details.ListPrice);
+                                document.querySelector('#property_type').innerHTML = property_details.PropertyType;
+                            }
+                            if(property_details.TaxRecordLink) {
+                                scope.tax_records_link = true;
+                                scope.property_found_tax_records = true;
+                                document.querySelector('#property_tax_records_link').setAttribute('href', property_details.TaxRecordLink);
+                            }
+                            // let owners = property_details.Owner1;
+                            // if(property_details.Owner2 != '') {
+                            //     owners += ', '+property_details.Owner2;
+                            // }
+                            // document.querySelector('#property_owners').innerHTML = owners;
+
+                            scope.final_result = true;
+
+                            if(property_details.ListingId) {
+                                scope.property_found_mls = true;
+                                document.querySelector('#property_image').setAttribute('src', property_details.ListPictureURL);
+                            }
+
+                            setTimeout(function() {
+                                window.scrollTo({ top: 5000, behavior: 'smooth' });
+                            }, 100);
+
+
+                            // TODO add to sessionStorage
 
                         } else {
 
                             // show no results
+                            //scope.show_no_property_error = true;
+
+                            // TODO: send to manual entry and prefill fields
+                            scope.search_type = 'manually';
 
                         }
 
@@ -206,14 +264,27 @@ if(document.URL.match(/transactions\/create/)) {
                     console.log(error);
                 });
 
-                // if no results after 3 seconds resend the request
+                // if no results after 10 seconds resend the request
                 setTimeout(function() {
                     if(search_active == true) {
-                        ele.disabled = false;
-                        ele.click();
+                        //ele.disabled = false;
+                        ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
+                        if(sessionStorage.search_count < 3) {
+                            ele.click();
+                        } else {
+                            scope.show_no_property_error = true;
+                        }
                     }
-                }, 3000);
+                }, 7000);
 
+            },
+            clear_results_and_errors() {
+                this.show_multiple_error = false;
+                this.final_result = false;
+                this.show_license_state_error = false;
+                this.show_no_property_error = false;
+                this.show_street_error = false;
+                this.tax_records_link = false;
             }
         }
 

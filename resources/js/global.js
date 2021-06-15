@@ -242,8 +242,29 @@ window.data_table = function(src, cols, page_length, table, sort_by, no_sort_col
 
 function style_dt_buttons() {
     $('.dataTables_filter [type="search"]').attr('placeholder', 'Search');
-    $('.dt-button').attr('class', ' buttons-colvis px-2 py-1 bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center border border-primary-dark rounded text-sm text-white tracking-tight focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md');
+    $('.dt-button').attr('class', ' buttons-colvis px-2 py-1 bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center border border-primary-dark rounded text-sm text-white tracking-tight focus:outline-none disabled:opacity-25 transition ease-in-out duration-150 shadow hover:shadow-md');
 
 
     $('.paginate_button').removeClass('paginate_button').addClass('paginate_button_custom');
+}
+
+
+// Format Money
+window.global_format_number = function (num) {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'decimal',
+        minimumFractionDigits: 0
+    });
+
+    num = num.toString().replace(/[,\$]/g, '');
+    return formatter.format(num);
+}
+
+window.global_format_number_with_decimals = function (num) {
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency', currency: 'USD'
+    });
+
+    num = num.replace(/[,\$]/g, '').toString();
+    return formatter.format(num);
 }

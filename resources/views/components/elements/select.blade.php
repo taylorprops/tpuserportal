@@ -1,6 +1,4 @@
-@props([
-    'disabled' => false
-    ])
+
 @php
 
 if($size == 'sm') {
@@ -31,7 +29,6 @@ if($attributes['id']) {
     <select
         id="{{ $id }}"
         placeholder="{{ $attributes['placeholder'] }}"
-        {{ $disabled ? 'disabled' : '' }}
         {!! $attributes -> merge(['class' => $classes]) !!}>
         {{ $slot }}
     </select>

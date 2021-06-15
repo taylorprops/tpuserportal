@@ -57,4 +57,64 @@ class Helper
 
     }
 
+    public static function directory($directory) {
+        $results = [];
+        $handler = opendir($directory);
+
+        while ($file = readdir($handler)) {
+            if ($file != '.' && $file != '..') {
+                $results[] = $file;
+            }
+        }
+
+        closedir($handler);
+
+        return $results;
+    }
+
+    public static function is_dir_empty($dir) {
+        if (! is_readable($dir)) {
+            return null;
+        }
+
+        return count(scandir($dir)) == 2;
+    }
+
+    public static function shorten_text($text, $length) {
+        if (strlen($text) > $length) {
+            return substr($text, 0, $length).'...';
+        }
+
+        return $text;
+    }
+
+    public static function format_phone($phone) {
+        $phone = preg_replace('/[\s\(\)-]+/', '', $phone);
+
+        return '('.substr($phone, 0, 3).') '.substr($phone, 3, 3).'-'.substr($phone, 6);
+    }
+
+    public static function date_mdy($date) {
+        return date('n/j/Y', strtotime($date));
+    }
+
+    public static function get_mb($size) {
+        return sprintf('%4.2f', $size / 1048576);
+    }
+
+    public static function get_initials($string) {
+        if (strlen($string) > 0) {
+            $words = explode(' ', $string);
+            $initials = '';
+
+            foreach ($words as $w) {
+                $initials .= $w[0];
+            }
+
+            return $initials;
+        }
+
+        return '';
+    }
+
 }

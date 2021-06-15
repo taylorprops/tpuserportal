@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\DocManagement\Transactions;
 
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightListings;
+use App\Models\DocManagement\Resources\LocationData;
 
 class TransactionsController extends Controller
 {
@@ -34,7 +36,9 @@ class TransactionsController extends Controller
             ],
         ][$transaction_type];
 
-        return view('/doc_management/transactions/create', compact('transaction_type', 'details'));
+        $states = LocationData::select('state') -> groupBy('state') -> orderBy('state') -> get();
+
+        return view('/doc_management/transactions/create', compact('transaction_type', 'details', 'states'));
 
     }
 
@@ -168,6 +172,8 @@ class TransactionsController extends Controller
             } else {
 
                 $bright_db_search = $bright_db_search -> first();
+                $bright_db_search -> MLSListDate = Helper::date_mdy($bright_db_search -> MLSListDate);
+                $bright_db_search -> CloseDate = Helper::date_mdy($bright_db_search -> CloseDate);
                 $results['results_bright_id'] = $bright_db_search -> ListingId;
 
             }
@@ -324,62 +330,57 @@ class TransactionsController extends Controller
                     ];
 
 
-                    if (isset($property['real_property_search_link']['url'])) {
+                    /* if (isset($property['real_property_search_link']['url'])) {
 
                         // Owner name not available from response so we have to follow the link provided in the results and get the owner's name from that page
 
-                        try {
+                        $link = $property['real_property_search_link']['url'];
+                        $link = str_replace('http', 'https', $link);
 
-                            $link = $property['real_property_search_link']['url'];
+                        $headers = @get_headers($link);
 
+                        if($headers && strpos( $headers[0], '302')) {
+                            $link = str_replace('Location: ', '', $headers[1]);
                             $headers = @get_headers($link);
+                        }
 
-                            if($headers && strpos( $headers[0], '302')) {
-                                $link = str_replace('Location: ', '', $headers[1]);
-                                $headers = @get_headers($link);
-                            }
-                            if($headers && strpos( $headers[0], '200')) {
+                        if($headers && strpos( $headers[0], '200')) {
 
-                                $page = new \DOMDocument();
-                                libxml_use_internal_errors(true);
-                                $page -> loadHTMLFile($link);
-                                $xpath = new \DOMXpath($page);
+                            $page = new \DOMDocument();
+                            libxml_use_internal_errors(true);
+                            $page -> loadHTMLFile($link);
+                            $xpath = new \DOMXpath($page);
 
 
-                                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName_0"])');
+                            $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName_0"])');
 
-                                if ($owner1 == '') {
-                                    $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName_0"])');
-                                }
-
-                                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName2_0"])');
-
-                                if ($owner2 == '') {
-                                    $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName2_0"])');
-                                }
-
-                                $details['Owner1'] = $owner1;
-                                $details['Owner2'] = $owner2;
-
-
-                                // $details['frederick_city'] = 'no';
-                                // if(stristr($property['town_code_mdp_field_towncode_desctown_sdat_field_36'], 'Frederick')) { //MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblSpecTaxTown_0
-                                //     $details['frederick_city'] = 'yes';
-                                // }
-                                // $details['condo'] = 'no';
-                                // if(stristr($property['land_use_code_mdp_field_lu_desclu_sdat_field_50'], 'condominium')) {
-                                //     $details['condo'] = 'yes';
-                                // }
-
+                            if ($owner1 == '') {
+                                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName_0"])');
                             }
 
-                        } catch (\Exception $e) {
+                            $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName2_0"])');
 
-                            return response() -> json(['error' => $e -> getMessage()]);
+                            if ($owner2 == '') {
+                                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName2_0"])');
+                            }
+
+                            $details['Owner1'] = $owner1;
+                            $details['Owner2'] = $owner2;
+
+
+                            // $details['frederick_city'] = 'no';
+                            // if(stristr($property['town_code_mdp_field_towncode_desctown_sdat_field_36'], 'Frederick')) { //MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblSpecTaxTown_0
+                            //     $details['frederick_city'] = 'yes';
+                            // }
+                            // $details['condo'] = 'no';
+                            // if(stristr($property['land_use_code_mdp_field_lu_desclu_sdat_field_50'], 'condominium')) {
+                            //     $details['condo'] = 'yes';
+                            // }
 
                         }
 
-                    }
+
+                    } */
 
 
                 } else if(count($properties) > 1) {
