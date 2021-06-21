@@ -320,7 +320,7 @@
                         id="my_select"
                         name=""
                         data-label="My Select"
-                        :size="''sm|md|lg|xl''"&gt;
+                        :size="'sm|md|lg|xl'"&gt;
                             &lt;option value="">Select&lt;/option&gt;
                             &lt;option value="First"&gt;First&lt;/option&gt;
                             &lt;option value="Second"&gt;Second&lt;/option&gt;
@@ -415,16 +415,26 @@
 
                     <div x-show="show">
                         <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                        &lt;x-modals.modal
-                            :modalWidth="'w-6/12'"
-                            :modalTitle="'Add Form'"
-                            :buttonClass="'default|primary|success|danger'"
-                            :buttonSize="'md'"
-                            :buttonText="'&lt;i class='fal fa-plus mr-2'&gt;&lt;/i&gt; Add Form'"&gt;
+
+                            &lt;x-elements.button
+                            class="mb-3"
+                            :buttonClass="'primary'"
+                            :buttonSize="'sm'"
+                            type="button"
+                            @click="show_add_contact_modal = true"&gt;
+                            &lt;i class="fad fa-user-friends mr-2"&gt;&lt;/i&gt; Import from Contacts
+                            &lt;/x-elements.button&gt;
+
+                            &lt;x-modals.modal
+                            :modalWidth="'w-1/2'"
+                            :modalTitle="'Import Contact'"
+                            :modalId="'show_add_contact_modal'"
+                            x-show="show_add_contact_modal"&gt;
 
                             Stuff goes here
 
-                        &lt;/x-modals.modal&gt;
+                            &lt;/x-modals.modal&gt;
+
                         </pre>
                     </div>
                 </div>
@@ -433,19 +443,19 @@
                 x-data="{ show_modal: false }">
 
                     <x-elements.button
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
-                        type="button"
-                        x-on:click="show_modal = true">
-                        <i class="fal fa-check mr-2"></i> Open Modal
+                    class="mb-3"
+                    :buttonClass="'primary'"
+                    :buttonSize="'md'"
+                    type="button"
+                    @click="show_modal = true">
+                    Show Modal
                     </x-elements.button>
 
                     <x-modals.modal
-                        :modalWidth="'w-6/12'"
-                        :modalTitle="'Modal Title'"
-                        x-show="show_modal">
-
-                        Stuff goes here
+                    :modalWidth="'w-1/2'"
+                    :modalTitle="'Import Contact'"
+                    :modalId="'show_modal'"
+                    x-show="show_modal">
 
                     </x-modals.modal>
 

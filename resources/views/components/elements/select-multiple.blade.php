@@ -1,6 +1,3 @@
-@props([
-    'disabled' => false
-    ])
 @php
 
 if($size == 'sm') {
@@ -11,7 +8,7 @@ if($size == 'sm') {
     $label_text_size = 'text-sm';
 } else if($size == 'lg') {
     $classes = 'px-3 py-3 text-base';
-    $label_text_size = 'text-base';
+    $label_text_size = 'text-sm';
 } else if($size == 'xl') {
     $classes = 'px-3 py-3 text-lg';
     $label_text_size = 'text-lg';
@@ -26,13 +23,12 @@ if($attributes['id']) {
 }
 @endphp
 
-<label class="text-gray-600 ml-2 {{ $label_text_size }}">
-    {{ $label }}
+<label class="text-gray-500 italic block {{ $label_text_size }}">
+    <span class="ml-2">{{ $label }}</span>
     <select
         multiple
         id="{{ $id }}"
         placeholder="{{ $attributes['placeholder'] }}"
-        {{ $disabled ? 'disabled' : '' }}
         {!! $attributes -> merge(['class' => $classes]) !!}>
         {{ $slot }}
     </select>

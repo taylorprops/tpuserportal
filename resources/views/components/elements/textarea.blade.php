@@ -1,6 +1,3 @@
-@props([
-    'disabled' => false
-    ])
 @php
 
 
@@ -12,7 +9,7 @@ if($size == 'sm') {
     $label_text_size = 'text-sm';
 } else if($size == 'lg') {
     $classes = 'px-3 py-3 text-base';
-    $label_text_size = 'text-base';
+    $label_text_size = 'text-sm';
 } else if($size == 'xl') {
     $classes = 'px-3 py-3 text-lg';
     $label_text_size = 'text-lg';
@@ -27,11 +24,10 @@ if($attributes['id']) {
 }
 @endphp
 
-<label class="text-gray-600 ml-2 {{ $label_text_size }}">
-    {{ $label }}
+<label class="text-gray-500 italic {{ $label_text_size }}">
+    <span class="ml-2">{{ $label }}</span>
     <textarea id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"
-    {{ $disabled ? 'disabled' : '' }}
     {!! $attributes -> merge(['class' => $classes]) !!} />{{ $slot }}</textarea>
     <div class="relative">
             <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>

@@ -16,10 +16,11 @@ if(document.URL.match(/agents$/)) {
             { data: 'cell_phone' },
             { data: 'email' }
         ];
+        let table = document.querySelector('#agents_table');
 
-        data_table('/employees/agents/get_agents', cols, 25, $('#agents_table'), [1, 'asc'], [0], [], true, true, true, true, true);
+        data_table('/employees/agents/get_agents', cols, 25, $(table), [1, 'asc'], [0], [], true, true, true, true, true);
 
-        $('#agents_table').show();
+        table.classList.remove('hidden');
         hide_loader();
 
 

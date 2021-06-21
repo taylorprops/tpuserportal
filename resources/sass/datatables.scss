@@ -40,12 +40,21 @@
 
 
     .dataTables_filter input {
-        font-size: .8rem;
-        width: 150px;
+        padding: 0px 2px !important;
+        font-size: .8rem !important;
+        width: 100px !important;
     }
-    .dataTables_length select {
-        font-size: .8rem;
-        width: 70px;
+    .dataTables_length {
+
+        label {
+            font-size: .8rem !important;
+        }
+
+        select {
+            padding: 0px 2px !important;
+            font-size: .8rem !important;
+            width: 50px !important;
+        }
     }
 
 
@@ -134,9 +143,8 @@
     }
 
     .dataTables_filter input {
-        width: 120px !important;
-        padding: 4px 0 2px 3px;
-        height: 25px;
+        width: 100px !important;
+        padding: 2px 0 2px 2px;
         margin-top: 8px;
     }
 

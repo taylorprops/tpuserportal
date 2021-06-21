@@ -1,6 +1,3 @@
-@props([
-    'disabled' => false
-    ])
 @php
 
 $classes = 'text-'.$color.'-600 ';
@@ -22,7 +19,7 @@ if($size == 'sm') {
 @endphp
 
 <label class="inline-flex items-center">
-    <input type="radio" class="form-radio {{ $classes }}  {{ $disabled ? 'disabled' : '' }} {!! $attributes -> merge() !!}"><span class="ml-2 text-gray-600 {{ $text_size }}">{{ $label }}</span>
+    <input type="radio" class="form-radio {{ $classes }} {!! $attributes -> merge() !!}"><span class="ml-2 text-gray-500 {{ $text_size }}">{{ $label }}</span>
     <div class="relative">
         <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
     </div>

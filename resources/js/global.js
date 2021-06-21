@@ -6,6 +6,10 @@ toastr.options.preventDuplicates = true;
 
 window.addEventListener('load', (event) => {
 
+    global_format_money();
+
+    setInterval(global_format_phones, 1000);
+
 });
 
 window._token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -267,4 +271,137 @@ window.global_format_number_with_decimals = function (num) {
 
     num = num.replace(/[,\$]/g, '').toString();
     return formatter.format(num);
+}
+
+window.format_money = function(ele) {
+    let val = ele.value.replace(/\$/,'');
+    ele.value = '$'+global_format_number(val);
+}
+
+window.format_money_with_decimals = function(ele) {
+    let val = ele.value.replace(/\$/,'');
+    ele.value = global_format_number_with_decimals(val);
+}
+
+window.global_format_money = function() {
+    // $('.money, .money-decimal').each(function() {
+    //     let val = $(this).val();
+    //     if(val.match(/[a-zA-Z]+/)) {
+    //         $(this).val(val.replace(/[a-zA-Z]+/,''));
+    //     }
+    // });
+
+    let money = document.querySelectorAll('.money');
+
+    if(money.length > 0) {
+
+        money.forEach(function(input) {
+
+            if(input.value != '') {
+                format_money(input);
+            }
+            input.onkeyup = function () {
+                if(input.value != '') {
+                    format_money(input);
+                }
+            }
+
+        });
+
+    }
+
+    let money_decimal = document.querySelectorAll('.money-decimal');
+
+    if(money_decimal.length > 0) {
+
+        money_decimal.forEach(function(input) {
+
+            if(input.value != '') {
+                format_money_with_decimals(input);
+            }
+            input.onchange = function() {
+                if(input.value != '') {
+                    format_money_with_decimals(input);
+                }
+            }
+
+        });
+
+    }
+
+}
+
+
+// Numbers Only
+document.querySelectorAll('.numbers-only').forEach(function(input) {
+
+    input.addEventListener('keydown', (event) => {
+
+        // set attr  max with input type = text
+        let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v'];
+
+        if(!input.classList.contains('no-decimals')) {
+            allowed_keys.push('.');
+        }
+        if(!allowed_keys.includes(event.key)) {
+            event.preventDefault();
+        } else {
+
+            let max = input.getAttribute('max') ?? null;
+
+            if(max) {
+                if(parseInt(input.value + event.key) > max) {
+                    event.preventDefault();
+                    input.value = event.key;
+                }
+            }
+        }
+
+    });
+
+});
+
+// Format Phone
+window.global_format_phone = function (obj) {
+    if(obj) {
+        let numbers = obj.value.replace(/\D/g, ''),
+            char = { 0: '(', 3: ') ', 6: '-' };
+        obj.value = '';
+        for (let i = 0; i < numbers.length; i++) {
+            if (i > 13) {
+                return false;
+            }
+            obj.value += (char[i] || '') + numbers[i];
+        }
+    }
+}
+window.global_format_phones = function() {
+    document.querySelectorAll('.phone').forEach(function(input) {
+        input.classList.add('numbers-only');
+        global_format_phone(input);
+        input.setAttribute('maxlength', 14);
+        input.addEventListener('keyup', (event) => {
+            global_format_phone(input);
+        })
+    });
+}
+
+// unwrap element
+window.unwrap = function(wrapper) {
+    // place childNodes in document fragment
+    var docFrag = document.createDocumentFragment();
+    while (wrapper.firstChild) {
+        var child = wrapper.removeChild(wrapper.firstChild);
+        docFrag.appendChild(child);
+    }
+
+    // replace wrapper with document fragment
+    wrapper.parentNode.replaceChild(docFrag, wrapper);
+}
+
+window.ucwords = function (str) {
+    return (str + '')
+        .replace(/^(.)|\s+(.)/g, function ($1) {
+            return $1.toUpperCase()
+        })
 }

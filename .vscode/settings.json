@@ -24,6 +24,7 @@
         "id",
         "interactjs",
         "longitude",
+        "maxlength",
         "mdp",
         "ocr",
         "pdftk",
@@ -44,6 +45,7 @@
         "thiagoalessio",
         "to",
         "toastr",
+        "ucwords",
         "wgs",
         "x",
         "yajra"

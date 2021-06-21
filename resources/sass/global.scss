@@ -1,6 +1,8 @@
 html {
     scroll-behavior: smooth;
+    overflow-y: scroll;
 }
+
 
 [x-cloak] {
     display: none !important;
@@ -72,10 +74,12 @@ color: #2a4266;
 color: #273d5e;
 
 // primary
+color: #e0ecff;
 color: #4e84da;
 color: #4a78c2;
 color: #3f629c;
 color: #37578a;
 color: #2b4670;
 
+color: #ffa366;
 }

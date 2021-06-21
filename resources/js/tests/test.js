@@ -1,7 +1,7 @@
 if(document.URL.match(/tests/)) {
 
 
-    window.field_buttons = function() {
+    window.test = function() {
         return {
             active(ele) {
                 buttons = document.querySelectorAll('button');

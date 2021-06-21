@@ -23,6 +23,17 @@ module.exports = {
                 '-5.5': '-5.5rem',
                 '-6': '-6rem'
             },
+            maxHeight: {
+                '100-px': '100px',
+                '200-px': '200px',
+                '300-px': '300px',
+                '400-px': '400px',
+                '500-px': '500px',
+                '600-px': '600px',
+                '700-px': '700px',
+                '800-px': '800px',
+                '900-px': '900px'
+            },
             height: theme => ({
                 'screen-5': '5vh',
                 'screen-8': '8vh',
@@ -55,13 +66,14 @@ module.exports = {
             }),
             colors: {
                 default: {
-                    lighter: '#4770b3',
+                lighter: '#4770b3',
                     light: '#3f629c',
                     DEFAULT: '#365483',
                     dark: '#2a4266',
                     darker: '#273d5e',
                 },
                 primary: {
+                    lightest: '#e0ecff',
                     lighter: '#4e84da',
                     light: '#4a78c2',
                     DEFAULT: '#3f629c',
@@ -69,6 +81,8 @@ module.exports = {
                     darker: '#2b4670',
                 },
                 secondary: {
+                    lightest: '#fce4d4',
+                    lighter: '#ffa366',
                     light: '#f7863b',
                     DEFAULT: '#ce6621',
                     dark: '#c25208',

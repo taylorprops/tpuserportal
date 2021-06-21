@@ -10,16 +10,18 @@ class Modal extends Component
 
     public $modalWidth;
     public $modalTitle;
+    public $modalId;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($modalWidth, $modalTitle)
+    public function __construct($modalWidth, $modalTitle, $modalId)
     {
         $this -> modalWidth = $modalWidth;
         $this -> modalTitle = $modalTitle;
+        $this -> modalId = $modalId;
     }
 
     /**

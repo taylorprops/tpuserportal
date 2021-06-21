@@ -12,5 +12,4 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 _notes
-webpack.mix.js
 .editorconfig
