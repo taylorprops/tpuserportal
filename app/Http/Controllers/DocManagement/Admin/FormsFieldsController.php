@@ -96,7 +96,7 @@ class FormsFieldsController extends Controller
 
             foreach ($fields as $field) {
 
-                $new_field = new FormsFields;
+                $new_field = new FormsFields();
 
                 $new_field -> form_id = $form_id;
                 $new_field -> field_id = $field['id'];

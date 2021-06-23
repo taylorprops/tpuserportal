@@ -11,5 +11,7 @@ class Config extends Model
 
     protected $connection = 'mysql';
     protected $table = 'config';
+    protected $fillable = ['config_key', 'config_value', 'value_type'];
+    public $timestamps = false;
 
 }

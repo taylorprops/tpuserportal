@@ -40,8 +40,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/doc_management/admin/forms/get_fields', [FormsFieldsController::class, 'get_fields']) -> middleware(['admin']);
     Route::post('/doc_management/admin/forms/save_fields', [FormsFieldsController::class, 'save_fields']) -> middleware(['admin']);
 
-    // %%%% Form Elements
-    Route::get('/resources/design/form_elements', [ResourcesController::class, 'form_elements']) -> middleware(['admin']);
+
 
 
     // %%%% Employees
@@ -64,6 +63,16 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions/get_contacts', [TransactionsController::class, 'get_contacts']) -> middleware(['agent']);
     Route::get('/transactions/agent_search', [TransactionsController::class, 'agent_search']) -> middleware(['agent']);
 
+
+
+
+    /////////////// %%%%%%%%%%%%%%%%%% SUPER ADMIN %%%%%%%%%%%%%%%%%% ///////////////
+    // %%%% Form Elements
+    Route::get('/resources/design/form_elements', [ResourcesController::class, 'form_elements']) -> middleware(['admin']);
+    Route::get('/resources/config/config_variables', [ResourcesController::class, 'config_variables']) -> middleware(['admin']);
+    Route::get('/resources/config/get_config_variables', [ResourcesController::class, 'get_config_variables']) -> middleware(['admin']);
+    Route::post('/resources/config/config_edit', [ResourcesController::class, 'config_edit']) -> middleware(['admin']);
+    Route::post('/resources/config/config_add', [ResourcesController::class, 'config_add']) -> middleware(['admin']);
 
 
 

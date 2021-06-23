@@ -96,8 +96,6 @@ if(document.URL.match(/transactions\/create/)) {
 
                     sessionStorage.setItem('search_details', JSON.stringify(search_details));
                     sessionStorage.setItem('property_details', JSON.stringify(property_details));
-                    // console.log(JSON.parse(sessionStorage.search_details));
-                    // console.log(JSON.parse(sessionStorage.property_details));
 
                     document.getElementById('street_number').value = street_number;
                     document.getElementById('street_name').value = street_name;
@@ -457,13 +455,11 @@ if(document.URL.match(/transactions\/create/)) {
                     let list_price = property_details.ListPrice ?? null;
 
                     let for_sale = this.for_sale == 'yes' ? 'sale' : 'rental';
-                    document.getElementById('sale_rental').value = for_sale;
-                    document.getElementById('property_type').value = property_type_value;
-                    document.getElementById('property_sub_type').value = property_sub_type;
-                    document.getElementById('year_built').value = year_built;
-                    document.getElementById('list_price').value = list_price;
-                    document.getElementById('lease_amount').value = list_price;
-                    document.getElementById('hoa_condo').value = hoa_condo;
+                    document.getElementById('SaleRent').value = for_sale;
+                    document.getElementById('PropertyType').value = property_type_value;
+                    document.getElementById('PropertySubType').value = property_sub_type;
+                    document.getElementById('YearBuilt').value = year_built;
+                    document.getElementById('HoaCondoFees').value = hoa_condo;
 
                 } else {
 
@@ -493,14 +489,11 @@ if(document.URL.match(/transactions\/create/)) {
 
                     let checklist_details = {
                         'Agent_ID': document.getElementById('Agent_ID').value,
-                        'sale_rental': document.getElementById('sale_rental').value,
-                        'property_type': document.getElementById('property_type').value,
-                        'property_sub_type': document.getElementById('property_sub_type').value,
-                        'year_built': document.getElementById('year_built').value,
-                        'list_price': document.getElementById('list_price').value,
-                        'contract_price': document.getElementById('contract_price').value,
-                        'lease_amount': document.getElementById('lease_amount').value,
-                        'hoa_condo': document.getElementById('hoa_condo').value
+                        'SaleRent': document.getElementById('SaleRent').value,
+                        'PropertyType': document.getElementById('PropertyType').value,
+                        'PropertySubType': document.getElementById('PropertySubType').value,
+                        'YearBuilt': document.getElementById('YearBuilt').value,
+                        'HoaCondoFees': document.getElementById('HoaCondoFees').value
                     };
 
                     sessionStorage.setItem('checklist_details', JSON.stringify(checklist_details));
@@ -521,8 +514,8 @@ if(document.URL.match(/transactions\/create/)) {
             },
             property_type_selected() {
 
-                let prop_type = document.getElementById('property_type');
-                let prop_sub_type = document.getElementById('property_sub_type');
+                let prop_type = document.getElementById('PropertyType');
+                let prop_sub_type = document.getElementById('PropertySubType');
 
 
                 if(prop_type.value == 'Residential') {
@@ -537,6 +530,15 @@ if(document.URL.match(/transactions\/create/)) {
                     this.show_disclosures = true;
                 } else {
                     this.show_disclosures = false;
+                }
+
+                if(this.transaction_type == 'contract') {
+                    if(this.for_sale == 'yes') {
+                        document.getElementById('CloseDate').closest('label').querySelector('.label-text').innerText = 'Settlement Date';
+                    } else {
+                        document.getElementById('CloseDate').closest('label').querySelector('.label-text').innerText = 'Lease Date';
+                        this.show_disclosures = false;
+                    }
                 }
 
             },
@@ -668,10 +670,90 @@ if(document.URL.match(/transactions\/create/)) {
                 let type = ucwords(transaction_type);
                 show_loading_button(ele, 'Saving '+type+'...');
 
+                let sellers = [];
+                let buyers = [];
+
+                let members_container = document.querySelectorAll('.members-container');
+
+                members_container.forEach(function(member_container) {
+
+                    let type = member_container.getAttribute('data-type');
+
+                    let members = member_container.querySelectorAll('.member-container');
+                    if(members) {
+
+                        let cont = true;
+
+                        members.forEach(function(member) {
+
+                            member.querySelectorAll('.required').forEach(function(required) {
+                                if(required.value == '') {
+                                    cont = false;
+                                }
+                            });
+
+                            if(cont == true) {
+
+                                let details = {
+                                    'type': type
+                                };
+
+                                details.first_name = member.querySelector('.member-first').value;
+                                details.last_name = member.querySelector('.member-last').value;
+                                if(member.querySelector('.member-entity-name')) {
+                                    details.entity_name = member.querySelector('.member-entity-name').value;
+                                }
+                                if(member.querySelector('.member-phone')) {
+                                    details.phone = member.querySelector('.member-phone').value;
+                                    details.email = member.querySelector('.member-email').value;
+                                    details.street = member.querySelector('.member-street').value;
+                                    details.city = member.querySelector('.member-city').value;
+                                    details.state = member.querySelector('.member-state').value;
+                                    details.zip = member.querySelector('.member-zip').value;
+                                }
+
+                                if(type == 'seller') {
+                                    sellers.push(details);
+                                } else if(type == 'buyer') {
+                                    buyers.push(details);
+                                }
+
+                            }
+
+                        });
+
+                    }
+
+                });
+
+
+                if(sellers.length == 0 && transaction_type != 'referral') {
+                    toastr.error('You must enter at least one Seller');
+                    document.querySelector('.seller-header').scrollIntoView();
+                    return false;
+                }
+                if(transaction_type == 'contract') {
+                    if(buyers.length == 0) {
+                        toastr.error('You must enter at least one Buyer');
+                        document.querySelector('.buyer-header').scrollIntoView();
+                        return false;
+                    }
+                }
+
                 let form = document.querySelector('#create_form');
                 let formData = new FormData(form);
 
-                console.log(sessionStorage);
+                let required_details = {};
+                formData.forEach(function(value, key){
+                    required_details[key] = value;
+                });
+
+                formData.append('transaction_type', this.transaction_type);
+                formData.append('checklist_details', sessionStorage.checklist_details);
+                formData.append('property_details', sessionStorage.property_details);
+                formData.append('required_details', JSON.stringify(required_details));
+                formData.append('sellers', JSON.stringify(sellers));
+                formData.append('buyers', JSON.stringify(buyers));
 
                 axios.post('/transactions/save_transaction', formData)
                 .then(function (response) {

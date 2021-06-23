@@ -7,7 +7,8 @@ require('alpinejs');
 //import tippy from 'tippy.js';
 require('./global.js');
 
-require('./form_elements/form_elements.js');
+require('./resources/form_elements/form_elements.js');
+require('./resources/config/config_variables.js');
 
 require('./nav/nav.js');
 require('./dashboard/dashboard.js');

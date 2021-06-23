@@ -52,7 +52,25 @@ class TransactionsController extends Controller
 
     public function save_transaction(Request $request) {
 
-        dd($request -> all());
+        $checklist_details = json_decode($request -> checklist_details, true);
+        $property_details = json_decode($request -> property_details, true);
+        $required_details = json_decode($request -> required_details, true);
+        $sellers = json_decode($request -> sellers, true);
+        $buyers = json_decode($request -> buyers, true) ?? null;
+
+        dd($checklist_details, $property_details, $required_details, $sellers, $buyers);
+
+        $validator = $request -> validate([
+            'ListPrice' => 'required_if:transaction_type,==,listing',
+            'ContractPrice' => 'required_if:transaction_type,==,contract',
+        ],
+        [
+            'required' => 'Required Field',
+            'required_if' => 'Required Field',
+        ]);
+
+
+        // need to convert all date fields from m/d/y to y/m/d
 
     }
 
@@ -106,20 +124,11 @@ class TransactionsController extends Controller
 
         $validator = $request -> validate([
             'Agent_ID' => 'required',
-            'sale_rental' => 'required',
-            'property_type' => 'required',
-            'property_sub_type' => 'required_if:for_sale,==,yes',
-            'year_built' => 'required_if:show_disclosures,==,yes',
-            'list_price' => 'required_if:transaction_type,==,listing',
-            'contract_price' => Rule::requiredIf(function() use($request){
-                return  $request -> transaction_type == 'contract' &&
-                        $request -> for_sale == 'yes';
-            }),
-            'lease_amount' => Rule::requiredIf(function() use($request){
-                return  $request -> transaction_type == 'contract' &&
-                        $request -> for_sale == 'no';
-            }),
-            'hoa_condo' => 'required_if:show_disclosures,==,yes',
+            'SaleRent' => 'required',
+            'PropertyType' => 'required',
+            'PropertySubType' => 'required_if:for_sale,==,yes',
+            'YearBuilt' => 'required_if:show_disclosures,==,yes',  //|integer|digits:4|max:'.date('Y', strtotime('+1 year'))
+            'HoaCondoFees' => 'required_if:show_disclosures,==,yes',
         ],
         [
             'required' => 'Required Field',
@@ -127,6 +136,7 @@ class TransactionsController extends Controller
         ]);
 
     }
+
 
     public function get_property_info(Request $request) {
 
@@ -283,7 +293,7 @@ class TransactionsController extends Controller
         }
 
 
-        /******* Final results **********/
+        /* %%%%%%%%%% Final results %%%%%%%%%% */
         if($tax_record_search) {
             $tax_record_search = $tax_record_search['details'];
         }
@@ -502,21 +512,17 @@ class TransactionsController extends Controller
 
     public function get_property_types(Request $request) {
 
-        $property_types = ChecklistPropertyTypes::orderBy('display_order')
+        return ChecklistPropertyTypes::orderBy('display_order')
         -> get()
         -> pluck('property_type');
-
-        return $property_types;
 
     }
 
     public function get_property_sub_types(Request $request) {
 
-        $property_sub_types = ChecklistPropertySubTypes::orderBy('display_order')
+        return ChecklistPropertySubTypes::orderBy('display_order')
         -> get()
         -> pluck('property_sub_type');
-
-        return $property_sub_types;
 
     }
 
@@ -524,7 +530,7 @@ class TransactionsController extends Controller
 
         $val = $request -> val;
 
-        $agents = BrightAgentRoster::select(['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberPreferredPhone', 'OfficePhone', 'MemberEmail', 'MemberMlsId', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode', 'MemberType', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+        return BrightAgentRoster::select(['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberPreferredPhone', 'OfficePhone', 'MemberEmail', 'MemberMlsId', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode', 'MemberType', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
         -> where('MemberLastName', 'like', '%'.$val.'%')
             -> orWhere('MemberEmail', 'like', '%'.$val.'%')
             -> orWhere('MemberMlsId', 'like', '%'.$val.'%')
@@ -533,8 +539,6 @@ class TransactionsController extends Controller
             -> orderBy('MemberLastName')
             -> limit(50)
             -> get();
-
-        return $agents;
 
     }
 

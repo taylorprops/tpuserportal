@@ -65,6 +65,7 @@ window.show_form_errors = function(errors) {
         if(element) {
             let error_message = element.closest('label').querySelector('.error-message');
             error_message.innerHTML = message;
+            element.scrollIntoView();
         }
 
     });

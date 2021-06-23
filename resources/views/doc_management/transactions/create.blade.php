@@ -452,7 +452,7 @@
 
                                 @if(auth() -> user() -> group != 'agent')
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                        <div class="mb-5">
+                                        <div class="mb-7">
                                             <x-elements.select
                                             class="required"
                                             id="Agent_ID"
@@ -475,8 +475,8 @@
 
                                     <div>
                                         <x-elements.select
-                                        id="sale_rental"
-                                        name="sale_rental"
+                                        id="SaleRent"
+                                        name="SaleRent"
                                         class="required"
                                         data-label="Transaction Type"
                                         :size="'md'"
@@ -490,8 +490,8 @@
 
                                     <div>
                                         <x-elements.select
-                                        id="property_type"
-                                        name="property_type"
+                                        id="PropertyType"
+                                        name="PropertyType"
                                         class="required"
                                         data-label="Property Type"
                                         :size="'md'"
@@ -507,8 +507,8 @@
                                     <div
                                     x-show="for_sale === 'yes'">
                                         <x-elements.select
-                                        id="property_sub_type"
-                                        name="property_sub_type"
+                                        id="PropertySubType"
+                                        name="PropertySubType"
                                         class="required"
                                         data-label="Sale Type"
                                         :size="'md'"
@@ -526,51 +526,18 @@
                                         <x-elements.input
                                         type="text"
                                         class="required numbers-only"
-                                        id="year_built"
-                                        name="year_built"
+                                        id="YearBuilt"
+                                        name="YearBuilt"
                                         placeholder=""
                                         data-label="Year Built"
                                         :size="'md'"/>
                                     </div>
 
                                     <div
-                                    x-show="transaction_type === 'listing'">
-                                        <x-elements.input
-                                        class="required numbers-only money"
-                                        id="list_price"
-                                        name="list_price"
-                                        placeholder=""
-                                        data-label="List Price"
-                                        :size="'md'"/>
-                                    </div>
-
-                                    <div
-                                    x-show="for_sale === 'no' && transaction_type == 'contract'">
-                                        <x-elements.input
-                                        class="required numbers-only money"
-                                        id="lease_amount"
-                                        name="lease_amount"
-                                        placeholder=""
-                                        data-label="Monthly Lease Amount"
-                                        :size="'md'"/>
-                                    </div>
-
-                                    <div
-                                    x-show="transaction_type === 'contract'">
-                                        <x-elements.input
-                                        class="required numbers-only money"
-                                        id="contract_price"
-                                        name="contract_price"
-                                        placeholder=""
-                                        data-label="Contract Price"
-                                        :size="'md'"/>
-                                    </div>
-
-                                    <div
                                     x-show="property_type !== 'Commercial' && property_type !== 'New Construction' && show_disclosures === true && for_sale === 'yes'">
                                         <x-elements.select
-                                        id="hoa_condo"
-                                        name="hoa_condo"
+                                        id="HoaCondoFees"
+                                        name="HoaCondoFees"
                                         class="required"
                                         data-label="HOA/Condo Fees"
                                         :size="'md'">
@@ -611,17 +578,18 @@
 
                                     <form id="create_form">
 
-                                        <div class="text-xl p-3 mb-5 border-b border-t-4 text-gray-700">Seller(s)</div>
+                                        <div class="text-xl p-3 mb-5 border-b border-t-4 text-gray-700 seller-header"
+                                        x-text="for_sale === 'yes' ? 'Seller(s)' : 'Owner(s)'"></div>
 
                                         <div class="lg:w-5/6 mx-auto">
 
-                                            <div class="members-container">
+                                            <div class="members-container" data-type="seller">
 
                                                 <div class="border rounded p-4 mt-3 member-container" data-id="1">
 
                                                     <div class="flex justify-between">
 
-                                                        <div class="text-secondary text-lg mb-2">Seller <span class="member-id">1</span></div>
+                                                        <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"></span> <span class="member-id">1</span></div>
 
                                                         <x-elements.button
                                                         class="mb-3"
@@ -638,14 +606,14 @@
                                                         <x-elements.check-box
                                                         :size="'sm'"
                                                         :color="'blue'"
-                                                        :label="'Seller is a Trust, Company or other Entity'"
+                                                        :label="'Owner is a Trust, Company or other Entity'"
                                                         @click="seller_is_trust = !seller_is_trust"/>
                                                     </div>
 
                                                     <div class="my-3"
                                                     x-show.transition="seller_is_trust">
                                                         <x-elements.input
-                                                        class="contact-entity-name"
+                                                        class="member-entity-name"
                                                         data-label="Trust, Company or other Entity Name"
                                                         :size="'md'"
                                                         x-bind:class="{ 'required': seller_is_trust }"/>
@@ -738,13 +706,13 @@
                                                 :buttonSize="'sm'"
                                                 type="button"
                                                 @click="add_member('Seller')">
-                                                <i class="fal fa-plus mr-2"></i> Add Seller
+                                                <i class="fal fa-plus mr-2"></i> <span x-text="for_sale === 'yes' ? 'Add Seller' : 'Add Owner'"></span>
                                             </x-elements.button>
                                             </div>
 
                                         </div>
 
-                                        <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700">Dates</div>
+                                        <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700">Listing Details</div>
 
                                         <div class="lg:w-5/6 mx-auto mb-10">
 
@@ -752,16 +720,31 @@
 
                                                 <div class="col-span-1">
                                                     <x-elements.input
-                                                    type="date"
-                                                    class="list-date required"
-                                                    data-label="List Date"
+                                                    class="required numbers-only money"
+                                                    id="ListPrice"
+                                                    name="ListPrice"
+                                                    placeholder=""
+                                                    data-label="List Price"
                                                     :size="'md'"/>
                                                 </div>
 
                                                 <div class="col-span-1">
                                                     <x-elements.input
+                                                    id="MLSListDate"
+                                                    name="MLSListDate"
                                                     type="date"
-                                                    class="expiration-date required"
+                                                    class="required"
+                                                    data-label="List Date"
+                                                    :size="'md'"
+                                                    @onchange="document.getElementById('ExpirationDate').setAttribute('min', $event.target.value)"/>
+                                                </div>
+
+                                                <div class="col-span-1">
+                                                    <x-elements.input
+                                                    id="ExpirationDate"
+                                                    name="ExpirationDate"
+                                                    type="date"
+                                                    class="required"
                                                     data-label="Expiration Date"
                                                     :size="'md'"/>
                                                 </div>
@@ -786,17 +769,18 @@
 
                                 <form id="create_form">
 
-                                    <div class="text-xl p-3 mb-5 border-b border-t-4 text-gray-700">Buyer(s)</div>
+                                    <div class="text-xl p-3 mb-5 border-b border-t-4 text-gray-700 buyer-header"
+                                    x-text="for_sale === 'yes' ? 'Buyer(s)' : 'Renter(s)'"></div>
 
                                     <div class="lg:w-5/6 mx-auto">
 
-                                        <div class="members-container">
+                                        <div class="members-container" data-type="buyer">
 
                                             <div class="border rounded p-4 mt-3 member-container" data-id="1">
 
                                                 <div class="flex justify-between">
 
-                                                    <div class="text-secondary text-lg mb-2">Buyer <span class="member-id">1</span></div>
+                                                    <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Buyer' : 'Renter'"></span> <span class="member-id">1</span></div>
 
                                                     <x-elements.button
                                                     class="mb-3"
@@ -813,7 +797,7 @@
                                                     <x-elements.check-box
                                                     :size="'sm'"
                                                     :color="'blue'"
-                                                    :label="'Buyer is a Trust, Company or other Entity'"
+                                                    :label="'Client is a Trust, Company or other Entity'"
                                                     @click="buyer_is_trust = !buyer_is_trust"/>
                                                 </div>
 
@@ -913,28 +897,29 @@
                                             :buttonSize="'sm'"
                                             type="button"
                                             @click="add_member('Buyer')">
-                                            <i class="fal fa-plus mr-2"></i> Add Buyer
+                                            <i class="fal fa-plus mr-2"></i> Add <span x-text="for_sale === 'yes' ? 'Buyer' : 'Renter'"></span>
                                         </x-elements.button>
                                         </div>
 
                                     </div>
 
 
-                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700">Seller(s)</div>
+                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700 seller-header"
+                                    x-text="for_sale === 'yes' ? 'Seller(s)' : 'Owner(s)'"></div>
 
                                     <div class="lg:w-5/6 mx-auto">
 
-                                        <div class="members-container">
+                                        <div class="members-container" data-type="seller">
 
                                             <div class="border rounded p-4 mt-3 member-container" data-id="1">
 
-                                                <div class="text-secondary text-lg mb-2">Seller <span class="member-id">1</span></div>
+                                                <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"></span> <span class="member-id">1</span></div>
 
                                                 <div class="py-5">
                                                     <x-elements.check-box
                                                     :size="'sm'"
                                                     :color="'blue'"
-                                                    :label="'Seller is a Trust, Company or other Entity'"
+                                                    :label="'Owner is a Trust, Company or other Entity'"
                                                     @click="seller_is_trust = !seller_is_trust"/>
                                                 </div>
 
@@ -977,7 +962,7 @@
                                             :buttonSize="'sm'"
                                             type="button"
                                             @click="add_member('Seller', true)">
-                                                <i class="fal fa-plus mr-2"></i> Add Seller
+                                                <i class="fal fa-plus mr-2"></i> Add <span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"><span>
                                             </x-elements.button>
                                         </div>
 
@@ -1073,20 +1058,44 @@
                                     </div>
 
 
-                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700">Dates</div>
+                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700"
+                                    x-text="for_sale === 'yes' ? 'Contract Details' : 'Lease Details'"></div>
 
                                     <div class="lg:w-5/6 mx-auto mb-10">
 
                                         <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
-                                            <div class="col-span-1">
+                                            <div class="col-span-1"
+                                            x-show="for_sale === 'no'">
+                                                <x-elements.input
+                                                class="required numbers-only money"
+                                                id="LeaseAmount"
+                                                name="LeaseAmount"
+                                                placeholder=""
+                                                data-label="Lease Amount"
+                                                :size="'md'"/>
+                                            </div>
+
+                                            <div class="col-span-1"
+                                            x-show="for_sale === 'yes'">
+                                                <x-elements.input
+                                                class="required numbers-only money"
+                                                id="ContractPrice"
+                                                name="ContractPrice"
+                                                placeholder=""
+                                                data-label="Contract Price"
+                                                :size="'md'"/>
+                                            </div>
+
+                                            <div class="col-span-1"
+                                            x-show="for_sale === 'yes'">
                                                 <x-elements.input
                                                 id="ContractDate"
                                                 name="ContractDate"
                                                 type="date"
                                                 class="required"
                                                 data-label="Contract Date"
-                                                :size="'md'" />
+                                                :size="'md'"/>
                                             </div>
 
                                             <div class="col-span-1">
@@ -1104,9 +1113,11 @@
                                     </div>
 
 
-                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700">Title and Earnest</div>
+                                    <div class="text-xl p-3 mb-5 mt-20 border-b border-t-4 text-gray-700"
+                                    x-show="for_sale === 'yes'">Title and Earnest</div>
 
-                                    <div class="lg:w-5/6 mx-auto mb-10">
+                                    <div class="lg:w-5/6 mx-auto mb-10"
+                                    x-show="for_sale === 'yes'">
 
                                         <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
@@ -1180,7 +1191,7 @@
                                             :buttonSize="'lg'"
                                             type="button"
                                             @click="save_transaction($event.currentTarget, 'contract')">
-                                            <i class="fal fa-check mr-2"></i> Save Contract
+                                            <i class="fal fa-check mr-2"></i> <span x-text="for_sale === 'yes' ? 'Save Contract' : 'Save Lease'"></span>
                                         </x-elements.button>
                                     </div>
 

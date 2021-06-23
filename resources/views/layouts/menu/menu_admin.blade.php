@@ -87,6 +87,11 @@ $level2 = [
         'title' => 'Form Elements',
         'link' => '/resources/design/form_elements',
         'icon' => 'fad fa-rectangle-wide mr-2'
+    ],
+    [
+        'title' => 'Config Variables',
+        'link' => '/resources/config/config_variables',
+        'icon' => 'fad fa-cogs mr-2'
     ]
 ];
 

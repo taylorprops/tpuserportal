@@ -24,12 +24,12 @@ if($attributes['id']) {
 }
 @endphp
 
-<label class="text-gray-500 italic {{ $label_text_size }}">
+<label class="text-gray-500 block italic {{ $label_text_size }}">
     <span class="ml-2">{{ $label }}</span>
     <textarea id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"
     {!! $attributes -> merge(['class' => $classes]) !!} />{{ $slot }}</textarea>
     <div class="relative">
-            <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
-        </div>
+        <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
+    </div>
 </label>
