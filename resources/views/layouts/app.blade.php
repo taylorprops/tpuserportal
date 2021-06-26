@@ -45,7 +45,7 @@
             </span>
         </div>
 
-        <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden bg-gray-50">
+        <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden">
 
             {{-- @include('layouts.navigation') --}}
             @include('layouts.menu.menu')
@@ -65,7 +65,7 @@
 
                 <!-- Page Heading -->
                 @if($header != 'null')
-                <header class="" :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
+                <header :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
                     <div class="max-w-full pb-3 md:pb-5 px-4 sm:px-6 lg:px-8"
                     :class="{ 'mx-auto mt-6' : main_nav_open, 'ml-10 mt-2' : !main_nav_open }">
                         <h2 class="font-semibold md:text-2xl md:ml-12 lg:ml-24 text-primary">
@@ -85,6 +85,8 @@
         </div>
 
         <input type="hidden" id="global_company_active_states" value="{{ implode(',', config('global.company_active_states')) }}">
+
+
 
     </body>
 

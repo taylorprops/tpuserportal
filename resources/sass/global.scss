@@ -1,6 +1,7 @@
 html {
     scroll-behavior: smooth;
     overflow-y: scroll;
+    @apply text-gray-700;
 }
 
 
@@ -63,6 +64,11 @@ html {
 
 .custom-dropdown:hover > .custom-dropdown-content {
 	display: block;
+}
+
+/* sortablejs */
+.drag-clone {
+    @apply bg-secondary-lightest;
 }
 
 .test{

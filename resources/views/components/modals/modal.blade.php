@@ -11,9 +11,9 @@
 
         <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle {{ $modalWidth }} sm:p-6 animate__animated animate__fadeIn" @click.away="{{ $modalId }} = false">
 
-            <div class="flex justify-between">
+            <div class="flex justify-between border-b mb-4 pb-2">
 
-                <div class="text-2xl text-gray-600 mb-3">{{ $modalTitle }}</div>
+                <div class="text-xl">{!! $modalTitle !!}</div>
 
                 <a href="javascript:void(0)" @click="{{ $modalId }} = false"><i class="fal fa-times fa-2x text-danger"></i></a>
 

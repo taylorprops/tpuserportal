@@ -58,6 +58,7 @@ window.ele_loading = function(ele) {
 }
 
 window.show_form_errors = function(errors) {
+    remove_form_errors();
     Object.entries(errors).forEach(([key, value]) => {
         let field = `${key}`;
         let message = `${value}`;

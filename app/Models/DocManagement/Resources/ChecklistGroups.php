@@ -14,7 +14,7 @@ class ChecklistGroups extends Model
     public $timestamps = false;
 
     public function forms() {
-        return $this -> hasMany(\App\Models\DocManagement\Admin\Forms::class, 'checklist_group_id');
+        return $this -> hasMany(\App\Models\DocManagement\Admin\Forms\Forms::class, 'checklist_group_id');
     }
 
 }

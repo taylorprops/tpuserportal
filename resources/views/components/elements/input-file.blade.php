@@ -18,7 +18,7 @@ $required = $attributes['class'] == 'required' ? true : false;
 
     <label class="whitespace-nowrap bg-white w-full {{ $classes }}">
 
-        <div class="file-input-div flex justify-start text-gray-600 rounded-sm border border-gray-300 cursor-pointer {{ $required ? 'required' : '' }}">
+        <div class="file-input-div flex justify-start rounded-sm border border-gray-300 cursor-pointer {{ $required ? 'required' : '' }}">
 
             <span class="{{ $classes }} mr-2 bg-{{ $buttonClass }} hover:bg-{{ $buttonClass }}-dark active:bg-{{ $buttonClass }}-dark focus:border-{{ $buttonClass }}-dark ring-{{ $buttonClass }}-dark inline-flex items-center border border-transparent rounded-sm-l font-semibold text-white focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150"><i class="fal fa-upload mr-2"></i> Select A File</span>
 

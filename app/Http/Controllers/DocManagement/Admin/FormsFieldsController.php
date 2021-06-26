@@ -4,10 +4,10 @@ namespace App\Http\Controllers\DocManagement\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\DocManagement\Admin\Forms;
-use App\Models\DocManagement\Admin\FormsFields;
-use App\Models\DocManagement\Admin\CommonFields;
-use App\Models\DocManagement\Admin\CommonFieldsGroups;
+use App\Models\DocManagement\Admin\Forms\Forms;
+use App\Models\DocManagement\Admin\Forms\FormsFields;
+use App\Models\DocManagement\Resources\CommonFields;
+use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class FormsFieldsController extends Controller
 {

@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\DocManagement\Resources\LocationData;
+use App\Models\DocManagement\Transactions\Transactions;
+use App\Models\DocManagement\Resources\ChecklistLocations;
 use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
 use App\Models\DocManagement\Resources\ChecklistPropertySubTypes;
 
@@ -52,25 +54,148 @@ class TransactionsController extends Controller
 
     public function save_transaction(Request $request) {
 
+        $transaction_type = $request -> transaction_type;
+        $for_sale = $request -> for_sale;
         $checklist_details = json_decode($request -> checklist_details, true);
         $property_details = json_decode($request -> property_details, true);
         $required_details = json_decode($request -> required_details, true);
         $sellers = json_decode($request -> sellers, true);
         $buyers = json_decode($request -> buyers, true) ?? null;
 
-        dd($checklist_details, $property_details, $required_details, $sellers, $buyers);
+        $transaction = new Transactions();
+        $transaction -> transaction_type = $transaction_type;
 
-        $validator = $request -> validate([
-            'ListPrice' => 'required_if:transaction_type,==,listing',
-            'ContractPrice' => 'required_if:transaction_type,==,contract',
-        ],
-        [
-            'required' => 'Required Field',
-            'required_if' => 'Required Field',
-        ]);
+        if($transaction_type == 'listing') {
+
+            $validator = $request -> validate([
+                'ListPrice' => 'required',
+                'MLSListDate' => 'required',
+                'ExpirationDate' => 'required'
+            ],
+            [
+                'required' => 'Required Field',
+            ]);
+
+            $Listing_ID = 1;
+            if(Transactions::max('Listing_ID')) {
+                $Listing_ID = Transactions::max('Listing_ID') + 1;
+            }
+            $transaction -> Listing_ID = $Listing_ID;
 
 
-        // need to convert all date fields from m/d/y to y/m/d
+        }
+
+        if($transaction_type == 'contract') {
+
+            $validator = $request -> validate([
+                'ContractPrice' => 'required_if:for_sale,==,yes',
+                'LeaseAmount' => 'required_if:for_sale,==,no',
+                'ListAgentFirstName' => 'required',
+                'ListAgentLastName' => 'required',
+                'ListOfficeName' => 'required',
+                'ListAgentPreferredPhone'=> 'required',
+                'ListAgentMlsId' => 'required',
+                'ContractDate' => 'required_if:for_sale,==,yes',
+                'CloseDate' => 'required',
+                'UsingHeritageTitle' => 'required_if:for_sale,==,yes',
+            ],
+            [
+                'required' => 'Required Field',
+                'required_if' => 'Required Field',
+            ]);
+
+            $Contract_ID = 1;
+            if(Transactions::max('Contract_ID')) {
+                $Contract_ID = Transactions::max('Contract_ID') + 1;
+            }
+            $transaction -> Contract_ID = $Contract_ID;
+
+        }
+
+        if($transaction_type == 'referral') {
+
+            $validator = $request -> validate([
+                'ReferralClientFirstName' => 'required',
+                'ReferralClientLastName' => 'required',
+                'ReferralClientPhone' => 'required',
+                'ReferralClientStreet'=> 'required',
+                'ReferralClientZip' => 'required',
+                'ReferralClientCity' => 'required',
+                'ReferralClientState' => 'required',
+                'ReferralReceivingAgentFirstName' => 'required',
+                'ReferralReceivingAgentLastName' => 'required',
+                'ReferralReceivingAgentOfficeName' => 'required',
+                'ReferralReceivingAgentOfficeStreet' => 'required',
+                'ReferralReceivingAgentOfficeCity' => 'required',
+                'ReferralReceivingAgentOfficeState' => 'required',
+                'ReferralSettlementDate' => 'required',
+                'ReferralCommissionAmount' => 'required',
+                'ReferralReferralPercentage' => 'required',
+                'ReferralAgentCommission' => 'required',
+            ],
+            [
+                'required' => 'Required Field',
+            ]);
+
+            $Referral_ID = 1;
+            if(Transactions::max('Referral_ID')) {
+                $Referral_ID = Transactions::max('Referral_ID') + 1;
+            }
+            $transaction -> Referral_ID = $Referral_ID;
+
+        }
+
+
+        foreach($property_details as $key => $val) {
+            // convert dates
+            if(preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
+                $val = date('Y-m-d', strtotime($val));
+            } else if(preg_match('/\$[0-9]/', $val)) {
+                // convert money
+                $val = preg_replace('/[\$,]+/', '', $val);
+            }
+            $transaction -> $key = $val;
+        }
+        foreach($required_details as $key => $val) {
+            if(preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
+                $val = date('Y-m-d', strtotime($val));
+            } else if(preg_match('/\$[0-9]/', $val)) {
+                $val = preg_replace('/[\$,]+/', '', $val);
+            }
+            if($key == 'ListPrice' || $key == 'ContractPrice' || $key == 'LeaseAmount') {
+                $val = $val == '' ? '0' : $val;
+            }
+            $transaction -> $key = $val;
+        }
+
+        foreach($checklist_details as $key => $val) {
+            $transaction -> $key = $val;
+        }
+
+        $transaction -> save();
+
+
+        // add members
+
+        // DO NOT add members to transaction
+        // remove buyer and seller, list agent and buyer agent fields from transaction table
+
+        // add Location_ID
+        // add checklist
+
+        // if listing
+        // update listing office details to ours
+        // update listing agent details
+
+        // if a contract
+        // update contract office details to ours
+        // update buyer agent details
+        // add commission and add Commission_ID to transaction
+        // add earnest and add Earnest_ID to transaction
+
+        // create property email
+
+        // set Status
 
     }
 
@@ -385,8 +510,6 @@ class TransactionsController extends Controller
                     $details = [
                         'County' => $tax_county ?? null,
                         'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
-                        'Longitude' => $property['mdp_longitude_mdp_field_digxcord_converted_to_wgs84'] ?? null,
-                        'Latitude' => $property['mdp_latitude_mdp_field_digycord_converted_to_wgs84'] ?? null,
                         'StreetNumber' => $property['premise_address_number_mdp_field_premsnum_sdat_field_20'] ?? null,
                         'StreetName' => $property['premise_address_name_mdp_field_premsnam_sdat_field_23'] ?? null,
                         'StreetSuffix' => $property['premise_address_type_mdp_field_premstyp_sdat_field_24'] ?? null,
@@ -409,10 +532,7 @@ class TransactionsController extends Controller
                         'Map' => $property['map_mdp_field_map_sdat_field_42'] ?? null,
                         'Grid' => $property['grid_mdp_field_grid_sdat_field_43'] ?? null,
                         'Parcel' => $property['parcel_mdp_field_parcel_sdat_field_44'] ?? null,
-                        'ZoningCode' => $property['zoning_code_mdp_field_zoning_sdat_field_45'] ?? null,
                         'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
-                        'UtilitiesWater' => $property['property_factors_utilities_water_mdp_field_pfuw_sdat_field_63'] ?? null,
-                        'UtilitiesSewage' => $property['property_factors_utilities_sewer_mdp_field_pfus_sdat_field_64'] ?? null,
 
                     ];
 
@@ -512,17 +632,25 @@ class TransactionsController extends Controller
 
     public function get_property_types(Request $request) {
 
-        return ChecklistPropertyTypes::orderBy('display_order')
-        -> get()
-        -> pluck('property_type');
+        return ChecklistPropertyTypes::select(['id', 'property_type'])
+        -> orderBy('display_order')
+        -> get();
 
     }
 
     public function get_property_sub_types(Request $request) {
 
-        return ChecklistPropertySubTypes::orderBy('display_order')
-        -> get()
-        -> pluck('property_sub_type');
+        return ChecklistPropertySubTypes::select(['id', 'property_sub_type'])
+        -> orderBy('display_order')
+        -> get();
+
+    }
+
+    public function get_locations(Request $request) {
+
+        return ChecklistLocations::select(['id', 'location', 'state'])
+        -> orderBy('display_order')
+        -> get();
 
     }
 

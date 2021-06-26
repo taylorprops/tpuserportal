@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
+use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
 use App\Http\Controllers\DocManagement\Transactions\TransactionsController;
 
@@ -41,6 +42,13 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/doc_management/admin/forms/save_fields', [FormsFieldsController::class, 'save_fields']) -> middleware(['admin']);
 
 
+    // %%%% Checklists
+    Route::get('/doc_management/admin/checklists/checklists', [ChecklistsController::class, 'checklists']) -> middleware(['admin']);
+    Route::get('/doc_management/admin/checklists/get_checklist_locations', [ChecklistsController::class, 'get_checklist_locations']) -> middleware(['admin']);
+    Route::get('/doc_management/admin/checklists/get_checklists', [ChecklistsController::class, 'get_checklists']) -> middleware(['admin']);
+    Route::post('/doc_management/admin/checklists/save_checklist', [ChecklistsController::class, 'save_checklist']) -> middleware(['admin']);
+    Route::post('/doc_management/admin/checklists/delete_checklist', [ChecklistsController::class, 'delete_checklist']) -> middleware(['admin']);
+
 
 
     // %%%% Employees
@@ -58,6 +66,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions/get_location_details', [TransactionsController::class, 'get_location_details']) -> middleware(['agent']);
     Route::post('/transactions/validate_form_manual_entry', [TransactionsController::class, 'validate_form_manual_entry']) -> middleware(['agent']);
     Route::post('/transactions/validate_form_checklist_details', [TransactionsController::class, 'validate_form_checklist_details']) -> middleware(['agent']);
+    Route::get('/transactions/get_locations', [TransactionsController::class, 'get_locations']) -> middleware(['agent']);
     Route::get('/transactions/get_property_types', [TransactionsController::class, 'get_property_types']) -> middleware(['agent']);
     Route::get('/transactions/get_property_sub_types', [TransactionsController::class, 'get_property_sub_types']) -> middleware(['agent']);
     Route::get('/transactions/get_contacts', [TransactionsController::class, 'get_contacts']) -> middleware(['agent']);

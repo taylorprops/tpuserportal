@@ -50,7 +50,7 @@ $level3 = [
     ],
     [
         'title' => 'Checklists',
-        'link' => '/doc_management/checklists',
+        'link' => '/doc_management/admin/checklists/checklists',
         'icon' => 'fal fa-tasks mr-2'
     ],
     [

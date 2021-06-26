@@ -174,7 +174,7 @@ if (document.URL.match(/forms$/)) {
 
                 if(forms.length == 0) {
 
-                    results.innerHTML = '<div class="p-4 text-gray-600 text-lg text-center">No Results</div>';
+                    results.innerHTML = '<div class="p-4 text-lg text-center">No Results</div>';
 
                 } else {
 

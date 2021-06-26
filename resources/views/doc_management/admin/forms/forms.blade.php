@@ -16,9 +16,9 @@
             show_form_names: true
         }">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
-            <div class="bg-white shadow-sm sm:rounded-lg p-6 h-screen-90">
+            <div class="h-screen-90">
 
                 <div class="flex justify-between mb-2">
 
@@ -45,7 +45,7 @@
                         :buttonSize="'md'"
                         type="button"
                         x-on:click="show_modal = true; clear_form()">
-                        <i class="fal fa-check mr-2"></i> Add Form
+                        <i class="fal fa-plus mr-2"></i> Add Form
                     </x-elements.button>
 
                 </div>
@@ -64,7 +64,7 @@
                                 $count = $form_group -> forms -> count();
                                 @endphp
 
-                                <li class="form-group-{{ $form_group_id }} border border-b p-3 cursor-pointer hover:bg-primary hover:text-white @if($loop -> first) bg-primary-dark text-white @endif"
+                                <li class="form-group-{{ $form_group_id }} border border-b p-3 cursor-pointer hover:bg-primary-light hover:text-white @if($loop -> first) bg-primary-dark text-white @endif"
                                     data-form-group-id="{{ $form_group_id }}"
                                     :class="{ 'bg-primary-dark text-white': active_tab === '{{ $form_group_id }}' }"
                                     @click.prevent="active_tab = '{{ $form_group_id }}';
@@ -105,6 +105,7 @@
         <x-modals.modal
             :modalWidth="'w-9/12'"
             :modalTitle="'Add Form'"
+            :modalId="'show_modal'"
             x-show="show_modal">
 
             <form id="upload_form" enctype="multipart/form-data">
@@ -115,7 +116,7 @@
 
                         <div class="my-3">
 
-                            <div id="current_form" class="mb-2 text-gray-600"></div>
+                            <div id="current_form" class="mb-2"></div>
 
                             <x-elements.input-file
                             :size="'md'"
@@ -304,7 +305,7 @@
     </div>
 
     <div id="search_results_li_template" class="hidden">
-        <li class="border-b p-2 text-gray-600 cursor-pointer hover:bg-gray-100"
+        <li class="border-b p-2 cursor-pointer hover:bg-gray-100"
         x-on:click="show_result('%%form_group_id%%', '%%form_id%%')">
             <div class="grid grid-cols-6">
                 <div class="col-span-4 mr-3">%%form_name_display%%</div>

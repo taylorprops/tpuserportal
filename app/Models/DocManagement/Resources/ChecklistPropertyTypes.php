@@ -12,4 +12,8 @@ class ChecklistPropertyTypes extends Model
     protected $connection = 'mysql';
     protected $table = 'docs_resources_checklist_property_types';
 
+    public function checklists() {
+        return $this -> hasMany(\App\Models\DocManagement\Admin\Checklists\AdminChecklists::class, 'checklist_property_type_id');
+    }
+
 }

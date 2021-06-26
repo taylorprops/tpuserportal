@@ -25,7 +25,7 @@ if($attributes['id']) {
 @endphp
 
 <label class="text-gray-500 block italic {{ $label_text_size }}">
-    <span class="ml-2 label-text">{{ $label }}</span>
+    <span class="ml-2">{{ $label }}</span>
     <input id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"
     {!! $attributes -> merge(['class' => $classes]) !!} />

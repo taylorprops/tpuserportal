@@ -116,7 +116,7 @@
                             $image_location = $page -> image_location;
                             @endphp
 
-                            <div class="flex justify-between w-full bg-gray-300 p-2 text-sm text-gray-600 page-header-{{ $page_number }}">
+                            <div class="flex justify-between w-full bg-gray-300 p-2 text-sm page-header-{{ $page_number }}">
                                 <div>{{ $form_name }}</div>
                                 <div>{{ $page_number }}</div>
                             </div>
@@ -287,7 +287,7 @@
 
                             <div class="my-3" x-show="field_category === 'number'"><hr></div>
 
-                            <div class="text-gray-600 font-sm my-2">Shared Field Name</div>
+                            <div class="font-sm my-2">Shared Field Name</div>
 
                             <div class="grid grid-cols-6 mb-3">
 
@@ -376,7 +376,7 @@
                                                                             data-common-field-group-id="{{ $field -> group_id }}"
                                                                             data-common-field-sub-group-id="{{ $field -> sub_group_id }}"
                                                                             @click.stop="field_options = false; select_common_field($event);">
-                                                                                {!! str_replace($sub_group -> sub_group_name, '<span class="text-xs text-gray-600">'.$sub_group -> sub_group_name.' - </span>', $field -> field_name) !!}
+                                                                                {!! str_replace($sub_group -> sub_group_name, '<span class="text-xs">'.$sub_group -> sub_group_name.' - </span>', $field -> field_name) !!}
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>

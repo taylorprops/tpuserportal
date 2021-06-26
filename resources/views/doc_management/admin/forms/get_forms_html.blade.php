@@ -17,8 +17,8 @@
     $fields_count = count($form -> fields);
     @endphp
 
-        <li class="form-{{ $form_id }} text-gray-600 p-3 w-full"
-        :class="{ 'border-yellow-600 border-4 rounded' : active_form === '{{ $form_id }}', 'border-b' : active_form !== '{{ $form_id }}' }">
+        <li class="form-{{ $form_id }} p-3 w-full"
+        :class="{ 'bg-secondary-lightest rounded' : active_form === '{{ $form_id }}', 'border-b' : active_form !== '{{ $form_id }}' }">
 
             <div class="flex justify-between items-center">
                 <div>

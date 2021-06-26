@@ -4,12 +4,6 @@ if(document.URL.match(/transactions\/create/)) {
 
         document.getElementById('address_search_input').focus();
 
-        sessionStorage.clear();
-        sessionStorage.search_details = '';
-
-        // setInterval(function() {
-        //     console.log(sessionStorage.property_details);
-        // }, 2000);
 
     });
 
@@ -41,6 +35,9 @@ if(document.URL.match(/transactions\/create/)) {
             import_contact_member_id: 1,
             show_agent_search_results: false,
             using_heritage_title: false,
+            search_details: [],
+            property_details: [],
+            checklist_details: [],
             address_search() {
 
                 let scope = this;
@@ -55,8 +52,7 @@ if(document.URL.match(/transactions\/create/)) {
                     let street_number = street_name = city = county = state = zip = '', county = '';
 
 
-                    sessionStorage.clear();
-                    // sessionStorage.search_count = 0;
+
 
                     address_details.address_components.forEach(function (address) {
 
@@ -77,7 +73,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                     });
 
-                    let search_details = {
+                    scope.search_details = {
                         'street_number': street_number,
                         'street_name': street_name,
                         'city': city,
@@ -85,7 +81,7 @@ if(document.URL.match(/transactions\/create/)) {
                         'zip': zip,
                         'county': county
                     };
-                    let property_details = {
+                    scope.property_details = {
                         'prop_street_number': street_number,
                         'prop_street_name': street_name,
                         'prop_city': city,
@@ -94,8 +90,6 @@ if(document.URL.match(/transactions\/create/)) {
                         'prop_county': county
                     };
 
-                    sessionStorage.setItem('search_details', JSON.stringify(search_details));
-                    sessionStorage.setItem('property_details', JSON.stringify(property_details));
 
                     document.getElementById('street_number').value = street_number;
                     document.getElementById('street_name').value = street_name;
@@ -143,19 +137,16 @@ if(document.URL.match(/transactions\/create/)) {
                         return false;
                     }
 
-                    let search_details = JSON.parse(sessionStorage.search_details);
-                    street_number = search_details.street_number;
-                    street_name = search_details.street_name;
-                    city = search_details.city;
-                    state = search_details.state;
-                    zip = search_details.zip;
-                    county = search_details.county;
+                    street_number = scope.search_details.street_number;
+                    street_name = scope.search_details.street_name;
+                    city = scope.search_details.city;
+                    state = scope.search_details.state;
+                    zip = scope.search_details.zip;
+                    county = scope.search_details.county;
                     unit_number = document.getElementById('address_search_unit').value;
 
                     // set unit number - not always added until "Continue" clicked
-                    search_details.unit_number = unit_number;
-
-                    sessionStorage.search_details = JSON.stringify(search_details);
+                    scope.search_details.unit_number = unit_number;
 
                     document.getElementById('street_number').value = street_number;
                     document.getElementById('street_name').value = street_name;
@@ -169,11 +160,11 @@ if(document.URL.match(/transactions\/create/)) {
                         document.getElementById('county').value = county;
                     }, 100);
 
-                    this.address_header(street_number, street_name, unit_number, city, state, zip);
+                    scope.address_header(street_number, street_name, unit_number, city, state, zip);
 
                     let active_states = document.getElementById('global_company_active_states').value.split(',');
                     if(active_states.includes(state) == false) {
-                        this.show_license_state_error = true;
+                        scope.show_license_state_error = true;
                         return false;
                     }
 
@@ -187,8 +178,8 @@ if(document.URL.match(/transactions\/create/)) {
 
                 }
 
-                if(this.transaction_type == 'referral') {
-                    this.active_step = 3;
+                if(scope.transaction_type == 'referral') {
+                    scope.active_step = 3;
                     return false;
 
                 }
@@ -200,8 +191,8 @@ if(document.URL.match(/transactions\/create/)) {
                 axios.get('/transactions/get_property_info', {
                     params: {
                         ListingId: ListingId,
-                        transaction_type: this.transaction_type,
-                        search_type: this.search_type,
+                        transaction_type: scope.transaction_type,
+                        search_type: scope.search_type,
                         street_number: street_number,
                         street_name: street_name,
                         unit: unit_number,
@@ -221,50 +212,49 @@ if(document.URL.match(/transactions\/create/)) {
                         }
                     }
 
-                    let property_details = response.data.property_details;
+                    let details = response.data.property_details;
 
                     ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
 
 
-                    if(property_details) {
+                    if(details) {
                         // show result
 
-                        document.querySelector('#property_address').innerHTML = property_details.FullStreetAddress+'<br>'+property_details.City+', '+property_details.StateOrProvince+' '+property_details.PostalCode;
-                        if(property_details.ListingId) {
-                            document.querySelector('#property_listing_id').innerHTML = property_details.ListingId;
-                            document.querySelector('#property_status').innerHTML = property_details.MlsStatus;
-                            document.querySelector('#property_list_office').innerHTML = property_details.ListOfficeName;
-                            document.querySelector('#property_list_agent').innerHTML = property_details.ListAgentFirstName+' '+property_details.ListAgentLastName;
-                            document.querySelector('#property_list_date').innerHTML = property_details.MLSListDate;
-                            document.querySelector('#property_list_price').innerHTML = '$'+global_format_number(property_details.ListPrice);
-                            document.querySelector('#property_type_display').innerHTML = property_details.PropertyType;
+                        document.querySelector('#property_address').innerHTML = details.FullStreetAddress+'<br>'+details.City+', '+details.StateOrProvince+' '+details.PostalCode;
+                        if(details.ListingId) {
+                            document.querySelector('#property_listing_id').innerHTML = details.ListingId;
+                            document.querySelector('#property_status').innerHTML = details.MlsStatus;
+                            document.querySelector('#property_list_office').innerHTML = details.ListOfficeName;
+                            document.querySelector('#property_list_agent').innerHTML = details.ListAgentFirstName+' '+details.ListAgentLastName;
+                            document.querySelector('#property_list_date').innerHTML = details.MLSListDate;
+                            document.querySelector('#property_list_price').innerHTML = '$'+global_format_number(details.ListPrice);
+                            document.querySelector('#property_type_display').innerHTML = details.PropertyType;
                         }
-                        if(property_details.TaxRecordLink) {
+                        if(details.TaxRecordLink) {
                             scope.tax_records_link = true;
                             scope.property_found_tax_records = true;
-                            document.querySelector('#property_tax_records_link').setAttribute('href', property_details.TaxRecordLink);
+                            document.querySelector('#property_tax_records_link').setAttribute('href', details.TaxRecordLink);
                         }
-                        // let owners = property_details.Owner1;
-                        // if(property_details.Owner2 != '') {
-                        //     owners += ', '+property_details.Owner2;
+                        // let owners = details.Owner1;
+                        // if(details.Owner2 != '') {
+                        //     owners += ', '+details.Owner2;
                         // }
                         // document.querySelector('#property_owners').innerHTML = owners;
 
-                        //  add to sessionStorage
-                        sessionStorage.property_details = JSON.stringify(property_details);
+                        scope.property_details = details;
 
                         scope.final_result = true;
 
                         scope.property_found_mls = false;
-                        if(property_details.ListingId) {
+                        if(details.ListingId) {
                             scope.property_found_mls = true;
-                            document.querySelector('#property_image').setAttribute('src', property_details.ListPictureURL);
+                            document.querySelector('#property_image').setAttribute('src', details.ListPictureURL);
                             scope.set_checklist_details();
                         }
 
                         // add if mls
                         if(mls_search) {
-                            scope.address_header(property_details.StreetNumber, property_details.StreetName, property_details.UnitNumber, property_details.City, property_details.StateOrProvince, property_details.PostalCode);
+                            scope.address_header(details.StreetNumber, details.StreetName, details.UnitNumber, details.City, details.StateOrProvince, details.PostalCode);
                         }
 
                         setTimeout(function() {
@@ -291,7 +281,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                         }
 
-                        sessionStorage.removeItem('property_details');
+                        scope.property_details = [];
 
                     }
 
@@ -352,8 +342,8 @@ if(document.URL.match(/transactions\/create/)) {
                 let zip = document.getElementById('zip').value;
                 let county = document.getElementById('county').value;
 
-                //  add to sessionStorage
-                let property_details = {
+
+                let details = {
                     'FullStreetAddress': street_number+' '+street_name,
                     'Unit': unit,
                     'City': city,
@@ -368,7 +358,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                 axios.post('/transactions/validate_form_manual_entry', formData)
                 .then(function (response) {
-                    sessionStorage.property_details = JSON.stringify(property_details);
+                    scope.property_details = details;
 
                     // go to step 2
                     scope.active_step = 2;
@@ -392,16 +382,16 @@ if(document.URL.match(/transactions\/create/)) {
             set_checklist_details() {
 
                 let transaction_type = this.transaction_type;
-                let property_details = JSON.parse(sessionStorage.property_details);
-                //console.log(property_details);
 
-                if(property_details.ListingId) {
+                let details = this.property_details;
 
-                    let property_type = property_details.PropertyType;
+                if(details.ListingId) {
+
+                    let property_type = details.PropertyType;
                     let property_type_value = property_type.replace(/\sLease/, '');
                     property_type_value = property_type_value.replace(/\sSale/, '');
                     this.property_type = property_type_value;
-                    let property_sub_type = property_details.SaleType || null;
+                    let property_sub_type = details.SaleType || null;
 
 
                     this.for_sale = property_type.match(/lease/i) ? 'no' : 'yes';
@@ -431,7 +421,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                         // if no results check new construction
                         if(property_sub_type == '') {
-                            if(property_details.NewConstructionYN == 'Y') {
+                            if(details.NewConstructionYN == 'Y') {
                                 property_sub_type = 'New Construction';
                             }
                         }
@@ -440,19 +430,19 @@ if(document.URL.match(/transactions\/create/)) {
 
 
                     let hoa_condo = 'none';
-                    let condo = property_details.CondoYN || null;
+                    let condo = details.CondoYN || null;
                     if(condo && condo == 'Y') {
                         hoa_condo = 'condo';
                     }
-                    let hoa = property_details.AssociationYN ?? null;
+                    let hoa = details.AssociationYN ?? null;
                     if(hoa && hoa == 'Y') {
-                        if(property_details.AssociationFee > 0) {
+                        if(details.AssociationFee > 0) {
                             hoa_condo = 'hoa';
                         }
                     }
 
-                    let year_built = property_details.YearBuilt ?? null;
-                    let list_price = property_details.ListPrice ?? null;
+                    let year_built = details.YearBuilt ?? null;
+                    let list_price = details.ListPrice ?? null;
 
                     let for_sale = this.for_sale == 'yes' ? 'sale' : 'rental';
                     document.getElementById('SaleRent').value = for_sale;
@@ -487,7 +477,7 @@ if(document.URL.match(/transactions\/create/)) {
                 axios.post('/transactions/validate_form_checklist_details', formData)
                 .then(function (response) {
 
-                    let checklist_details = {
+                    scope.checklist_details = {
                         'Agent_ID': document.getElementById('Agent_ID').value,
                         'SaleRent': document.getElementById('SaleRent').value,
                         'PropertyType': document.getElementById('PropertyType').value,
@@ -496,8 +486,6 @@ if(document.URL.match(/transactions\/create/)) {
                         'HoaCondoFees': document.getElementById('HoaCondoFees').value
                     };
 
-                    sessionStorage.setItem('checklist_details', JSON.stringify(checklist_details));
-                    //console.log(sessionStorage.checklist_details);
                     // go to step 2
                     scope.active_step = 3;
                     scope.steps_complete = 2;
@@ -549,7 +537,7 @@ if(document.URL.match(/transactions\/create/)) {
                 this.show_street_error = false;
                 this.tax_records_link = false;
                 this.address_not_found = false;
-                sessionStorage.removeItem('property_details');
+                this.property_details = [];
             },
             address_header(street_number, street_name, unit_number, city, state, zip) {
 
@@ -667,6 +655,8 @@ if(document.URL.match(/transactions\/create/)) {
             },
             save_transaction(ele, transaction_type) {
 
+                remove_form_errors();
+
                 let type = ucwords(transaction_type);
                 show_loading_button(ele, 'Saving '+type+'...');
 
@@ -688,6 +678,9 @@ if(document.URL.match(/transactions\/create/)) {
 
                             member.querySelectorAll('.required').forEach(function(required) {
                                 if(required.value == '') {
+                                    let error_message = required.closest('label').querySelector('.error-message');
+                                    error_message.innerHTML = 'Required';
+                                    required.scrollIntoView();
                                     cont = false;
                                 }
                             });
@@ -728,7 +721,7 @@ if(document.URL.match(/transactions\/create/)) {
 
 
                 if(sellers.length == 0 && transaction_type != 'referral') {
-                    toastr.error('You must enter at least one Seller');
+                    toastr.error('You must enter at least one Owner');
                     document.querySelector('.seller-header').scrollIntoView();
                     return false;
                 }
@@ -749,8 +742,9 @@ if(document.URL.match(/transactions\/create/)) {
                 });
 
                 formData.append('transaction_type', this.transaction_type);
-                formData.append('checklist_details', sessionStorage.checklist_details);
-                formData.append('property_details', sessionStorage.property_details);
+                formData.append('for_sale', this.for_sale);
+                formData.append('checklist_details', JSON.stringify(this.checklist_details));
+                formData.append('property_details', JSON.stringify(this.property_details));
                 formData.append('required_details', JSON.stringify(required_details));
                 formData.append('sellers', JSON.stringify(sellers));
                 formData.append('buyers', JSON.stringify(buyers));
@@ -817,14 +811,14 @@ if(document.URL.match(/transactions\/create/)) {
 
                     document.getElementById('ListAgentFirstName').value = ele.getAttribute('data-MemberFirstName');
                     document.getElementById('ListAgentLastName').value = ele.getAttribute('data-MemberLastName');
-                    document.getElementById('ListAgentOfficeName').value = ele.getAttribute('data-OfficeName');
+                    document.getElementById('ListOfficeName').value = ele.getAttribute('data-OfficeName');
                     document.getElementById('ListAgentMlsId').value = ele.getAttribute('data-MemberMlsId');
                     document.getElementById('ListAgentPreferredPhone').value = ele.getAttribute('data-MemberPreferredPhone');
                     document.getElementById('ListAgentEmail').value = ele.getAttribute('data-MemberEmail');
-                    document.getElementById('ListAgentOfficeStreet').value = ele.getAttribute('data-OfficeAddress1');
-                    document.getElementById('ListAgentOfficeCity').value = ele.getAttribute('data-OfficeCity');
-                    document.getElementById('ListAgentOfficeState').value = ele.getAttribute('data-OfficeStateOrProvince');
-                    document.getElementById('ListAgentOfficeZip').value = ele.getAttribute('data-OfficePostalCode');
+                    document.getElementById('ListOfficeFullStreetAddress').value = ele.getAttribute('data-OfficeAddress1');
+                    document.getElementById('ListOfficeCity').value = ele.getAttribute('data-OfficeCity');
+                    document.getElementById('ListOfficeStateOrProvince').value = ele.getAttribute('data-OfficeStateOrProvince');
+                    document.getElementById('ListOfficePostalCode').value = ele.getAttribute('data-OfficePostalCode');
 
                 } else if(this.transaction_type == 'referral') {
 
@@ -874,4 +868,3 @@ if(document.URL.match(/transactions\/create/)) {
 }
 
 
-//sessionStorage.AgentID = document.getElementById('Agent_ID').value;
