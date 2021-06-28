@@ -24,7 +24,7 @@
                 <input class="main-search-input appearance-none block w-full bg-blue-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-blue-200" type="text" placeholder="Search">
             </div>
 
-            <nav class="mt-5 px-2 space-y-1">
+            <nav class="navigation mt-5 px-2 space-y-1">
 
                 @include('layouts/menu/menu_admin')
 

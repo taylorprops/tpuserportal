@@ -32,8 +32,8 @@
                             x-on:keyup="search_forms($event.target);"/>
 
                         <div class="absolute top-10 left-0 bg-white rounded border border-gray-300 shadow-md p-2 w-screen sm:w-screen-70 md:w-screen-50 z-10"
-                        x-show.transition="show_search_results"
-                        x-on:click.away="show_search_results = false; document.querySelector('#search').value = '';">
+                        x-transition="show_search_results"
+                        x-on:click.outside="show_search_results = false; document.querySelector('#search').value = '';">
                             <ul id="search_results"></ul>
                         </div>
 

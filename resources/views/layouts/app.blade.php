@@ -34,6 +34,8 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('global.google_api_key') }}&libraries=places&outputFormat=json"></script>
 
+        <script defer src="https://unpkg.com/alpinejs@3.1.1/dist/cdn.min.js"></script>
+
 
     </head>
 
@@ -45,7 +47,7 @@
             </span>
         </div>
 
-        <div x-data="{ main_nav_open: $screen('xl') }" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden">
+        <div x-data="nav()" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden">
 
             {{-- @include('layouts.navigation') --}}
             @include('layouts.menu.menu')

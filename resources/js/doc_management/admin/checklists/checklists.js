@@ -8,7 +8,8 @@ if (document.URL.match(/checklists$/)) {
 
     });
 
-    window.checklists = function() {
+
+    window.checklists = function(location_id) {
 
         return {
 
@@ -27,6 +28,18 @@ if (document.URL.match(/checklists$/)) {
             active_form_group: '',
             searching_form_groups: false,
             active_edit_checklist_id: '',
+
+            init() {
+                this.get_checklist_locations();
+                this.location_id = location_id;
+                let scope = this;
+                fetch('/transactions/get_locations').then(function(data) { scope.locations = data; });
+                fetch('/transactions/get_form_groups').then(data => scope.form_groups = data);
+                fetch('/transactions/get_property_types').then(data => scope.property_types = data);
+                fetch('/transactions/get_property_sub_types').then(data => scope.property_sub_types = data);
+
+            },
+
             get_checklist_locations() {
                 axios.get('/doc_management/admin/checklists/get_checklist_locations')
                 .then(function (response) {

@@ -70,7 +70,7 @@
             <div class="py-6 md:py-8">
 
                 {{-- STEP 1 --}}
-                <div x-show.transition="active_step === 1">
+                <div x-transition="active_step === 1">
 
                     {{-- Nav - Mobile --}}
                     <div class="sm:hidden">
@@ -132,7 +132,7 @@
 
                         {{-- Address Search Div --}}
                         <div class="md:w-2/3 mx-auto"
-                        x-show.transition="search_type === 'address'">
+                        x-transition="search_type === 'address'">
 
                             <div class="grid grid-cols-1 md:grid-cols-7">
 
@@ -172,7 +172,7 @@
 
                         {{-- MLS Search Div --}}
                         <div class="md:max-w-xs mx-auto"
-                        x-show.transition="search_type === 'mls'">
+                        x-transition="search_type === 'mls'">
 
                             <div>
                                 <x-elements.input
@@ -197,7 +197,7 @@
 
                         {{-- Manual Entry Div --}}
                         <div
-                        x-show.transition="search_type === 'manually'">
+                        x-transition="search_type === 'manually'">
 
                             <form id="manual_entry_form">
 
@@ -308,7 +308,7 @@
                         {{-- Errors --}}
 
                         <div class="mt-8"
-                        x-show.transition="show_no_property_error">
+                        x-transition="show_no_property_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>
@@ -324,7 +324,7 @@
                         </div>
 
                         <div class="mt-8"
-                        x-show.transition="show_street_error">
+                        x-transition="show_street_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>
@@ -340,7 +340,7 @@
                         </div>
 
                         <div class="mt-8"
-                        x-show.transition="show_license_state_error">
+                        x-transition="show_license_state_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>You can only add properties from states the company is licesned in.</p>
@@ -352,7 +352,7 @@
                         {{-- Final Result --}}
                         <div class="border border-secondary mt-12 rounded w-2/3 mx-auto"
                         id="final_results"
-                        x-show.transition.in="final_result">
+                        x-transition="final_result">
 
                             <div class="bg-secondary text-white px-4 py-2"><i class="fal fa-check fa-lg mr-3"></i> Property Found</div>
 
@@ -360,14 +360,14 @@
 
                                 <div class="col-span-1">
                                     <img src="" id="property_image" class="max-h-20 rounded-lg shadow"
-                                    x-show.transition="property_found_mls">
-                                    <i class="fad fa-home-alt fa-3x text-gray-400" id="no_property_image" x-show.transition="!property_found_mls"></i>
+                                    x-transition="property_found_mls">
+                                    <i class="fad fa-home-alt fa-3x text-gray-400" id="no_property_image" x-transition="!property_found_mls"></i>
                                 </div>
                                 <div class="col-span-3 flex items-center">
                                     <div>
                                         <div id="property_address"></div>
                                         <div class="flex justify-start items-center"
-                                        x-show.transition="property_found_mls">
+                                        x-transition="property_found_mls">
                                             <div id="property_listing_id" class="text-gray-700"></div>
                                             <div class="mx-3"> - </div>
                                             <div id="property_status" class="text-lg font-semibold text-secondary"></div>
@@ -382,7 +382,7 @@
                             <div class="max-w-sm p-3 mx-auto">
 
                                 <div class=" text-gray-700"
-                                x-show.transition="property_found_mls">
+                                x-transition="property_found_mls">
                                     <div class="mb-2">
                                         Listing Office: <span id="property_list_office"></span>
                                     </div>
@@ -399,7 +399,7 @@
                                         Property Type: <span id="property_type_display"></span>
                                     </div>
                                 </div>
-                                <div x-show.transition="property_found_tax_records">
+                                <div x-transition="property_found_tax_records">
                                     <div class="mb-2"
                                     x-show="tax_records_link">
                                         Tax Records: <a href="" id="property_tax_records_link" target="_blank" class="text-primary">View Tax Records</a>
@@ -438,7 +438,7 @@
                 </div>
 
                 {{-- STEP 2 --}}
-                <div x-show.transition="active_step === 2">
+                <div x-transition="active_step === 2">
 
                     <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
 
@@ -564,7 +564,7 @@
                 </div>
 
                 {{-- STEP 3 --}}
-                <div x-show.transition="active_step === 3">
+                <div x-transition="active_step === 3">
 
                     <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
 
@@ -607,7 +607,7 @@
                                             </div>
 
                                             <div class="my-3"
-                                            x-show.transition="seller_is_trust">
+                                            x-transition="seller_is_trust">
                                                 <x-elements.input
                                                 class="member-entity-name"
                                                 data-label="Trust, Company or other Entity Name"
@@ -798,7 +798,7 @@
                                         </div>
 
                                         <div class="my-3"
-                                        x-show.transition="buyer_is_trust">
+                                        x-transition="buyer_is_trust">
                                             <x-elements.input
                                             class="contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
@@ -920,7 +920,7 @@
                                         </div>
 
                                         <div class="my-3"
-                                        x-show.transition="seller_is_trust">
+                                        x-transition="seller_is_trust">
                                             <x-elements.input
                                             class="contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
@@ -981,7 +981,7 @@
                                 <div class="relative">
                                     <div class="border bg-white p-2 absolute top-1 z-50"
                                     x-show="show_agent_search_results"
-                                    @click.away="show_agent_search_results = false">
+                                    @click.outside="show_agent_search_results = false">
                                         <ul id="agent_search_results" class="max-h-300-px overflow-auto"></ul>
                                     </div>
                                 </div>
@@ -1310,7 +1310,7 @@
                                     <div class="relative">
                                         <div class="border bg-white p-2 absolute top-1 z-50"
                                         x-show="show_agent_search_results"
-                                        @click.away="show_agent_search_results = false">
+                                        @click.outside="show_agent_search_results = false">
                                             <ul id="agent_search_results" class="max-h-300-px overflow-auto"></ul>
                                         </div>
                                     </div>

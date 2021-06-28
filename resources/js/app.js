@@ -1,6 +1,5 @@
 require('./bootstrap');
-require('alpine-magic-helpers');
-require('alpinejs');
+//require('alpinejs');
 
 
 //import tippy from 'tippy.js';

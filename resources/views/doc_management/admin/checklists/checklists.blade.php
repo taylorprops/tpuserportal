@@ -4,14 +4,9 @@
         <i class="fad fa-tasks mr-3"></i> Checklists
     </x-slot>
 
+    @php $location_id = $checklist_locations -> first() -> id; @endphp
     <div class="page-container"
-    x-data="checklists()"
-    x-init="get_checklist_locations();
-    location_id = '{{ $checklist_locations -> first() -> id }}';
-    $fetch('/transactions/get_locations').then(data => locations = data);
-    $fetch('/transactions/get_form_groups').then(data => form_groups = data);
-    $fetch('/transactions/get_property_types').then(data => property_types = data);
-    $fetch('/transactions/get_property_sub_types').then(data => property_sub_types = data);">
+    x-data="checklists('{{ $location_id }}')">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
@@ -274,7 +269,8 @@
                 </div>
 
                 <div class="mb-5"
-                x-show.transition="show_property_sub_type">
+                x-show="show_property_sub_type"
+                x-transition>
                     <x-elements.select
                     id="property_sub_type_id"
                     name="property_sub_type_id"
@@ -334,46 +330,49 @@
         </x-modals.modal>
 
 
+        <template id="form_template">
+
+            <div class="form px-2 border-b flex justify-between items-center text-sm form-%%name%%"
+            data-form-id="%%form_id%%"
+            data-checklist-id="%%checklist_id%%"
+            data-checklist-group-id="%%checklist_group_id%%">
+
+                <div class="py-2 flex justify-start items-center cursor-pointer">
+                    <div class="pr-5 item-handle"><i class="fal fa-bars"></i></div>
+                    <div>%%form_name%%</div>
+                </div>
+
+                <div class="py-2 flex justify-end items-center">
+
+                    <div class="mr-8">
+
+                        <x-elements.toggle
+                        id="toggle_%%name%%"
+                        :size="'md'"
+                        :label="'Required'"
+                        @onchange=""/>
+
+                    </div>
+
+                    <div>
+                        <x-elements.button
+                            :buttonClass="'danger'"
+                            :buttonSize="'md'"
+                            type="button"
+                            @click.stop="$event.target.closest('.form-%%name%%').remove()">
+                                <i class="fal fa-times"></i>
+                        </x-elements.button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </template>
+
+
     </div>
 
-    <template id="form_template">
 
-        <div class="form px-2 border-b flex justify-between items-center text-sm form-%%name%%"
-        data-form-id="%%form_id%%"
-        data-checklist-id="%%checklist_id%%"
-        data-checklist-group-id="%%checklist_group_id%%">
-
-            <div class="py-2 flex justify-start items-center cursor-pointer">
-                <div class="pr-5 item-handle"><i class="fal fa-bars"></i></div>
-                <div>%%form_name%%</div>
-            </div>
-
-            <div class="py-2 flex justify-end items-center">
-
-                <div class="mr-8">
-
-                    <x-elements.toggle
-                    id="toggle_%%name%%"
-                    :size="'md'"
-                    :label="'Required'"
-                    @onchange=""/>
-
-                </div>
-
-                <div>
-                    <x-elements.button
-                        :buttonClass="'danger'"
-                        :buttonSize="'md'"
-                        type="button"
-                        @click.stop="$event.target.closest('.form-%%name%%').remove()">
-                            <i class="fal fa-times"></i>
-                    </x-elements.button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </template>
 
 </x-app-layout>

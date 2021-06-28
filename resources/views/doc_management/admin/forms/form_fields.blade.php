@@ -184,7 +184,7 @@
             x-init="$parent.active_field = '%%id%%'; add_type = field_category == 'radio' ? ' Radio' : ' Line';"
             :class="{ 'z-50': $parent.active_field === '%%id%%' }"
             @click.stop="$parent.active_field = '%%id%%'"
-            @click.away="$parent.active_field = ''"
+            @click.outside="$parent.active_field = ''"
             @dblclick.stop.prevent="return false;">
 
                 @php $input_id = time() * rand(); @endphp
@@ -330,7 +330,7 @@
                                             <div x-data="{ field_options: false }"
                                             @mouseover="field_options = true"
                                             @click="field_options = true"
-                                            @mouseover.away="field_options = false">
+                                            @mouseover.outside="field_options = false">
                                                 <x-elements.button
                                                 class=""
                                                 :buttonClass="'primary'"
@@ -340,7 +340,7 @@
                                                 </x-elements.button>
 
                                                 <div class="absolute top-6 left-0 pt-3"
-                                                x-show.transition="field_options">
+                                                x-transition="field_options">
 
                                                     <ul class="w-max text-sm bg-white p-2 relative border rounded shadow">
 
