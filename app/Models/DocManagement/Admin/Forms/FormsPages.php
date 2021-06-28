@@ -11,5 +11,6 @@ class FormsPages extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_forms_pages';
+    protected $guarded = [];
 
 }

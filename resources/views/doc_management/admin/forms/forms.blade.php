@@ -70,7 +70,7 @@
                                     @click.prevent="active_tab = '{{ $form_group_id }}';
                                     document.querySelector('#form_group_id').value = '{{ $form_group_id }}';
                                     document.querySelector('#state').value = '{{ $state }}';
-                                    get_forms('{{ $form_group_id }}')">
+                                    get_forms(`{{ $form_group_id }}`)">
 
                                     <div class="flex justify-between items-center">
 

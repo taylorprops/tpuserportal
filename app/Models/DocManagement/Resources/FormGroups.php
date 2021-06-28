@@ -13,9 +13,10 @@ class FormGroups extends Model
     protected $connection = 'mysql';
     protected $table = 'docs_resources_form_groups';
     public $timestamps = false;
+    protected $guarded = [];
 
     public function forms() {
-        return $this -> hasMany(\App\Models\DocManagement\Admin\Forms\Forms::class, 'form_group_id') -> orderBy('created_at', 'desc');
+        return $this -> hasMany(\App\Models\DocManagement\Admin\Forms\Forms::class, 'form_group_id') -> orderBy('form_name_display', 'asc');
     }
 
 }

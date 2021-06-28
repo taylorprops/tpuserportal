@@ -11,5 +11,6 @@ class CommonFields extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_common_fields';
+    protected $guarded = [];
 
 }

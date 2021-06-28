@@ -11,5 +11,6 @@ class SignerOptions extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_signer_options';
+    protected $guarded = [];
 
 }

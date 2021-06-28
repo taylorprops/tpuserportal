@@ -11,5 +11,6 @@ class BrightListings extends Model
 
     protected $connection = 'mysql';
     protected $table = 'bright_listings';
+    protected $guarded = [];
 
 }

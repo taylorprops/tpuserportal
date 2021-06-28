@@ -11,4 +11,5 @@ class InHouseDocs extends Model
 
     protected $connection = 'mysql';
     protected $table = 'emp_in_house_docs';
+    protected $guarded = [];
 }

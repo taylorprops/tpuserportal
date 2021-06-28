@@ -4,6 +4,8 @@ namespace App\Http\Controllers\DocManagement\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DocManagement\Resources\FormGroups;
+use App\Models\DocManagement\Resources\ChecklistGroups;
 use App\Models\DocManagement\Resources\ChecklistLocations;
 use App\Models\DocManagement\Admin\Checklists\AdminChecklists;
 use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
@@ -14,7 +16,11 @@ class ChecklistsController extends Controller
 
         $checklist_locations = ChecklistLocations::orderBy('display_order') -> get();
 
-        return view('/doc_management/admin/checklists/checklists', compact('checklist_locations'));
+        $form_groups = FormGroups::with(['forms']) -> get();
+
+        $checklist_groups = ChecklistGroups::with(['checklist_items']) -> get();
+
+        return view('/doc_management/admin/checklists/checklists', compact('checklist_locations', 'form_groups', 'checklist_groups'));
 
     }
 
@@ -36,11 +42,11 @@ class ChecklistsController extends Controller
             $location = $location_details -> state;
         }
 
-        $property_types = ChecklistPropertyTypes::with(['checklists.property_type', 'checklists.property_sub_type', 'checklists.items']) -> with(['checklists' => function($query) use ($location_id) {
+        $property_types = ChecklistPropertyTypes::with(['checklists.property_type', 'checklists.property_sub_type', 'checklists.items', 'checklists.location']) -> with(['checklists' => function($query) use ($location_id) {
             $query -> where('checklist_location_id', $location_id) -> where('active', 'yes');
         }])
-        -> orderBy('display_order')
         -> get();
+
 
         return view('/doc_management/admin/checklists/get_checklists_html', compact('property_types', 'location'));
 
@@ -65,7 +71,7 @@ class ChecklistsController extends Controller
             $checklist = AdminChecklists::find($request -> id);
         } else {
             $checklist = new AdminChecklists();
-            $checklist -> checklist_order = 0;
+            $checklist -> checklist_order = 1000;
         }
         $checklist -> checklist_location_id = $request -> location_id;
         $checklist -> checklist_represent = $request -> represent;
@@ -88,4 +94,16 @@ class ChecklistsController extends Controller
             return response() -> json(['status' => 'success']);
         }
     }
+
+    public function update_order(Request $request) {
+
+        foreach(json_decode($request -> checklists, true) as $key => $value) {
+            AdminChecklists::find($value['id'])
+            -> update([
+                'checklist_order' => $value['order']
+            ]);
+        }
+
+    }
+
 }

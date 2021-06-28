@@ -9,6 +9,7 @@
     x-init="get_checklist_locations();
     location_id = '{{ $checklist_locations -> first() -> id }}';
     $fetch('/transactions/get_locations').then(data => locations = data);
+    $fetch('/transactions/get_form_groups').then(data => form_groups = data);
     $fetch('/transactions/get_property_types').then(data => property_types = data);
     $fetch('/transactions/get_property_sub_types').then(data => property_sub_types = data);">
 
@@ -60,6 +61,130 @@
             </div>
 
         </div>
+
+
+        {{-- Modals --}}
+
+        <x-modals.modal
+        :modalWidth="'w-4/5'"
+        :modalTitle="'<span class=\'modal-title\'>Add Checklist Items</span>'"
+        :modalId="'show_add_items_modal'"
+        x-show="show_add_items_modal">
+
+            <div class="grid grid-cols-3">
+
+                <div class="col-span-1 mr-6">
+
+                    <div class="mb-4">
+                        <x-elements.input
+                        placeholder="Search..."
+                        :size="'md'"
+                        @keyup="search_forms($event.currentTarget.value)"/>
+                    </div>
+
+                    <div class="mb-4">
+                        <x-elements.select
+                        data-label="Association"
+                        :size="'md'"
+                        {{-- x-init="active_form_group = form_groups[0].id" --}}
+                        @change="active_form_group = $event.currentTarget.value">
+                            <option value=""></option>
+                            <template x-for="form_group in form_groups" :key="form_group.id">
+                                <option :value="form_group.id" x-text="form_group.group_name"></option>
+                            </template>
+                        </x-elements.select>
+                    </div>
+
+                    <div class="h-screen-65 overflow-auto">
+
+                        @foreach($form_groups as $form_group)
+
+                            @php
+                            $form_group_id = $form_group -> id;
+                            $form_group_name = $form_group -> group_name;
+                            $forms = $form_group -> forms;
+                            @endphp
+
+                            <div class="mr-4" x-show="active_form_group === '{{ $form_group -> id }}' || active_form_group === ''">
+
+                                <div class="p-2 font-semibold bg-gray-100 rounded-t"
+                                x-show="searching_form_groups === false">
+                                    {{ $form_group_name }}
+                                </div>
+
+                                <ul class="mb-6">
+                                    @foreach($forms as $form)
+
+                                        @php
+                                        $form_id = $form -> id;
+                                        $form_name = $form -> form_name_display;
+                                        $checklist_group_id = $form -> checklist_group_id;
+                                        @endphp
+
+                                        <li class="form-name p-2 border-b text-sm text-gray-700 hover:bg-gray-50"
+                                        data-form-name="{{ $form_name }}">
+
+                                            <div class="flex justify-between items-center">
+
+                                                <div>{{ $form_name }}</div>
+
+                                                <x-elements.button
+                                                    :buttonClass="'primary'"
+                                                    :buttonSize="'sm'"
+                                                    type="button"
+                                                    @click="add_checklist_item(`{{ $checklist_group_id }}`, `{{ $form_id }}`, `{{ $form_name }}`)">
+                                                        <i class="fal fa-plus mr-2"></i> Add
+                                                </x-elements.button>
+
+                                            </div>
+
+                                            <div class="text-xs text-gray-400"
+                                            x-show="searching_form_groups === true">
+                                                {{ $form_group_name }}
+                                            </div>
+
+                                        </li>
+
+                                    @endforeach
+                                </ul>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+                <div class="col-span-2">
+
+                    <div class="h-screen-80 overflow-auto">
+
+                        @foreach($checklist_groups as $checklist_group)
+
+                            @php
+                            $items = $checklist_group -> checklist_items;
+                            @endphp
+
+                            <div class="rounded-lg border mb-4">
+
+                                <div class="text-lg bg-gray-100 rounded-t-lg pl-3 py-2">
+                                    {{ $checklist_group -> group_name }}
+                                </div>
+
+                                <div class="checklist-group p-3" data-checklist-group-id="{{ $checklist_group -> id }}"></div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </x-modals.modal>
 
         <x-modals.modal
         :modalWidth="'w-300'"
@@ -211,5 +336,44 @@
 
     </div>
 
+    <template id="form_template">
+
+        <div class="form px-2 border-b flex justify-between items-center text-sm form-%%name%%"
+        data-form-id="%%form_id%%"
+        data-checklist-id="%%checklist_id%%"
+        data-checklist-group-id="%%checklist_group_id%%">
+
+            <div class="py-2 flex justify-start items-center cursor-pointer">
+                <div class="pr-5 item-handle"><i class="fal fa-bars"></i></div>
+                <div>%%form_name%%</div>
+            </div>
+
+            <div class="py-2 flex justify-end items-center">
+
+                <div class="mr-8">
+
+                    <x-elements.toggle
+                    id="toggle_%%name%%"
+                    :size="'md'"
+                    :label="'Required'"
+                    @onchange=""/>
+
+                </div>
+
+                <div>
+                    <x-elements.button
+                        :buttonClass="'danger'"
+                        :buttonSize="'md'"
+                        type="button"
+                        @click.stop="$event.target.closest('.form-%%name%%').remove()">
+                            <i class="fal fa-times"></i>
+                    </x-elements.button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </template>
 
 </x-app-layout>

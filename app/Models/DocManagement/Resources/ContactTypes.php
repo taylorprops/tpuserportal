@@ -11,5 +11,6 @@ class ContactTypes extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_contact_types';
+    protected $guarded = [];
 
 }

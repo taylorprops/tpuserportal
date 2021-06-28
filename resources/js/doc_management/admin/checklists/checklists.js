@@ -4,7 +4,7 @@ if (document.URL.match(/checklists$/)) {
 
     window.addEventListener('load', (event) => {
 
-
+        sortable_items();
 
     });
 
@@ -15,6 +15,7 @@ if (document.URL.match(/checklists$/)) {
             location_id: '',
             active_type: 'listing',
             show_checklist_modal: false,
+            show_add_items_modal: false,
             locations: [],
             property_types: [],
             property_sub_types: [],
@@ -22,6 +23,10 @@ if (document.URL.match(/checklists$/)) {
             for_sale: '',
             checklist_modal_title: '',
             show_confirm_modal: false,
+            form_groups: [],
+            active_form_group: '',
+            searching_form_groups: false,
+            active_edit_checklist_id: '',
             get_checklist_locations() {
                 axios.get('/doc_management/admin/checklists/get_checklist_locations')
                 .then(function (response) {
@@ -40,100 +45,23 @@ if (document.URL.match(/checklists$/)) {
                     },
                 })
                 .then(function (response) {
+
                     document.getElementById('checklist_location_'+scope.location_id).innerHTML = response.data;
+
                     let sortable_div = document.querySelector('.checklist-sortable');
                     let sortable = Sortable.create(sortable_div, {
-                        handle: ".handle",  // Drag handle selector within list items
+                        handle: ".checklist-handle",  // Drag handle selector within list items
                         draggable: ".checklist",  // Specifies which items inside the element should be draggable
-
                         chosenClass: "drag-clone",  // Class name for the chosen item
-                        dragClass: "",  // Class name for the dragging item
 
-                        swapThreshold: 1, // Threshold of the swap zone
+                        onEnd: function (evt) {
 
-                        dragoverBubble: false,
+                            let ele = evt.item;  // dragged HTMLElement
+                            let container = ele.closest('.checklist-sortable');
+                            scope.update_order(container);
 
-                        emptyInsertThreshold: 5, // px, distance mouse must be from empty sortable to insert drag element into it
-
-
-                        setData: function (/** DataTransfer */dataTransfer, /** HTMLElement*/dragEl) {
-                            dataTransfer.setData('Text', dragEl.textContent); // `dataTransfer` object of HTML5 DragEvent
                         },
 
-                        // Element is chosen
-                        onChoose: function (/**Event*/evt) {
-                            evt.oldIndex;  // element index within parent
-                        },
-
-                        // Element is unchosen
-                        onUnchoose: function(/**Event*/evt) {
-                            // same properties as onEnd
-                        },
-
-                        // Element dragging started
-                        onStart: function (/**Event*/evt) {
-                            evt.oldIndex;  // element index within parent
-                        },
-
-                        // Element dragging ended
-                        onEnd: function (/**Event*/evt) {
-                            var itemEl = evt.item;  // dragged HTMLElement
-                            evt.to;    // target list
-                            evt.from;  // previous list
-                            evt.oldIndex;  // element's old index within old parent
-                            evt.newIndex;  // element's new index within new parent
-                            evt.oldDraggableIndex; // element's old index within old parent, only counting draggable elements
-                            evt.newDraggableIndex; // element's new index within new parent, only counting draggable elements
-                            evt.clone // the clone element
-                            evt.pullMode;  // when item is in another sortable: `"clone"` if cloning, `true` if moving
-                        },
-
-                        // Element is dropped into the list from another list
-                        onAdd: function (/**Event*/evt) {
-                            // same properties as onEnd
-                        },
-
-                        // Changed sorting within list
-                        onUpdate: function (/**Event*/evt) {
-                            // same properties as onEnd
-                        },
-
-                        // Called by any change to the list (add / update / remove)
-                        onSort: function (/**Event*/evt) {
-                            // same properties as onEnd
-                        },
-
-                        // Element is removed from the list into another list
-                        onRemove: function (/**Event*/evt) {
-                            // same properties as onEnd
-                        },
-
-                        // Attempt to drag a filtered element
-                        onFilter: function (/**Event*/evt) {
-                            var itemEl = evt.item;  // HTMLElement receiving the `mousedown|tapstart` event.
-                        },
-
-                        // Event when you move an item in the list or between lists
-                        onMove: function (/**Event*/evt, /**Event*/originalEvent) {
-                            // Example: https://jsbin.com/nawahef/edit?js,output
-                            evt.dragged; // dragged HTMLElement
-                            evt.draggedRect; // DOMRect {left, top, right, bottom}
-                            evt.related; // HTMLElement on which have guided
-                            evt.relatedRect; // DOMRect
-                            evt.willInsertAfter; // Boolean that is true if Sortable will insert drag element after target by default
-                            originalEvent.clientY; // mouse position
-                            // return false; — for cancel
-                            // return -1; — insert before target
-                            // return 1; — insert after target
-                            // return true; — keep default insertion point based on the direction
-                            // return void; — keep default insertion point based on the direction
-                        },
-
-
-                        onChange: function(evt) {
-                            evt.newIndex // most likely why this event is used is to get the dragging element's current index
-                            // same properties as onEnd
-                        }
                     });
                 })
                 .catch(function (error) {
@@ -201,7 +129,41 @@ if (document.URL.match(/checklists$/)) {
                     }
                 });
             },
-            add_items(checklist_id) {
+            add_items(checklist_id, property_type, property_sub_type, checklist_type, sale_rent, represent, location) {
+
+                this.active_edit_checklist_id = checklist_id;
+
+                if(property_sub_type != '') {
+                    property_type += ' : '+property_sub_type;
+                }
+                document.querySelector('.modal-title').innerHTML = 'Checklist Items | '+location+' | '+property_type+' | '+ucwords(checklist_type)+' | '+ucwords(sale_rent)+' | Rep: '+ucwords(represent);
+
+                this.show_add_items_modal = true;
+
+            },
+            add_checklist_item(checklist_group_id, form_id, form_name) {
+
+                let checklist_id = this.active_edit_checklist_id;
+                let form_group_container = document.querySelector('.checklist-group[data-checklist-group-id="'+checklist_group_id+'"]');
+                let name = Date.now();
+
+
+
+                let form_html = document.getElementById('form_template').innerHTML;
+                form_html = form_html.replace(/%%name%%/g, name);
+                form_html = form_html.replace(/%%form_name%%/g, form_name);
+                form_html = form_html.replace(/%%form_id%%/g, form_id);
+                form_html = form_html.replace(/%%checklist_id%%/g, checklist_id);
+                form_html = form_html.replace(/%%checklist_group_id%%/g, checklist_group_id);
+
+                form_group_container.innerHTML += form_html;
+
+                sortable_items();
+
+                // let div = document.createElement('div');
+                // div.innerHTML = form_html;
+                // form_group_container.appendChild(div);
+                // unwrap(div);
 
             },
             delete_checklist(checklist_id) {
@@ -231,9 +193,79 @@ if (document.URL.match(/checklists$/)) {
 
                 });
 
+            },
+            update_order(container) {
+
+                let checklists = [];
+                container.querySelectorAll('.checklist').forEach(function(checklist, i) {
+                    let data = {
+                        id: checklist.getAttribute('data-checklist-id'),
+                        order: i
+                    }
+                    checklists.push(data);
+                });
+
+                let formData = new FormData();
+                formData.append('checklists', JSON.stringify(checklists));
+                axios.post('/doc_management/admin/checklists/update_order', formData)
+                .then(function (response) {
+                    toastr.success('Reorder Successful');
+                })
+                .catch(function (error) {
+                    if(error) {
+                        if(error.response.status == 422) {
+                            let errors = error.response.data.errors;
+                            show_form_errors(errors);
+                        }
+                    }
+                });
+
+            },
+            filter_checklists(container) {
+                console.log(container);
+                container.querySelectorAll('.checklist').forEach(function(checklist) {
+                    console.log(checklist);
+                    checklist.classList.toggle('hidden');
+                    checklist.classList.toggle('flex');
+                });
+
+            },
+            search_forms(val) {
+
+                if(val.length > 0) {
+                    let regex = new RegExp(val, 'gi');
+                    document.querySelectorAll('.form-name').forEach(function(form) {
+                        if(form.getAttribute('data-form-name').match(regex)) {
+                            form.classList.remove('hidden');
+                        } else {
+                            form.classList.add('hidden');
+                        }
+                    });
+
+                    this.searching_form_groups = true;
+
+                } else {
+
+                    this.searching_form_groups = false;
+                    document.querySelectorAll('.form-name').forEach(function(form) {
+                        form.classList.remove('hidden');
+                    });
+                }
+
             }
 
         }
+
+    }
+
+    window.sortable_items = function() {
+        document.querySelectorAll('.checklist-group').forEach(function(sortable_div) {
+            let sortable = Sortable.create(sortable_div, {
+                handle: ".item-handle",
+                draggable: ".form",
+                chosenClass: "drag-clone",
+            });
+        });
 
     }
 

@@ -11,5 +11,6 @@ class EsignTemplatesDocumentImages extends Model
 
     protected $connection = 'mysql';
     protected $table = 'esign_templates_document_images';
+    protected $guarded = [];
 
 }

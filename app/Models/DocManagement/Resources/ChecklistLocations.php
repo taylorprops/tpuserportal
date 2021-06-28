@@ -12,5 +12,6 @@ class ChecklistLocations extends Model
     protected $connection = 'mysql';
     protected $table = 'docs_resources_checklist_locations';
     public $timestamps = false;
+    protected $guarded = [];
 
 }

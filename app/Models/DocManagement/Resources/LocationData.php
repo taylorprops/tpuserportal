@@ -11,6 +11,7 @@ class LocationData extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_location_data';
-    protected $guarded = [];
+
+    public $guarded = [];
 
 }

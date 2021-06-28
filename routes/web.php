@@ -48,6 +48,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/doc_management/admin/checklists/get_checklists', [ChecklistsController::class, 'get_checklists']) -> middleware(['admin']);
     Route::post('/doc_management/admin/checklists/save_checklist', [ChecklistsController::class, 'save_checklist']) -> middleware(['admin']);
     Route::post('/doc_management/admin/checklists/delete_checklist', [ChecklistsController::class, 'delete_checklist']) -> middleware(['admin']);
+    Route::post('/doc_management/admin/checklists/update_order', [ChecklistsController::class, 'update_order']) -> middleware(['admin']);
 
 
 
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions/get_property_types', [TransactionsController::class, 'get_property_types']) -> middleware(['agent']);
     Route::get('/transactions/get_property_sub_types', [TransactionsController::class, 'get_property_sub_types']) -> middleware(['agent']);
     Route::get('/transactions/get_contacts', [TransactionsController::class, 'get_contacts']) -> middleware(['agent']);
+    Route::get('/transactions/get_form_groups', [TransactionsController::class, 'get_form_groups']) -> middleware(['agent']);
     Route::get('/transactions/agent_search', [TransactionsController::class, 'agent_search']) -> middleware(['agent']);
 
 

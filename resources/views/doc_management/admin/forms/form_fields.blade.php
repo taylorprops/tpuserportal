@@ -148,7 +148,7 @@
 
                     <div class="thumb-header-{{ $page_number }} w-3/4 mx-auto relative mb-2 cursor-pointer hover:shadow-md"
                     {{-- :class="{ 'opacity-30' : active_page !== {{ $page_number }}, 'opacity-100' : active_page === {{ $page_number }} }" --}}
-                    @click.stop="active_page = {{ $page_number }}; go_to_page('{{ $page_number }}')">
+                    @click.stop="active_page = {{ $page_number }}; go_to_page(`{{ $page_number }}`)">
                         <img src="/storage/{{ $image_location }}" class="w-100">
                         <div class="absolute bottom-1 right-1 px-1.5 py-0.5 text-center text-xs text-white bg-gray-600 rounded-lg">{{ $page_number }}</div>
                     </div>

@@ -11,6 +11,7 @@ class CommonFieldsSubGroups extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_common_fields_sub_groups';
+    protected $guarded = [];
 
     public function common_fields() {
         return $this -> hasMany(\App\Models\DocManagement\Resources\CommonFields::class, 'sub_group_id') -> orderBy('sub_group_id') -> orderBy('field_order');

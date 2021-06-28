@@ -11,5 +11,6 @@ class AgentsDocs extends Model
 
     protected $connection = 'mysql';
     protected $table = 'emp_agents_docs';
+    protected $guarded = [];
 
 }

@@ -11,5 +11,6 @@ class EsignEnvelopes extends Model
 
     protected $connection = 'mysql';
     protected $table = 'esign_envelopes';
+    protected $guarded = [];
 
 }

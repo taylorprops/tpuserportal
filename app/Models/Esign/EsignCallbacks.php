@@ -11,5 +11,6 @@ class EsignCallbacks extends Model
 
     protected $connection = 'mysql';
     protected $table = 'esign_callbacks';
+    protected $guarded = [];
 
 }

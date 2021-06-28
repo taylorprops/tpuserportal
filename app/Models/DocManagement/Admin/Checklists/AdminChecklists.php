@@ -11,14 +11,14 @@ class AdminChecklists extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_checklists';
-    public $fillable = ['active'];
+    protected $guarded = [];
 
     public function items() {
         return $this -> hasMany(\App\Models\DocManagement\Admin\Checklists\AdminChecklistsItems::class, 'checklist_id');
     }
 
     public function location() {
-        return $this -> hasOne(\App\Models\DocManagement\Resources\ChecklistLocations::class, 'checklist_location_id', 'id');
+        return $this -> hasOne(\App\Models\DocManagement\Resources\ChecklistLocations::class, 'id', 'checklist_location_id');
     }
 
     public function property_type() {

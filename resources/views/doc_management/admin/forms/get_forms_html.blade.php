@@ -73,7 +73,7 @@
                         :buttonClass="'primary'"
                         :buttonSize="'md'"
                         type="button"
-                        @click="active_form = '{{ $form_id }}'; duplicate_form('{{ $form_id }}')">
+                        @click="active_form = '{{ $form_id }}'; duplicate_form(`{{ $form_id }}`)">
                         <i class="fad fa-copy mr-2"></i> Duplicate
                     </x-elements.button>
                 </div>
@@ -84,7 +84,7 @@
                         :buttonSize="'md'"
                         type="button"
                         target="_blank"
-                        @click="active_form = '{{ $form_id }}'; publish_form('{{ $form_id }}')">
+                        @click="active_form = '{{ $form_id }}'; publish_form(`{{ $form_id }}`)">
                         <i class="fad fa-file-export mr-2"></i> Publish
                     </x-elements.button>
                 </div>
@@ -95,7 +95,7 @@
                         :buttonSize="'md'"
                         type="button"
                         target="_blank"
-                        @click="delete_form('{{ $form_id }}')">
+                        @click="delete_form(`{{ $form_id }}`)">
                         <i class="fal fa-trash mr-2"></i> Delete
                     </x-elements.button>
                 </div>

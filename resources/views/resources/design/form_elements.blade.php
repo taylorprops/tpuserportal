@@ -505,6 +505,45 @@
                     </div>
 
 
+                    {{-- Toggle --}}
+                    <div x-data="{ show: false }">
+
+                        <div class="flex justify-start items-center mt-6 mb-3">
+                            <div class="text-lg text-yellow-700 mr-4">Toggle Switch</div>
+                            <a href="javascript:void(0)" class="text-sm text-gray-500" @click="show = !show">
+                                <i class="fal fa-plus mr-2"></i> Show Code
+                            </a>
+                        </div>
+
+                        <div x-show="show">
+                            <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
+                            &lt;x-elements.toggle
+                            id="toggle_1"
+                            :size="'sm'"
+                            :label="'Toggle Label'"/&gt;
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-4 rounded p-3 bg-white">
+
+                        @php $c = 0; @endphp
+                        @foreach(['sm', 'md', 'lg', 'xl'] as $size)
+                            @php $c += 1; @endphp
+                            <div class="my-4">
+                                <x-elements.toggle
+                                id="toggle_{{ $c }}"
+                                :size="$size"
+                                :label="'Toggle Label'"/>
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+
+
+
                 </div>
 
             </div>

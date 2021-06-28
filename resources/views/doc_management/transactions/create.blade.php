@@ -5,7 +5,7 @@
     </x-slot>
 
     <div class="create-div pb-36 pt-16"
-    x-data="create('{{ $transaction_type }}')"
+    x-data="create(`{{ $transaction_type }}`)"
     x-init="
         address_search();
         get_contacts();

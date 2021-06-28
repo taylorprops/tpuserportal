@@ -18,14 +18,16 @@ if($size == 'sm') {
 $classes .= ' w-full rounded-sm border border-gray-300 focus:outline-none focus:ring-blue-300 focus:border-blue-200 focus:shadow-sm disabled:opacity-50';
 $label = $attributes['data-label'] ?? null;
 
-$id = time();
+$id = time() * rand();
 if($attributes['id']) {
     $id = $attributes['id'];
 }
 @endphp
 
 <label class="text-gray-500 block italic {{ $label_text_size }}">
+    @if($label != '')
     <span class="ml-2">{{ $label }}</span>
+    @endif
     <input id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"
     {!! $attributes -> merge(['class' => $classes]) !!} />

@@ -11,5 +11,6 @@ class ContractStatuses extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_contract_statuses';
+    protected $guarded = [];
 
 }

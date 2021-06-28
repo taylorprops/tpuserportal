@@ -11,5 +11,6 @@ class EsignSigners extends Model
 
     protected $connection = 'mysql';
     protected $table = 'esign_signers';
+    protected $guarded = [];
 
 }

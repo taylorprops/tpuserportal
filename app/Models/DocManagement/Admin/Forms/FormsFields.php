@@ -11,5 +11,6 @@ class FormsFields extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_forms_fields';
+    protected $guarded = [];
 
 }

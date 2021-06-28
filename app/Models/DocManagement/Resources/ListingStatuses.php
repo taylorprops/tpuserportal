@@ -11,5 +11,6 @@ class ListingStatuses extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_listing_statuses';
+    protected $guarded = [];
 
 }

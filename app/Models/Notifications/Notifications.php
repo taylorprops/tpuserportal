@@ -11,5 +11,6 @@ class Notifications extends Model
 
     protected $connection = 'mysql';
     protected $table = 'notifications';
+    protected $guarded = [];
 
 }

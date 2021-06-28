@@ -11,5 +11,6 @@ class TaskOptions extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_task_options';
+    protected $guarded = [];
 
 }

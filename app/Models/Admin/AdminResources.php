@@ -11,5 +11,6 @@ class AdminResources extends Model
 
     protected $connection = 'mysql';
     protected $table = 'admin_resource_items';
+    protected $guarded = [];
 
 }

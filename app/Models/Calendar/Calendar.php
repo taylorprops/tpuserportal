@@ -11,5 +11,6 @@ class Calendar extends Model
 
     protected $connection = 'mysql';
     protected $table = 'calendar';
+    protected $guarded = [];
 
 }

@@ -11,5 +11,6 @@ class TransactionCoordinatorsDocs extends Model
 
     protected $connection = 'mysql';
     protected $table = 'emp_transaction_coordinators_docs';
+    protected $guarded = [];
 
 }

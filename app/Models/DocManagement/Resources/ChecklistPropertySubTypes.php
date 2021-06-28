@@ -11,5 +11,6 @@ class ChecklistPropertySubTypes extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_checklist_property_sub_types';
+    protected $guarded = [];
 
 }

@@ -11,5 +11,6 @@ class CompanyListingsNotes extends Model
 
     protected $connection = 'mysql';
     protected $table = 'company_listings_notes';
+    protected $guarded = [];
 
 }

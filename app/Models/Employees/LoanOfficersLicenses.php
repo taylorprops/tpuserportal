@@ -11,5 +11,6 @@ class LoanOfficersLicenses extends Model
 
     protected $connection = 'mysql';
     protected $table = 'emp_loan_officers_licenses';
+    protected $guarded = [];
 
 }

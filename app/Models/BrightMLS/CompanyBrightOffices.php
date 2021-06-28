@@ -11,5 +11,6 @@ class CompanyBrightOffices extends Model
 
     protected $connection = 'mysql';
     protected $table = 'company_bright_offices';
+    protected $guarded = [];
 
 }

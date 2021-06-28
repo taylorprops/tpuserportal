@@ -11,6 +11,7 @@ class Transactions extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_transactions';
+    protected $guarded = [];
 
     public static function boot() {
         parent::boot();

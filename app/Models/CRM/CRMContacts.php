@@ -11,5 +11,6 @@ class CRMContacts extends Model
 
     protected $connection = 'mysql';
     protected $table = 'crm_contacts';
+    protected $guarded = [];
 
 }

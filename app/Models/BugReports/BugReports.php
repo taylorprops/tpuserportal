@@ -11,5 +11,6 @@ class BugReports extends Model
 
     protected $connection = 'mysql';
     protected $table = 'bug_reports';
+    protected $guarded = [];
 
 }

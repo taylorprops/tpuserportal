@@ -10,6 +10,7 @@ use App\Models\Employees\Agents;
 use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\DocManagement\Resources\FormGroups;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\DocManagement\Transactions\Transactions;
 use App\Models\DocManagement\Resources\ChecklistLocations;
@@ -650,6 +651,13 @@ class TransactionsController extends Controller
 
         return ChecklistLocations::select(['id', 'location', 'state'])
         -> orderBy('display_order')
+        -> get();
+
+    }
+
+    public function get_form_groups(Request $request) {
+
+        return FormGroups::select(['id', 'group_name'])
         -> get();
 
     }

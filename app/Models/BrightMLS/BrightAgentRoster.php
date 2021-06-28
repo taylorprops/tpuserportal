@@ -11,6 +11,7 @@ class BrightAgentRoster extends Model
 
     protected $connection = 'mysql';
     protected $table = 'bright_agent_roster';
+    protected $guarded = [];
 
     public static function boot() {
         parent::boot();

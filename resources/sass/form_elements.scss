@@ -37,3 +37,15 @@ textarea.required,
     border-bottom: 5px solid gray;
 }
 /* End Slider */
+
+/* toggle */
+.toggle-container {
+    input.form-toggle:checked ~ .dot {
+        transform: translateX(90%);
+        @apply bg-primary;
+    }
+    .dot {
+        top: -.3rem;
+        left: -.3rem;
+    }
+}

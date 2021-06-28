@@ -11,5 +11,6 @@ class InHouse extends Model
 
     protected $connection = 'mysql';
     protected $table = 'emp_in_house';
+    protected $guarded = [];
 
 }

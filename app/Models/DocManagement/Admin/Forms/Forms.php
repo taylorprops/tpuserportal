@@ -11,6 +11,7 @@ class Forms extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_forms';
+    protected $guarded = [];
 
     public function form_group() {
         return $this -> hasOne(\App\Models\DocManagement\Resources\FormGroups::class, 'id', 'form_group_id');

@@ -11,5 +11,6 @@ class ReferralStatuses extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_resources_referral_statuses';
+    protected $guarded = [];
 
 }

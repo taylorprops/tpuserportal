@@ -11,5 +11,6 @@ class AdminChecklistsItems extends Model
 
     protected $connection = 'mysql';
     protected $table = 'docs_checklists_items';
+    protected $guarded = [];
 
 }
