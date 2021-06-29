@@ -1,0 +1,16 @@
+.navigation {
+
+    li.one > ul {
+        display: none;
+    }
+    li.one:hover > ul{
+        display: block;
+    }
+    li.two > ul {
+        display: none;
+    }
+    li.two:hover > ul{
+        display: block;
+    }
+
+}

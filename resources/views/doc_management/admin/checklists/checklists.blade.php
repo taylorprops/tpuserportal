@@ -6,7 +6,13 @@
 
     @php $location_id = $checklist_locations -> first() -> id; @endphp
     <div class="page-container"
-    x-data="checklists('{{ $location_id }}')">
+    x-data="checklists('{{ $location_id }}')"
+    {{-- x-init="get_checklist_locations();
+    location_id = location_id;
+    fetch('/transactions/get_locations').then(function(data) { locations = data; });
+    fetch('/transactions/get_form_groups').then(data => form_groups = data);
+    fetch('/transactions/get_property_types').then(data => property_types = data);
+    fetch('/transactions/get_property_sub_types').then(data => property_sub_types = data);" --}}>
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 

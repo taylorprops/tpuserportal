@@ -13,7 +13,7 @@ if (document.URL.match(/checklists$/)) {
 
         return {
 
-            location_id: '',
+            location_id: location_id,
             active_type: 'listing',
             show_checklist_modal: false,
             show_add_items_modal: false,
@@ -31,12 +31,23 @@ if (document.URL.match(/checklists$/)) {
 
             init() {
                 this.get_checklist_locations();
-                this.location_id = location_id;
                 let scope = this;
-                fetch('/transactions/get_locations').then(function(data) { scope.locations = data; });
-                fetch('/transactions/get_form_groups').then(data => scope.form_groups = data);
-                fetch('/transactions/get_property_types').then(data => scope.property_types = data);
-                fetch('/transactions/get_property_sub_types').then(data => scope.property_sub_types = data);
+                axios.get('/transactions/get_locations')
+                .then(function (response) {
+                    scope.locations = response.data;
+                });
+                axios.get('/transactions/get_form_groups')
+                .then(function (response) {
+                    scope.form_groups = response.data;
+                });
+                axios.get('/transactions/get_property_types')
+                .then(function (response) {
+                    scope.property_types = response.data;
+                });
+                axios.get('/transactions/get_property_sub_types')
+                .then(function (response) {
+                    scope.property_sub_types = response.data;
+                });
 
             },
 
@@ -59,9 +70,10 @@ if (document.URL.match(/checklists$/)) {
                 })
                 .then(function (response) {
 
-                    document.getElementById('checklist_location_'+scope.location_id).innerHTML = response.data;
+                    let checklist_container = document.getElementById('checklist_location_'+scope.location_id);
+                    checklist_container.innerHTML = response.data;
 
-                    let sortable_div = document.querySelector('.checklist-sortable');
+                    let sortable_div = checklist_container.querySelector('.checklist-sortable');
                     let sortable = Sortable.create(sortable_div, {
                         handle: ".checklist-handle",  // Drag handle selector within list items
                         draggable: ".checklist",  // Specifies which items inside the element should be draggable
@@ -234,10 +246,9 @@ if (document.URL.match(/checklists$/)) {
                 });
 
             },
-            filter_checklists(container) {
-                console.log(container);
+            filter_checklists(ele) {
+                let container = ele.closest('.checklist-container');
                 container.querySelectorAll('.checklist').forEach(function(checklist) {
-                    console.log(checklist);
                     checklist.classList.toggle('hidden');
                     checklist.classList.toggle('flex');
                 });

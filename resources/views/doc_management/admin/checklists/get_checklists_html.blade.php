@@ -1,4 +1,4 @@
-<div x-ref="checklist_container">
+<div class="checklist-container">
 
     <div class="mb-4 flex justify-between items-center">
 
@@ -8,7 +8,7 @@
             <x-elements.select
             data-label="Checklist Type"
             :size="'md'"
-            @change="filter_checklists($refs.checklist_container)">
+            @change="filter_checklists($event.currentTarget)">
                 <option value="listing">Listing</option>
                 <option value="contract">Contract/Lease</option>
             </x-elements.select>

@@ -44,11 +44,11 @@
 
 
 <!-- Static sidebar for desktop -->
-<div class="hidden xl:flex xl:flex-shrink-0 h-screen fixed overflow-auto" x-show="main_nav_open">
+<div class="hidden xl:flex xl:flex-shrink-0 h-screen fixed" x-show="main_nav_open">
     <div class="flex flex-col w-64">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="flex flex-col h-0 flex-1 bg-default-dark">
-            <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+            <div class="flex-1 flex flex-col pt-5 pb-4">
                 <div class="flex items-center justify-between flex-shrink-0 px-4">
 
                     <img class="h-auto w-3/4" src="/images/logo/logos.png" alt="Taylor Properties">
@@ -64,7 +64,7 @@
                     <input class="main-search-input appearance-none block w-full bg-blue-100 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-blue-200" type="text" placeholder="Search">
                 </div>
 
-                <nav class="mt-5 flex-1 px-2 bg-default-dark space-y-1">
+                <nav class="navigation mt-5 flex-1 px-2 bg-default-dark space-y-1">
 
                     @include('layouts/menu/menu_admin')
 
