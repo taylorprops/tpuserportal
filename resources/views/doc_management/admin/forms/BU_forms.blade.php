@@ -9,7 +9,12 @@
     </x-slot>
 
     <div class="page-container pt-2"
-        x-data="forms('{{ $active_tab }}')">
+        x-data="{
+            active_tab: '{{ $active_tab }}',
+            show_modal: false,
+            show_search_results: false,
+            show_form_names: true
+        }">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
@@ -27,7 +32,7 @@
                             x-on:keyup="search_forms($event.target);"/>
 
                         <div class="absolute top-10 left-0 bg-white rounded border border-gray-300 shadow-md p-2 w-screen sm:w-screen-70 md:w-screen-50 z-10"
-                        x-show="show_search_results" x-transition
+                        x-transition="show_search_results"
                         x-on:click.outside="show_search_results = false; document.querySelector('#search').value = '';">
                             <ul id="search_results"></ul>
                         </div>
@@ -65,7 +70,7 @@
                                     @click.prevent="active_tab = '{{ $form_group_id }}';
                                     document.querySelector('#form_group_id').value = '{{ $form_group_id }}';
                                     document.querySelector('#state').value = '{{ $state }}';
-                                    get_forms()">
+                                    get_forms(`{{ $form_group_id }}`)">
 
                                     <div class="flex justify-between items-center">
 

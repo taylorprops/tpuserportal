@@ -39,7 +39,8 @@
 
     </head>
 
-    <body class="font-sans antialiased" x-data="{ show_loading: false }">
+    <body class="font-sans antialiased"
+    x-data="{ show_loading: false }">
 
         <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50" x-show="show_loading">
             <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0">

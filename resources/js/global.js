@@ -41,12 +41,13 @@ window.axios_options = {
 }); */
 
 
-window.show_loader = function() {
+
+/* window.show_loader = function() {
     document.querySelector('body').__x.$data.show_loading = true;
 }
 window.hide_loader = function() {
     document.querySelector('body').__x.$data.show_loading = false;
-}
+} */
 
 window.ele_loading = function(ele) {
     ele.html(' \

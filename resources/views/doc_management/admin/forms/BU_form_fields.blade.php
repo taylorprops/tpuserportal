@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="page-container h-screen"
-    x-data="fill_fields()">
+    x-data="fill_fields(), { active_page: 1, selected_field_category: '', active_field: '' }">
 
         <div class="w-full p-2 flex justify-around h-screen-8">
 
@@ -121,12 +121,9 @@
                                 <div>{{ $page_number }}</div>
                             </div>
 
-                            <div class="form-page-container page-{{ $page_number }} relative border"
+                            <div class="form-page-container page-{{ $page_number }} relative"
                             data-page="{{ $page_number }}"
-                            @dblclick.stop.prevent="active_field = '';
-                            $nextTick(() => {
-                                add_field($event)
-                            });">
+                            @dblclick.stop.prevent="active_field = ''; add_field($event)">
 
                                 <img src="/storage/{{ $image_location }}" class="w-100">
 
@@ -175,20 +172,20 @@
             data-category="%%category%%"
             data-common-field-id=""
             data-group-id="%%id%%"
-            {{-- x-bind:data-number-type="number_type" --}}
+            x-bind:data-number-type="number_type"
             style="top: %%y_perc%%%; left: %%x_perc%%%; height: %%h_perc%%%; width: %%w_perc%%%;"
-            {{-- x-data="{
+            x-data="{
+                options_side: '',
                 field_category: '%%category%%',
                 number_type: 'numeric',
                 is_group: false,
                 add_type: ' Line'
-            }" --}}
-            {{-- x-init="active_field = '%%id%%'; add_type = field_category == 'radio' ? ' Radio' : ' Line';" --}}
-            x-init="$nextTick(() => { console.log(active_field) });"
-            x-bind:class="{ 'z-50': active_field === '%%id%%' }"
-            @click.stop="active_field = '%%id%%'"
-            @click.outside="active_field = ''"
-            {{-- @dblclick.stop.prevent="return false;" --}}>
+            }"
+            x-init="$parent.active_field = '%%id%%'; add_type = field_category == 'radio' ? ' Radio' : ' Line';"
+            :class="{ 'z-50': $parent.active_field === '%%id%%' }"
+            @click.stop="$parent.active_field = '%%id%%'"
+            @click.outside="$parent.active_field = ''"
+            @dblclick.stop.prevent="return false;">
 
                 @php $input_id = time() * rand(); @endphp
 
@@ -198,15 +195,15 @@
                     <div class="resizer bottom-left"></div>
                     <div class="resizer bottom-right"></div>
                     <div class="group-label font-bold text-indigo-500"
-                    {{-- x-bind:class="{ 'radio': field_category === 'radio' || field_category === 'checkbox' }" --}}
-                    {{-- x-show="is_group" --}}>G</div>
+                    :class="{ 'radio': field_category === 'radio' || field_category === 'checkbox' }"
+                    x-show="is_group">G</div>
                 </div>
 
-                <div class="field-name field-name-%%id%% draggable-handle flex items-center absolute top-0 w-full h-full whitespace-nowrap opacity-50 text-xs text-white px-1 overflow-hidden"
-                x-bind:class="{ 'bg-yellow-600': active_field === '%%id%%', 'bg-blue-600': active_field !== '%%id%%' }"></div>
+                <div class="field-name field-name-{{ $input_id }} draggable-handle flex items-center absolute top-0 w-full h-full whitespace-nowrap opacity-50 text-xs text-white px-1 overflow-hidden"
+                :class="{ 'bg-yellow-600': $parent.active_field === '%%id%%', 'bg-blue-600': $parent.active_field !== '%%id%%' }"></div>
 
-                {{-- <div class="" x-bind:class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }"
-                x-show="active_field === '%%id%%'">
+                <div class="" :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }"
+                x-show="$parent.active_field === '%%id%%'">
 
                     <div class=""
                     :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }">
@@ -222,7 +219,7 @@
                                 :buttonClass="'primary'"
                                 :buttonSize="'sm'"
                                 type="button"
-                                @click="active_field = ''; copy_field('%%id%%', false);">
+                                @click="$parent.active_field = ''; $parent.copy_field('%%id%%', false);">
                                     <i class="fal fa-copy mr-2"></i> Copy
                                 </x-elements.button>
 
@@ -232,7 +229,7 @@
                                 :buttonSize="'sm'"
                                 type="button"
                                 x-show="field_category !== 'checkbox' && field_category !== 'date'"
-                                @click="active_field = ''; copy_field('%%id%%', true)">
+                                @click="$parent.active_field = ''; $parent.copy_field('%%id%%', true)">
                                     <i class="fal fa-plus mr-2"></i> Add  <span class="ml-1" x-text="add_type"></span>
                                 </x-elements.button>
 
@@ -241,7 +238,7 @@
                                 :buttonClass="'danger'"
                                 :buttonSize="'sm'"
                                 type="button"
-                                @click="remove_field(%%id%%)">
+                                @click="$parent.remove_field(%%id%%)">
                                     <i class="fal fa-ban mr-2"></i> Delete
                                 </x-elements.button>
 
@@ -296,7 +293,7 @@
 
                                 <div class="col-span-5">
                                     <x-elements.input
-                                    class="common-field-input input-%%id%%"
+                                    class="common-field-input input-{{ $input_id }}"
                                     placeholder="Select Shared Name Below"
                                     data-label=""
                                     readonly
@@ -308,7 +305,7 @@
                                     :buttonClass="'danger'"
                                     :buttonSize="'md'"
                                     type="button"
-                                    x-on:click="document.querySelector('.input-%%id%%').value = ''; document.querySelector('.field-name-%%id%%').innerText = '';">
+                                    x-on:click="document.querySelector('.input-{{ $input_id }}').value = ''; document.querySelector('.field-name-{{ $input_id }}').innerText = '';">
                                     <i class="fal fa-times"></i>
                                     </x-elements.button>
                                 </div>
@@ -343,7 +340,7 @@
                                                 </x-elements.button>
 
                                                 <div class="absolute top-6 left-0 pt-3"
-                                                x-show="field_options" x-transition>
+                                                x-transition="field_options">
 
                                                     <ul class="w-max text-sm bg-white p-2 relative border rounded shadow">
 
@@ -431,7 +428,7 @@
 
                     </div>
 
-                </div> --}}
+                </div>
 
             </div>
 

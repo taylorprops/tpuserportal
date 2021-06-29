@@ -7,7 +7,7 @@
         $forms = $form_group -> forms;
         @endphp
 
-        <li class="form-group-li border border-b p-3 w-full @if($loop -> first) active @endif"
+        <li class="form-group-li border border-b p-3 w-full"
             x-show="active_tab === '{{ $form_group_id }}'"
             :class="{ 'active' : active_tab === '{{ $form_group_id }}' }">
 
