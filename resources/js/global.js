@@ -12,6 +12,7 @@ window.addEventListener('load', (event) => {
 
 });
 
+
 window._token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 // axios headersObj
 window.axios_options = {
@@ -42,12 +43,15 @@ window.axios_options = {
 
 
 
-/* window.show_loader = function() {
-    document.querySelector('body').__x.$data.show_loading = true;
+window.show_loading = function() {
+
+    document.querySelector('.page-loading').classList.remove('hidden');
+    document.querySelector('.page-loading').classList.add('block');
 }
-window.hide_loader = function() {
-    document.querySelector('body').__x.$data.show_loading = false;
-} */
+window.hide_loading = function() {
+    document.querySelector('.page-loading').classList.add('hidden');
+    document.querySelector('.page-loading').classList.remove('block');
+}
 
 window.ele_loading = function(ele) {
     ele.html(' \
@@ -407,4 +411,20 @@ window.ucwords = function (str) {
         .replace(/^(.)|\s+(.)/g, function ($1) {
             return $1.toUpperCase()
         })
+}
+
+window.random_dark_color = function() {
+    var lum = -0.25;
+    var hex = String('#' + Math.random().toString(16).slice(2, 8).toUpperCase()).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    var rgb = "#",
+        c, i;
+    for (i = 0; i < 3; i++) {
+        c = parseInt(hex.substr(i * 2, 2), 16);
+        c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+        rgb += ("00" + c).substr(c.length);
+    }
+    return rgb;
 }

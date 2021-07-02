@@ -1,44 +1,34 @@
 
 if(document.URL.match(/agents$/)) {
 
-    window.addEventListener('load', (event) => {
 
-        show_loader();
-        get_agents();
+    window.agents = function() {
 
-    });
-
-    function get_agents() {
-
-        let cols = [
-            { data: 'edit', orderable: false, searchable: false },
-            { data: 'full_name' },
-            { data: 'cell_phone' },
-            { data: 'email' }
-        ];
-        let table = document.querySelector('#agents_table');
-
-        data_table('/employees/agents/get_agents', cols, 25, $(table), [1, 'asc'], [0], [], true, true, true, true, true);
-
-        table.classList.remove('hidden');
-        hide_loader();
-
-
-        /* axios.get('/employees/agents/get_agents', {
-            params: {
-
+        return {
+            init() {
+                this.get_agents();
             },
-        })
-        .then(function (response) {
+            get_agents() {
 
-            $('#agents_table').show().find('tbody').html(response.data);
-            hide_loader();
-            data_table('/employees/agents/get_agents', 25, $('#agents_table'), [1, 'asc'], [0], [], true, true, true, true, true);
-        })
-        .catch(function (error) {
-            console.log(error);
-        }); */
+                show_loading();
+
+                let cols = [
+                    { data: 'edit', orderable: false, searchable: false },
+                    { data: 'full_name' },
+                    { data: 'cell_phone' },
+                    { data: 'email' }
+                ];
+                let table = document.querySelector('#agents_table');
+
+                data_table('/employees/agents/get_agents', cols, 25, $(table), [1, 'asc'], [0], [], true, true, true, true, true);
+
+                table.classList.remove('hidden');
+                hide_loading();
+
+            }
+        }
 
     }
+
 
 }

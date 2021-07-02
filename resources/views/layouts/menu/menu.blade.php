@@ -1,5 +1,5 @@
 
-<div x-show="main_nav_open" class="fixed inset-0 flex z-40 xl:hidden" x-ref="dialog" aria-modal="true" style="display: none;">
+<div x-show="main_nav_open" class="fixed inset-0 flex z-20 xl:hidden" x-ref="dialog" aria-modal="true" style="display: none;">
 
     <div x-show="main_nav_open" x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-default bg-opacity-75" @click="main_nav_open = false" aria-hidden="true" style="display: none;"></div>
 

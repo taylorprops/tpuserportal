@@ -133,7 +133,7 @@ if (document.URL.match(/forms$/)) {
 
                 if(event.target.value != '') {
 
-                    this.show_loading = true;
+                    show_loading();
 
                     let scope = this;
                     let form = document.querySelector('#upload_form');
@@ -157,7 +157,7 @@ if (document.URL.match(/forms$/)) {
                                 form_names.innerHTML = form_names.innerHTML + row;
                             });
 
-                            scope.show_loading = false;
+                            hide_loading();
 
                         })
                         .catch(function (error) {

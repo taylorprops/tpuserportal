@@ -39,14 +39,7 @@
 
     </head>
 
-    <body class="font-sans antialiased"
-    x-data="{ show_loading: false }">
-
-        <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50" x-show="show_loading">
-            <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0">
-                <i class="fas fa-circle-notch fa-spin fa-4x"></i>
-            </span>
-        </div>
+    <body class="font-sans antialiased">
 
         <div x-data="nav()" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden">
 
@@ -79,7 +72,7 @@
                 @endif
 
                 <!-- Page Content -->
-                <main :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
+                <main class="" :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
                     {{ $slot }}
                 </main>
 
@@ -89,7 +82,11 @@
 
         <input type="hidden" id="global_company_active_states" value="{{ implode(',', config('global.company_active_states')) }}">
 
-
+        <div class="page-loading w-full h-full fixed top-0 left-0 bg-white opacity-70 z-90 hidden">
+            <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0">
+                <i class="fas fa-circle-notch fa-spin fa-4x"></i>
+            </span>
+        </div>
 
     </body>
 

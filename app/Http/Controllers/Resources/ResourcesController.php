@@ -29,22 +29,9 @@ class ResourcesController extends Controller
             return '<span class="font-semibold">'.$config -> config_key.'</span>';
         })
         -> editColumn('config_value', function($config) {
-            return '<textarea class="config-value w-full" rows="'.(strlen($config -> config_value) / 110).'"
-            @change="
-                let value = $event.currentTarget.value;
-                $fetch({
-                    url: \'/resources/config/config_edit\',
-                    method: \'POST\',
-                    params: {
-                        \'id\': \''.$config -> id.'\',
-                        \'field\': \'config_value\',
-                        \'value\': value
-                    }
-                })
-                .then(function(){
-                    toastr.success(\'Config updated\');
-                });
-            "
+            return '<textarea class="config-input config-value w-full" rows="'.(strlen($config -> config_value) / 110).'"
+            data-id="'.$config -> id.'"
+            data-field="config_value"
             >'.$config -> config_value.'</textarea>';
         })
         -> editColumn('value_type', function($config) {
@@ -56,22 +43,9 @@ class ResourcesController extends Controller
                 $array = 'selected';
             }
             return '
-            <select class="config-key" data-id="'.$config -> id.'"
-            @change="
-                let value = $event.currentTarget.value;
-                $fetch({
-                    url: \'/resources/config/config_edit\',
-                    method: \'POST\',
-                    params: {
-                        \'id\': \''.$config -> id.'\',
-                        \'field\': \'value_type\',
-                        \'value\': value
-                    }
-                })
-                .then(function(){
-                    toastr.success(\'Config updated\');
-                });
-            "
+            <select class="config-input config-key"
+            data-id="'.$config -> id.'"
+            data-field="value_type"
             >
                 <option value="string" '.$string.'>String</option>
                 <option value="array" '.$array.'>Array</option>

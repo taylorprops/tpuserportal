@@ -4,42 +4,38 @@
         Agents
     </x-slot>
 
-    <div class="pb-12 pt-2 page-container">
+    <div class="pb-12 pt-2 page-container z-0"
+    x-data="agents()">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
-            <div class="">
 
-                {{-- xxxxxxxxxxxxxxxxxxxx --}}
+            <div class="no-wrap">
 
+                <table id="agents_table" class="data-table hover nowrap order-column row-border" width="100%">
 
-                <div class="no-wrap">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
 
-                    <table id="agents_table" class="data-table hover nowrap order-column row-border animate__animated animate__fadeIn hidden" width="100%">
+                    <tbody>
 
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
+                    </body>
 
-                        <tbody>
-
-                        </body>
-
-                    </table>
-
-                </div>
-
-
-                {{-- xxxxxxxxxxxxxxxxxxxx --}}
+                </table>
 
             </div>
 
+
+            {{-- xxxxxxxxxxxxxxxxxxxx --}}
+
         </div>
+
 
     </div>
 

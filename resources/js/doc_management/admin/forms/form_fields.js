@@ -3,8 +3,7 @@
 if(document.URL.match(/form_fields/)) {
 
 
-
-    window.fill_fields = function() {
+    window.fields = function() {
 
         return {
 
@@ -14,7 +13,8 @@ if(document.URL.match(/form_fields/)) {
             active_field: '',
 
             init() {
-                //this.get_fields();
+                this.get_fields();
+                show_loading();
             },
 
             show_selected_field_category(ele) {
@@ -24,6 +24,60 @@ if(document.URL.match(/form_fields/)) {
                 });
                 ele.classList.add('active', 'bg-secondary', 'border-secondary', 'ring-secondary', 'hover:bg-secondary-dark', 'active:border-secondary', 'focus:border-secondary');
             },
+            go_to_page(page) {
+                document.querySelector('.page-header-'+page).scrollIntoView({behavior: 'smooth', block: 'start'});
+                document.querySelector('.thumb-header-'+page).scrollIntoView({behavior: 'smooth', block: 'start'});
+                active_page = page;
+            },
+            scroll_page(event) {
+
+                // let page_container = event.target;
+                // let pages = page_container.querySelectorAll('.form-page-container');
+                // let cont = 'yes';
+
+                // let c = 0;
+                // pages.forEach(function(page) {
+                //     if(c < 1) {
+                //         c = 1;
+
+                //         let start = Math.abs(page.getBoundingClientRect().top);
+                //         let end = page.offsetHeight;
+                //         let breakpoint = end * .75;
+                //         console.log(start, breakpoint, end, page_container.scrollTop);
+
+
+                //         if (start > breakpoint) {
+                //             if(start > end) {
+                //                 document.querySelector('.page-container').__x.$data.active_page = page;
+                //                 console.log(page);
+                //                 cont = 'no';
+                //             }
+                //         }
+                //     }
+
+                // });
+
+
+                // let active_page = document.querySelector('.page-container').__x.$data.active_page;
+                // let page_container = document.querySelector('.page-container');
+                // let page = document.querySelector('.page-'+active_page);
+                // let cont = 'yes';
+
+                // let center = window.outerHeight / 2;
+                // let start = page.getBoundingClientRect().top - page_container.getBoundingClientRect().top;
+                // let end = start + page.offsetHeight;
+                // console.log(start, center, end);
+
+
+                // if (start < center && end > center) {
+
+                //     document.querySelector('.page-container').__x.$data.active_page = page;
+                //     console.log(page);
+                //     cont = 'no';
+                // }
+
+            },
+
             get_fields() {
 
                 let scope = this;
@@ -44,7 +98,9 @@ if(document.URL.match(/form_fields/)) {
                         let field_html = document.querySelector('#field_template').innerHTML;
 
                         field_html = field_html.replace(/%%id%%/g, field.field_id);
+                        field_html = field_html.replace(/%%group_id%%/g, field.group_id);
                         field_html = field_html.replace(/%%category%%/g, field.field_category);
+                        field_html = field_html.replace(/%%group_color%%/g, '');
                         field_html = field_html.replace(/%%x_perc%%/g, field.left_perc);
                         field_html = field_html.replace(/%%y_perc%%/g, field.top_perc);
                         field_html = field_html.replace(/%%h_perc%%/g, field.height_perc);
@@ -52,14 +108,10 @@ if(document.URL.match(/form_fields/)) {
 
                         let page_container = document.querySelector('.page-'+field.page);
 
-                        let div = document.createElement('div');
-                        div.innerHTML = field_html;
-                        page_container.appendChild(div);
-                        unwrap(div);
+                        page_container.innerHTML += field_html;
 
                         let new_field = document.querySelector('[data-id="' + field.field_id + '"]');
                         new_field.classList.add('drag-resize');
-
 
                         new_field.setAttribute('data-is-group', field.is_group);
                         new_field.setAttribute('data-group-id', field.group_id);
@@ -82,23 +134,38 @@ if(document.URL.match(/form_fields/)) {
                         }
 
                         scope.coordinates(null, new_field, new_field.field_category);
-                        scope.draggable(new_field, new_field.field_category);
 
-                        setTimeout(function() {
-                            if(document.querySelectorAll('[data-group-id="'+field.group_id+'"]').length > 1) {
-                                document.querySelectorAll('[data-group-id="'+field.group_id+'"]').forEach(function(field) {
-                                    /* field.__x.$data.is_group = true; */
-                                });
-                            }
-                            scope.set_options_side(new_field);
-                            scope.active_field = '';
+                        // setTimeout(function() {
+                        //     if(document.querySelectorAll('[data-group-id="'+field.group_id+'"]').length > 1) {
+                        //         document.querySelectorAll('[data-group-id="'+field.group_id+'"]').forEach(function(field) {
+                        //             field.querySelector('.group-label').classList.remove('hidden');
+                        //         });
+                        //     }
 
-                            if(index == data.length - 1) {
-                                scope.resize();
-                            }
-                        }, 100);
+                        // }, 100);
 
                     });
+
+                    setTimeout(function() {
+                        if(document.querySelectorAll('.field-div').length > 0) {
+                            document.querySelectorAll('.field-div').forEach(function(group) {
+                                let group_id = group.getAttribute('data-group-id');
+                                let group_fields = document.querySelectorAll('[data-group-id="'+group_id+'"]');
+                                let group_color = random_dark_color();
+                                if(group_fields.length > 1) {
+                                    group_fields.forEach(function(field) {
+                                        field.querySelector('.group-label').classList.remove('hidden');
+                                        field.querySelector('.group-label').style.background = group_color;
+                                    });
+                                } else {
+                                    document.querySelector('[data-group-id="'+group_id+'"]').querySelector('.group-label').style.background = group_color;
+                                }
+                            });
+                        }
+
+                    }, 100);
+
+                    hide_loading();
 
                 })
                 .catch(function (error) {
@@ -106,6 +173,7 @@ if(document.URL.match(/form_fields/)) {
                 });
 
             },
+
             add_field(event) {
                 if(this.selected_field_category != '') {
                     this.create_field(event);
@@ -121,19 +189,20 @@ if(document.URL.match(/form_fields/)) {
                 let field_html = document.querySelector('#field_template').innerHTML;
                 let id = Date.now();
 
+                let group_color = random_dark_color();
+
                 field_html = field_html.replace(/%%id%%/g, id);
+                field_html = field_html.replace(/%%group_id%%/g, id);
                 field_html = field_html.replace(/%%category%%/g, field_category);
+                field_html = field_html.replace(/%%group_color%%/g, group_color);
                 field_html = field_html.replace(/%%x_perc%%/g, coords.x_perc);
                 field_html = field_html.replace(/%%y_perc%%/g, coords.y_perc);
                 field_html = field_html.replace(/%%h_perc%%/g, coords.h_perc);
                 field_html = field_html.replace(/%%w_perc%%/g, coords.w_perc);
 
-                let div = document.createElement('div');
-                div.innerHTML = field_html;
-                container.appendChild(div);
-                unwrap(div);
+                container.innerHTML += field_html;
 
-                let new_field = document.querySelector('[data-id="' + id + '"]');
+                let new_field = document.querySelector('[data-id="'+id+'"]');
                 new_field.classList.add('drag-resize');
 
 
@@ -143,20 +212,21 @@ if(document.URL.match(/form_fields/)) {
                 }
 
                 this.coordinates(null, new_field, field_category);
-                this.resize();
+                this.resize(new_field);
 
                 this.active_field = id;
-                console.log(Alpine.raw(this.active_field));
+
                 setTimeout(function() {
                     scope.draggable(new_field, field_category);
                     scope.set_options_side(new_field);
+                    new_field.click();
                 }, 1);
 
 
             },
             save_fields(ele) {
 
-                show_loading_button(ele, 'Saving Fields...');
+                show_loading_button(ele, 'Saving ... ');
 
                 let container = document.querySelector('.forms-container');
                 let form_id = container.getAttribute('data-form-id');
@@ -228,8 +298,6 @@ if(document.URL.match(/form_fields/)) {
 
             },
             coordinates(event, ele = null, field_category) {
-
-                console.log('running coordinates');
 
                 let container, x, y;
 
@@ -319,6 +387,10 @@ if(document.URL.match(/form_fields/)) {
             },
             set_options_side(element) {
 
+                if(!element.parentNode) {
+                    return false;
+                }
+
                 let width = element.parentNode.offsetWidth;
                 let left = element.offsetLeft;
                 if(left > (width / 2)) {
@@ -332,236 +404,188 @@ if(document.URL.match(/form_fields/)) {
 
                 let scope = this;
                 let field = document.querySelector('[data-id="'+id+'"]');
-                let group_id = field.getAttribute('data-group-id');
                 let new_field = field.outerHTML;
+                let group_id = field.getAttribute('data-group-id');
                 let field_category = field.getAttribute('data-category');
                 let options_side = this.options_side;
                 let field_top = field.offsetTop;
                 let field_height = field.offsetHeight;
+
                 let new_id = Date.now();
                 let find_id = new RegExp(id, 'g');
 
                 new_field = new_field.replace(find_id, new_id);
-                let div = document.createElement('div');
-                div.innerHTML = new_field;
-                field.closest('.form-page-container').appendChild(div);
-                unwrap(div);
 
-                //field.closest('.form-page-container').innerHTML += new_field;
+
+                field.closest('.form-page-container').innerHTML += new_field;
+                new_field = document.querySelector('[data-id="'+new_id+'"]');
+
+                new_field.style.top = field_top + field_height + 10+'px';
+
+                if(group == false) {
+                    new_field.querySelector('.common-field-input').value = '';
+                    new_field.querySelector('.field-name').innerText = '';
+                    new_field.setAttribute('data-group-id', new_id);
+                    new_field.querySelector('.group-label').classList.add('hidden');
+                    group_color = random_dark_color();
+                    new_field.querySelector('.group-label').style.background = group_color;
+                } else {
+                    new_field.querySelector('.common-field-input').value = field.querySelector('.common-field-input').value;
+                    new_field.setAttribute('data-group-id', group_id);
+                    new_field.setAttribute('data-is-group', 'yes');
+                    new_field.querySelector('.group-label').classList.remove('hidden');
+                    document.querySelector('[data-id="'+id+'"]').querySelector('.group-label').classList.remove('hidden');
+                }
 
                 setTimeout(function() {
-                    new_field = document.querySelector('[data-id="'+new_id+'"]');
-                    new_field.style.top = field_top + field_height + 10+'px';
-
-                    if(group == false) {
-                        new_field.querySelector('.common-field-input').value = '';
-                        new_field.querySelector('.field-name').innerText = '';
-                        new_field.setAttribute('data-group-id', new_id);
-                    } else {
-                        /* document.querySelector('[data-id="'+id+'"]').__x.$data.is_group = true;
-                        new_field.__x.$data.is_group = true; */
-                        new_field.setAttribute('data-group-id', group_id);
-                        new_field.setAttribute('data-is-group', 'yes');
-                    }
-
-                    scope.resize();
-                    scope.draggable(new_field, field_category);
                     scope.coordinates(null, new_field, field_category);
                     scope.options_side = options_side;
                     new_field.click();
-
-                }, 300);
+                }, 100);
 
 
             },
             remove_field(id) {
-                document.querySelector('[data-id="'+id+'"]').remove();
-            },
-            go_to_page(page) {
-                document.querySelector('.page-header-'+page).scrollIntoView({behavior: 'smooth', block: 'start'});
-                document.querySelector('.thumb-header-'+page).scrollIntoView({behavior: 'smooth', block: 'start'});
-                active_page = page;
-            },
-            scroll_page(event) {
+                let ele = document.querySelector('[data-id="'+id+'"]');
+                let group_id = ele.getAttribute('data-group-id');
+                ele.remove();
+                let group = document.querySelectorAll('[data-group-id="'+group_id+'"]');
+                if(group.length < 2) {
+                    group.forEach(function(field) {
+                        field.querySelector('.group-label').classList.add('hidden');
+                    });
+                }
 
-                // let page_container = event.target;
-                // let pages = page_container.querySelectorAll('.form-page-container');
-                // let cont = 'yes';
-
-                // let c = 0;
-                // pages.forEach(function(page) {
-                //     if(c < 1) {
-                //         c = 1;
-
-                //         let start = Math.abs(page.getBoundingClientRect().top);
-                //         let end = page.offsetHeight;
-                //         let breakpoint = end * .75;
-                //         console.log(start, breakpoint, end, page_container.scrollTop);
-
-
-                //         if (start > breakpoint) {
-                //             if(start > end) {
-                //                 document.querySelector('.page-container').__x.$data.active_page = page;
-                //                 console.log(page);
-                //                 cont = 'no';
-                //             }
-                //         }
-                //     }
-
-                // });
-
-
-                // let active_page = document.querySelector('.page-container').__x.$data.active_page;
-                // let page_container = document.querySelector('.page-container');
-                // let page = document.querySelector('.page-'+active_page);
-                // let cont = 'yes';
-
-                // let center = window.outerHeight / 2;
-                // let start = page.getBoundingClientRect().top - page_container.getBoundingClientRect().top;
-                // let end = start + page.offsetHeight;
-                // console.log(start, center, end);
-
-
-                // if (start < center && end > center) {
-
-                //     document.querySelector('.page-container').__x.$data.active_page = page;
-                //     console.log(page);
-                //     cont = 'no';
-                // }
 
             },
-            resize() {
+            resize(element) {
 
-                //console.log('running resize');
                 let scope = this;
-                let field_divs = document.querySelectorAll('.field-div.drag-resize');
+                let resizers = element.querySelectorAll('.resizer');
+                let input_minimum_size = 15;
+                let check_radio_minimum_size = 10;
+                let check_radio_maximum_size = 30;
+                let original_width = 0;
+                let original_height = 0;
+                let original_x = 0;
+                let original_y = 0;
+                let original_mouse_x = 0;
+                let original_mouse_y = 0;
+                let keep_aspect = false;
+                let field_category = element.getAttribute('data-category');
 
-                field_divs.forEach(function(element) {
+                //draggable(element, field_category);
 
-                    let resizers = element.querySelectorAll('.resizer');
-                    let input_minimum_size = 15;
-                    let check_radio_minimum_size = 10;
-                    let check_radio_maximum_size = 30;
-                    let original_width = 0;
-                    let original_height = 0;
-                    let original_x = 0;
-                    let original_y = 0;
-                    let original_mouse_x = 0;
-                    let original_mouse_y = 0;
-                    let keep_aspect = false;
-                    let field_category = element.getAttribute('data-category');
+                for (let i = 0; i < resizers.length; i++) {
+                    let currentResizer = resizers[i];
+                    currentResizer.addEventListener('mousedown', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        original_width = parseFloat(element.offsetWidth);
+                        original_height = parseFloat(element.offsetHeight);
+                        original_x = element.offsetLeft;
+                        original_y = element.offsetTop;
+                        original_mouse_x = e.pageX;
+                        original_mouse_y = e.pageY;
+                        keep_aspect = field_category == 'radio' || field_category == 'checkbox' ? true : false;
+                        window.addEventListener('mousemove', resize);
+                        window.addEventListener('mouseup', stopResize);
+                    })
 
-                    //draggable(element, field_category);
+                    function resize(e) {
+                        if (currentResizer.classList.contains('bottom-right')) {
+                            const width = original_width + (e.pageX - original_mouse_x);
+                            const height = original_height + (e.pageY - original_mouse_y);
+                            if(keep_aspect == true) {
+                                if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
+                                    element.style.width = width + 'px';
+                                    element.style.height = width + 'px';
+                                }
+                            } else {
+                                if (width > input_minimum_size) {
+                                    element.style.width = width + 'px';
+                                }
+                                if (height > input_minimum_size) {
+                                    element.style.height = height + 'px';
+                                }
 
-                    for (let i = 0; i < resizers.length; i++) {
-                        let currentResizer = resizers[i];
-                        currentResizer.addEventListener('mousedown', function (e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            original_width = parseFloat(element.offsetWidth);
-                            original_height = parseFloat(element.offsetHeight);
-                            original_x = element.offsetLeft;
-                            original_y = element.offsetTop;
-                            original_mouse_x = e.pageX;
-                            original_mouse_y = e.pageY;
-                            keep_aspect = field_category == 'radio' || field_category == 'checkbox' ? true : false;
-                            window.addEventListener('mousemove', resize);
-                            window.addEventListener('mouseup', stopResize);
-                        })
-
-                        function resize(e) {
-                            if (currentResizer.classList.contains('bottom-right')) {
-                                const width = original_width + (e.pageX - original_mouse_x);
-                                const height = original_height + (e.pageY - original_mouse_y);
-                                if(keep_aspect == true) {
-                                    if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                                        element.style.width = width + 'px';
-                                        element.style.height = width + 'px';
-                                    }
-                                } else {
-                                    if (width > input_minimum_size) {
-                                        element.style.width = width + 'px';
-                                    }
-                                    if (height > input_minimum_size) {
-                                        element.style.height = height + 'px';
-                                    }
-
+                            }
+                        }
+                        else if (currentResizer.classList.contains('bottom-left')) {
+                            const height = original_height + (e.pageY - original_mouse_y);
+                            const width = original_width - (e.pageX - original_mouse_x);
+                            if(keep_aspect == true) {
+                                if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
+                                    element.style.width = width + 'px';
+                                    element.style.height = width + 'px';
+                                    element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                                }
+                            } else {
+                                if (height > input_minimum_size) {
+                                    element.style.height = height + 'px';
+                                }
+                                if (width > input_minimum_size) {
+                                    element.style.width = width + 'px';
+                                    element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
                                 }
                             }
-                            else if (currentResizer.classList.contains('bottom-left')) {
-                                const height = original_height + (e.pageY - original_mouse_y);
-                                const width = original_width - (e.pageX - original_mouse_x);
-                                if(keep_aspect == true) {
-                                    if (width > check_radio_minimum_size && width <= check_radio_maximum_size) {
-                                        element.style.width = width + 'px';
-                                        element.style.height = width + 'px';
-                                        element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                                    }
-                                } else {
-                                    if (height > input_minimum_size) {
-                                        element.style.height = height + 'px';
-                                    }
-                                    if (width > input_minimum_size) {
-                                        element.style.width = width + 'px';
-                                        element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                                    }
+                        }
+                        else if (currentResizer.classList.contains('top-right')) {
+                            const width = original_width + (e.pageX - original_mouse_x);
+                            const height = original_height - (e.pageY - original_mouse_y);
+                            if(keep_aspect == true) {
+                                if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
+                                    element.style.width = height + 'px';
+                                    element.style.height = height + 'px';
+                                    element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                                }
+                            } else {
+                                if (width > input_minimum_size) {
+                                    element.style.width = width + 'px';
+                                }
+                                if (height > input_minimum_size) {
+                                    element.style.height = height + 'px';
+                                    element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
                                 }
                             }
-                            else if (currentResizer.classList.contains('top-right')) {
-                                const width = original_width + (e.pageX - original_mouse_x);
-                                const height = original_height - (e.pageY - original_mouse_y);
-                                if(keep_aspect == true) {
-                                    if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                                        element.style.width = height + 'px';
-                                        element.style.height = height + 'px';
-                                        element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                                    }
-                                } else {
-                                    if (width > input_minimum_size) {
-                                        element.style.width = width + 'px';
-                                    }
-                                    if (height > input_minimum_size) {
-                                        element.style.height = height + 'px';
-                                        element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                                    }
+                        }
+                        else {
+                            const width = original_width - (e.pageX - original_mouse_x)
+                            const height = original_height - (e.pageY - original_mouse_y)
+                            if(keep_aspect == true) {
+                                if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
+                                    element.style.width = height + 'px';
+                                    element.style.height = height + 'px';
+                                    element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                                    element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
+                                }
+                            } else {
+                                if (width > input_minimum_size) {
+                                    element.style.width = width + 'px'
+                                    element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
+                                }
+                                if (height > input_minimum_size) {
+                                    element.style.height = height + 'px'
+                                    element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
                                 }
                             }
-                            else {
-                                const width = original_width - (e.pageX - original_mouse_x)
-                                const height = original_height - (e.pageY - original_mouse_y)
-                                if(keep_aspect == true) {
-                                    if (height > check_radio_minimum_size && height <= check_radio_maximum_size) {
-                                        element.style.width = height + 'px';
-                                        element.style.height = height + 'px';
-                                        element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                                        element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                                    }
-                                } else {
-                                    if (width > input_minimum_size) {
-                                        element.style.width = width + 'px'
-                                        element.style.left = original_x + (e.pageX - original_mouse_x) + 'px';
-                                    }
-                                    if (height > input_minimum_size) {
-                                        element.style.height = height + 'px'
-                                        element.style.top = original_y + (e.pageY - original_mouse_y) + 'px';
-                                    }
-                                }
-                            }
-
-                            scope.set_options_side(element);
-
                         }
 
-                        function stopResize() {
-                            window.removeEventListener('mousemove', resize);
-                            scope.coordinates(null, element, field_category);
-                            scope.draggable(element, field_category);
-                        }
+                        scope.set_options_side(element);
+
                     }
 
-                });
+                    function stopResize() {
+                        window.removeEventListener('mousemove', resize);
+                        scope.coordinates(null, element, field_category);
+                        scope.draggable(element, field_category);
+                    }
+
+                }
+
 
             },
+
             draggable(element, field_category) {
 
                 //console.log('running draggable');
@@ -570,13 +594,15 @@ if(document.URL.match(/form_fields/)) {
                 if(element.parentNode) {
                     let draggable = new PlainDraggable(element, {
                         handle: element.querySelector('.draggable-handle'),
-                        //autoScroll: true,
+                        autoScroll: true,
                         //containment: element.parentNode,
                         leftTop: true,
                         onDrag: function(newPosition) {
-                            scope.set_options_side(element);
+                            //scope.set_options_side(element);
+                            scope.active_field = '';
                         },
                         onDragEnd: function(newPosition) {
+                            scope.set_options_side(element);
                             scope.coordinates(null, element, field_category);
                         }
                     });
@@ -616,6 +642,7 @@ if(document.URL.match(/form_fields/)) {
             },
 
         }
+
     }
 
 

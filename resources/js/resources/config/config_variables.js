@@ -1,14 +1,14 @@
 if(document.URL.match(/config_variables/)) {
 
-    window.addEventListener('load', (event) => {
 
-        get_config();
 
-    });
 
     window.config = function(type) {
 
         return {
+            init() {
+                get_config();
+            },
             config_add() {
                 let form = document.getElementById('config_add_form');
                 let formData = new FormData(form);
@@ -24,8 +24,25 @@ if(document.URL.match(/config_variables/)) {
                         }
                     }
                 });
-            }
+            },
+
         }
+
+    }
+
+    window.config_edit = function(id, field, value) {
+
+        let formData = new FormData();
+        formData.append('id', id);
+        formData.append('field', field);
+        formData.append('value', value);
+        axios.post('/resources/config/config_edit', formData)
+        .then(function (response) {
+            toastr.success('Config updated');
+        })
+        .catch(function (error) {
+
+        });
 
     }
 
@@ -39,6 +56,14 @@ if(document.URL.match(/config_variables/)) {
         let table = document.querySelector('#config_table');
 
         data_table('/resources/config/get_config_variables', cols, 25, $(table), [0, 'asc'], [1], [], true, true, true, true, true);
+
+        setTimeout(function() {
+            document.querySelectorAll('.config-input').forEach(function(input) {
+                input.addEventListener('change', (event) => {
+                    config_edit(event.target.getAttribute('data-id'), event.target.getAttribute('data-field'), event.target.value);
+                });
+            });
+        }, 500);
     }
 
 }

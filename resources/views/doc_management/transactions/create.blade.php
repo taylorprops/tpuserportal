@@ -1478,7 +1478,7 @@
         :modalId="'show_add_contact_modal'"
         x-show="show_add_contact_modal">
 
-            <table id="contacts_table" class="data-table hover nowrap order-column row-border animate__animated animate__fadeIn hidden" width="100%">
+            <table id="contacts_table" class="data-table hover nowrap order-column row-border" width="100%">
                 <thead>
                     <tr>
                         <th></th>

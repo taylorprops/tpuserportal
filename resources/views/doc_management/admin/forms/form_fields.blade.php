@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="page-container h-screen"
-    x-data="fill_fields()">
+    x-data="fields()">
 
         <div class="w-full p-2 flex justify-around h-screen-8">
 
@@ -99,9 +99,10 @@
 
         </div>
 
-        <div class="grid grid-cols-9 w-full">
+        <div class="grid grid-cols-9 w-full"
+        x-data="">
 
-            <div class="col-span-8 relative">
+            <div class="col-span-8">
 
                 <div class="h-screen-92 overflow-y-auto pb-56 forms-container"
                 data-form-id="{{ $form_id }}">
@@ -123,10 +124,7 @@
 
                             <div class="form-page-container page-{{ $page_number }} relative border"
                             data-page="{{ $page_number }}"
-                            @dblclick.stop.prevent="active_field = '';
-                            $nextTick(() => {
-                                add_field($event)
-                            });">
+                            @dblclick.stop.prevent="add_field($event)">
 
                                 <img src="/storage/{{ $image_location }}" class="w-100">
 
@@ -169,75 +167,76 @@
 
         <template id="field_template" class="hidden">
 
-            <div class="field-div absolute animate__animated animate__fadeIn"
+            <div class="field-div absolute"
             id="field_%%id%%"
             data-id="%%id%%"
             data-category="%%category%%"
             data-common-field-id=""
             data-group-id="%%id%%"
-            {{-- x-bind:data-number-type="number_type" --}}
-            style="top: %%y_perc%%%; left: %%x_perc%%%; height: %%h_perc%%%; width: %%w_perc%%%;"
-            {{-- x-data="{
+            x-data="{
                 field_category: '%%category%%',
                 number_type: 'numeric',
-                is_group: false,
-                add_type: ' Line'
-            }" --}}
-            {{-- x-init="active_field = '%%id%%'; add_type = field_category == 'radio' ? ' Radio' : ' Line';" --}}
-            x-init="$nextTick(() => { console.log(active_field) });"
+            }"
+            x-bind:data-number-type="number_type"
+            style="top: %%y_perc%%%; left: %%x_perc%%%; height: %%h_perc%%%; width: %%w_perc%%%;"
             x-bind:class="{ 'z-50': active_field === '%%id%%' }"
-            @click.stop="active_field = '%%id%%'"
+            x-init="
+                draggable($el, '%%category%%'),
+                resize($el)"
+            @click.stop="
+                active_field = '%%id%%';
+                set_options_side($el);
+                draggable($el, '%%category%%'),
+                resize($el)"
             @click.outside="active_field = ''"
-            {{-- @dblclick.stop.prevent="return false;" --}}>
-
-                @php $input_id = time() * rand(); @endphp
+            @dblclick.stop.prevent>
 
                 <div class="resizers">
                     <div class="resizer top-left"></div>
                     <div class="resizer top-right"></div>
                     <div class="resizer bottom-left"></div>
                     <div class="resizer bottom-right"></div>
-                    <div class="group-label font-bold text-indigo-500"
-                    {{-- x-bind:class="{ 'radio': field_category === 'radio' || field_category === 'checkbox' }" --}}
-                    {{-- x-show="is_group" --}}>G</div>
+                    <div class="group-label text-white h-1.5 w-1.5 rounded-full hidden z-50"
+                    style="background: %%group_color%%"
+                    x-bind:class="{ 'radio': field_category === 'radio' || field_category === 'checkbox' }"></div>
                 </div>
 
-                <div class="field-name field-name-%%id%% draggable-handle flex items-center absolute top-0 w-full h-full whitespace-nowrap opacity-50 text-xs text-white px-1 overflow-hidden"
-                x-bind:class="{ 'bg-yellow-600': active_field === '%%id%%', 'bg-blue-600': active_field !== '%%id%%' }"></div>
+                <div class="field-name field-name-%%id%% draggable-handle flex items-center absolute top-0 w-full h-full whitespace-nowrap opacity-80 text-xxs px-1 overflow-hidden"
+                x-bind:class="{ 'bg-yellow-700 text-white': active_field === '%%id%%', 'bg-yellow-100 text-yellow-900': active_field !== '%%id%%' }"></div>
 
-                {{-- <div class="" x-bind:class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }"
+                <div class="" x-bind:class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }"
                 x-show="active_field === '%%id%%'">
 
                     <div class=""
                     :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }">
 
-                        <div class="absolute -top-3.5 py-3 w-max"
+                        <div class="absolute -bottom-10 w-max"
                         :class="{ 'left-0': options_side === 'left', 'right-0': options_side === 'right' }">
 
                             <div class="flex justify-start items-center"
                             :class="{ 'flex-row': options_side === 'left', 'flex-row-reverse': options_side === 'right' }">
 
                                 <x-elements.button
-                                class="mx-1"
                                 :buttonClass="'primary'"
                                 :buttonSize="'sm'"
                                 type="button"
+                                x-show="field_category !== 'radio'"
+                                x-bind:class="{ 'mr-2': options_side === 'left', 'ml-2': options_side === 'right' }"
                                 @click="active_field = ''; copy_field('%%id%%', false);">
                                     <i class="fal fa-copy mr-2"></i> Copy
                                 </x-elements.button>
 
                                 <x-elements.button
-                                class="mx-1"
                                 :buttonClass="'primary'"
                                 :buttonSize="'sm'"
                                 type="button"
                                 x-show="field_category !== 'checkbox' && field_category !== 'date'"
-                                @click="active_field = ''; copy_field('%%id%%', true)">
-                                    <i class="fal fa-plus mr-2"></i> Add  <span class="ml-1" x-text="add_type"></span>
+                                @click="active_field = ''; copy_field('%%id%%', true);">
+                                    <i class="fal fa-plus mr-2"></i> Add To Group
                                 </x-elements.button>
 
                                 <x-elements.button
-                                class="mx-1"
+                                class="mx-2"
                                 :buttonClass="'danger'"
                                 :buttonSize="'sm'"
                                 type="button"
@@ -251,7 +250,7 @@
 
                     </div>
 
-                    <div class="field-div-options absolute -bottom-1 w-max"
+                    <div class="field-div-options absolute -bottom-14 w-max"
                     :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }">
 
                         <div class="p-2 bg-white border-2 shadow absolute w-96 rounded"
@@ -301,6 +300,7 @@
                                     data-label=""
                                     readonly
                                     :size="'md'"/>
+                                    <input type="hidden">
                                 </div>
                                 <div class="col-span-1 ml-2">
                                     <x-elements.button
@@ -342,7 +342,7 @@
                                                     <i class="fad {{ $icon }} mr-2"></i> {{ $label }} <i class="fal fa-angle-down ml-2"></i>
                                                 </x-elements.button>
 
-                                                <div class="absolute top-6 left-0 pt-3"
+                                                <div class="absolute top-5 left-0 pt-3"
                                                 x-show="field_options" x-transition>
 
                                                     <ul class="w-max text-sm bg-white p-2 relative border rounded shadow">
@@ -431,7 +431,7 @@
 
                     </div>
 
-                </div> --}}
+                </div>
 
             </div>
 
