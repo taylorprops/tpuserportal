@@ -194,7 +194,7 @@ if (document.URL.match(/forms$/)) {
                         form_li = form_li.replace(/%%form_name_display%%/g, form_name_display);
                         form_li = form_li.replace(/%%form_group%%/g, form_group);
 
-                        results.innerHTML += form_li;
+                        results.insertAdjacentHTML('beforeend', form_li);
 
                     });
 

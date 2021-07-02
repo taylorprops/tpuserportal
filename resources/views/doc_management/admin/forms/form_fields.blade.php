@@ -174,10 +174,9 @@
             data-common-field-id=""
             data-group-id="%%id%%"
             x-data="{
-                field_category: '%%category%%',
-                number_type: 'numeric',
+                field_category: '%%category%%'
             }"
-            x-bind:data-number-type="number_type"
+            {{-- x-bind:data-number-type="number_type_%%id%%" --}}
             style="top: %%y_perc%%%; left: %%x_perc%%%; height: %%h_perc%%%; width: %%w_perc%%%;"
             x-bind:class="{ 'z-50': active_field === '%%id%%' }"
             x-init="
@@ -196,7 +195,7 @@
                     <div class="resizer top-right"></div>
                     <div class="resizer bottom-left"></div>
                     <div class="resizer bottom-right"></div>
-                    <div class="group-label text-white h-1.5 w-1.5 rounded-full hidden z-50"
+                    <div class="group-label text-white h-1.5 w-1.5 rounded-full hidden z-20"
                     style="background: %%group_color%%"
                     x-bind:class="{ 'radio': field_category === 'radio' || field_category === 'checkbox' }"></div>
                 </div>
@@ -253,36 +252,46 @@
                     <div class="field-div-options absolute -bottom-14 w-max"
                     :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }">
 
-                        <div class="p-2 bg-white border-2 shadow absolute w-96 rounded"
+                        <div class="p-4 bg-white border-2 shadow absolute w-96 rounded"
                         :class="{ 'left-0 right-auto': options_side === 'left', 'right-0 left-auto': options_side === 'right' }"
                         x-show="field_category !== 'checkbox' && field_category !== 'radio'">
 
                             <div class="grid grid-cols-2"
-                            x-show="field_category === 'number'">
+                            x-show="field_category === 'number'"
+                            x-data="{
+                                number_type: ''
+                            }">
 
                                 <div class="p-2 rounded" :class="{ 'bg-blue-200': number_type === 'numeric' }">
                                     <x-elements.radio
-                                    name="number_type_%%id%%"
+                                    name="number_type_radio_%%id%%"
+                                    id="numeric_%%id%%"
                                     class="number-type"
-                                    checked="checked"
                                     value="numeric"
                                     :size="'sm'"
                                     :color="'blue'"
                                     :label="'Numeric'"
-                                    x-model="number_type"/>
-                                        <div class="text-xs text-gray-500">4,000.00</div>
+                                    x-on:change="console.log(number_type); number_type = $el.checked ? 'numeric' : 'written';"
+                                    {{-- x-model="number_type_%%id%%" --}}/>
+
+                                    <div class="text-xs text-gray-500">4,000.00</div>
+
                                 </div>
 
                                 <div class="p-2 rounded" :class="{ 'bg-blue-200': number_type === 'written' }">
                                     <x-elements.radio
-                                    name="number_type_%%id%%"
+                                    name="number_type_radio_%%id%%"
+                                    id="written_%%id%%"
                                     class="number-type"
                                     value="written"
                                     :size="'sm'"
                                     :color="'blue'"
                                     :label="'Written'"
-                                    x-model="number_type"/>
-                                        <div class="text-xs text-gray-500">Four Thousand</div>
+                                    x-on:change="console.log(number_type); number_type = $el.checked ? 'written' : 'numeric';"
+                                    {{-- x-model="number_type_%%id%%" --}}/>
+
+                                    <div class="text-xs text-gray-500">Four Thousand</div>
+
                                 </div>
 
                             </div>

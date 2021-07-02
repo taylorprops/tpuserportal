@@ -108,7 +108,7 @@ if(document.URL.match(/form_fields/)) {
 
                         let page_container = document.querySelector('.page-'+field.page);
 
-                        page_container.innerHTML += field_html;
+                        page_container.insertAdjacentHTML('beforeend', field_html);
 
                         let new_field = document.querySelector('[data-id="' + field.field_id + '"]');
                         new_field.classList.add('drag-resize');
@@ -200,7 +200,7 @@ if(document.URL.match(/form_fields/)) {
                 field_html = field_html.replace(/%%h_perc%%/g, coords.h_perc);
                 field_html = field_html.replace(/%%w_perc%%/g, coords.w_perc);
 
-                container.innerHTML += field_html;
+                container.insertAdjacentHTML('beforeend', field_html);
 
                 let new_field = document.querySelector('[data-id="'+id+'"]');
                 new_field.classList.add('drag-resize');
@@ -416,8 +416,8 @@ if(document.URL.match(/form_fields/)) {
 
                 new_field = new_field.replace(find_id, new_id);
 
+                field.closest('.form-page-container').insertAdjacentHTML('beforeend', new_field);
 
-                field.closest('.form-page-container').innerHTML += new_field;
                 new_field = document.querySelector('[data-id="'+new_id+'"]');
 
                 new_field.style.top = field_top + field_height + 10+'px';
@@ -617,6 +617,7 @@ if(document.URL.match(/form_fields/)) {
             },
             select_common_field(event) {
 
+                /*
                 let ele = event.currentTarget;
                 let id = ele.getAttribute('data-id');
                 let name = ele.getAttribute('data-name');
@@ -636,6 +637,34 @@ if(document.URL.match(/form_fields/)) {
                 field_div.setAttribute('data-field-name', name);
                 field_div.setAttribute('data-db-column-name', db_column_name);
                 field_div.setAttribute('data-field-type', field_type);
+
+                this.active_field = ''; */
+
+                let ele = event.currentTarget;
+                let id = ele.getAttribute('data-id');
+                let group_id = ele.closest('.field-div').getAttribute('data-group-id');
+                let name = ele.getAttribute('data-name');
+                let db_column_name = ele.getAttribute('data-db-column-name');
+                let field_type = ele.getAttribute('data-field-type');
+                let common_field_group_id = ele.getAttribute('data-common-field-group-id');
+                let common_field_sub_group_id = ele.getAttribute('data-common-field-sub-group-id');
+
+                let group_fields = document.querySelectorAll('.field-div[data-group-id="'+group_id+'"]');
+
+                if(group_fields.length > 0) {
+                    group_fields.forEach(function(field_div) {
+
+                        field_div.querySelector('.common-field-input').value = name;
+                        field_div.querySelector('.field-name').innerText = name;
+
+                        field_div.setAttribute('data-common-field-id', id);
+                        field_div.setAttribute('data-common-field-group-id', common_field_group_id);
+                        field_div.setAttribute('data-common-field-sub-group-id', common_field_sub_group_id);
+                        field_div.setAttribute('data-field-name', name);
+                        field_div.setAttribute('data-db-column-name', db_column_name);
+                        field_div.setAttribute('data-field-type', field_type);
+                    });
+                }
 
                 this.active_field = '';
 

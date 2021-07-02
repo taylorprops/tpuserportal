@@ -25,9 +25,9 @@ window.show_file_names = function (event) {
     let files = event.target.files;
     document.querySelector('.file-names').innerHTML = '';
     for (var i = 0; i < files.length; i++) {
-        document.querySelector('.file-names').innerHTML += files[i].name;
+        document.querySelector('.file-names').insertAdjacentHTML('beforeend', files[i].name);
         if(i < files.length - 1) {
-            document.querySelector('.file-names').innerHTML += ', ';
+            document.querySelector('.file-names').insertAdjacentHTML('beforeend', ', ');
         }
     }
 }

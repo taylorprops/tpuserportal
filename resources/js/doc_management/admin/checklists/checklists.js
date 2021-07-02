@@ -181,7 +181,7 @@ if (document.URL.match(/checklists$/)) {
                 form_html = form_html.replace(/%%checklist_id%%/g, checklist_id);
                 form_html = form_html.replace(/%%checklist_group_id%%/g, checklist_group_id);
 
-                form_group_container.innerHTML += form_html;
+                form_group_container.insertAdjacentHTML('beforeend', form_html);
 
                 sortable_items();
 
