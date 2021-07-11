@@ -46,18 +46,14 @@ html {
 
     }
 
-    .group-label:not(.radio) {
+    .group-label {
         position: absolute;
         top: 0px;
         right: 1px;
         font-size: .6rem;
     }
 
-    .group-label.radio {
-        font-size: .6rem;
-        width: 100%;
-        text-align: center;
-    }
+
 
 }
 

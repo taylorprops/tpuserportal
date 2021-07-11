@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <ul class="bg-default-light shadow absolute left-full top-0 w-48 p-2">
+        <ul class="bg-default-light shadow absolute left-3/4 top-0 w-48 p-2 z-10">
             @foreach($level2 as $link)
                 <li class="text-white hover:text-primary p-2 pl-4">
                     <a href="{{ $link['link'] }}" class="w-full flex items-center text-sm font-medium rounded-md text-white hover:text-gray-300">
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <ul class="bg-default-light shadow absolute left-full top-0 w-48 p-2">
+        <ul class="bg-default-light shadow absolute left-3/4 top-0 w-48 p-2 z-10">
 
             @foreach($level3 as $link)
 
@@ -86,7 +86,7 @@
                             </div>
                         </div>
 
-                        <ul class="bg-default-light shadow absolute left-full top-0 w-48 p-2">
+                        <ul class="bg-default-light shadow absolute left-3/4 top-0 w-48 p-2">
                             @foreach($link['sub_links'] as $link)
                                 <li class="p-2 pl-4">
                                     <a href="{{ $link['link'] }}" class="w-full flex items-center text-sm font-medium rounded-md text-white hover:text-gray-300">

@@ -7,10 +7,10 @@ if(document.URL.match(/transactions\/create/)) {
 
     });
 
-    window.create = function(type) {
+    window.create = function(transaction_type) {
 
         return {
-            transaction_type: '',
+            transaction_type: transaction_type,
             search_type: 'address',
             active_step: 1,
             steps_complete: '0',
@@ -38,6 +38,29 @@ if(document.URL.match(/transactions\/create/)) {
             search_details: [],
             property_details: [],
             checklist_details: [],
+
+            init() {
+
+                let scope = this;
+
+                this.address_search();
+
+                setTimeout(function() {
+                    scope.get_contacts();
+                }, 200);
+
+                if(this.transaction_type == 'listing') { this.show_both = true; };
+
+                axios.get('/transactions/get_property_types')
+                .then(function (response) {
+                    scope.property_types = response.data;
+                });
+                axios.get('/transactions/get_property_sub_types')
+                .then(function (response) {
+                    scope.property_sub_types = response.data;
+                });
+
+            },
             address_search() {
 
                 let scope = this;
@@ -575,7 +598,6 @@ if(document.URL.match(/transactions\/create/)) {
                 ];
                 let table = document.querySelector('#contacts_table');
                 data_table('/transactions/get_contacts', cols, 10, $(table), [1, 'asc'], [0], [], false, true, true, true, true);
-                table.classList.remove('hidden');
             },
             import_contact(ele) {
                 let id = ele.getAttribute('data-id');
@@ -625,17 +647,15 @@ if(document.URL.match(/transactions\/create/)) {
                 member_html = member_html.replace(/%%member_count%%/g, member_count);
                 member_html = member_html.replace(/%%member_type%%/g, member_type);
 
-                let div = document.createElement('div');
-                div.innerHTML = member_html;
-                container.appendChild(div);
-                unwrap(div);
+                container.insertAdjacentHTML('beforeend', member_html);
+
                 document.querySelector('.new-member-div').classList.add('member-container');
                 document.querySelector('.new-member-div').classList.remove('new-member-div');
 
 
             },
             remove_member(member_id, ele) {
-
+                console.log('working');
                 let container = ele.closest('.members-container');
                 let member = container.querySelector('[data-id="'+member_id+'"]');
                 member.classList.remove('opacity-100');
@@ -658,6 +678,7 @@ if(document.URL.match(/transactions\/create/)) {
                 remove_form_errors();
 
                 let type = ucwords(transaction_type);
+                ele_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving '+type+'...');
 
                 let sellers = [];
@@ -723,12 +744,14 @@ if(document.URL.match(/transactions\/create/)) {
                 if(sellers.length == 0 && transaction_type != 'referral') {
                     toastr.error('You must enter at least one Owner');
                     document.querySelector('.seller-header').scrollIntoView();
+                    ele.innerHTML = ele_html;
                     return false;
                 }
                 if(transaction_type == 'contract') {
                     if(buyers.length == 0) {
                         toastr.error('You must enter at least one Buyer');
                         document.querySelector('.buyer-header').scrollIntoView();
+                        ele.innerHTML = ele_html;
                         return false;
                     }
                 }
@@ -758,6 +781,7 @@ if(document.URL.match(/transactions\/create/)) {
                         if(error.response.status == 422) {
                             let errors = error.response.data.errors;
                             show_form_errors(errors);
+                            ele.innerHTML = ele_html;
                         }
                     }
                 });
@@ -792,10 +816,8 @@ if(document.URL.match(/transactions\/create/)) {
                         li = li.replace(/%%OfficeStateOrProvince%%/g, agent.OfficeStateOrProvince);
                         li = li.replace(/%%OfficePostalCode%%/g, agent.OfficePostalCode);
 
-                        let div = document.createElement('div');
-                        div.innerHTML = li;
-                        results_div.appendChild(div);
-                        unwrap(div);
+                        results_div.insertAdjacentHTML('beforeend', li);
+
                     });
 
                     scope.show_agent_search_results = true;
@@ -806,7 +828,7 @@ if(document.URL.match(/transactions\/create/)) {
                 });
             },
             select_agent(ele) {
-
+                console.log(ele);
                 if(this.transaction_type == 'contract') {
 
                     document.getElementById('ListAgentFirstName').value = ele.getAttribute('data-MemberFirstName');

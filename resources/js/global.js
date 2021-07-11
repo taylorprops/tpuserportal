@@ -44,7 +44,6 @@ window.axios_options = {
 
 
 window.show_loading = function() {
-
     document.querySelector('.page-loading').classList.remove('hidden');
     document.querySelector('.page-loading').classList.add('block');
 }

@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('America/New_York');
 
         // add custom config vars from config table
+        // General config - string or array
         config([
             'global' => Config::all([
                 'config_key','config_value','value_type'
@@ -51,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
             -> toArray()
         ]);
 
+        // custom configs / from tables other than config
         config([
             'bright_office_codes' => CompanyBrightOffices::all([
                 'bright_office_code'

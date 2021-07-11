@@ -219,7 +219,7 @@ class TransactionsController extends Controller
                 data-city="'.$contacts -> contact_city.'"
                 data-state="'.$contacts -> contact_state.'"
                 data-zip="'.$contacts -> contact_zip.'"
-                @click="import_contact($event.target)"
+                x-on:click="import_contact($el)"
                 ><i class="fal fa-check fa-sm mr-2"></i> Import</button>';
         })
         -> editColumn('contact_first', function($contacts) {

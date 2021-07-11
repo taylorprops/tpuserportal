@@ -185,11 +185,6 @@ if (document.URL.match(/checklists$/)) {
 
                 sortable_items();
 
-                // let div = document.createElement('div');
-                // div.innerHTML = form_html;
-                // form_group_container.appendChild(div);
-                // unwrap(div);
-
             },
             delete_checklist(checklist_id) {
 

@@ -617,29 +617,6 @@ if(document.URL.match(/form_fields/)) {
             },
             select_common_field(event) {
 
-                /*
-                let ele = event.currentTarget;
-                let id = ele.getAttribute('data-id');
-                let name = ele.getAttribute('data-name');
-                let db_column_name = ele.getAttribute('data-db-column-name');
-                let field_type = ele.getAttribute('data-field-type');
-                let common_field_group_id = ele.getAttribute('data-common-field-group-id');
-                let common_field_sub_group_id = ele.getAttribute('data-common-field-sub-group-id');
-
-                let field_div = ele.closest('.field-div');
-
-                field_div.querySelector('.common-field-input').value = name;
-                field_div.querySelector('.field-name').innerText = name;
-
-                field_div.setAttribute('data-common-field-id', id);
-                field_div.setAttribute('data-common-field-group-id', common_field_group_id);
-                field_div.setAttribute('data-common-field-sub-group-id', common_field_sub_group_id);
-                field_div.setAttribute('data-field-name', name);
-                field_div.setAttribute('data-db-column-name', db_column_name);
-                field_div.setAttribute('data-field-type', field_type);
-
-                this.active_field = ''; */
-
                 let ele = event.currentTarget;
                 let id = ele.getAttribute('data-id');
                 let group_id = ele.closest('.field-div').getAttribute('data-group-id');
@@ -667,6 +644,24 @@ if(document.URL.match(/form_fields/)) {
                 }
 
                 this.active_field = '';
+
+            },
+            delete_page(page, form_id) {
+
+                $('#page_div_' + page).next('.file-view-page-info').fadeOut('slow').remove();
+                $('#page_' + page + ', #page_div_' + page + ', #thumb_' + page).fadeOut('slow').remove();
+
+                let formData = new FormData();
+                formData.append('page', page);
+                formData.append('form_id', form_id);
+                axios.post('/doc_management/admin/forms/delete_page', formData, axios_options)
+                    .then(function (response) {
+                        toastr.success('Page Successfully Removed');
+                        document.querySelector('.thumb-header-'+page).remove();
+                    })
+                    .catch(function (error) {
+
+                    });
 
             },
 

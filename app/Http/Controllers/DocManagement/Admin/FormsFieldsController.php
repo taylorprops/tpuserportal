@@ -4,9 +4,11 @@ namespace App\Http\Controllers\DocManagement\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Admin\Forms\Forms;
-use App\Models\DocManagement\Admin\Forms\FormsFields;
+use App\Models\DocManagement\Admin\Forms\FormsPages;
 use App\Models\DocManagement\Resources\CommonFields;
+use App\Models\DocManagement\Admin\Forms\FormsFields;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class FormsFieldsController extends Controller
@@ -123,6 +125,45 @@ class FormsFieldsController extends Controller
             }
 
         }
+
+    }
+
+    public function delete_page(Request $request) {
+
+        $form_id = $request -> form_id;
+        $page = $request -> page;
+
+        // get form, page and image
+        $form = Forms::where('id', $form_id) -> first();
+        $pages = FormsPages::where('form_id', $form_id) -> get();
+        $page = FormsPages::where('form_id', $form_id) -> where('page_number', $page) -> first();
+
+        // update pages total counts
+        $new_page_count = $form -> pages_total - 1;
+
+        $form -> pages_total = $new_page_count;
+        $form -> save();
+
+        foreach($pages as $page_update) {
+            $page_update -> pages_total = $new_page_count;
+            $page_update -> save();
+        }
+
+        // remove last page from pages and images
+        $files_remove = [$page -> pdf_location, $page -> image_location];
+        foreach ($files_remove as $file_remove) {
+            Storage::delete($file_remove);
+        }
+
+        // remove page from table
+        $page -> delete();
+
+        // remove last page from main form
+        $file = Storage::path($form -> form_location);
+        $temp_file = Storage::path('tmp/'.$form -> file_name);
+        exec('pdftk '.$file.' cat 1-r2 output '.$temp_file.' && mv '.$temp_file.' '.$file);
+
+
 
     }
 

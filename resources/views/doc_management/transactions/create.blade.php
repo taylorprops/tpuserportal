@@ -5,14 +5,7 @@
     </x-slot>
 
     <div class="create-div pb-36 pt-16"
-    x-data="create(`{{ $transaction_type }}`)"
-    x-init="
-        address_search();
-        get_contacts();
-        transaction_type = '{{ $transaction_type }}';
-        if(transaction_type == 'listing') { this.show_both = true; };
-        $fetch('/transactions/get_property_types').then(data => property_types = data);
-        $fetch('/transactions/get_property_sub_types').then(data => property_sub_types = data);">
+    x-data="create(`{{ $transaction_type }}`)">
 
         <div class="max-w-screen-lg mx-auto sm:px-6 lg:px-12">
 
@@ -70,7 +63,7 @@
             <div class="py-6 md:py-8">
 
                 {{-- STEP 1 --}}
-                <div x-transition="active_step === 1">
+                <div x-transition x-show="active_step === 1">
 
                     {{-- Nav - Mobile --}}
                     <div class="sm:hidden">
@@ -78,7 +71,7 @@
                         <x-elements.select id="my_select" name=""
                         data-label="Locate Property By"
                         :size="'md'"
-                        x-on:change="search_type = $event.target.value; clear_results_and_errors();">
+                        x-on:change="search_type = $el.value; clear_results_and_errors();">
                             <option value="address" selected>Search Street Address </option>
                             <option value="mls">Search MLS ID</option>
                             <option value="manually">Enter Manually</option>
@@ -132,7 +125,7 @@
 
                         {{-- Address Search Div --}}
                         <div class="md:w-2/3 mx-auto"
-                        x-transition="search_type === 'address'">
+                        x-transition x-show="search_type === 'address'">
 
                             <div class="grid grid-cols-1 md:grid-cols-7">
 
@@ -160,7 +153,7 @@
                                     :buttonClass="'primary'"
                                     :buttonSize="'lg'"
                                     type="button"
-                                    @click="get_property_info($event.currentTarget, search_type)"
+                                    @click="get_property_info($el, search_type)"
                                     @keydown="sessionStorage.search_details = ''">
                                     Continue <i class="fal fa-arrow-right ml-2"></i>
                                 </x-elements.button>
@@ -172,7 +165,7 @@
 
                         {{-- MLS Search Div --}}
                         <div class="md:max-w-xs mx-auto"
-                        x-transition="search_type === 'mls'">
+                        x-transition x-show="search_type === 'mls'">
 
                             <div>
                                 <x-elements.input
@@ -188,7 +181,7 @@
                                     :buttonClass="'primary'"
                                     :buttonSize="'lg'"
                                     type="button"
-                                    @click="get_property_info($event.currentTarget, search_type)">
+                                    @click="get_property_info($el, search_type)">
                                     Continue <i class="fal fa-arrow-right ml-2"></i>
                                 </x-elements.button>
                             </div>
@@ -197,7 +190,7 @@
 
                         {{-- Manual Entry Div --}}
                         <div
-                        x-transition="search_type === 'manually'">
+                        x-transition x-show="search_type === 'manually'">
 
                             <form id="manual_entry_form">
 
@@ -245,7 +238,7 @@
                                         placeholder=""
                                         data-label="Zip"
                                         :size="'lg'"
-                                        @keyup="get_location_details('#manual_entry_form', '', $event.target, '#city', '#state', '#county')"/>
+                                        @keyup="get_location_details('#manual_entry_form', '', $el, '#city', '#state', '#county')"/>
                                     </div>
 
                                     <div class="col-span-1 md:col-span-2">
@@ -265,7 +258,7 @@
                                         name="state"
                                         data-label="State"
                                         :size="'lg'"
-                                        @change="let value = $event.target.value; $fetch('/transactions/get_counties/'+value).then(data => counties = data);">
+                                        @change="let value = $el.value; axios('/transactions/get_counties/'+value).then(data => counties = data);">
                                             <option value=""></option>
                                             @foreach($states as $state)
                                                 <option value="{{ $state -> state }}">{{ $state -> state }}</option>
@@ -308,7 +301,7 @@
                         {{-- Errors --}}
 
                         <div class="mt-8"
-                        x-transition="show_no_property_error">
+                        x-transition x-show="show_no_property_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>
@@ -324,7 +317,7 @@
                         </div>
 
                         <div class="mt-8"
-                        x-transition="show_street_error">
+                        x-transition x-show="show_street_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>
@@ -340,7 +333,7 @@
                         </div>
 
                         <div class="mt-8"
-                        x-transition="show_license_state_error">
+                        x-transition x-show="show_license_state_error">
                             <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                                 <p class="font-bold">Error</p>
                                 <p>You can only add properties from states the company is licesned in.</p>
@@ -352,7 +345,7 @@
                         {{-- Final Result --}}
                         <div class="border border-secondary mt-12 rounded w-2/3 mx-auto"
                         id="final_results"
-                        x-transition="final_result">
+                        x-transition x-show="final_result">
 
                             <div class="bg-secondary text-white px-4 py-2"><i class="fal fa-check fa-lg mr-3"></i> Property Found</div>
 
@@ -360,14 +353,14 @@
 
                                 <div class="col-span-1">
                                     <img src="" id="property_image" class="max-h-20 rounded-lg shadow"
-                                    x-transition="property_found_mls">
-                                    <i class="fad fa-home-alt fa-3x text-gray-400" id="no_property_image" x-transition="!property_found_mls"></i>
+                                    x-transition x-show="property_found_mls">
+                                    <i class="fad fa-home-alt fa-3x text-gray-400" id="no_property_image" x-transition x-show="!property_found_mls"></i>
                                 </div>
                                 <div class="col-span-3 flex items-center">
                                     <div>
                                         <div id="property_address"></div>
                                         <div class="flex justify-start items-center"
-                                        x-transition="property_found_mls">
+                                        x-transition x-show="property_found_mls">
                                             <div id="property_listing_id" class="text-gray-700"></div>
                                             <div class="mx-3"> - </div>
                                             <div id="property_status" class="text-lg font-semibold text-secondary"></div>
@@ -382,7 +375,7 @@
                             <div class="max-w-sm p-3 mx-auto">
 
                                 <div class=" text-gray-700"
-                                x-transition="property_found_mls">
+                                x-transition x-show="property_found_mls">
                                     <div class="mb-2">
                                         Listing Office: <span id="property_list_office"></span>
                                     </div>
@@ -399,7 +392,7 @@
                                         Property Type: <span id="property_type_display"></span>
                                     </div>
                                 </div>
-                                <div x-transition="property_found_tax_records">
+                                <div x-transition x-show="property_found_tax_records">
                                     <div class="mb-2"
                                     x-show="tax_records_link">
                                         Tax Records: <a href="" id="property_tax_records_link" target="_blank" class="text-primary">View Tax Records</a>
@@ -438,7 +431,7 @@
                 </div>
 
                 {{-- STEP 2 --}}
-                <div x-transition="active_step === 2">
+                <div x-transition x-show="active_step === 2">
 
                     <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
 
@@ -476,7 +469,7 @@
                                 class="required"
                                 data-label="Transaction Type"
                                 :size="'md'"
-                                @change="for_sale = $event.target.value == 'sale' || $event.target.value == 'both' ? 'yes' : 'no'; $nextTick(() => { property_type_selected() })">
+                                @change="for_sale = $el.value == 'sale' || $el.value == 'both' ? 'yes' : 'no'; $nextTick(() => { property_type_selected() })">
                                     <option value="sale" :selected="for_sale === 'yes'">Sale</option>
                                     <option value="rental" :selected="for_sale === 'no'">Rental</option>
                                     <option value="both" :class="{ 'hidden': show_both === false }">Both</option>
@@ -564,7 +557,7 @@
                 </div>
 
                 {{-- STEP 3 --}}
-                <div x-transition="active_step === 3">
+                <div x-transition x-show="active_step === 3">
 
                     <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
 
@@ -592,7 +585,7 @@
                                                 :buttonClass="'primary'"
                                                 :buttonSize="'sm'"
                                                 type="button"
-                                                @click="show_add_contact_modal = true; import_contact_member_id = 1">
+                                                x-on:click="show_add_contact_modal = true; import_contact_member_id = 1">
                                                 <i class="fad fa-user-friends mr-2"></i> Import from Contacts
                                                 </x-elements.button>
 
@@ -603,11 +596,11 @@
                                                 :size="'sm'"
                                                 :color="'blue'"
                                                 :label="'Owner is a Trust, Company or other Entity'"
-                                                @click="seller_is_trust = !seller_is_trust"/>
+                                                x-on:click="seller_is_trust = !seller_is_trust"/>
                                             </div>
 
                                             <div class="my-3"
-                                            x-transition="seller_is_trust">
+                                            x-transition x-show="seller_is_trust">
                                                 <x-elements.input
                                                 class="member-entity-name"
                                                 data-label="Trust, Company or other Entity Name"
@@ -666,7 +659,7 @@
                                                     data-member-index="1"
                                                     :size="'md'"
                                                     x-bind:class="{ 'required': !seller_is_trust }"
-                                                    @keyup="get_location_details('.member-container', '1', $event.target, '.member-city', '.member-state')"/>
+                                                    @keyup="get_location_details('.member-container', '1', $el, '.member-city', '.member-state')"/>
                                                 </div>
 
                                                 <div class="col-span-1 md:col-span-2">
@@ -732,7 +725,7 @@
                                             class="required"
                                             data-label="List Date"
                                             :size="'md'"
-                                            @onchange="document.getElementById('ExpirationDate').setAttribute('min', $event.target.value)"/>
+                                            @onchange="document.getElementById('ExpirationDate').setAttribute('min', $el.value)"/>
                                         </div>
 
                                         <div class="col-span-1">
@@ -754,7 +747,7 @@
                                     :buttonClass="'primary'"
                                     :buttonSize="'lg'"
                                     type="button"
-                                    @click="save_transaction($event.currentTarget, 'listing')">
+                                    @click="save_transaction($el, 'listing')">
                                     <i class="fal fa-check mr-2"></i> Save Listing
                                 </x-elements.button>
                                 </div>
@@ -783,7 +776,7 @@
                                             :buttonClass="'primary'"
                                             :buttonSize="'sm'"
                                             type="button"
-                                            @click="show_add_contact_modal = true; import_contact_member_id = 1">
+                                            x-on:click="show_add_contact_modal = true; import_contact_member_id = 1">
                                             <i class="fad fa-user-friends mr-2"></i> Import from Contacts
                                             </x-elements.button>
 
@@ -794,11 +787,11 @@
                                             :size="'sm'"
                                             :color="'blue'"
                                             :label="'Client is a Trust, Company or other Entity'"
-                                            @click="buyer_is_trust = !buyer_is_trust"/>
+                                            x-on:click="buyer_is_trust = !buyer_is_trust"/>
                                         </div>
 
                                         <div class="my-3"
-                                        x-transition="buyer_is_trust">
+                                        x-transition x-show="buyer_is_trust">
                                             <x-elements.input
                                             class="contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
@@ -857,7 +850,7 @@
                                                 data-member-index="1"
                                                 :size="'md'"
                                                 x-bind:class="{ 'required': !buyer_is_trust }"
-                                                @keyup="get_location_details('.member-container', '1', $event.target, '.member-city', '.member-state')"/>
+                                                @keyup="get_location_details('.member-container', '1', $el, '.member-city', '.member-state')"/>
                                             </div>
 
                                             <div class="col-span-1 md:col-span-2">
@@ -920,7 +913,7 @@
                                         </div>
 
                                         <div class="my-3"
-                                        x-transition="seller_is_trust">
+                                        x-transition x-show="seller_is_trust">
                                             <x-elements.input
                                             class="contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
@@ -974,7 +967,7 @@
                                     class="bg-gray-50 focus:bg-white agent-search-input"
                                     placeholder="Search Agents in Bright MLS"
                                     :size="'sm'"
-                                    @keyup="agent_search($event.target.value)"/>
+                                    @keyup="agent_search($el.value)"/>
                                     <i class="fal fa-search text-gray-400 absolute right-3 top-5"></i>
                                 </div>
 
@@ -1125,7 +1118,7 @@
                                         name="UsingHeritageTitle"
                                         data-label="Using Heritage Title"
                                         :size="'md'"
-                                        @change="using_heritage_title = $event.currentTarget.value == 'yes' ? true : false">
+                                        @change="using_heritage_title = $el.value == 'yes' ? true : false">
                                             <option value=""></option>
                                             <option value="yes">Yes</option>
                                             <option value="no">No</option>
@@ -1186,7 +1179,7 @@
                                     :buttonClass="'primary'"
                                     :buttonSize="'lg'"
                                     type="button"
-                                    @click="save_transaction($event.currentTarget, 'contract')">
+                                    @click="save_transaction($el, 'contract')">
                                     <i class="fal fa-check mr-2"></i> <span x-text="for_sale === 'yes' ? 'Save Contract' : 'Save Lease'"></span>
                                 </x-elements.button>
                             </div>
@@ -1263,7 +1256,7 @@
                                             data-member-index="1"
                                             :size="'md'"
                                             x-bind:class="{ 'required': !seller_is_trust }"
-                                            @keyup="get_location_details('.referral-address-container', '', $event.target, '#ReferralClientCity', '#ReferralClientState')"/>
+                                            @keyup="get_location_details('.referral-address-container', '', $el, '#ReferralClientCity', '#ReferralClientState')"/>
                                         </div>
 
                                         <div class="col-span-1 md:col-span-2">
@@ -1303,7 +1296,7 @@
                                         class="bg-gray-50 focus:bg-white agent-search-input"
                                         placeholder="Search Agents in Bright MLS"
                                         :size="'sm'"
-                                        @keyup="agent_search($event.target.value)"/>
+                                        @keyup="agent_search($el.value)"/>
                                         <i class="fal fa-search text-gray-400 absolute right-3 top-5"></i>
                                     </div>
 
@@ -1365,7 +1358,7 @@
                                             data-label="Office Zip"
                                             data-member-index="1"
                                             :size="'md'"
-                                            @keyup="get_location_details('.referral-office-address-container', '', $event.target, '#ReferralReceivingAgentOfficeCity', '#ReferralReceivingAgentOfficeState')"/>
+                                            @keyup="get_location_details('.referral-office-address-container', '', $el, '#ReferralReceivingAgentOfficeCity', '#ReferralReceivingAgentOfficeState')"/>
                                         </div>
 
                                         <div class="col-span-1 md:col-span-2">
@@ -1432,7 +1425,7 @@
                                             data-label="Referral Percentage"
                                             max-length="2"
                                             :size="'md'"
-                                            @keyup="total_referral_commission(); let ele = $event.target; ele.value = ele.value.replace(/\./, '');"/>
+                                            @keyup="total_referral_commission(); let ele = $el; ele.value = ele.value.replace(/\./, '');"/>
                                         </div>
 
                                         <div class="col-span-1">
@@ -1455,7 +1448,7 @@
                                         :buttonClass="'primary'"
                                         :buttonSize="'lg'"
                                         type="button"
-                                        @click="save_transaction($event.currentTarget, 'referral')">
+                                        @click="save_transaction($el, 'referral')">
                                         <i class="fal fa-check mr-2"></i> Save Referral
                                     </x-elements.button>
                                 </div>
@@ -1508,7 +1501,7 @@
                     :buttonClass="'primary'"
                     :buttonSize="'sm'"
                     type="button"
-                    @click="show_add_contact_modal = true; import_contact_member_id = %%member_id%%">
+                    x-on:click="show_add_contact_modal = true; import_contact_member_id = %%member_id%%">
                     <i class="fad fa-user-friends mr-2"></i> Import from Contacts
                     </x-elements.button>
 
@@ -1517,7 +1510,7 @@
                     :buttonClass="'danger'"
                     :buttonSize="'sm'"
                     type="button"
-                    @click="remove_member(%%member_id%%, $event.currentTarget);">
+                    x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
                     </x-elements.button>
 
@@ -1576,7 +1569,7 @@
                     data-member-index="%%member_id%%"
                     :size="'md'"
                     x-bind:class="{ 'required': !seller_is_trust }"
-                    @keyup="get_location_details('.member-container', '%%member_id%%', $event.target, '.member-city', '.member-state')"/>
+                    @keyup="get_location_details('.member-container', '%%member_id%%', $el, '.member-city', '.member-state')"/>
                 </div>
 
                 <div class="col-span-1 md:col-span-2">
@@ -1621,7 +1614,7 @@
                     :buttonClass="'danger'"
                     :buttonSize="'sm'"
                     type="button"
-                    @click="remove_member(%%member_id%%, $event.currentTarget);">
+                    x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
                     </x-elements.button>
 
@@ -1655,7 +1648,7 @@
 
     <template id="agent_search_result_template">
         <li class="px-2 py-3 border-b cursor-pointer hover:text-secondary"
-        x-on:click="select_agent($event.currentTarget)"
+        x-on:click="select_agent($el)"
         data-MemberFirstName="%%MemberFirstName%%"
         data-MemberLastName="%%MemberLastName%%"
         data-MemberPreferredPhone="%%MemberPreferredPhone%%"

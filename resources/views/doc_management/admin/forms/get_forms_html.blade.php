@@ -22,7 +22,7 @@
 
             <div class="flex justify-between items-center">
                 <div>
-                    <a href="/storage/{{ $form -> form_location }}" target="_blank">{{ $form -> form_name_display }}</a>
+                    <a href="/storage/{{ $form -> form_location }}" class="text-gray-600 text-lg" target="_blank">{{ $form -> form_name_display }}</a>
                 </div>
                 <div class="text-xs">
                     Added: {{ date('M jS, Y', strtotime($form -> created_at)) }} {{ date('g:i A', strtotime($form -> created_at)) }}
@@ -34,7 +34,7 @@
                 <div>
                     <x-elements.button
                         :buttonClass="'primary'"
-                        :buttonSize="'md'"
+                        :buttonSize="'sm'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'; window.open('/doc_management/admin/forms/form_fields/{{ $form_id }}', '_blank');">
                         <i class="fad fa-rectangle-wide mr-2"></i> Fillable Fields
@@ -47,7 +47,7 @@
                 <div class="ml-3">
                     <x-elements.button
                         :buttonClass="'primary'"
-                        :buttonSize="'md'"
+                        :buttonSize="'sm'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'">
                         <i class="fad fa-signature mr-2"></i> Signature Fields
@@ -60,7 +60,7 @@
                 <div class="ml-3">
                     <x-elements.button
                     :buttonClass="'primary'"
-                    :buttonSize="'md'"
+                    :buttonSize="'sm'"
                     type="button"
                     @click="clear_form(); edit_form($event.target, `{{ $form_id }}`, `{{ $form_name_display}}`, `{{ $form_location }}`, `{{ $form_group_id }}`, `{{ $checklist_group_id }}`, `{{ $form_tag }}`, `{{ $state }}`, `{{ $helper_text }}`);
                     active_form = `{{ $form_id }}`;">
@@ -71,7 +71,7 @@
                 <div class="ml-3">
                     <x-elements.button
                         :buttonClass="'primary'"
-                        :buttonSize="'md'"
+                        :buttonSize="'sm'"
                         type="button"
                         @click="active_form = '{{ $form_id }}'; duplicate_form(`{{ $form_id }}`)">
                         <i class="fad fa-copy mr-2"></i> Duplicate
@@ -81,7 +81,7 @@
                 <div class="ml-3">
                     <x-elements.button
                         :buttonClass="'success'"
-                        :buttonSize="'md'"
+                        :buttonSize="'sm'"
                         type="button"
                         target="_blank"
                         @click="active_form = '{{ $form_id }}'; publish_form(`{{ $form_id }}`)">
@@ -92,7 +92,7 @@
                 <div class="ml-3">
                     <x-elements.button
                         :buttonClass="'danger'"
-                        :buttonSize="'md'"
+                        :buttonSize="'sm'"
                         type="button"
                         target="_blank"
                         @click="delete_form(`{{ $form_id }}`)">

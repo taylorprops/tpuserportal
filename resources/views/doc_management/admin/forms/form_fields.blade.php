@@ -144,23 +144,37 @@
 
                     @php
                     $page_number = $page -> page_number;
+                    $form_id = $page -> form_id;
                     $image_location = $page -> image_location;
                     @endphp
 
                     <div class="thumb-header-{{ $page_number }} w-3/4 mx-auto relative mb-2 cursor-pointer hover:shadow-md"
                     {{-- :class="{ 'opacity-30' : active_page !== {{ $page_number }}, 'opacity-100' : active_page === {{ $page_number }} }" --}}
-                    @click.stop="active_page = {{ $page_number }}; go_to_page(`{{ $page_number }}`)">
-                        <img src="/storage/{{ $image_location }}" class="w-100">
-                        <div class="absolute bottom-1 right-1 px-1.5 py-0.5 text-center text-xs text-white bg-gray-600 rounded-lg">{{ $page_number }}</div>
+                    >
+                        <div @click.stop="active_page = {{ $page_number }}; go_to_page(`{{ $page_number }}`)">
+                            <img src="/storage/{{ $image_location }}" class="w-100">
+                        </div>
+
+
+                        @if($loop -> last && $loop -> count > 1)
+                            <div class="absolute bottom-1 right-1 px-1.5 py-0.5 text-center text-xs text-white bg-red-600 rounded-lg"
+                            @click.stop="delete_page(`{{ $page_number }}`, `{{ $form_id }}`)">
+                                <i class="fal fa-times"></i>
+                            </div>
+                        @else
+                            <div class="absolute bottom-1 right-1 px-1.5 py-0.5 text-center text-xs text-white bg-gray-600 rounded-lg">
+                                {{ $page_number }}
+                            </div>
+                        @endif
+
                     </div>
+
 
                 @endforeach
 
             </div>
 
         </div>
-
-
 
 
         {{-- Templates --}}
