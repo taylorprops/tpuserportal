@@ -3,11 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\DocManagement\Admin\Forms;
-use App\Models\DocManagement\Admin\CommonFieldsGroups;
+use App\Models\Employees\Agents;
+use App\Models\DocManagement\Admin\Forms\Forms;
+use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class TestsController extends Controller
 {
+
+    public function agent_data(Request $request) {
+
+        $agents = Agents::select(['id', 'first', 'last', 'email1'])
+        -> where('active', 'yes')
+        -> with(['docs', 'licenses'])
+        -> get()
+        -> toJson();
+
+        dd($agents);
+    }
+
     public function alpine(Request $request) {
 
         return view('/tests/alpine');

@@ -90,13 +90,17 @@ class FormsController extends Controller
         $new_file_name_pdf = $sanitized.'.pdf';
         $new_file_name_image = $sanitized.'.png';
 
+        $upload_pdf = Storage::path('tmp/'.$new_file_name_pdf);
+        $upload_image = Storage::path('tmp/'.$new_file_name_image);
+
         // get first page of upload
-        exec('pdftk '.$upload.' cat 1 output '.Storage::path('tmp/'.$new_file_name_pdf));
+        exec('pdftk '.$upload.' cat 1 output '.$upload_pdf);
+
         // convert to image
-        exec('convert '.$upload.' -density 200 -flatten -trim -quality 80% -background white '.Storage::path('tmp/'.$new_file_name_image));
+        exec('convert '.$upload_pdf.' -density 200 -flatten -trim -quality 80% -background white '.$upload_image);
 
         // scan text
-        $text = (new TesseractOCR(Storage::path('tmp/'.$new_file_name_image)))
+        $text = (new TesseractOCR($upload_image))
             -> allowlist(range('a', 'z'), range('A', 'Z'), '-_/\'/')
             -> run();
 

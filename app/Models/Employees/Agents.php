@@ -13,4 +13,12 @@ class Agents extends Model
     protected $table = 'emp_agents';
     protected $guarded = [];
 
+    public function docs() {
+        return $this -> hasMany(\App\Models\Employees\AgentsDocs::class, 'agent_id');
+    }
+
+    public function licenses() {
+        return $this -> hasMany(\App\Models\Employees\AgentsLicenses::class, 'agent_id');
+    }
+
 }

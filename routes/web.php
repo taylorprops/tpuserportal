@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
+use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
 use App\Http\Controllers\DocManagement\Transactions\TransactionsController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\DocManagement\Transactions\TransactionsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/auth/login');
 });
 
 Route::middleware(['auth', 'web']) -> group(function () {
@@ -87,11 +88,18 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/resources/config/config_add', [ResourcesController::class, 'config_add']) -> middleware(['admin']);
 
 
+    // %%%% Skyslope
+    Route::get('/skyslope/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['admin']);
+    Route::get('/skyslope/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
+    Route::get('/skyslope/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
+    Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
+    Route::get('/skyslope/get_documents/{type}/{id}', [SkySlopeController::class, 'get_documents']) -> middleware(['admin']);
 
 
     // %%%% Tests
     Route::get('/tests/test', [TestsController::class, 'test']) -> middleware(['admin']);
     Route::get('/tests/alpine', [TestsController::class, 'alpine']) -> middleware(['admin']);
+    Route::get('/tests/agent_data', [TestsController::class, 'agent_data']) -> middleware(['admin']);
 
 
 });
