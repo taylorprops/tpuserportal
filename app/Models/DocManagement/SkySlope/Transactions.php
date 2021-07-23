@@ -10,12 +10,17 @@ class Transactions extends Model
 {
     use HasFactory;
     use HasCompositePrimaryKeyTrait;
+    use \Awobaz\Compoships\Compoships;
 
     public $incrementing = false;
     protected $connection = 'skyslope';
     protected $table = 'transactions';
     protected $primaryKey = ['listingGuid', 'saleGuid'];
     protected $fillable = ['listingGuid', 'saleGuid'];
+
+    public function docs() {
+        return $this -> hasMany(\App\Models\DocManagement\SkySlope\Documents::class, ['listingGuid', 'saleGuid'], ['listingGuid', 'saleGuid']);
+    }
 
 
 

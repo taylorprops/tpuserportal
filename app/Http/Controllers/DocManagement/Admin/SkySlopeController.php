@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DocManagement\Admin;
 use Throwable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\SkySlope\Users;
 use App\Models\DocManagement\SkySlope\Documents;
 use App\Models\DocManagement\SkySlope\Transactions;
@@ -154,16 +155,43 @@ class SkySlopeController extends Controller
 
     }
 
-    public function get_documents(Request $request, $session = null) {
 
-        try {
 
-            $type = $request -> type;
-            $listingGuid = $request -> type == 'listings' ? $request -> id : null;
-            $saleGuid = $request -> type == 'sales' ? $request -> id : null;
+
+    public function add_documents() {
+
+        $transactions = Transactions::where('docs_added', 'no') -> limit(50) -> get();
+
+        if(count($transactions) > 0) {
 
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
+
+            foreach($transactions as $transaction) {
+
+                $type = $transaction -> objectType;
+                $id = $transaction -> saleGuid;
+                if($type == 'listing') {
+                    $id = $transaction -> listingGuid;
+                }
+
+                if($this -> get_documents($type, $id, $session) == 'success') {
+                    $transaction -> docs_added = 'yes';
+                    $transaction -> save();
+                }
+            }
+
+        }
+
+    }
+
+    public function get_documents($type, $id, $session) {
+
+        try {
+
+            $listingGuid = $type == 'listing' ? $id : null;
+            $saleGuid = $type == 'sale' ? $id : null;
+
             $headers = [
                 'Content-Type' => 'application/json',
                 'Session' => $session
@@ -173,44 +201,72 @@ class SkySlopeController extends Controller
                 'headers' => $headers
             ]);
 
-            if($type == 'listings') {
+            if($type == 'listing') {
                 $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
-            } else if($type == 'sales') {
+            } else if($type == 'sale') {
                 $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
             }
 
-            $contents = $response -> getBody() -> getContents();
-            $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
-            $contents = json_decode($contents, true);
+            $headers = $response -> getHeaders();
+            $remaining = $headers['x-ratelimit-remaining'][0];
+            // $reset = $headers['x-ratelimit-reset'][0];
+            // $seconds_left = $reset - time() - 30;
+            // echo $seconds_left.' -- '.$remaining.'<br>';
 
-            $documents = $contents['value']['documents'];
+            if($remaining > 0) {
 
-            foreach($documents as $document) {
+                $contents = $response -> getBody() -> getContents();
+                $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                $contents = json_decode($contents, true);
 
-                $add_document = Documents::firstOrCreate([
-                    'id' => $document['id']
-                ]);
+                $documents = $contents['value']['documents'];
 
-                foreach($document as $col => $value) {
-                    if(!in_array($col, ['fileSize', 'pages'])) {
-                        $add_document -> $col = $value;
+                foreach($documents as $document) {
+
+                    //dd($document);
+                    $add_document = Documents::firstOrCreate([
+                        'id' => $document['id']
+                    ]);
+
+                    $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                    Storage::makeDirectory($dir);
+                    Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
+                    $file_location = $dir.'/'.$document['fileName'];
+
+                    foreach($document as $col => $value) {
+                        if(!in_array($col, ['fileSize', 'pages'])) {
+                            $add_document -> $col = $value;
+                        }
                     }
+
+                    $add_document -> file_location = $file_location;
+                    $add_document -> listingGuid = $listingGuid;
+                    $add_document -> saleGuid = $saleGuid;
+
+                    $add_document -> save();
+
+
+
+
+
                 }
 
-                $add_document -> listingGuid = $listingGuid;
-                $add_document -> saleGuid = $saleGuid;
+                return 'success';
 
-                $add_document -> save();
+            } else {
+
+                return 'error';
 
             }
 
-
-
         } catch (Throwable $e) {
 
-            echo $e -> getMessage();
+            return $e -> getMessage();
 
         }
+
+
+
 
 
     }

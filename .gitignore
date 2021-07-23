@@ -13,3 +13,8 @@ npm-debug.log
 yarn-error.log
 _notes
 .editorconfig
+/storage/app/public/tmp
+/storage/app/public/doc_management
+/storage/app/public/esign_templates
+/storage/debugbar
+/storage/logs

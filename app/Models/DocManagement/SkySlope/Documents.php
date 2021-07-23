@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Documents extends Model
 {
     use HasFactory;
+    use \Awobaz\Compoships\Compoships;
 
     public $incrementing = false;
     protected $connection = 'skyslope';

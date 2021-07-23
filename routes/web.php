@@ -93,7 +93,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/skyslope/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
     Route::get('/skyslope/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
     Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
-    Route::get('/skyslope/get_documents/{type}/{id}', [SkySlopeController::class, 'get_documents']) -> middleware(['admin']);
+    Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
+
 
 
     // %%%% Tests
