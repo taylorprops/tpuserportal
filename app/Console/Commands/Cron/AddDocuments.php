@@ -39,7 +39,7 @@ class AddDocuments extends Command
      */
     public function handle()
     {
-        AddDocumentsJob::dispatch() -> onQueue('add_documents');
+        AddDocumentsJob::dispatch();
     }
 
 
