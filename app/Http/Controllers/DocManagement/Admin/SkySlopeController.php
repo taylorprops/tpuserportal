@@ -160,7 +160,7 @@ class SkySlopeController extends Controller
 
     public function add_documents() {
 
-        $transactions = Transactions::where('docs_added', 'no') -> limit(50) -> get();
+        $transactions = Transactions::where('docs_added', 'no') -> limit(5) -> get();
 
         if(count($transactions) > 0) {
 
