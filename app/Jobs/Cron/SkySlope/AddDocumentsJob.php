@@ -40,7 +40,7 @@ class AddDocumentsJob implements ShouldQueue
 
     public function add_documents() {
 
-        $transactions = Transactions::where('docs_added', 'no') -> limit(50) -> get();
+        $transactions = Transactions::where('docs_added', 'no') -> limit(10) -> get();
 
         if(count($transactions) > 0) {
 
