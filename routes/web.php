@@ -96,6 +96,11 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
 
 
+    Route::prefix('jobs') -> group(function () {
+        Route::queueMonitor();
+    });
+
+
 
     // %%%% Tests
     Route::get('/tests/test', [TestsController::class, 'test']) -> middleware(['admin']);

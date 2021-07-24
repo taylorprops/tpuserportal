@@ -13,10 +13,11 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\Models\DocManagement\SkySlope\Documents;
 use App\Models\DocManagement\SkySlope\Transactions;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class AddDocumentsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
@@ -71,7 +72,7 @@ class AddDocumentsJob implements ShouldQueue
 
     public function get_documents($type, $id, $session) {
 
-        try {
+        //try {
 
             $listingGuid = $type == 'listing' ? $id : null;
             $saleGuid = $type == 'sale' ? $id : null;
@@ -135,11 +136,11 @@ class AddDocumentsJob implements ShouldQueue
 
             }
 
-        } catch (Throwable $e) {
+        // } catch (Throwable $e) {
 
-            return $e -> getMessage();
+        //     return $e -> getMessage();
 
-        }
+        // }
 
 
 
