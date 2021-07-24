@@ -86,10 +86,14 @@ class AddDocumentsJob implements ShouldQueue
                 'headers' => $headers
             ]);
 
-            if($type == 'listing') {
-                $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
-            } else if($type == 'sale') {
-                $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
+            try {
+                if($type == 'listing') {
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
+                } else if($type == 'sale') {
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
+                }
+            } catch (\GuzzleHttp\Exception\ServerException $e) {
+                $remaining = 0;
             }
 
             $headers = $response -> getHeaders();
