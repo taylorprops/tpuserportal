@@ -36,7 +36,7 @@ class AddDocumentsJob implements ShouldQueue
      */
     public function handle()
     {
-        $this -> add_documents();
+
     }
 
     public function add_documents() {
