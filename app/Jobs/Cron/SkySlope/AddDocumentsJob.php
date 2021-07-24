@@ -26,7 +26,7 @@ class AddDocumentsJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this -> onQueue('add_documents');
+        //
     }
 
     /**
