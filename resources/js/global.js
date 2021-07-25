@@ -427,3 +427,15 @@ window.random_dark_color = function() {
     }
     return rgb;
 }
+
+
+window.global_get_url_parameters = function(key) {
+    // usage
+    // let tab = global_get_url_parameters('tab');
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if (urlParams.has(key)) {
+        return urlParams.get(key);
+    }
+    return false;
+}
