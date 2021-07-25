@@ -36,7 +36,9 @@ class AddDocumentsJob implements ShouldQueue
      */
     public function handle()
     {
+
         $this -> add_documents();
+
     }
 
     public function add_documents() {
@@ -48,6 +50,11 @@ class AddDocumentsJob implements ShouldQueue
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
 
+            $progress = 0;
+            $this -> queueProgress($progress);
+
+            $downloads = [];
+
             foreach($transactions as $transaction) {
 
                 $type = $transaction -> objectType;
@@ -58,19 +65,99 @@ class AddDocumentsJob implements ShouldQueue
 
                 $transaction -> docs_added = 'yes';
                 $transaction -> save();
-                $this -> get_documents($type, $id, $session);
 
-                // if($this -> get_documents($type, $id, $session) == 'success') {
-                //     $transaction -> docs_added = 'yes';
-                //     $transaction -> save();
-                // }
+                $listingGuid = $type == 'listing' ? $id : null;
+                $saleGuid = $type == 'sale' ? $id : null;
+
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    'Session' => $session
+                ];
+
+                $client = new \GuzzleHttp\Client([
+                    'headers' => $headers
+                ]);
+
+                try {
+                    if($type == 'listing') {
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
+                    } else if($type == 'sale') {
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
+                    }
+
+
+                    $headers = $response -> getHeaders();
+                    $remaining = $headers['x-ratelimit-remaining'][0];
+
+                    if($remaining > 0) {
+
+                        $contents = $response -> getBody() -> getContents();
+                        $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                        $contents = json_decode($contents, true);
+
+                        $documents = $contents['value']['documents'];
+
+                        if(count($documents) > 0) {
+
+                            foreach($documents as $document) {
+
+                                $add_document = Documents::firstOrCreate([
+                                    'id' => $document['id']
+                                ]);
+
+                                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                                $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
+
+                                $file_location = $dir.'/'.$document['fileName'];
+
+                                foreach($document as $col => $value) {
+                                    if(!in_array($col, ['fileSize', 'pages'])) {
+                                        $add_document -> $col = $value;
+                                    }
+                                }
+
+                                $add_document -> file_location = $file_location;
+                                $add_document -> listingGuid = $listingGuid;
+                                $add_document -> saleGuid = $saleGuid;
+
+                                $add_document -> save();
+
+                            }
+
+                        }
+
+
+                    } else {
+
+                        return 'error';
+
+                    }
+
+                } catch (\GuzzleHttp\Exception\ServerException $e) {
+                    $remaining = 0;
+                }
+
             }
+
+            $progress_increment = round((1 / count($downloads)) * 100);
+            foreach($downloads as $download) {
+
+                $dir = $download['dir'];
+                Storage::makeDirectory($dir);
+                Storage::put($download['to'], file_get_contents($download['from']));
+
+                $progress += $progress_increment;
+                $this -> queueProgress($progress);
+
+            }
+
+            $this -> queueProgress(100);
 
         }
 
     }
 
-    public function get_documents($type, $id, $session) {
+    public function get_documents($type, $id, $session, $progress) {
 
         //try {
 
@@ -105,32 +192,36 @@ class AddDocumentsJob implements ShouldQueue
 
                     $documents = $contents['value']['documents'];
 
-                    foreach($documents as $document) {
+                    if(count($documents) > 0) {
 
-                        $add_document = Documents::firstOrCreate([
-                            'id' => $document['id']
-                        ]);
+                        foreach($documents as $document) {
 
-                        $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
-                        Storage::makeDirectory($dir);
-                        Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
-                        $file_location = $dir.'/'.$document['fileName'];
+                            $add_document = Documents::firstOrCreate([
+                                'id' => $document['id']
+                            ]);
 
-                        foreach($document as $col => $value) {
-                            if(!in_array($col, ['fileSize', 'pages'])) {
-                                $add_document -> $col = $value;
+                            $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                            Storage::makeDirectory($dir);
+                            Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
+                            $file_location = $dir.'/'.$document['fileName'];
+
+                            foreach($document as $col => $value) {
+                                if(!in_array($col, ['fileSize', 'pages'])) {
+                                    $add_document -> $col = $value;
+                                }
                             }
+
+                            $add_document -> file_location = $file_location;
+                            $add_document -> listingGuid = $listingGuid;
+                            $add_document -> saleGuid = $saleGuid;
+
+                            $add_document -> save();
+
                         }
-
-                        $add_document -> file_location = $file_location;
-                        $add_document -> listingGuid = $listingGuid;
-                        $add_document -> saleGuid = $saleGuid;
-
-                        $add_document -> save();
 
                     }
 
-                    return 'success';
+                    return count($documents);
 
                 } else {
 
