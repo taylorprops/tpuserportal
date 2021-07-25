@@ -15,9 +15,27 @@ if (document.URL.match(/monitor/)) {
                 let controllers = ' \
                 <div class="my-3 block"> \
                     <div class="flex justify-start items-center" x-data="controls()"> \
-                        <div class="mr-2"><a href="javascript:void(0)" class="p-2 bg-gray-50 border rounded shadow control-button" x-on:click="play()"><i class="fal fa-play fa-lg text-gray-600"></i></a></div> \
-                        <div class="mr-2"><a href="javascript:void(0)" class="p-2 bg-gray-50 border rounded shadow control-button" x-on:click="stop()"><i class="fal fa-stop fa-lg text-gray-600"></i></a></div> \
-                        <div class="mr-2"><a href="javascript:void(0)" class="p-2 bg-gray-50 border rounded shadow control-button" x-on:click="refresh()"><i class="fal fa-redo fa-lg text-gray-600"></i></a></div> \
+                        <div class="mr-2"> \
+                            <a href="javascript:void(0)" class="p-2 border rounded shadow control-button" \
+                            x-on:click="active = \'1\'; play()" \
+                            x-bind:class="{ \'bg-primary text-white\': active === \'1\', \'bg-gray-50 text-gray-600\': active !== \'1\' }"> \
+                                <i class="fal fa-play fa-lg"></i> \
+                            </a> \
+                        </div> \
+                        <div class="mr-2"> \
+                            <a href="javascript:void(0)" class="p-2 border rounded shadow control-button" \
+                            x-on:click="active = \'2\'; stop()" \
+                            x-bind:class="{ \'bg-primary text-white\': active === \'2\', \'bg-gray-50 text-gray-600\': active !== \'2\' }"> \
+                                <i class="fal fa-stop fa-lg"></i> \
+                            </a> \
+                        </div> \
+                        <div class="mr-2"> \
+                            <a href="javascript:void(0)" class="p-2 border rounded shadow control-button" \
+                            x-on:click="active = \'3\'; refresh()" \
+                            x-bind:class="{ \'bg-primary text-white\': active === \'3\', \'bg-gray-50 text-gray-600\': active !== \'3\' }"> \
+                                <i class="fal fa-redo fa-lg"></i> \
+                            </a> \
+                        </div> \
                     </div> \
                 </div>';
                 let controllers_div = document.createElement('div');
@@ -33,6 +51,7 @@ if (document.URL.match(/monitor/)) {
     window.controls = function() {
         return {
             play_interval: '',
+            active: '0',
             play() {
                 play_interval = setInterval(jobs, 1000);
             },
