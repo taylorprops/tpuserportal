@@ -2,8 +2,11 @@ if (document.URL.match(/monitor/)) {
 
     jobs();
 
-
     function jobs() {
+        document.querySelector('.monitor').setAttribute('src', '/jobs');
+    }
+
+    /* function jobs() {
         let type = global_get_url_parameters('type') || '';
         let queue = global_get_url_parameters('queue') || '';
 
@@ -49,7 +52,7 @@ if (document.URL.match(/monitor/)) {
         .catch(function (error) {
             console.log(error);
         });
-    }
+    } */
 
     window.controls = function() {
         return {
