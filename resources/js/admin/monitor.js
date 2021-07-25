@@ -4,6 +4,7 @@ if (document.URL.match(/monitor/)) {
 
     function jobs() {
         document.querySelector('.monitor').setAttribute('src', '/jobs');
+        console.log('plahying');
     }
 
     /* function jobs() {
@@ -59,7 +60,8 @@ if (document.URL.match(/monitor/)) {
             play_interval: '',
             active: '0',
             play() {
-                play_interval = setInterval(jobs, 1000);
+                play_interval = setInterval(jobs, 2000);
+                disable_buttons();
             },
             stop() {
                 clearInterval(play_interval);
@@ -69,6 +71,21 @@ if (document.URL.match(/monitor/)) {
                 jobs();
             }
         }
+    }
+
+    function disable_buttons() {
+
+        // let iframe = document.querySelector('.monitor');
+
+        // let forms = iframe.contentWindow.document.getElementsByTagName('form');
+
+        // for(let i = 0; i < forms.length; i++) {
+        //     let buttons = forms[i].getElementsByTagName('button');
+        //     for(let j = 0; j < buttons.length; j++) {
+        //         buttons[j].setAttribute('disabled', true);
+        //     }
+        // }
+
     }
 
     function insertAfter(newNode, existingNode) {
