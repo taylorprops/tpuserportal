@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
@@ -95,7 +96,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
     Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
 
-
+    Route::get('/admin/monitor', [AdminController::class, 'monitor']) -> middleware(['admin']);
     Route::prefix('jobs') -> group(function () {
         Route::queueMonitor();
     });

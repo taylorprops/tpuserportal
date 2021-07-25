@@ -10,12 +10,6 @@ window.addEventListener('load', (event) => {
 
     setInterval(global_format_phones, 1000);
 
-    if(document.URL.match(/jobs/)) {
-        setTimeout(function() {
-            window.location.reload();
-        }, 3000);
-    }
-
 });
 
 

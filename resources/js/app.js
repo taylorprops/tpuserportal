@@ -10,6 +10,7 @@ require('./resources/config/config_variables.js');
 
 require('./nav/nav.js');
 require('./dashboard/dashboard.js');
+require('./admin/monitor.js');
 
 
 require('./doc_management/admin/forms/forms.js');

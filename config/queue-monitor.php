@@ -28,7 +28,7 @@ return [
         /*
          * Set the monitored jobs count to be displayed per page.
          */
-        'per_page' => 35,
+        'per_page' => 1000,
 
         /*
          *  Show custom data stored on model
@@ -50,6 +50,6 @@ return [
         /**
          * Time frame used to calculate metrics values (in days).
          */
-        'metrics_time_frame' => 14,
+        'metrics_time_frame' => 1,
     ],
 ];
