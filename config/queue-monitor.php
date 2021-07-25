@@ -28,7 +28,7 @@ return [
         /*
          * Set the monitored jobs count to be displayed per page.
          */
-        'per_page' => 10,
+        'per_page' => 50,
 
         /*
          *  Show custom data stored on model

@@ -4,7 +4,7 @@
         null
     </x-slot>
 
-    <div class="w-screen h-screen-95 bg-gray-50 pr-4">
+    <div class="w-screen-88 h-screen-95 bg-gray-50 pr-4">
 
         <div class="py-4 pl-6">
             <div class="flex justify-start items-center" x-data="controls()">
