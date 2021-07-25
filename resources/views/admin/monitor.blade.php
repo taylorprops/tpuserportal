@@ -4,7 +4,7 @@
         null
     </x-slot>
 
-    <div class="w-screen-88 h-screen-95 bg-gray-50 pr-4">
+    <div class="bg-gray-50 p-5 pr-0 overflow-hidden">
 
         <div class="py-4 pl-6">
             <div class="flex justify-start items-center" x-data="controls()">
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <iframe class="monitor" width="100%" height="100%"></iframe>
+        <div class="monitor w-full h-screen-90 overflow-y-auto p-5"></div>
 
     </div>
 

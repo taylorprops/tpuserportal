@@ -73,6 +73,7 @@ module.exports = {
                 'screen-70': '70vw',
                 'screen-75': '75vw',
                 'screen-80': '80vw',
+                'screen-85': '85vw',
                 'screen-88': '88vw',
                 'screen-90': '90vw',
             }),
