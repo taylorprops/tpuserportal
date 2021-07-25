@@ -143,7 +143,9 @@ class AddDocumentsJob implements ShouldQueue
             foreach($downloads as $download) {
 
                 $dir = $download['dir'];
-                Storage::makeDirectory($dir);
+                if(!Storage::exists($dir)) {
+                    Storage::makeDirectory($dir);
+                }
                 Storage::put($download['to'], file_get_contents($download['from']));
 
                 $progress += $progress_increment;
