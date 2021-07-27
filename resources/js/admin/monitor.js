@@ -26,16 +26,16 @@ if (document.URL.match(/monitor/)) {
             play_interval: null,
             active: '0',
             play() {
-                if(play_interval) {
-                    clearInterval(play_interval);
+                if(this.play_interval) {
+                    clearInterval(this.play_interval);
                 }
-                play_interval = setInterval(jobs, 2000);
+                this.play_interval = setInterval(jobs, 2000);
             },
             stop() {
-                clearInterval(play_interval);
+                clearInterval(this.play_interval);
             },
             refresh() {
-                clearInterval(play_interval);
+                //clearInterval(this.play_interval);
                 jobs();
             }
         }
