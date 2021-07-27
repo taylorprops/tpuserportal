@@ -26,7 +26,7 @@ if (document.URL.match(/monitor/)) {
             play_interval: '',
             active: '0',
             play() {
-                play_interval = setInterval(jobs, 1000);
+                play_interval = setInterval(jobs, 2000);
             },
             stop() {
                 clearInterval(play_interval);
