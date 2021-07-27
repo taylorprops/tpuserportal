@@ -60,7 +60,7 @@ class GetTransactionsJob implements ShouldQueue
             'query' => $query
         ]);
 
-        $progress = 10;
+        $progress = 1;
         $this -> queueProgress($progress);
 
         $response = $client -> request('GET', 'https://api.skyslope.com/api/files');
@@ -69,9 +69,6 @@ class GetTransactionsJob implements ShouldQueue
         $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
         $contents = json_decode($contents, true);
         $data = $contents['value'];
-
-        $progress = 20;
-        $this -> queueProgress($progress);
 
         $progress_increment = (int)round((1 / 15) * 100);
 
