@@ -17,15 +17,13 @@
                 </div>
                 <div class="mr-2">
                     <a href="javascript:void(0)" class="p-2 border rounded shadow control-button"
-                    x-on:click="active = '2'; stop()"
-                    x-bind:class="{'bg-primary text-white': active === '2','bg-gray-100 text-gray-600': active !== '2' }">
+                    x-on:click="active = '2'; stop()">
                         <i class="fal fa-stop fa-lg"></i>
                     </a>
                 </div>
                 <div class="mr-2">
                     <a href="javascript:void(0)" class="p-2 border rounded shadow control-button"
-                    x-on:click="active = '3'; refresh()"
-                    x-bind:class="{'bg-primary text-white': active === '3','bg-gray-100 text-gray-600': active !== '3' }">
+                    x-on:click="active = '3'; refresh()">
                         <i class="fal fa-redo fa-lg"></i>
                     </a>
                 </div>

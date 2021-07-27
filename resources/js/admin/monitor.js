@@ -9,8 +9,9 @@ if (document.URL.match(/monitor/)) {
 
         axios.get('/jobs?type='+type+'&queue='+queue)
         .then(function (response) {
-            document.querySelector('.monitor').innerHTML = '';
-            document.querySelector('.monitor').insertAdjacentHTML('beforeend', response.data);
+            document.querySelector('.monitor').innerHTML = response.data;
+            // document.querySelector('.monitor').innerHTML = '';
+            // document.querySelector('.monitor').insertAdjacentHTML('beforeend', response.data);
             document.querySelector('.text-5xl').classList.add('text-3xl');
             document.querySelector('.text-5xl').classList.remove('text-5xl');
 
