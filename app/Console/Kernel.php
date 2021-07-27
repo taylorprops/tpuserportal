@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule -> command('telescope:prune') -> daily();
-        //$schedule -> command('skyslope:add_documents') -> everyMinute();
+        $schedule -> command('skyslope:get_transactions') -> everySixHours();
+        $schedule -> command('skyslope:add_documents') -> everyThirtyMinutes();
     }
 
     /**

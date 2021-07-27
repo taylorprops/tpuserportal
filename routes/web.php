@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
+use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
@@ -95,6 +96,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/skyslope/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
     Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
     Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
+
+
+    // %%%% New Skyslope to old DB
+    Route::get('/old_db/skyslope/update_listings', [OldSkySlopeController::class, 'update_listings']) -> middleware(['admin']);
 
     Route::get('/admin/monitor', [AdminController::class, 'monitor']) -> middleware(['admin']);
     Route::prefix('jobs') -> group(function () {

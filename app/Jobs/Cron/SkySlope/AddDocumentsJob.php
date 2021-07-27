@@ -140,6 +140,7 @@ class AddDocumentsJob implements ShouldQueue
             }
 
             $progress_increment = round((1 / count($downloads)) * 100);
+
             foreach($downloads as $download) {
 
                 $dir = $download['dir'];

@@ -1,26 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Cron;
+namespace App\Console\Commands\Cron\SkySlope;
 
 use Illuminate\Console\Command;
-use App\Jobs\Cron\SkySlope\AddDocumentsJob;
+use App\Jobs\Cron\SkySlope\GetTransactionsJob;
 
-
-class AddDocuments extends Command
+class GetTransactions extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'skyslope:add_documents';
+    protected $signature = 'skyslope:get_transactions';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add document details and link to skyslope transactions';
+    protected $description = 'Get all transactions from skyslope';
 
     /**
      * Create a new command instance.
@@ -39,9 +38,6 @@ class AddDocuments extends Command
      */
     public function handle()
     {
-        AddDocumentsJob::dispatch();
+        GetTransactionsJob::dispatch();
     }
-
-
-
 }

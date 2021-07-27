@@ -25,8 +25,13 @@ class SkySlopeController extends Controller
                 'Session' => $session
             ];
 
-            $createdAfter = '2021-06-01T00:00:01.000Z';
-            $createdBefore = '2021-08-01T00:00:01.000Z';
+            $days = 2;
+            if($request -> days) {
+                $days = $request -> days;
+            }
+
+            $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-'.$days.' day')));
+            $createdBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
 
             $query = [
                 'createdAfter' => $createdAfter,

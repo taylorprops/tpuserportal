@@ -13,79 +13,79 @@
         <div class="text-white font-semibold pl-2 pt-3 pb-2 text-sm border-t border-white mt-3">Doc Management</div>
     </li>
 
-        {{-- Transactions --}}
-        @php
-        $level2 = [
-            [
-                'title' => 'View Transactions',
-                'link' => '/transactions',
-                'icon' => 'fal fa-bars mr-2'
-            ],
-            [
-                'title' => 'Add Listing',
-                'link' => '/transactions/create/listing',
-                'icon' => 'fal fa-plus mr-2'
-            ],
-            [
-                'title' => 'Add Contract',
-                'link' => '/transactions/create/contract',
-                'icon' => 'fal fa-plus mr-2'
-            ],
-            [
-                'title' => 'Add Referral',
-                'link' => '/transactions/create/referral',
-                'icon' => 'fal fa-plus mr-2'
-            ]
-        ];
+    {{-- Transactions --}}
+    @php
+    $level2 = [
+        [
+            'title' => 'View Transactions',
+            'link' => '/transactions',
+            'icon' => 'fal fa-bars mr-2'
+        ],
+        [
+            'title' => 'Add Listing',
+            'link' => '/transactions/create/listing',
+            'icon' => 'fal fa-plus mr-2'
+        ],
+        [
+            'title' => 'Add Contract',
+            'link' => '/transactions/create/contract',
+            'icon' => 'fal fa-plus mr-2'
+        ],
+        [
+            'title' => 'Add Referral',
+            'link' => '/transactions/create/referral',
+            'icon' => 'fal fa-plus mr-2'
+        ]
+    ];
 
-        @endphp
+    @endphp
 
-        <x-nav.menu
-        :level="'2'"
-        :title="'Transactions'"
-        :icon="'fad fa-sign'"
-        :level2="$level2"/>
+    <x-nav.menu
+    :level="'2'"
+    :title="'Transactions'"
+    :icon="'fad fa-sign'"
+    :level2="$level2"/>
 
-        {{-- End Transactions --}}
+    {{-- End Transactions --}}
 
-        {{-- Admin --}}
-        @php
-        $level3 = [
-            [
-                'title' => 'Forms',
-                'link' => '/doc_management/admin/forms/forms',
-                'icon' => 'far fa-book mr-2'
-            ],
-            [
-                'title' => 'Checklists',
-                'link' => '/doc_management/admin/checklists/checklists',
-                'icon' => 'fal fa-tasks mr-2'
-            ],
-            [
-                'title' => 'Resources',
-                'icon' => 'fal fa-tools mr-2',
-                'sub_links' => [
-                    [
-                        'title' => 'Site Resources',
-                        'link' => '/doc_management/site_resources',
-                        'icon' => 'fal fa-circle mr-2'
-                    ],
-                    [
-                        'title' => 'Common Fields',
-                        'link' => '/doc_management/common_fields',
-                        'icon' => 'fal fa-object-ungroup mr-2'
-                    ]
+    {{-- Admin --}}
+    @php
+    $level3 = [
+        [
+            'title' => 'Forms',
+            'link' => '/doc_management/admin/forms/forms',
+            'icon' => 'far fa-book mr-2'
+        ],
+        [
+            'title' => 'Checklists',
+            'link' => '/doc_management/admin/checklists/checklists',
+            'icon' => 'fal fa-tasks mr-2'
+        ],
+        [
+            'title' => 'Resources',
+            'icon' => 'fal fa-tools mr-2',
+            'sub_links' => [
+                [
+                    'title' => 'Site Resources',
+                    'link' => '/doc_management/site_resources',
+                    'icon' => 'fal fa-circle mr-2'
+                ],
+                [
+                    'title' => 'Common Fields',
+                    'link' => '/doc_management/common_fields',
+                    'icon' => 'fal fa-object-ungroup mr-2'
                 ]
             ]
-        ];
+        ]
+    ];
 
-        @endphp
+    @endphp
 
-        <x-nav.menu
-        :level="'3'"
-        :title="'Admin'"
-        :icon="'far fa-tasks-alt'"
-        :level3="$level3"/>
+    <x-nav.menu
+    :level="'3'"
+    :title="'Admin'"
+    :icon="'far fa-tasks-alt'"
+    :level3="$level3"/>
 
     {{-- End Doc Management --}}
 
@@ -124,6 +124,11 @@
 
         @php
         $level2 = [
+            [
+                'title' => 'Queue Monitor',
+                'link' => '/admin/monitor',
+                'icon' => 'fad fa-analytics mr-2'
+            ],
             [
                 'title' => 'Form Elements',
                 'link' => '/resources/design/form_elements',
