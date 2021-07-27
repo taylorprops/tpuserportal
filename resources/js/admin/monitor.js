@@ -4,10 +4,11 @@ if (document.URL.match(/monitor/)) {
 
 
     function jobs() {
+        let page = global_get_url_parameters('page') || '';
         let type = global_get_url_parameters('type') || '';
         let queue = global_get_url_parameters('queue') || '';
 
-        axios.get('/jobs?type='+type+'&queue='+queue)
+        axios.get('/jobs?type='+type+'&queue='+queue+'&page='+page)
         .then(function (response) {
             document.querySelector('.monitor').innerHTML = response.data;
             // document.querySelector('.monitor').innerHTML = '';
