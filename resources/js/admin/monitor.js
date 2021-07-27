@@ -29,13 +29,12 @@ if (document.URL.match(/monitor/)) {
                 if(this.play_interval) {
                     clearInterval(this.play_interval);
                 }
-                this.play_interval = setInterval(jobs, 2000);
+                this.play_interval = setInterval(jobs, 900);
             },
             stop() {
                 clearInterval(this.play_interval);
             },
             refresh() {
-                //clearInterval(this.play_interval);
                 jobs();
             }
         }
