@@ -14,7 +14,7 @@ use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class GetTransactionsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
@@ -38,6 +38,9 @@ class GetTransactionsJob implements ShouldQueue
 
     public function get_transactions() {
 
+        $progress = 0;
+        $this -> queueProgress($progress);
+
         $auth = $this -> skyslope_auth();
         $session = $auth['Session'];
         $headers = [
@@ -45,12 +48,10 @@ class GetTransactionsJob implements ShouldQueue
             'Session' => $session
         ];
 
-        $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-12 hours')));
-        //$createdBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
+        $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-12 days')));
 
         $query = [
             'createdAfter' => $createdAfter,
-            //'createdBefore' => $createdBefore,
             'type' => 'all'
         ];
 
@@ -59,6 +60,9 @@ class GetTransactionsJob implements ShouldQueue
             'query' => $query
         ]);
 
+        $progress = 10;
+        $this -> queueProgress($progress);
+
         $response = $client -> request('GET', 'https://api.skyslope.com/api/files');
 
         $contents = $response -> getBody() -> getContents();
@@ -66,6 +70,10 @@ class GetTransactionsJob implements ShouldQueue
         $contents = json_decode($contents, true);
         $data = $contents['value'];
 
+        $progress = 20;
+        $this -> queueProgress($progress);
+
+        $progress_increment = (int)round((1 / 15) * 100);
 
         foreach($data as $transaction) {
 
@@ -109,9 +117,14 @@ class GetTransactionsJob implements ShouldQueue
 
                 $add_transaction -> save();
 
+                $progress += $progress_increment;
+                $this -> queueProgress($progress_increment);
+
             }
 
         }
+
+        $this -> queueProgress(100);
 
     }
 

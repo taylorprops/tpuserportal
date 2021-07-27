@@ -10,11 +10,17 @@ use App\Models\DocManagement\SkySlope\Users;
 use App\Models\DocManagement\SkySlope\Documents;
 use App\Models\DocManagement\SkySlope\Transactions;
 
+
 class SkySlopeController extends Controller
 {
 
 
     public function get_transactions(Request $request, $session = null) {
+
+        $progress_increment = (int)round((1 / 15) * 100);
+        dd($progress_increment);
+
+        die();
 
         try {
 
