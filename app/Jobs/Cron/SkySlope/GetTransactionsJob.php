@@ -118,7 +118,7 @@ class GetTransactionsJob implements ShouldQueue
                 $add_transaction -> save();
 
                 $progress += $progress_increment;
-                $this -> queueProgress($progress_increment);
+                $this -> queueProgress($progress);
 
             }
 
