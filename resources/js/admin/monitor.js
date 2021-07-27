@@ -23,7 +23,7 @@ if (document.URL.match(/monitor/)) {
 
     window.controls = function() {
         return {
-            play_interval: '',
+            play_interval: null,
             active: '0',
             play() {
                 if(play_interval) {
