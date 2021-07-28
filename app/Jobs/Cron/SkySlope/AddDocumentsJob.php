@@ -47,6 +47,15 @@ class AddDocumentsJob implements ShouldQueue
 
         if(count($transactions) > 0) {
 
+            $data = [];
+            foreach($transactions as $transaction) {
+                $data[] = [
+                    'listingGuid' => $transaction -> listingGuid,
+                    'saleGuid' => $transaction -> saleGuid
+                ];
+            }
+            $this -> queueData(['transactions' => $data], true);
+
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
 
@@ -62,8 +71,6 @@ class AddDocumentsJob implements ShouldQueue
                 if($type == 'listing') {
                     $id = $transaction -> listingGuid;
                 }
-
-                $this -> queueData(['type' => $type, 'id' => $id], true);
 
                 $transaction -> docs_added = 'yes';
                 $transaction -> save();
