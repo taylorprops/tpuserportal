@@ -42,7 +42,7 @@ class AddMissingDocumentsJob implements ShouldQueue
         $progress = 0;
         $this -> queueProgress($progress);
 
-        $documents = Documents::whereNull('file_exists') -> limit(100) -> get();
+        $documents = Documents::whereNull('file_exists') -> limit(1000) -> get();
 
         foreach($documents as $document) {
 
