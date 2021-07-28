@@ -63,6 +63,8 @@ class AddDocumentsJob implements ShouldQueue
                     $id = $transaction -> listingGuid;
                 }
 
+                $this -> queueData(['type' => $type, 'id' => $id], true);
+
                 $transaction -> docs_added = 'yes';
                 $transaction -> save();
 
