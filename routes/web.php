@@ -90,12 +90,13 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/resources/config/config_add', [ResourcesController::class, 'config_add']) -> middleware(['admin']);
 
 
-    // %%%% Skyslope
+    // %%%% Skyslope - import data for records
     Route::get('/skyslope/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['admin']);
     Route::get('/skyslope/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
     Route::get('/skyslope/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
     Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
     Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
+    Route::get('/skyslope/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB

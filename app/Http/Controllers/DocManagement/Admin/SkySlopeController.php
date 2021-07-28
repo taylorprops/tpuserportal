@@ -17,11 +17,6 @@ class SkySlopeController extends Controller
 
     public function get_transactions(Request $request, $session = null) {
 
-        $progress_increment = (int)round((1 / 15) * 100);
-        dd($progress_increment);
-
-        die();
-
         try {
 
             $auth = $this -> skyslope_auth();
@@ -170,7 +165,96 @@ class SkySlopeController extends Controller
 
     }
 
+    public function check_documents_exists(Request $request) {
 
+        $documents = Documents::whereNull('file_exists') -> limit(100) -> get();
+
+        foreach($documents as $document) {
+
+            $exists = 'no';
+
+            if(Storage::exists($document -> file_location)) {
+
+                $exists = 'yes';
+
+            } else {
+
+                echo 'missing, adding... ';
+
+                $auth = $this -> skyslope_auth();
+                $session = $auth['Session'];
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    'Session' => $session
+                ];
+
+                $client = new \GuzzleHttp\Client([
+                    'headers' => $headers
+                ]);
+
+                if($document -> listingGuid && $document -> saleGuid) {
+
+                    $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('saleGuid', $document -> saleGuid) -> first();
+
+                } else {
+
+                    if($document -> listingGuid) {
+                        $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
+                    } else {
+                        $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
+                    }
+
+                }
+
+                $type = $transaction -> objectType;
+                $saleGuid = $transaction -> saleGuid;
+                $listingGuid = $transaction -> listingGuid;
+
+                if($type == 'listing') {
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents/'.$document -> id);
+                } else if($type == 'sale') {
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents/'.$document -> id);
+                }
+
+                $contents = $response -> getBody() -> getContents();
+                $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                $contents = json_decode($contents, true);
+
+                $new_document = $contents['value']['document'];
+
+                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                $file_location = $dir.'/'.$new_document['fileName'];
+                if(!Storage::exists($dir)) {
+                    Storage::makeDirectory($dir);
+                }
+                Storage::put($file_location, file_get_contents($new_document['url']));
+
+                foreach($new_document as $col => $value) {
+                    if(!in_array($col, ['fileSize', 'pages'])) {
+                        $document -> $col = $value;
+                    }
+                }
+
+                $document -> file_location = $file_location;
+                $document -> listingGuid = $listingGuid;
+                $document -> saleGuid = $saleGuid;
+
+                $document -> save();
+
+                if(Storage::exists($file_location)) {
+                    $exists = 'yes';
+                }
+
+            }
+
+            $document -> file_exists = $exists;
+            $document -> save();
+
+        }
+
+
+
+    }
 
 
     public function add_documents() {
