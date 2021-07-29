@@ -199,8 +199,6 @@ class OldSkySlopeController extends Controller
         return LocationData::select('county') -> where('zip', $zip) -> first() -> county;
     }
 
-
-
     public function skyslope_auth() {
 
         $timestamp = str_replace(' ', 'T', gmdate('Y-m-d H:i:s')).'Z';
