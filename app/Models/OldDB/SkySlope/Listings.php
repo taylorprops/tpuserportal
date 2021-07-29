@@ -12,7 +12,7 @@ class Listings extends Model
     use HasCompositePrimaryKeyTrait;
 
     protected $connection = 'mysql_old_skyslope';
-    protected $table = 'listings_test';
+    protected $table = 'listings';
     protected $primaryKey = ['TransactionId', 'ListingId'];
     public $timestamps = false;
     protected $fillable = ['TransactionId', 'ListingId'];
