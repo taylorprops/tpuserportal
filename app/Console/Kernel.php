@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         // add missing documents to skyslope transactions
         $schedule -> command('skyslope:add_missing_documents') -> everyHour();
         // add skyslope data to old db
-        //$schedule -> command('old_db:add_skyslope_listings') -> everyMinute();
+        $schedule -> command('old_db:add_skyslope_listings') -> everyMinute();
     }
 
     /**
