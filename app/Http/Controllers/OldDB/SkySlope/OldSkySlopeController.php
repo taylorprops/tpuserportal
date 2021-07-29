@@ -22,12 +22,12 @@ class OldSkySlopeController extends Controller
             'Session' => $session
         ];
 
-        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-5 day')));
-        $modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
+        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-1 day')));
+        //$modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
 
         $query = [
             'modifiedAfter' => $modifiedAfter,
-            'modifiedBefore' => $modifiedBefore,
+            //'modifiedBefore' => $modifiedBefore,
             'type' => 'all'
         ];
 
@@ -45,9 +45,9 @@ class OldSkySlopeController extends Controller
 
 
         echo 'Total: '.count($data).'<br>';
-        echo 'Start: '.$modifiedAfter.' - End: '.$modifiedBefore.'<br>';
+        echo 'Start: '.$modifiedAfter;
 
-        //dd($data[1], $data[2]);
+        //dd($data[3], $data[4], $data[5], $data[6]);
         foreach($data as $transaction) {
 
             if($transaction['objectType'] != 'summary') {
@@ -87,7 +87,7 @@ class OldSkySlopeController extends Controller
                 $county = str_replace("'", "", $county);
                 $location = $transaction['property']['state'].' - '.$county;
 
-                $deal_type = 'Listing Sold';
+                $deal_type = 'Listing';
                 if(isset($transaction['dealType'])) {
                     $deal_type = $transaction['dealType'];
                 }
@@ -109,21 +109,31 @@ class OldSkySlopeController extends Controller
                 $add_transaction -> Zip = $transaction['property']['zip'];
 
                 $add_transaction -> DateEntered = Helper::date_mdy($transaction['createdOn']);
-                $add_transaction -> List_Date = Helper::date_mdy($transaction['createdOn']);
-                $add_transaction -> Acceptance_Date = Helper::date_mdy($transaction['createdOn']) ?? null;
-                $add_transaction -> Scheduled_Close_Date = Helper::date_mdy($transaction['createdOn']) ?? null;
-                $add_transaction -> Actual_Close_Date = Helper::date_mdy($transaction['createdOn']) ?? null;
-                if(isset($transaction['expirationDate'])) {
-                    $add_transaction -> Listing_Expiration_Date = Helper::date_mdy($transaction['expirationDate']) ?? null;
+                $add_transaction -> DateEntered_Formatted = substr($transaction['createdOn'], 0, 10);
+
+                if(isset($transaction['listingDate'])) {
+                    $add_transaction -> List_Date = Helper::date_mdy($transaction['listingDate']);
+                    $add_transaction -> List_Date_Formatted = substr($transaction['listingDate'], 0, 10);
                 }
 
-                $add_transaction -> DateEntered_Formatted = substr($transaction['createdOn'], 0, 10);
-                $add_transaction -> List_Date_Formatted = substr($transaction['createdOn'], 0, 10);
-                $add_transaction -> Acceptance_Date_Formatted = substr($transaction['createdOn'], 0, 10) ?? null;
-                $add_transaction -> Scheduled_Close_Date_Formatted = substr($transaction['createdOn'], 0, 10) ?? null;
-                $add_transaction -> Actual_Close_Date_Formatted = substr($transaction['createdOn'], 0, 10) ?? null;
+                if(isset($transaction['contractAcceptanceDate'])) {
+                    $add_transaction -> Acceptance_Date = Helper::date_mdy($transaction['contractAcceptanceDate']);
+                    $add_transaction -> Acceptance_Date_Formatted = substr($transaction['contractAcceptanceDate'], 0, 10);
+                }
+
+                if(isset($transaction['escrowClosingDate'])) {
+                    $add_transaction -> Scheduled_Close_Date = Helper::date_mdy($transaction['escrowClosingDate']);
+                    $add_transaction -> Scheduled_Close_Date_Formatted = substr($transaction['escrowClosingDate'], 0, 10);
+                }
+
+                if(isset($transaction['actualClosingDate'])) {
+                    $add_transaction -> Actual_Close_Date = Helper::date_mdy($transaction['actualClosingDate']);
+                    $add_transaction -> Actual_Close_Date_Formatted = substr($transaction['actualClosingDate'], 0, 10);
+                }
+
                 if(isset($transaction['expirationDate'])) {
-                    $add_transaction -> Listing_Expiration_Date_Formatted = substr($transaction['expirationDate'], 0, 10) ?? null;
+                    $add_transaction -> Listing_Expiration_Date = Helper::date_mdy($transaction['expirationDate']);
+                    $add_transaction -> Listing_Expiration_Date_Formatted = substr($transaction['expirationDate'], 0, 10);
                 }
 
                 $add_transaction -> List_Price = $transaction['listingPrice'];
