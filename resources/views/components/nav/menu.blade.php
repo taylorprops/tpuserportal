@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <ul class="bg-default-light shadow absolute left-3/4 top-0 w-48 p-2 z-10">
+        <ul class="bg-default-light shadow absolute left-3/4 top-0 min-w-max p-2 z-10">
             @foreach($level2 as $link)
                 <li class="text-white hover:text-primary p-2 pl-4">
                     <a href="{{ $link['link'] }}" class="w-full flex items-center text-sm font-medium rounded-md text-white hover:text-gray-300">
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <ul class="bg-default-light shadow absolute left-3/4 top-0 w-48 p-2 z-10">
+        <ul class="bg-default-light shadow absolute left-3/4 top-0 min-w-max p-2 z-10">
 
             @foreach($level3 as $link)
 
@@ -81,7 +81,7 @@
                             <a href="javascript:void(0)" class="w-full flex items-center text-sm font-medium rounded-md text-white hover:text-gray-300">
                                 <i class="{{ $link['icon'] }}"></i> {{ $link['title'] }}
                             </a>
-                            <div>
+                            <div class="ml-3">
                                 <i class="fal fa-angle-right text-gray-300 fa-lg"></i>
                             </div>
                         </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
+use App\Http\Controllers\OldDB\Company\OldTransactionsController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
 use App\Http\Controllers\DocManagement\Transactions\TransactionsController;
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% Transactions
     Route::get('/transactions', [TransactionsController::class, 'transactions']) -> middleware(['agent']);
+    Route::get('/transactions_archived', [TransactionsController::class, 'transactions_archived']) -> middleware(['agent']);
     Route::get('/transactions/create/{transaction_type}', [TransactionsController::class, 'create']) -> middleware(['agent']);
     Route::post('/transactions/save_transaction', [TransactionsController::class, 'save_transaction']) -> middleware(['agent']);
     Route::get('/transactions/get_property_info', [TransactionsController::class, 'get_property_info']) -> middleware(['agent']);
@@ -101,6 +103,11 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% New Skyslope to old DB
     Route::get('/old_db/skyslope/update_listings', [OldSkySlopeController::class, 'update_listings']) -> middleware(['admin']);
+
+    // %%%% add old company listings to New Skyslope
+    Route::get('/old_db/company/get_transactions', [OldTransactionsController::class, 'get_transactions']) -> middleware(['admin']);
+
+
 
     Route::get('/admin/monitor', [AdminController::class, 'monitor']) -> middleware(['admin']);
     Route::prefix('jobs') -> group(function () {

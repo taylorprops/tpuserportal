@@ -112,6 +112,7 @@ class GetTransactionsJob implements ShouldQueue
 
                 }
 
+                $add_transaction -> data_source = 'skyslope';
                 $add_transaction -> save();
 
                 $progress += $progress_increment;

@@ -35,7 +35,12 @@
             'title' => 'Add Referral',
             'link' => '/transactions/create/referral',
             'icon' => 'fal fa-plus mr-2'
-        ]
+        ],
+        [
+            'title' => 'Archived Transactions',
+            'link' => '/transactions_archived',
+            'icon' => 'fal fa-file-archive mr-2'
+        ],
     ];
 
     @endphp
