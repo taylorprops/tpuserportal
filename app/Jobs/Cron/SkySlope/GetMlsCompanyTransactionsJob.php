@@ -126,7 +126,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                     //if($doc -> invalid != 'yes') {
 
-                        //if(file_exists($doc -> upload_loc)) {
+                        if(file_exists($doc -> upload_loc)) {
 
                             $downloads[] = ['from' => $doc -> upload_loc, 'to' => $dir.'/'.$doc -> upload_file_name];
 
@@ -142,7 +142,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                             $add_docs -> save();
 
-                        //}
+                        }
 
                     //}
 
