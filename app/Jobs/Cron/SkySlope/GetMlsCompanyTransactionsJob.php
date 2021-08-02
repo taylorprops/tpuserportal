@@ -58,6 +58,8 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
             if(count($docs) > 0) {
 
+                $this -> queueData(['ListingSourceRecordId' => $transaction -> ListingSourceRecordId], true);
+
                 $add_transaction = new SkySlopeTransactions();
 
                 if($transaction -> ListAgentCompID > 0) {
