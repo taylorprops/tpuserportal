@@ -52,6 +52,8 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> limit(100)
         -> get();
 
+        $queue_data = [];
+
         foreach ($transactions as $transaction) {
 
             $docs = $transaction -> docs;
