@@ -154,7 +154,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                     foreach($downloads as $download) {
 
-                        if(file_get_contents($download['from']) !== false) {
+                        if(@fopen($download['from'], 'r')) {
                             Storage::put($download['to'], file_get_contents($download['from']));
                         }
 
