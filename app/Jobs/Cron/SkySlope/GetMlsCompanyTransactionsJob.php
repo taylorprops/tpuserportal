@@ -148,14 +148,18 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                 }
 
-                $progress_increment = round((1 / count($downloads)) * 100);
+                if(count($downloads) > 0) {
 
-                foreach($downloads as $download) {
+                    $progress_increment = round((1 / count($downloads)) * 100);
 
-                    Storage::put($download['to'], file_get_contents($download['from']));
+                    foreach($downloads as $download) {
 
-                    $progress += $progress_increment;
-                    $this -> queueProgress($progress);
+                        Storage::put($download['to'], file_get_contents($download['from']));
+
+                        $progress += $progress_increment;
+                        $this -> queueProgress($progress);
+
+                    }
 
                 }
 
