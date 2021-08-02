@@ -58,7 +58,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
             if(count($docs) > 0) {
 
-                $this -> queueData(['ListingSourceRecordId' => $transaction -> ListingSourceRecordId], true);
+                $queue_data[] = $transaction -> ListingSourceRecordIds;
 
                 $add_transaction = new SkySlopeTransactions();
 
@@ -161,6 +161,8 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
             $transaction -> downloaded = 'yes';
             $transaction -> save();
+
+            $this -> queueData(['ListingSourceRecordIds' => $queue_data]);
 
         }
 
