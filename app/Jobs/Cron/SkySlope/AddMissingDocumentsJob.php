@@ -68,19 +68,29 @@ class AddMissingDocumentsJob implements ShouldQueue
                     'headers' => $headers
                 ]);
 
-                if($document -> listingGuid && $document -> saleGuid) {
+                if($document -> saleGuid && $document -> saleGuid != '' && $document -> saleGuid != 'null') {
 
-                    $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('saleGuid', $document -> saleGuid) -> first();
+                    $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
 
                 } else {
 
-                    if($document -> listingGuid) {
-                        $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
-                    } else {
-                        $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
-                    }
+                    $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
 
                 }
+
+                // if($document -> listingGuid && $document -> saleGuid) {
+
+                //     $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('saleGuid', $document -> saleGuid) -> first();
+
+                // } else {
+
+                //     if($document -> listingGuid) {
+                //         $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
+                //     } else {
+                //         $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
+                //     }
+
+                // }
 
                 if(!$transaction) {
                     $this -> queueData(['transaction_not_found' => 'LG = '.$document -> listingGuid.' SG = '.$document -> saleGuid], true);
