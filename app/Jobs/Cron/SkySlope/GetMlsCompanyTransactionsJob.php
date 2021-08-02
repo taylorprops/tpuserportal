@@ -124,7 +124,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                 foreach($docs as $doc) {
 
-                    //if($doc -> invalid != 'yes') {
+                    if($doc -> invalid != 'yes') {
 
                         //if(file_exists($doc -> upload_loc)) {
 
@@ -144,7 +144,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                         //}
 
-                    //}
+                    }
 
                 }
 
