@@ -87,6 +87,7 @@ class AddDocumentsJob implements ShouldQueue
                     'headers' => $headers
                 ]);
 
+                $response = null;
                 try {
                     if($type == 'listing') {
                         $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
