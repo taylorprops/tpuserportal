@@ -50,7 +50,13 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> with(['docs'])
         -> where('downloaded', 'no')
         -> limit(10)
+        -> inRandomOrder()
         -> get();
+
+        foreach ($transactions as $transaction) {
+            $transaction -> downloaded = 'yes';
+            $transaction -> save();
+        }
 
         $queue_data = [];
 
@@ -166,9 +172,6 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                 }
 
             }
-
-            $transaction -> downloaded = 'yes';
-            $transaction -> save();
 
             $this -> queueData(['ListingSourceRecordIds' => $queue_data]);
 
