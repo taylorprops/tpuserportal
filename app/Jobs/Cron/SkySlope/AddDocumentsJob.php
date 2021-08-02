@@ -94,51 +94,54 @@ class AddDocumentsJob implements ShouldQueue
                         $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
                     }
 
+                    if($response) {
 
-                    $headers = $response -> getHeaders();
-                    $remaining = $headers['x-ratelimit-remaining'][0];
+                        $headers = $response -> getHeaders();
+                        $remaining = $headers['x-ratelimit-remaining'][0];
 
-                    if($remaining > 0) {
+                        if($remaining > 0) {
 
-                        $contents = $response -> getBody() -> getContents();
-                        $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
-                        $contents = json_decode($contents, true);
+                            $contents = $response -> getBody() -> getContents();
+                            $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                            $contents = json_decode($contents, true);
 
-                        $documents = $contents['value']['documents'];
+                            $documents = $contents['value']['documents'];
 
-                        if(count($documents) > 0) {
+                            if(count($documents) > 0) {
 
-                            foreach($documents as $document) {
+                                foreach($documents as $document) {
 
-                                $add_document = Documents::firstOrCreate([
-                                    'id' => $document['id']
-                                ]);
+                                    $add_document = Documents::firstOrCreate([
+                                        'id' => $document['id']
+                                    ]);
 
-                                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
-                                $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
+                                    $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                                    $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
 
-                                $file_location = $dir.'/'.$document['fileName'];
+                                    $file_location = $dir.'/'.$document['fileName'];
 
-                                foreach($document as $col => $value) {
-                                    if(!in_array($col, ['fileSize', 'pages'])) {
-                                        $add_document -> $col = $value;
+                                    foreach($document as $col => $value) {
+                                        if(!in_array($col, ['fileSize', 'pages'])) {
+                                            $add_document -> $col = $value;
+                                        }
                                     }
+
+                                    $add_document -> file_location = $file_location;
+                                    $add_document -> listingGuid = $listingGuid;
+                                    $add_document -> saleGuid = $saleGuid;
+
+                                    $add_document -> save();
+
                                 }
-
-                                $add_document -> file_location = $file_location;
-                                $add_document -> listingGuid = $listingGuid;
-                                $add_document -> saleGuid = $saleGuid;
-
-                                $add_document -> save();
 
                             }
 
+
+                        } else {
+
+                            return 'error';
+
                         }
-
-
-                    } else {
-
-                        return 'error';
 
                     }
 
@@ -192,52 +195,55 @@ class AddDocumentsJob implements ShouldQueue
                     $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
                 }
 
+                if($response) {
 
-                $headers = $response -> getHeaders();
-                $remaining = $headers['x-ratelimit-remaining'][0];
+                    $headers = $response -> getHeaders();
+                    $remaining = $headers['x-ratelimit-remaining'][0];
 
-                if($remaining > 0) {
+                    if($remaining > 0) {
 
-                    $contents = $response -> getBody() -> getContents();
-                    $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
-                    $contents = json_decode($contents, true);
+                        $contents = $response -> getBody() -> getContents();
+                        $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                        $contents = json_decode($contents, true);
 
-                    $documents = $contents['value']['documents'];
+                        $documents = $contents['value']['documents'];
 
-                    if(count($documents) > 0) {
+                        if(count($documents) > 0) {
 
-                        foreach($documents as $document) {
+                            foreach($documents as $document) {
 
-                            $add_document = Documents::firstOrCreate([
-                                'id' => $document['id']
-                            ]);
+                                $add_document = Documents::firstOrCreate([
+                                    'id' => $document['id']
+                                ]);
 
-                            $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
-                            Storage::makeDirectory($dir);
-                            Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
-                            $file_location = $dir.'/'.$document['fileName'];
+                                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                                Storage::makeDirectory($dir);
+                                Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
+                                $file_location = $dir.'/'.$document['fileName'];
 
-                            foreach($document as $col => $value) {
-                                if(!in_array($col, ['fileSize', 'pages'])) {
-                                    $add_document -> $col = $value;
+                                foreach($document as $col => $value) {
+                                    if(!in_array($col, ['fileSize', 'pages'])) {
+                                        $add_document -> $col = $value;
+                                    }
                                 }
+
+                                $add_document -> file_location = $file_location;
+                                $add_document -> listingGuid = $listingGuid;
+                                $add_document -> saleGuid = $saleGuid;
+
+                                $add_document -> save();
+
                             }
-
-                            $add_document -> file_location = $file_location;
-                            $add_document -> listingGuid = $listingGuid;
-                            $add_document -> saleGuid = $saleGuid;
-
-                            $add_document -> save();
 
                         }
 
+                        return count($documents);
+
+                    } else {
+
+                        return 'error';
+
                     }
-
-                    return count($documents);
-
-                } else {
-
-                    return 'error';
 
                 }
 
