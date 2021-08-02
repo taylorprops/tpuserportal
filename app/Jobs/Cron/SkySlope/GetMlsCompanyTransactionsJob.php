@@ -1,23 +1,47 @@
 <?php
 
-namespace App\Http\Controllers\OldDB\Company;
+namespace App\Jobs\Cron\SkySlope;
 
-use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use App\Models\OldDB\Agents;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\OldDB\Company\Documents;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
 use App\Models\OldDB\Company\Transactions;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Resources\LocationData;
-use App\Models\DocManagement\SkySlope\Transactions as SkySlopeTransactions;
 use App\Models\DocManagement\SkySlope\Documents as SkySlopeDocuments;
+use App\Models\DocManagement\SkySlope\Transactions as SkySlopeTransactions;
 
-class OldTransactionsController extends Controller
+class GetMlsCompanyTransactionsJob implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public function get_transactions(Request $request) {
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this -> onQueue('add_mls_company_transactions');
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $this -> get_transactions();
+    }
+
+    public function get_transactions() {
 
         $progress = 0;
         $this -> queueProgress($progress);
@@ -25,7 +49,7 @@ class OldTransactionsController extends Controller
         $transactions = Transactions::select(['ListingSourceRecordId', 'ListingSourceRecordKey', 'ListAgentCompID', 'SaleAgentCompID', 'FullStreetAddress', 'City', 'StateOrProvince', 'PostalCode', 'County', 'MlsStatus', 'YearBuilt', 'PropertyType', 'PropertySubType', 'StreetNumber', 'StreetDirPrefix', 'StreetDirSuffix', 'StreetName', 'UnitNumber', 'MLSListDate', 'PurchaseContractDate', 'CloseDate', 'ExpirationDate', 'ListPrice', 'ClosePrice'])
         -> with(['docs'])
         -> where('downloaded', 'no')
-        -> limit(1000)
+        -> limit(100)
         -> get();
 
         foreach ($transactions as $transaction) {
@@ -136,9 +160,9 @@ class OldTransactionsController extends Controller
             $transaction -> downloaded = 'yes';
             $transaction -> save();
 
-            $this -> queueProgress(100);
-
         }
+
+        $this -> queueProgress(100);
 
     }
 
@@ -161,6 +185,5 @@ class OldTransactionsController extends Controller
     function county($zip) {
         return LocationData::select('county') -> where('zip', $zip) -> first() -> county;
     }
-
 
 }

@@ -12,7 +12,7 @@ class Transactions extends Model
     protected $connection = 'mysql_old_company';
     protected $table = 'mls_company';
     protected $primaryKey = 'ListingSourceRecordKey';
-    protected $fillable = ['ListingSourceRecordKey', 'ListingSourceRecordId'];
+    protected $fillable = ['ListingSourceRecordKey', 'ListingSourceRecordId', 'downloaded'];
     public $timestamps = false;
 
     public function docs() {
