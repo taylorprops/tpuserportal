@@ -42,7 +42,12 @@ class AddMissingDocumentsJob implements ShouldQueue
         $progress = 0;
         $this -> queueProgress($progress);
 
-        $documents = Documents::whereNull('file_exists') -> orWhere('file_exists', '') -> limit(1000) -> get();
+        $documents = Documents::where(function($query) {
+            $query -> whereNull('file_exists')
+            -> orWhere('file_exists', '');
+        })
+        -> whereNull('doc_type')
+        -> limit(1000) -> get();
 
         foreach($documents as $document) {
 
@@ -76,25 +81,6 @@ class AddMissingDocumentsJob implements ShouldQueue
 
                     $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
 
-                }
-
-                // if($document -> listingGuid && $document -> saleGuid) {
-
-                //     $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('saleGuid', $document -> saleGuid) -> first();
-
-                // } else {
-
-                //     if($document -> listingGuid) {
-                //         $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
-                //     } else {
-                //         $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
-                //     }
-
-                // }
-
-                if(!$transaction) {
-                    $this -> queueData(['transaction_not_found' => 'LG = '.$document -> listingGuid.' SG = '.$document -> saleGuid], true);
-                    //$this -> queueData(['transaction_not_found' => $document], true);
                 }
 
                 $type = $transaction -> objectType;
