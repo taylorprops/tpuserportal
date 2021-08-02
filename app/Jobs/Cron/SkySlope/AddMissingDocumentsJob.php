@@ -83,7 +83,8 @@ class AddMissingDocumentsJob implements ShouldQueue
                 }
 
                 if(!$transaction) {
-                    $this -> queueData(['transaction_not_found' => 'document_id = '.$document], true);
+                    $this -> queueData(['transaction_not_found' => 'LG = '.$document -> listingGuid.' SG = '.$document -> saleGuid], true);
+                    $this -> queueData(['transaction_not_found' => $document], true);
                 }
 
                 $type = $transaction -> objectType;
