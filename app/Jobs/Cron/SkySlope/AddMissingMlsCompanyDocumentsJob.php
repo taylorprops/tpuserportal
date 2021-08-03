@@ -75,6 +75,10 @@ class AddMissingMlsCompanyDocumentsJob implements ShouldQueue
 
             }
 
+        } else {
+
+            $this -> queueData(['complete' => 'yes']);
+
         }
 
         $this -> queueProgress(100);
