@@ -457,6 +457,47 @@ class SkySlopeController extends Controller
 
     }
 
+    public function add_missing_documents() {
+
+        //$progress = 0;
+        //$this -> queueProgress($progress);
+
+        $documents = Documents::where(function($query) {
+            $query -> whereNull('file_exists')
+            -> orWhere('file_exists', '');
+        })
+        -> limit(1000) -> get();
+
+        foreach($documents as $document) {
+
+            $exists = 'no';
+            $missing = [];
+            dump($document -> file_location);
+            if(Storage::exists($document -> file_location)) {
+
+                $exists = 'yes';
+
+            } else {
+
+                $exists = 'no';
+                $missing[] = $document -> id;
+
+            }
+
+            $document -> file_exists = $exists;
+            //$document -> save();
+
+            //$progress += .1;
+            //$this -> queueProgress($progress);
+
+            //$this -> queueData(['missing' => $missing], true);
+
+        }
+        dump($missing);
+
+        //$this -> queueProgress(100);
+
+    }
 
     public function test(Request $request, $session = null) {
 

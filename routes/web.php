@@ -99,6 +99,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
     Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
     Route::get('/skyslope/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
+    Route::get('/skyslope/add_missing_documents', [SkySlopeController::class, 'add_missing_documents']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB
