@@ -46,7 +46,7 @@ class AddMissingMlsCompanyDocumentsJob implements ShouldQueue
             -> orWhere('file_exists', '');
         })
         -> whereNotNull('doc_type')
-        -> limit(100) -> get();
+        -> limit(1000) -> get();
 
         foreach($documents as $document) {
 
