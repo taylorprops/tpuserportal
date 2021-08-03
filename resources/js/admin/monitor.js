@@ -10,11 +10,20 @@ if (document.URL.match(/monitor/)) {
 
         axios.get('/jobs?type='+type+'&queue='+queue+'&page='+page)
         .then(function (response) {
+
             document.querySelector('.monitor').innerHTML = response.data;
+
+            let monitor = document.querySelector('.monitor');
+            //console.log(monitor.offsetLeft);
+            monitor.querySelector('[charset="utf-8"]').remove();
+            monitor.querySelector('[name="viewport"]').remove();
+            monitor.querySelector('title').remove();
+            let link = monitor.getElementsByTagName('link')[0];
+            link.remove();
+            let h1 = monitor.getElementsByTagName('h1')[0];
+            h1.remove();
             // document.querySelector('.monitor').innerHTML = '';
             // document.querySelector('.monitor').insertAdjacentHTML('beforeend', response.data);
-            document.querySelector('.text-5xl').classList.add('text-3xl');
-            document.querySelector('.text-5xl').classList.remove('text-5xl');
 
         })
         .catch(function (error) {
