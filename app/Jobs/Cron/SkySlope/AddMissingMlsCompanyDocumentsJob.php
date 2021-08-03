@@ -48,28 +48,32 @@ class AddMissingMlsCompanyDocumentsJob implements ShouldQueue
         -> whereNotNull('doc_type')
         -> limit(1000) -> get();
 
-        foreach($documents as $document) {
+        if(count($documents) > 0) {
 
-            $exists = 'no';
-            $missing = [];
+            foreach($documents as $document) {
 
-            if(Storage::exists($document -> file_location)) {
+                $exists = 'no';
+                $missing = [];
 
-                $exists = 'yes';
+                if(Storage::exists($document -> file_location)) {
 
-            } else {
+                    $exists = 'yes';
 
-                $missing[] = $document -> id;
+                } else {
+
+                    $missing[] = $document -> id;
+
+                }
+
+                $document -> file_exists = $exists;
+                $document -> save();
+
+                $progress += .1;
+                $this -> queueProgress($progress);
+
+                $this -> queueData(['missing' => $missing], true);
 
             }
-
-            $document -> file_exists = $exists;
-            $document -> save();
-
-            $progress += .1;
-            $this -> queueProgress($progress);
-
-            $this -> queueData(['missing' => $missing], true);
 
         }
 
