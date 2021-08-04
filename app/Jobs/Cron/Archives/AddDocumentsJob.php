@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Cron\SkySlope;
+namespace App\Jobs\Cron\Archives;
 
 use Throwable;
 use Illuminate\Http\Request;
@@ -11,8 +11,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Models\DocManagement\SkySlope\Documents;
-use App\Models\DocManagement\SkySlope\Transactions;
+use App\Models\DocManagement\Archives\Documents;
+use App\Models\DocManagement\Archives\Transactions;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class AddDocumentsJob implements ShouldQueue
@@ -116,7 +116,7 @@ class AddDocumentsJob implements ShouldQueue
                                         'id' => $document['id']
                                     ]);
 
-                                    $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                                    $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                                     $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
 
                                     $file_location = $dir.'/'.$document['fileName'];
@@ -221,7 +221,7 @@ class AddDocumentsJob implements ShouldQueue
                                     'id' => $document['id']
                                 ]);
 
-                                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                                $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                                 Storage::makeDirectory($dir);
                                 Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
                                 $file_location = $dir.'/'.$document['fileName'];

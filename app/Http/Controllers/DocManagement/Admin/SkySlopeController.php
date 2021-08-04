@@ -222,7 +222,7 @@ class SkySlopeController extends Controller
 
                 $new_document = $contents['value']['document'];
 
-                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                 $file_location = $dir.'/'.$new_document['fileName'];
                 if(!Storage::exists($dir)) {
                     Storage::makeDirectory($dir);
@@ -327,7 +327,7 @@ class SkySlopeController extends Controller
                         'id' => $document['id']
                     ]);
 
-                    $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                    $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                     Storage::makeDirectory($dir);
                     Storage::put($dir.'/'.$document['fileName'], file_get_contents($document['url']));
                     $file_location = $dir.'/'.$document['fileName'];

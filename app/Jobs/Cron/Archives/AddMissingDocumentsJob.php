@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Cron\SkySlope;
+namespace App\Jobs\Cron\Archives;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -9,8 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Models\DocManagement\SkySlope\Documents;
-use App\Models\DocManagement\SkySlope\Transactions;
+use App\Models\DocManagement\Archives\Documents;
+use App\Models\DocManagement\Archives\Transactions;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class AddMissingDocumentsJob implements ShouldQueue
@@ -99,7 +99,7 @@ class AddMissingDocumentsJob implements ShouldQueue
 
                 $new_document = $contents['value']['document'];
 
-                $dir = 'doc_management/skyslope/'.$listingGuid.'_'.$saleGuid;
+                $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                 $file_location = $dir.'/'.$new_document['fileName'];
                 if(!Storage::exists($dir)) {
                     Storage::makeDirectory($dir);

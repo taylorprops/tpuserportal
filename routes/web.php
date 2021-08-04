@@ -93,17 +93,17 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 
     // %%%% Skyslope - import data for records
-    Route::get('/skyslope/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['admin']);
-    Route::get('/skyslope/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
-    Route::get('/skyslope/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
-    Route::get('/skyslope/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
-    Route::get('/skyslope/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
-    Route::get('/skyslope/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
-    Route::get('/skyslope/add_missing_documents', [SkySlopeController::class, 'add_missing_documents']) -> middleware(['admin']);
+    Route::get('/archives/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['admin']);
+    Route::get('/archives/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
+    Route::get('/archives/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);
+    Route::get('/archives/get_listing/{listingGuid}', [SkySlopeController::class, 'get_listing']) -> middleware(['admin']);
+    Route::get('/archives/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
+    Route::get('/archives/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
+    Route::get('/archives/add_missing_documents', [SkySlopeController::class, 'add_missing_documents']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB
-    Route::get('/old_db/skyslope/update_listings', [OldSkySlopeController::class, 'update_listings']) -> middleware(['admin']);
+    Route::get('/old_db/archives/update_listings', [OldSkySlopeController::class, 'update_listings']) -> middleware(['admin']);
 
     // %%%% add old company listings to New Skyslope
     Route::get('/old_db/company/get_transactions', [OldTransactionsController::class, 'get_transactions']) -> middleware(['admin']);

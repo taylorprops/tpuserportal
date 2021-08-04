@@ -87,7 +87,7 @@ class OldTransactionsController extends Controller
                 $add_transaction -> save();
 
                 // add docs to db - downloading done in separate controller
-                $dir = 'doc_management/skyslope/'.$guid;
+                $dir = 'doc_management/archives/'.$guid;
                 if(!Storage::exists($dir)) {
                     Storage::makeDirectory($dir);
                 }

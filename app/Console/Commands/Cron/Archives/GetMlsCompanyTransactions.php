@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands\Cron\SkySlope;
+namespace App\Console\Commands\Cron\Archives;
 
 use Illuminate\Console\Command;
-use App\Jobs\Cron\SkySlope\AddMissingDocumentsJob;
+use App\Jobs\Cron\Archives\GetMlsCompanyTransactionsJob;
 
-class AddMissingDocuments extends Command
+class GetMlsCompanyTransactions extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'skyslope:add_missing_documents';
+    protected $signature = 'archives:add_mls_company_transactions';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add missing documents';
+    protected $description = 'Add old transactions and docs from mls_company to skyslope db';
 
     /**
      * Create a new command instance.
@@ -38,6 +38,6 @@ class AddMissingDocuments extends Command
      */
     public function handle()
     {
-        AddMissingDocumentsJob::dispatch();
+        GetMlsCompanyTransactionsJob::dispatch();
     }
 }

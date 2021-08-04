@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Cron\SkySlope;
+namespace App\Jobs\Cron\Archives;
 
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Models\DocManagement\SkySlope\Transactions;
+use App\Models\DocManagement\Archives\Transactions;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class GetTransactionsJob implements ShouldQueue

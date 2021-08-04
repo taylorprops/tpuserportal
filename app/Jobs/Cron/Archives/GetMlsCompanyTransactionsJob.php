@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs\Cron\SkySlope;
+namespace App\Jobs\Cron\Archives;
 
 use Illuminate\Support\Str;
 use App\Models\OldDB\Agents;
@@ -14,8 +14,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Resources\LocationData;
-use App\Models\DocManagement\SkySlope\Documents as SkySlopeDocuments;
-use App\Models\DocManagement\SkySlope\Transactions as SkySlopeTransactions;
+use App\Models\DocManagement\Archives\Documents as SkySlopeDocuments;
+use App\Models\DocManagement\Archives\Transactions as SkySlopeTransactions;
 
 class GetMlsCompanyTransactionsJob implements ShouldQueue
 {
@@ -123,7 +123,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                     $add_transaction -> save();
 
                     // add docs to db - downloading done in separate controller
-                    $dir = 'doc_management/skyslope/'.$guid;
+                    $dir = 'doc_management/archives/'.$guid;
                     if(!Storage::exists($dir)) {
                         Storage::makeDirectory($dir);
                     }
