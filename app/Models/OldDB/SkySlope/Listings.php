@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\OldDB\Archives;
+namespace App\Models\OldDB\SkySlope;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasCompositePrimaryKeyTrait;

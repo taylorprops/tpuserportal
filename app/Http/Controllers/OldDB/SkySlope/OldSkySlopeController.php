@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\OldDB\Archives;
+namespace App\Http\Controllers\OldDB\SkySlope;
 
 use App\Helpers\Helper;
 use App\Models\OldDB\Agents;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\OldDB\Archives\Listings;
+use App\Models\OldDB\SkySlope\Listings;
 use App\Models\DocManagement\Resources\LocationData;
 
 class OldSkySlopeController extends Controller

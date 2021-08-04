@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Console\Commands\OldDB\Archives;
+namespace App\Console\Commands\OldDB\SkySlope;
 
 use Illuminate\Console\Command;
-use App\Jobs\OldDB\Archives\AddSkySlopeListingsJob;
+use App\Jobs\OldDB\SkySlope\AddSkySlopeListingsJob;
 
 class AddSkySlopeListings extends Command
 {

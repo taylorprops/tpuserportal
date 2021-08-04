@@ -7,7 +7,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
-use App\Http\Controllers\OldDB\Archives\OldSkySlopeController;
+use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\ArchivesController;
 use App\Http\Controllers\OldDB\Company\OldTransactionsController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;

@@ -678,4 +678,10 @@ class TransactionsController extends Controller
 
     }
 
+    public function transactions_archived(Request $request) {
+
+
+
+    }
+
 }
