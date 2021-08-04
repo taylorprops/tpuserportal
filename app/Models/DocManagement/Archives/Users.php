@@ -10,7 +10,7 @@ class Users extends Model
     use HasFactory;
 
     public $incrementing = false;
-    protected $connection = 'skyslope';
+    protected $connection = 'archives';
     protected $table = 'users';
     protected $primaryKey = 'userGuid';
     protected $fillable = ['userGuid'];

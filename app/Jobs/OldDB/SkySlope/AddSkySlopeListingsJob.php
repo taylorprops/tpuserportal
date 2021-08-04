@@ -51,7 +51,7 @@ class AddSkySlopeListingsJob implements ShouldQueue
             'Session' => $session
         ];
 
-        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-8 hour')));
+        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-1 day')));
         //$modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
 
         $query = [
@@ -78,16 +78,13 @@ class AddSkySlopeListingsJob implements ShouldQueue
 
             if($transaction['objectType'] != 'summary') {
 
-                if($transaction['objectType'] == 'sale') {
-                    $add_transaction = Listings::firstOrCreate([
-                        'TransactionId' => $transaction['transactionId']
-                    ]);
-                } else if($transaction['objectType'] == 'listing') {
-                    $add_transaction = Listings::firstOrCreate([
-                        'ListingId' => $transaction['listingId'],
-                        'TransactionId' => '0'
-                    ]);
-                }
+                $ListingId = $transaction['listingId'] ?? 0;
+                $TransactionId = $transaction['transactionId'] ?? 0;
+
+                $add_transaction = Listings::firstOrCreate([
+                    'ListingId' => $ListingId,
+                    'TransactionId' => $TransactionId
+                ]);
 
                 $address = $transaction['property']['streetNumber'];
                 if($transaction['property']['direction'] != '') {
@@ -198,11 +195,6 @@ class AddSkySlopeListingsJob implements ShouldQueue
                 $add_transaction -> B2Email = $transaction['buyers'][1]['email'] ?? null;
                 $add_transaction -> B2Phone = $transaction['buyers'][1]['phoneNumber'] ?? null;
 
-                if(isset($transaction['transactionId'])) {
-                    $add_transaction -> TransactionId = $transaction['transactionId'];
-                    $add_transaction -> TransactionIdBase64 = base64_encode($transaction['transactionId']);
-                }
-                $add_transaction -> ListingId = $transaction['listingId'] ?? '0';
                 $add_transaction -> Public_ID = $transaction['agent']['publicId'] ?? null;
                 $add_transaction -> Office_Name = $location;
                 $add_transaction -> County = $county;

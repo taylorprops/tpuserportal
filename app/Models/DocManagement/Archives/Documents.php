@@ -13,7 +13,7 @@ class Documents extends Model
     use Compoships;
 
     public $incrementing = false;
-    protected $connection = 'skyslope';
+    protected $connection = 'archives';
     protected $table = 'documents';
     protected $primaryKey = 'id';
     protected $fillable = ['id'];

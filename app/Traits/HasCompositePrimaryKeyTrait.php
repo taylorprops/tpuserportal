@@ -10,6 +10,17 @@ trait HasCompositePrimaryKeyTrait {
     }
 
 
+    public function getKey()
+    {
+        $attributes = [];
+
+        foreach ($this -> getKeyName() as $key) {
+            $attributes[$key] = $this -> getAttribute($key);
+        }
+
+        return $attributes;
+    }
+
     //Set the keys for a save update query.
     protected function setKeysForSaveQuery($query) {
 

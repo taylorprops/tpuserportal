@@ -12,7 +12,10 @@ use App\Models\DocManagement\Resources\LocationData;
 class OldSkySlopeController extends Controller
 {
 
-    public function update_listings(Request $request) {
+    public function update_listings() {
+
+        //$progress = 0;
+        //$this -> queueProgress($progress);
 
         $auth = $this -> skyslope_auth();
         $session = $auth['Session'];
@@ -22,12 +25,12 @@ class OldSkySlopeController extends Controller
             'Session' => $session
         ];
 
-        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-1 day')));
-        //$modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
+        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-15 day')));
+        $modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-10 day')));
 
         $query = [
             'modifiedAfter' => $modifiedAfter,
-            //'modifiedBefore' => $modifiedBefore,
+            'modifiedBefore' => $modifiedBefore,
             'type' => 'all'
         ];
 
@@ -43,25 +46,19 @@ class OldSkySlopeController extends Controller
         $contents = json_decode($contents, true);
         $data = $contents['value'];
 
+        //$progress_increment = round((1 / count($data)) * 100);
 
-        echo 'Total: '.count($data).'<br>';
-        echo 'Start: '.$modifiedAfter;
-
-        //dd($data[3], $data[4], $data[5], $data[6]);
         foreach($data as $transaction) {
 
             if($transaction['objectType'] != 'summary') {
 
-                if($transaction['objectType'] == 'sale') {
-                    $add_transaction = Listings::firstOrCreate([
-                        'TransactionId' => $transaction['transactionId']
-                    ]);
-                } else if($transaction['objectType'] == 'listing') {
-                    $add_transaction = Listings::firstOrCreate([
-                        'ListingId' => $transaction['listingId'],
-                        'TransactionId' => '0'
-                    ]);
-                }
+                $ListingId = $transaction['listingId'] ?? 0;
+                $TransactionId = $transaction['transactionId'] ?? 0;
+
+                $add_transaction = Listings::firstOrCreate([
+                    'ListingId' => $ListingId,
+                    'TransactionId' => $TransactionId
+                ]);
 
                 $address = $transaction['property']['streetNumber'];
                 if($transaction['property']['direction'] != '') {
@@ -172,21 +169,21 @@ class OldSkySlopeController extends Controller
                 $add_transaction -> B2Email = $transaction['buyers'][1]['email'] ?? null;
                 $add_transaction -> B2Phone = $transaction['buyers'][1]['phoneNumber'] ?? null;
 
-                if(isset($transaction['transactionId'])) {
-                    $add_transaction -> TransactionId = $transaction['transactionId'];
-                    $add_transaction -> TransactionIdBase64 = base64_encode($transaction['transactionId']);
-                }
-                $add_transaction -> ListingId = $transaction['listingId'] ?? '0';
-                $add_transaction -> Public_ID = $transaction['agent']['publicId'] ?? null;
+                $add_transaction -> Public_ID = $transaction['agent']['publicId'];
                 $add_transaction -> Office_Name = $location;
                 $add_transaction -> County = $county;
-
+                dump($add_transaction);
                 $add_transaction -> save();
 
             }
 
+            //$progress += $progress_increment;
+            //$this -> queueProgress($progress);
+
         }
 
+        //$progress = 100;
+        //$this -> queueProgress($progress);
 
     }
 

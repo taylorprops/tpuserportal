@@ -680,7 +680,7 @@ class TransactionsController extends Controller
 
     public function transactions_archived(Request $request) {
 
-
+        return view('/doc_management/transactions/transactions_archived');
 
     }
 

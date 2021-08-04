@@ -14,7 +14,7 @@ class Transactions extends Model
     use Compoships;
 
     public $incrementing = false;
-    protected $connection = 'skyslope';
+    protected $connection = 'archives';
     protected $table = 'transactions';
     protected $primaryKey = ['listingGuid', 'saleGuid'];
     protected $fillable = ['listingGuid', 'saleGuid'];

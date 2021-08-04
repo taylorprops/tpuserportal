@@ -16,5 +16,6 @@ class Listings extends Model
     protected $primaryKey = ['TransactionId', 'ListingId'];
     public $timestamps = false;
     protected $fillable = ['TransactionId', 'ListingId'];
+    //protected $guarded = [];
 
 }
