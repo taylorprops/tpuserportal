@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
-use App\Models\DocManagement\Archives\Documents;
+use App\Models\DocManagement\SkySlope\Documents;
 
 class AddMissingMlsCompanyDocumentsJob implements ShouldQueue
 {
