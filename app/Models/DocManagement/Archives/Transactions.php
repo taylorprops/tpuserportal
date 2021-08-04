@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DocManagement\SkySlope;
+namespace App\Models\DocManagement\Archives;
 
 use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +20,7 @@ class Transactions extends Model
     protected $fillable = ['listingGuid', 'saleGuid'];
 
     public function docs() {
-        return $this -> hasMany(\App\Models\DocManagement\SkySlope\Documents::class, ['listingGuid', 'saleGuid'], ['listingGuid', 'saleGuid']);
+        return $this -> hasMany(\App\Models\DocManagement\Archives\Documents::class, ['listingGuid', 'saleGuid'], ['listingGuid', 'saleGuid']);
     }
 
 

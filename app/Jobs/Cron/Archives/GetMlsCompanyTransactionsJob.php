@@ -14,8 +14,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Resources\LocationData;
-use App\Models\DocManagement\SkySlope\Documents as SkySlopeDocuments;
-use App\Models\DocManagement\SkySlope\Transactions as SkySlopeTransactions;
+use App\Models\DocManagement\Archives\Documents as SkySlopeDocuments;
+use App\Models\DocManagement\Archives\Transactions as SkySlopeTransactions;
 
 class GetMlsCompanyTransactionsJob implements ShouldQueue
 {

@@ -11,8 +11,8 @@ use App\Models\OldDB\Company\Documents;
 use Illuminate\Support\Facades\Storage;
 use App\Models\OldDB\Company\Transactions;
 use App\Models\DocManagement\Resources\LocationData;
-use App\Models\DocManagement\SkySlope\Transactions as SkySlopeTransactions;
-use App\Models\DocManagement\SkySlope\Documents as SkySlopeDocuments;
+use App\Models\DocManagement\Archives\Transactions as SkySlopeTransactions;
+use App\Models\DocManagement\Archives\Documents as SkySlopeDocuments;
 
 class OldTransactionsController extends Controller
 {

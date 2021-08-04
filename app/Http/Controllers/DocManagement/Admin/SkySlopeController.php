@@ -6,9 +6,9 @@ use Throwable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Models\DocManagement\SkySlope\Users;
-use App\Models\DocManagement\SkySlope\Documents;
-use App\Models\DocManagement\SkySlope\Transactions;
+use App\Models\DocManagement\Archives\Users;
+use App\Models\DocManagement\Archives\Documents;
+use App\Models\DocManagement\Archives\Transactions;
 
 
 class SkySlopeController extends Controller

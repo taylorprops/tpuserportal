@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DocManagement\SkySlope;
+namespace App\Models\DocManagement\Archives;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

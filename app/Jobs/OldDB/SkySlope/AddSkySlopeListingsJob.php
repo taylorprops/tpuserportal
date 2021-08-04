@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Jobs\OldDB\SkySlope;
+namespace App\Jobs\OldDB\Archives;
 
 use App\Helpers\Helper;
 use App\Models\OldDB\Agents;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\OldDB\SkySlope\Listings;
+use App\Models\OldDB\Archives\Listings;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
