@@ -697,9 +697,8 @@ class TransactionsController extends Controller
             return '<a href="" class="'.$button_classes.'"><i class="fal fa-pencil fa-sm mr-2"></i> View/Edit</a>';
         })
         -> editColumn('name', function($transactions) {
-            $property = $transactions -> property;
-            $property = json_decode($property, true);
-            return $property['streetNumber'].' '.$property['streetAddress'].' '.$property['city'].', '.$property['state'].' '.$property['zip'];
+            $property = json_decode($transactions -> property);
+            return $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
         })
         -> escapeColumns([])
         -> make(true);

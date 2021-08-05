@@ -81,10 +81,18 @@ class AddSkySlopeListingsJob implements ShouldQueue
                 $ListingId = $transaction['listingId'] ?? 0;
                 $TransactionId = $transaction['transactionId'] ?? 0;
 
-                $add_transaction = Listings::firstOrCreate([
-                    'ListingId' => $ListingId,
-                    'TransactionId' => $TransactionId
-                ]);
+                if($transaction['objectType'] != 'listing') {
+                    $add_transaction = Listings::firstOrCreate([
+                        'ListingId' => $ListingId,
+                        'TransactionId' => $TransactionId
+                    ]);
+                } else if($transaction['objectType'] != 'sale') {
+                    $add_transaction = Listings::firstOrCreate([
+                        'TransactionId' => $TransactionId
+                    ]);
+                    $add_transaction -> ListingId = $ListingId;
+                }
+
 
                 $address = $transaction['property']['streetNumber'];
                 if($transaction['property']['direction'] != '') {

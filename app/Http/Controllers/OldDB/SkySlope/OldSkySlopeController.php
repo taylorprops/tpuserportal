@@ -25,12 +25,12 @@ class OldSkySlopeController extends Controller
             'Session' => $session
         ];
 
-        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-15 day')));
-        $modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-10 day')));
+        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-1 day')));
+        //$modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('+1 day')));
 
         $query = [
             'modifiedAfter' => $modifiedAfter,
-            'modifiedBefore' => $modifiedBefore,
+            //'modifiedBefore' => $modifiedBefore,
             'type' => 'all'
         ];
 
@@ -55,10 +55,18 @@ class OldSkySlopeController extends Controller
                 $ListingId = $transaction['listingId'] ?? 0;
                 $TransactionId = $transaction['transactionId'] ?? 0;
 
-                $add_transaction = Listings::firstOrCreate([
-                    'ListingId' => $ListingId,
-                    'TransactionId' => $TransactionId
-                ]);
+                if($transaction['objectType'] != 'listing') {
+                    $add_transaction = Listings::firstOrCreate([
+                        'ListingId' => $ListingId,
+                        'TransactionId' => $TransactionId
+                    ]);
+                } else if($transaction['objectType'] != 'sale') {
+                    $add_transaction = Listings::firstOrCreate([
+                        'TransactionId' => $TransactionId
+                    ]);
+                    $add_transaction -> ListingId = $ListingId;
+                }
+
 
                 $address = $transaction['property']['streetNumber'];
                 if($transaction['property']['direction'] != '') {
@@ -169,11 +177,12 @@ class OldSkySlopeController extends Controller
                 $add_transaction -> B2Email = $transaction['buyers'][1]['email'] ?? null;
                 $add_transaction -> B2Phone = $transaction['buyers'][1]['phoneNumber'] ?? null;
 
-                $add_transaction -> Public_ID = $transaction['agent']['publicId'];
+                $add_transaction -> Public_ID = $transaction['agent']['publicId'] ?? null;
                 $add_transaction -> Office_Name = $location;
                 $add_transaction -> County = $county;
+
                 dump($add_transaction);
-                $add_transaction -> save();
+                //$add_transaction -> save();
 
             }
 
