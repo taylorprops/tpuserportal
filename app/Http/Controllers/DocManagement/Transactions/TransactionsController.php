@@ -10,12 +10,14 @@ use App\Models\Employees\Agents;
 use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Resources\FormGroups;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\DocManagement\Transactions\Transactions;
 use App\Models\DocManagement\Resources\ChecklistLocations;
 use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
 use App\Models\DocManagement\Resources\ChecklistPropertySubTypes;
+use App\Models\DocManagement\Archives\Transactions as ArchivedTransactions;
 
 class TransactionsController extends Controller
 {
@@ -681,6 +683,26 @@ class TransactionsController extends Controller
     public function transactions_archived(Request $request) {
 
         return view('/doc_management/transactions/transactions_archived');
+
+    }
+
+    public function get_transactions_archived(Request $request) {
+
+        $transactions = ArchivedTransactions::select(['property']) -> get();
+
+        $button_classes = 'px-3 py-2 text-sm bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center rounded text-white shadow hover:shadow-lg outline-none tracking-wider focus:outline-none disabled:opacity-25 transition-all ease-in-out duration-150 shadow hover:shadow-md';
+
+        return datatables() -> of($transactions)
+        -> addColumn('edit', function ($transactions) use ($button_classes) {
+            return '<a href="" class="'.$button_classes.'"><i class="fal fa-pencil fa-sm mr-2"></i> View/Edit</a>';
+        })
+        -> editColumn('name', function($transactions) {
+            $property = $transactions -> property;
+            $property = json_decode($property, true);
+            return $property['streetNumber'].' '.$property['streetAddress'].' '.$property['city'].', '.$property['state'].' '.$property['zip'];
+        })
+        -> escapeColumns([])
+        -> make(true);
 
     }
 

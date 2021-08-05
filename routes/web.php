@@ -66,6 +66,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% Transactions
     Route::get('/transactions', [TransactionsController::class, 'transactions']) -> middleware(['agent']);
     Route::get('/transactions_archived', [TransactionsController::class, 'transactions_archived']) -> middleware(['agent']);
+    Route::get('/get_transactions_archived', [TransactionsController::class, 'get_transactions_archived']) -> middleware(['agent']);
     Route::get('/transactions/create/{transaction_type}', [TransactionsController::class, 'create']) -> middleware(['agent']);
     Route::post('/transactions/save_transaction', [TransactionsController::class, 'save_transaction']) -> middleware(['agent']);
     Route::get('/transactions/get_property_info', [TransactionsController::class, 'get_property_info']) -> middleware(['agent']);
