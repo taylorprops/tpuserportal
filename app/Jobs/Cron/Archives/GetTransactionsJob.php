@@ -117,7 +117,24 @@ class GetTransactionsJob implements ShouldQueue
 
                 }
 
+                $address = $transaction -> Street_Number;
+                if($transaction -> Street_Dir != '') {
+                    $address .= ' ' . $transaction -> Street_Dir;
+                }
+                $address .= ' ' . $transaction -> Street_Name;
+                if($transaction -> Unit_Number != '') {
+                    $address .= ' ' . $transaction -> Unit_Number;
+                }
+                $city = $transaction -> City;
+                $state = $transaction -> State;
+                $zip = $transaction -> Zip;
+
                 $add_transaction -> agentId = $agentId ?? 0;
+                $add_transaction -> agent_name = $transaction -> First_Name.' '.$transaction -> Last_Name;
+                $add_transaction -> address = $address;
+                $add_transaction -> city = $city;
+                $add_transaction -> state = $state;
+                $add_transaction -> zip = $zip;
                 $add_transaction -> data_source = 'skyslope';
                 $add_transaction -> save();
 

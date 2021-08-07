@@ -19,12 +19,12 @@ class Transactions extends Model
     protected $primaryKey = ['listingGuid', 'saleGuid'];
     protected $fillable = ['listingGuid', 'saleGuid'];
 
-    public static function boot() {
-        parent::boot();
-        static::addGlobalScope(function ($query) {
-            $query -> whereHas('docs');
-        });
-    }
+    // public static function boot() {
+    //     parent::boot();
+    //     static::addGlobalScope(function ($query) {
+    //         $query -> whereHas('docs');
+    //     });
+    // }
 
 
 

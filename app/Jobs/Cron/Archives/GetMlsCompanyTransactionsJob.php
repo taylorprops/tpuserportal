@@ -77,6 +77,8 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                     } else {
                         $agent_id = $transaction -> SaleAgentCompID ?? 0;
                     }
+                    $agent_details = $this -> agent($agent_id);
+                    $agent_name = $agent_details['first'].' '.$agent_details['last'];
 
                     $guid = (string) Str::uuid();
 
@@ -110,6 +112,10 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                         'streetAddress' => $transaction -> StreetName,
                     ];
                     $add_transaction -> property = json_encode($property);
+                    $add_transaction -> address = $transaction -> FullStreetAddress;
+                    $add_transaction -> city = $transaction -> City;
+                    $add_transaction -> state = $transaction -> StateOrProvince;
+                    $add_transaction -> zip = $transaction -> PostalCode;
 
                     $agent = [
                         'guid' => '',
@@ -120,6 +126,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                     $add_transaction -> mlsNumber = $transaction -> ListingSourceRecordId ?? '0';
                     $add_transaction -> data_source = 'mls_company';
                     $add_transaction -> agentId = $agent_id;
+                    $add_transaction -> agent_name = $agent_name;
 
                     $add_transaction -> save();
 

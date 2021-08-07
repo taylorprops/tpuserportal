@@ -8,17 +8,16 @@ use App\Models\CRM\CRMContacts;
 use Illuminate\Validation\Rule;
 use App\Models\Employees\Agents;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\DocManagement\Archives\Documents;
+
 use App\Models\DocManagement\Resources\FormGroups;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\DocManagement\Transactions\Transactions;
 use App\Models\DocManagement\Resources\ChecklistLocations;
 use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
 use App\Models\DocManagement\Resources\ChecklistPropertySubTypes;
-use App\Models\DocManagement\Archives\Transactions as ArchivedTransactions;
+
 
 class TransactionsController extends Controller
 {
@@ -681,69 +680,6 @@ class TransactionsController extends Controller
 
     }
 
-    public function transactions_archived(Request $request) {
 
-        return view('/doc_management/transactions/transactions_archived');
-
-    }
-
-    public function get_transactions_archived(Request $request) {
-
-        $transactions = ArchivedTransactions::select(['listingGuid', 'saleGuid', 'property', 'agentId', 'listingDate', 'actualClosingDate', 'status'])
-        -> with(['agent_details:id,nickname,last'])
-        -> orderBy('actualClosingDate', 'desc')
-        -> get();
-
-
-        $button_classes = 'px-3 py-2 text-sm bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center rounded text-white shadow hover:shadow-lg outline-none tracking-wider focus:outline-none disabled:opacity-25 transition-all ease-in-out duration-150 shadow hover:shadow-md';
-
-        return datatables() -> of($transactions)
-        -> addColumn('view', function ($transactions) use ($button_classes) {
-            return '<a href="/transactions_archived_view/'.$transactions -> listingGuid.'/'.$transactions -> saleGuid.'" class="'.$button_classes.'">View</a>';
-        })
-        -> editColumn('status', function($transactions) {
-            return ucwords($transactions -> status);
-        })
-        -> addColumn('address', function($transactions) {
-            if($transactions -> property != '') {
-                $property = json_decode($transactions -> property);
-                return $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
-            }
-            return '';
-        })
-        -> addColumn('agent', function($transactions) {
-            $agent = '';
-            if($transactions -> agent_details) {
-                $agent = $transactions -> agent_details -> nickname.' '.$transactions -> agent_details -> last;
-            }
-            return $agent;
-        })
-        -> addColumn('list_date', function($transactions) {
-            return substr($transactions -> listingDate, 0, 10);
-        })
-        -> addColumn('close_date', function($transactions) {
-            return substr($transactions -> actualClosingDate, 0, 10);
-        })
-        -> escapeColumns([])
-        -> make(true);
-
-    }
-
-    public function transactions_archived_view(Request $request) {
-
-        $transaction = ArchivedTransactions::where('listingGuid', $request -> listingGuid)
-        -> where('saleGuid', $request -> saleGuid)
-        -> with(['agent_details:id,nickname,last,cell_phone,email1', 'docs'])
-        -> first();
-
-        $property = json_decode($transaction -> property);
-        $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
-
-        $agent = $transaction -> agent_details;
-        $docs = $transaction -> docs;
-
-        return view('/doc_management/transactions/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs'));
-
-    }
 
 }

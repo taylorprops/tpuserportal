@@ -9,28 +9,72 @@
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
-            <div class="">
+            <div class="flex flex-col">
 
-                <div class="no-wrap">
+                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
-                    <table id="archives_table" class="data-table hover nowrap order-column row-border" width="100%">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 
-                        <thead>
-                            <tr>
-                                <th width="100"></th>
-                                <th>Status</th>
-                                <th>Address</th>
-                                <th>Agent</th>
-                                <th>List Date</th>
-                                <th>Close Date</th>
-                            </tr>
-                        </thead>
+                        <div class="d-flex justify-content-center mb-2">
+                            {!! $transactions -> links() !!}
+                        </div>
 
-                        <tbody>
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
-                        </body>
+                            <table class="min-w-full divide-y divide-gray-200">
 
-                    </table>
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agent</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">List Date</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Close Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @foreach($transactions as $transaction)
+                                    @php
+                                    $property = json_decode($transaction -> property);
+                                    $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
+                                    $agent = '';
+                                    if($transaction -> agent_details) {
+                                        $agent = $transaction -> agent_details -> nickname.' '.$transaction -> agent_details -> last;
+                                    }
+                                    @endphp
+                                        <tr>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
+                                                <x-elements.button
+                                                    class=""
+                                                    :buttonClass="'primary'"
+                                                    :buttonSize="'md'"
+                                                    type="button">
+                                                    View
+                                                </x-elements.button>
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ ucwords($transaction -> status) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ $agent }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
+                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> actualClosingDate, 0, 10) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+
+                                <tbody>
+
+                                </body>
+
+                            </table>
+
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-2">
+                            {!! $transactions -> links() !!}
+                        </div>
+
+                    </div>
 
                 </div>
 
