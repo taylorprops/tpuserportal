@@ -40,6 +40,8 @@ class AddMissingFieldsJob implements ShouldQueue
         $progress = 0;
         $this -> queueProgress($progress);
 
+        $left = Transactions::whereNull('state') -> count();
+
         $transactions = Transactions::whereNull('state')
         -> orWhere('state', '')
         -> with(['agent_details'])
@@ -51,7 +53,7 @@ class AddMissingFieldsJob implements ShouldQueue
             return false;
         }
 
-        $this -> queueData(['left' => count($transactions)]);
+        $this -> queueData(['left' => $left]);
 
         $progress_increment = .5;
 
