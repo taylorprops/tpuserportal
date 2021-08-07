@@ -54,24 +54,23 @@ class ArchivedTransactionsController extends Controller
 
         // $left = Transactions::whereNull('address') -> count();
         // dump($left);
-        $transactions = Transactions::whereNull('state')
-        -> orWhere('state', '')
-        -> with(['agent_details'])
+        $transactions = Transactions::where('state', 'xxx')
+        //-> with(['agent_details'])
         //-> inRandomOrder()
-        //-> limit(2000)
+        //-> limit(200)
         -> get();
         dump(count($transactions));
 
         if(count($transactions) == 0) {
-            $this -> queueData(['completed' => 'yes']);
-            return false;
+            //$this -> queueData(['completed' => 'yes']);
+            //return false;
         }
 
         //$this -> queueData(['left' => $left]);
 
         //$progress_increment = .5;
 
-        foreach($transactions as $transaction) {
+        /* foreach($transactions as $transaction) {
 
             $property = json_decode($transaction -> property, true);
             $address = '';
@@ -111,7 +110,7 @@ class ArchivedTransactionsController extends Controller
             // }
             //$this -> queueProgress($progress);
 
-        }
+        } */
 
         //$this -> queueProgress(100);
 
