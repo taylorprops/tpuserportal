@@ -119,6 +119,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                     $add_transaction -> mlsNumber = $transaction -> ListingSourceRecordId ?? '0';
                     $add_transaction -> data_source = 'mls_company';
+                    $add_transaction -> agentId = $agent_id;
 
                     $add_transaction -> save();
 

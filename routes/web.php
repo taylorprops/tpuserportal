@@ -8,7 +8,7 @@ use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
-use App\Http\Controllers\DocManagement\Admin\ArchivesController;
+use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
 use App\Http\Controllers\OldDB\Company\OldTransactionsController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
@@ -67,6 +67,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions', [TransactionsController::class, 'transactions']) -> middleware(['agent']);
     Route::get('/transactions_archived', [TransactionsController::class, 'transactions_archived']) -> middleware(['agent']);
     Route::get('/get_transactions_archived', [TransactionsController::class, 'get_transactions_archived']) -> middleware(['agent']);
+    Route::get('/transactions_archived_view/{listingGuid}/{saleGuid}', [TransactionsController::class, 'transactions_archived_view']) -> middleware(['agent']);
     Route::get('/transactions/create/{transaction_type}', [TransactionsController::class, 'create']) -> middleware(['agent']);
     Route::post('/transactions/save_transaction', [TransactionsController::class, 'save_transaction']) -> middleware(['agent']);
     Route::get('/transactions/get_property_info', [TransactionsController::class, 'get_property_info']) -> middleware(['agent']);
@@ -93,7 +94,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/resources/config/config_add', [ResourcesController::class, 'config_add']) -> middleware(['admin']);
 
 
-    // %%%% Skyslope - import data for records
+    // %%%% archives - import data for records
     Route::get('/archives/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['admin']);
     Route::get('/archives/get_listings', [SkySlopeController::class, 'get_listings']) -> middleware(['admin']);
     Route::get('/archives/get_users', [SkySlopeController::class, 'get_users']) -> middleware(['admin']);

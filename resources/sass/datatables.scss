@@ -9,6 +9,23 @@
 
     position: inherit !important;
 
+    .dataTables_processing {
+        position: absolute;
+        top: 50% !important;
+        left: 50% !important;
+        width: 300px !important;
+        height: 100px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: auto !important;
+        padding-top: 40px !important;
+        text-align: center !important;
+        font-size: 1.2em !important;
+        background: white !important;
+        background-color: white !important;
+        @apply border shadow rounded;
+    }
+
     .data-table {
         @apply text-gray-600;
         margin-top: 15px;

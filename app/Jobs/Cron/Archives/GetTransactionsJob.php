@@ -99,6 +99,11 @@ class GetTransactionsJob implements ShouldQueue
                             if(count($value) == 0) {
                                 $value = [];
                             }
+
+                            if($col == 'agent') {
+                                $agentId = $value['publicId'];
+                            }
+
                             $value = json_encode($value);
 
                         }
@@ -112,6 +117,7 @@ class GetTransactionsJob implements ShouldQueue
 
                 }
 
+                $add_transaction -> agentId = $agentId ?? 0;
                 $add_transaction -> data_source = 'skyslope';
                 $add_transaction -> save();
 

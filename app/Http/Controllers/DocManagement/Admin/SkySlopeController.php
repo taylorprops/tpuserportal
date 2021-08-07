@@ -15,105 +15,100 @@ class SkySlopeController extends Controller
 {
 
 
-    public function get_transactions(Request $request, $session = null) {
+    public function get_transactions() {
 
-        try {
+        //$progress = 0;
+        //$this -> queueProgress($progress);
 
-            $auth = $this -> skyslope_auth();
-            $session = $auth['Session'];
-            $headers = [
-                'Content-Type' => 'application/json',
-                'Session' => $session
-            ];
+        $auth = $this -> skyslope_auth();
+        $session = $auth['Session'];
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Session' => $session
+        ];
 
-            $days_ago_start = 4;
-            $days_ago_end = 0;
-            if($request -> start) {
-                $days_ago_start = $request -> start;
-            }
-            if($request -> end) {
-                $days_ago_end = $request -> end;
-            }
+        $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-1 days')));
 
-            $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-'.$days_ago_start.' day')));
-            $createdBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-'.$days_ago_end.' day')));
+        $query = [
+            'createdAfter' => $createdAfter,
+            'type' => 'all'
+        ];
 
-            $query = [
-                'createdAfter' => $createdAfter,
-                'createdBefore' => $createdBefore,
-                'type' => 'all'
-            ];
+        $client = new \GuzzleHttp\Client([
+            'headers' => $headers,
+            'query' => $query
+        ]);
 
-            $client = new \GuzzleHttp\Client([
-                'headers' => $headers,
-                'query' => $query
-            ]);
+        //$progress = 1;
+        //$this -> queueProgress($progress);
 
-            $response = $client -> request('GET', 'https://api.skyslope.com/api/files');
+        $response = $client -> request('GET', 'https://api.skyslope.com/api/files');
 
-            $contents = $response -> getBody() -> getContents();
-            $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
-            $contents = json_decode($contents, true);
-            $data = $contents['value'];
+        $contents = $response -> getBody() -> getContents();
+        $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+        $contents = json_decode($contents, true);
+        $data = $contents['value'];
 
-            //dd($data);
-            echo 'Total: '.count($data).'<br>';
-            echo 'Start: '.$createdAfter.' - End: '.$createdBefore.'<br>';
+        //$progress_increment = (int)round((1 / 15) * 100);
 
-            foreach($data as $transaction) {
+        foreach($data as $transaction) {
 
-                if($transaction['objectType'] != 'summary') {
+            if($transaction['objectType'] != 'summary') {
 
-                    if($transaction['objectType'] == 'sale') {
-                        $add_transaction = Transactions::firstOrCreate([
-                            'saleGuid' => $transaction['saleGuid'],
-                            'listingGuid' => $transaction['listingGuid']
-                        ]);
-                        $key = 'saleGuid';
-                    } else if($transaction['objectType'] == 'listing') {
-                        $add_transaction = Transactions::firstOrCreate([
-                            'listingGuid' => $transaction['listingGuid']
-                        ]);
-                        $key = 'listingGuid';
-                    }
+                if($transaction['objectType'] == 'sale') {
+                    $add_transaction = Transactions::firstOrCreate([
+                        'saleGuid' => $transaction['saleGuid'],
+                        'listingGuid' => $transaction['listingGuid']
+                    ]);
+                    $key = 'saleGuid';
+                } else if($transaction['objectType'] == 'listing') {
+                    $add_transaction = Transactions::firstOrCreate([
+                        'listingGuid' => $transaction['listingGuid']
+                    ]);
+                    $key = 'listingGuid';
+                }
 
-                    foreach($transaction as $col => $value) {
+                foreach($transaction as $col => $value) {
 
-                        if($col != $key) {
+                    if($col != $key) {
 
 
-                            if(is_array($value)) {
+                        if(is_array($value)) {
 
-                                if(count($value) == 0) {
-                                    $value = [];
-                                }
-                                $value = json_encode($value);
-
-                            }
-                            if($col == 'isOfficeLead') {
-                                $value = $value == 'true' ? 1 : 0;
+                            if(count($value) == 0) {
+                                $value = [];
                             }
 
-                            $add_transaction -> $col = $value;
+                            if($col == 'agent') {
+                                $agentId = $value['publicId'];
+                            }
+
+                            $value = json_encode($value);
 
                         }
+                        if($col == 'isOfficeLead') {
+                            $value = $value == 'true' ? 1 : 0;
+                        }
+
+                        $add_transaction -> $col = $value;
 
                     }
-
-                    $add_transaction -> save();
 
                 }
 
+                $add_transaction -> agentId = $agentId;
+                $add_transaction -> data_source = 'skyslope';
+                dump($agentId);
+                //$add_transaction -> save();
+
+                //$progress += $progress_increment;
+                //$this -> queueProgress($progress);
+
             }
-
-
-
-        } catch (Throwable $e) {
-
-            echo $e -> getMessage();
 
         }
 
+        //$this -> queueProgress(100);
 
     }
 

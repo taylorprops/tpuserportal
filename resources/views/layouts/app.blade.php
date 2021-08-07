@@ -61,7 +61,7 @@
 
                 <!-- Page Heading -->
                 @if($header != 'null')
-                <header :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
+                <header :class="{ 'ml-44' : main_nav_open, '' : !main_nav_open }">
                     <div class="max-w-full pb-3 md:pb-5 px-4 sm:px-6 lg:px-8"
                     :class="{ 'mx-auto mt-6' : main_nav_open, 'ml-10 mt-2' : !main_nav_open }">
                         <h2 class="md:text-2xl md:ml-12 lg:ml-24 text-primary tracking-wider">
