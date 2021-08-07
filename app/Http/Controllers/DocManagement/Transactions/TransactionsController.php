@@ -8,6 +8,7 @@ use App\Models\CRM\CRMContacts;
 use Illuminate\Validation\Rule;
 use App\Models\Employees\Agents;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\DocManagement\Archives\Documents;

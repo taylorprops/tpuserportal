@@ -110,6 +110,7 @@ window.datatable_settings = {
     "responsive": true,
     "destroy": true,
     "fixedHeader": true,
+    "processing": true,
     "serverSide": true,
     "language": {
         search: '',
