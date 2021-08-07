@@ -43,6 +43,7 @@ class AddMissingFieldsJob implements ShouldQueue
         $left = Transactions::whereNull('address') -> count();
 
         $transactions = Transactions::whereNull('address')
+        -> orWhere('address', '')
         -> with(['agent_details'])
         //-> inRandomOrder()
         -> limit(400)
