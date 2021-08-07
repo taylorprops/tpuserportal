@@ -48,7 +48,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
         $transactions = Transactions::select(['ListingSourceRecordId', 'ListingSourceRecordKey', 'ListAgentCompID', 'SaleAgentCompID', 'FullStreetAddress', 'City', 'StateOrProvince', 'PostalCode', 'County', 'MlsStatus', 'YearBuilt', 'PropertyType', 'PropertySubType', 'StreetNumber', 'StreetDirPrefix', 'StreetDirSuffix', 'StreetName', 'UnitNumber', 'MLSListDate', 'PurchaseContractDate', 'CloseDate', 'ExpirationDate', 'ListPrice', 'ClosePrice'])
         -> with(['docs'])
-        -> where('downloaded', 'no')
+        -> where('downloaded', 'yes')
         -> limit(40)
         -> inRandomOrder()
         -> get();
