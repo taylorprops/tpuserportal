@@ -109,7 +109,8 @@ window.datatable_settings = {
     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
     "responsive": true,
     "destroy": true,
-    fixedHeader: true,
+    "fixedHeader": true,
+    "serverSide": true,
     "language": {
         search: '',
         searchPlaceholder: 'Search'
