@@ -6,18 +6,27 @@ use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasCompositePrimaryKeyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Kyslik\ColumnSortable\Sortable;
 
 class Transactions extends Model
 {
     use HasFactory;
     use HasCompositePrimaryKeyTrait;
     use Compoships;
+    use Sortable;
 
     public $incrementing = false;
     protected $connection = 'archives';
     protected $table = 'transactions';
     protected $primaryKey = ['listingGuid', 'saleGuid'];
     protected $fillable = ['listingGuid', 'saleGuid'];
+    public $sortable = [
+        'status',
+        'address',
+        'agent_name',
+        'listingDate',
+        'actualClosingDate'
+    ];
 
     // public static function boot() {
     //     parent::boot();
