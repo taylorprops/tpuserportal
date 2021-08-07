@@ -40,13 +40,10 @@ class AddMissingFieldsJob implements ShouldQueue
         $progress = 0;
         $this -> queueProgress($progress);
 
-        $left = Transactions::whereNull('address') -> count();
-
-        $transactions = Transactions::whereNull('address')
-        -> orWhere('address', '')
+        $transactions = Transactions::whereNull('state')
+        -> orWhere('state', '')
         -> with(['agent_details'])
-        //-> inRandomOrder()
-        -> limit(4000)
+        -> limit(400)
         -> get();
 
         if(count($transactions) == 0) {
@@ -61,11 +58,16 @@ class AddMissingFieldsJob implements ShouldQueue
         foreach($transactions as $transaction) {
 
             $property = json_decode($transaction -> property, true);
-            $address = $property['streetNumber'];
+            $address = '';
+            if($property['streetNumber'] != '') {
+                $address = $property['streetNumber'];
+            }
             if($property['direction'] != '') {
                 $address .= ' ' . $property['direction'];
             }
-            $address .= ' ' .$property['streetAddress'];
+            if($property['streetAddress'] != '') {
+                $address .= ' ' .$property['streetAddress'];
+            }
             if($property['unit'] != '') {
                 $address .= ' ' . $property['unit'];
             }

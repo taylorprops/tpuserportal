@@ -54,58 +54,64 @@ class ArchivedTransactionsController extends Controller
 
         // $left = Transactions::whereNull('address') -> count();
         // dump($left);
-        $transactions = Transactions::whereNull('address')
-        -> orWhere('address', '')
+        $transactions = Transactions::whereNull('state')
+        -> orWhere('state', '')
         -> with(['agent_details'])
         //-> inRandomOrder()
-        -> limit(2000)
+        //-> limit(2000)
         -> get();
         dump(count($transactions));
-        // if(count($transactions) == 0) {
-        //     $this -> queueData(['completed' => 'yes']);
-        //     return false;
-        // }
+
+        if(count($transactions) == 0) {
+            $this -> queueData(['completed' => 'yes']);
+            return false;
+        }
 
         //$this -> queueData(['left' => $left]);
 
         //$progress_increment = .5;
 
-        // foreach($transactions as $transaction) {
+        foreach($transactions as $transaction) {
 
-        //     $property = json_decode($transaction -> property, true);
-        //     $address = $property['streetNumber'];
-        //     if($property['direction'] != '') {
-        //         $address .= ' ' . $property['direction'];
-        //     }
-        //     $address .= ' ' .$property['streetAddress'];
-        //     if($property['unit'] != '') {
-        //         $address .= ' ' . $property['unit'];
-        //     }
-        //     $city = $property['city'];
-        //     $state = $property['state'];
-        //     $zip = $property['zip'];
+            $property = json_decode($transaction -> property, true);
+            $address = '';
+            if($property['streetNumber'] != '') {
+                $address = $property['streetNumber'];
+            }
+            if($property['direction'] != '') {
+                $address .= ' ' . $property['direction'];
+            }
+            if($property['streetAddress'] != '') {
+                $address .= ' ' .$property['streetAddress'];
+            }
+            if($property['unit'] != '') {
+                $address .= ' ' . $property['unit'];
+            }
+            $city = $property['city'];
+            $state = $property['state'];
+            $zip = $property['zip'];
 
-        //     $agent_name = '';
-        //     if($transaction -> agent_details) {
-        //         $agent = $transaction -> agent_details;
-        //         $agent_name = $agent -> nickname.' '.$agent -> last;
-        //     }
+            $agent_name = '';
+            if($transaction -> agent_details) {
+                $agent = $transaction -> agent_details;
+                $agent_name = $agent -> nickname.' '.$agent -> last;
+            }
 
-        //     $transaction -> address = $address;
-        //     $transaction -> city = $city;
-        //     $transaction -> state = $state;
-        //     $transaction -> zip = $zip;
-        //     $transaction -> agent_name = $agent_name;
-        //     dump($transaction);
-        //     //$transaction -> save();
+            $transaction -> address = $address;
+            $transaction -> city = $city;
+            $transaction -> state = $state;
+            $transaction -> zip = $zip;
+            $transaction -> agent_name = $agent_name;
+            dump($transaction);
+            //$transaction -> save();
 
-        //     // $progress += $progress_increment;
-        //     // if($progress > 99) {
-        //     //     $progress = 99;
-        //     // }
-        //     //$this -> queueProgress($progress);
+            // $progress += $progress_increment;
+            // if($progress > 99) {
+            //     $progress = 99;
+            // }
+            //$this -> queueProgress($progress);
 
-        // }
+        }
 
         //$this -> queueProgress(100);
 
