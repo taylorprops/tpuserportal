@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Cron\Archives;
 
+use App\Models\OldDB\Agents;
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -9,8 +10,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
-use App\Models\DocManagement\Archives\Transactions;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
+use App\Models\DocManagement\Archives\Transactions;
 
 class GetTransactionsJob implements ShouldQueue
 {
@@ -116,21 +117,28 @@ class GetTransactionsJob implements ShouldQueue
                     }
 
                 }
+                $property = json_decode($transaction -> property);
+                $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
+                $address = $property -> streetNumber;
+                if($property -> direction != '') {
+                    $address .= ' ' . $property -> direction;
+                }
+                $address .= ' ' .$property -> streetAddress;
+                if($property -> unit != '') {
+                    $address .= ' ' . $property -> unit;
+                }
+                $city = $property -> city;
+                $state = $property -> state;
+                $zip = $property -> zip;
 
-                $address = $transaction['Street_Number'];
-                if($transaction['Street_Dir'] != '') {
-                    $address .= ' ' . $transaction['Street_Dir'];
+                $agent_name = '';
+                if($agentId && $agentId != '') {
+                    $agent_details = $this -> agent($agentId);
+                    $agent_name = $agent_details['first'].' '.$agent_details['last'];
                 }
-                $address .= ' ' . $transaction['Street_Name'];
-                if($transaction['Unit_Number'] != '') {
-                    $address .= ' ' . $transaction['Unit_Number'];
-                }
-                $city = $transaction['City'];
-                $state = $transaction['State'];
-                $zip = $transaction['Zip'];
 
                 $add_transaction -> agentId = $agentId ?? 0;
-                $add_transaction -> agent_name = $transaction['First_Name'].' '.$transaction['Last_Name'];
+                $add_transaction -> agent_name = $agent_name;
                 $add_transaction -> address = $address;
                 $add_transaction -> city = $city;
                 $add_transaction -> state = $state;
@@ -147,6 +155,22 @@ class GetTransactionsJob implements ShouldQueue
 
         $this -> queueProgress(100);
 
+    }
+
+    function agent($id) {
+        $agent = Agents::find($id);
+        if($agent) {
+            $first = $agent -> first;
+            $last = $agent -> last;
+            $email = $agent -> email1;
+            $phone = $agent -> cell_phone;
+        } else {
+            $first = '';
+            $last = '';
+            $email = '';
+            $phone = '';
+        }
+        return ['first' => $first, 'last' => $last, 'email' => $email, 'phone' => $phone];
     }
 
     public function skyslope_auth() {
