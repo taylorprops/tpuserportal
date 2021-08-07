@@ -84,7 +84,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions_archived', [ArchivedTransactionsController::class, 'transactions_archived']) -> middleware(['agent']);
     Route::get('/transactions_archived_view/{listingGuid}/{saleGuid}', [ArchivedTransactionsController::class, 'transactions_archived_view']) -> middleware(['agent']);
     // temp
-    Route::get('/add_missing_fields', [ArchivedTransactionsController::class, 'add_missing_fields']) -> middleware(['agent']);
 
     /////////////// %%%%%%%%%%%%%%%%%% SUPER ADMIN %%%%%%%%%%%%%%%%%% ///////////////
     // %%%% Form Elements
