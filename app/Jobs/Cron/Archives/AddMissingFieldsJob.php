@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Jobs\Cron\Archives;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\Models\DocManagement\Archives\Transactions;
+
+class AddMissingFieldsJob implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this -> onQueue('add_missing_fields');
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $this -> add_missing_fields();
+    }
+
+    public function add_missing_fields() {
+
+        $transactions = Transactions::whereNull('address')
+        -> with(['agent_details'])
+        -> limit(100)
+        -> get();
+
+        foreach($transactions as $transaction) {
+
+            $property = json_decode($transaction -> property, true);
+            $address = $property['streetNumber'];
+            if($property['direction'] != '') {
+                $address .= ' ' . $property['direction'];
+            }
+            $address .= ' ' .$property['streetAddress'];
+            if($property['unit'] != '') {
+                $address .= ' ' . $property['unit'];
+            }
+            $city = $property['city'];
+            $state = $property['state'];
+            $zip = $property['zip'];
+
+            $agent_name = '';
+            if($transaction -> agent_details) {
+                $agent = $transaction -> agent_details;
+                $agent_name = $agent -> nickname.' '.$agent -> last;
+            }
+
+            $transaction -> address = $address;
+            $transaction -> city = $city;
+            $transaction -> state = $state;
+            $transaction -> zip = $zip;
+            $transaction -> agent_name = $agent_name;
+            $transaction -> save();
+
+        }
+
+    }
+
+}
