@@ -45,7 +45,7 @@ class AddMissingFieldsJob implements ShouldQueue
         $transactions = Transactions::whereNull('state')
         -> orWhere('state', '')
         -> with(['agent_details'])
-        -> limit(400)
+        -> limit(200)
         -> get();
 
         if(count($transactions) == 0) {
