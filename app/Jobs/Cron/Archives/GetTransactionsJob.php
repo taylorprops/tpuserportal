@@ -117,7 +117,7 @@ class GetTransactionsJob implements ShouldQueue
                     }
 
                 }
-                $property = json_decode($transaction -> property);
+                $property = json_decode($transaction['property']);
                 $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
                 $address = $property -> streetNumber;
                 if($property -> direction != '') {
