@@ -117,19 +117,19 @@ class GetTransactionsJob implements ShouldQueue
                     }
 
                 }
-                $property = json_decode($transaction['property']);
-                $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
-                $address = $property -> streetNumber;
-                if($property -> direction != '') {
-                    $address .= ' ' . $property -> direction;
+                $property = $transaction['property'];
+                $address = $property['streetNumber'].' '.$property['streetAddress'].' '.$property['city'].', '.$property['state'].' '.$property['zip'];
+                $address = $property['streetNumber'];
+                if($property['direction'] != '') {
+                    $address .= ' ' . $property['direction'];
                 }
-                $address .= ' ' .$property -> streetAddress;
-                if($property -> unit != '') {
-                    $address .= ' ' . $property -> unit;
+                $address .= ' ' .$property['streetAddress'];
+                if($property['unit'] != '') {
+                    $address .= ' ' . $property['unit'];
                 }
-                $city = $property -> city;
-                $state = $property -> state;
-                $zip = $property -> zip;
+                $city = $property['city'];
+                $state = $property['state'];
+                $zip = $property['zip'];
 
                 $agent_name = '';
                 if($agentId && $agentId != '') {
