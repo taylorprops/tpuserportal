@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
         // ends - when all data added
         //$schedule -> command('archives:add_mls_company_transactions') -> everyMinute();
         //$schedule -> command('archives:add_mls_company_missing_documents') -> everyMinute();
-        $schedule -> command('archives:add_missing_fields') -> everyMinute();
+        //$schedule -> command('archives:add_missing_fields') -> everyMinute();
 
         // %%% END TEMP %%% //
     }

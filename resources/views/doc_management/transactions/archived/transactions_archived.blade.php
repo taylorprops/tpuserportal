@@ -19,7 +19,7 @@
                             {!! $transactions -> links() !!}
                         </div>
 
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div class="table-div shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
                             <table class="min-w-full divide-y divide-gray-200">
 
@@ -44,20 +44,14 @@
                                     }
                                     @endphp
                                         <tr>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
-                                                <x-elements.button
-                                                    class=""
-                                                    :buttonClass="'primary'"
-                                                    :buttonSize="'md'"
-                                                    type="button">
-                                                    View
-                                                </x-elements.button>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <a href="transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="px-4 py-3 bg-primary text-white text-center shadow rounded-md" target="_blank">View</a>
                                             </td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ ucwords($transaction -> status) }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ $agent }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
-                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> actualClosingDate, 0, 10) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ucwords($transaction -> status) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $agent }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> actualClosingDate, 0, 10) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

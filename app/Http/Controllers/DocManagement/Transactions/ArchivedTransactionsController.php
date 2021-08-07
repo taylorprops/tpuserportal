@@ -24,7 +24,7 @@ class ArchivedTransactionsController extends Controller
         -> orderBy('actualClosingDate', 'desc')
         -> paginate(25);
 
-        return view('/doc_management/transactions/transactions_archived', compact('transactions'));
+        return view('/doc_management/transactions/archived/transactions_archived', compact('transactions'));
 
     }
 
@@ -42,7 +42,7 @@ class ArchivedTransactionsController extends Controller
         $agent = $transaction -> agent_details;
         $docs = $transaction -> docs;
 
-        return view('/doc_management/transactions/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs'));
+        return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs'));
 
     }
 
