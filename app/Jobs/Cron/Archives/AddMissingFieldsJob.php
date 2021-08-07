@@ -90,7 +90,7 @@ class AddMissingFieldsJob implements ShouldQueue
 
         }
 
-        $this -> queueProgress(100);
+        //$this -> queueProgress(100);
 
     }
 
