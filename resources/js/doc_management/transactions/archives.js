@@ -14,7 +14,7 @@ if(document.URL.match(/archived/)) {
                     { data: 'view', orderable: false, searchable: false },
                     { data: 'status' },
                     { data: 'address' },
-                    { data: 'agent' },
+                    //{ data: 'agent' },
                     { data: 'list_date' },
                     { data: 'close_date' }
                 ];

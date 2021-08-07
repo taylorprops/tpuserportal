@@ -689,7 +689,7 @@ class TransactionsController extends Controller
     public function get_transactions_archived(Request $request) {
 
         $transactions = ArchivedTransactions::select(['listingGuid', 'saleGuid', 'property', 'agentId', 'listingDate', 'actualClosingDate', 'status'])
-        -> with(['agent_details:id,nickname,last'])
+        //-> with(['agent_details:id,nickname,last'])
         -> orderBy('actualClosingDate', 'desc')
         -> get();
 
@@ -710,13 +710,13 @@ class TransactionsController extends Controller
             }
             return '';
         })
-        -> addColumn('agent', function($transactions) {
-            $agent = '';
-            if($transactions -> agent_details) {
-                $agent = $transactions -> agent_details -> nickname.' '.$transactions -> agent_details -> last;
-            }
-            return $agent;
-        })
+        // -> addColumn('agent', function($transactions) {
+        //     $agent = '';
+        //     if($transactions -> agent_details) {
+        //         $agent = $transactions -> agent_details -> nickname.' '.$transactions -> agent_details -> last;
+        //     }
+        //     return $agent;
+        // })
         -> addColumn('list_date', function($transactions) {
             return substr($transactions -> listingDate, 0, 10);
         })

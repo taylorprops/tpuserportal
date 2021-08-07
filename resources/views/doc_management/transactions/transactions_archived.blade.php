@@ -20,7 +20,7 @@
                                 <th width="100"></th>
                                 <th>Status</th>
                                 <th>Address</th>
-                                <th>Agent</th>
+                                {{-- <th>Agent</th> --}}
                                 <th>List Date</th>
                                 <th>Close Date</th>
                             </tr>
