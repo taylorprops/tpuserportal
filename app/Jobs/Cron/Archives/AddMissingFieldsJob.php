@@ -8,11 +8,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Archives\Transactions;
 
 class AddMissingFieldsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
@@ -36,10 +37,15 @@ class AddMissingFieldsJob implements ShouldQueue
 
     public function add_missing_fields() {
 
+        $progress = 0;
+        $this -> queueProgress($progress);
+
         $transactions = Transactions::whereNull('address')
         -> with(['agent_details'])
         -> limit(100)
         -> get();
+
+        $progress_increment = 1;
 
         foreach($transactions as $transaction) {
 
@@ -69,7 +75,12 @@ class AddMissingFieldsJob implements ShouldQueue
             $transaction -> agent_name = $agent_name;
             $transaction -> save();
 
+            $progress += $progress_increment;
+            $this -> queueProgress($progress);
+
         }
+
+        $this -> queueProgress(100);
 
     }
 
