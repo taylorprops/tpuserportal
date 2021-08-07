@@ -86,11 +86,14 @@ class AddMissingFieldsJob implements ShouldQueue
             $transaction -> save();
 
             $progress += $progress_increment;
+            if($progress > 99) {
+                $progress = 99;
+            }
             $this -> queueProgress($progress);
 
         }
 
-        //$this -> queueProgress(100);
+        $this -> queueProgress(100);
 
     }
 
