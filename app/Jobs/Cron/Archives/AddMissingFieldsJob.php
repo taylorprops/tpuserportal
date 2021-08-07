@@ -55,7 +55,7 @@ class AddMissingFieldsJob implements ShouldQueue
 
         $this -> queueData(['left' => $left]);
 
-        $progress_increment = 1;
+        $progress_increment = .5;
 
         foreach($transactions as $transaction) {
 
