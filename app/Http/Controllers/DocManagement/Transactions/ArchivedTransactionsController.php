@@ -14,8 +14,12 @@ class ArchivedTransactionsController extends Controller
 
         $search = $request -> search;
         $transactions = ArchivedTransactions::select(['listingGuid', 'saleGuid', 'property', 'agentId', 'listingDate', 'actualClosingDate', 'status'])
-        -> where('address', 'like', '%'.$search.'%')
-        -> orWhere('agent_name', 'like', '%'.$search.'%')
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> where('address', 'like', '%'.$search.'%')
+                -> orWhere('agent_name', 'like', '%'.$search.'%');
+            }
+        })
         -> with(['agent_details:id,nickname,last'])
         -> orderBy('actualClosingDate', 'desc')
         -> paginate(25);
