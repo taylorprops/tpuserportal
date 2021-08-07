@@ -45,6 +45,11 @@ class AddMissingFieldsJob implements ShouldQueue
         -> limit(100)
         -> get();
 
+        if(count($transactions) == 0) {
+            $this -> queueData(['completed' => 'yes']);
+            return false;
+        }
+
         $progress_increment = 1;
 
         foreach($transactions as $transaction) {
