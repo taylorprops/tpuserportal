@@ -162,7 +162,7 @@ class AddDocumentsJob implements ShouldQueue
                     if(!Storage::exists($dir)) {
                         Storage::makeDirectory($dir);
                     }
-                    Storage::put($download['to'], file_get_contents($download['from']));
+                    Storage::put($download['to'], gzdecode(file_get_contents($download['from'])));
 
                     $progress += $progress_increment;
                     $this -> queueProgress($progress);
@@ -177,7 +177,7 @@ class AddDocumentsJob implements ShouldQueue
 
     }
 
-    public function get_documents($type, $id, $session, $progress) {
+    /* public function get_documents($type, $id, $session, $progress) {
 
         //try {
 
@@ -266,7 +266,7 @@ class AddDocumentsJob implements ShouldQueue
 
 
 
-    }
+    } */
 
     public function skyslope_auth() {
 

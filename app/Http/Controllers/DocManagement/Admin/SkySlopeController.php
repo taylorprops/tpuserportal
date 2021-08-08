@@ -254,6 +254,148 @@ class SkySlopeController extends Controller
 
     public function add_documents() {
 
+        gzdecode('/var/www/admin-tail/storage/app/public/doc_management/archives/_f36215a7-1a2d-41a5-8213-3b8ad1622772/addendum.pdf');
+        return false;
+
+        $transactions = Transactions::where('docs_added', 'yes') -> where('data_source', 'skyslope') -> limit(3) -> get();
+
+        if(count($transactions) > 0) {
+
+            $data = [];
+            foreach($transactions as $transaction) {
+                $data[] = [
+                    'listingGuid' => $transaction -> listingGuid,
+                    'saleGuid' => $transaction -> saleGuid
+                ];
+            }
+            //$this -> queueData(['transactions' => $data], true);
+
+            $auth = $this -> skyslope_auth();
+            $session = $auth['Session'];
+
+            //$progress = 0;
+            //$this -> queueProgress($progress);
+
+            $downloads = [];
+
+            foreach($transactions as $transaction) {
+
+                $type = $transaction -> objectType;
+                $id = $transaction -> saleGuid;
+                if($type == 'listing') {
+                    $id = $transaction -> listingGuid;
+                }
+
+                $transaction -> docs_added = 'yes';
+                $transaction -> save();
+
+                $listingGuid = $type == 'listing' ? $id : null;
+                $saleGuid = $type == 'sale' ? $id : null;
+
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    'Session' => $session
+                ];
+
+                $client = new \GuzzleHttp\Client([
+                    'headers' => $headers
+                ]);
+
+                $response = null;
+                try {
+                    if($type == 'listing') {
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
+                    } else if($type == 'sale') {
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
+                    }
+
+                    if($response) {
+
+                        $headers = $response -> getHeaders();
+                        $remaining = $headers['x-ratelimit-remaining'][0];
+
+                        if($remaining > 0) {
+
+                            $contents = $response -> getBody() -> getContents();
+                            $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
+                            $contents = json_decode($contents, true);
+
+                            $documents = $contents['value']['documents'];
+
+                            if(count($documents) > 0) {
+
+                                foreach($documents as $document) {
+
+                                    // $add_document = Documents::firstOrCreate([
+                                    //     'id' => $document['id']
+                                    // ]);
+
+                                    $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
+                                    $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
+
+                                    // $file_location = $dir.'/'.$document['fileName'];
+
+                                    // foreach($document as $col => $value) {
+                                    //     if(!in_array($col, ['fileSize', 'pages'])) {
+                                    //         $add_document -> $col = $value;
+                                    //     }
+                                    // }
+
+                                    // $add_document -> file_location = $file_location;
+                                    // $add_document -> listingGuid = $listingGuid;
+                                    // $add_document -> saleGuid = $saleGuid;
+
+                                    //$add_document -> save();
+
+                                }
+
+                            }
+
+
+                        } else {
+
+                            return 'error';
+
+                        }
+
+                    }
+
+                } catch (\GuzzleHttp\Exception\ServerException $e) {
+                    $remaining = 0;
+                }
+
+            }
+
+            if(count($downloads) > 0) {
+
+                //$progress_increment = round((1 / count($downloads)) * 100);
+
+                foreach($downloads as $download) {
+
+                    $dir = $download['dir'];
+                    if(!Storage::exists($dir)) {
+                        Storage::makeDirectory($dir);
+                    }
+                    file_put_contents(Storage::path($download['to']), file_get_contents($download['from']));
+                    //Storage::put($download['to'], file_get_contents($download['from']));
+                    dump($download['to'], $download['from']);
+
+                    //$progress += $progress_increment;
+                    //$this -> queueProgress($progress);
+
+                }
+
+            }
+
+            //$this -> queueProgress(100);
+
+        }
+
+    }
+
+
+    /* public function add_documents() {
+
         $transactions = Transactions::where('docs_added', 'no') -> limit(5) -> get();
 
         if(count($transactions) > 0) {
@@ -363,7 +505,7 @@ class SkySlopeController extends Controller
 
 
 
-    }
+    } */
 
     public function get_listing(Request $request, $session = null) {
 
