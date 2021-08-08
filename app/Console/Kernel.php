@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('archives:get_transactions') -> everySixHours();
         // add documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_documents') -> everyMinute();
+        $schedule -> command('archives:add_documents') -> everyTenMinutes();
         // add missing documents to skyslope transactions
         // ends - when no more transactions added to skyslope
         $schedule -> command('archives:add_missing_documents') -> hourly();
