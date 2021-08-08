@@ -49,10 +49,7 @@ class AddDocumentsJob implements ShouldQueue
 
             $data = [];
             foreach($transactions as $transaction) {
-                $data[] = [
-                    'listingGuid' => $transaction -> listingGuid,
-                    'saleGuid' => $transaction -> saleGuid
-                ];
+                $data[] = 'listingGuid = '.$transaction -> listingGuid.' and saleGuid = '.$transaction -> saleGuid;
             }
             $this -> queueData(['transactions' => $data], true);
 
