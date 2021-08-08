@@ -162,15 +162,19 @@ class AddDocumentsJob implements ShouldQueue
                     if(!Storage::exists($dir)) {
                         Storage::makeDirectory($dir);
                     }
+
                     try {
+
                         $file_contents = gzdecode(file_get_contents($download['from']));
                         Storage::put($download['to'], $file_contents);
-                    } catch (\Throwable $e) {
+                        $progress += $progress_increment;
+                        $this -> queueProgress($progress);
+
+                    } catch (Throwable $e) {
+
+                        echo $e -> getMessage();
 
                     }
-
-                    $progress += $progress_increment;
-                    $this -> queueProgress($progress);
 
                 }
 
