@@ -82,6 +82,9 @@ class AddDocumentsJob implements ShouldQueue
                 }
                 File::cleanDirectory(Storage::path($dir));
 
+                $transaction -> docs_added_run = 'yes';
+                $transaction -> save();
+
                 $headers = [
                     'Content-Type' => 'application/json',
                     'Session' => $session
