@@ -5,6 +5,7 @@ namespace App\Jobs\Cron\Archives;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -47,6 +48,16 @@ class AddDocumentsJob implements ShouldQueue
         $transactions = Transactions::where('docs_added', 'no') -> where('data_source', 'skyslope') -> inRandomOrder() -> limit(8) -> get();
 
         if(count($transactions) > 0) {
+
+            $stats = DB::select('select
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' ) as total,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added_run = \'yes\' ) as added_run,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'yes\' ) as added,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'not found\' ) as not_found,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'transaction not found\' ) as transaction_not_found,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'redo\' ) as redo,
+            ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'no\' ) as not_added\')');
+            $this -> queueData([$stats], true);
 
             $data = '';
             foreach($transactions as $transaction) {
