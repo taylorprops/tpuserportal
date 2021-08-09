@@ -69,9 +69,6 @@ class AddDocumentsJob implements ShouldQueue
                     $id = $transaction -> listingGuid;
                 }
 
-                $transaction -> docs_added = 'yes';
-                $transaction -> save();
-
                 $listingGuid = $type == 'listing' ? $id : null;
                 $saleGuid = $type == 'sale' ? $id : null;
 
@@ -176,6 +173,9 @@ class AddDocumentsJob implements ShouldQueue
                 }
 
             }
+
+            $transaction -> docs_added = 'yes';
+            $transaction -> save();
 
             $this -> queueProgress(100);
 
