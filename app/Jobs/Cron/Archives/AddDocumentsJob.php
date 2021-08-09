@@ -52,7 +52,7 @@ class AddDocumentsJob implements ShouldQueue
             foreach($transactions as $transaction) {
                 $data .= "listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."' and ";
             }
-            $this -> queueData([$data]);
+            $this -> queueData([$data], true);
 
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
@@ -189,6 +189,9 @@ class AddDocumentsJob implements ShouldQueue
             $this -> queueProgress(100);
 
         }
+
+        $transaction -> docs_added = 'transaction not found';
+        $transaction -> save();
 
         $this -> queueProgress(100);
 
