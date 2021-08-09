@@ -73,7 +73,7 @@ class AddMissingDocumentsJob implements ShouldQueue
                     'headers' => $headers
                 ]);
 
-                if($document -> saleGuid && $document -> saleGuid != '' && $document -> saleGuid != 'null') {
+                if($document -> saleGuid && $document -> saleGuid != '0') {
 
                     $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
 
