@@ -186,6 +186,8 @@ class AddDocumentsJob implements ShouldQueue
                 $transaction -> save();
             }
 
+            $this -> queueProgress(100);
+
         }
 
         $this -> queueProgress(100);

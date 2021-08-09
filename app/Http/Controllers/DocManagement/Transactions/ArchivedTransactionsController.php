@@ -31,13 +31,14 @@ class ArchivedTransactionsController extends Controller
             $sort = $request -> sort;
         }
         $search = $request -> search ?? null;
-        $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'status', 'address', 'city', 'state', 'zip'])
+        $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
                 -> orWhere('agent_name', 'like', '%'.$search.'%');
             }
         })
+        -> with(['docs:id,listingGuid,saleGuid,fileName'])
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate(25);

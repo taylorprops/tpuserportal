@@ -25,7 +25,8 @@ class Transactions extends Model
         'address',
         'agent_name',
         'listingDate',
-        'actualClosingDate'
+        'actualClosingDate',
+        'data_source'
     ];
 
     // public static function boot() {

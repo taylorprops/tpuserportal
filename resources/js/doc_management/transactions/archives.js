@@ -6,6 +6,7 @@ if(document.URL.match(/archived/)) {
             search_val: '',
             active_url: '',
             init() {
+                show_loading();
                 this.get_archives();
             },
             get_archives(url) {
@@ -19,13 +20,11 @@ if(document.URL.match(/archived/)) {
                 .then(function (response) {
                     document.querySelector('.archives-table').innerHTML = response.data;
                     scope.links();
+                    hide_loading();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-
-                // show_loading();
-                // hide_loading();
 
             },
             links() {
@@ -33,6 +32,7 @@ if(document.URL.match(/archived/)) {
                 document.querySelector('.archives-table').querySelectorAll('a').forEach(function(link) {
                     if(!link.classList.contains('view-link')) {
                         link.addEventListener('click', function(e) {
+                            show_loading();
                             e.preventDefault();
                             let url = this.href;
                             if(this.search_val != '') {

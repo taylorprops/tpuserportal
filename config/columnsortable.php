@@ -7,7 +7,7 @@ return [
     */
     'columns'                       => [
         'alpha'   => [
-            'rows'  => ['description', 'email', 'name', 'slug'],
+            'rows'  => ['description', 'email', 'name', 'slug', 'status', 'address', 'agent_name', 'data_source'],
             'class' => 'fa fa-sort-alpha',
         ],
         'amount'  => [
@@ -15,7 +15,7 @@ return [
             'class' => 'fa fa-sort-amount',
         ],
         'numeric' => [
-            'rows'  => ['created_at', 'updated_at', 'level', 'id', 'phone_number'],
+            'rows'  => ['created_at', 'updated_at', 'level', 'id', 'phone_number', 'listingDate', 'actualClosingDate'],
             'class' => 'fa fa-sort-numeric',
         ],
     ],
@@ -49,12 +49,12 @@ return [
     /*
     suffix class that is appended when ascending direction is applied
      */
-    'asc_suffix'                    => '-asc',
+    'asc_suffix'                    => '-up',
 
     /*
     suffix class that is appended when descending direction is applied
      */
-    'desc_suffix'                   => '-desc',
+    'desc_suffix'                   => '-down',
 
     /*
     default anchor class, if value is null none is added
@@ -98,7 +98,7 @@ return [
     'allow_request_modification'    => true,
 
     /*
-    default direction for: $user->sortable('id') usage
+    default direction for: $user -> sortable('id') usage
      */
     'default_direction'             => 'asc',
 
