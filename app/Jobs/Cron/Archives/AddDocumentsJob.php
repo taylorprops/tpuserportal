@@ -172,10 +172,16 @@ class AddDocumentsJob implements ShouldQueue
 
                 }
 
+                $transaction -> docs_added = 'yes';
+                $transaction -> save();
+
+            } else {
+
+                $transaction -> docs_added = 'not found';
+                $transaction -> save();
             }
 
-            $transaction -> docs_added = 'yes';
-            $transaction -> save();
+
 
             $this -> queueProgress(100);
 
