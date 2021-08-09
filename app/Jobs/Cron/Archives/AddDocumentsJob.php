@@ -152,6 +152,9 @@ class AddDocumentsJob implements ShouldQueue
 
                                     $add_document -> save();
 
+                                    $transaction -> docs_added = 'yes';
+                                    $transaction -> save();
+
                                 }
 
                             }
@@ -162,6 +165,11 @@ class AddDocumentsJob implements ShouldQueue
                             return 'error';
 
                         }
+
+                    } else {
+
+                        $transaction -> docs_added = 'no response';
+                        $transaction -> save();
 
                     }
 
@@ -193,12 +201,9 @@ class AddDocumentsJob implements ShouldQueue
 
                 }
 
-                $transaction -> docs_added = 'yes';
-                $transaction -> save();
-
             } else {
 
-                $transaction -> docs_added = 'not found';
+                $transaction -> docs_added = 'docs not found';
                 $transaction -> save();
             }
 
@@ -206,8 +211,6 @@ class AddDocumentsJob implements ShouldQueue
 
         }
 
-        $transaction -> docs_added = 'transaction not found';
-        $transaction -> save();
 
         $this -> queueProgress(100);
 
