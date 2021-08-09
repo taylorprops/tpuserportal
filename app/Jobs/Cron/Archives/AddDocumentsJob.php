@@ -73,8 +73,8 @@ class AddDocumentsJob implements ShouldQueue
                     $id = $transaction -> listingGuid;
                 }
 
-                $listingGuid = $type == 'listing' ? $id : null;
-                $saleGuid = $type == 'sale' ? $id : null;
+                $listingGuid = $type == 'listing' ? $id : 0;
+                $saleGuid = $type == 'sale' ? $id : 0;
 
                 $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
                 if(!Storage::exists($dir)) {
