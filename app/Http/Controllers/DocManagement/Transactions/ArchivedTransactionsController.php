@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\DocManagement\Transactions;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
 
@@ -12,6 +14,7 @@ class ArchivedTransactionsController extends Controller
 {
 
     public function transactions_archived(Request $request) {
+
 
         return view('/doc_management/transactions/archived/transactions_archived');
 

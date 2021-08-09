@@ -5,15 +5,16 @@ namespace App\Jobs\Cron\Archives;
 use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\File;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
-use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class AddDocumentsJob implements ShouldQueue
 {
@@ -159,6 +160,7 @@ class AddDocumentsJob implements ShouldQueue
                     if(!Storage::exists($dir)) {
                         Storage::makeDirectory($dir);
                     }
+                    File::cleanDirectory(Storage::path($dir));
 
                     try {
 
