@@ -51,7 +51,7 @@ class AddDocumentsJob implements ShouldQueue
             foreach($transactions as $transaction) {
                 $data .= "listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."' and ";
             }
-            $this -> queueData(['transactions' => $data]);
+            $this -> queueData([$data]);
 
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
