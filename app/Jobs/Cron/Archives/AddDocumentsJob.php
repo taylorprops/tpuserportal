@@ -160,7 +160,7 @@ class AddDocumentsJob implements ShouldQueue
                     if(!Storage::exists($dir)) {
                         Storage::makeDirectory($dir);
                     }
-                    File::cleanDirectory(Storage::path($dir));
+
 
                     try {
 
