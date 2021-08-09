@@ -49,7 +49,6 @@ class ArchivedTransactionsController extends Controller
 
     public function transactions_archived_view(Request $request) {
 
-        dd($request -> listingGuid, $request -> saleGuid);
         $transaction = Transactions::where('listingGuid', $request -> listingGuid)
         -> where('saleGuid', $request -> saleGuid)
         -> with(['agent_details:id,nickname,last,cell_phone,email1', 'docs'])
