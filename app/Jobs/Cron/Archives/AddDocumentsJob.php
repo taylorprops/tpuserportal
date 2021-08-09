@@ -47,11 +47,11 @@ class AddDocumentsJob implements ShouldQueue
 
         if(count($transactions) > 0) {
 
-            $data = [];
+            $data = '';
             foreach($transactions as $transaction) {
-                $data[] = "listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."' and ";
+                $data .= "listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."' and ";
             }
-            $this -> queueData(['transactions' => $data], true);
+            $this -> queueData(['transactions' => $data]);
 
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
