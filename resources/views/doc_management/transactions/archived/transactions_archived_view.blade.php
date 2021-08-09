@@ -58,7 +58,7 @@
 
                             <div class="border-b mb-3 pb-2">
                                 <div class="flex justify-start items-center">
-                                    <div>
+                                    <div class="my-2">
                                         <a href="/storage/{{ $doc -> file_location }}" class="view-link px-4 py-3 bg-primary text-white text-center shadow rounded-md" target="_blank">View</a>
                                     </div>
                                     <div class="ml-4">
