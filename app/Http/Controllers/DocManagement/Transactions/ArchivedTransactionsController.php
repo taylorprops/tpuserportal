@@ -54,8 +54,7 @@ class ArchivedTransactionsController extends Controller
         -> with(['agent_details:id,nickname,last,cell_phone,email1', 'docs'])
         -> first();
 
-        $property = json_decode($transaction -> property);
-        $address = $property -> streetNumber.' '.$property -> streetAddress.' '.$property -> city.', '.$property -> state.' '.$property -> zip;
+        $address = $transaction -> address.' '.$transaction -> city.', '.$transaction -> state.' '.$transaction -> zip;
 
         $agent = $transaction -> agent_details;
         $docs = $transaction -> docs;
