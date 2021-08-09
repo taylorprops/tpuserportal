@@ -171,6 +171,7 @@ class AddDocumentsJob implements ShouldQueue
                     } catch (Throwable $e) {
 
                         echo $e -> getMessage();
+                        dump($download);
 
                     }
 
