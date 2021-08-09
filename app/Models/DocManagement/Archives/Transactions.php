@@ -28,12 +28,12 @@ class Transactions extends Model
         'actualClosingDate'
     ];
 
-    // public static function boot() {
-    //     parent::boot();
-    //     static::addGlobalScope(function ($query) {
-    //         $query -> whereHas('docs');
-    //     });
-    // }
+    public static function boot() {
+        parent::boot();
+        static::addGlobalScope(function ($query) {
+            $query -> whereHas('docs');
+        });
+    }
 
 
 
