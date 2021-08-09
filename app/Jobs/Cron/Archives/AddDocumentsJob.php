@@ -76,6 +76,12 @@ class AddDocumentsJob implements ShouldQueue
                 $listingGuid = $type == 'listing' ? $id : null;
                 $saleGuid = $type == 'sale' ? $id : null;
 
+                $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
+                if(!Storage::exists($dir)) {
+                    Storage::makeDirectory($dir);
+                }
+                File::cleanDirectory(Storage::path($dir));
+
                 $headers = [
                     'Content-Type' => 'application/json',
                     'Session' => $session
@@ -114,8 +120,7 @@ class AddDocumentsJob implements ShouldQueue
                                         'id' => $document['id']
                                     ]);
 
-                                    $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
-                                    $downloads[] = ['dir' => $dir, 'from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
+                                    $downloads[] = ['from' => $document['url'], 'to' => $dir.'/'.$document['fileName']];
 
                                     $file_location = $dir.'/'.$document['fileName'];
 
@@ -155,12 +160,6 @@ class AddDocumentsJob implements ShouldQueue
                 $progress_increment = round((1 / count($downloads)) * 100);
 
                 foreach($downloads as $download) {
-
-                    $dir = $download['dir'];
-                    if(!Storage::exists($dir)) {
-                        Storage::makeDirectory($dir);
-                    }
-
 
                     try {
 
