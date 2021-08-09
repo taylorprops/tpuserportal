@@ -56,12 +56,15 @@ class AddDocumentsJob implements ShouldQueue
             $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
 
-            $progress = 0;
+            $progress = 1;
             $this -> queueProgress($progress);
 
             $downloads = [];
 
             foreach($transactions as $transaction) {
+
+                $progress += 1;
+                $this -> queueProgress($progress);
 
                 $type = $transaction -> objectType;
                 $id = $transaction -> saleGuid;
