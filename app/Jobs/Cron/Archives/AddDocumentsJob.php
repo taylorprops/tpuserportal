@@ -184,7 +184,7 @@ class AddDocumentsJob implements ShouldQueue
                     }
 
                 } catch (Throwable $e) {
-                    $transaction -> docs_added_run = 'transaction not found';
+                    $transaction -> docs_added = 'transaction not found';
                     $transaction -> save();
                 }
 
