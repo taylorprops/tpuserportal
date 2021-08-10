@@ -79,9 +79,6 @@ class AddDocumentsJob implements ShouldQueue
 
             foreach($transactions as $transaction) {
 
-                $progress += 1;
-                $this -> queueProgress($progress);
-
                 $type = $transaction -> objectType;
                 $id = $transaction -> saleGuid;
                 if($type == 'listing') {
@@ -187,6 +184,9 @@ class AddDocumentsJob implements ShouldQueue
                     $transaction -> docs_added = 'transaction not found';
                     $transaction -> save();
                 }
+
+                $progress += 1;
+                $this -> queueProgress($progress);
 
             }
 
