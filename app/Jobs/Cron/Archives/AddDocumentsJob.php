@@ -108,7 +108,9 @@ class AddDocumentsJob implements ShouldQueue
                 ]);
 
                 $response = null;
+
                 try {
+
                     if($type == 'listing') {
                         $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
                     } else if($type == 'sale') {
@@ -162,7 +164,8 @@ class AddDocumentsJob implements ShouldQueue
 
                         } else {
 
-                            return 'error';
+                            $transaction -> docs_added = 'none remaining';
+                            $transaction -> save();
 
                         }
 
@@ -205,8 +208,8 @@ class AddDocumentsJob implements ShouldQueue
 
             } else {
 
-                $transaction -> docs_added = 'docs not found';
-                $transaction -> save();
+                // $transaction -> docs_added = 'docs not found';
+                // $transaction -> save();
             }
 
             $this -> queueProgress(100);
