@@ -54,9 +54,10 @@ class AddDocumentsJob implements ShouldQueue
                 ( select count(*) from archives.transactions where data_source = \'skyslope\' ) as total,
                 ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added_run = \'yes\' ) as added_run,
                 ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'yes\' ) as added,
-                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'not found\' ) as not_found,
-                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'transaction not found\' ) as transaction_not_found,
-                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'redo\' ) as redo,
+                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'docs not found\' ) as docs_not_found,
+                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'no response\' ) as no_response,
+                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'none remaining\' ) as none_remaining,
+                ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'error\' ) as error,
                 ( select count(*) from archives.transactions where data_source = \'skyslope\' and docs_added = \'no\' ) as not_added'
             );
             $this -> queueData([$stats], true);
