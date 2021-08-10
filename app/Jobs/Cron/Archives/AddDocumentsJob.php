@@ -197,12 +197,14 @@ class AddDocumentsJob implements ShouldQueue
 
                 foreach($downloads as $download) {
 
+                    $progress += $progress_increment;
+                    $this -> queueProgress($progress);
+
                     try {
 
                         $file_contents = gzdecode(file_get_contents($download['from']));
                         Storage::put($download['to'], $file_contents);
-                        $progress += $progress_increment;
-                        $this -> queueProgress($progress);
+
 
                     } catch (Throwable $e) {
 
