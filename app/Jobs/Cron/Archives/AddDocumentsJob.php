@@ -152,10 +152,10 @@ class AddDocumentsJob implements ShouldQueue
 
                                     $add_document -> save();
 
-                                    $transaction -> docs_added = 'yes';
-                                    $transaction -> save();
-
                                 }
+
+                                $transaction -> docs_added = 'yes';
+                                $transaction -> save();
 
                             }
 
@@ -175,6 +175,8 @@ class AddDocumentsJob implements ShouldQueue
 
                 } catch (\GuzzleHttp\Exception\ServerException $e) {
                     $remaining = 0;
+                    $transaction -> docs_added = 'error';
+                    $transaction -> save();
                 }
 
             }
