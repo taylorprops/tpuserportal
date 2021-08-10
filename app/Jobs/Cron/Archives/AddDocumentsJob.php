@@ -55,6 +55,7 @@ class AddDocumentsJob implements ShouldQueue
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added_run = 'yes' ) as added_run,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'yes' ) as added,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'transaction not found' ) as transaction_not_found,
+                ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'download failed' ) as download_failed,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'docs not found' ) as docs_not_found,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'no response' ) as no_response,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'none remaining' ) as none_remaining,
@@ -205,8 +206,8 @@ class AddDocumentsJob implements ShouldQueue
 
                     } catch (Throwable $e) {
 
-                        echo $e -> getMessage();
-                        dump($download);
+                        $transaction -> docs_added = 'download failed';
+                        $transaction -> save();
 
                     }
 
