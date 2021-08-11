@@ -127,14 +127,14 @@ class GetEscrowChecksJob implements ShouldQueue
 
                     }
 
-                    $progress += $progress_increment;
-                    $this -> queueProgress($progress);
-
                 } else {
                     $check -> downloaded = 'no_transaction';
                     $check -> save();
                     //$this -> queueData(['no_transaction' => $check -> id], true);
                 }
+
+                $progress += $progress_increment;
+                $this -> queueProgress($progress);
 
             }
 
