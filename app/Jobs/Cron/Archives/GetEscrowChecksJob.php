@@ -113,7 +113,7 @@ class GetEscrowChecksJob implements ShouldQueue
                     $check -> downloaded = 'yes';
                     $check -> save();
 
-                    $progress += 1;
+                    $progress += .1;
                     if($progress > 99) {
                         $progress = 99;
                     }
