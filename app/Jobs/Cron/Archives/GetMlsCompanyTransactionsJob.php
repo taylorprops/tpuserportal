@@ -52,7 +52,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> limit(20)
         -> inRandomOrder()
         -> get();
-
+        $this -> queueData([count($transactions)]);
         if(count($transactions) > 0) {
 
 
