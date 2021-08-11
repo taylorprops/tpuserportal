@@ -47,54 +47,58 @@ class GetEscrowChecksJob implements ShouldQueue
         -> limit(100)
         -> get();
 
-        $progress_increment = round((1 / count($checks)) * 100);
+        if(count($checks) > 0) {
 
-        foreach ($checks as $check) {
+            $progress_increment = 1;
 
-            $transaction = null;
-            if($check -> escrow -> transaction_skyslope) {
-                $transaction = $check -> escrow -> transaction_skyslope;
-            } else {
-                $transaction = $check -> escrow -> transaction_company;
-            }
+            foreach ($checks as $check) {
 
-            if($transaction) {
-
-                $listingGuid = '';
-                $saleGuid = '';
-                if($transaction -> listingGuid != 0) {
-                    $listingGuid = $transaction -> listingGuid;
-                }
-                if($transaction -> saleGuid != 0) {
-                    $saleGuid = $transaction -> saleGuid;
+                $transaction = null;
+                if($check -> escrow -> transaction_skyslope) {
+                    $transaction = $check -> escrow -> transaction_skyslope;
+                } else {
+                    $transaction = $check -> escrow -> transaction_company;
                 }
 
-                $url = $check -> url;
+                if($transaction) {
 
-                if($url) {
-
-                    $file_name = basename($url);
-                    $file_contents = file_get_contents($url);
-
-                    $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
-                    if(!Storage::exists($dir)) {
-                        Storage::makeDirectory($dir);
+                    $listingGuid = '';
+                    $saleGuid = '';
+                    if($transaction -> listingGuid != 0) {
+                        $listingGuid = $transaction -> listingGuid;
                     }
-                    $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
-                    if(!Storage::exists($dir)) {
-                        Storage::makeDirectory($dir);
+                    if($transaction -> saleGuid != 0) {
+                        $saleGuid = $transaction -> saleGuid;
                     }
-                    Storage::put($dir.'/'.$file_name, $file_contents);
 
-                    $check -> file_location = $dir.'/'.$file_name;
+                    $url = $check -> url;
+
+                    if($url) {
+
+                        $file_name = basename($url);
+                        $file_contents = file_get_contents($url);
+
+                        $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
+                        if(!Storage::exists($dir)) {
+                            Storage::makeDirectory($dir);
+                        }
+                        $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
+                        if(!Storage::exists($dir)) {
+                            Storage::makeDirectory($dir);
+                        }
+                        Storage::put($dir.'/'.$file_name, $file_contents);
+
+                        $check -> file_location = $dir.'/'.$file_name;
+
+                    }
+
+                    $check -> downloaded = 'yes';
+                    $check -> save();
+
+                    $progress += $progress_increment;
+                    $this -> queueProgress($progress);
 
                 }
-
-                $check -> downloaded = 'yes';
-                $check -> save();
-
-                $progress += $progress_increment;
-                $this -> queueProgress($progress);
 
             }
 
