@@ -96,6 +96,11 @@ class GetEscrowChecksJob implements ShouldQueue
 
                         $check -> file_location = $dir.'/'.$file_name;
 
+                        if(!file_exists(Storage::path($dir.'/'.$file_name))) {
+                            $this -> queueData(['download_failed' => $check], true);
+                            return false;
+                        }
+
                     } else {
                         $this -> queueData(['no_url' => $check], true);
                     }
