@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\DocManagement\Transactions;
+namespace App\Http\Controllers\DocManagement\Archives;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
-
 
 class ArchivedTransactionsController extends Controller
 {
@@ -63,9 +62,5 @@ class ArchivedTransactionsController extends Controller
         return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs'));
 
     }
-
-
-
-
 
 }

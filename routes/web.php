@@ -9,11 +9,12 @@ use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
+use App\Http\Controllers\DocManagement\Archives\EscrowController;
 use App\Http\Controllers\OldDB\Company\OldTransactionsController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
 use App\Http\Controllers\DocManagement\Transactions\TransactionsController;
-use App\Http\Controllers\DocManagement\Transactions\ArchivedTransactionsController;
+use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions/get_form_groups', [TransactionsController::class, 'get_form_groups']) -> middleware(['agent']);
     Route::get('/transactions/agent_search', [TransactionsController::class, 'agent_search']) -> middleware(['agent']);
 
+
+
     // archived
     Route::get('/transactions_archived', [ArchivedTransactionsController::class, 'transactions_archived']) -> middleware(['agent']);
     Route::get('/get_transactions_archived', [ArchivedTransactionsController::class, 'get_transactions_archived']) -> middleware(['agent']);
@@ -104,6 +107,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/archives/add_documents', [SkySlopeController::class, 'add_documents']) -> middleware(['admin']);
     Route::get('/archives/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
     Route::get('/archives/add_missing_documents', [SkySlopeController::class, 'add_missing_documents']) -> middleware(['admin']);
+
+    // %%%% escrow
+    Route::get('/archives/escrow', [EscrowController::class, 'escrow']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB
