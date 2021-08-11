@@ -52,7 +52,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> limit(20)
         -> inRandomOrder()
         -> get();
-        $this -> queueData([count($transactions)]);
+        $this -> queueData([count($transactions)], true);
         if(count($transactions) > 0) {
 
 
@@ -186,7 +186,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                 $progress += $progress_increment;
                 $this -> queueProgress($progress);
 
-                $this -> queueData(['ListingSourceRecordIds' => $queue_data]);
+                $this -> queueData(['ListingSourceRecordIds' => $queue_data], true);
 
             }
 
