@@ -9,11 +9,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 use App\Models\DocManagement\Archives\EscrowChecks;
 
 class GetEscrowChecksJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
@@ -37,11 +38,16 @@ class GetEscrowChecksJob implements ShouldQueue
 
     public function get_checks() {
 
+        $progress = 1;
+        $this -> queueProgress($progress);
+
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
         -> limit(100)
         -> get();
+
+        $progress_increment = round((1 / count($checks)) * 100);
 
         foreach ($checks as $check) {
 
@@ -87,9 +93,14 @@ class GetEscrowChecksJob implements ShouldQueue
                 $check -> downloaded = 'yes';
                 $check -> save();
 
+                $progress += $progress_increment;
+                $this -> queueProgress($progress);
+
             }
 
         }
+
+        $this -> queueProgress(100);
 
     }
 
