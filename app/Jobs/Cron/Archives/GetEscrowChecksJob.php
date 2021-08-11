@@ -83,6 +83,7 @@ class GetEscrowChecksJob implements ShouldQueue
                             $check -> downloaded = 'file_missing';
                             $check -> save();
                             $this -> queueData(['file_missing' => $check -> id], true);
+                            return false;
                         }
 
                         $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
@@ -108,6 +109,7 @@ class GetEscrowChecksJob implements ShouldQueue
                         $check -> downloaded = 'no_url';
                         $check -> save();
                         $this -> queueData(['no_url' => $check -> id], true);
+                        return false;
                     }
 
                     $check -> downloaded = 'yes';
