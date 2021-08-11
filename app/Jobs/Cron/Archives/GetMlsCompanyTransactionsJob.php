@@ -51,7 +51,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> where('downloaded', 'no')
         -> inRandomOrder()
         -> get();
-        $this -> queueData([count($transactions)], true);
+
         if(count($transactions) > 0) {
 
 
@@ -62,7 +62,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                 $docs = $transaction -> docs;
 
-                if(count($docs) > 0) {
+                //if(count($docs) > 0) {
 
                     $queue_data[] = $transaction -> ListingSourceRecordId;
 
@@ -179,7 +179,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
                     }
 
-                }
+                //}
 
                 $progress_increment = round((1 / count($transactions)) * 100);
                 $progress += $progress_increment;
