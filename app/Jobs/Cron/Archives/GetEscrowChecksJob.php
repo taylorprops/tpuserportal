@@ -47,7 +47,7 @@ class GetEscrowChecksJob implements ShouldQueue
         -> limit(100)
         -> get();
 
-        $this -> queueData([count($checks)]);
+        $this -> queueData([count($checks)], true);
 
         if(count($checks) > 0) {
 
@@ -88,10 +88,16 @@ class GetEscrowChecksJob implements ShouldQueue
                         if(!Storage::exists($dir)) {
                             Storage::makeDirectory($dir);
                         }
-                        Storage::put($dir.'/'.$file_name, $file_contents);
+                        if($file_contents) {
+                            Storage::put($dir.'/'.$file_name, $file_contents);
+                        } else {
+                            $this -> queueData(['file_missing' => $check], true);
+                        }
 
                         $check -> file_location = $dir.'/'.$file_name;
 
+                    } else {
+                        $this -> queueData(['no_url' => $check], true);
                     }
 
                     $check -> downloaded = 'yes';
@@ -100,6 +106,8 @@ class GetEscrowChecksJob implements ShouldQueue
                     $progress += $progress_increment;
                     $this -> queueProgress($progress);
 
+                } else {
+                    $this -> queueData(['no_transaction' => $check], true);
                 }
 
             }
