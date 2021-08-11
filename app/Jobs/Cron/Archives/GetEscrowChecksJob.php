@@ -45,7 +45,7 @@ class GetEscrowChecksJob implements ShouldQueue
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
-        -> limit(100)
+        -> limit(1000)
         -> get();
 
         $this -> queueData([count($checks)], true);
