@@ -47,6 +47,8 @@ class GetEscrowChecksJob implements ShouldQueue
         -> limit(100)
         -> get();
 
+        $this -> queueData([count($checks)]);
+
         if(count($checks) > 0) {
 
             $progress_increment = 1;
