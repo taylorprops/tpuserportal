@@ -85,11 +85,10 @@ class EscrowController extends Controller
 
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
-        //-> inRandomOrder()
-        //-> limit(5000)
+        -> inRandomOrder()
+        -> limit(100)
         -> get();
 
-        $checks_to_fix = '';
         foreach ($checks as $check) {
 
             $transaction = null;
@@ -101,53 +100,42 @@ class EscrowController extends Controller
 
             if($transaction) {
 
-                // $listingGuid = '';
-                // $saleGuid = '';
-                // if($transaction -> listingGuid != 0) {
-                //     $listingGuid = $transaction -> listingGuid;
-                // }
-                // if($transaction -> saleGuid != 0) {
-                //     $saleGuid = $transaction -> saleGuid;
-                // }
+                $listingGuid = '';
+                $saleGuid = '';
+                if($transaction -> listingGuid != 0) {
+                    $listingGuid = $transaction -> listingGuid;
+                }
+                if($transaction -> saleGuid != 0) {
+                    $saleGuid = $transaction -> saleGuid;
+                }
 
-                // $url = $check -> url;
+                $url = $check -> url;
 
-                // if($url) {
+                if($url) {
 
-                //     $file_name = basename($url);
-                //     $file_contents = file_get_contents($url);
+                    $file_name = basename($url);
+                    $file_contents = file_get_contents($url);
 
-                //     $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
-                //     if(!Storage::exists($dir)) {
-                //         Storage::makeDirectory($dir);
-                //     }
-                //     $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
-                //     if(!Storage::exists($dir)) {
-                //         Storage::makeDirectory($dir);
-                //     }
-                //     Storage::put($dir.'/'.$file_name, $file_contents);
+                    $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
+                    if(!Storage::exists($dir)) {
+                        Storage::makeDirectory($dir);
+                    }
+                    $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
+                    if(!Storage::exists($dir)) {
+                        Storage::makeDirectory($dir);
+                    }
+                    Storage::put($dir.'/'.$file_name, $file_contents);
 
-                //     $check -> file_location = $dir.'/'.$file_name;
+                    $check -> file_location = $dir.'/'.$file_name;
 
-                // }
+                }
 
-                // $check -> downloaded = 'yes';
-                // $check -> save();
-
-            } else {
-
-                $checks_to_fix .= "'".$check -> escrow -> mls."', ";
+                $check -> downloaded = 'yes';
+                $check -> save();
 
             }
 
-            $check -> downloaded = 'yes';
-            $check -> save();
-
-
-
         }
-
-        echo $checks_to_fix;
 
     }
 

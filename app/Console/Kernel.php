@@ -42,11 +42,16 @@ class Kernel extends ConsoleKernel
         // ends - when no more transactions added to skyslope
         $schedule -> command('old_db:add_skyslope_listings') -> everyMinute();
 
+
         // add mls_company to skyslope
         // ends - when all data added
-        $schedule -> command('archives:add_mls_company_transactions') -> everyMinute();
+        //$schedule -> command('archives:add_mls_company_transactions') -> everyMinute();
         //$schedule -> command('archives:add_mls_company_missing_documents') -> everyMinute();
         //$schedule -> command('archives:add_missing_fields') -> everyMinute();
+
+        // add escrow checks
+        // ends - when no more transactions added to skyslope
+        $schedule -> command('archives:get_escrow_checks') -> everyMinute();
 
         // %%% END TEMP %%% //
     }
