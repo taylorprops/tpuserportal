@@ -51,7 +51,7 @@ class Kernel extends ConsoleKernel
 
         // add escrow checks
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:get_escrow_checks') -> everyMinute();
+        //$schedule -> command('archives:get_escrow_checks') -> everyMinute();
 
         // %%% END TEMP %%% //
     }
