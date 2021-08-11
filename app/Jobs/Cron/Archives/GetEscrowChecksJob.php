@@ -52,8 +52,6 @@ class GetEscrowChecksJob implements ShouldQueue
 
         if(count($checks) > 0) {
 
-            $progress_increment = 1;
-
             foreach ($checks as $check) {
 
                 $transaction = null;
@@ -115,7 +113,10 @@ class GetEscrowChecksJob implements ShouldQueue
                     $check -> downloaded = 'yes';
                     $check -> save();
 
-                    $progress += $progress_increment;
+                    $progress += 1;
+                    if($progress > 99) {
+                        $progress = 99;
+                    }
                     $this -> queueProgress($progress);
 
                 } else {
