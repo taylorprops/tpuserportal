@@ -52,10 +52,11 @@ class GetEscrowChecksJob implements ShouldQueue
 
         if(count($checks) > 0) {
 
-            $cont = 'yes';
             $progress_increment = round((1 / count($checks)) * 100);
 
             foreach ($checks as $check) {
+
+                $cont = 'yes';
 
                 $transaction = null;
                 if($check -> escrow -> transaction_skyslope) {
@@ -77,7 +78,7 @@ class GetEscrowChecksJob implements ShouldQueue
 
                     $url = $check -> url;
 
-                    if($url) {
+                    if($url != '') {
 
                         $file_name = basename($url);
                         try {
@@ -85,7 +86,7 @@ class GetEscrowChecksJob implements ShouldQueue
                         } catch (Throwable $e) {
                             $check -> downloaded = 'file_missing';
                             $check -> save();
-                            $this -> queueData(['file_missing' => 'true'], true);
+                            //$this -> queueData(['file_missing' => 'true'], true);
                             $cont = 'no';
                         }
 
@@ -106,7 +107,7 @@ class GetEscrowChecksJob implements ShouldQueue
                             if(!file_exists(Storage::path($dir.'/'.$file_name))) {
                                 $check -> downloaded = 'download_failed';
                                 $check -> save();
-                                $this -> queueData(['download_failed' => 'true'], true);
+                                //$this -> queueData(['download_failed' => 'true'], true);
                                 $cont = 'no';
                             }
 
@@ -115,7 +116,7 @@ class GetEscrowChecksJob implements ShouldQueue
                     } else {
                         $check -> downloaded = 'no_url';
                         $check -> save();
-                        $this -> queueData(['no_url' => 'true'], true);
+                        //$this -> queueData(['no_url' => 'true'], true);
                         $cont = 'no';
                     }
 
@@ -132,7 +133,7 @@ class GetEscrowChecksJob implements ShouldQueue
                 } else {
                     $check -> downloaded = 'no_transaction';
                     $check -> save();
-                    $this -> queueData(['no_transaction' => $check -> id], true);
+                    //$this -> queueData(['no_transaction' => $check -> id], true);
                 }
 
             }
