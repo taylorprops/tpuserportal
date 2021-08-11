@@ -138,6 +138,8 @@ class GetEscrowChecksJob implements ShouldQueue
 
         }
 
+        $this -> queueProgress(100);
+
     }
 
 }
