@@ -45,7 +45,7 @@ class GetEscrowChecksJob implements ShouldQueue
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
-        -> limit(1000)
+        -> limit(100)
         -> get();
 
         $this -> queueData([count($checks)], true);
@@ -53,6 +53,7 @@ class GetEscrowChecksJob implements ShouldQueue
         if(count($checks) > 0) {
 
             $cont = 'yes';
+            $progress_increment = round((1 / count($checks)) * 100);
 
             foreach ($checks as $check) {
 
@@ -125,7 +126,7 @@ class GetEscrowChecksJob implements ShouldQueue
 
                     }
 
-                    $progress += .1;
+                    $progress += $progress_increment;
                     $this -> queueProgress($progress);
 
                 } else {
