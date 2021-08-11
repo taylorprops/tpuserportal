@@ -50,11 +50,10 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> with(['docs'])
         -> where('downloaded', 'no')
         -> inRandomOrder()
+        -> limit(100)
         -> get();
 
         if(count($transactions) > 0) {
-
-
 
             $queue_data = [];
 
@@ -139,40 +138,45 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                         Storage::makeDirectory($dir);
                     }
 
-                    $downloads = [];
 
-                    foreach($docs as $doc) {
+                    if(count($docs) > 0) {
 
-                        if($doc -> invalid != 'yes') {
+                        $downloads = [];
 
-                            //if(file_exists($doc -> upload_loc)) {
+                        foreach($docs as $doc) {
 
-                                $downloads[] = ['from' => $doc -> upload_loc, 'to' => $dir.'/'.$doc -> upload_file_name];
+                            if($doc -> invalid != 'yes') {
 
-                                $add_docs = new SkySlopeDocuments();
-                                $add_docs -> id = (string) Str::uuid();
-                                $add_docs -> listingGuid = $guid;
-                                $add_docs -> doc_type = $doc -> doc_type;
-                                $add_docs -> name = str_replace('.pdf', '', $doc -> upload_file_name);
-                                $add_docs -> fileName = $doc -> upload_file_name;
-                                $add_docs -> extension = 'pdf';
-                                $add_docs -> url = $doc -> upload_loc;
-                                $add_docs -> file_location = $dir.'/'.$doc -> upload_file_name;
+                                //if(file_exists($doc -> upload_loc)) {
 
-                                $add_docs -> save();
+                                    $downloads[] = ['from' => $doc -> upload_loc, 'to' => $dir.'/'.$doc -> upload_file_name];
 
-                            //}
+                                    $add_docs = new SkySlopeDocuments();
+                                    $add_docs -> id = (string) Str::uuid();
+                                    $add_docs -> listingGuid = $guid;
+                                    $add_docs -> doc_type = $doc -> doc_type;
+                                    $add_docs -> name = str_replace('.pdf', '', $doc -> upload_file_name);
+                                    $add_docs -> fileName = $doc -> upload_file_name;
+                                    $add_docs -> extension = 'pdf';
+                                    $add_docs -> url = $doc -> upload_loc;
+                                    $add_docs -> file_location = $dir.'/'.$doc -> upload_file_name;
+
+                                    $add_docs -> save();
+
+                                //}
+
+                            }
 
                         }
 
-                    }
+                        if(count($downloads) > 0) {
 
-                    if(count($downloads) > 0) {
+                            foreach($downloads as $download) {
 
-                        foreach($downloads as $download) {
+                                if(@fopen($download['from'], 'r')) {
+                                    Storage::put($download['to'], file_get_contents($download['from']));
+                                }
 
-                            if(@fopen($download['from'], 'r')) {
-                                Storage::put($download['to'], file_get_contents($download['from']));
                             }
 
                         }

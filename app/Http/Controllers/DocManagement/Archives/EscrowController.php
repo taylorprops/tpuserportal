@@ -92,7 +92,7 @@ class EscrowController extends Controller
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
-        -> limit(5000)
+        -> limit(2000)
         -> get();
 
         $checks_to_fix = '';
