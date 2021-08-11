@@ -116,9 +116,6 @@ class GetEscrowChecksJob implements ShouldQueue
                     $check -> save();
 
                     $progress += .1;
-                    if($progress > 99) {
-                        $progress = 99;
-                    }
                     $this -> queueProgress($progress);
 
                 } else {
@@ -130,8 +127,6 @@ class GetEscrowChecksJob implements ShouldQueue
             }
 
         }
-
-        $this -> queueProgress(100);
 
     }
 
