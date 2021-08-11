@@ -46,6 +46,8 @@ class Transactions extends Model
         return $this -> hasOne(\App\Models\DocManagement\Archives\Agents::class, 'id', 'agentId');
     }
 
-
+    public function escrow() {
+        return $this -> hasOne(\App\Models\DocManagement\Archives\Escrow::class, ['TransactionId', 'mls'], ['transactionId', 'mlsNumber']);
+    }
 
 }

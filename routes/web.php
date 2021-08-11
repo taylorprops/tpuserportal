@@ -110,6 +110,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% escrow
     Route::get('/archives/escrow', [EscrowController::class, 'escrow']) -> middleware(['admin']);
+    Route::get('/archives/get_checks', [EscrowController::class, 'get_checks']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB

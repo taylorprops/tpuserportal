@@ -14,4 +14,9 @@ class EscrowChecks extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    public function escrow() {
+        return $this -> belongsTo(\App\Models\DocManagement\Archives\Escrow::class, 'escrow_id');
+    }
+
+
 }

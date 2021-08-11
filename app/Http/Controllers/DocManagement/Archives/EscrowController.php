@@ -79,4 +79,30 @@ class EscrowController extends Controller
         $add_check -> save();
 
     }
+
+    public function get_checks() {
+
+        $checks = EscrowChecks::where('downloaded', 'no')
+        -> whereNotNull('url')
+        -> with(['escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
+        -> inRandomOrder()
+        -> limit(20000)
+        -> get();
+
+        $missing = '';
+        foreach ($checks as $check) {
+            if(!$check -> escrow -> transaction_skyslope && !$check -> escrow -> transaction_company) {
+                if($check -> escrow -> mls != '') {
+                    $missing .= "'".$check -> escrow -> mls."', ";
+                }
+            }
+
+            // $check -> downloaded = 'yes';
+            // $check -> save();
+
+        }
+         echo $missing;
+
+    }
+
 }

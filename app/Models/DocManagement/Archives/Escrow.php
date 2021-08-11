@@ -2,12 +2,14 @@
 
 namespace App\Models\DocManagement\Archives;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Escrow extends Model
 {
     use HasFactory;
+    use Compoships;
 
     protected $connection = 'archives';
     protected $table = 'escrow';
@@ -17,6 +19,14 @@ class Escrow extends Model
 
     public function checks() {
         return $this -> hasMany(\App\Models\DocManagement\Archives\EscrowChecks::class, 'escrow_id', 'id');
+    }
+
+    public function transaction_skyslope() {
+        return $this -> belongsTo(\App\Models\DocManagement\Archives\Transactions::class, 'transactionId', 'TransactionId');
+    }
+
+    public function transaction_company() {
+        return $this -> belongsTo(\App\Models\DocManagement\Archives\Transactions::class, 'mls', 'mlsNumber');
     }
 
 }

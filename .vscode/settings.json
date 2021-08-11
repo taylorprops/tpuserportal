@@ -326,5 +326,6 @@
         "zip",
         "zoomable"
     ],
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "github.copilot.autocomplete.enable": true
 }
