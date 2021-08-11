@@ -39,7 +39,7 @@ class GetEscrowChecksJob implements ShouldQueue
 
     public function get_checks() {
 
-        $progress = 1;
+        $progress = 0;
         $this -> queueProgress($progress);
 
         $checks = EscrowChecks::where('downloaded', 'no')
