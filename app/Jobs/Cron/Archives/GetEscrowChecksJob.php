@@ -52,6 +52,8 @@ class GetEscrowChecksJob implements ShouldQueue
 
         if(count($checks) > 0) {
 
+            $cont = 'yes';
+
             foreach ($checks as $check) {
 
                 $transaction = null;
@@ -82,38 +84,46 @@ class GetEscrowChecksJob implements ShouldQueue
                         } catch (Throwable $e) {
                             $check -> downloaded = 'file_missing';
                             $check -> save();
-                            $this -> queueData(['file_missing' => $check -> id], true);
-                            return false;
+                            $this -> queueData(['file_missing' => 'true'], true);
+                            $cont = 'no';
                         }
 
-                        $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
-                        if(!Storage::exists($dir)) {
-                            Storage::makeDirectory($dir);
-                        }
-                        $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
-                        if(!Storage::exists($dir)) {
-                            Storage::makeDirectory($dir);
-                        }
-                        Storage::put($dir.'/'.$file_name, $file_contents);
+                        if($cont == 'yes') {
 
-                        $check -> file_location = $dir.'/'.$file_name;
+                            $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
+                            if(!Storage::exists($dir)) {
+                                Storage::makeDirectory($dir);
+                            }
+                            $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
+                            if(!Storage::exists($dir)) {
+                                Storage::makeDirectory($dir);
+                            }
+                            Storage::put($dir.'/'.$file_name, $file_contents);
 
-                        if(!file_exists(Storage::path($dir.'/'.$file_name))) {
-                            $check -> downloaded = 'download_failed';
-                            $check -> save();
-                            $this -> queueData(['download_failed' => $check -> id], true);
-                            return false;
+                            $check -> file_location = $dir.'/'.$file_name;
+
+                            if(!file_exists(Storage::path($dir.'/'.$file_name))) {
+                                $check -> downloaded = 'download_failed';
+                                $check -> save();
+                                $this -> queueData(['download_failed' => 'true'], true);
+                                $cont = 'no';
+                            }
+
                         }
 
                     } else {
                         $check -> downloaded = 'no_url';
                         $check -> save();
-                        $this -> queueData(['no_url' => $check -> id], true);
-                        return false;
+                        $this -> queueData(['no_url' => 'true'], true);
+                        $cont = 'no';
                     }
 
-                    $check -> downloaded = 'yes';
-                    $check -> save();
+                    if($cont == 'yes') {
+
+                        $check -> downloaded = 'yes';
+                        $check -> save();
+
+                    }
 
                     $progress += .1;
                     $this -> queueProgress($progress);
