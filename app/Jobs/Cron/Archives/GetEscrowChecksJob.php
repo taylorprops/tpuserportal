@@ -82,6 +82,8 @@ class GetEscrowChecksJob implements ShouldQueue
                         try {
                             $file_contents = file_get_contents($url);
                         } catch (Throwable $e) {
+                            $check -> downloaded = 'file_missing';
+                            $check -> save();
                             $this -> queueData(['file_missing' => $check -> id], true);
                         }
 
@@ -98,11 +100,15 @@ class GetEscrowChecksJob implements ShouldQueue
                         $check -> file_location = $dir.'/'.$file_name;
 
                         if(!file_exists(Storage::path($dir.'/'.$file_name))) {
+                            $check -> downloaded = 'download_failed';
+                            $check -> save();
                             $this -> queueData(['download_failed' => $check -> id], true);
                             return false;
                         }
 
                     } else {
+                        $check -> downloaded = 'no_url';
+                        $check -> save();
                         $this -> queueData(['no_url' => $check -> id], true);
                     }
 
@@ -113,6 +119,8 @@ class GetEscrowChecksJob implements ShouldQueue
                     $this -> queueProgress($progress);
 
                 } else {
+                    $check -> downloaded = 'no_transaction';
+                    $check -> save();
                     $this -> queueData(['no_transaction' => $check -> id], true);
                 }
 
@@ -120,7 +128,7 @@ class GetEscrowChecksJob implements ShouldQueue
 
         }
 
-        $this -> queueProgress(100);
+       //$this -> queueProgress(100);
 
     }
 
