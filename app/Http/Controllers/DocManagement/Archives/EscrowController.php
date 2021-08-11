@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DocManagement\Archives;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Archives\Escrow;
 use App\Models\OldDB\Company\Escrow as OldEscrow;
 use App\Models\DocManagement\Archives\EscrowChecks;
@@ -82,26 +83,77 @@ class EscrowController extends Controller
 
     public function get_checks() {
 
+        // $checks = EscrowChecks::where('downloaded', 'no')
+        // -> whereNotNull('url')
+        // -> with(['escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
+        // -> inRandomOrder()
+        // -> limit(100)
+        // -> get();
         $checks = EscrowChecks::where('downloaded', 'no')
-        -> whereNotNull('url')
-        -> with(['escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
+        -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
-        -> limit(20000)
+        -> limit(5000)
         -> get();
 
-        $missing = '';
+        $checks_to_fix = '';
         foreach ($checks as $check) {
-            if(!$check -> escrow -> transaction_skyslope && !$check -> escrow -> transaction_company) {
-                if($check -> escrow -> mls != '') {
-                    $missing .= "'".$check -> escrow -> mls."', ";
-                }
+
+            $transaction = null;
+            if($check -> escrow -> transaction_skyslope) {
+                $transaction = $check -> escrow -> transaction_skyslope;
+            } else {
+                $transaction = $check -> escrow -> transaction_company;
             }
 
-            // $check -> downloaded = 'yes';
-            // $check -> save();
+            if($transaction) {
+
+                // $listingGuid = '';
+                // $saleGuid = '';
+                // if($transaction -> listingGuid != 0) {
+                //     $listingGuid = $transaction -> listingGuid;
+                // }
+                // if($transaction -> saleGuid != 0) {
+                //     $saleGuid = $transaction -> saleGuid;
+                // }
+
+                // $url = $check -> url;
+
+                // if($url) {
+
+                //     $file_name = basename($url);
+                //     $file_contents = file_get_contents($url);
+
+                //     $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
+                //     if(!Storage::exists($dir)) {
+                //         Storage::makeDirectory($dir);
+                //     }
+                //     $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
+                //     if(!Storage::exists($dir)) {
+                //         Storage::makeDirectory($dir);
+                //     }
+                //     Storage::put($dir.'/'.$file_name, $file_contents);
+
+                //     $check -> file_location = $dir.'/'.$file_name;
+
+                // }
+
+                // $check -> downloaded = 'yes';
+                // $check -> save();
+
+            } else {
+
+                $checks_to_fix .= "'".$check -> escrow -> mls."', ";
+
+            }
+
+            $check -> downloaded = 'yes';
+            $check -> save();
+
+
 
         }
-         echo $missing;
+
+        echo $checks_to_fix;
 
     }
 
