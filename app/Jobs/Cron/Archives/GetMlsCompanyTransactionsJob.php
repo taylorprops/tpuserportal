@@ -55,10 +55,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
 
         if(count($transactions) > 0) {
 
-            foreach ($transactions as $transaction) {
-                $transaction -> downloaded = 'yes';
-                $transaction -> save();
-            }
+
 
             $queue_data = [];
 
@@ -129,6 +126,13 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
                     $add_transaction -> agent_name = $agent_name;
 
                     $add_transaction -> save();
+
+                    if($add_transaction) {
+                        $transaction -> downloaded = 'yes';
+                        $transaction -> save();
+                    } else {
+                        return 'error';
+                    }
 
                     // add docs to db - downloading done in separate controller
                     $dir = 'doc_management/archives/'.$guid;
