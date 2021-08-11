@@ -83,16 +83,10 @@ class EscrowController extends Controller
 
     public function get_checks() {
 
-        // $checks = EscrowChecks::where('downloaded', 'no')
-        // -> whereNotNull('url')
-        // -> with(['escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
-        // -> inRandomOrder()
-        // -> limit(100)
-        // -> get();
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
-        -> inRandomOrder()
-        -> limit(2000)
+        //-> inRandomOrder()
+        //-> limit(5000)
         -> get();
 
         $checks_to_fix = '';
