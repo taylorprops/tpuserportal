@@ -52,7 +52,7 @@ class GetEscrowChecksJob implements ShouldQueue
 
         if(count($checks) > 0) {
 
-            $progress_increment = round((1 / count($checks)) * 100);
+            $progress_increment = (int)round((1 / count($checks)) * 100);
 
             foreach ($checks as $check) {
 
