@@ -50,7 +50,7 @@ class GetMlsCompanyTransactionsJob implements ShouldQueue
         -> with(['docs'])
         -> where('downloaded', 'no')
         -> inRandomOrder()
-        -> limit(100)
+        -> limit(500)
         -> get();
 
         if(count($transactions) > 0) {
