@@ -48,14 +48,24 @@
                 </div>
 
                 <div class="border shadow col-span-3">
-                    <div class="bg-gray-50 text-gray-700 text-lg p-3 font-medium">
-                        Escrow
+                    <div class="bg-gray-50 p-3 flex justify-between items-center">
+                        <div class="font-medium text-gray-700 text-lg">Escrow</div>
+                        @if($transferred_from_link)
+                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2" role="alert">
+                                <i class="fal fa-exclamation-triangle mr-2"></i> Transferred from {!! $transferred_from_link !!}
+                            </div>
+                        @endif
+                        @if($transferred_to_link)
+                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2" role="alert">
+                                <i class="fal fa-exclamation-triangle mr-2"></i> Transferred to {!! $transferred_to_link !!}
+                            </div>
+                        @endif
                     </div>
                     <div class="p-4">
 
                         @if($escrow)
 
-                            <div class="grid grid-cols-3 gap-6">
+                            <div class="grid grid-cols-4 gap-6">
 
                                 <div>
                                     <div class="grid grid-cols-2 gap-6 border-b mb-3 pb-2">
@@ -72,22 +82,42 @@
                                     </div>
                                 </div>
 
-                                <div class="col-span-2">
+                                <div class="col-span-3">
 
                                     @if($checks)
+
+                                        <div class="font-semibold text-gray-500 mb-4">Checks</div>
 
                                         @foreach($checks as $check)
 
                                             <div class="border-b mb-3 pb-2 flex justify-start items-center">
 
-                                                <div>
+                                                <div class="w-12">
                                                     <a href="/storage/{{ $check -> file_location }}" class="text-primary font-semibold" target="_blank">View</a>
                                                 </div>
-                                                <div class="w-16 ml-6">
+                                                <div class="w-12">
                                                     {{ ucwords($check -> check_type) }}
                                                 </div>
-                                                <div>
+                                                <div class="w-20">
                                                     ${{ number_format($check -> amount, 0) }}
+                                                </div>
+                                                <div class="w-20">
+                                                    {{ $check -> number }}
+                                                </div>
+                                                <div class="w-24">
+                                                    {{ $check -> check_date }}
+                                                </div>
+                                                <div class="flex-grow">
+                                                    {{ $check -> name }}
+                                                </div>
+                                                <div class="w-16">
+                                                    @if($check -> cleared == 'yes')
+                                                        <span class="text-success">Cleared</span>
+                                                    @elseif($check -> bounced == 'yes')
+                                                        <span class="text-danger">Bounced</span>
+                                                    @else
+                                                        <span class="text-warning">Pending</span>
+                                                    @endif
                                                 </div>
 
                                             </div>
