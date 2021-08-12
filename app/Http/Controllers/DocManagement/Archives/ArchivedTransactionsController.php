@@ -150,7 +150,7 @@ class ArchivedTransactionsController extends Controller
         }
 
         if($escrow) {
-
+            dd($escrow);
 
             if($transferred_from) {
                 $transferred_from_link = '<a href="/transactions_archived_view/'.$transferred_from -> listingGuid.'/'.$transferred_from -> saleGuid.'" class="underline" target="_blank">'.$transferred_from -> address.' '.$transferred_from -> city.', '.$transferred_from -> state.' '.$transferred_from -> zip.'</a>';
