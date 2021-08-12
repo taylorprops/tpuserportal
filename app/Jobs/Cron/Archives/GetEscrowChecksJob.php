@@ -45,14 +45,14 @@ class GetEscrowChecksJob implements ShouldQueue
         $checks = EscrowChecks::where('downloaded', 'no')
         -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
         -> inRandomOrder()
-        -> limit(1000)
+        -> limit(100)
         -> get();
 
         $this -> queueData([count($checks)], true);
 
         if(count($checks) > 0) {
 
-            $progress_increment = .1;
+            $progress_increment = 1;
 
             foreach ($checks as $check) {
 
@@ -96,7 +96,7 @@ class GetEscrowChecksJob implements ShouldQueue
                             if(!Storage::exists($dir)) {
                                 Storage::makeDirectory($dir);
                             }
-                            $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid.'/escrow';
+                            $dir = $dir.'/escrow';
                             if(!Storage::exists($dir)) {
                                 Storage::makeDirectory($dir);
                             }

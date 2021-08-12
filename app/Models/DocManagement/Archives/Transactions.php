@@ -29,12 +29,6 @@ class Transactions extends Model
         'data_source'
     ];
 
-    // public static function boot() {
-    //     parent::boot();
-    //     static::addGlobalScope(function ($query) {
-    //         $query -> whereHas('docs');
-    //     });
-    // }
 
 
 

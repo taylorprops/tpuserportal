@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\DocManagement\Archives;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\DocManagement\Archives\Escrow;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
 
@@ -59,7 +60,31 @@ class ArchivedTransactionsController extends Controller
         $agent = $transaction -> agent_details;
         $docs = $transaction -> docs;
 
-        return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs'));
+        if($transaction -> transactionId > 0) {
+            $escrow = Escrow::where('TransactionId', $transaction -> transactionId) -> with(['checks']) -> first();
+        } else {
+            $escrow = Escrow::where('mls', $transaction -> mlsNumber) -> with(['checks']) -> first();
+        }
+
+        $checks = $escrow -> checks;
+
+        $escrow_total_in = $checks -> where('cleared', 'yes')
+        -> where('amount', '>', '0')
+        -> where('check_type', 'in')
+        -> sum('amount');
+
+        $escrow_total_out = $checks -> where('cleared', 'yes')
+        -> where('amount', '>', '0')
+        -> where('check_type', 'out')
+        -> sum('amount');
+
+        $escrow_total_left = $escrow_total_in - $escrow_total_out;
+
+        $escrow_total_in = '$'.number_format($escrow_total_in, 0);
+        $escrow_total_out = '$'.number_format($escrow_total_out, 0);
+        $escrow_total_left = '$'.number_format($escrow_total_left, 0);
+
+        return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs', 'escrow', 'escrow_total_in', 'escrow_total_out', 'escrow_total_left', 'checks'));
 
     }
 

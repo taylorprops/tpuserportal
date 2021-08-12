@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -51,7 +52,9 @@ class Kernel extends ConsoleKernel
 
         // add escrow checks
         // ends - when no more transactions added to skyslope
-        //$schedule -> command('archives:get_escrow_checks') -> everyMinute();
+        //if(env('APP_EVN') == 'local') {
+            //$schedule -> command('archives:get_escrow_checks') -> everyMinute();
+        //}
 
         // %%% END TEMP %%% //
     }
