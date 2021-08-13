@@ -65,7 +65,12 @@ class ArchivedTransactionsController extends Controller
         $address = $transaction -> address.' '.$transaction -> city.', '.$transaction -> state.' '.$transaction -> zip;
 
         $agent = $transaction -> agent_details;
-        $docs = $transaction -> docs;
+
+        if($request -> saleGuid != '0') {
+            $docs = Documents::where('saleGuid', $request -> saleGuid) -> get();
+        } else {
+            $docs = Documents::where('listingGuid', $request -> listingGuid) -> get();
+        }
 
         $transactionId = $transaction -> transactionId;
         $mls = $transaction -> mlsNumber;
