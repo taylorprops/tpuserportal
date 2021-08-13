@@ -27,7 +27,11 @@
                 } else if($transaction -> data_source == 'skyslope') {
                     $data_source = 'Skyslope';
                 }
-                $docs_count = count($transaction -> docs);
+                $docs_count = count($transaction -> docs_listing) + count($transaction -> docs_sale);
+                $close_date = substr($transaction -> escrowClosingDate, 0, 10);
+                if($transaction -> actualClosingDate != '') {
+                    $close_date = substr($transaction -> actualClosingDate, 0, 10);
+                }
                 @endphp
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -37,7 +41,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction -> agent_name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> actualClosingDate, 0, 10) }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $close_date }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $data_source }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $docs_count }}</td>
                 </tr>

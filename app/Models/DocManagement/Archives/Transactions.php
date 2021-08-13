@@ -32,8 +32,15 @@ class Transactions extends Model
 
 
 
-    public function docs() {
-        return $this -> hasMany(\App\Models\DocManagement\Archives\Documents::class, ['listingGuid', 'saleGuid'], ['listingGuid', 'saleGuid']);
+    public function docs_sale() {
+        return $this -> hasMany(\App\Models\DocManagement\Archives\Documents::class, 'saleGuid', 'saleGuid') -> where(function($query) {
+            $query -> where('saleGuid', '!=', '0');
+        });
+    }
+    public function docs_listing() {
+        return $this -> hasMany(\App\Models\DocManagement\Archives\Documents::class, 'listingGuid', 'listingGuid') -> where(function($query) {
+            $query -> where('listingGuid', '!=', '0');
+        });
     }
 
     public function agent_details() {

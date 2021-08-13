@@ -31,14 +31,14 @@ class ArchivedTransactionsController extends Controller
             $sort = $request -> sort;
         }
         $search = $request -> search ?? null;
-        $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
+        $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'escrowClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
                 -> orWhere('agent_name', 'like', '%'.$search.'%');
             }
         })
-        -> with(['docs:id,listingGuid,saleGuid,fileName'])
+        -> with(['docs_listing:id,listingGuid,saleGuid,fileName', 'docs_sale:id,listingGuid,saleGuid,fileName'])
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate(25);
@@ -59,10 +59,15 @@ class ArchivedTransactionsController extends Controller
 
         $transaction = Transactions::where('listingGuid', $request -> listingGuid)
         -> where('saleGuid', $request -> saleGuid)
-        -> with(['agent_details:id,nickname,last,cell_phone,email1', 'docs'])
+        -> with(['agent_details:id,nickname,last,cell_phone,email1'])
         -> first();
 
         $address = $transaction -> address.' '.$transaction -> city.', '.$transaction -> state.' '.$transaction -> zip;
+
+        $close_date = substr($transaction -> escrowClosingDate, 0, 10);
+        if($transaction -> actualClosingDate != '') {
+            $close_date = substr($transaction -> actualClosingDate, 0, 10);
+        }
 
         $agent = $transaction -> agent_details;
 
@@ -183,7 +188,7 @@ class ArchivedTransactionsController extends Controller
 
         }
 
-        return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs', 'escrow', 'escrow_total_in', 'escrow_total_out', 'escrow_total_left', 'checks', 'transferred_from_link', 'transferred_to_link'));
+        return view('/doc_management/transactions/archived/transactions_archived_view', compact('transaction', 'address', 'agent', 'docs', 'escrow', 'escrow_total_in', 'escrow_total_out', 'escrow_total_left', 'checks', 'transferred_from_link', 'transferred_to_link', 'close_date'));
 
     }
 
