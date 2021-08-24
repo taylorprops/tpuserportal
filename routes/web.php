@@ -132,6 +132,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/test', [TestsController::class, 'test']) -> middleware(['admin']);
     Route::get('/tests/alpine', [TestsController::class, 'alpine']) -> middleware(['admin']);
     Route::get('/tests/agent_data', [TestsController::class, 'agent_data']) -> middleware(['admin']);
+    Route::get('/tests/menu', [TestsController::class, 'menu']) -> middleware(['admin']);
 
 
 });

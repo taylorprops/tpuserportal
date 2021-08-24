@@ -10,6 +10,12 @@ use App\Models\DocManagement\Resources\CommonFieldsGroups;
 class TestsController extends Controller
 {
 
+    public function menu(Request $request) {
+
+        return view('/tests/menu');
+
+    }
+
     public function agent_data(Request $request) {
 
         $agents = Agents::select(['id', 'first', 'last', 'email1'])

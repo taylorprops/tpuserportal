@@ -84,51 +84,51 @@
 
                                 <div class="col-span-3">
 
+                                    @if($checks)
+
                                     <div class="bg-gray-50 shadow-inner p-3 rounded">
 
-                                        @if($checks)
+                                        <div class="font-semibold text-gray-500 mb-4">Checks</div>
 
-                                            <div class="font-semibold text-gray-500 mb-4">Checks</div>
+                                        @foreach($checks as $check)
 
-                                            @foreach($checks as $check)
+                                            <div class="border-b mb-3 pb-2 flex justify-start items-center">
 
-                                                <div class="border-b mb-3 pb-2 flex justify-start items-center">
-
-                                                    <div class="w-12">
-                                                        <a href="/storage/{{ $check -> file_location }}" class="text-primary font-semibold" target="_blank">View</a>
-                                                    </div>
-                                                    <div class="w-12">
-                                                        {{ ucwords($check -> check_type) }}
-                                                    </div>
-                                                    <div class="w-20">
-                                                        ${{ number_format($check -> amount, 0) }}
-                                                    </div>
-                                                    <div class="w-20">
-                                                        {{ $check -> number }}
-                                                    </div>
-                                                    <div class="w-24">
-                                                        {{ $check -> check_date }}
-                                                    </div>
-                                                    <div class="flex-grow">
-                                                        {{ $check -> name }}
-                                                    </div>
-                                                    <div class="w-16">
-                                                        @if($check -> cleared == 'yes')
-                                                            <span class="text-success">Cleared</span>
-                                                        @elseif($check -> bounced == 'yes')
-                                                            <span class="text-danger">Bounced</span>
-                                                        @else
-                                                            <span class="text-warning">Pending</span>
-                                                        @endif
-                                                    </div>
-
+                                                <div class="w-12">
+                                                    <a href="/storage/{{ $check -> file_location }}" class="text-primary font-semibold" target="_blank">View</a>
+                                                </div>
+                                                <div class="w-12">
+                                                    {{ ucwords($check -> check_type) }}
+                                                </div>
+                                                <div class="w-20">
+                                                    ${{ number_format($check -> amount, 0) }}
+                                                </div>
+                                                <div class="w-20">
+                                                    {{ $check -> number }}
+                                                </div>
+                                                <div class="w-24">
+                                                    {{ $check -> check_date }}
+                                                </div>
+                                                <div class="flex-grow">
+                                                    {{ $check -> name }}
+                                                </div>
+                                                <div class="w-16">
+                                                    @if($check -> cleared == 'yes')
+                                                        <span class="text-success">Cleared</span>
+                                                    @elseif($check -> bounced == 'yes')
+                                                        <span class="text-danger">Bounced</span>
+                                                    @else
+                                                        <span class="text-warning">Pending</span>
+                                                    @endif
                                                 </div>
 
-                                            @endforeach
+                                            </div>
 
-                                        @endif
+                                        @endforeach
 
                                     </div>
+
+                                    @endif
 
                                 </div>
 
