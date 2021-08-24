@@ -43,7 +43,6 @@
 
         <div x-data="nav()" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" class="min-h-screen flex overflow-hidden">
 
-            {{-- @include('layouts.navigation') --}}
             @include('layouts.menu.menu')
 
             <div class="flex flex-col w-0 flex-1 overflow-hidden">
