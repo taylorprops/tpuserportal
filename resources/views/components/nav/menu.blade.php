@@ -5,7 +5,7 @@ $id = time() * rand();
 
 @if($level == '1')
     <li>
-        <a href="{{ $link }}" class="rounded-md flex items-center text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-50">
+        <a href="{{ $link }}" class="rounded-md flex items-center text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200">
             <div class="bg-gray-50 h-7 w-7 rounded mr-2 flex justify-center items-center">
                 <i class="{{ $icon }}"></i>
             </div>
@@ -17,8 +17,8 @@ $id = time() * rand();
 
 @if($level == '2')
 
-    <li class="w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-50"
-    :class="{ 'bg-gray-50 text-gray-900': active_menu == {{ $id }} }">
+    <li class="w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
+    :class="{ 'bg-gray-200 text-gray-900': active_menu == {{ $id }} }">
 
         <div class="flex justify-between items-center w-full rounded-md"
         @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
@@ -34,7 +34,7 @@ $id = time() * rand();
             </div>
         </div>
 
-        <ul class="bg-white rounded-md"
+        <ul class="bg-white rounded-md p-3 mt-2"
         x-show="active_menu == {{ $id }}"
         x-transition:enter="transition ease-in-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
@@ -59,8 +59,8 @@ $id = time() * rand();
 
 @if($level == '3')
 
-    <li class="relative w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-50"
-    :class="{ 'bg-gray-50 text-gray-900': active_menu == {{ $id }} }">
+    <li class="relative w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
+    :class="{ 'bg-gray-200 text-gray-900': active_menu == {{ $id }} }">
 
         <div class="flex justify-between items-center w-full rounded-md"
         @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
@@ -77,7 +77,7 @@ $id = time() * rand();
 
         </div>
 
-        <ul class="bg-white rounded-md"
+        <ul class="bg-white rounded-md p-3 mt-2"
         x-show="active_menu == {{ $id }}"
         x-transition:enter="transition ease-in-out duration-300"
         x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
@@ -109,7 +109,7 @@ $id = time() * rand();
                             </div>
                         </div>
 
-                        <ul class="bg-gray-50 p-2 mt-2 rounded-md"
+                        <ul class="bg-gray-100 p-3 mt-2 rounded-md"
                         x-show="active_sub_menu == {{ $id }}"
                         x-transition:enter="transition ease-in-out duration-300"
                         x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
