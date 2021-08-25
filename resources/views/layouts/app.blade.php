@@ -45,25 +45,23 @@
 
             @include('layouts.menu.menu')
 
-            <div class="flex flex-col w-0 flex-1 overflow-hidden">
-
-                <div class="pl-1 pt-1 sm:pl-3 sm:pt-3" x-show="!main_nav_open">
-
-                    <button class="fixed -ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" @click="main_nav_open = true">
-                        <span class="sr-only">Open sidebar</span>
-                        <svg class="h-6 w-6" x-description="Heroicon name: outline/menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-
-                </div>
+            <div class="flex flex-col w-0 flex-1 p-1 overflow-hidden">
 
                 <!-- Page Heading -->
                 @if($header != 'null')
-                <header :class="{ 'ml-44' : main_nav_open, '' : !main_nav_open }">
-                    <div class="max-w-full pb-3 md:pb-5 px-4 sm:px-6 lg:px-8"
-                    :class="{ 'mx-auto mt-6' : main_nav_open, 'ml-10 mt-2' : !main_nav_open }">
-                        <h2 class="md:text-2xl md:ml-12 lg:ml-24 text-primary tracking-wider">
+                <header>
+                    <div class="w-full py-1 border-gray-500 border-b"
+                    :class="{
+                        'ml-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
+                        'pl-8 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
+                        'relative': (window.outerWidth >= 1280),
+                        'fixed': (window.outerWidth < 1280)
+                    }">
+                        <h2 class="sm:text-xl md:text-2xl text-gray-600 tracking-wider"
+                        :class="{
+                            'ml-4' : !main_nav_open,
+                            'ml-0' : main_nav_open,
+                        }">
                             {{ $header ?? null }}
                         </h2>
                     </div>
@@ -71,7 +69,12 @@
                 @endif
 
                 <!-- Page Content -->
-                <main class="" :class="{ 'ml-64' : main_nav_open, '' : !main_nav_open }">
+                <main class="p-4" :class="{
+                    'ml-72' : main_nav_open && (window.outerWidth >= 1280),
+                    '' : !(window.outerWidth >= 1280) || !main_nav_open,
+                    'pt-8' : (window.outerWidth <= 640),
+                    'pt-12' : (window.outerWidth > 640) && (window.outerWidth < 1280),
+                }">
                     {{ $slot }}
                 </main>
 
