@@ -10,7 +10,7 @@
 
     {{-- Doc Management --}}
     <li>
-        <div class="text-white font-semibold pl-2 pt-3 pb-2 text-sm border-t border-white mt-3">Doc Management</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t border-gray-500 mt-3">Doc Management</div>
     </li>
 
     {{-- Transactions --}}
@@ -97,7 +97,7 @@
 
     {{-- Employees --}}
     <li>
-        <div class="text-white font-semibold pl-2 pt-3 pb-2 text-sm border-t border-white mt-3">Employees</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t border-gray-500 mt-3">Employees</div>
     </li>
 
         @php
@@ -105,7 +105,7 @@
             [
                 'title' => 'Agents',
                 'link' => '/employees/agents',
-                'icon' => 'fal fa-user-tie mr-2'
+                'icon' => 'fal fa-person-sign mr-2'
             ],
 
         ];
@@ -124,7 +124,7 @@
 
     {{-- Super Admin --}}
     <li>
-        <div class="text-white font-semibold pl-2 pt-3 pb-2 text-sm border-t border-white mt-3">Super Admin</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t border-gray-500 mt-3">Super Admin</div>
     </li>
 
         @php

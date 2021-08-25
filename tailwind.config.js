@@ -8,6 +8,12 @@ module.exports = {
     ],
     theme: {
         extend: {
+            transitionProperty: {
+                height: 'height'
+            },
+            transitionProperty: {
+                width: 'width'
+            },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },

@@ -8,9 +8,14 @@
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
+            <div class="h-screen w-full">
 
+                asefasdf
+
+            </div>
 
         </div>
+
 
     </div>
 </x-app-layout>
