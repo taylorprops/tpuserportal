@@ -5,7 +5,7 @@ $id = time() * rand();
 
 @if($level == '1')
     <li>
-        <a href="{{ $link }}" class="rounded-md flex items-center text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200">
+        <a href="{{ $link }}" class="block h-full w-full rounded-md flex items-center text-gray-700 hover:bg-gray-300 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200">
             <div class="bg-gray-50 h-7 w-7 rounded mr-2 flex justify-center items-center">
                 <i class="{{ $icon }}"></i>
             </div>
@@ -17,11 +17,11 @@ $id = time() * rand();
 
 @if($level == '2')
 
-    <li class="w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
-    :class="{ 'bg-gray-200 text-gray-900': active_menu == {{ $id }} }">
+    <li class="w-full rounded-md cursor-pointer text-gray-700 hover:bg-gray-300 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
+    :class="{ 'bg-gray-300 text-gray-900': active_menu == {{ $id }} }"
+    @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
 
-        <div class="flex justify-between items-center w-full rounded-md"
-        @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
+        <div class="h-full w-full flex justify-between items-center rounded-md">
 
             <div class="flex justify-start items-center">
                 <div class="bg-gray-50 h-7 w-7 rounded mr-2 flex justify-center items-center">
@@ -59,11 +59,11 @@ $id = time() * rand();
 
 @if($level == '3')
 
-    <li class="relative w-full cursor-pointer text-gray-700 hover:bg-gray-50 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
-    :class="{ 'bg-gray-200 text-gray-900': active_menu == {{ $id }} }">
+    <li class="relative rounded-md w-full cursor-pointer text-gray-700 hover:bg-gray-300 hover:text-gray-900 px-2 py-2 text-sm font-medium focus:bg-gray-200"
+    :class="{ 'bg-gray-300 text-gray-900': active_menu == {{ $id }} }"
+    @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
 
-        <div class="flex justify-between items-center w-full rounded-md"
-        @click="if(active_menu == {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
+        <div class="h-full w-full flex justify-between items-center rounded-md">
 
             <div class="flex justify-start items-center">
                 <div class="bg-gray-50 h-7 w-7 rounded mr-2 flex justify-center items-center">

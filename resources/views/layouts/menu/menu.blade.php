@@ -39,7 +39,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                     <i class="fal fa-search absolute top-4 right-4"></i>
                 </div>
 
-                <nav class="navigation flex-1 px-2 pt-3 bg-white space-y-1"
+                <nav class="navigation flex-1 px-2 pt-3 bg-white space-y-1 border-t"
                 x-data="{ close_all: false }">
 
                     @include('layouts/menu/menu_admin')
@@ -47,7 +47,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                 </nav>
             </div>
 
-            <div class="flex-shrink-0 flex bg-gray-50 p-4">
+            <div class="bg-gray-50 p-4">
 
                 @include('layouts/menu/menu_footer')
 
