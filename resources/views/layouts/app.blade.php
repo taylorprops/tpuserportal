@@ -41,7 +41,7 @@
 
     <body class="font-sans antialiased">
 
-        <div x-data="nav()" x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" {{-- @keydown.window.escape="main_nav_open = false" --}} class="min-h-screen flex overflow-hidden">
+        <div x-data="nav()" {{-- x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;" @keydown.window.escape="main_nav_open = false" --}} class="min-h-screen flex overflow-hidden">
 
             @include('layouts.menu.menu')
 
