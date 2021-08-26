@@ -33,7 +33,7 @@ class EscrowController extends Controller
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
-                -> orWhere('agent_name', 'like', '%'.$search.'%');
+                -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
         -> with(['transaction_skyslope', 'transaction_company'])
