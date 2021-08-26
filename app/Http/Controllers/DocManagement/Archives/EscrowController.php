@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\DocManagement\Archives;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 use App\Models\DocManagement\Archives\Escrow;
 // use App\Models\OldDB\Company\Escrow as OldEscrow;
 // use App\Models\DocManagement\Archives\EscrowChecks;
@@ -36,7 +37,7 @@ class EscrowController extends Controller
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
-        -> with(['transaction_skyslope', 'transaction_company'])
+        -> with(['transaction_skyslope:TransactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'transaction_company:TransactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate'])
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate(25);
