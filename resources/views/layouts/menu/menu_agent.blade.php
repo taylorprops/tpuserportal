@@ -92,15 +92,6 @@
     :icon="'far fa-tasks-alt'"
     :level3="$level3"/>
 
-    {{-- End Admin --}}
-
-    {{-- Escrow --}}
-    <x-nav.menu
-    :level="'1'"
-    :title="'Escrow'"
-    :link="'/transactions_archived/escrow'"
-    :icon="'fad fa-money-check'"/>
-
     {{-- End Doc Management --}}
 
 

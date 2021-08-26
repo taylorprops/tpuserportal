@@ -17,6 +17,12 @@ class Escrow extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+    public $sortable = [
+        'address',
+        'agent',
+        'contract_date',
+    ];
+
     public function checks() {
         return $this -> hasMany(\App\Models\DocManagement\Archives\EscrowChecks::class, 'escrow_id', 'id');
     }

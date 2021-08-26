@@ -22,6 +22,7 @@ require('./employees/agents.js');
 
 require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');
+require('./doc_management/transactions/escrow.js');
 
 
 

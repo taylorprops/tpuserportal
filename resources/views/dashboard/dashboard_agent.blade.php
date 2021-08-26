@@ -3,4 +3,6 @@
         Dashboard
     </x-slot>
 
+    Agent Dashboard
+
 </x-app-layout>

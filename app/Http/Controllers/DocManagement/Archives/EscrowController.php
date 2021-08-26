@@ -4,15 +4,51 @@ namespace App\Http\Controllers\DocManagement\Archives;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Archives\Escrow;
-use App\Models\OldDB\Company\Escrow as OldEscrow;
-use App\Models\DocManagement\Archives\EscrowChecks;
+// use App\Models\OldDB\Company\Escrow as OldEscrow;
+// use App\Models\DocManagement\Archives\EscrowChecks;
 
 class EscrowController extends Controller
 {
 
     public function escrow(Request $request) {
+
+        return view('doc_management/transactions/archived/escrow');
+
+    }
+
+    public function get_escrow(Request $request) {
+
+        $direction = 'desc';
+        $sort = 'contract_date';
+        if($request -> direction) {
+            $direction = $request -> direction;
+        }
+        if($request -> sort) {
+            $sort = $request -> sort;
+        }
+        $search = $request -> search ?? null;
+        $escrows = Escrow::select(['mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> where('address', 'like', '%'.$search.'%')
+                -> orWhere('agent_name', 'like', '%'.$search.'%');
+            }
+        })
+        -> with(['transaction_skyslope', 'transaction_company'])
+        -> orderBy($sort, $direction)
+        //-> sortable()
+        -> paginate(25);
+
+        return view('doc_management/transactions/archived/get_escrow_html', compact('escrows'));
+
+    }
+
+
+    //////// TRANSFER ARCHIVE /////////
+
+    /* public function escrow(Request $request) {
 
         $escrows = OldEscrow::limit(1000) -> where('transferred_to_new_server', 'no') -> get();
 
@@ -137,6 +173,6 @@ class EscrowController extends Controller
 
         }
 
-    }
+    } */
 
 }

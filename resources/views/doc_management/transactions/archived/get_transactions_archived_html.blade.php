@@ -48,10 +48,6 @@
             @endforeach
         </tbody>
 
-        <tbody>
-
-        </body>
-
     </table>
 
 </div>

@@ -22,14 +22,14 @@ class ArchivedTransactionsController extends Controller
 
     public function get_transactions_archived(Request $request) {
 
-        // $direction = 'desc';
-        // $sort = 'actualClosingDate';
-        // if($request -> direction) {
-        //     $direction = $request -> direction;
-        // }
-        // if($request -> sort) {
-        //     $sort = $request -> sort;
-        // }
+        $direction = 'desc';
+        $sort = 'actualClosingDate';
+        if($request -> direction) {
+            $direction = $request -> direction;
+        }
+        if($request -> sort) {
+            $sort = $request -> sort;
+        }
         $search = $request -> search ?? null;
         $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'escrowClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
         -> where(function($query) use ($search) {
@@ -39,8 +39,8 @@ class ArchivedTransactionsController extends Controller
             }
         })
         -> with(['docs_listing:id,listingGuid,saleGuid,fileName', 'docs_sale:id,listingGuid,saleGuid,fileName'])
-        //-> orderBy($sort, $direction)
-        -> sortable()
+        -> orderBy($sort, $direction)
+        //-> sortable()
         -> paginate(25);
 
         return view('/doc_management/transactions/archived/get_transactions_archived_html', compact('transactions'));
