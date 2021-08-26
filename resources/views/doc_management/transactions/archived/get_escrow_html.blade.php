@@ -19,16 +19,30 @@
             @foreach($escrows as $escrow)
                 @php
                 $address = $escrow -> address.' '.$escrow -> city.', '.$escrow -> state.' '.$escrow -> zip;
-                if($escrow -> TransactionId > 0) {
-                    $transaction = $escrow -> transaction_skyslope;
-                } else {
+                if($escrow -> mls != '') {
                     $transaction = $escrow -> transaction_company;
+                } else {
+                    $transaction = $escrow -> transaction_skyslope;
                 }
                 $close_date = $transaction ? substr($transaction -> actualClosingDate, 0, 10) : '';
+                $checks = $escrow -> checks;
+
+                $escrow_total_in = $checks -> where('cleared', 'yes')
+                -> where('amount', '>', '0')
+                -> where('check_type', 'in')
+                -> sum('amount');
+
+                $escrow_total_out = $checks -> where('cleared', 'yes')
+                -> where('amount', '>', '0')
+                -> where('check_type', 'out')
+                -> sum('amount');
+
+                $escrow_total_left = $escrow_total_in - $escrow_total_out;
+
+                $escrow_total_left = '$'.number_format($escrow_total_left, 0);
                 @endphp
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ $escrow -> TransactionId }}
                         @if($transaction)
                         <a href="/transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link px-4 py-3 bg-primary text-white text-center shadow rounded-md" target="_blank">View</a>
                         @endif
@@ -36,7 +50,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow -> agent }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $close_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_left }}</td>
                 </tr>
             @endforeach
         </tbody>

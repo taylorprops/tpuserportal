@@ -37,7 +37,7 @@ class EscrowController extends Controller
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
-        -> with(['transaction_skyslope:TransactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'transaction_company:TransactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate'])
+        -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'checks'])
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate(25);

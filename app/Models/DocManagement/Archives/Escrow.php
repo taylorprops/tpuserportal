@@ -28,7 +28,9 @@ class Escrow extends Model
     }
 
     public function transaction_skyslope() {
-        return $this -> belongsTo(\App\Models\DocManagement\Archives\Transactions::class, 'TransactionId', 'transactionId');
+        return $this -> belongsTo(\App\Models\DocManagement\Archives\Transactions::class, 'TransactionId', 'transactionId') -> where(function($query) {
+            $query -> where('TransactionId', '>', '0');
+        });
     }
 
     public function transaction_company() {
