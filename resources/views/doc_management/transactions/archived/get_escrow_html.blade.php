@@ -12,6 +12,8 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('address', 'Address')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('agent', 'Agent')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Close Date</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Money In</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Money Out</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Holding</th>
             </tr>
         </thead>
@@ -24,7 +26,21 @@
                 } else {
                     $transaction = $escrow -> transaction_skyslope;
                 }
-                $close_date = $transaction ? substr($transaction -> actualClosingDate, 0, 10) : '';
+                $close_date = null;
+                if($transaction) {
+                    $close_date = substr($transaction -> escrowClosingDate, 0, 10);
+                    if($transaction -> actualClosingDate != '') {
+                        $close_date = substr($transaction -> actualClosingDate, 0, 10);
+                    }
+                }
+                if(!$close_date) {
+                    $close_date = $escrow -> contract_date;
+                }
+
+                // if($escrow -> address = '1450 Grandview Rd') {
+                //     dd($escrow);
+                // }
+
                 $checks = $escrow -> checks;
 
                 $escrow_total_in = $checks -> where('cleared', 'yes')
@@ -39,6 +55,8 @@
 
                 $escrow_total_left = $escrow_total_in - $escrow_total_out;
 
+                $escrow_total_in = '$'.number_format($escrow_total_in, 0);
+                $escrow_total_out = '$'.number_format($escrow_total_out, 0);
                 $escrow_total_left = '$'.number_format($escrow_total_left, 0);
                 @endphp
                 <tr>
@@ -50,7 +68,9 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow -> agent }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $close_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_left }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_in }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_out }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
                 </tr>
             @endforeach
         </tbody>

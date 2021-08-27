@@ -4,11 +4,11 @@ namespace App\Http\Controllers\DocManagement\Archives;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-//use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use App\Models\DocManagement\Archives\Escrow;
-// use App\Models\OldDB\Company\Escrow as OldEscrow;
-// use App\Models\DocManagement\Archives\EscrowChecks;
+use App\Models\OldDB\Company\Escrow as OldEscrow;
+use App\Models\DocManagement\Archives\EscrowChecks;
 
 class EscrowController extends Controller
 {
@@ -30,14 +30,14 @@ class EscrowController extends Controller
             $sort = $request -> sort;
         }
         $search = $request -> search ?? null;
-        $escrows = Escrow::select(['mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
+        $escrows = Escrow::select(['id', 'mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
-        -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate', 'checks'])
+        -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate(25);
@@ -49,7 +49,7 @@ class EscrowController extends Controller
 
     //////// TRANSFER ARCHIVE /////////
 
-    /* public function escrow(Request $request) {
+    public function get_old_escrow(Request $request) {
 
         $escrows = OldEscrow::limit(1000) -> where('transferred_to_new_server', 'no') -> get();
 
@@ -59,7 +59,7 @@ class EscrowController extends Controller
 
             $escrow_ids[] = $escrow -> id;
 
-            $add_escrow = new Escrow();
+            $add_escrow = Escrow::firstOrCreate(['id' => $escrow -> id]);
 
             foreach($escrow -> toArray() as $key => $value) {
 
@@ -96,6 +96,37 @@ class EscrowController extends Controller
 
         $update_escrow = OldEscrow::whereIn('id', $escrow_ids) -> update(['transferred_to_new_server' => 'yes']);
 
+
+
+    }
+
+    public function update_old_escrow(Request $request) {
+
+        $escrows = Escrow::with(['checks']) -> get();
+        $ids = [];
+        foreach($escrows as $escrow) {
+
+            $checks = $escrow -> checks;
+
+            $escrow_total_in = $checks -> where('cleared', 'yes')
+            -> where('amount', '>', '0')
+            -> where('check_type', 'in')
+            -> sum('amount');
+
+            $escrow_total_out = $checks -> where('cleared', 'yes')
+            -> where('amount', '>', '0')
+            -> where('check_type', 'out')
+            -> sum('amount');
+
+            $escrow_total_left = $escrow_total_in - $escrow_total_out;
+
+            if($escrow_total_left > 0) {
+                $ids[] = $escrow -> id;
+            }
+
+        }
+
+        dump($ids);
 
 
     }
@@ -174,6 +205,6 @@ class EscrowController extends Controller
 
         }
 
-    } */
+    }
 
 }
