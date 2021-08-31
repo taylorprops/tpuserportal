@@ -59,6 +59,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // temp
     Route::get('/add_missing_fields', [ArchivedTransactionsController::class, 'add_missing_fields']) -> middleware(['admin']);
+    Route::get('/get_transactions', [ArchivedTransactionsController::class, 'get_transactions']) -> middleware(['admin']);
 
 
     /////////////// %%%%%%%%%%%%%%%%%% SUPER ADMIN %%%%%%%%%%%%%%%%%% ///////////////
