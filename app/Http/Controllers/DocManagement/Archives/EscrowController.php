@@ -217,8 +217,9 @@ class EscrowController extends Controller
 
     public function add_guids(Request $request) {
 
-        $before = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> count();
-        $escrows = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> limit(1000) -> get();
+        $before = Escrow::whereNull('listingGuid') -> whereNotNull('mls') -> count();
+
+        $escrows = Escrow::whereNull('listingGuid') -> whereNotNull('mls') -> limit(1000) -> get();
 
         foreach($escrows as $escrow) {
             $transaction = Transactions::where('transactionId', $escrow -> TransactionId) -> first();
@@ -229,7 +230,7 @@ class EscrowController extends Controller
             }
         }
 
-        $after = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> count();
+        $after = Escrow::whereNull('listingGuid') -> whereNotNull('mls') -> count();
 
         dump($before, $after);
 
