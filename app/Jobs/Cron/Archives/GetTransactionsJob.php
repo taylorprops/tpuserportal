@@ -52,8 +52,7 @@ class GetTransactionsJob implements ShouldQueue
         $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-2 days')));
 
         $query = [
-            //'createdAfter' => $createdAfter,
-            'email' => 'RolandViewAve4219@skyslope.com',
+            'createdAfter' => $createdAfter,
             'type' => 'all'
         ];
 
