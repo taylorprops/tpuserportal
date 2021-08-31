@@ -5,11 +5,12 @@ if(document.URL.match(/escrow/)) {
         return {
             search_val: '',
             active_url: '',
+            length: '10',
             init() {
                 show_loading();
                 this.get_escrow();
             },
-            get_escrow(url) {
+            get_escrow(url = null) {
 
                 let scope = this;
                 if(!url) {
@@ -34,7 +35,7 @@ if(document.URL.match(/escrow/)) {
                         link.addEventListener('click', function(e) {
                             show_loading();
                             e.preventDefault();
-                            let url = this.href;
+                            let url = this.href+'&length='+scope.length;
                             if(this.search_val != '') {
                                 if(url.match(/\?/)) {
                                     url += '&';
@@ -53,7 +54,13 @@ if(document.URL.match(/escrow/)) {
             },
             search(val) {
                 this.search_val = val;
-                this.active_url = '/transactions_archived/get_escrow_html?search=' + val.trim();
+                this.active_url = '/transactions_archived/get_escrow_html?search=' + val.trim()+'&length='+this.length;
+                this.get_escrow(this.active_url);
+            },
+            change_length(ele) {
+                let val = parseInt(ele.value);
+                this.length = val;
+                this.active_url = '/transactions_archived/get_escrow_html?length=' + val;
                 this.get_escrow(this.active_url);
             }
         }

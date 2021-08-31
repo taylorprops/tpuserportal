@@ -44,18 +44,18 @@
     x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
     @keydown.window.escape="main_nav_open = false">
 
-        <div class="min-h-screen flex overflow-hidden">
+        <div class="min-h-screen flex">
 
             @include('layouts.menu.menu')
 
-            <div class="flex flex-col w-0 flex-1 p-1 overflow-hidden">
+            <div class="flex flex-col w-0 flex-1">
 
                 <!-- Page Heading -->
                 @if($header != 'null')
                 <header>
-                    <div class="w-full py-1 border-gray-500 border-b"
+                    <div class="w-full border-gray-200 border-b bg-white py-2"
                     :class="{
-                        'ml-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
+                        'pl-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
                         'pl-8 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
                         'relative': (window.outerWidth >= 1280),
                         'fixed': (window.outerWidth < 1280)
@@ -72,7 +72,7 @@
                 @endif
 
                 <!-- Page Content -->
-                <main class="p-4" :class="{
+                <main class="" :class="{
                     'ml-72' : main_nav_open && (window.outerWidth >= 1280),
                     '' : !(window.outerWidth >= 1280) || !main_nav_open,
                     'pt-8' : (window.outerWidth <= 640),

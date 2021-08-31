@@ -7,31 +7,16 @@
     <div class="pb-12 pt-2"
     x-data="escrow()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="p-2 mb-3 sm:mt-1 md:mt-2 lg:mt-3 ml-0 xl:ml-6 w-48 lg:w-80">
+            <x-elements.input
+                placeholder="Search"
+                :size="'md'"
+                x-on:keyup="search($el.value)"/>
+        </div>
 
-            <div class="flex flex-col">
+        <div class="w-screen-95 mx-auto sm:w-full overflow-x-auto">
 
-                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-
-                    <div class="p-2 ml-6 w-80">
-                        <x-elements.input
-                            id="search"
-                            name=""
-                            data-label=""
-                            placeholder="Search"
-                            :size="'lg'"
-                            x-on:keyup="search($el.value)"/>
-                    </div>
-
-                    <div class="escrow-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-
-
-
-                    </div>
-
-                </div>
-
-            </div>
+            <div class="escrow-table min-w-1000 text-xs md:text-sm px-0 sm:px-3 lg:px-8 whitespace-nowrap"></div>
 
         </div>
 

@@ -1,10 +1,10 @@
 <div class="d-flex justify-content-center mb-2 pagination-div">
-    {!! $escrows -> links() !!}
+    {{ $escrows -> onEachSide(1) -> links() }}
 </div>
 
-<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<div class="shadow border-b border-gray-200 sm:rounded-lg">
 
-    <table class="min-w-full divide-y divide-gray-200">
+    <table class="w-full divide-y divide-gray-200">
 
         <thead class="bg-gray-50">
             <tr>
@@ -60,17 +60,17 @@
                 $escrow_total_left = '$'.number_format($escrow_total_left, 0);
                 @endphp
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                         @if($transaction)
-                        <a href="/transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link px-4 py-3 bg-primary text-white text-center shadow rounded-md" target="_blank">View</a>
+                        <a href="/transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link px-4 py-3 bg-primary text-white text-center shadow rounded-md hover:bg-primary-dark hover:shadow-md" target="_blank">View</a>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow -> agent }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $close_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_in }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $escrow_total_out }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $address }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow -> agent }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $close_date }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow_total_in }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow_total_out }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -80,5 +80,5 @@
 </div>
 
 <div class="d-flex justify-content-center mt-2 pagination-div">
-    {!! $escrows -> links() !!}
+    {{ $escrows -> onEachSide(1) -> links() }}
 </div>

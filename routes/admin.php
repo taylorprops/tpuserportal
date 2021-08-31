@@ -79,10 +79,12 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/archives/check_documents_exists', [SkySlopeController::class, 'check_documents_exists']) -> middleware(['admin']);
     Route::get('/archives/add_missing_documents', [SkySlopeController::class, 'add_missing_documents']) -> middleware(['admin']);
 
+
     // %%%% escrow
     Route::get('/archives/escrow', [EscrowController::class, 'escrow']) -> middleware(['admin']);
     Route::get('/archives/update_old_escrow', [EscrowController::class, 'update_old_escrow']) -> middleware(['admin']);
     Route::get('/archives/get_checks', [EscrowController::class, 'get_checks']) -> middleware(['admin']);
+    Route::get('/archives/add_guids', [EscrowController::class, 'add_guids']) -> middleware(['admin']);
 
 
     // %%%% New Skyslope to old DB

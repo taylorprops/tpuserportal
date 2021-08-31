@@ -49,6 +49,17 @@ module.exports = {
                 '800-px': '800px',
                 '900-px': '900px'
             },
+            maxWidth: {
+                '100-px': '100px',
+                '200-px': '200px',
+                '300-px': '300px',
+                '400-px': '400px',
+                '500-px': '500px',
+                '600-px': '600px',
+                '700-px': '700px',
+                '800-px': '800px',
+                '900-px': '900px'
+            },
             height: theme => ({
                 'screen-5': '5vh',
                 'screen-8': '8vh',
@@ -82,6 +93,7 @@ module.exports = {
                 'screen-85': '85vw',
                 'screen-88': '88vw',
                 'screen-90': '90vw',
+                'screen-95': '95vw',
             }),
             colors: {
                 default: {

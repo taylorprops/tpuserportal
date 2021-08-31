@@ -23,11 +23,12 @@
                             x-on:keyup="search($el.value)"/>
                     </div>
 
-                    <div class="archives-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}
 
+                        <div class="archives-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                        </div>
 
-
-                    </div>
+                    {{-- </div> --}}
 
                 </div>
 

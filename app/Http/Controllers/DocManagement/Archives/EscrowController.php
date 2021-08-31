@@ -4,11 +4,12 @@ namespace App\Http\Controllers\DocManagement\Archives;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\DocManagement\Archives\Escrow;
 use App\Models\OldDB\Company\Escrow as OldEscrow;
 use App\Models\DocManagement\Archives\EscrowChecks;
+use App\Models\DocManagement\Archives\Transactions;
 
 class EscrowController extends Controller
 {
@@ -23,11 +24,15 @@ class EscrowController extends Controller
 
         $direction = 'desc';
         $sort = 'contract_date';
+        $length = 10;
         if($request -> direction) {
             $direction = $request -> direction;
         }
         if($request -> sort) {
             $sort = $request -> sort;
+        }
+        if($request -> length) {
+            $length = $request -> length;
         }
         $search = $request -> search ?? null;
         $escrows = Escrow::select(['id', 'mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
@@ -40,7 +45,7 @@ class EscrowController extends Controller
         -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
         -> orderBy($sort, $direction)
         //-> sortable()
-        -> paginate(25);
+        -> paginate($length);
 
         return view('doc_management/transactions/archived/get_escrow_html', compact('escrows'));
 
@@ -50,6 +55,8 @@ class EscrowController extends Controller
     //////// TRANSFER ARCHIVE /////////
 
     public function get_old_escrow(Request $request) {
+
+        // TODO: update old server transferred_to_new_server = no
 
         $escrows = OldEscrow::limit(1000) -> where('transferred_to_new_server', 'no') -> get();
 
@@ -204,6 +211,27 @@ class EscrowController extends Controller
             }
 
         }
+
+    }
+
+
+    public function add_guids(Request $request) {
+
+        $before = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> count();
+        $escrows = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> limit(1000) -> get();
+
+        foreach($escrows as $escrow) {
+            $transaction = Transactions::where('transactionId', $escrow -> TransactionId) -> first();
+            if($transaction) {
+                $escrow -> listingGuid = $transaction -> listingGuid;
+                $escrow -> saleGuid = $transaction -> saleGuid;
+                $escrow -> save();
+            }
+        }
+
+        $after = Escrow::whereNull('listingGuid') -> where('TransactionId', '>', '0') -> count();
+
+        dump($before, $after);
 
     }
 

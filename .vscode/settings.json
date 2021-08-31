@@ -1,6 +1,7 @@
 {
     "cSpell.ignoreWords": [
         "aapi",
+        "add",
         "addendums",
         "address",
         "advlist",
@@ -122,6 +123,7 @@
         "fullnames",
         "gp",
         "group-id",
+        "guids",
         "height",
         "heightp",
         "hellosign",

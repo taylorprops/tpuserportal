@@ -67,6 +67,14 @@ html {
     @apply bg-secondary-lightest;
 }
 
+
+.min-w-600 {
+    min-width: 600px;
+}
+.min-w-1000 {
+    min-width: 1000px;
+}
+
 .test{
 // default
 color: #4770b3;
