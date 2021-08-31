@@ -222,7 +222,7 @@ class EscrowController extends Controller
         $escrows = Escrow::whereNull('listingGuid') -> whereNotNull('mls') -> limit(1000) -> get();
 
         foreach($escrows as $escrow) {
-            $transaction = Transactions::where('transactionId', $escrow -> TransactionId) -> first();
+            $transaction = Transactions::where('mlsNumber', $escrow -> mls) -> first();
             if($transaction) {
                 $escrow -> listingGuid = $transaction -> listingGuid;
                 $escrow -> saleGuid = $transaction -> saleGuid;
