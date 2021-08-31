@@ -52,7 +52,8 @@ class GetTransactionsJob implements ShouldQueue
         $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-2 days')));
 
         $query = [
-            'createdAfter' => $createdAfter,
+            //'createdAfter' => $createdAfter,
+            'propertyAddress' => '4219 Roland',
             'type' => 'all'
         ];
 
