@@ -2,13 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
+use Illuminate\Support\Facades\Crypt;
+use App\Models\Employees\LoanOfficersNotes;
+use App\Models\Employees\LoanOfficersLicenses;
 use App\Models\DocManagement\Admin\Forms\Forms;
+use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
+use App\Models\Employees\LoanOfficers as LoanOfficersNew;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class TestsController extends Controller
 {
+
+    public function update_encrypted_fields() {
+
+        $loan_officers = LoanOfficersNew::get();
+
+        foreach ($loan_officers as $loan_officer) {
+            $loan_officer -> soc_sec = Crypt::encrypt($loan_officer -> soc_sec);
+            $loan_officer -> save();
+        }
+
+    }
+
+
 
     public function menu(Request $request) {
 

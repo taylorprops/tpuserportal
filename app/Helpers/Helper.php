@@ -5,7 +5,7 @@ namespace App\Helpers;
 class Helper
 {
 
-    public static function clean_file_name($file, $new_ext, $remove_numbers = false) {
+    public static function clean_file_name($file, $new_ext, $remove_numbers = false, $add_time = false) {
 
         $file_name = $file -> getClientOriginalName();
         $file_ext = $file -> getClientOriginalExtension();
@@ -15,6 +15,10 @@ class Helper
             $file_name = preg_replace('/[0-9]+/', '', $file_name);
         }
         $file_name = Helper::sanitize($file_name);
+
+        if($add_time == true) {
+            $file_name .= '_'.time();
+        }
 
         if($new_ext != '') {
             return $file_name.'.'.$new_ext;

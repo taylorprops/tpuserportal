@@ -428,7 +428,7 @@
                                 &lt;/x-elements.button&gt;
 
                                 &lt;x-modals.modal
-                                :modalWidth="'w-1/2'"
+                                :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
                                 :modalTitle="'Import Contact'"
                                 :modalId="'show_add_contact_modal'"
                                 x-show="show_add_contact_modal"&gt;
@@ -454,7 +454,7 @@
                         </x-elements.button>
 
                         <x-modals.modal
-                        :modalWidth="'w-1/2'"
+                        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
                         :modalTitle="'Import Contact'"
                         :modalId="'show_modal'"
                         x-show="show_modal">

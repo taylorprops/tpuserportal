@@ -14,4 +14,8 @@ class LocationData extends Model
 
     public $guarded = [];
 
+    public function scopeGetStates() {
+        return $this -> select('state') -> distinct() -> orderBy('state') -> get();
+    }
+
 }

@@ -21,4 +21,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions/get_form_groups', [TransactionsController::class, 'get_form_groups']) -> middleware(['agent']);
     Route::get('/transactions/agent_search', [TransactionsController::class, 'agent_search']) -> middleware(['agent']);
 
+
+
 });

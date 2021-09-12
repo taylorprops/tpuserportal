@@ -25,7 +25,9 @@ if($attributes['id']) {
 @endphp
 
 <label class="text-gray-500 italic block {{ $label_text_size }}">
-    <span class="ml-2">{{ $label }}</span>
+    @if($label != '')
+        <span class="ml-2">{{ $label }}</span>
+    @endif
     <select
         id="{{ $id }}"
         placeholder="{{ $attributes['placeholder'] }}"

@@ -1,5 +1,19 @@
+import * as FilePond from "filepond";
+window.FilePond = FilePond;
+
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+
+FilePond.registerPlugin(FilePondPluginImagePreview);
+FilePond.registerPlugin(FilePondPluginFileEncode);
+FilePond.registerPlugin(FilePondPluginFileValidateType);
+
+import Cropper from 'cropperjs';
+window.Cropper = Cropper;
+
 require('./bootstrap');
-//require('alpinejs');
+
 
 
 //import tippy from 'tippy.js';
@@ -19,6 +33,8 @@ require('./doc_management/admin/forms/form_fields.js');
 require('./doc_management/admin/checklists/checklists.js');
 
 require('./employees/agents.js');
+require('./employees/loan_officers.js');
+require('./employees/loan_officer.js');
 
 require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');

@@ -4,8 +4,13 @@
 
 @import 'animate.css/animate.min.css';
 @import 'toastr2/dist/toastr.min.css';
+
+@import "filepond/dist/filepond.min.css";
+@import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+@import 'cropperjs/dist/cropper.css';
+
 @import './global.scss';
 @import './nav.scss';
 @import './form_elements.scss';
-@import './datatables.scss';
+//@import './datatables.scss';
 /* @import 'tippy.js/dist/tippy.css'; */

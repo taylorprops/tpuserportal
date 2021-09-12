@@ -26,7 +26,7 @@ if($attributes['id']) {
 
 <label class="text-gray-500 block italic {{ $label_text_size }}">
     @if($label != '')
-    <span class="ml-2">{{ $label }}</span>
+        <span class="ml-2">{{ $label }}</span>
     @endif
     <input id="{{ $id }}"
     placeholder="{{ $attributes['placeholder'] }}"

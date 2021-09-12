@@ -116,6 +116,11 @@
                 'link' => '/employees/agents',
                 'icon' => 'fal fa-person-sign mr-2'
             ],
+            [
+                'title' => 'Loan Officers',
+                'link' => '/employees/loan_officers',
+                'icon' => 'fal fa-user-chart mr-2'
+            ],
 
         ];
 

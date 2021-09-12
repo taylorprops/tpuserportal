@@ -11,7 +11,7 @@
 
             <div class="flex flex-col">
 
-                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="sm:-mx-6 lg:-mx-8">
 
                     <div class="p-2 ml-6 w-80">
                         <x-elements.input

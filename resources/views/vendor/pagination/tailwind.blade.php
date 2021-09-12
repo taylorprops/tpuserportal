@@ -36,12 +36,12 @@
 
             <div class="text-sm text-gray-700 hidden sm:block md:ml-8 xl:ml-0">
                 <div class="flex justify-start items-center">
-                    <div>
+                    <div class="mr-1">
                         Show
                     </div>
                     <div>
                         <x-elements.select
-                        class="shadow-sm"
+                        class="shadow-sm pr-6"
                         data-label=""
                         :size="'md'"
                         x-on:change="change_length($el)">

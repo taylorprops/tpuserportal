@@ -45,7 +45,16 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% Employees
     Route::get('/employees/agents', [EmployeesController::class, 'agents']) -> middleware(['admin']);
     Route::get('/employees/agents/get_agents', [EmployeesController::class, 'get_agents']) -> middleware(['admin']);
-
+    Route::get('/employees/loan_officers', [EmployeesController::class, 'loan_officers']) -> middleware(['admin']);
+    Route::get('/employees/loan_officers/get_loan_officers', [EmployeesController::class, 'get_loan_officers']) -> middleware(['admin']);
+    Route::get('/employees/loan_officers/loan_officer_view/{id}', [EmployeesController::class, 'loan_officer_view']) -> middleware(['admin']);
+    Route::get('/employees/loan_officers/get_licenses_loan_officer', [EmployeesController::class, 'get_licenses_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/photos/save_cropped_upload_loan_officer', [EmployeesController::class, 'save_cropped_upload_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/photos/delete_photo_loan_officer', [EmployeesController::class, 'delete_photo_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/docs/docs_upload_loan_officer', [EmployeesController::class, 'docs_upload_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/docs/get_docs_loan_officer', [EmployeesController::class, 'get_docs_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/docs/delete_doc_loan_officer', [EmployeesController::class, 'delete_doc_loan_officer']) -> middleware(['admin']);
+    Route::post('/employees/loan_officers/save_loan_officer', [EmployeesController::class, 'save_loan_officer']) -> middleware(['admin']);
 
     // archived
     Route::get('/transactions_archived', [ArchivedTransactionsController::class, 'transactions_archived']) -> middleware(['admin']);
@@ -108,6 +117,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/alpine', [TestsController::class, 'alpine']) -> middleware(['admin']);
     Route::get('/tests/agent_data', [TestsController::class, 'agent_data']) -> middleware(['admin']);
     Route::get('/tests/menu', [TestsController::class, 'menu']) -> middleware(['admin']);
+    Route::get('/tests/add_los', [TestsController::class, 'add_los']) -> middleware(['admin']);
+    Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['admin']);
 
 
 

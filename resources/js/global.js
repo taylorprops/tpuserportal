@@ -62,18 +62,23 @@ window.ele_loading = function(ele) {
 }
 
 window.show_form_errors = function(errors) {
+
     remove_form_errors();
+
     Object.entries(errors).forEach(([key, value]) => {
+
         let field = `${key}`;
         let message = `${value}`;
         let element = document.querySelector('#'+field);
         if(element) {
             let error_message = element.closest('label').querySelector('.error-message');
             error_message.innerHTML = message;
-            element.scrollIntoView();
+            scroll_above(element);
+            toastr.error('Field not completed: ' + message);
         }
 
     });
+
 }
 
 window.remove_form_errors = function(event = null) {
@@ -87,6 +92,18 @@ window.remove_form_errors = function(event = null) {
             error_div.innerHTML = '';
         });
     }
+}
+
+
+window.scroll_above = function(element){
+
+    let yOffset = -150;
+    let y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({top: y, behavior: 'smooth'});
+    element.focus({
+        preventScroll: true
+    });
+
 }
 
 
@@ -338,6 +355,23 @@ window.global_format_money = function() {
     }
 
 }
+
+
+document.querySelectorAll('.ssn').forEach(function(input) {
+
+    input.addEventListener('keydown', (event) => {
+
+        let re = /\D/g; // remove any characters that are not numbers
+        let soc_sec = input.value.replace(re,"");
+
+        let ssa = soc_sec.slice(0,3);
+        let ssb = soc_sec.slice(3,5);
+        let ssc = soc_sec.slice(5,9);
+        input.value = ssa+"-"+ssb+"-"+ssc;
+
+    });
+
+});
 
 
 // Numbers Only
