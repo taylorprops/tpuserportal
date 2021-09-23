@@ -1,4 +1,177 @@
 
+.form-element {
+
+    &.input {
+        @apply text-gray-600 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        &.sm {
+            @apply py-1.5 text-xs;
+        }
+        &.md {
+            @apply py-2 text-sm;
+        }
+        &.lg {
+            @apply py-3 text-base;
+            @media screen and (max-width: 768px) {
+                @apply py-2 text-sm;
+            }
+        }
+        &.xl {
+            @apply py-4 text-lg;
+        }
+    }
+
+    &.checkbox, &.radio {
+        &.sm {
+            @apply h-3 w-3;
+        }
+        &.md {
+            @apply h-3.5 w-3.5;
+        }
+        &.lg {
+            @apply h-4 w-4;
+        }
+        &.xl {
+            @apply h-5 w-5;
+        }
+        &:checked {
+            &.primary {
+                @apply bg-primary hover:bg-primary-light focus:ring-primary;
+            }
+            &.secondary {
+                @apply bg-secondary hover:bg-secondary-light focus:ring-secondary;
+            }
+            &.danger {
+                @apply bg-danger hover:bg-danger-light focus:ring-danger;
+            }
+            &.success {
+                @apply bg-success hover:bg-success-light focus:ring-success;
+            }
+        }
+    }
+
+    &.select {
+        @apply text-gray-600 pl-3 pr-8 block w-full shadow-sm focus:ring-blue-500 focus:ring-2 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        &.sm {
+            @apply py-1.5 text-xs;
+        }
+        &.md {
+            @apply py-2 text-sm;
+        }
+        &.lg {
+            @apply py-3 text-base;
+            @media screen and (max-width: 768px) {
+                @apply py-2 text-sm;
+            }
+        }
+        &.xl {
+            @apply py-4 text-lg;
+        }
+    }
+
+    &.textarea {
+        @apply text-gray-600 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        &.sm {
+            @apply py-1.5 text-xs;
+        }
+        &.md {
+            @apply py-2 text-sm;
+        }
+        &.lg {
+            @apply py-3 text-base;
+            @media screen and (max-width: 768px) {
+                @apply py-2 text-sm;
+            }
+        }
+        &.xl {
+            @apply py-4 text-lg;
+        }
+    }
+
+}
+
+.form-element-label {
+
+    @apply text-gray-500;
+
+    &.checkbox, &.radio {
+        &.sm {
+            .label-text {
+                @apply text-xs ml-1;
+            }
+        }
+        &.md {
+            .label-text {
+                @apply text-sm ml-1.5;
+            }
+        }
+        &.lg {
+            .label-text {
+                @apply text-base ml-2 mt-0.5;
+            }
+        }
+        &.xl {
+            .label-text {
+                @apply text-lg ml-2 mt-1;
+            }
+        }
+
+    }
+    &:not(.checkbox):not(.radio) {
+        @apply  mb-2 ml-2 italic;
+        &.sm {
+            @apply text-xs;
+        }
+        &.md {
+            @apply text-sm;
+        }
+        &.lg {
+            @apply text-base;
+        }
+        &.xl {
+            @apply text-lg;
+        }
+    }
+}
+
+.button {
+    @apply px-3.5 cursor-pointer flex items-center border border-transparent font-medium rounded shadow text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+    &.sm {
+        @apply h-6 text-xs;
+        &.no-text {
+            @apply h-6 w-6 flex items-center justify-around;
+        }
+    }
+    &.md {
+        @apply h-8 text-base;
+        &.no-text {
+            @apply h-8 w-8 flex items-center justify-around;
+        }
+    }
+    &.lg {
+        @apply h-10 text-lg;
+    }
+    &.xl {
+        @apply h-12 text-lg;
+    }
+    &.default {
+        @apply bg-default hover:bg-default-light focus:ring-default;
+    }
+    &.primary {
+        @apply bg-primary hover:bg-primary-light focus:ring-primary;
+    }
+    &.secondary {
+        @apply bg-secondary hover:bg-secondary-light focus:ring-secondary;
+    }
+    &.danger {
+        @apply bg-danger hover:bg-danger-light focus:ring-danger;
+    }
+    &.success {
+        @apply bg-success hover:bg-success-light focus:ring-success;
+    }
+
+}
+
+
 
 input.required,
 select.required,

@@ -20,45 +20,40 @@
             <!-- Email Address -->
             <div class="mt-5">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="text" class="form-element input md"
                     id="email"
                     type="email"
                     name="email"
-                    :value="old('email', $request -> email)"
+                    value="{{ $request -> email }}"
                     data-label="Email"
-                    placeholder="Email"
+                    placeholder=""
                     required
-                    readonly />
+                    readonly>
 
             </div>
 
             <!-- Password -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password"
-                    type="password"
                     name="password"
                     data-label="Password"
-                    placeholder="Password"
+                    placeholder=""
                     autofocus
-                    required />
+                    required>
 
             </div>
 
             <!-- Confirm Password -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password_confirmation"
-                    type="password"
                     name="password_confirmation"
                     data-label="Confirm Password"
-                    placeholder="Confirm Password"
-                    required />
+                    placeholder=""
+                    required>
 
             </div>
 

@@ -16,61 +16,52 @@
 
             <!-- Name -->
             <div class="pt-5">
-
-                <x-elements.input
-                    :size="'md'"
+                <input type="text" class="form-element input md"
                     id="name"
                     type="text"
                     name="name"
                     :value="old('name')"
                     data-label="Name"
-                    placeholder="name"
-                    required readonly />
+                    placeholder=""
+                    required readonly>
 
             </div>
 
             <!-- Email Address -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="text" class="form-element input md"
                     id="email"
                     type="email"
                     name="email"
                     :value="old('email')"
                     data-label="Email"
-                    placeholder="Email"
-                    required readonly />
+                    placeholder=""
+                    required readonly>
 
             </div>
 
             <!-- Password -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password"
-                    {{-- class="block mt-1 w-full" --}}
-                    type="password"
                     name="password"
                     data-label="Password"
-                    placeholder="Password"
-                    required autofocus autocomplete="new-password" />
+                    placeholder=""
+                    required autofocus autocomplete="new-password">
 
             </div>
 
             <!-- Confirm Password -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password_confirmation"
-                    {{-- class="block mt-1 w-full" --}}
-                    type="password"
                     name="password_confirmation"
                     data-label="Confirm Password"
-                    placeholder="Confirm Password"
-                    required />
+                    placeholder=""
+                    required>
 
             </div>
 

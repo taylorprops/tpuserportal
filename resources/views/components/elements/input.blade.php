@@ -16,6 +16,7 @@ if($size == 'sm') {
 }
 
 $classes .= ' w-full rounded-sm border border-gray-300 focus:outline-none focus:ring-blue-300 focus:border-blue-200 focus:shadow-sm disabled:opacity-50';
+/* $classes .= ' h-12 text-gray-600 px-4 py-3 mb-2 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600disabled:opacity-50'; */
 $label = $attributes['data-label'] ?? null;
 
 $id = time() * rand();

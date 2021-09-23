@@ -20,41 +20,35 @@
                 <div class="flex justify-between items-center">
 
                     <div>
-                        <x-elements.select
-                        class="sort-by"
-                        name=""
+                        <select
+                        class="form-element select md sort-by"
                         data-label="Sort By"
-                        :size="'md'"
                         x-on:change="get_forms()">
                             <option value="created_at" selected>Date Added</option>
                             <option value="form_name">A-Z</option>
-                        </x-elements.select>
+                        </select>
                     </div>
 
                     <div class="ml-2">
-                        <x-elements.select
-                        class="show-published"
-                        name=""
+                        <select
+                        class="form-element select md show-published"
                         data-label="Published"
-                        :size="'md'"
                         x-on:change="get_forms()">
                             <option value="" selected>All</option>
                             <option value="yes">Yes</option>
                             <option value="no">No</option>
-                        </x-elements.select>
+                        </select>
                     </div>
 
                     <div class="ml-2">
-                        <x-elements.select
-                        class="show-active"
-                        name=""
+                        <select
+                        class="form-element select md show-active"
                         data-label="Active"
-                        :size="'md'"
                         x-on:change="get_forms()">
                             <option value="">All</option>
                             <option value="yes" selected>Active</option>
                             <option value="no">Deleted</option>
-                        </x-elements.select>
+                        </select>
                     </div>
 
                 </div>

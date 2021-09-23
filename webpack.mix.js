@@ -21,20 +21,7 @@ mix.js('resources/js/app.js', 'public/js')
             require('autoprefixer'),
             ],
     }) */
-    .version();
+    .version()
+    .disableNotifications();
 
 
-/* mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
-    .sourceMaps()
-    // .options({
-    //     postCss: [ tailwindcss('./tailwind.config.js') ],
-    // })
-    .version(); */
-
-/* mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-    require('postcss-import'),
-    require('tailwindcss'),
-    require('autoprefixer'),
-]); */

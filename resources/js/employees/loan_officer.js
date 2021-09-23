@@ -15,6 +15,7 @@ if(document.URL.match(/loan_officer_view/)) {
                 this.photo();
                 this.docs();
                 this.get_docs();
+                this.init_text_editor();
                 document.querySelectorAll('.filepond--credits').forEach(function(div) {
                     div.style.display = 'none';
                 });
@@ -253,6 +254,44 @@ if(document.URL.match(/loan_officer_view/)) {
                 })
                 .catch(function (error) {
                 });
+            },
+            init_text_editor() {
+
+                let options = {
+                    selector: '#bio',
+                    height: 500,
+                    menubar: 'tools edit format table',
+                    statusbar: false,
+                    plugins: 'image table code',
+                    toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
+                    table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                    relative_urls : false,
+                    document_base_url: location.hostname
+                }
+                text_editor(options);
+
+            },
+            save_bio(button) {
+                show_loading_button(button, 'Saving Bio...');
+                let bio = tinyMCE.activeEditor.getContent();
+                bio = '<div style="width: 100%">'+bio+'</div>';
+
+                let formData = new FormData();
+                formData.append('bio', bio);
+                formData.append('loan_officer_id', loan_officer_id);
+                axios.post('/heritage_financial/loan_officers/profile/save_bio', formData)
+                .then(function (response) {
+                    toastr.success('Loan Officer Bio saved successfully!');
+                    button.innerHTML = '<i class="fal fa-check mr-2"></i> Save Bio';
+                })
+                .catch(function (error) {
+                    if(error) {
+                        if(error.response.status == 422) {
+                            let errors = error.response.data.errors;
+                            show_form_errors(errors);
+                        }
+                    }
+                });
             }
 
         }
@@ -260,3 +299,4 @@ if(document.URL.match(/loan_officer_view/)) {
     }
 
 }
+

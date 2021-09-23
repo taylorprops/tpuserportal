@@ -60,7 +60,7 @@
             <hr class="text-primary my-5">
 
 
-            <div class="py-6 md:py-8">
+            <div class="px-4 py-6 md:py-8">
 
                 {{-- STEP 1 --}}
                 <div x-transition x-show="active_step === 1">
@@ -68,14 +68,15 @@
                     {{-- Nav - Mobile --}}
                     <div class="sm:hidden">
 
-                        <x-elements.select id="my_select" name=""
+                        <select
+                        class="form-element select md"
+                        id="my_select"
                         data-label="Locate Property By"
-                        :size="'md'"
                         x-on:change="search_type = $el.value; clear_results_and_errors();">
                             <option value="address" selected>Search Street Address </option>
                             <option value="mls">Search MLS ID</option>
                             <option value="manually">Enter Manually</option>
-                        </x-elements.select>
+                        </select>
 
                     </div>
 
@@ -83,6 +84,8 @@
                     <div class="hidden sm:block">
 
                         <div class="border-b border-gray-200">
+
+                            <div class="text-gray-600 mb-4 text-sm italic">Search by Address, MLS # or Enter Manually</div>
 
                             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
@@ -114,11 +117,11 @@
                     </div>
 
                     {{-- Address/MLS Options --}}
-                    <div class="py-6 md:pb-16 bg-white">
+                    <div class="pt-12 md:pb-16 bg-white">
 
-                        <div class="flex justify-around mt-4 mb-8">
-                            <div class="w-3/4 bg-secondary-lightest border-l-4 border-secondary text-secondary p-4 flex items-center"
-                            x-show="address_not_found">
+                        <div class="flex justify-around mt-4 mb-8"
+                        x-show="address_not_found">
+                            <div class="w-3/4 bg-secondary-lightest border-l-4 border-secondary text-secondary p-4 flex items-center">
                                 <p><i class="fad fa-info-circle mr-3"></i> Please confirm the address.</p>
                             </div>
                         </div>
@@ -130,33 +133,32 @@
                             <div class="grid grid-cols-1 md:grid-cols-7">
 
                                 <div class="col-span-1 md:col-span-6">
-                                    <x-elements.input
+                                    <input
+                                    type="text"
+                                    class="form-element input lg"
                                     id="address_search_input"
-                                    placeholder=""
                                     data-label="Enter the Street Address"
-                                    :size="'lg'"
-                                    @keydown="show_street_error = false"/>
+                                    @keydown="show_street_error = false">
                                 </div>
                                 <div class="col-span-1 md:ml-2">
-                                    <x-elements.input
+                                    <input
+                                    type="text"
+                                    class="form-element input lg"
                                     id="address_search_unit"
-                                    placeholder=""
-                                    data-label="Unit"
-                                    :size="'lg'"/>
+                                    data-label="Unit">
                                 </div>
 
                             </div>
 
                             <div class="mt-4">
-                                <x-elements.button
-                                    class="address-search"
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'lg'"
-                                    type="button"
-                                    @click="get_property_info($el, search_type)"
-                                    @keydown="sessionStorage.search_details = ''">
+
+                                <button
+                                type="button"
+                                class="button primary lg address-search"
+                                @click="get_property_info($el, search_type)"
+                                @keydown="sessionStorage.search_details = ''">
                                     Continue <i class="fal fa-arrow-right ml-2"></i>
-                                </x-elements.button>
+                                </button>
                             </div>
 
 
@@ -168,22 +170,20 @@
                         x-transition x-show="search_type === 'mls'">
 
                             <div>
-                                <x-elements.input
+                                <input
+                                type="text"
+                                class="form-element input lg"
                                 id="mls_search_input"
-                                placeholder=""
-                                data-label="Enter MLS ID"
-                                :size="'lg'"/>
+                                data-label="Enter MLS ID">
                             </div>
 
                             <div class="w-full text-center mt-4">
-                                <x-elements.button
-                                    class="mls-search"
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'lg'"
-                                    type="button"
-                                    @click="get_property_info($el, search_type)">
+                                <button
+                                type="button"
+                                class="button primary lg mls-search"
+                                @click="get_property_info($el, search_type)">
                                     Continue <i class="fal fa-arrow-right ml-2"></i>
-                                </x-elements.button>
+                                </button>
                             </div>
 
                         </div>
@@ -198,32 +198,30 @@
                                 <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
 
                                     <div class="col-span-1">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input lg required"
                                         id="street_number"
                                         name="street_number"
-                                        placeholder=""
-                                        data-label="Street Number"
-                                        :size="'lg'"/>
+                                        data-label="Street Number">
                                     </div>
 
                                     <div class="col-span-1 md:col-span-4">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input lg required"
                                         id="street_name"
                                         name="street_name"
-                                        placeholder=""
-                                        data-label="Street Name"
-                                        :size="'lg'"/>
+                                        data-label="Street Name">
                                     </div>
 
                                     <div class="col-span-1">
-                                        <x-elements.input
+                                        <input
+                                        type="text"
+                                        class="form-element input lg"
                                         id="unit"
                                         name="unit"
-                                        placeholder=""
-                                        data-label="Unit"
-                                        :size="'lg'"/>
+                                        data-label="Unit">
                                     </div>
 
                                 </div>
@@ -231,66 +229,64 @@
                                 <div class="grid grid-cols-1 md:grid-cols-6 gap-4 mt-7">
 
                                     <div class="col-span-1">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input lg required"
                                         id="zip"
                                         name="zip"
-                                        placeholder=""
                                         data-label="Zip"
-                                        :size="'lg'"
-                                        @keyup="get_location_details('#manual_entry_form', '', $el, '#city', '#state', '#county')"/>
+                                        @keyup="get_location_details('#manual_entry_form', '', '#zip', '#city', '#state', '#county')">
                                     </div>
 
                                     <div class="col-span-1 md:col-span-2">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input lg required"
                                         id="city"
                                         name="city"
-                                        placeholder=""
-                                        data-label="City"
-                                        :size="'lg'"/>
+                                        data-label="City">
                                     </div>
 
                                     <div class="col-span-1">
-                                        <x-elements.select
-                                        class="required"
+                                        <select
+                                        class="form-element select lg required"
                                         id="state"
                                         name="state"
                                         data-label="State"
-                                        :size="'lg'"
-                                        @change="let value = $el.value; axios('/transactions/get_counties/'+value).then(data => counties = data);">
+                                        @change="let value = $el.value; axios.get('/transactions/get_counties/'+value).then(function (response) {
+                                            counties = response.data;
+                                        })">
                                             <option value=""></option>
                                             @foreach($states as $state)
                                                 <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                                             @endforeach
-                                        </x-elements.select>
+                                        </select>
                                     </div>
 
                                     <div class="col-span-1 md:col-span-2">
-                                        <x-elements.select
-                                        class="required"
+                                        <select
+                                        class="form-element select lg required"
                                         id="county"
                                         name="county"
-                                        data-label="County"
-                                        :size="'lg'">
+                                        data-label="County">
+                                        <option value=""></option>
                                         <template
                                         x-for="county in counties">
                                             <option :value="county" x-text="county"></option>
                                         </template>
-                                        </x-elements.select>
+                                        </select>
                                     </div>
 
                                 </div>
 
                                 <div class="h-32 flex items-center justify-around">
-                                    <x-elements.button
-                                        class=""
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'lg'"
-                                        type="button"
-                                        @click="save_manual_entry()">
+
+                                    <button
+                                    type="button"
+                                    class="button primary lg"
+                                    @click="save_manual_entry()">
                                         Next Step <i class="fal fa-arrow-right ml-2"></i>
-                                    </x-elements.button>
+                                    </button>
                                 </div>
 
                             </form>
@@ -404,14 +400,13 @@
 
                                 <div class="pb-4 pt-8 flex justify-around"
                                 :class="{ 'border-t': property_found_mls }">
-                                    <x-elements.button
-                                        class=""
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'lg'"
-                                        type="button"
-                                        @click="set_checklist_details(); active_step = 2; steps_complete = 1;">
+
+                                    <button
+                                    type="button"
+                                    class="button primary lg"
+                                    @click="set_checklist_details(); active_step = 2; steps_complete = 1;">
                                         Next Step <i class="fal fa-arrow-right ml-2"></i>
-                                    </x-elements.button>
+                                    </button>
                                 </div>
 
                                 <div class="mt-6 border-t pt-4 text-sm text-gray-400 flex justify-around">
@@ -433,7 +428,7 @@
                 {{-- STEP 2 --}}
                 <div x-transition x-show="active_step === 2">
 
-                    <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
+                    <div class="address-header text-gray-600 font-semibold text-xl mb-6"></div>
 
                     <form id="checklist_details_div">
 
@@ -442,18 +437,17 @@
                         @if(auth() -> user() -> group != 'agent')
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div class="mb-7">
-                                    <x-elements.select
-                                    class="required"
+                                    <select
+                                    class="form-element select md required"
                                     id="Agent_ID"
                                     name="Agent_ID"
-                                    data-label="Select Agent"
-                                    :size="'md'">
+                                    data-label="Select Agent">
                                         <option value=""></option>
                                         @foreach($agents as $agent)
                                             <option value="{{ $agent -> id }}">{{ $agent -> first_name }} {{ $agent -> last_name }}</option>
                                         @endforeach
 
-                                    </x-elements.select>
+                                    </select>
                                 </div>
                             </div>
                         @else
@@ -463,92 +457,85 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
                             <div>
-                                <x-elements.select
+                                <select
+                                class="form-element select md required"
                                 id="SaleRent"
                                 name="SaleRent"
-                                class="required"
                                 data-label="Transaction Type"
-                                :size="'md'"
                                 @change="for_sale = $el.value == 'sale' || $el.value == 'both' ? 'yes' : 'no'; $nextTick(() => { property_type_selected() })">
                                     <option value="sale" :selected="for_sale === 'yes'">Sale</option>
                                     <option value="rental" :selected="for_sale === 'no'">Rental</option>
                                     <option value="both" :class="{ 'hidden': show_both === false }">Both</option>
 
-                                </x-elements.select>
+                                </select>
                             </div>
 
                             <div>
-                                <x-elements.select
+                                <select
+                                class="form-element select md required"
                                 id="PropertyType"
                                 name="PropertyType"
-                                class="required"
                                 data-label="Property Type"
-                                :size="'md'"
                                 @change="property_type_selected()">
                                     <option value=""></option>
                                     <template x-for="prop_type in property_types" :key="prop_type.id">
                                         <option :value="prop_type.property_type" x-text="prop_type.property_type"></option>
                                     </template>
 
-                                </x-elements.select>
+                                </select>
                             </div>
 
                             <div
                             x-show="for_sale === 'yes'">
-                                <x-elements.select
+                                <select
+                                class="form-element select md required"
                                 id="PropertySubType"
                                 name="PropertySubType"
-                                class="required"
                                 data-label="Sale Type"
-                                :size="'md'"
                                 @change="property_type_selected()">
                                     <option value=""></option>
                                     <template x-for="property_sub_type in property_sub_types" :key="property_sub_type.id">
                                         <option :value="property_sub_type.property_sub_type" x-text="property_sub_type.property_sub_type"></option>
                                     </template>
 
-                                </x-elements.select>
+                                </select>
                             </div>
 
                             <div
                             x-show="show_disclosures === true && for_sale === 'yes'">
-                                <x-elements.input
+                                <input
                                 type="text"
-                                class="required numbers-only"
+                                class="form-element input md required numbers-only"
                                 id="YearBuilt"
                                 name="YearBuilt"
-                                placeholder=""
-                                data-label="Year Built"
-                                :size="'md'"/>
+                                data-label="Year Built">
                             </div>
 
                             <div
                             x-show="property_type !== 'Commercial' && property_type !== 'New Construction' && show_disclosures === true && for_sale === 'yes'">
-                                <x-elements.select
+                                <select
+                                class="form-element select md required"
                                 id="HoaCondoFees"
                                 name="HoaCondoFees"
-                                class="required"
-                                data-label="HOA/Condo Fees"
-                                :size="'md'">
+                                data-label="HOA/Condo Fees">
                                     <option value=""></option>
                                     <option value="hoa">HOA Fees</option>
                                     <option value="condo">Condo Fees</option>
                                     <option value="none">None</option>
 
-                                </x-elements.select>
+                                </select>
                             </div>
 
                         </div>
 
                         <div class="flex justify-around py-12 w-full">
-                            <x-elements.button
-                            class=""
-                            :buttonClass="'primary'"
-                            :buttonSize="'lg'"
+
+                            <button
                             type="button"
+                            class="button primary lg"
                             @click="check_checklist_details()">
                             Next Step <i class="fal fa-arrow-right ml-2"></i>
-                        </x-elements.button>
+                        </button>
                         </div>
 
                     </form>
@@ -559,7 +546,7 @@
                 {{-- STEP 3 --}}
                 <div x-transition x-show="active_step === 3">
 
-                    <div class="address-header text-secondary-dark font-semibold text-xl mb-6"></div>
+                    <div class="address-header text-gray-600 font-semibold text-xl mb-6"></div>
 
                     <div>
 
@@ -580,64 +567,63 @@
 
                                                 <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"></span> <span class="member-id">1</span></div>
 
-                                                <x-elements.button
-                                                class="mb-3"
-                                                :buttonClass="'primary'"
-                                                :buttonSize="'sm'"
+
+                                                <button
                                                 type="button"
+                                                class="button primary sm mb-3"
                                                 x-on:click="show_add_contact_modal = true; import_contact_member_id = 1">
                                                 <i class="fad fa-user-friends mr-2"></i> Import from Contacts
-                                                </x-elements.button>
+                                                </button>
 
                                             </div>
 
                                             <div class="py-5">
-                                                <x-elements.check-box
-                                                :size="'sm'"
-                                                :color="'blue'"
-                                                :label="'Owner is a Trust, Company or other Entity'"
-                                                x-on:click="seller_is_trust = !seller_is_trust"/>
+                                                <input
+                                                type="checkbox"
+                                                class="form-element checkbox md primary"
+                                                data-label="Owner is a Trust, Company or other Entity"
+                                                x-on:click="seller_is_trust = !seller_is_trust;">
                                             </div>
 
                                             <div class="my-3"
-                                            x-transition x-show="seller_is_trust">
-                                                <x-elements.input
-                                                class="member-entity-name"
+                                            x-show="seller_is_trust" x-transition>
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-entity-name"
                                                 data-label="Trust, Company or other Entity Name"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': seller_is_trust }"/>
+                                                x-bind:class="{ 'required': seller_is_trust }">
                                             </div>
 
                                             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                                                 <div>
-                                                    <x-elements.input
-                                                    class="member-first required"
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md member-first required"
                                                     data-label="First Name"
-                                                    :size="'md'"
-                                                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                    x-bind:class="{ 'required': !seller_is_trust }">
                                                 </div>
 
                                                 <div>
-                                                    <x-elements.input
-                                                    class="member-last required"
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md member-last required"
                                                     data-label="Last Name"
-                                                    :size="'md'"
-                                                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                    x-bind:class="{ 'required': !seller_is_trust }">
                                                 </div>
 
                                                 <div>
-                                                    <x-elements.input
-                                                    class="member-phone phone required"
-                                                    data-label="Phone"
-                                                    :size="'md'"/>
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md member-phone phone required"
+                                                    data-label="Phone">
                                                 </div>
 
                                                 <div>
-                                                    <x-elements.input
-                                                    class="member-email"
-                                                    data-label="Email"
-                                                    :size="'md'"/>
+                                                    <input
+                                                    type="email"
+                                                    class="form-element input md member-email"
+                                                    data-label="Email">
                                                 </div>
 
                                             </div>
@@ -645,42 +631,41 @@
                                             <div class="grid grid-cols-1 md:grid-cols-7 gap-5 mt-5">
 
                                                 <div class="col-span-1 md:col-span-3">
-                                                    <x-elements.input
-                                                    class="member-street required"
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md member-street required"
                                                     data-label="Home Address"
-                                                    :size="'md'"
-                                                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                    x-bind:class="{ 'required': !seller_is_trust }">
                                                 </div>
 
                                                 <div class="col-span-1">
-                                                    <x-elements.input
-                                                    class="numbers-only member-zip required"
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md numbers-only member-zip required"
                                                     data-label="Zip Code"
                                                     data-member-index="1"
-                                                    :size="'md'"
                                                     x-bind:class="{ 'required': !seller_is_trust }"
-                                                    @keyup="get_location_details('.member-container', '1', $el, '.member-city', '.member-state')"/>
+                                                    @keyup="get_location_details('.member-container', '1', '.member-zip', '.member-city', '.member-state')">
                                                 </div>
 
                                                 <div class="col-span-1 md:col-span-2">
-                                                    <x-elements.input
-                                                    class="member-city required"
+                                                    <input
+                                                    type="text"
+                                                    class="form-element input md member-city required"
                                                     data-label="City"
-                                                    :size="'md'"
-                                                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                    x-bind:class="{ 'required': !seller_is_trust }">
                                                 </div>
 
                                                 <div class="col-span-1">
-                                                    <x-elements.select
-                                                    class="member-state required"
+                                                    <select
+                                                    class="form-element select md member-state required"
                                                     data-label="State"
-                                                    :size="'md'"
                                                     x-bind:class="{ 'required': !seller_is_trust }">
                                                         <option value=""></option>
                                                         @foreach($states as $state)
                                                             <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                                                         @endforeach
-                                                    </x-elements.select>
+                                                    </select>
                                                 </div>
 
                                             </div>
@@ -690,13 +675,13 @@
                                     </div>
 
                                     <div class="my-4">
-                                        <x-elements.button
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'sm'"
+
+                                        <button
                                         type="button"
+                                        class="button primary sm"
                                         @click="add_member('Seller')">
                                         <i class="fal fa-plus mr-2"></i> <span x-text="for_sale === 'yes' ? 'Add Seller' : 'Add Owner'"></span>
-                                    </x-elements.button>
+                                    </button>
                                     </div>
 
                                 </div>
@@ -708,34 +693,27 @@
                                     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                                         <div class="col-span-1">
-                                            <x-elements.input
-                                            class="required numbers-only money"
+                                            <input
+                                            type="text"
+                                            class="form-element input md required numbers-only money"
                                             id="ListPrice"
                                             name="ListPrice"
-                                            placeholder=""
-                                            data-label="List Price"
-                                            :size="'md'"/>
+                                            data-label="List Price">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input type="date" class="form-element input md required"
                                             id="MLSListDate"
                                             name="MLSListDate"
-                                            type="date"
-                                            class="required"
                                             data-label="List Date"
-                                            :size="'md'"
-                                            @onchange="document.getElementById('ExpirationDate').setAttribute('min', $el.value)"/>
+                                            @onchange="document.getElementById('ExpirationDate').setAttribute('min', $el.value)">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input type="date" class="form-element input md required"
                                             id="ExpirationDate"
                                             name="ExpirationDate"
-                                            type="date"
-                                            class="required"
-                                            data-label="Expiration Date"
-                                            :size="'md'"/>
+                                            data-label="Expiration Date">
                                         </div>
 
                                     </div>
@@ -743,13 +721,13 @@
                                 </div>
 
                                 <div class="w-full flex justify-around py-10 border-t">
-                                    <x-elements.button
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'lg'"
+
+                                    <button
                                     type="button"
+                                    class="button primary lg"
                                     @click="save_transaction($el, 'listing')">
                                     <i class="fal fa-check mr-2"></i> Save Listing
-                                </x-elements.button>
+                                </button>
                                 </div>
 
                             </form>
@@ -771,64 +749,61 @@
 
                                             <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Buyer' : 'Renter'"></span> <span class="member-id">1</span></div>
 
-                                            <x-elements.button
-                                            class="mb-3"
-                                            :buttonClass="'primary'"
-                                            :buttonSize="'sm'"
+
+                                            <button
                                             type="button"
+                                            class="button primary sm mb-3"
                                             x-on:click="show_add_contact_modal = true; import_contact_member_id = 1">
                                             <i class="fad fa-user-friends mr-2"></i> Import from Contacts
-                                            </x-elements.button>
+                                            </button>
 
                                         </div>
 
                                         <div class="py-5">
-                                            <x-elements.check-box
-                                            :size="'sm'"
-                                            :color="'blue'"
-                                            :label="'Client is a Trust, Company or other Entity'"
-                                            x-on:click="buyer_is_trust = !buyer_is_trust"/>
+                                            <input type="checkbox" class="form-element checkbox sm primary"
+                                            data-label="Client is a Trust, Company or other Entity"
+                                            x-on:click="buyer_is_trust = !buyer_is_trust">
                                         </div>
 
                                         <div class="my-3"
                                         x-transition x-show="buyer_is_trust">
-                                            <x-elements.input
-                                            class="contact-entity-name"
+                                            <input
+                                            type="text"
+                                            class="form-element input md contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
-                                            :size="'md'"
-                                            x-bind:class="{ 'required': buyer_is_trust }"/>
+                                            x-bind:class="{ 'required': buyer_is_trust }">
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-first required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-first required"
                                                 data-label="First Name"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !buyer_is_trust }"/>
+                                                x-bind:class="{ 'required': !buyer_is_trust }">
                                             </div>
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-last required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-last required"
                                                 data-label="Last Name"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !buyer_is_trust }"/>
+                                                x-bind:class="{ 'required': !buyer_is_trust }">
                                             </div>
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-phone phone required"
-                                                data-label="Phone"
-                                                :size="'md'"/>
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-phone phone required"
+                                                data-label="Phone">
                                             </div>
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-email"
-                                                data-label="Email"
-                                                :size="'md'"/>
+                                                <input
+                                                type="email"
+                                                class="form-element input md member-email"
+                                                data-label="Email">
                                             </div>
 
                                         </div>
@@ -836,42 +811,41 @@
                                         <div class="grid grid-cols-1 md:grid-cols-7 gap-5 mt-5">
 
                                             <div class="col-span-1 md:col-span-3">
-                                                <x-elements.input
-                                                class="member-street required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-street required"
                                                 data-label="Home Address"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !buyer_is_trust }"/>
+                                                x-bind:class="{ 'required': !buyer_is_trust }">
                                             </div>
 
                                             <div class="col-span-1">
-                                                <x-elements.input
-                                                class="numbers-only member-zip required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md numbers-only member-zip required"
                                                 data-label="Zip Code"
                                                 data-member-index="1"
-                                                :size="'md'"
                                                 x-bind:class="{ 'required': !buyer_is_trust }"
-                                                @keyup="get_location_details('.member-container', '1', $el, '.member-city', '.member-state')"/>
+                                                @keyup="get_location_details('.member-container', '1', '.member-zip', '.member-city', '.member-state')">
                                             </div>
 
                                             <div class="col-span-1 md:col-span-2">
-                                                <x-elements.input
-                                                class="member-city required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-city required"
                                                 data-label="City"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !buyer_is_trust }"/>
+                                                x-bind:class="{ 'required': !buyer_is_trust }">
                                             </div>
 
                                             <div class="col-span-1">
-                                                <x-elements.select
-                                                class="member-state required"
+                                                <select
+                                                class="form-element select md member-state required"
                                                 data-label="State"
-                                                :size="'md'"
                                                 x-bind:class="{ 'required': !buyer_is_trust }">
                                                     <option value=""></option>
                                                     @foreach($states as $state)
                                                         <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                                                     @endforeach
-                                                </x-elements.select>
+                                                </select>
                                             </div>
 
                                         </div>
@@ -881,13 +855,13 @@
                                 </div>
 
                                 <div class="my-4">
-                                    <x-elements.button
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'sm'"
+
+                                    <button
                                     type="button"
+                                    class="button primary sm"
                                     @click="add_member('Buyer')">
                                     <i class="fal fa-plus mr-2"></i> Add <span x-text="for_sale === 'yes' ? 'Buyer' : 'Renter'"></span>
-                                </x-elements.button>
+                                </button>
                                 </div>
 
                             </div>
@@ -905,38 +879,36 @@
                                         <div class="text-secondary text-lg mb-2"><span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"></span> <span class="member-id">1</span></div>
 
                                         <div class="py-5">
-                                            <x-elements.check-box
-                                            :size="'sm'"
-                                            :color="'blue'"
-                                            :label="'Owner is a Trust, Company or other Entity'"
-                                            @click="seller_is_trust = !seller_is_trust"/>
+                                            <input type="checkbox" class="form-element checkbox md primary"
+                                            data-label="Owner is a Trust, Company or other Entity"
+                                            @click="seller_is_trust = !seller_is_trust">
                                         </div>
 
                                         <div class="my-3"
                                         x-transition x-show="seller_is_trust">
-                                            <x-elements.input
-                                            class="contact-entity-name"
+                                            <input
+                                            type="text"
+                                            class="form-element input md contact-entity-name"
                                             data-label="Trust, Company or other Entity Name"
-                                            :size="'md'"
-                                            x-bind:class="{ 'required': seller_is_trust }"/>
+                                            x-bind:class="{ 'required': seller_is_trust }">
                                         </div>
 
                                         <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-first required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-first required"
                                                 data-label="First Name"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                x-bind:class="{ 'required': !seller_is_trust }">
                                             </div>
 
                                             <div>
-                                                <x-elements.input
-                                                class="member-last required"
+                                                <input
+                                                type="text"
+                                                class="form-element input md member-last required"
                                                 data-label="Last Name"
-                                                :size="'md'"
-                                                x-bind:class="{ 'required': !seller_is_trust }"/>
+                                                x-bind:class="{ 'required': !seller_is_trust }">
                                             </div>
 
                                         </div>
@@ -946,13 +918,13 @@
                                 </div>
 
                                 <div class="my-4">
-                                    <x-elements.button
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'sm'"
+
+                                    <button
                                     type="button"
+                                    class="button primary sm"
                                     @click="add_member('Seller', true)">
                                         <i class="fal fa-plus mr-2"></i> Add <span x-text="for_sale === 'yes' ? 'Seller' : 'Owner'"><span>
-                                    </x-elements.button>
+                                    </button>
                                 </div>
 
                             </div>
@@ -963,12 +935,12 @@
                             <div class="lg:w-5/6 mx-auto">
 
                                 <div class="relative lg:w-1/2">
-                                    <x-elements.input
-                                    class="bg-gray-50 focus:bg-white agent-search-input"
+                                    <input
+                                    type="text"
+                                    class="form-element input sm bg-gray-50 focus:bg-white agent-search-input"
                                     placeholder="Search Agents in Bright MLS"
-                                    :size="'sm'"
-                                    @keyup="agent_search($el.value)"/>
-                                    <i class="fal fa-search text-gray-400 absolute right-3 top-5"></i>
+                                    @keyup="agent_search($el.value)">
+                                    <i class="fal fa-search text-gray-400 absolute right-3 top-2"></i>
                                 </div>
 
                                 <div class="relative">
@@ -982,30 +954,30 @@
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mt-5">
 
                                     <div class="col-span-1">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input md required"
                                         id="ListAgentFirstName"
                                         name="ListAgentFirstName"
-                                        data-label="Agent First Name"
-                                        :size="'md'"/>
+                                        data-label="Agent First Name">
                                     </div>
 
                                     <div>
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input md required"
                                         id="ListAgentLastName"
                                         name="ListAgentLastName"
-                                        data-label="Agent Last Name"
-                                        :size="'md'"/>
+                                        data-label="Agent Last Name">
                                     </div>
 
                                     <div class="col-span-1 md:col-span-2">
-                                        <x-elements.input
-                                        class="required"
+                                        <input
+                                        type="text"
+                                        class="form-element input md required"
                                         id="ListOfficeName"
                                         name="ListOfficeName"
-                                        data-label="Agent Company"
-                                        :size="'md'"/>
+                                        data-label="Agent Company">
                                     </div>
 
                                 </div>
@@ -1013,28 +985,30 @@
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-5 md:mt-5">
 
                                     <div>
-                                        <x-elements.input
-                                        class="phone required"
+                                        <input
+                                        type="text"
+                                        class="form-element input md phone required"
                                         id="ListAgentPreferredPhone"
                                         name="ListAgentPreferredPhone"
-                                        data-label="Agent Phone"
-                                        :size="'md'"/>
+                                        data-label="Agent Phone">
                                     </div>
 
                                     <div class="col-span-1 md:col-span-2">
-                                        <x-elements.input
+                                        <input
+                                        type="text"
+                                        class="form-element input md"
                                         id="ListAgentEmail"
                                         name="ListAgentEmail"
-                                        data-label="Agent Email"
-                                        :size="'md'"/>
+                                        data-label="Agent Email">
                                     </div>
 
                                     <div>
-                                        <x-elements.input
+                                        <input
+                                        type="text"
+                                        class="form-element input md"
                                         id="ListAgentMlsId"
                                         name="ListAgentMlsId"
-                                        data-label="Agent MLS ID"
-                                        :size="'md'"/>
+                                        data-label="Agent MLS ID">
                                     </div>
 
                                 </div>
@@ -1056,45 +1030,41 @@
 
                                     <div class="col-span-1"
                                     x-show="for_sale === 'no'">
-                                        <x-elements.input
-                                        class="required numbers-only money"
+                                        <input
+                                        type="text"
+                                        class="form-element input md required numbers-only money"
                                         id="LeaseAmount"
                                         name="LeaseAmount"
-                                        placeholder=""
-                                        data-label="Lease Amount"
-                                        :size="'md'"/>
+                                        data-label="Lease Amount">
                                     </div>
 
                                     <div class="col-span-1"
                                     x-show="for_sale === 'yes'">
-                                        <x-elements.input
-                                        class="required numbers-only money"
+                                        <input
+                                        type="text"
+                                        class="form-element input md required numbers-only money"
                                         id="ContractPrice"
                                         name="ContractPrice"
-                                        placeholder=""
-                                        data-label="Contract Price"
-                                        :size="'md'"/>
+                                        data-label="Contract Price">
                                     </div>
 
                                     <div class="col-span-1"
                                     x-show="for_sale === 'yes'">
-                                        <x-elements.input
+                                        <input
+                                        type="date"
+                                        class="form-element input md required"
                                         id="ContractDate"
                                         name="ContractDate"
-                                        type="date"
-                                        class="required"
-                                        data-label="Contract Date"
-                                        :size="'md'"/>
+                                        data-label="Contract Date">
                                     </div>
 
                                     <div class="col-span-1">
-                                        <x-elements.input
+                                        <input
+                                        type="date"
+                                        class="form-element input md required"
                                         id="CloseDate"
                                         name="CloseDate"
-                                        type="date"
-                                        class="required"
-                                        data-label="Settlement Date"
-                                        :size="'md'"/>
+                                        data-label="Settlement Date">
                                     </div>
 
                                 </div>
@@ -1112,29 +1082,28 @@
 
                                     <div class="col-span-1">
 
-                                        <x-elements.select
-                                        class="required"
+                                        <select
+                                        class="form-element select md required"
                                         id="UsingHeritageTitle"
                                         name="UsingHeritageTitle"
                                         data-label="Using Heritage Title"
-                                        :size="'md'"
                                         @change="using_heritage_title = $el.value == 'yes' ? true : false">
                                             <option value=""></option>
                                             <option value="yes">Yes</option>
                                             <option value="no">No</option>
                                             <option value="maybe">Not Sure Yet</option>
-                                        </x-elements.select>
+                                        </select>
                                     </div>
 
                                     <div class="col-span-3">
                                         <div>
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md"
                                             id="TitleCompany"
                                             name="TitleCompany"
-                                            placeholder=""
                                             data-label="Title Company"
-                                            :size="'md'"
-                                            x-bind:value="using_heritage_title == true ? 'Heritage Title' : ''"/>
+                                            x-bind:value="using_heritage_title == true ? 'Heritage Title' : ''">
                                         </div>
                                     </div>
 
@@ -1143,29 +1112,27 @@
                                 <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mt-5">
 
                                     <div class="col-span-1">
-                                        <x-elements.input
+                                        <input
+                                        type="text"
+                                        class="form-element input md money numbers-only"
                                         id="EarnestAmount"
                                         name="EarnestAmount"
-                                        type="text"
-                                        class="money numbers-only"
-                                        data-label="Earnest Amount"
-                                        :size="'md'" />
+                                        data-label="Earnest Amount">
                                     </div>
 
                                     <div class="col-span-2">
-                                        <x-elements.select
-                                        class=""
+                                        <select
+                                        class="form-element select md"
                                         id="EarnestHeldBy"
                                         name="EarnestHeldBy"
-                                        data-label="Earenest Held By"
-                                        :size="'md'">
+                                        data-label="Earenest Held By">
                                             <option value=""></option>
                                             <option value="us">Taylor/Anne Arundel Properties</option>
                                             <option value="other_company">Other Real Estate Company</option>
                                             <option value="title">Title Company/Attorney</option>
                                             <option value="heritage_title">Heritage Title</option>
                                             <option value="builder">Builder</option>
-                                        </x-elements.select>
+                                        </select>
                                     </div>
 
                                 </div>
@@ -1175,13 +1142,13 @@
 
 
                             <div class="w-full flex justify-around py-10 border-t">
-                                <x-elements.button
-                                    :buttonClass="'primary'"
-                                    :buttonSize="'lg'"
-                                    type="button"
-                                    @click="save_transaction($el, 'contract')">
+
+                                <button
+                                type="button"
+                                class="button primary lg"
+                                @click="save_transaction($el, 'contract')">
                                     <i class="fal fa-check mr-2"></i> <span x-text="for_sale === 'yes' ? 'Save Contract' : 'Save Lease'"></span>
-                                </x-elements.button>
+                                </button>
                             </div>
 
                         </form>
@@ -1197,89 +1164,87 @@
                                     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                                         <div>
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralClientFirstName"
                                             name="ReferralClientFirstName"
-                                            class="required"
-                                            data-label="First Name"
-                                            :size="'md'"/>
+                                            data-label="First Name">
                                         </div>
 
                                         <div>
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralClientLastName"
                                             name="ReferralClientLastName"
-                                            class="required"
-                                            data-label="Last Name"
-                                            :size="'md'"/>
+                                            data-label="Last Name">
                                         </div>
 
                                         <div>
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md phone required"
                                             id="ReferralClientPhone"
                                             name="ReferralClientPhone"
-                                            class="phone required"
-                                            data-label="Phone"
-                                            :size="'md'"/>
+                                            data-label="Phone">
                                         </div>
 
                                     </div>
 
                                     <div class="mt-6 mb-3">
-                                        <x-elements.button
-                                        class=""
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'sm'"
+
+                                        <button
                                         type="button"
+                                        class="button primary sm"
                                         @click="set_referral_address()">
-                                        Use Property Address
-                                    </x-elements.button> - <span class="address-header text-xs"></span>
+                                            Use Property Address
+                                    </button> - <span class="address-header text-xs"></span>
                                     </div>
 
                                     <div class="grid grid-cols-1 md:grid-cols-7 gap-5 mt-5 referral-address-container">
 
                                         <div class="col-span-1 md:col-span-3">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralClientStreet"
                                             name="ReferralClientStreet"
-                                            class="required"
-                                            data-label="Home Address"
-                                            :size="'md'"/>
+                                            data-label="Home Address">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md numbers-only required"
                                             id="ReferralClientZip"
                                             name="ReferralClientZip"
-                                            class="numbers-only required"
                                             data-label="Zip Code"
                                             data-member-index="1"
-                                            :size="'md'"
                                             x-bind:class="{ 'required': !seller_is_trust }"
-                                            @keyup="get_location_details('.referral-address-container', '', $el, '#ReferralClientCity', '#ReferralClientState')"/>
+                                            @keyup="get_location_details('.referral-address-container', '', '#ReferralClientZip', '#ReferralClientCity', '#ReferralClientState')">
                                         </div>
 
                                         <div class="col-span-1 md:col-span-2">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralClientCity"
                                             name="ReferralClientCity"
-                                            class="required"
-                                            data-label="City"
-                                            :size="'md'"/>
+                                            data-label="City">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.select
+                                            <select
+                                            class="form-element select md required"
                                             id="ReferralClientState"
                                             name="ReferralClientState"
-                                            class="required"
-                                            data-label="State"
-                                            :size="'md'">
+                                            data-label="State">
                                                 <option value=""></option>
                                                 @foreach($states as $state)
                                                     <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                                                 @endforeach
-                                            </x-elements.select>
+                                            </select>
                                         </div>
 
                                     </div>
@@ -1292,12 +1257,12 @@
                                 <div class="lg:w-5/6 mx-auto">
 
                                     <div class="relative lg:w-1/2">
-                                        <x-elements.input
-                                        class="bg-gray-50 focus:bg-white agent-search-input"
+                                        <input
+                                        type="text"
+                                        class="form-element input sm bg-gray-50 focus:bg-white agent-search-input"
                                         placeholder="Search Agents in Bright MLS"
-                                        :size="'sm'"
-                                        @keyup="agent_search($el.value)"/>
-                                        <i class="fal fa-search text-gray-400 absolute right-3 top-5"></i>
+                                        @keyup="agent_search($el.value)">
+                                        <i class="fal fa-search text-gray-400 absolute right-3 top-2"></i>
                                     </div>
 
                                     <div class="relative">
@@ -1311,30 +1276,30 @@
                                     <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mt-5">
 
                                         <div class="col-span-1">
-                                            <x-elements.input
-                                            class="required"
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralReceivingAgentFirstName"
                                             name="ReferralReceivingAgentFirstName"
-                                            data-label="Agent First Name"
-                                            :size="'md'"/>
+                                            data-label="Agent First Name">
                                         </div>
 
                                         <div>
-                                            <x-elements.input
-                                            class="required"
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralReceivingAgentLastName"
                                             name="ReferralReceivingAgentLastName"
-                                            data-label="Agent Last Name"
-                                            :size="'md'"/>
+                                            data-label="Agent Last Name">
                                         </div>
 
                                         <div class="col-span-1 md:col-span-2">
-                                            <x-elements.input
-                                            class="required"
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralReceivingAgentOfficeName"
                                             name="ReferralReceivingAgentOfficeName"
-                                            data-label="Agent Company"
-                                            :size="'md'"/>
+                                            data-label="Agent Company">
                                         </div>
 
                                     </div>
@@ -1342,46 +1307,45 @@
                                     <div class="grid grid-cols-1 md:grid-cols-7 gap-5 mt-5 referral-office-address-container">
 
                                         <div class="col-span-1 md:col-span-3">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralReceivingAgentOfficeStreet"
                                             name="ReferralReceivingAgentOfficeStreet"
-                                            class="required"
-                                            data-label="Office Address"
-                                            :size="'md'"/>
+                                            data-label="Office Address">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md numbers-only required"
                                             id="ReferralReceivingAgentOfficeZip"
                                             Zip="ReferralReceivingAgentOfficeZip"
-                                            class="numbers-only required"
                                             data-label="Office Zip"
                                             data-member-index="1"
-                                            :size="'md'"
-                                            @keyup="get_location_details('.referral-office-address-container', '', $el, '#ReferralReceivingAgentOfficeCity', '#ReferralReceivingAgentOfficeState')"/>
+                                            @keyup="get_location_details('.referral-office-address-container', '', '#ReferralReceivingAgentOfficeZip', '#ReferralReceivingAgentOfficeCity', '#ReferralReceivingAgentOfficeState')">
                                         </div>
 
                                         <div class="col-span-1 md:col-span-2">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md required"
                                             id="ReferralReceivingAgentOfficeCity"
                                             name="ReferralReceivingAgentOfficeCity"
-                                            class="required"
-                                            data-label="City"
-                                            :size="'md'"/>
+                                            data-label="City">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.select
+                                            <select
+                                            class="form-element select md required"
                                             id="ReferralReceivingAgentOfficeState"
                                             name="ReferralReceivingAgentOfficeState"
-                                            class="required"
-                                            data-label="State"
-                                            :size="'md'">
+                                            data-label="State">
                                                 <option value=""></option>
                                                 @foreach($states as $state)
                                                     <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                                                 @endforeach
-                                            </x-elements.select>
+                                            </select>
                                         </div>
 
                                     </div>
@@ -1396,47 +1360,41 @@
                                     <div class="grid grid-cols-4 gap-5">
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input type="date" class="form-element input md required"
                                             id="ReferralSettlementDate"
                                             name="ReferralSettlementDate"
-                                            type="date"
-                                            class="required"
-                                            data-label="Settlement Date"
-                                            :size="'md'"/>
+                                            data-label="Settlement Date">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md money-decimal required"
                                             id="ReferralCommissionAmount"
                                             name="ReferralCommissionAmount"
-                                            type="text"
-                                            class="money-decimal required"
                                             data-label="Total Commission Amount"
-                                            :size="'md'"
-                                            @keyup="total_referral_commission()"/>
+                                            @keyup="total_referral_commission()">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md numbers-only required"
                                             id="ReferralReferralPercentage"
                                             name="ReferralReferralPercentage"
-                                            type="text"
-                                            class="numbers-only required"
                                             data-label="Referral Percentage"
                                             max-length="2"
-                                            :size="'md'"
-                                            @keyup="total_referral_commission(); let ele = $el; ele.value = ele.value.replace(/\./, '');"/>
+                                            @keyup="total_referral_commission(); let ele = $el; ele.value = ele.value.replace(/\./, '');">
                                         </div>
 
                                         <div class="col-span-1">
-                                            <x-elements.input
+                                            <input
+                                            type="text"
+                                            class="form-element input md money-decimal required"
                                             id="ReferralAgentCommission"
                                             name="ReferralAgentCommission"
-                                            type="text"
-                                            class="money-decimal required"
                                             readonly
-                                            data-label="Your Commission Total"
-                                            :size="'md'"/>
+                                            data-label="Your Commission Total">
                                         </div>
 
                                     </div>
@@ -1444,13 +1402,13 @@
                                 </div>
 
                                 <div class="w-full flex justify-around pt-12 border-t mt-8">
-                                    <x-elements.button
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'lg'"
-                                        type="button"
-                                        @click="save_transaction($el, 'referral')">
+
+                                    <button
+                                    type="button"
+                                    class="button primary lg"
+                                    @click="save_transaction($el, 'referral')">
                                         <i class="fal fa-check mr-2"></i> Save Referral
-                                    </x-elements.button>
+                                    </button>
                                 </div>
 
                             </form>
@@ -1495,24 +1453,23 @@
 
                 <div class="text-secondary text-lg mb-2">%%member_type%% <span class="member-id">%%member_count%%</span></div>
 
-                <div>
+                <div class="flex">
 
-                    <x-elements.button
-                    :buttonClass="'primary'"
-                    :buttonSize="'sm'"
+
+                    <button
                     type="button"
+                    class="button primary sm"
                     x-on:click="show_add_contact_modal = true; import_contact_member_id = %%member_id%%">
                     <i class="fad fa-user-friends mr-2"></i> Import from Contacts
-                    </x-elements.button>
+                    </button>
 
-                    <x-elements.button
-                    class="py-1.5 delete-button"
-                    :buttonClass="'danger'"
-                    :buttonSize="'sm'"
+
+                    <button
                     type="button"
+                    class="button primary sm no-text danger py-1.5 ml-4 delete-button"
                     x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
-                    </x-elements.button>
+                    </button>
 
                 </div>
 
@@ -1521,33 +1478,31 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                 <div>
-                    <x-elements.input
-                    class="member-first required"
-                    data-label="First Name"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-first required"
+                    data-label="First Name">
                 </div>
 
                 <div>
-                    <x-elements.input
-                    class="member-last required"
-                    data-label="Last Name"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-last required"
+                    data-label="Last Name">
                 </div>
 
                 <div>
-                    <x-elements.input
-                    class="member-phone phone required"
-                    data-label="Phone"
-                    :size="'md'"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-phone phone required"
+                    data-label="Phone">
                 </div>
 
                 <div>
-                    <x-elements.input
-                    class="member-email"
-                    data-label="Email"
-                    :size="'md'"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-email"
+                    data-label="Email">
                 </div>
 
             </div>
@@ -1555,42 +1510,37 @@
             <div class="grid grid-cols-1 md:grid-cols-7 gap-5 mt-5">
 
                 <div class="col-span-1 md:col-span-3">
-                    <x-elements.input
-                    class="member-street required"
-                    data-label="Home Address"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-street required"
+                    data-label="Home Address">
                 </div>
 
                 <div class="col-span-1">
-                    <x-elements.input
-                    class="numbers-only member-zip required"
+                    <input
+                    type="text"
+                    class="form-element input md numbers-only member-zip required"
                     data-label="Zip Code"
                     data-member-index="%%member_id%%"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"
-                    @keyup="get_location_details('.member-container', '%%member_id%%', $el, '.member-city', '.member-state')"/>
+                    @keyup="get_location_details('.member-container', '%%member_id%%', '.member-zip', '.member-city', '.member-state')">
                 </div>
 
                 <div class="col-span-1 md:col-span-2">
-                    <x-elements.input
-                    class="member-city required"
-                    data-label="City"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-city required"
+                    data-label="City">
                 </div>
 
                 <div class="col-span-1">
-                    <x-elements.select
-                    class="member-state required"
-                    data-label="State"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }">
+                    <select
+                    class="form-element select md member-state required"
+                    data-label="State">
                         <option value=""></option>
                         @foreach($states as $state)
                             <option value="{{ $state -> state }}">{{ $state -> state }}</option>
                         @endforeach
-                    </x-elements.select>
+                    </select>
                 </div>
 
             </div>
@@ -1609,14 +1559,13 @@
 
                 <div>
 
-                    <x-elements.button
-                    class="py-1.5 delete-button"
-                    :buttonClass="'danger'"
-                    :buttonSize="'sm'"
+
+                    <button
                     type="button"
+                    class="button danger sm no-text py-1.5 delete-button"
                     x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
-                    </x-elements.button>
+                    </button>
 
                 </div>
 
@@ -1625,19 +1574,17 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
 
                 <div>
-                    <x-elements.input
-                    class="member-first required"
-                    data-label="First Name"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-first required"
+                    data-label="First Name">
                 </div>
 
                 <div>
-                    <x-elements.input
-                    class="member-last required"
-                    data-label="Last Name"
-                    :size="'md'"
-                    x-bind:class="{ 'required': !seller_is_trust }"/>
+                    <input
+                    type="text"
+                    class="form-element input md member-last required"
+                    data-label="Last Name">
                 </div>
 
             </div>

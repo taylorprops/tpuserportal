@@ -19,27 +19,27 @@
         [
             'title' => 'View Transactions',
             'link' => '/transactions',
-            'icon' => 'fal fa-bars mr-2'
+            'icon' => 'fad fa-bars mr-2'
         ],
         [
             'title' => 'Add Listing',
             'link' => '/transactions/create/listing',
-            'icon' => 'fal fa-plus mr-2'
+            'icon' => 'fad fa-plus mr-2'
         ],
         [
             'title' => 'Add Contract',
             'link' => '/transactions/create/contract',
-            'icon' => 'fal fa-plus mr-2'
+            'icon' => 'fad fa-plus mr-2'
         ],
         [
             'title' => 'Add Referral',
             'link' => '/transactions/create/referral',
-            'icon' => 'fal fa-plus mr-2'
+            'icon' => 'fad fa-plus mr-2'
         ],
         [
             'title' => 'Archived Transactions',
             'link' => '/transactions_archived',
-            'icon' => 'fal fa-file-archive mr-2'
+            'icon' => 'fad fa-file-archive mr-2'
         ],
     ];
 
@@ -53,7 +53,10 @@
 
     {{-- End Transactions --}}
 
+
+
     {{-- Admin --}}
+
     @php
     $level3 = [
         [
@@ -64,21 +67,21 @@
         [
             'title' => 'Checklists',
             'link' => '/doc_management/admin/checklists/checklists',
-            'icon' => 'fal fa-tasks mr-2'
+            'icon' => 'fad fa-tasks mr-2'
         ],
         [
             'title' => 'Resources',
-            'icon' => 'fal fa-tools mr-2',
+            'icon' => 'fad fa-tools mr-2',
             'sub_links' => [
                 [
                     'title' => 'Site Resources',
                     'link' => '/doc_management/site_resources',
-                    'icon' => 'fal fa-circle mr-2'
+                    'icon' => 'fad fa-circle mr-2'
                 ],
                 [
                     'title' => 'Common Fields',
                     'link' => '/doc_management/common_fields',
-                    'icon' => 'fal fa-object-ungroup mr-2'
+                    'icon' => 'fad fa-object-ungroup mr-2'
                 ]
             ]
         ]
@@ -93,6 +96,7 @@
     :level3="$level3"/>
 
     {{-- End Admin --}}
+
 
     {{-- Escrow --}}
     <x-nav.menu
@@ -112,14 +116,19 @@
         @php
         $level2 = [
             [
+                'title' => 'In-House',
+                'link' => '/employees/in_house',
+                'icon' => 'fad fa-user mr-2'
+            ],
+            [
                 'title' => 'Agents',
                 'link' => '/employees/agents',
-                'icon' => 'fal fa-person-sign mr-2'
+                'icon' => 'fad fa-person-sign mr-2'
             ],
             [
                 'title' => 'Loan Officers',
                 'link' => '/employees/loan_officers',
-                'icon' => 'fal fa-user-chart mr-2'
+                'icon' => 'fad fa-user-chart mr-2'
             ],
 
         ];

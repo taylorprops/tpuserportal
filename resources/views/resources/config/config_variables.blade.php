@@ -13,51 +13,49 @@
 
                 <div x-data="{ show_add: false }">
 
-                    <x-elements.button
-                        class="mb-5"
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
-                        type="button"
-                        @click="show_add = ! show_add">
+                    <button
+                    type="button"
+                    class="button primary md mb-5"
+                    @click="show_add = ! show_add">
                         Add Config Variable <i class="fal fa-angle-right ml-2"
                         x-bind:class="{ 'fa-rotate-90': show_add === true }"></i>
-                    </x-elements.button>
+                    </button>
 
                     <div class="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 p-5 mb-7 mt-3 bg-gray-50 shadow-inner rounded"
                     x-show="show_add" x-transition>
 
                         <div class="mb-3">
-                            <x-elements.input
+                            <input
+                            type="text"
+                            class="form-element input md"
                             name="config_key"
-                            data-label="Key"
-                            :size="'md'"/>
+                            data-label="Key">
                         </div>
 
                         <div class="mb-3">
-                            <x-elements.textarea
+                            <textarea
+                            class="form-element textarea md required"
                             name="config_value"
-                            data-label="Value"
-                            :size="'md'"/>
+                            data-label="Value"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <x-elements.select
+                            <select
+                            class="form-element select md"
                             name="value_type"
-                            data-label="Value Type"
-                            :size="'md'">
+                            data-label="Value Type">
                                 <option value="string">String</option>
                                 <option value="array">Array</option>
-                            </x-elements.select>
+                            </select>
                         </div>
 
                         <div class="flex justify-around p-5">
-                            <x-elements.button
-                                :buttonClass="'primary'"
-                                :buttonSize="'md'"
-                                type="button"
-                                @click="config_add()">
+                            <button
+                            type="button"
+                            class="button primary md"
+                            @click="config_add()">
                                 <i class="fal fa-check mr-2"></i> Save
-                            </x-elements.button>
+                            </button>
                         </div>
 
                     </div>

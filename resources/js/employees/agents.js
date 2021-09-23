@@ -19,7 +19,7 @@ if(document.URL.match(/agents$/)) {
                     { data: 'email' }
                 ];
                 let table = document.querySelector('#agents_table');
-
+                // TODO: remove datatables
                 data_table('/employees/agents/get_agents', cols, 25, $(table), [1, 'asc'], [0], [], true, true, true, true, true);
 
                 table.classList.remove('hidden');

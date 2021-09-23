@@ -97,11 +97,12 @@ module.exports = {
             }),
             colors: {
                 default: {
-                lighter: '#4770b3',
-                    light: '#3f629c',
-                    DEFAULT: '#365483',
-                    dark: '#2a4266',
-                    darker: '#273d5e',
+                    lightest: '#028ee6',
+                    lighter: '#0275bd',
+                    light: '#025283',
+                    DEFAULT: '#003e64',
+                    dark: '#022d46',
+                    darker: '#001f31',
                 },
                 primary: {
                     lightest: '#e0ecff',

@@ -22,16 +22,14 @@
             <!-- Email Address -->
             <div>
 
-
-                <x-elements.input
-                    :size="'md'"
+                <input type="text" class="form-element input md"
                     id="email"
                     type="email"
                     name="email"
                     :value="old('email')"
                     data-label="Email"
-                    placeholder="Email"
-                    required autofocus />
+                    placeholder=""
+                    required autofocus>
 
             </div>
 

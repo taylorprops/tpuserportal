@@ -22,14 +22,9 @@ class ArchivedTransactionsController extends Controller
 
     public function get_transactions_archived(Request $request) {
 
-        $direction = 'desc';
-        $sort = 'actualClosingDate';
-        if($request -> direction) {
-            $direction = $request -> direction;
-        }
-        if($request -> sort) {
-            $sort = $request -> sort;
-        }
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'actualClosingDate';
+
         $search = $request -> search ?? null;
         $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'escrowClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
         -> where(function($query) use ($search) {

@@ -36,7 +36,7 @@ $id = time() * rand();
                 </div>
             </div>
 
-            <ul class="bg-white rounded-md p-3 mt-2"
+            <ul class="bg-white rounded-md p-1 mt-2"
             x-show="active_menu == {{ $id }}"
             x-transition:enter="transition ease-in-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
@@ -45,8 +45,8 @@ $id = time() * rand();
             x-transition:leave-start="opacity-100 transform scale-y-100 translate-y-0"
             x-transition:leave-end="opacity-0 transform scale-y-0 -translate-y-1/2">
                 @foreach($level2 as $link)
-                    <li class="p-2 pl-4">
-                        <a href="{{ $link['link'] }}" class="w-full flex items-center text-xs text-gray-700 hover:text-gray-900">
+                    <li class="">
+                        <a href="{{ $link['link'] }}" class="w-full flex items-center p-2 text-sm text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-100">
                             <i class="{{ $link['icon'] }}"></i> {{ $link['title'] }}
                         </a>
                     </li>
@@ -83,7 +83,7 @@ $id = time() * rand();
 
             </div>
 
-            <ul class="bg-white rounded-md p-3 mt-2"
+            <ul class="bg-white rounded-md p-1 mt-2"
             x-show="active_menu == {{ $id }}"
             x-transition:enter="transition ease-in-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
@@ -96,26 +96,27 @@ $id = time() * rand();
 
                     @if(!isset($link['sub_links']))
 
-                        <li class="p-2 pl-4">
-                            <a href="{{ $link['link'] }}" class="w-full flex items-center text-xs text-gray-700 hover:text-gray-900">
+                        <li class="">
+                            <a href="{{ $link['link'] }}" class="w-full flex items-center p-2 text-sm text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-100">
                                 <i class="{{ $link['icon'] }}"></i> {{ $link['title'] }}
                             </a>
                         </li>
 
                     @else
 
-                        <li class="p-2 pl-4">
-                            <div class="flex justify-between items-center w-full"
-                            @click="if(active_sub_menu == {{ $id }}) { active_sub_menu = '' } else { active_sub_menu = {{ $id }} }">
-                                <a href="javascript:void(0)" class="w-full flex items-center text-xs text-gray-700 hover:text-gray-900">
+                        <li class="text-sm text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-100"
+                        :class="{ 'bg-gray-100 text-gray-900': active_sub_menu == {{ $id }} }"
+                        @click="if(active_sub_menu == {{ $id }}) { active_sub_menu = '' } else { active_sub_menu = {{ $id }} }">
+                            <div class="flex justify-between items-center w-full">
+                                <a href="javascript:void(0)" class="w-full flex items-center p-2 ">
                                     <i class="{{ $link['icon'] }}"></i> {{ $link['title'] }}
                                 </a>
-                                <div class="ml-3">
+                                <div class="mx-3">
                                     <i class="fal fa-angle-right text-gray-700 fa-lg"></i>
                                 </div>
                             </div>
 
-                            <ul class="bg-gray-100 p-3 mt-2 rounded-md"
+                            <ul class="bg-gray-100 p-2 pt-0 ml-2 rounded-md"
                             x-show="active_sub_menu == {{ $id }}"
                             x-transition:enter="transition ease-in-out duration-300"
                             x-transition:enter-start="opacity-0 transform scale-y-0 -translate-y-1/2"
@@ -124,8 +125,8 @@ $id = time() * rand();
                             x-transition:leave-start="opacity-100 transform scale-y-100 translate-y-0"
                             x-transition:leave-end="opacity-0 transform scale-y-0 -translate-y-1/2">
                                 @foreach($link['sub_links'] as $link)
-                                    <li class="p-2 pl-4">
-                                        <a href="{{ $link['link'] }}" class="text-xs text-gray-700 hover:text-gray-900">
+                                    <li class="">
+                                        <a href="{{ $link['link'] }}" class="text-sm p-2 rounded-md block text-gray-700 hover:text-gray-900 hover:bg-white">
                                             {{ $link['title'] }}
                                         </a>
                                     </li>

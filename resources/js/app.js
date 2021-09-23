@@ -40,6 +40,6 @@ require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');
 require('./doc_management/transactions/escrow.js');
 
-
+require('./heritage_financial/loan_officers/profile');
 
 require('./tests/test');

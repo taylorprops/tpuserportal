@@ -14,84 +14,73 @@
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
-                    class="field-button"
+                    <button
                     type="button"
+                    class="button primary md field-button"
                     data-type="textbox"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
                     @click.prevent="selected_field_category = 'textbox'; show_selected_field_category($event.currentTarget);">
-                    <i class="fad fa-text fa-lg mr-2"></i> Textbox
-                    </x-elements.button>
+                        <i class="fad fa-text fa-lg mr-2"></i> Textbox
+                    </button>
 
                 </div>
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
-                    class="field-button"
+                    <button
                     type="button"
+                    class="button primary md field-button"
                     data-type="date"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
                     @click.prevent="selected_field_category = 'date'; show_selected_field_category($event.currentTarget);">
-                    <i class="fad fa-calendar-alt fa-lg mr-2"></i> Date
-                    </x-elements.button>
+                        <i class="fad fa-calendar-alt fa-lg mr-2"></i> Date
+                    </button>
 
                 </div>
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
-                    class="field-button"
+                    <button
                     type="button"
+                    class="button primary md field-button"
                     data-type="number"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
                     @click.prevent="selected_field_category = 'number'; show_selected_field_category($event.currentTarget);">
-                    <span class="text-white mr-2">$0-9</span> Price/Number
-                    </x-elements.button>
+                        <span class="text-white mr-2">$0-9</span> Price/Number
+                    </button>
 
                 </div>
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
-                    class="field-button"
+                    <button
                     type="button"
+                    class="button primary md field-button"
                     data-type="checkbox"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
                     @click.prevent="selected_field_category = 'checkbox'; show_selected_field_category($event.currentTarget);">
-                    <i class="fad fa-square fa-lg mr-2"></i> Checkbox
-                    </x-elements.button>
+                        <i class="fad fa-square fa-lg mr-2"></i> Checkbox
+                    </button>
 
                 </div>
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
-                    class="field-button"
+                    <button
                     type="button"
+                    class="button primary md field-button"
                     data-type="radio"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
                     @click.prevent="selected_field_category = 'radio'; show_selected_field_category($event.currentTarget);">
-                    <i class="fad fa-circle fa-lg mr-2"></i> Radio Button
-                    </x-elements.button>
+                        <i class="fad fa-circle fa-lg mr-2"></i> Radio Button
+                    </button>
 
                 </div>
 
                 <div class="flex-auto px-2">
 
-                    <x-elements.button
+                    <button
                     type="button"
+                    class="button success lg"
                     data-type="radio"
-                    :buttonClass="'success'"
-                    :buttonSize="'lg'"
                     @click="save_fields($event.currentTarget)">
-                    Save Fields <i class="fal fa-check ml-2"></i>
-                    </x-elements.button>
+                        Save Fields <i class="fal fa-check ml-2"></i>
+                    </button>
 
                 </div>
 
@@ -229,33 +218,29 @@
                             <div class="flex justify-start items-center"
                             :class="{ 'flex-row': options_side === 'left', 'flex-row-reverse': options_side === 'right' }">
 
-                                <x-elements.button
-                                :buttonClass="'primary'"
-                                :buttonSize="'sm'"
+                                <button
                                 type="button"
+                                class="button primary sm"
                                 x-show="field_category !== 'radio'"
                                 x-bind:class="{ 'mr-2': options_side === 'left', 'ml-2': options_side === 'right' }"
                                 @click="active_field = ''; copy_field('%%id%%', false);">
                                     <i class="fal fa-copy mr-2"></i> Copy
-                                </x-elements.button>
+                                </button>
 
-                                <x-elements.button
-                                :buttonClass="'primary'"
-                                :buttonSize="'sm'"
+                                <button
                                 type="button"
+                                class="button primary sm"
                                 x-show="field_category !== 'checkbox' && field_category !== 'date'"
                                 @click="active_field = ''; copy_field('%%id%%', true);">
                                     <i class="fal fa-plus mr-2"></i> Add To Group
-                                </x-elements.button>
+                                </button>
 
-                                <x-elements.button
-                                class="mx-2"
-                                :buttonClass="'danger'"
-                                :buttonSize="'sm'"
+                                <button
                                 type="button"
+                                class="button danger sm mr-2"
                                 @click="remove_field(%%id%%)">
                                     <i class="fal fa-ban mr-2"></i> Delete
-                                </x-elements.button>
+                                </button>
 
                             </div>
 
@@ -314,26 +299,21 @@
 
                             <div class="font-sm my-2">Shared Field Name</div>
 
-                            <div class="grid grid-cols-6 mb-3">
+                            <div class="grid grid-cols-6 mb-3 place-content-center">
 
                                 <div class="col-span-5">
-                                    <x-elements.input
-                                    class="common-field-input input-%%id%%"
-                                    placeholder="Select Shared Name Below"
+                                    <input type="text" class="form-element input md common-field-input input-%%id%%" placeholder="Select Shared Name Below"
                                     data-label=""
-                                    readonly
-                                    :size="'md'"/>
+                                    readonly>
                                     <input type="hidden">
                                 </div>
                                 <div class="col-span-1 ml-2">
-                                    <x-elements.button
-                                    class="clear-common-field-input"
-                                    :buttonClass="'danger'"
-                                    :buttonSize="'md'"
+                                    <button
                                     type="button"
+                                    class="button danger md no-text clear-common-field-input"
                                     x-on:click="document.querySelector('.input-%%id%%').value = ''; document.querySelector('.field-name-%%id%%').innerText = '';">
-                                    <i class="fal fa-times"></i>
-                                    </x-elements.button>
+                                        <i class="fal fa-times"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -357,13 +337,11 @@
                                             @mouseover="field_options = true"
                                             @click="field_options = true"
                                             @mouseover.outside="field_options = false">
-                                                <x-elements.button
-                                                class=""
-                                                :buttonClass="'primary'"
-                                                :buttonSize="'sm'"
-                                                type="button">
+                                                <button
+                                                type="button"
+                                                class="button primary sm">
                                                     <i class="fad {{ $icon }} mr-2"></i> {{ $label }} <i class="fal fa-angle-down ml-2"></i>
-                                                </x-elements.button>
+                                                </button>
 
                                                 <div class="absolute top-5 left-0 pt-3"
                                                 x-show="field_options" x-transition>

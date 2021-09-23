@@ -77,23 +77,20 @@
                 <div class="col-span-1 mr-6">
 
                     <div class="mb-4">
-                        <x-elements.input
-                        placeholder="Search..."
-                        :size="'md'"
-                        @keyup="search_forms($event.currentTarget.value)"/>
+                        <input type="text" class="form-element input md" placeholder="Search..." @keyup="search_forms($event.currentTarget.value)">
                     </div>
 
                     <div class="mb-4">
-                        <x-elements.select
+                        <select
+                        class="form-element select md"
                         data-label="Association"
-                        :size="'md'"
                         {{-- x-init="active_form_group = form_groups[0].id" --}}
                         @change="active_form_group = $event.currentTarget.value">
                             <option value=""></option>
                             <template x-for="form_group in form_groups" :key="form_group.id">
                                 <option :value="form_group.id" x-text="form_group.group_name"></option>
                             </template>
-                        </x-elements.select>
+                        </select>
                     </div>
 
                     <div class="h-screen-65 overflow-auto">
@@ -129,13 +126,12 @@
 
                                                 <div>{{ $form_name }}</div>
 
-                                                <x-elements.button
-                                                    :buttonClass="'primary'"
-                                                    :buttonSize="'sm'"
-                                                    type="button"
-                                                    @click="add_checklist_item(`{{ $checklist_group_id }}`, `{{ $form_id }}`, `{{ $form_name }}`)">
-                                                        <i class="fal fa-plus mr-2"></i> Add
-                                                </x-elements.button>
+                                                <button
+                                                type="submit"
+                                                class="button primary md ml-3"
+                                                @click="add_checklist_item(`{{ $checklist_group_id }}`, `{{ $form_id }}`, `{{ $form_name }}`)">
+                                                    <i class="fal fa-plus mr-2"></i> Add
+                                                </button>
 
                                             </div>
 
@@ -198,22 +194,19 @@
             </div>
             <div class="flex justify-around pt-5 border-t">
 
-                <x-elements.button
-                    class=""
-                    :buttonClass="'danger'"
-                    :buttonSize="'md'"
-                    type="button"
-                    @click="show_confirm_modal = false">
+                <button
+                type="button"
+                class="button danger md"
+                @click="show_confirm_modal = false">
                     <i class="fal fa-times mr-2"></i> Cancel
-                </x-elements.button>
+                </button>
 
-                <x-elements.button
-                    id="confirm"
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
-                    type="button">
+                <button
+                type="button"
+                class="button primary md"
+                id="confirm">
                     <i class="fal fa-check mr-2"></i> Continue
-                </x-elements.button>
+                </button>
 
             </div>
 
@@ -229,103 +222,97 @@
             <form id="checklist_form">
 
                 <div class="mb-5">
-                    <x-elements.select
+                    <select
+                    class="form-element select md required"
                     id="location_id"
                     name="location_id"
-                    class="required"
-                    data-label="Checklist Location"
-                    :size="'md'">
+                    data-label="Checklist Location">
                         <option value=""></option>
                         <template x-for="location in locations" :key="location.id">
                             <option :data-state="location.state" :value="location.id" x-text="location.state+' | '+location.location"></option>
                         </template>
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="mb-5">
-                    <x-elements.select
+                    <select
+                    class="form-element select md required"
                     id="sale_rent"
                     name="sale_rent"
-                    class="required"
                     data-label="Sale/Rental"
-                    :size="'md'"
                     @change="for_sale = $event.target.value;
                     let prop_type = document.querySelector('#property_type_id');
                     show_property_sub_type = $event.target.value === 'sale' && prop_type.options[prop_type.selectedIndex].text === 'Residential' ? true : false;">
                         <option value=""></option>
                         <option value="sale">Sale</option>
                         <option value="rental">Rental</option>
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="mb-5">
-                    <x-elements.select
+                    <select
+                    class="form-element select md required"
                     id="property_type_id"
                     name="property_type_id"
-                    class="required"
                     data-label="Property Type"
-                    :size="'md'"
                     @change="show_property_sub_type = $event.target.options[$event.target.selectedIndex].text === 'Residential' && document.querySelector('#sale_rent').value === 'sale' ? true : false">
                         <option value=""></option>
                         <template x-for="prop_type in property_types" :key="prop_type.id">
                             <option :value="prop_type.id" x-text="prop_type.property_type"></option>
                         </template>
 
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="mb-5"
                 x-show="show_property_sub_type"
                 x-transition>
-                    <x-elements.select
+                    <select
+                    class="form-element select md"
                     id="property_sub_type_id"
                     name="property_sub_type_id"
                     x-bind:class="{ 'required': show_property_sub_type === true }"
-                    data-label="Sale Type"
-                    :size="'md'">
+                    data-label="Sale Type">
                         <option value=""></option>
                         <template x-for="property_sub_type in property_sub_types" :key="property_sub_type.id">
                             <option :value="property_sub_type.id" x-text="property_sub_type.property_sub_type"></option>
                         </template>
 
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="mb-5">
-                    <x-elements.select
+                    <select
+                    class="form-element select md required"
                     id="checklist_type"
                     name="checklist_type"
-                    class="required"
-                    data-label="Checklist Type"
-                    :size="'md'">
+                    data-label="Checklist Type">
                         <option value=""></option>
                         <option value="listing">Listing</option>
                         <option value="contract">Contract/Lease</option>
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="mb-5">
-                    <x-elements.select
+                    <select
+                    class="form-element select md required"
                     id="represent"
                     name="represent"
-                    class="required"
-                    data-label="Represent"
-                    :size="'md'">
+                    data-label="Represent">
                         <option value=""></option>
                         <option value="seller">Seller/Owner</option>
                         <option value="buyer">Buyer/Renter</option>
-                    </x-elements.select>
+                    </select>
                 </div>
 
                 <div class="w-full flex justify-around py-5">
-                    <x-elements.button
-                        id="save_checklist"
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
-                        type="button"
-                        @click="save_checklist()">
+                    <button
+                    type="button"
+                    class="button primary md"
+                    id="save_checklist"
+                    @click="save_checklist()">
                         <i class="fal fa-check mr-2"></i> Save Checklist
-                    </x-elements.button>
+                    </button>
 
                 </div>
 
@@ -361,13 +348,12 @@
                     </div>
 
                     <div>
-                        <x-elements.button
-                            :buttonClass="'danger'"
-                            :buttonSize="'md'"
-                            type="button"
-                            @click.stop="$event.target.closest('.form-%%name%%').remove()">
+                        <button
+                        type="button"
+                        class="button danger md"
+                        @click.stop="$event.target.closest('.form-%%name%%').remove()">
                                 <i class="fal fa-times"></i>
-                        </x-elements.button>
+                        </button>
                     </div>
 
                 </div>

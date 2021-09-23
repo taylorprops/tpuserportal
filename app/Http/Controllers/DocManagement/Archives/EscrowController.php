@@ -22,18 +22,10 @@ class EscrowController extends Controller
 
     public function get_escrow(Request $request) {
 
-        $direction = 'desc';
-        $sort = 'contract_date';
-        $length = 10;
-        if($request -> direction) {
-            $direction = $request -> direction;
-        }
-        if($request -> sort) {
-            $sort = $request -> sort;
-        }
-        if($request -> length) {
-            $length = $request -> length;
-        }
+        $direction = $request -> direction ? $request -> direction : 'desc';
+        $sort = $request -> sort ? $request -> sort : 'contract_date';
+        $length = $request -> length ? $request -> length : 10;
+
         $search = $request -> search ?? null;
         $escrows = Escrow::select(['id', 'mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
         -> where(function($query) use ($search) {

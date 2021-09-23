@@ -16,24 +16,24 @@
                     <div class="flex justify-start items-center">
 
                         <div class="p-2 ml-6 w-48">
-                            <x-elements.input
+                            <input
+                            type="text"
+                            class="form-element input md"
                                 id="search"
                                 data-label="Search"
-                                placeholder=""
-                                :size="'md'"
-                                x-on:keyup="search($el.value)"/>
+                                x-on:keyup="search($el.value)">
                         </div>
 
                         <div class="p-2 ml-6 w-48">
-                            <x-elements.select
+                            <select
+                            class="form-element select md"
                             id="active"
                             data-label="Active"
-                            :size="'md'"
                             x-on:change="show_active($el.value)">
                                 <option value="">All</option>
                                 <option value="yes" selected>Active</option>
                                 <option value="no">Not Active</option>
-                            </x-elements.select>
+                            </select>
                         </div>
 
                     </div>

@@ -21,6 +21,6 @@ if($size == 'sm') {
 <label class="inline-flex items-center {{ $text_size }}">
     <input type="checkbox" class="form-checkbox {{ $classes }}" {!! $attributes -> merge(['class' => $classes]) !!}><span class="ml-2">{{ $label }}</span>
     <div class="relative">
-            <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
-        </div>
+        <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
+    </div>
 </label>

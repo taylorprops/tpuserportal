@@ -19,14 +19,12 @@
             <!-- Password -->
             <div>
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password"
-                    type="password"
                     name="password"
                     data-label="Password"
-                    placeholder="Password"
-                    required autocomplete="current-password" />
+                    placeholder=""
+                    required autocomplete="current-password">
 
             </div>
 

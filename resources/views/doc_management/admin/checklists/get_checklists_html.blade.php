@@ -5,22 +5,20 @@
         <div class="text-2xl text-secondary">{{ $location }}</div>
 
         <div class="w-44">
-            <x-elements.select
+            <select
+            class="form-element select md"
             data-label="Checklist Type"
-            :size="'md'"
             @change="filter_checklists($event.currentTarget)">
                 <option value="listing">Listing</option>
                 <option value="contract">Contract/Lease</option>
-            </x-elements.select>
+            </select>
         </div>
 
-        <x-elements.button
-            class="mr-4"
-            :buttonClass="'primary'"
-            :buttonSize="'md'"
-            type="button">
+        <button
+        type="button"
+        class="button primary md mr-4"
             <i class="fad fa-clone mr-2"></i> Copy Checklists
-        </x-elements.button>
+        </button>
 
     </div>
 
@@ -37,13 +35,12 @@
 
                 <div class="flex justify-start items-center pb-4 mb-4 border-b">
 
-                    <x-elements.button
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
-                        type="button"
-                        @click="add_edit_checklist($event.currentTarget, 'add', '', location_id, '', '{{ $property_type_id }}', '',  '', '')">
+                    <button
+                    type="button"
+                    class="button primary md"
+                    @click="add_edit_checklist($event.currentTarget, 'add', '', location_id, '', '{{ $property_type_id }}', '',  '', '')">
                             <i class="fal fa-plus mr-2"></i> Add
-                    </x-elements.button>
+                    </button>
 
                     <div class="text-xl ml-4">{{ $property_type -> property_type }}</div>
 
@@ -96,42 +93,34 @@
 
                                     <div class="px-2 py-1 rounded bg-primary-lightest text-primary-dark text-center">{{ count($items) }}</div>
 
-                                    <x-elements.button
-                                        class="ml-3"
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'sm'"
-                                        type="button"
-                                        @click="add_items(`{{ $checklist_id }}`, `{{ $property_type }}`, `{{ $property_sub_type }}`, `{{ $checklist_type }}`, `{{ $sale_rent }}`, `{{ $represent }}`, `{{ $location }}`)">
+                                    <button
+                                    type="button"
+                                    class="button primary sm ml-3"
+                                    @click="add_items(`{{ $checklist_id }}`, `{{ $property_type }}`, `{{ $property_sub_type }}`, `{{ $checklist_type }}`, `{{ $sale_rent }}`, `{{ $represent }}`, `{{ $location }}`)">
                                         <i class="fal fa-plus mr-2"></i> Add Items
-                                    </x-elements.button>
+                                    </button>
 
-                                    <x-elements.button
-                                        class="ml-3"
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'sm'"
-                                        type="button"
-                                        @click="add_edit_checklist($event.currentTarget, `edit`, `{{ $checklist_id }}`, location_id, `{{ $sale_rent }}`, `{{ $property_type_id }}`, `{{ $property_sub_type_id }}`, `{{ $checklist_type }}`, `{{ $represent }}`)">
+                                    <button
+                                    type="button"
+                                    class="button primary sm ml-3"
+                                    @click="add_edit_checklist($event.currentTarget, `edit`, `{{ $checklist_id }}`, location_id, `{{ $sale_rent }}`, `{{ $property_type_id }}`, `{{ $property_sub_type_id }}`, `{{ $checklist_type }}`, `{{ $represent }}`)">
                                         <i class="fal fa-edit mr-2"></i> Edit
-                                    </x-elements.button>
+                                    </button>
 
 
-                                    <x-elements.button
-                                        class="ml-3"
-                                        :buttonClass="'danger'"
-                                        :buttonSize="'sm'"
-                                        type="button"
-                                        @click="delete_checklist(`{{ $checklist_id }}`)">
+                                    <button
+                                    type="button"
+                                    class="button danger sm ml-3"
+                                    @click="delete_checklist(`{{ $checklist_id }}`)">
                                         <i class="fal fa-trash mr-2"></i> Delete
-                                    </x-elements.button>
+                                    </button>
 
-                                    <x-elements.button
-                                        class="ml-3"
-                                        :buttonClass="'primary'"
-                                        :buttonSize="'sm'"
-                                        type="button"
-                                        @click="add_edit_checklist($event.currentTarget, 'add', '', location_id, '{{ $sale_rent }}', '{{ $property_type_id }}', '{{ $property_sub_type_id }}', '{{ $checklist_type }}', '{{ $represent }}')">
+                                    <button
+                                    type="button"
+                                    class="button primary sm ml-3"
+                                    @click="add_edit_checklist($event.currentTarget, 'add', '', location_id, '{{ $sale_rent }}', '{{ $property_type_id }}', '{{ $property_sub_type_id }}', '{{ $checklist_type }}', '{{ $represent }}')">
                                         <i class="fal fa-clone mr-2"></i> Duplicate
-                                    </x-elements.button>
+                                    </button>
 
                             </div>
 

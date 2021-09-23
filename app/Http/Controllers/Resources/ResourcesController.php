@@ -29,7 +29,7 @@ class ResourcesController extends Controller
             return '<span class="font-semibold">'.$config -> config_key.'</span>';
         })
         -> editColumn('config_value', function($config) {
-            return '<textarea class="config-input config-value w-full" rows="'.(strlen($config -> config_value) / 110).'"
+            return '<textarea class="form-element textarea md config-input config-value w-full" rows="'.(strlen($config -> config_value) / 110).'"
             data-id="'.$config -> id.'"
             data-field="config_value"
             >'.$config -> config_value.'</textarea>';
@@ -43,7 +43,7 @@ class ResourcesController extends Controller
                 $array = 'selected';
             }
             return '
-            <select class="config-input config-key"
+            <select class="form-element select md config-input config-key"
             data-id="'.$config -> id.'"
             data-field="value_type"
             >

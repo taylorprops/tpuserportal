@@ -14,13 +14,12 @@
                 <div class="sm:-mx-6 lg:-mx-8">
 
                     <div class="p-2 ml-6 w-80">
-                        <x-elements.input
-                            id="search"
-                            name=""
-                            data-label=""
-                            placeholder="Search"
-                            :size="'lg'"
-                            x-on:keyup="search($el.value)"/>
+                        <input
+                        type="text"
+                        class="form-element input lg"
+                        id="search"
+                        placeholder="Search"
+                        x-on:keyup="search($el.value)"/>
                     </div>
 
                     {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}

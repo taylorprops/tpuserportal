@@ -34,6 +34,9 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key={{ config('global.google_api_key') }}&libraries=places&outputFormat=json"></script>
 
+        {{-- text editor --}}
+        <script src="//cdn.tiny.cloud/1/t3u7alod16y8nsqt07h4m5kwfw8ob9sxbvy2rlmrqo94zrui/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
         <script defer src="https://unpkg.com/alpinejs@3.1.1/dist/cdn.min.js"></script>
 
 

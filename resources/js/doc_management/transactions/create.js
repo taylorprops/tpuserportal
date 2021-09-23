@@ -12,7 +12,7 @@ if(document.URL.match(/transactions\/create/)) {
         return {
             transaction_type: transaction_type,
             search_type: 'address',
-            active_step: 1,
+            active_step: 3,
             steps_complete: '0',
             show_no_property_error: false,
             show_street_error: false,
@@ -136,7 +136,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                     } else {
 
-                        scope.get_location_details('#manual_entry_form', '', document.getElementById('zip'), '#city', '#state', '#county');
+                        get_location_details('#manual_entry_form', '', '#zip', '#city', '#state', '#county');
 
                     }
 
@@ -313,40 +313,6 @@ if(document.URL.match(/transactions\/create/)) {
                     console.log(error);
                 });
 
-            },
-            get_location_details(container, member_id, zip, city, state, county = null) {
-
-                let zip_code = zip.value;
-                if(member_id) {
-                    container = document.querySelector(container+'[data-id="'+member_id+'"]');
-                } else {
-                    container = document.querySelector(container);
-                }
-                city = container.querySelector(city);
-                state = container.querySelector(state);
-                county = container.querySelector(county) || null;
-
-                if(zip_code.length == 5) {
-                    axios.get('/transactions/get_location_details', {
-                        params: {
-                            zip: zip_code
-                        },
-                    })
-                    .then(function (response) {
-                        city.value = response.data.city;
-                        state.value = response.data.state;
-                        if(county) {
-                            let event = new Event('change');
-                            state.dispatchEvent(event);
-                            setTimeout(function() {
-                                county.value = response.data.county;
-                            }, 200);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                }
             },
             save_manual_entry() {
 
@@ -590,13 +556,13 @@ if(document.URL.match(/transactions\/create/)) {
 
             },
             get_contacts() {
-
                 let cols = [
                     { data: 'import', orderable: false, searchable: false },
                     { data: 'contact_first' },
                     { data: 'contact_email' }
                 ];
                 let table = document.querySelector('#contacts_table');
+                // TODO: remove datatables
                 data_table('/transactions/get_contacts', cols, 10, $(table), [1, 'asc'], [0], [], false, true, true, true, true);
             },
             import_contact(ele) {

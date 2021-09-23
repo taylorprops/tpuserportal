@@ -8,10 +8,11 @@
     x-data="escrow()">
 
         <div class="p-2 mb-3 sm:mt-1 md:mt-2 lg:mt-3 ml-0 xl:ml-6 w-48 lg:w-80">
-            <x-elements.input
-                placeholder="Search"
-                :size="'md'"
-                x-on:keyup="search($el.value)"/>
+            <input
+            type="text"
+            class="form-element input md"
+            placeholder="Search"
+            x-on:keyup="search($el.value)"/>
         </div>
 
         <div class="w-screen-95 mx-auto sm:w-full overflow-x-auto">

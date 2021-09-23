@@ -19,12 +19,11 @@
 
                     <div class="search-container relative">
 
-                        <x-elements.input
+                        <input type="text" class="form-element input md"
                             id="search"
                             placeholder="Search"
                             data-label=""
-                            :size="'md'"
-                            x-on:keyup="search_forms($event.target);"/>
+                            @keyup="search_forms($event.target);"/>
 
                         <div class="absolute top-10 left-0 bg-white rounded border border-gray-300 shadow-md p-2 w-screen sm:w-screen-70 md:w-screen-50 z-10"
                         x-show="show_search_results" x-transition
@@ -34,14 +33,12 @@
 
                     </div>
 
-                    <x-elements.button
-                        class=""
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
-                        type="button"
-                        x-on:click="show_modal = true; clear_form()">
+                    <button
+                    type="button"
+                    class="button primary md"
+                    x-on:click="show_modal = true; clear_form()">
                         <i class="fal fa-plus mr-2"></i> Add Form
-                    </x-elements.button>
+                    </button>
 
                 </div>
 
@@ -113,19 +110,15 @@
 
                             <div id="current_form" class="mb-2"></div>
 
-                            <x-elements.input-file
-                            :size="'md'"
-                            :buttonClass="'primary'"
-                            :size="'md'"
+                            <input type="file" class="form-element input md required"
                             name="upload"
                             id="upload"
-                            class="required"
                             accept="application/pdf"
-                            x-on:change.stop="get_upload_text(event)"/>
+                            @change.stop="get_upload_text(event)"/>
 
                         </div>
 
-                        <div class="mb-3 mt-5 bg-gray-100 rounded hidden form-names-div">
+                        <div class="mb-3 mt-5 pb-3 bg-gray-100 rounded hidden form-names-div">
 
                             <div class="flex justify-start">
                                 <h5 class="text-secondary ml-2 my-1" @click="show_form_names = !show_form_names">Select and/or Edit Form Name</h5>
@@ -140,12 +133,9 @@
                         </div>
 
                         <div class="mt-4">
-                            <x-elements.input
-                            :size="'md'"
+                            <input type="text" class="form-element input md required"
                             id="form_name_display"
                             name="form_name_display"
-                            class="required"
-                            type="text"
                             data-label="Form Name"/>
                         </div>
 
@@ -154,33 +144,31 @@
                             <div class="mt-4">
 
                                 <div>
-                                    <x-elements.select
-                                        :size="'md'"
-                                        id="checklist_group_id"
-                                        name="checklist_group_id"
-                                        class="required"
-                                        data-label="Checklist Group"
-                                        placeholder="Checklist Group">
+                                    <select
+                                    class="form-element select md required"
+                                    id="checklist_group_id"
+                                    name="checklist_group_id"
+                                    data-label="Checklist Group"
+                                    placeholder="Checklist Group">
                                         <option value=""></option>
                                         @foreach($checklist_groups as $checklist_group)
                                         <option value="{{ $checklist_group -> id }}">{{ $checklist_group -> group_name }}</option>
                                         @endforeach
-                                    </x-elements.select>
+                                    </select>
                                 </div>
 
                                 <div class="mt-4">
-                                    <x-elements.select
-                                        :size="'md'"
-                                        id="form_group_id"
-                                        name="form_group_id"
-                                        class="required"
-                                        data-label="Form Group"
-                                        placeholder="Form Group">
+                                    <select
+                                    class="form-element select md required"
+                                    id="form_group_id"
+                                    name="form_group_id"
+                                    data-label="Form Group"
+                                    placeholder="Form Group">
                                         <option value=""></option>
                                         @foreach($form_groups as $form_group)
                                         <option value="{{ $form_group -> id }}"  @if($form_group -> id  == $active_tab) selected @endif>{{ $form_group -> group_name }}</option>
                                         @endforeach
-                                    </x-elements.select>
+                                    </select>
                                 </div>
 
                             </div>
@@ -188,33 +176,32 @@
                             <div class="mt-4">
 
                                 <div>
-                                    <x-elements.select
-                                        :size="'md'"
-                                        id="form_tag"
-                                        name="form_tag"
-                                        data-label="Form Tag"
-                                        placeholder="Form Tag">
+                                    <select
+                                    class="form-element select md"
+                                    id="form_tag"
+                                    name="form_tag"
+                                    data-label="Form Tag"
+                                    placeholder="Form Tag">
                                         <option value=""></option>
                                         @foreach($form_tags as $form_tag)
                                             <option value="{{ $form_tag -> id }}">{{ $form_tag -> tag_name }}</option>
                                         @endforeach
-                                    </x-elements.select>
+                                    </select>
                                 </div>
 
                                 <div class="mt-4">
-                                    <x-elements.select
-                                        :size="'md'"
-                                        id="state"
-                                        name="state"
-                                        class="required"
-                                        data-label="State"
-                                        placeholder="State">
+                                    <select
+                                    class="form-element select md required"
+                                    id="state"
+                                    name="state"
+                                    data-label="State"
+                                    placeholder="State">
                                         <option value=""></option>
                                         <option value="All">All</option>
                                         @foreach($active_states as $active_state)
                                         <option value="{{ $active_state }}" @if($active_state == $default_state) selected @endif>{{ $active_state }}</option>
                                         @endforeach
-                                    </x-elements.select>
+                                    </select>
                                 </div>
 
                             </div>
@@ -224,13 +211,11 @@
 
                         <div class="my-5">
 
-                            <x-elements.textarea
+                            <textarea
+                            class="form-element textarea md required"
                             id="helper_text"
                             name="helper_text"
-                            class="required"
-                            placeholder=""
-                            data-label="Helper Text"
-                            :size="'md'"/>
+                            data-label="Helper Text"></textarea>
 
                         </div>
 
@@ -246,23 +231,19 @@
 
                 <div class="border-top mt-5 sm:mt-4 ">
 
-                    <x-elements.button
-                        class="mr-5"
-                        @click="save_form($event.target); show_loading_button($event.target, 'Saving Form'); $event.target.disabled = true;"
-                        :buttonClass="'primary'"
-                        :buttonSize="'lg'"
-                        type="button">
+                    <button
+                    type="button"
+                    class="button primary lg mr-5"
+                    @click="save_form($event.target); show_loading_button($event.target, 'Saving Form'); $event.target.disabled = true;">
                         <i class="fal fa-check mr-2"></i> Save Form
-                    </x-elements.button>
+                    </button>
 
-                    <x-elements.button
-                        class="ml-5"
-                        @click="show_modal = false"
-                        :buttonClass="'danger'"
-                        :buttonSize="'md'"
-                        type="button">
+                    <button
+                    type="button"
+                    class="button danger md ml-5"
+                    @click="show_modal = false">
                         <i class="fal fa-times mr-2"></i> Cancel
-                    </x-elements.button>
+                    </button>
 
 
                 </div>
@@ -280,21 +261,16 @@
     <div id="form_name_template" class="hidden">
         <div class="flex justify-start title-option w-100 h-9 form-name-div">
             <div class="w-1/7 mr-2 flex-none my-3">
-                <x-elements.button
-                    class="add-title"
-                    :buttonClass="'primary'"
-                    :buttonSize="'sm'"
-                    type="button"
-                    @click="add_form_name($event.target.closest('.form-name-div'))">
+                <button
+                type="button"
+                class="button primary sm add-title"
+                @click="add_form_name($event.target.closest('.form-name-div'))">
                     <i class="fal fa-check mr-2"></i> Select
-                </x-elements.button>
+                </button>
             </div>
             <div class="flex-grow pr-2 my-3">
-                <x-elements.input
-                type="text"
-                class="rounded w-full form-name-title"
-                value="%%title%%"
-                    :size="'sm'"/>
+                <input type="text" class="form-name-title form-element input sm"
+                value="%%title%%">
             </div>
         </div>
     </div>

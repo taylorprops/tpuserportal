@@ -40,16 +40,15 @@
                         Show
                     </div>
                     <div>
-                        <x-elements.select
-                        class="shadow-sm pr-6"
+                        <select
+                        class="form-element select md shadow-sm pr-6"
                         data-label=""
-                        :size="'md'"
                         x-on:change="change_length($el)">
                             <option value="10" @if($paginator -> perPage() == 10) selected @endif>10</option>
                             <option value="25" @if($paginator -> perPage() == 25) selected @endif>25</option>
                             <option value="50" @if($paginator -> perPage() ==50) selected @endif>50</option>
                             <option value="100" @if($paginator -> perPage() == 100) selected @endif>100</option>
-                        </x-elements.select>
+                        </select>
                     </div>
                 </div>
             </div>

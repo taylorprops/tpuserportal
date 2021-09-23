@@ -20,9 +20,9 @@ switch ($align) {
 <div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
 
 
-    <x-elements.button type="button" :buttonClass="$buttonClass" :buttonSize="$buttonSize" @click="open = ! open">
+    <button type="button" class="button {{ $buttonClass }} {{ $buttonSize }}" @click="open = ! open">
         {{ $buttonText }}
-    </x-elements.button>
+    </button>
 
 
     <div x-show="open"

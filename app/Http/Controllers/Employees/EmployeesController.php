@@ -55,14 +55,9 @@ class EmployeesController extends Controller
 
     public function get_loan_officers(Request $request) {
 
-        $direction = 'asc';
-        $sort = 'last_name';
-        if($request -> direction) {
-            $direction = $request -> direction;
-        }
-        if($request -> sort) {
-            $sort = $request -> sort;
-        }
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'last_name';
+
         $search = $request -> search ?? null;
         $active = $request -> active;
         $loan_officers = LoanOfficers::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'position'])
@@ -242,6 +237,17 @@ class EmployeesController extends Controller
         LoanOfficersDocs::find($id) -> delete();
 
         return response() -> json(['status' => 'success']);
+
+    }
+
+    public function save_bio(Request $request) {
+
+        $id = $request -> loan_officer_id ? $request -> loan_officer_id : auth() -> user() -> user_id;
+        LoanOfficers::find($id) -> update([
+            'bio' => $request -> bio
+        ]);
+
+        return response() -> json(['success' => true]);
 
     }
 

@@ -27,12 +27,8 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.input
-                                id="my_input"
-                                name="my_input"
-                                placeholder="My Input"
-                                data-label="My Input"
-                                :size="'sm|md|lg|xl'"/&gt;
+                                Options: <span class="text-red-800">sm, md, lg, xl</span><br>
+                                &lt;input type="text" class="form-element input <span class="text-red-800">md</span>" placeholder="Size" data-label="Regular Input"&gt;
                             </pre>
                         </div>
                     </div>
@@ -42,12 +38,7 @@
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <x-elements.input
-                                id="{{ $size }}_input"
-                                name=""
-                                placeholder="{{ $size }} Input"
-                                data-label="{{ $size }}"
-                                :size="$size"/>
+                                <input type="text" class="form-element input {{ $size }}" placeholder="{{ $size }}" data-label="Regular Input">
                             </div>
 
                         @endforeach
@@ -67,12 +58,8 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.input-file
-                                id="my_input"
-                                name="my_input"
-                                accept="application/pdf"
-                                :size="'sm|md|lg|xl'"
-                                :buttonClass="'default|primary|success|danger'"/&gt;
+                                Options: <span class="text-red-800">sm, md, lg, xl</span><br>
+                                &lt;input type="file" class="form-element input <span class="text-red-800">md</span>" placeholder="Size" data-label="File Input"&gt;
                             </pre>
                         </div>
                     </div>
@@ -82,11 +69,7 @@
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <x-elements.input-file
-                                id="{{ $size }}_input_file"
-                                accept="application/pdf"
-                                :size="$size"
-                                :buttonClass="'primary'"/>
+                                <input type="file" class="form-element input {{ $size }}" placeholder="{{ $size }}" data-label="File Input">
                             </div>
 
                         @endforeach
@@ -142,32 +125,25 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.button
-                                class=""
-                                :buttonClass="'default|primary|success|danger'"
-                                :buttonSize="'sm|md|lg|xl'"
-                                type="button"&gt;
-                                &lt;i class="fal fa-check mr-2"&gt;&lt;/i&gt; Save
-                            &lt;/x-elements.button&gt;
+                                Options: <span class="text-red-800">sm, md, lg | default, primary, secondary, danger, success</span><br>
+                                &lt;button type="button" class="button <span class="text-red-800">default md</span>"&gt;
+                                &lt;i class="fal fa-check mr-2"&gt;&lt;/i&gt; md default
+                                &lt;/button&gt;
                             </pre>
                         </div>
                     </div>
 
                     <div class="mb-4 rounded p-3 bg-white">
-                        @foreach(['sm', 'md', 'lg', 'xl'] as $size)
+                        @foreach(['sm', 'md', 'lg'] as $size)
 
                         <div class="mb-3">
 
                             @foreach(['default', 'primary', 'success', 'danger'] as $class)
-
-                                <x-elements.button
-                                    class="mr-2"
-                                    :buttonClass="$class"
-                                    :buttonSize="$size"
-                                    type="button">
-                                    <i class="fal fa-check mr-2"></i> {{ ucwords($size.' - '.$class) }}
-                                </x-elements.button>
-
+                                <span class="m-3">
+                                    <button type="button" class="button {{ $class }} {{ $size }}">
+                                        <i class="fal fa-check mr-2"></i> {{ ucwords($size.' - '.$class) }}
+                                    </button>
+                                </span>
                             @endforeach
 
                         </div>
@@ -218,14 +194,8 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.check-box
-                                id="my_checkbox"
-                                name="my_checkbox"
-                                checked="checked"
-                                value="abc"
-                                :size="'sm|md|lg|xl'"
-                                :color="'red|blue|etc'"
-                                :label="'Check Option'"/&gt;
+                                Options: <span class="text-red-800">sm, md, lg, xl | primary, secondary, danger, success</span><br>
+                                &lt;input type="checkbox" class="form-element checkbox <span class="text-red-800">md primary</span>" data-label="Check Option"&gt;
                             </pre>
                         </div>
                     </div>
@@ -234,19 +204,17 @@
 
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
-                            @foreach(['red', 'green', 'blue'] as $color)
+                            @foreach(['primary', 'secondary', 'success', 'danger'] as $class)
 
-                                <x-elements.check-box
-                                id=""
-                                name="my_checkbox"
-                                checked="checked"
-                                value="abc"
-                                :size="$size"
-                                :color="$color"
-                                :label="'Check Option'"/>
+                                <span class="mr-3">
+
+                                    <input type="checkbox" class="form-element checkbox {{ $size }} {{ $class }}" data-label="Check Option">
+
+                                </span>
 
                             @endforeach
-                            <br>
+
+                            <br><br>
 
                         @endforeach
 
@@ -257,22 +225,16 @@
                     <div x-data="{ show: false }">
 
                         <div class="flex justify-start items-center mt-6 mb-3">
-                            <div class="text-lg text-yellow-700 mr-4">Radios</div>
+                            <div class="text-lg text-yellow-700 mr-4">Radio</div>
                             <a href="javascript:void(0)" class="text-sm text-gray-500" @click="show = !show">
                                 <i class="fal fa-plus mr-2"></i> Show Code
                             </a>
                         </div>
 
                         <div x-show="show">
-                            <pre class="p-4 border mb-2 bg-gray-200  whitespace-pre-line">
-                            &lt;x-elements.radio
-                                id="my_radio"
-                                name="my_radio"
-                                checked="checked"
-                                value="abc"
-                                :size="'sm|md|lg|xl'"
-                                :color="'red|green|etc'"
-                                :label="'Radio Option'"/&gt;
+                            <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
+                                Options: <span class="text-red-800">sm, md, lg, xl | primary, secondary, danger, success</span><br>
+                                &lt;input type="radio" class="form-element radio <span class="text-red-800">md primary</span>" data-label="Radio Option"&gt;
                             </pre>
                         </div>
                     </div>
@@ -281,23 +243,17 @@
 
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
-                            @foreach(['red', 'green', 'blue'] as $color)
-
-                                <x-elements.radio
-                                id=""
-                                name="{{ $size }}"
-                                value="abc"
-                                :size="$size"
-                                :color="$color"
-                                :label="'Radio Option'"/>
-
+                            @foreach(['primary', 'secondary', 'success', 'danger'] as $class)
+                                <span class="mr-3">
+                                    <input type="radio" class="form-element radio {{ $size }} {{ $class }}" data-label="Radio Option" name="{{ $size }}">
+                                </span>
                             @endforeach
                             <br>
-
+                            <br>
                         @endforeach
 
-                    </div>
 
+                    </div>
 
 
                 </div>
@@ -318,17 +274,18 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.select
-                            id="my_select"
-                            name=""
-                            data-label="My Select"
-                            :size="'sm|md|lg|xl'"&gt;
-                                &lt;option value="">Select&lt;/option&gt;
-                                &lt;option value="First"&gt;First&lt;/option&gt;
-                                &lt;option value="Second"&gt;Second&lt;/option&gt;
-                                &lt;option value="Third"&gt;Third&lt;/option&gt;
-                                &lt;option value="Fourth"&gt;Fourth&lt;/option&gt;
-                            &lt;/x-elements.select&gt;
+                                Options: <span class="text-red-800">sm, md, lg, xl</span><br>
+                                &lt;select
+                                class="form-element select <span class="text-red-800">md</span>"
+                                id=""
+                                name=""
+                                data-label="Select Element"&gt;
+                                    &lt;option value=""&gt;Select&lt;/option&gt;
+                                    &lt;option value="First"&gt;First&lt;/option&gt;
+                                    &lt;option value="Second"&gt;Second&lt;/option&gt;
+                                    &lt;option value="Third"&gt;Third&lt;/option&gt;
+                                    &lt;option value="Fourth"&gt;Fourth&lt;/option&gt;
+                                &lt;/select&gt;
                             </pre>
                         </div>
                     </div>
@@ -338,17 +295,17 @@
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <x-elements.select
-                                id="{{ $size }}_select"
+                                <select
+                                class="form-element select {{ $size }}"
+                                id=""
                                 name=""
-                                data-label="{{ $size }}"
-                                :size="$size">
+                                data-label="{{ $size }}">
                                     <option value="">Select</option>
                                     <option value="First">First</option>
                                     <option value="Second">Second</option>
                                     <option value="Third">Third</option>
                                     <option value="Fourth">Fourth</option>
-                                </x-elements.select>
+                                </select>
                             </div>
 
                         @endforeach
@@ -367,17 +324,19 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.select-multiple
-                            id="my_select_multiple"
-                            name=""
-                            data-label="My Select Multiple"
-                            :size="'sm|md|lg|xl'"&gt;
-                                &lt;option class="text-red-500" value="">Select&lt;/Multiple Options&gt;
-                                &lt;option value="First"&gt;First&lt;/option&gt;
-                                &lt;option value="Second"&gt;Second&lt;/option&gt;
-                                &lt;option value="Third"&gt;Third&lt;/option&gt;
-                                &lt;option value="Fourth"&gt;Fourth&lt;/option&gt;
-                            &lt;/x-elements.select-multiple&gt;
+                                Options: <span class="text-red-800">sm, md, lg, xl</span><br>
+                                &lt;select
+                                class="form-element select <span class="text-red-800">md</span>"
+                                multiple
+                                id=""
+                                name=""
+                                data-label="Select Element"&gt;
+                                    &lt;option value=""&gt;Select&lt;/option&gt;
+                                    &lt;option value="First"&gt;First&lt;/option&gt;
+                                    &lt;option value="Second"&gt;Second&lt;/option&gt;
+                                    &lt;option value="Third"&gt;Third&lt;/option&gt;
+                                    &lt;option value="Fourth"&gt;Fourth&lt;/option&gt;
+                                &lt;/select&gt;
                             </pre>
                         </div>
                     </div>
@@ -387,17 +346,18 @@
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <x-elements.select-multiple
-                                id="{{ $size }}_select_multiple"
+                                <select
+                                multiple
+                                class="form-element select {{ $size }}"
+                                id=""
                                 name=""
-                                data-label="{{ $size }}"
-                                :size="$size">
-                                    <option  class="text-red-500">------ Select Multiple</option>
+                                data-label="{{ $size }}">
+                                    <option value="">Select</option>
                                     <option value="First">First</option>
                                     <option value="Second">Second</option>
                                     <option value="Third">Third</option>
                                     <option value="Fourth">Fourth</option>
-                                </x-elements.select-multiple>
+                                </select>
                             </div>
 
                         @endforeach
@@ -444,14 +404,12 @@
                     <div class="mb-4 rounded p-3 bg-white"
                     x-data="{ show_modal: false }">
 
-                        <x-elements.button
-                        class="mb-3"
-                        :buttonClass="'primary'"
-                        :buttonSize="'md'"
+                        <button
                         type="button"
+                        class="button primary md mb-3"
                         @click="show_modal = true">
-                        Show Modal
-                        </x-elements.button>
+                        Show Modal <i class="fal fa-plus ml-2"></i>
+                        </button>
 
                         <x-modals.modal
                         :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
@@ -476,12 +434,11 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                            &lt;x-elements.textarea
-                                id="my_textarea"
-                                name="my_textarea"
-                                placeholder="My Textarea"
-                                data-label="My Textarea"
-                                :size="'sm|md|lg|xl'"/&gt;
+                            &lt;textarea
+                            class="form-element textarea md"
+                            rows="2"&gt
+                                Textarea value
+                            &lt;/textarea&gt;
                             </pre>
                         </div>
                     </div>
@@ -491,13 +448,7 @@
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <x-elements.textarea
-                                id="{{ $size }}_textarea"
-                                name=""
-                                rows="2"
-                                placeholder="{{ $size }} Textarea"
-                                data-label="{{ $size }}"
-                                :size="$size">Textarea value</x-elements.textarea>
+                                <textarea class="form-element textarea {{ $size }}" rows="2">Textarea value</textarea>
                             </div>
 
                         @endforeach

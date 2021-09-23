@@ -20,29 +20,26 @@
             <!-- Email Address -->
             <div class="pt-3">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="text" class="form-element input md"
                     id="email"
                     type="email"
                     name="email"
                     :value="old('email')"
                     data-label="Email"
-                    placeholder="Email"
+                    placeholder=""
                     required
-                    autofocus />
+                    autofocus>
             </div>
 
             <!-- Password -->
             <div class="mt-4">
 
-                <x-elements.input
-                    :size="'md'"
+                <input type="password" class="form-element input md"
                     id="password"
-                    type="password"
                     name="password"
                     data-label="Password"
-                    placeholder="Password"
-                    required autocomplete="current-password" />
+                    placeholder=""
+                    required autocomplete="current-password">
             </div>
 
             <!-- Remember Me -->
@@ -60,13 +57,9 @@
                     </a>
                 @endif
 
-                <x-elements.button
-                    :buttonClass="'primary'"
-                    :buttonSize="'md'"
-                    type="submit"
-                    class="ml-3">
+                <button type="submit" class="button primary md ml-3">
                     Login <i class="fal fa-sign-in ml-2"></i>
-                </x-elements.button>
+                </button>
 
             </div>
         </form>

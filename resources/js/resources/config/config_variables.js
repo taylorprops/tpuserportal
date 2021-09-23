@@ -54,7 +54,7 @@ if(document.URL.match(/config_variables/)) {
             { data: 'value_type' }
         ];
         let table = document.querySelector('#config_table');
-
+        // TODO: remove datatables
         data_table('/resources/config/get_config_variables', cols, 25, $(table), [0, 'asc'], [1], [], true, true, true, true, true);
 
         setTimeout(function() {
