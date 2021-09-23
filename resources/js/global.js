@@ -61,8 +61,12 @@ window.form_elements = function() {
 
             label.classList.add(type, size);
 
+            let element_id = element.id ? element.id : new Date.now() * Math.random() * 1000;
+            element.id = element_id;
+
             if(label_text) {
                 label.classList.add('form-element-label');
+                label.setAttribute('for', element_id);
                 if(type == 'checkbox') {
                     label.classList.add('mt-2');
                     label.insertAdjacentHTML('beforeend', '<div class="label-text inline-block">'+label_text+'</div>');

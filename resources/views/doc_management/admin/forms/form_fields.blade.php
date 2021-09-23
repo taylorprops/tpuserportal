@@ -262,32 +262,32 @@
                             }">
 
                                 <div class="p-2 rounded" :class="{ 'bg-blue-200': number_type === 'numeric' }">
-                                    <x-elements.radio
-                                    name="number_type_radio_%%id%%"
-                                    id="numeric_%%id%%"
-                                    class="number-type"
-                                    value="numeric"
-                                    :size="'sm'"
-                                    :color="'blue'"
-                                    :label="'Numeric'"
-                                    x-on:change="console.log(number_type); number_type = $el.checked ? 'numeric' : 'written';"
-                                    {{-- x-model="number_type_%%id%%" --}}/>
+                                    <div class="mb-2">
+                                        <input
+                                        type="radio"
+                                        class="form-element radio md number-type"
+                                        name="number_type_radio_%%id%%"
+                                        id="numeric_%%id%%"
+                                        value="numeric"
+                                        data-label="Numeric"
+                                        x-on:change="number_type = $el.checked ? 'numeric' : 'written';">
+                                    </div>
 
                                     <div class="text-xs text-gray-500">4,000.00</div>
 
                                 </div>
 
                                 <div class="p-2 rounded" :class="{ 'bg-blue-200': number_type === 'written' }">
-                                    <x-elements.radio
-                                    name="number_type_radio_%%id%%"
-                                    id="written_%%id%%"
-                                    class="number-type"
-                                    value="written"
-                                    :size="'sm'"
-                                    :color="'blue'"
-                                    :label="'Written'"
-                                    x-on:change="console.log(number_type); number_type = $el.checked ? 'written' : 'numeric';"
-                                    {{-- x-model="number_type_%%id%%" --}}/>
+                                    <div class="mb-2">
+                                        <input
+                                        type="radio"
+                                        class="form-element radio md number-type"
+                                        name="number_type_radio_%%id%%"
+                                        id="written_%%id%%"
+                                        value="written"
+                                        data-label="Written"
+                                        x-on:change="number_type = $el.checked ? 'written' : 'numeric';">
+                                    </div>
 
                                     <div class="text-xs text-gray-500">Four Thousand</div>
 

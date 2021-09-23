@@ -77,7 +77,7 @@
                     x-on:click="delete_photo()"
                     x-show="has_photo">
                         <i class="fal fa-times mr-2"></i> Delete Photo
-                    </x-elements.button>
+                    </button>
 
                 </div>
 
@@ -102,7 +102,7 @@
                             class="button primary md"
                             x-on:click="save_cropped_image($el)">
                                 <i class="fal fa-check mr-2"></i> Save Changes
-                            </x-elements.button>
+                            </button>
                         </div>
 
                     </x-modals.modal>
@@ -124,7 +124,7 @@
                     class="button primary xl px-8 py-6 text-lg"
                     x-on:click="save_bio($el)">
                         <i class="fal fa-check mr-2"></i> Save Bio
-                    </x-elements.button>
+                    </button>
                 </div>
 
             </div>

@@ -208,7 +208,7 @@ if(document.URL.match(/loan_officer_view/)) {
                             url: '/employees/loan_officers/docs/docs_upload_loan_officer',
                             onerror: (response) => response.data,
                             ondata: (formData) => {
-                                formData.append('loan_officer_id', loan_officer_id);
+                                formData.append('employee_id', loan_officer_id);
                                 formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
                                 return formData;
                             }
@@ -235,7 +235,7 @@ if(document.URL.match(/loan_officer_view/)) {
                         let html = document.querySelector('#doc_template').innerHTML;
                         html = html.replace(/%%id%%/g, doc.id);
                         html = html.replace(/%%file_name%%/g, doc.file_name);
-                        html = html.replace(/%%url%%/g, doc.url);
+                        html = html.replace(/%%url%%/g, doc.file_location_url);
                         document.querySelector('.docs-div').insertAdjacentHTML('beforeend', html);
                     });
                 })

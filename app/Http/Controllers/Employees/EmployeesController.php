@@ -195,7 +195,34 @@ class EmployeesController extends Controller
 
     }
 
-    public function docs_upload_loan_officer(Request $request) {
+    public function docs_upload(Request $request) {
+
+        $file = $request -> file('loan_officer_docs');
+        $employee_type = $request -> employee_type;
+        $employee_id = $request -> employee_id;
+
+        $file_name_orig = $file -> getClientOriginalName();
+        $file_name = Helper::clean_file_name($file, '', false, true);
+
+        $dir = 'employees/loan_officers/docs/'.$loan_officer_id;
+        if(!is_dir($dir)) {
+            Storage::makeDirectory($dir);
+        }
+        $file -> storeAs($dir, $file_name);
+        $file_location = $dir.'/'.$file_name;
+        $file_location_url = Storage::url($dir.'/'.$file_name);
+
+        LoanOfficersDocs::create([
+            'emp_loan_officers_id' => $loan_officer_id,
+            'file_name' => $file_name_orig,
+            'file_location' => $file_location,
+            'file_location_url' => $file_location_url
+        ]);
+
+
+
+    }
+    /* public function docs_upload_loan_officer(Request $request) {
 
         $file = $request -> file('loan_officer_docs');
         $loan_officer_id = $request -> loan_officer_id;
@@ -220,7 +247,7 @@ class EmployeesController extends Controller
 
 
 
-    }
+    } */
 
     public function get_docs_loan_officer(Request $request) {
 

@@ -381,7 +381,7 @@
     <template id="doc_template">
         <div class="flex justify-between items-center border-b mb-4">
             <div>
-                <a href="%%url%%">%%file_name%%</a>
+                <a href="%%url%%" target="_blank">%%file_name%%</a>
             </div>
             <div>
 

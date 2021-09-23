@@ -41,7 +41,7 @@
                     </div>
                     <div>
                         <select
-                        class="form-element select md shadow-sm pr-6"
+                        class="form-element select sm shadow-sm pr-6"
                         data-label=""
                         x-on:change="change_length($el)">
                             <option value="10" @if($paginator -> perPage() == 10) selected @endif>10</option>

@@ -378,20 +378,18 @@
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
 
-                                &lt;x-elements.button
-                                class="mb-3"
-                                :buttonClass="'primary'"
-                                :buttonSize="'sm'"
+                                &lt;button
                                 type="button"
-                                @click="show_add_contact_modal = true"&gt;
-                                &lt;i class="fad fa-user-friends mr-2"&gt;&lt;/i&gt; Import from Contacts
-                                &lt;/x-elements.button&gt;
+                                class="button primary md mb-3"
+                                @click="show_modal = true">
+                                Show Modal <i class="fal fa-plus ml-2"></i>
+                                </button&gt;
 
                                 &lt;x-modals.modal
                                 :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
                                 :modalTitle="'Import Contact'"
-                                :modalId="'show_add_contact_modal'"
-                                x-show="show_add_contact_modal"&gt;
+                                :modalId="'show_modal'"
+                                x-show="show_modal"&gt;
 
                                 Stuff goes here
 
