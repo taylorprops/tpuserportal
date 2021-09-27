@@ -307,7 +307,7 @@
                                     readonly>
                                     <input type="hidden">
                                 </div>
-                                <div class="col-span-1 ml-2">
+                                <div class="col-span-1 ml-2 flex items-center">
                                     <button
                                     type="button"
                                     class="button danger md no-text clear-common-field-input"

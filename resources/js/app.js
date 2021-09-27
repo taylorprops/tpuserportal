@@ -33,13 +33,15 @@ require('./doc_management/admin/forms/form_fields.js');
 require('./doc_management/admin/checklists/checklists.js');
 
 require('./employees/agents.js');
+
+require('./employees/employees.js');
+
 require('./employees/loan_officers.js');
-require('./employees/loan_officer.js');
+
 
 require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');
 require('./doc_management/transactions/escrow.js');
 
-require('./heritage_financial/loan_officers/profile');
 
 require('./tests/test');

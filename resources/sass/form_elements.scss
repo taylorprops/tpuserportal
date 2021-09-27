@@ -134,24 +134,30 @@
 }
 
 .button {
-    @apply px-3.5 cursor-pointer flex items-center border border-transparent font-medium rounded shadow text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply cursor-pointer flex items-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
     &.sm {
-        @apply h-6 text-xs;
+        @apply px-3.5 h-6 text-xs;
         &.no-text {
-            @apply h-6 w-6 flex items-center justify-around;
+            @apply h-6 w-6 p-0 flex items-center justify-around;
         }
     }
     &.md {
-        @apply h-8 text-base;
+        @apply px-3.5 h-8 text-sm;
         &.no-text {
-            @apply h-8 w-8 flex items-center justify-around;
+            @apply h-8 w-8 p-0 flex items-center justify-around;
         }
     }
     &.lg {
-        @apply h-10 text-lg;
+        @apply px-6 h-12 text-base;
+        &.no-text {
+            @apply h-10 w-10 p-0 flex items-center justify-around;
+        }
     }
     &.xl {
-        @apply h-12 text-lg;
+        @apply px-8 h-16 text-lg;
+        &.no-text {
+            @apply h-14 w-14 p-0 flex items-center justify-around;
+        }
     }
     &.default {
         @apply bg-default hover:bg-default-light focus:ring-default;
@@ -167,6 +173,9 @@
     }
     &.success {
         @apply bg-success hover:bg-success-light focus:ring-success;
+    }
+    &.circle {
+        @apply rounded-full;
     }
 
 }

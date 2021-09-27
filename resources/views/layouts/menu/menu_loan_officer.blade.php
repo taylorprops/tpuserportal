@@ -18,7 +18,7 @@
     <x-nav.menu
     :level="'1'"
     :title="'Profile'"
-    :link="'/heritage_financial/loan_officers/profile'"
+    :link="'/employees/profile/'"
     :icon="'fad fa-tachometer-alt'"/>
 
 </ul>

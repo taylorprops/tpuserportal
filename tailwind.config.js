@@ -69,6 +69,7 @@ module.exports = {
                 'screen-30': '30vh',
                 'screen-40': '40vh',
                 'screen-50': '50vh',
+                'screen-55': '55vh',
                 'screen-60': '60vh',
                 'screen-65': '65vh',
                 'screen-70': '70vh',
@@ -78,6 +79,7 @@ module.exports = {
                 'screen-90': '90vh',
                 'screen-92': '92vh',
                 'screen-95': '95vh',
+                '7': '1.75rem',
             }),
             width: theme => ({
                 'screen-10': '10vw',

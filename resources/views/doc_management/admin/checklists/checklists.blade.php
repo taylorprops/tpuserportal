@@ -93,7 +93,7 @@
                         </select>
                     </div>
 
-                    <div class="h-screen-65 overflow-auto">
+                    <div class="h-screen-55 overflow-auto">
 
                         @foreach($form_groups as $form_group)
 
@@ -155,7 +155,7 @@
 
                 <div class="col-span-2">
 
-                    <div class="h-screen-80 overflow-auto">
+                    <div class="h-screen-70 overflow-auto">
 
                         @foreach($checklist_groups as $checklist_group)
 
@@ -179,6 +179,10 @@
 
                 </div>
 
+            </div>
+
+            <div class="w-full border-t mt-4 p-6 flex justify-around">
+                <button class="button primary xl">Save Checklist Items <i class="fal fa-check ml-2"></i></button>
             </div>
 
         </x-modals.modal>

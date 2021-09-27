@@ -1466,7 +1466,7 @@
 
                     <button
                     type="button"
-                    class="button primary sm no-text danger py-1.5 ml-4 delete-button"
+                    class="button primary sm no-text danger ml-4 delete-button"
                     x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
                     </button>
@@ -1562,7 +1562,7 @@
 
                     <button
                     type="button"
-                    class="button danger sm no-text py-1.5 delete-button"
+                    class="button danger sm no-text delete-button"
                     x-on:click="remove_member(%%member_id%%, $el);">
                     <i class="fal fa-times"></i>
                     </button>

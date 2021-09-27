@@ -61,7 +61,7 @@ window.form_elements = function() {
 
             label.classList.add(type, size);
 
-            let element_id = element.id ? element.id : new Date.now() * Math.random() * 1000;
+            let element_id = element.id ? element.id : Date.now() * Math.random() * 1000;
             element.id = element_id;
 
             if(label_text) {

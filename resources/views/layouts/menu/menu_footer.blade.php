@@ -9,7 +9,7 @@
             {{ auth() -> user() -> name }}
         </p>
         <p class="text-sm font-medium text-gray-500 group-hover:text-gray-300">
-            <a href="/heritage_financial/loan_officers/profile">
+            <a href="/employees/profile">
             View profile
             </a>
         </p>

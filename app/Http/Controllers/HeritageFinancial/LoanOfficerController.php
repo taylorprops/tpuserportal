@@ -9,13 +9,13 @@ use App\Models\Employees\LoanOfficers;
 class LoanOfficerController extends Controller
 {
 
-    public function profile(Request $request) {
+    // public function profile(Request $request) {
 
-        $loan_officer = LoanOfficers::with(['licenses']) -> find(auth() -> user() -> user_id);
+    //     $loan_officer = LoanOfficers::with(['licenses']) -> find(auth() -> user() -> user_id);
 
-        return view('/heritage_financial/loan_officers/profile', compact('loan_officer'));
+    //     return view('/heritage_financial/loan_officers/profile', compact('loan_officer'));
 
-    }
+    // }
 
 
 

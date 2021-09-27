@@ -125,7 +125,7 @@
 
                         <div x-show="show">
                             <pre class="p-4 border mb-2 bg-gray-200 whitespace-pre-line">
-                                Options: <span class="text-red-800">sm, md, lg | default, primary, secondary, danger, success</span><br>
+                                Options: <span class="text-red-800">sm, md, lg | default, primary, secondary, danger, success | no-text | rounded</span><br>
                                 &lt;button type="button" class="button <span class="text-red-800">default md</span>"&gt;
                                 &lt;i class="fal fa-check mr-2"&gt;&lt;/i&gt; md default
                                 &lt;/button&gt;
@@ -133,22 +133,64 @@
                         </div>
                     </div>
 
-                    <div class="mb-4 rounded p-3 bg-white">
-                        @foreach(['sm', 'md', 'lg'] as $size)
+                    <div class="mb-4 rounded p-2 bg-white">
 
-                        <div class="mb-3">
+                        @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
-                            @foreach(['default', 'primary', 'success', 'danger'] as $class)
-                                <span class="m-3">
-                                    <button type="button" class="button {{ $class }} {{ $size }}">
-                                        <i class="fal fa-check mr-2"></i> {{ ucwords($size.' - '.$class) }}
-                                    </button>
-                                </span>
-                            @endforeach
+                            <div class="mb-3 flex">
 
-                        </div>
+                                @foreach(['default', 'primary', 'success', 'danger'] as $class)
+                                    <span class="m-1">
+                                        <button type="button" class="button {{ $class }} {{ $size }}">
+                                            <i class="fal fa-check mr-2"></i> {{ $size.' - '.$class }}
+                                        </button>
+                                    </span>
+                                @endforeach
+
+                            </div>
 
                         @endforeach
+
+                    </div>
+
+                    <div class="mb-4 rounded p-2 bg-white">
+
+                        @foreach(['sm', 'md', 'lg', 'xl'] as $size)
+
+                            <div class="mb-3 flex">
+
+                                @foreach(['default', 'primary', 'success', 'danger'] as $class)
+                                    <span class="m-1">
+                                        <button type="button" class="button {{ $class }} {{ $size }} no-text">
+                                            <i class="fad fa-user"></i>
+                                        </button>
+                                    </span>
+                                @endforeach
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                    <div class="mb-4 rounded p-2 bg-white">
+
+                        @foreach(['sm', 'md', 'lg', 'xl'] as $size)
+
+                            <div class="mb-3 flex">
+
+                                @foreach(['default', 'primary', 'success', 'danger'] as $class)
+                                    <span class="m-1">
+                                        <button type="button" class="button {{ $class }} {{ $size }} no-text circle">
+                                            <i class="fad fa-user"></i>
+                                        </button>
+                                    </span>
+                                @endforeach
+
+                            </div>
+
+                        @endforeach
+
                     </div>
 
 

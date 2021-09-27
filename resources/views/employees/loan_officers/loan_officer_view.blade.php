@@ -5,7 +5,7 @@
     </x-slot>
 
     <div class="pt-2 pb-48"
-    x-data="loan_officer('{{ $loan_officer -> id }}', @if($loan_officer -> photo_location != '') true @else false @endif)">
+    x-data="profile('{{ $loan_officer -> id }}', 'loan_officer', @if($loan_officer -> photo_location != '') true @else false @endif);">
 
         <div class="max-w-900-px mx-auto pt-8 md:pt-12 xl:pt-16 px-4">
 
@@ -13,19 +13,19 @@
 
                 <div class="text-xl font-medium text-gray-700 border-b mb-6">Details</div>
 
-                <form id="loan_officer_form">
+                <form id="employee_form">
 
                     <div class="grid grid-cols-1 sm:grid-cols-4">
 
-                        <div class="p-3 rounded-md ml-2 sm:ml-4 col-span-1"
-                        x-data="{ active: '{{ $loan_officer -> active }}' }"
-                        :class="{ 'bg-green-50': active === 'yes', 'bg-red-50': active === 'no' }">
+                        <div class="col-span-1 m-2 sm:m-3"
+                        x-data="{ active: '{{ $loan_officer -> active }}' }">
                             <select
                             class="form-element select md required"
                             id="active"
                             name="active"
                             data-label="Active"
-                            x-model="active">
+                            x-model="active"
+                            :class="{ 'bg-green-50': active === 'yes', 'bg-red-50': active === 'no' }">
                                 <option value="yes" @if($loan_officer -> active == 'yes') selected @endif>Yes</option>
                                 <option value="no" @if($loan_officer -> active == 'no') selected @endif>No</option>
                             </select>
@@ -166,7 +166,7 @@
                             name="address_zip"
                             data-label="Zip"
                             value="{{ $loan_officer -> address_zip }}"
-                            x-on:keyup="get_location_details('#loan_officer_form', '', '#address_zip', '#address_city', '#address_state');">
+                            x-on:keyup="get_location_details('#employee_form', '', '#address_zip', '#address_city', '#address_state');">
                         </div>
 
                         <div class="m-2 sm:m-3 col-span-1 xl:col-span-2">
@@ -289,8 +289,8 @@
                         <input
                         type="file"
                         class="form-element input md"
-                        id="loan_officer_docs"
-                        name="loan_officer_docs"
+                        id="employee_docs"
+                        name="employee_docs"
                         multiple>
                     </div>
 
@@ -307,7 +307,7 @@
                         <div class="flex justify-around items-center">
                             <i class="fad fa-user fa-4x text-primary"
                             x-show="!has_photo"></i>
-                            <img class="rounded-lg shadow max-h-36" id="loan_officer_image" src="{{ $loan_officer -> photo_location_url }}"
+                            <img class="rounded-lg shadow max-h-36" id="employee_image" src="{{ $loan_officer -> photo_location_url }}"
                             x-show="has_photo">
                         </div>
 
@@ -324,13 +324,13 @@
 
                     <div class="flex-grow ml-4 lg:mx-12">
                         <div class="text-gray mb-3">Add/Replace Photo</div>
-                        <input type="file" id="loan_officer_photo" name="loan_officer_photo">
+                        <input type="file" id="employee_photo" name="employee_photo">
 
                         <x-modals.modal
                         :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
                         :modalTitle="'Crop Photo'"
                         :modalId="'show_cropper_modal'"
-                        :clickOutside="'loan_officer_photo_pond.removeFiles();'"
+                        :clickOutside="'employee_photo_pond.removeFiles();'"
                         x-show="show_cropper_modal">
 
                             <div class="crop-container max-h-96"></div>
@@ -363,7 +363,7 @@
 
                         <button
                         type="button"
-                        class="button primary md"
+                        class="button primary xl"
                         x-on:click="save_bio($el)">
                             <i class="fal fa-check mr-2"></i> Save Bio
                         </button>
