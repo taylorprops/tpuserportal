@@ -1,11 +1,11 @@
 <x-app-layout>
-    @section('title') {{ $loan_officer -> fullname }} @endsection
+    @section('title') {{ $employee -> fullname }} @endsection
     <x-slot name="header">
-        {{ $loan_officer -> fullname }}
+        {{ $employee -> fullname }}
     </x-slot>
 
     <div class="pt-2 pb-48"
-    x-data="profile('{{ $loan_officer -> id }}', 'loan_officer', @if($loan_officer -> photo_location != '') true @else false @endif);">
+    x-data="profile('{{ $employee -> id }}', 'loan_officer', @if($employee -> photo_location != '') true @else false @endif, '#bio');">
 
         <div class="max-w-900-px mx-auto pt-8 md:pt-12 xl:pt-16 px-4">
 
@@ -18,7 +18,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-4">
 
                         <div class="col-span-1 m-2 sm:m-3"
-                        x-data="{ active: '{{ $loan_officer -> active }}' }">
+                        x-data="{ active: '{{ $employee -> active }}' }">
                             <select
                             class="form-element select md required"
                             id="active"
@@ -26,8 +26,8 @@
                             data-label="Active"
                             x-model="active"
                             :class="{ 'bg-green-50': active === 'yes', 'bg-red-50': active === 'no' }">
-                                <option value="yes" @if($loan_officer -> active == 'yes') selected @endif>Yes</option>
-                                <option value="no" @if($loan_officer -> active == 'no') selected @endif>No</option>
+                                <option value="yes" @if($employee -> active == 'yes') selected @endif>Yes</option>
+                                <option value="no" @if($employee -> active == 'no') selected @endif>No</option>
                             </select>
                         </div>
 
@@ -38,7 +38,7 @@
                             id="start_date"
                             name="start_date"
                             data-label="Start Date"
-                            value="{{ $loan_officer -> start_date }}">
+                            value="{{ $employee -> start_date }}">
                         </div>
 
                         <div class="col-span-1 m-2 sm:m-3">
@@ -48,7 +48,7 @@
                             id="term_date"
                             name="term_date"
                             data-label="Termination Date"
-                            value="{{ $loan_officer -> term_date }}">
+                            value="{{ $employee -> term_date }}">
                         </div>
 
                     </div>
@@ -58,13 +58,13 @@
                         <div class="m-2 sm:m-3">
                             <select
                             class="form-element select md required"
-                            id="position"
-                            name="position"
+                            id="emp_position"
+                            name="emp_position"
                             data-label="Position">
                                 <option value=""></option>
-                                <option value="loan_officer" @if($loan_officer -> position == 'loan_officer') selected @endif>Loan Officer</option>
-                                <option value="processor" @if($loan_officer -> position == 'processor') selected @endif>Processor</option>
-                                <option value="manager" @if($loan_officer -> position == 'manager') selected @endif>Manager</option>
+                                <option value="loan_officer" @if($employee -> emp_position == 'loan_officer') selected @endif>Loan Officer</option>
+                                <option value="processor" @if($employee -> emp_position == 'processor') selected @endif>Processor</option>
+                                <option value="manager" @if($employee -> emp_position == 'manager') selected @endif>Manager</option>
                             </select>
                         </div>
 
@@ -76,10 +76,10 @@
                             class="required"
                             data-label="Job Title">
                                 <option value=""></option>
-                                <option value="Loan Officer" @if($loan_officer -> job_title == 'Loan Officer') selected @endif>Loan Officer</option>
-                                <option value="Senior Loan Officer" @if($loan_officer -> job_title == 'Senior Loan Officer') selected @endif>Senior Loan Officer</option>
-                                <option value="Processor" @if($loan_officer -> job_title == 'Processor') selected @endif>Processor</option>
-                                <option value="Manager" @if($loan_officer -> job_title == 'Manager') selected @endif>Manager</option>
+                                <option value="Loan Officer" @if($employee -> job_title == 'Loan Officer') selected @endif>Loan Officer</option>
+                                <option value="Senior Loan Officer" @if($employee -> job_title == 'Senior Loan Officer') selected @endif>Senior Loan Officer</option>
+                                <option value="Processor" @if($employee -> job_title == 'Processor') selected @endif>Processor</option>
+                                <option value="Manager" @if($employee -> job_title == 'Manager') selected @endif>Manager</option>
                             </select>
                         </div>
 
@@ -96,7 +96,7 @@
                             id="first_name"
                             name="first_name"
                             data-label="First Name"
-                            value="{{ $loan_officer -> first_name }}">
+                            value="{{ $employee -> first_name }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -106,7 +106,7 @@
                             id="last_name"
                             name="last_name"
                             data-label="Last Name"
-                            value="{{ $loan_officer -> last_name }}">
+                            value="{{ $employee -> last_name }}">
                         </div>
 
                     </div>
@@ -120,17 +120,7 @@
                             id="phone"
                             name="phone"
                             data-label="Phone"
-                            value="{{ $loan_officer -> phone }}">
-                        </div>
-
-                        <div class="m-2 sm:m-3 col-span-1 lg:col-span-2">
-                            <input
-                            type="email"
-                            class="form-element input md required"
-                            id="email"
-                            name="email"
-                            data-label="Email (For All Communications)"
-                            value="{{ $loan_officer -> email }}">
+                            value="{{ $employee -> phone }}">
                         </div>
 
                         <div class="m-2 sm:m-3 lg:col-span-2">
@@ -140,8 +130,18 @@
                             id="company_email"
                             name="company_email"
                             type="email"
-                            data-label="Company Email"
-                            value="{{ $loan_officer -> company_email }}">
+                            data-label="Company Email <span class='text-xs'>(For All Communications and Logins)</span>"
+                            value="{{ $employee -> company_email }}">
+                        </div>
+
+                        <div class="m-2 sm:m-3 col-span-1 lg:col-span-2">
+                            <input
+                            type="email"
+                            class="form-element input md required"
+                            id="email"
+                            name="email"
+                            data-label="Personal Email"
+                            value="{{ $employee -> email }}">
                         </div>
 
                     </div>
@@ -155,7 +155,7 @@
                             id="address_street"
                             name="address_street"
                             data-label="Street"
-                            value="{{ $loan_officer -> address_street }}">
+                            value="{{ $employee -> address_street }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -165,7 +165,7 @@
                             id="address_zip"
                             name="address_zip"
                             data-label="Zip"
-                            value="{{ $loan_officer -> address_zip }}"
+                            value="{{ $employee -> address_zip }}"
                             x-on:keyup="get_location_details('#employee_form', '', '#address_zip', '#address_city', '#address_state');">
                         </div>
 
@@ -176,7 +176,7 @@
                             id="address_city"
                             name="address_city"
                             data-label="City"
-                            value="{{ $loan_officer -> address_city }}">
+                            value="{{ $employee -> address_city }}">
                         </div>
 
                         <div class="m-2 sm:m-3 col-span-1">
@@ -185,10 +185,10 @@
                             id="address_state"
                             name="address_state"
                             data-label="State"
-                            value="{{ $loan_officer -> address_state }}">
+                            value="{{ $employee -> address_state }}">
                                 <option value=""></option>
                                 @foreach($states as $state)
-                                    <option value="{{ $state -> state }}" @if($loan_officer -> address_state == $state -> state) selected @endif>{{ $state -> state }}</option>
+                                    <option value="{{ $state -> state }}" @if($employee -> address_state == $state -> state) selected @endif>{{ $state -> state }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -206,7 +206,7 @@
                             id="commission_split"
                             name="commission_split"
                             data-label="Commission Split"
-                            value="{{ $loan_officer -> commission_split }}">
+                            value="{{ $employee -> commission_split }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -216,7 +216,7 @@
                             id="dob"
                             name="dob"
                             data-label="DOB"
-                            value="{{ $loan_officer -> dob }}">
+                            value="{{ $employee -> dob }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -226,7 +226,7 @@
                             id="soc_sec"
                             name="soc_sec"
                             data-label="Social Security"
-                            value="{{ \Crypt::decrypt($loan_officer -> soc_sec) }}">
+                            value="{{ \Crypt::decrypt($employee -> soc_sec) }}">
                         </div>
 
                     </div>
@@ -242,7 +242,7 @@
                             id="nmls_id"
                             name="nmls_id"
                             data-label="NMLS ID"
-                            value="{{ $loan_officer -> nmls_id }}">
+                            value="{{ $employee -> nmls_id }}">
                         </div>
 
                         <div class="m-2 sm:ml-4 col-span-1 sm:col-span-2 lg:col-span-3 border p-2 rounded-lg">
@@ -307,7 +307,7 @@
                         <div class="flex justify-around items-center">
                             <i class="fad fa-user fa-4x text-primary"
                             x-show="!has_photo"></i>
-                            <img class="rounded-lg shadow max-h-36" id="employee_image" src="{{ $loan_officer -> photo_location_url }}"
+                            <img class="rounded-lg shadow max-h-36" id="employee_image" src="{{ $employee -> photo_location_url }}"
                             x-show="has_photo">
                         </div>
 
@@ -357,7 +357,7 @@
 
                 <div class="max-w-700-px">
 
-                    <textarea class="form-element textarea md" id="bio" name="bio">{!! $loan_officer -> bio !!}</textarea>
+                    <textarea class="form-element textarea md" id="bio" name="bio">{!! $employee -> bio !!}</textarea>
 
                     <div class="flex justify-around items-center mt-4">
 

@@ -17,7 +17,7 @@ class All
     public function handle(Request $request, Closure $next)
     {
 
-        if (!in_array(auth() -> user() -> group, ['agent', 'admin', 'loan_officer', 'title', 'transaction_coordinator'])) {
+        if (!in_array(auth() -> user() -> group, ['agent', 'in_house', 'loan_officer', 'title', 'transaction_coordinator'])) {
             return redirect('/dashboard');
         }
 

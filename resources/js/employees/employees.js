@@ -1,7 +1,7 @@
-if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
+if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
 
-    window.profile = function(employee_id, employee_type, photo_exists) {
+    window.profile = function(emp_id, emp_type, photo_exists, text_editor_ele) {
 
         return {
             show_cropper_modal: false,
@@ -9,26 +9,36 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
             employee_photo_pond: '',
             has_photo: photo_exists,
             init() {
-                this.get_licenses();
+                let show_licenses = ['agent', 'loan_officer'];
+                if(show_licenses.includes(emp_type)) {
+                    this.get_licenses();
+                }
                 this.docs();
                 this.get_docs();
                 this.photo();
                 document.querySelectorAll('.filepond--credits').forEach(function(div) {
                     div.style.display = 'none';
                 });
-                this.init_text_editor('#bio');
+                if(text_editor_ele != '') {
+                    this.init_text_editor(text_editor_ele);
+                }
             },
 
             save_details(ele) {
 
                 show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
 
                 setTimeout(function() {
 
+                    if(document.querySelector('#company_email').value == '') {
+                        document.querySelector('#company_email').value = document.querySelector('#email').value;
+                    }
+
                     let form = document.getElementById('employee_form');
                     let formData = new FormData(form);
-                    formData.append('employee_id', employee_id);
-                    formData.append('employee_type', employee_type);
+                    formData.append('emp_id', emp_id);
+                    formData.append('emp_type', emp_type);
                     // TODO: fix this
                     axios.post('/employees/save_details', formData)
                     .then(function (response) {
@@ -51,8 +61,8 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
             get_licenses() {
                 axios.get('/employees/get_licenses', {
                     params: {
-                        employee_id: employee_id,
-                        employee_type: employee_type,
+                        emp_id: emp_id,
+                        emp_type: emp_type,
                     },
                 })
                 .then(function (response) {
@@ -84,8 +94,8 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
                             url: '/employees/docs/docs_upload',
                             onerror: (response) => response.data,
                             ondata: (formData) => {
-                                formData.append('employee_id', employee_id);
-                                formData.append('employee_type', employee_type);
+                                formData.append('emp_id', emp_id);
+                                formData.append('emp_type', emp_type);
                                 formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
                                 return formData;
                             }
@@ -102,20 +112,22 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
 
                 let scope = this;
                 let formData = new FormData();
-                formData.append('employee_id', employee_id);
-                formData.append('employee_type', employee_type);
+                formData.append('emp_id', emp_id);
+                formData.append('emp_type', emp_type);
                 formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
 
                 axios.post('/employees/docs/get_docs', formData, axios_options)
                 .then(function (response) {
                     document.querySelector('.docs-div').innerHTML = '';
-                    response.data.docs.forEach(function(doc) {
-                        let html = document.querySelector('#doc_template').innerHTML;
-                        html = html.replace(/%%id%%/g, doc.id);
-                        html = html.replace(/%%file_name%%/g, doc.file_name);
-                        html = html.replace(/%%url%%/g, doc.file_location_url);
-                        document.querySelector('.docs-div').insertAdjacentHTML('beforeend', html);
-                    });
+                    if(response.data.docs.length > 0) {
+                        response.data.docs.forEach(function(doc) {
+                            let html = document.querySelector('#doc_template').innerHTML;
+                            html = html.replace(/%%id%%/g, doc.id);
+                            html = html.replace(/%%file_name%%/g, doc.file_name);
+                            html = html.replace(/%%url%%/g, doc.file_location_url);
+                            document.querySelector('.docs-div').insertAdjacentHTML('beforeend', html);
+                        });
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -216,8 +228,8 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
 
                     // Pass the image file name as the third parameter if necessary.
                     formData.append('cropped_image', blob);
-                    formData.append('employee_id', employee_id);
-                    formData.append('employee_type', employee_type);
+                    formData.append('emp_id', emp_id);
+                    formData.append('emp_type', emp_type);
                     formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
 
                     axios.post('/employees/photos/save_cropped_upload', formData, axios_options)
@@ -242,8 +254,8 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
 
                     let scope = this;
                     let formData = new FormData();
-                    formData.append('employee_id', employee_id);
-                    formData.append('employee_type', employee_type);
+                    formData.append('emp_id', emp_id);
+                    formData.append('emp_type', emp_type);
 
                     axios.post('/employees/photos/delete_photo', formData, axios_options)
                     .then(function (response) {
@@ -280,8 +292,8 @@ if(document.URL.match(/profile/) || document.URL.match(/loan_officer_view/)) {
 
                 let formData = new FormData();
                 formData.append('bio', bio);
-                formData.append('employee_type', employee_type);
-                formData.append('employee_id', employee_id);
+                formData.append('emp_type', emp_type);
+                formData.append('emp_id', emp_id);
                 axios.post('/employees/profile/save_bio', formData)
                 .then(function (response) {
                     toastr.success('Your Bio has been saved successfully!');

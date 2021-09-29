@@ -118,9 +118,22 @@ window.show_form_errors = function (errors) {
         let field = `${key}`;
         let message = `${value}`;
         let element = document.querySelector('#' + field);
+        let label = '';
+        let error_message = '<div class="error-message text-red-500 text-xs">' + message + '</div>';
+
         if (element) {
-            let error_message = element.closest('label').querySelector('.error-message');
-            error_message.innerHTML = message;
+            if(element.parentNode.tagName == 'LABEL') {
+                label = element.parentNode;
+                label.insertAdjacentHTML('beforeend', error_message);
+            } else {
+                label = element.parentNode.querySelector('label');
+                element.parentNode.insertAdjacentHTML('beforeend', error_message);
+            }
+
+
+
+            //let error_message = element.closest('label').querySelector('.error-message');
+            //error_message.innerHTML = message;
             scroll_above(element);
             toastr.error('Field not completed: ' + message);
         }

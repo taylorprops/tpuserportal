@@ -2,7 +2,7 @@
 if(document.URL.match(/loan_officers$/)) {
 
 
-    window.loan_officers = function() {
+    window.employees = function() {
 
         return {
             search_val: '',
@@ -12,7 +12,7 @@ if(document.URL.match(/loan_officers$/)) {
                 show_loading();
                 this.show_active('yes');
             },
-            get_loan_officers(url) {
+            get_employees(url) {
 
                 let scope = this;
                 if(!url) {
@@ -21,7 +21,7 @@ if(document.URL.match(/loan_officers$/)) {
                 scope.active_url = url;
                 axios.get(url)
                 .then(function (response) {
-                    document.querySelector('.loan-officers-table').innerHTML = response.data;
+                    document.querySelector('.employees-table').innerHTML = response.data;
                     scope.links();
                     hide_loading();
                 })
@@ -32,7 +32,7 @@ if(document.URL.match(/loan_officers$/)) {
             },
             links() {
                 let scope = this;
-                document.querySelector('.loan-officers-table').querySelectorAll('a').forEach(function(link) {
+                document.querySelector('.employees-table').querySelectorAll('a').forEach(function(link) {
                     if(!link.classList.contains('view-link')) {
                         link.addEventListener('click', function(e) {
                             show_loading();
@@ -49,7 +49,7 @@ if(document.URL.match(/loan_officers$/)) {
                                 url += 'search=' + scope.search_val;
                             }
                             scope.active_url = url;
-                            scope.get_loan_officers(url);
+                            scope.get_employees(url);
                         });
                     }
                 });
@@ -59,7 +59,7 @@ if(document.URL.match(/loan_officers$/)) {
                 this.active = '';
                 document.querySelector('#active').value = '';
                 this.active_url = '/employees/loan_officers/get_loan_officers?search=' + val.trim();
-                this.get_loan_officers(this.active_url);
+                this.get_employees(this.active_url);
             },
             show_active(active) {
                 this.active = active;
@@ -70,7 +70,7 @@ if(document.URL.match(/loan_officers$/)) {
                     this.active_url += '?';
                 }
                 this.active_url += 'active=' + active;
-                this.get_loan_officers(this.active_url);
+                this.get_employees(this.active_url);
             },
         }
 

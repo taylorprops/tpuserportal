@@ -42,13 +42,8 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                 <nav class="navigation flex-1 px-2 pt-3 bg-gray-50 space-y-1 border-t"
                 x-data="{ close_all: false }">
 
-                @if(auth() -> user() -> group == 'admin')
-                    @include('layouts/menu/menu_admin')
-                @elseif(auth() -> user() -> group == 'agent')
-                    @include('layouts/menu/menu_agent')
-                @elseif(auth() -> user() -> group == 'loan_officer')
-                    @include('layouts/menu/menu_loan_officer')
-                @endif
+                @include('layouts/menu/menu_'.auth() -> user() -> group)
+
 
                 </nav>
             </div>

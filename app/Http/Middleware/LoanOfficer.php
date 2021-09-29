@@ -17,7 +17,7 @@ class LoanOfficer
     public function handle(Request $request, Closure $next)
     {
 
-        if (!in_array(auth() -> user() -> group, ['loan_officer', 'admin'])) {
+        if (!in_array(auth() -> user() -> group, ['loan_officer', 'in_house'])) {
             return redirect('/dashboard');
         }
 

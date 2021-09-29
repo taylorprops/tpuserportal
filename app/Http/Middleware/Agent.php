@@ -17,7 +17,7 @@ class Agent
     public function handle(Request $request, Closure $next)
     {
 
-        if (!in_array(auth() -> user() -> group, ['agent', 'admin'])) {
+        if (!in_array(auth() -> user() -> group, ['agent', 'in_house'])) {
             return redirect('/dashboard');
         }
 

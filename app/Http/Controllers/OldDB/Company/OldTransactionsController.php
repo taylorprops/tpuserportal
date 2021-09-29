@@ -142,6 +142,20 @@ class OldTransactionsController extends Controller
 
     }
 
+    public function agents(Request $request) {
+
+        $agents = Agents::select(['id', 'first', 'last','email1 as Email', 'profileId'])
+        -> where('active', 'yes') -> where('profileId', '>', '0')
+        -> with(['cc' => function($query) {
+            $query -> where('cc.default_card', 'yes');
+        }])
+        -> whereHas('cc')
+        -> get();
+
+        return response() -> json($agents);
+
+    }
+
     function agent($id) {
         $agent = Agents::find($id);
         if($agent) {

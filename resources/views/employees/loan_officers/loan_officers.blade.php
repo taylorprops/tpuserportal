@@ -5,7 +5,7 @@
     </x-slot>
 
     <div class="pb-12 pt-2"
-    x-data="loan_officers()">
+    x-data="employees()">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
@@ -40,7 +40,7 @@
 
                     {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}
 
-                        <div class="loan-officers-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow">
+                        <div class="employees-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow">
                         </div>
 
                     {{-- </div> --}}

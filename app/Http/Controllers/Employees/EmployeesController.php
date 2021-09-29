@@ -50,6 +50,49 @@ class EmployeesController extends Controller
     }
 
 
+    public function in_house(Request $request) {
+
+
+        return view('/employees/in_house/in_house');
+
+    }
+
+    public function get_in_house(Request $request) {
+
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'last_name';
+
+        $search = $request -> search ?? null;
+        $active = $request -> active;
+        $employees = InHouse::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> where('fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> where(function($query) use ($active) {
+            if($active != '') {
+                $query -> where('active', $active);
+            }
+        })
+        -> orderBy($sort, $direction)
+        -> paginate(25);
+
+        return view('/employees/in_house/get_in_house_html', compact('employees'));
+
+    }
+
+    public function in_house_view(Request $request) {
+
+        $id = $request -> id;
+        $employee = InHouse::with(['docs', 'notes']) -> find($id);
+        $states = LocationData::getStates();
+
+        return view('/employees/in_house/in_house_view', compact('employee', 'states'));
+
+    }
+
+
 
     public function loan_officers(Request $request) {
 
@@ -65,7 +108,7 @@ class EmployeesController extends Controller
 
         $search = $request -> search ?? null;
         $active = $request -> active;
-        $loan_officers = LoanOfficers::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'position'])
+        $employees = LoanOfficers::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('fullname', 'like', '%'.$search.'%');
@@ -80,206 +123,128 @@ class EmployeesController extends Controller
         -> orderBy($sort, $direction)
         -> paginate(25);
 
-        return view('/employees/loan_officers/get_loan_officers_html', compact('loan_officers'));
+        return view('/employees/loan_officers/get_loan_officers_html', compact('employees'));
 
     }
 
     public function loan_officer_view(Request $request) {
 
         $id = $request -> id;
-        $loan_officer = LoanOfficers::with(['docs', 'notes', 'licenses']) -> find($id);
+        $employee = LoanOfficers::with(['docs', 'notes', 'licenses']) -> find($id);
         $states = LocationData::getStates();
 
-        return view('/employees/loan_officers/loan_officer_view', compact('loan_officer', 'states'));
+        return view('/employees/loan_officers/loan_officer_view', compact('employee', 'states'));
 
     }
+
+
 
     public function save_details(Request $request) {
 
-        $employee_id = $request -> employee_id;
-        $employee_type = $request -> emp_type;
+        $emp_id = $request -> emp_id;
+        $emp_type = $request -> emp_type;
 
-        if($employee_type == 'loan_officer') {
+        if(!$request -> commission_split) {
+            $request -> merge(['commission_split' => 'N/A']);
+        }
 
-            $validator = $request -> validate([
-                'start_date' => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'phone' => 'required',
-                'email' => 'required',
-                'address_street' => 'required',
-                'address_city' => 'required',
-                'address_state' => 'required',
-                'address_zip' => 'required',
-                'commission_split' => 'required',
-                'soc_sec' => 'required',
-            ],
-            [
-                'required' => 'Required Field',
-                'required_if' => 'Required Field',
-            ]);
+        $validator = $request -> validate([
+            'start_date' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone' => 'required',
+            'company_email' => 'required',
+            'address_street' => 'required',
+            'address_city' => 'required',
+            'address_state' => 'required',
+            'address_zip' => 'required',
+            'commission_split' => 'required',
+            'soc_sec' => 'required',
+            'dob' => 'required',
+        ],
+        [
+            'required' => 'Required Field',
+            'required_if' => 'Required Field',
+        ]);
 
+        if($emp_type == 'loan_officer') {
 
+            $employee = LoanOfficers::find($emp_id);
+            $ignore_cols = ['emp_id', 'license_state', 'license_number'];
 
-            $loan_officer = LoanOfficers::find($employee_id);
-            $ignore_cols = ['employee_id', 'license_state', 'license_number'];
+        } else if($emp_type == 'in_house') {
 
-            foreach($request -> all() as $key => $val) {
-                if(!in_array($key, $ignore_cols)) {
-                    if($key == 'soc_sec') {
-                        $val = Crypt::encrypt($val);
-                    }
-                    $loan_officer[$key] = $val;
+            $employee = InHouse::find($emp_id);
+            $ignore_cols = ['emp_id', 'commission_split', 'license_state', 'license_number'];
+
+        }
+
+        // get user email before it is changed to update user table
+        $company_email = $employee -> company_email;
+
+        foreach($request -> all() as $key => $val) {
+            if(!in_array($key, $ignore_cols)) {
+                if($key == 'soc_sec') {
+                    $val = Crypt::encrypt($val);
                 }
+                $employee[$key] = $val;
             }
-            $loan_officer -> save();
+        }
+        $employee -> save();
 
-            EmployeesLicenses::where('emp_id', $employee_id) -> where('emp_type', 'loan_officer') -> delete();
+
+        if($request -> license_state && count($request -> license_state) > 0) {
+
+            EmployeesLicenses::where('emp_id', $emp_id) -> where('emp_type', $emp_type) -> delete();
             $license_states = $request -> license_state;
             $license_numbers = $request -> license_number;
 
-            if($request -> license_state && count($request -> license_state) > 0) {
-                $count_licenses = count($license_states);
-                for($i=0; $i<$count_licenses; $i++) {
-                    $license = new EmployeesLicenses();
-                    $license -> license_number = $license_numbers[$i];
-                    $license -> license_state = $license_states[$i];
-                    $license -> emp_id = $employee_id;
-                    $license -> emp_type = 'loan_officer';
-                    $license -> save();
-                }
+            $count_licenses = count($license_states);
+            for($i=0; $i<$count_licenses; $i++) {
+                $license = new EmployeesLicenses();
+                $license -> license_number = $license_numbers[$i];
+                $license -> license_state = $license_states[$i];
+                $license -> emp_id = $emp_id;
+                $license -> emp_type = 'loan_officer';
+                $license -> save();
             }
 
         }
 
-    }
-
-    /* public function get_licenses_loan_officer(Request $request) {
-
-        $loan_officer_id = $request -> loan_officer_id;
-        $licenses = LoanOfficers::find($loan_officer_id) -> licenses() -> get();
-        $states = LocationData::getStates();
-
-        return view('/employees/loan_officers/get_licenses_html', compact('licenses', 'states'));
-
-    } */
-
-    /* public function docs_upload_loan_officer(Request $request) {
-
-        $file = $request -> file('loan_officer_docs');
-        $loan_officer_id = $request -> loan_officer_id;
-
-        $file_name_orig = $file -> getClientOriginalName();
-        $file_name = Helper::clean_file_name($file, '', false, true);
-
-        $dir = 'employees/loan_officers/docs/'.$loan_officer_id;
-        if(!is_dir($dir)) {
-            Storage::makeDirectory($dir);
-        }
-        $file -> storeAs($dir, $file_name);
-        $file_location = $dir.'/'.$file_name;
-        $file_location_url = Storage::url($dir.'/'.$file_name);
-
-        EmployeesDocs::create([
-            'emp_loan_officers_id' => $loan_officer_id,
-            'file_name' => $file_name_orig,
-            'file_location' => $file_location,
-            'file_location_url' => $file_location_url
-        ]);
-
-
-
-    } */
-
-    /* public function get_docs_loan_officer(Request $request) {
-
-        $docs = LoanOfficers::find($request -> loan_officer_id) -> docs;
-
-        return compact('docs');
-
-    } */
-
-    /* public function delete_doc_loan_officer(Request $request) {
-
-        $id = $request -> id;
-
-        EmployeesDocs::find($id) -> delete();
-
-        return response() -> json(['status' => 'success']);
-
-    } */
-
-    /* public function save_cropped_upload_loan_officer(Request $request) {
-
-        $file = $request -> file('cropped_image');
-        $loan_officer_id = $request -> loan_officer_id;
-
-        $loan_officer = LoanOfficers::find($loan_officer_id);
-
-        $filename = $loan_officer -> first_name.'-'.$loan_officer -> last_name.'-'.$loan_officer -> id.'.'.$file -> extension();
-
-        $image_resize = Image::make($file -> getRealPath());
-        $image_resize -> resize(300, 400);
-        $image_resize -> save(Storage::path('employees/loan_officers/photos/'.$filename));
-
-        $location = 'employees/loan_officers/photos/'.$filename;
-        $url = Storage::url($location);
-
-        $loan_officer -> update([
-            'photo_location' => $location,
-            'photo_location_url' => $url
-        ]);
-
-        $user = User::where('email', $loan_officer -> email) -> first();
-        $user -> photo_location_url = $url;
+        // update users table
+        $user = User::where('email', $company_email) -> first();
+        $user -> name = $employee -> first_name.' '.$employee -> last_name;
+        $user -> first_name = $employee -> first_name;
+        $user -> last_name = $employee -> last_name;
+        $user -> email = $request -> company_email;
         $user -> save();
 
-        return response() -> json(['status' => 'success', 'url' => $url]);
-
-
-    } */
-
-    /* public function delete_photo_loan_officer(Request $request) {
-
-        $loan_officer_id = $request -> loan_officer_id;
-
-        $loan_officer = LoanOfficers::find($loan_officer_id);
-        $loan_officer -> update([
-            'photo_location' => '',
-            'photo_location_url' => ''
-        ]);
-
-        $user = User::where('email', $loan_officer -> email) -> first() -> update([
-            'photo_location_url' => ''
-        ]);
-
-        Storage::delete($loan_officer -> photo_location);
-
-    } */
+    }
 
 
     public function profile(Request $request) {
 
-        $employee_type = auth() -> user() -> group;
-        $employee_id = auth() -> user() -> user_id;
+        $emp_type = auth() -> user() -> group;
+        $emp_id = auth() -> user() -> user_id;
 
-        if($employee_type == 'agent') {
-            $employee = Agents::find($employee_id);
-            $employee_type = 'agents';
-        } else if($employee_type == 'loan_officer') {
-            $employee = LoanOfficers::with(['licenses']) -> find($employee_id);
-            $employee_type = 'loan_officers';
-        } else if($employee_type == 'in_house') {
-            $employee = InHouse::find($employee_id);
-        } else if($employee_type == 'title') {
-            $employee = Title::find($employee_id);
-        } else if($employee_type == 'transaction_coordinator') {
-            $employee = TransactionCoordinators::find($employee_id);
-            $employee_type = 'transaction_coordinators';
+
+        if($emp_type == 'agent') {
+            $employee = Agents::find($emp_id);
+            $emp_type = 'agents';
+        } else if($emp_type == 'loan_officer') {
+            $employee = LoanOfficers::with(['licenses']) -> find($emp_id);
+            $emp_type = 'loan_officers';
+        } else if($emp_type == 'in_house') {
+            $employee = InHouse::find($emp_id);
+        } else if($emp_type == 'title') {
+            $employee = Title::find($emp_id);
+        } else if($emp_type == 'transaction_coordinator') {
+            $employee = TransactionCoordinators::find($emp_id);
+            $emp_type = 'transaction_coordinators';
         }
 
 
-        return view('/employees/'.$employee_type.'/profile', compact('employee'));
+        return view('/employees/'.$emp_type.'/profile', compact('employee'));
 
     }
 
@@ -287,7 +252,7 @@ class EmployeesController extends Controller
 
     public function get_docs(Request $request) {
 
-        $docs = EmployeesDocs::where('emp_id', $request -> employee_id) -> where('emp_type', $request -> employee_type) -> get();
+        $docs = EmployeesDocs::where('emp_id', $request -> emp_id) -> where('emp_type', $request -> emp_type) -> get();
 
         return compact('docs');
 
@@ -296,13 +261,13 @@ class EmployeesController extends Controller
     public function docs_upload(Request $request) {
 
         $file = $request -> file('employee_docs');
-        $employee_type = $request -> employee_type;
-        $employee_id = $request -> employee_id;
+        $emp_type = $request -> emp_type;
+        $emp_id = $request -> emp_id;
 
         $file_name_orig = $file -> getClientOriginalName();
         $file_name = Helper::clean_file_name($file, '', false, true);
 
-        $dir = 'employees/'.$employee_type.'/docs/'.$employee_id;
+        $dir = 'employees/'.$emp_type.'/docs/'.$emp_id;
         if(!is_dir($dir)) {
             Storage::makeDirectory($dir);
         }
@@ -311,8 +276,8 @@ class EmployeesController extends Controller
         $file_location_url = Storage::url($dir.'/'.$file_name);
 
         EmployeesDocs::create([
-            'emp_id' => $employee_id,
-            'emp_type' => $employee_type,
+            'emp_id' => $emp_id,
+            'emp_type' => $emp_type,
             'file_name' => $file_name_orig,
             'file_location' => $file_location,
             'file_location_url' => $file_location_url,
@@ -334,9 +299,9 @@ class EmployeesController extends Controller
 
     public function get_licenses(Request $request) {
 
-        $employee_id = $request -> employee_id;
-        $employee_type = $request -> employee_type;
-        $licenses = EmployeesLicenses::where('emp_id', $employee_id) -> where('emp_type', $employee_type) -> get();
+        $emp_id = $request -> emp_id;
+        $emp_type = $request -> emp_type;
+        $licenses = EmployeesLicenses::where('emp_id', $emp_id) -> where('emp_type', $emp_type) -> get();
         $states = LocationData::getStates();
 
         return view('/employees/get_licenses_html', compact('licenses', 'states'));
@@ -346,28 +311,28 @@ class EmployeesController extends Controller
     public function save_cropped_upload(Request $request) {
 
         $file = $request -> file('cropped_image');
-        $employee_id = $request -> employee_id;
-        $employee_type = $request -> employee_type;
+        $emp_id = $request -> emp_id;
+        $emp_type = $request -> emp_type;
 
-        if($employee_type == 'agent') {
-            $employee = Agents::find($employee_id);
-        } else if($employee_type == 'loan_officer') {
-            $employee = LoanOfficers::find($employee_id);
-        } else if($employee_type == 'in_house') {
-            $employee = InHouse::find($employee_id);
-        } else if($employee_type == 'title') {
-            $employee = Title::find($employee_id);
-        } else if($employee_type == 'transaction_coordinator') {
-            $employee = TransactionCoordinators::find($employee_id);
+        if($emp_type == 'agent') {
+            $employee = Agents::find($emp_id);
+        } else if($emp_type == 'loan_officer') {
+            $employee = LoanOfficers::find($emp_id);
+        } else if($emp_type == 'in_house') {
+            $employee = InHouse::find($emp_id);
+        } else if($emp_type == 'title') {
+            $employee = Title::find($emp_id);
+        } else if($emp_type == 'transaction_coordinator') {
+            $employee = TransactionCoordinators::find($emp_id);
         }
 
-        $filename = $employee -> first_name.'-'.$employee -> last_name.'-'.$employee -> id.'.'.$file -> extension();
+        $filename = $employee -> id.'.'.$file -> extension();
 
         $image_resize = Image::make($file -> getRealPath());
         $image_resize -> resize(300, 400);
-        $image_resize -> save(Storage::path('employees/'.$employee_type.'/photos/'.$filename));
+        $image_resize -> save(Storage::path('employees/'.$emp_type.'/photos/'.$filename));
 
-        $location = 'employees/'.$employee_type.'/photos/'.$filename;
+        $location = 'employees/'.$emp_type.'/photos/'.$filename;
         $url = Storage::url($location);
 
         $employee -> update([
@@ -386,19 +351,19 @@ class EmployeesController extends Controller
 
     public function delete_photo(Request $request) {
 
-        $employee_id = $request -> employee_id;
-        $employee_type = $request -> employee_type;
+        $emp_id = $request -> emp_id;
+        $emp_type = $request -> emp_type;
 
-        if($employee_type == 'agent') {
-            $employee = Agents::find($employee_id);
-        } else if($employee_type == 'loan_officer') {
-            $employee = LoanOfficers::find($employee_id);
-        } else if($employee_type == 'in_house') {
-            $employee = InHouse::find($employee_id);
-        } else if($employee_type == 'title') {
-            $employee = Title::find($employee_id);
-        } else if($employee_type == 'transaction_coordinator') {
-            $employee = TransactionCoordinators::find($employee_id);
+        if($emp_type == 'agent') {
+            $employee = Agents::find($emp_id);
+        } else if($emp_type == 'loan_officer') {
+            $employee = LoanOfficers::find($emp_id);
+        } else if($emp_type == 'in_house') {
+            $employee = InHouse::find($emp_id);
+        } else if($emp_type == 'title') {
+            $employee = Title::find($emp_id);
+        } else if($emp_type == 'transaction_coordinator') {
+            $employee = TransactionCoordinators::find($emp_id);
         }
 
         Storage::delete($employee -> photo_location);
@@ -417,27 +382,28 @@ class EmployeesController extends Controller
 
     public function save_bio(Request $request) {
 
-        $employee_id = $request -> employee_id ? $request -> employee_id : auth() -> user() -> user_id;
-        $employee_type = $request -> employee_type ? $request -> employee_type : auth() -> user() -> group;
+        $emp_id = $request -> emp_id ? $request -> emp_id : auth() -> user() -> user_id;
+        $emp_type = $request -> emp_type ? $request -> emp_type : auth() -> user() -> group;
 
-        if($employee_type == 'agent') {
-            Agents::find($employee_id) -> update([
+
+        if($emp_type == 'agent') {
+            Agents::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
-        } else if($employee_type == 'loan_officer') {
-            LoanOfficers::find($employee_id) -> update([
+        } else if($emp_type == 'loan_officer') {
+            LoanOfficers::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
-        } else if($employee_type == 'in_house') {
-            InHouse::find($employee_id) -> update([
+        } else if($emp_type == 'in_house') {
+            InHouse::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
-        } else if($employee_type == 'title') {
-            Title::find($employee_id) -> update([
+        } else if($emp_type == 'title') {
+            Title::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
-        } else if($employee_type == 'transaction_coordinator') {
-            TransactionCoordinators::find($employee_id) -> update([
+        } else if($emp_type == 'transaction_coordinator') {
+            TransactionCoordinators::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
         }
@@ -450,7 +416,7 @@ class EmployeesController extends Controller
 
 
     //////////////// IMPORT DATA ////////////////
-    public function add_los(Request $request) {
+    public function import_los(Request $request) {
 
         LoanOfficers::truncate();
         EmployeesLicenses::where('emp_type', 'loan_officer') -> delete();
@@ -463,6 +429,7 @@ class EmployeesController extends Controller
 
             $add_lo = new LoanOfficers();
             $add_lo -> id = $lo -> id;
+            $add_lo -> emp_type = 'loan_officer';
             $add_lo -> active = $lo -> active;
             $add_lo -> first_name = $lo -> first;
             $add_lo -> last_name = $lo -> last;
@@ -491,11 +458,11 @@ class EmployeesController extends Controller
             $add_lo -> prev_company = $lo -> prev_company;
             $add_lo -> bio = $lo -> bio;
             if($lo -> manager == 'yes') {
-                $add_lo -> position = 'manager';
+                $add_lo -> emp_position = 'manager';
             } else if($lo -> proc == 'yes') {
-                $add_lo -> position = 'processor';
+                $add_lo -> emp_position = 'processor';
             } else {
-                $add_lo -> position = 'loan_officer';
+                $add_lo -> emp_position = 'loan_officer';
             }
             $add_lo -> save();
 
