@@ -1,7 +1,14 @@
+@php
+$title = 'Escrow';
+$breadcrumbs = [
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Escrow @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Escrow
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2"

@@ -27,7 +27,7 @@ class EmployeesController extends Controller
     public function agents(Request $request) {
 
 
-        return view('/employees/agents/agents');
+        return view('/employees/agent/agents');
 
     }
 
@@ -84,8 +84,11 @@ class EmployeesController extends Controller
 
     public function in_house_view(Request $request) {
 
-        $id = $request -> id;
-        $employee = InHouse::with(['docs', 'notes']) -> find($id);
+        $id = $request -> id ? $request -> id : null;
+        $employee = null;
+        if($id) {
+            $employee = InHouse::with(['docs', 'notes']) -> find($id);
+        }
         $states = LocationData::getStates();
 
         return view('/employees/in_house/in_house_view', compact('employee', 'states'));
@@ -97,7 +100,7 @@ class EmployeesController extends Controller
     public function loan_officers(Request $request) {
 
 
-        return view('/employees/loan_officers/loan_officers');
+        return view('/employees/loan_officer/loan_officers');
 
     }
 
@@ -123,17 +126,21 @@ class EmployeesController extends Controller
         -> orderBy($sort, $direction)
         -> paginate(25);
 
-        return view('/employees/loan_officers/get_loan_officers_html', compact('employees'));
+        return view('/employees/loan_officer/get_loan_officers_html', compact('employees'));
 
     }
 
     public function loan_officer_view(Request $request) {
 
-        $id = $request -> id;
-        $employee = LoanOfficers::with(['docs', 'notes', 'licenses']) -> find($id);
+        $id = $request -> id ? $request -> id : null;
+        $employee = null;
+        if($id) {
+            $employee = LoanOfficers::with(['docs', 'notes', 'licenses']) -> find($id);
+        }
+
         $states = LocationData::getStates();
 
-        return view('/employees/loan_officers/loan_officer_view', compact('employee', 'states'));
+        return view('/employees/loan_officer/loan_officer_view', compact('employee', 'states'));
 
     }
 
@@ -141,7 +148,7 @@ class EmployeesController extends Controller
 
     public function save_details(Request $request) {
 
-        $emp_id = $request -> emp_id;
+        $emp_id = $request -> emp_id ?? null;
         $emp_type = $request -> emp_type;
 
         if(!$request -> commission_split) {
@@ -149,38 +156,44 @@ class EmployeesController extends Controller
         }
 
         $validator = $request -> validate([
+            'emp_position' => 'required',
+            'job_title' => 'required',
             'start_date' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
-            'company_email' => 'required',
+            'email' => 'required|email|unique:users,email',
             'address_street' => 'required',
             'address_city' => 'required',
             'address_state' => 'required',
             'address_zip' => 'required',
             'commission_split' => 'required',
-            'soc_sec' => 'required',
+            'soc_sec' => 'required|regex:/[0-9]{3}-[0-9]{2}-[0-9]{4}/',
             'dob' => 'required',
         ],
         [
-            'required' => 'Required Field',
-            'required_if' => 'Required Field',
+            'required' => 'Required',
+            'email' => 'You must enter a valid email address',
+            'unique' => 'The email address is already in use',
+            'regex' => 'The social security number must be in the format ###-##-####'
         ]);
 
         if($emp_type == 'loan_officer') {
 
-            $employee = LoanOfficers::find($emp_id);
+            $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
             $ignore_cols = ['emp_id', 'license_state', 'license_number'];
 
         } else if($emp_type == 'in_house') {
 
-            $employee = InHouse::find($emp_id);
+            $employee = InHouse::firstOrNew(['id' => $emp_id]);
             $ignore_cols = ['emp_id', 'commission_split', 'license_state', 'license_number'];
 
         }
 
+
+
         // get user email before it is changed to update user table
-        $company_email = $employee -> company_email;
+        $orig_email = $employee -> email;
 
         foreach($request -> all() as $key => $val) {
             if(!in_array($key, $ignore_cols)) {
@@ -190,7 +203,9 @@ class EmployeesController extends Controller
                 $employee[$key] = $val;
             }
         }
+        $employee -> fullname = $employee -> first_name . ' ' . $employee -> last_name;
         $employee -> save();
+        $emp_id = $employee -> id;
 
 
         if($request -> license_state && count($request -> license_state) > 0) {
@@ -211,13 +226,28 @@ class EmployeesController extends Controller
 
         }
 
-        // update users table
-        $user = User::where('email', $company_email) -> first();
+        // add or update users table
+        if($request -> emp_id) {
+            $user = User::where('email', $orig_email) -> first();
+        } else {
+            $user = new User();
+            $user -> user_id = $emp_id;
+            $user -> group = $emp_type;
+            $user -> active = 'yes';
+            $user -> password = '$2y$10$P.O4F.rVfRRin81HksyCie0Wf0TEJQ9KlPYFoI2dMEzdtPFYD11FC';
+        }
         $user -> name = $employee -> first_name.' '.$employee -> last_name;
         $user -> first_name = $employee -> first_name;
         $user -> last_name = $employee -> last_name;
-        $user -> email = $request -> company_email;
+        $user -> email = $request -> email;
+        $user -> level = $request -> emp_position;
         $user -> save();
+
+        if(!$request -> emp_id) {
+            return response() -> json(['emp_id' => $emp_id]);
+        }
+
+        return response() -> json(['success' => true]);
 
     }
 
@@ -230,17 +260,14 @@ class EmployeesController extends Controller
 
         if($emp_type == 'agent') {
             $employee = Agents::find($emp_id);
-            $emp_type = 'agents';
         } else if($emp_type == 'loan_officer') {
             $employee = LoanOfficers::with(['licenses']) -> find($emp_id);
-            $emp_type = 'loan_officers';
         } else if($emp_type == 'in_house') {
             $employee = InHouse::find($emp_id);
         } else if($emp_type == 'title') {
             $employee = Title::find($emp_id);
         } else if($emp_type == 'transaction_coordinator') {
             $employee = TransactionCoordinators::find($emp_id);
-            $emp_type = 'transaction_coordinators';
         }
 
 
@@ -413,6 +440,39 @@ class EmployeesController extends Controller
 
     }
 
+    public function save_signature(Request $request) {
+
+        $emp_id = $request -> emp_id ? $request -> emp_id : auth() -> user() -> user_id;
+        $emp_type = $request -> emp_type ? $request -> emp_type : auth() -> user() -> group;
+
+
+        if($emp_type == 'agent') {
+            Agents::find($emp_id) -> update([
+                'signature' => $request -> signature
+            ]);
+        } else if($emp_type == 'loan_officer') {
+            LoanOfficers::find($emp_id) -> update([
+                'signature' => $request -> signature
+            ]);
+        } else if($emp_type == 'in_house') {
+            InHouse::find($emp_id) -> update([
+                'signature' => $request -> signature
+            ]);
+        } else if($emp_type == 'title') {
+            Title::find($emp_id) -> update([
+                'signature' => $request -> signature
+            ]);
+        } else if($emp_type == 'transaction_coordinator') {
+            TransactionCoordinators::find($emp_id) -> update([
+                'signature' => $request -> signature
+            ]);
+        }
+
+
+        return response() -> json(['success' => true]);
+
+    }
+
 
 
     //////////////// IMPORT DATA ////////////////
@@ -421,7 +481,7 @@ class EmployeesController extends Controller
         LoanOfficers::truncate();
         EmployeesLicenses::where('emp_type', 'loan_officer') -> delete();
         EmployeesNotes::where('emp_type', 'loan_officer') -> delete();
-        User::where('id', '>', '3') -> where('group', 'loan_officer') -> delete();
+        User::where('group', 'loan_officer') -> delete();
 
         $old_los = LoanOfficersOld::get();
 
@@ -448,7 +508,6 @@ class EmployeesController extends Controller
             if($lo -> term_date != '0000-00-00' && $lo -> term_date != '') {
                 $add_lo -> term_date = $lo -> term_date;
             }
-            $add_lo -> company_email = $lo -> comp_email;
             if($lo -> dob != '0000-00-00' && $lo -> dob != '') {
                 $add_lo -> dob = $lo -> dob;
             }
@@ -459,10 +518,13 @@ class EmployeesController extends Controller
             $add_lo -> bio = $lo -> bio;
             if($lo -> manager == 'yes') {
                 $add_lo -> emp_position = 'manager';
+                $add_lo -> job_title = 'Manager';
             } else if($lo -> proc == 'yes') {
                 $add_lo -> emp_position = 'processor';
+                $add_lo -> job_title = 'Processor';
             } else {
                 $add_lo -> emp_position = 'loan_officer';
+                $add_lo -> job_title = 'Loan Officer';
             }
             $add_lo -> save();
 
@@ -503,14 +565,19 @@ class EmployeesController extends Controller
             }
 
 
+            $email = $lo -> lo_email;
+            if($lo -> comp_email != '') {
+                $email = $lo -> comp_email;
+            }
             $add_user = new User();
             $add_user -> user_id = $lo -> id;
             $add_user -> group = 'loan_officer';
+            $add_user -> level = $add_lo -> emp_position;
             $add_user -> active = $lo -> active;
             $add_user -> name = $lo -> first.' '.$lo -> last;
             $add_user -> first_name = $lo -> first;
             $add_user -> last_name = $lo -> last;
-            $add_user -> email = $lo -> lo_email;
+            $add_user -> email = $email;
             $add_user -> password = '$2y$10$P.O4F.rVfRRin81HksyCie0Wf0TEJQ9KlPYFoI2dMEzdtPFYD11FC';
             $add_user -> save();
 

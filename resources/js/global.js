@@ -135,7 +135,7 @@ window.show_form_errors = function (errors) {
             //let error_message = element.closest('label').querySelector('.error-message');
             //error_message.innerHTML = message;
             scroll_above(element);
-            toastr.error('Field not completed: ' + message);
+            toastr.error('Field not completed');
         }
 
     });

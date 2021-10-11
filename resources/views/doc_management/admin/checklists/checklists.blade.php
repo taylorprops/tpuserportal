@@ -1,7 +1,14 @@
+@php
+$title = 'Checklists';
+$breadcrumbs = [
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Checklists @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        <i class="fad fa-tasks mr-3"></i> Checklists
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     @php $location_id = $checklist_locations -> first() -> id; @endphp
@@ -111,12 +118,14 @@
                                 </div>
 
                                 <ul class="mb-6">
+
                                     @foreach($forms as $form)
 
                                         @php
                                         $form_id = $form -> id;
                                         $form_name = $form -> form_name_display;
                                         $checklist_group_id = $form -> checklist_group_id;
+                                        $checklist_group = $form -> checklist_group -> group_name;
                                         @endphp
 
                                         <li class="form-name p-2 border-b text-sm text-gray-700 hover:bg-gray-50"
@@ -124,7 +133,11 @@
 
                                             <div class="flex justify-between items-center">
 
-                                                <div>{{ $form_name }}</div>
+                                                <div>
+                                                    {{ $form_name }}
+                                                    <div class="text-xs text-gray-400 italic">{{ $checklist_group }}</div>
+                                                </div>
+
 
                                                 <button
                                                 type="submit"
@@ -143,6 +156,7 @@
                                         </li>
 
                                     @endforeach
+
                                 </ul>
 
                             </div>
@@ -327,9 +341,9 @@
         </x-modals.modal>
 
 
-        <template id="form_template">
+        <template id="checklist_item_template">
 
-            <div class="form px-2 border-b flex justify-between items-center text-sm form-%%name%%"
+            <div class="checklist-item px-2 border-b flex justify-between items-center text-sm form-%%name%%"
             data-form-id="%%form_id%%"
             data-checklist-id="%%checklist_id%%"
             data-checklist-group-id="%%checklist_group_id%%">
@@ -345,6 +359,8 @@
 
                         <x-elements.toggle
                         id="toggle_%%name%%"
+                        name="required"
+                        checked="checked"
                         :size="'md'"
                         :label="'Required'"
                         @onchange=""/>

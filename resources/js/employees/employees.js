@@ -3,24 +3,38 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
     window.profile = function(emp_id, emp_type, photo_exists, text_editor_ele) {
 
+        if(!emp_id) {
+            photo_exists = false;
+        }
+
+        let profile = document.URL.match(/profile/) ? true : false;
+
         return {
             show_cropper_modal: false,
             cropper: '',
             employee_photo_pond: '',
             has_photo: photo_exists,
+            show_ssn: false,
+            show_email_error_modal: false,
             init() {
-                let show_licenses = ['agent', 'loan_officer'];
-                if(show_licenses.includes(emp_type)) {
-                    this.get_licenses();
-                }
-                this.docs();
-                this.get_docs();
-                this.photo();
-                document.querySelectorAll('.filepond--credits').forEach(function(div) {
-                    div.style.display = 'none';
-                });
-                if(text_editor_ele != '') {
-                    this.init_text_editor(text_editor_ele);
+
+                if(emp_id) {
+                    let show_licenses = ['agent', 'loan_officer'];
+                    if(show_licenses.includes(emp_type)) {
+                        this.get_licenses();
+                    }
+
+                    if(!profile) {
+                        this.docs();
+                        this.get_docs();
+                    }
+                    this.photo();
+                    document.querySelectorAll('.filepond--credits').forEach(function(div) {
+                        div.style.display = 'none';
+                    });
+                    if(text_editor_ele != '') {
+                        this.init_text_editor(text_editor_ele);
+                    }
                 }
             },
 
@@ -29,28 +43,37 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
-                setTimeout(function() {
+                let scope = this;
 
-                    if(document.querySelector('#company_email').value == '') {
-                        document.querySelector('#company_email').value = document.querySelector('#email').value;
-                    }
+                setTimeout(function() {
 
                     let form = document.getElementById('employee_form');
                     let formData = new FormData(form);
                     formData.append('emp_id', emp_id);
                     formData.append('emp_type', emp_type);
-                    // TODO: fix this
+
                     axios.post('/employees/save_details', formData)
                     .then(function (response) {
-                        toastr.success('Employee details updated successfully');
                         ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                        if(response.data) {
+                            if(response.data.success) {
+                                toastr.success('Employee details successfully saved')
+                            } else if(response.data.error) {
+                                scope.show_email_error_modal = true;
+                            } else if(response.data.emp_id) {
+                                emp_id = response.data.emp_id;
+                                window.location = '/employees/'+emp_type+'/'+emp_type+'_view/'+emp_id;
+                            }
+                        }
                     })
                     .catch(function (error) {
                         if(error) {
-                            if(error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                            if(error.response) {
+                                if(error.response.status == 422) {
+                                    let errors = error.response.data.errors;
+                                    show_form_errors(errors);
+                                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                                }
                             }
                         }
                     });
@@ -298,6 +321,29 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 .then(function (response) {
                     toastr.success('Your Bio has been saved successfully!');
                     button.innerHTML = '<i class="fal fa-check mr-2"></i> Save Bio';
+                })
+                .catch(function (error) {
+                    if(error) {
+                        if(error.response.status == 422) {
+                            let errors = error.response.data.errors;
+                            show_form_errors(errors);
+                        }
+                    }
+                });
+            },
+            save_signature(button) {
+                show_loading_button(button, 'Saving Signature...');
+                let signature = tinyMCE.activeEditor.getContent();
+                signature = '<div style="width: 100%">'+signature+'</div>';
+
+                let formData = new FormData();
+                formData.append('signature', signature);
+                formData.append('emp_type', emp_type);
+                formData.append('emp_id', emp_id);
+                axios.post('/employees/profile/save_signature', formData)
+                .then(function (response) {
+                    toastr.success('Your Signature has been saved successfully!');
+                    button.innerHTML = '<i class="fal fa-check mr-2"></i> Save Signature';
                 })
                 .catch(function (error) {
                     if(error) {

@@ -1,7 +1,15 @@
+@php
+$title = 'Transactions Archived';
+$breadcrumbs = [
+    ['Transactions', '/transactions/transactions'],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Archives @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Archives
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2"

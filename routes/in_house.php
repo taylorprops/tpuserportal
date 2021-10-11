@@ -45,14 +45,14 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% Employees
     Route::get('/employees/in_house', [EmployeesController::class, 'in_house']) -> middleware(['in_house']);
     Route::get('/employees/in_house/get_in_house', [EmployeesController::class, 'get_in_house']) -> middleware(['in_house']);
-    Route::get('/employees/in_house/in_house_view/{id}', [EmployeesController::class, 'in_house_view']) -> middleware(['in_house']);
+    Route::get('/employees/in_house/in_house_view/{id?}', [EmployeesController::class, 'in_house_view']) -> middleware(['in_house']);
 
-    Route::get('/employees/agents', [EmployeesController::class, 'agents']) -> middleware(['in_house']);
-    Route::get('/employees/agents/get_agents', [EmployeesController::class, 'get_agents']) -> middleware(['in_house']);
+    Route::get('/employees/agent', [EmployeesController::class, 'agents']) -> middleware(['in_house']);
+    Route::get('/employees/agent/get_agents', [EmployeesController::class, 'get_agents']) -> middleware(['in_house']);
 
-    Route::get('/employees/loan_officers', [EmployeesController::class, 'loan_officers']) -> middleware(['in_house']);
-    Route::get('/employees/loan_officers/get_loan_officers', [EmployeesController::class, 'get_loan_officers']) -> middleware(['in_house']);
-    Route::get('/employees/loan_officers/loan_officer_view/{id}', [EmployeesController::class, 'loan_officer_view']) -> middleware(['in_house']);
+    Route::get('/employees/loan_officer', [EmployeesController::class, 'loan_officers']) -> middleware(['in_house']);
+    Route::get('/employees/loan_officer/get_loan_officers', [EmployeesController::class, 'get_loan_officers']) -> middleware(['in_house']);
+    Route::get('/employees/loan_officer/loan_officer_view/{id?}', [EmployeesController::class, 'loan_officer_view']) -> middleware(['in_house']);
 
 
     Route::post('/employees/docs/docs_upload', [EmployeesController::class, 'docs_upload']) -> middleware(['in_house']);
@@ -105,7 +105,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/archives/add_guids', [EscrowController::class, 'add_guids']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
-    Route::get('/employees/loan_officers/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
+    Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
 
 
     // %%%% New Skyslope to old DB

@@ -58,14 +58,14 @@
                 <!-- Page Heading -->
                 @if($header != 'null')
                 <header>
-                    <div class="w-full border-gray-200 border-b bg-white py-4"
+                    <div class="w-full border-gray-200 border-b bg-white pb-4 pt-2"
                     :class="{
                         'pl-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
-                        'pl-8 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
+                        'pl-12 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
                         'relative': (window.outerWidth >= 1280),
                         'fixed': (window.outerWidth < 1280)
                     }">
-                        <h2 class="sm:text-xl md:text-2xl lg:text-3xl text-gray-600 tracking-wider"
+                        <h2 class="text-gray-600 tracking-wider"
                         :class="{
                             'ml-4' : !main_nav_open,
                             'ml-0' : main_nav_open,

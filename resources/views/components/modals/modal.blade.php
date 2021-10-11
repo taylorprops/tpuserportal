@@ -11,6 +11,7 @@
 
         <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle {{ $modalWidth }} sm:p-6 animate__animated animate__fadeIn" @if($clickOutside != '') @click.outside="{{ $clickOutside }} {{ $modalId }} = false" @else @click.outside="{{ $modalId }} = false" @endif>
 
+            @if($modalTitle != '')
             <div class="flex justify-between border-b mb-4 pb-2">
 
                 <div class="text-xl">{!! $modalTitle !!}</div>
@@ -18,6 +19,13 @@
                 <a href="javascript:void(0)" @click="{{ $modalId }} = false"><i class="fal fa-times fa-2x text-danger"></i></a>
 
             </div>
+            @else
+            <div class="flex justify-end">
+
+                <a href="javascript:void(0)" @click="{{ $modalId }} = false"><i class="fal fa-times fa-2x text-danger"></i></a>
+
+            </div>
+            @endif
 
             {{ $slot }}
 

@@ -122,12 +122,12 @@
             ],
             [
                 'title' => 'Agents',
-                'link' => '/employees/agents',
+                'link' => '/employees/agent',
                 'icon' => 'fad fa-person-sign mr-2'
             ],
             [
                 'title' => 'Loan Officers',
-                'link' => '/employees/loan_officers',
+                'link' => '/employees/loan_officer',
                 'icon' => 'fad fa-user-chart mr-2'
             ],
 
@@ -145,6 +145,7 @@
     {{-- End Employees --}}
 
 
+    @if(auth() -> user() -> level == 'super_admin')
     {{-- Super Admin --}}
     <li>
         <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Super Admin</div>
@@ -178,5 +179,6 @@
         :level2="$level2"/>
 
     {{-- End Super Admin --}}
+    @endif
 
 </ul>

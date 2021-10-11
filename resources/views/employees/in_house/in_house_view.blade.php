@@ -1,11 +1,19 @@
+@php
+$title = $employee ? $employee -> fullname : 'Add In House Employee';
+$breadcrumbs = [
+    ['In House Employees', '/employees/in_house'],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') {{ $employee -> fullname }} @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        {{ $employee -> fullname }}
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pt-2 pb-48"
-    x-data="profile('{{ $employee -> id }}', 'in_house', @if($employee -> photo_location != '') true @else false @endif, '');">
+    x-data="profile('{{ $employee -> id ?? null }}', 'in_house', @if($employee && $employee -> photo_location != '') true @else false @endif, '');">
 
         <div class="max-w-900-px mx-auto pt-8 md:pt-12 xl:pt-16 px-4">
 
@@ -13,23 +21,27 @@
 
                 <div class="text-xl font-medium text-gray-700 border-b mb-6">Details</div>
 
-                <form id="employee_form">
+                <form id="employee_form" autocomplete="off">
 
                     <div class="grid grid-cols-1 sm:grid-cols-4">
 
-                        <div class="col-span-1 m-2 sm:m-3"
-                        x-data="{ active: '{{ $employee -> active }}' }">
-                            <select
-                            class="form-element select md required"
-                            id="active"
-                            name="active"
-                            data-label="Active"
-                            x-model="active"
-                            :class="{ 'bg-green-50': active === 'yes', 'bg-red-50': active === 'no' }">
-                                <option value="yes" @if($employee -> active == 'yes') selected @endif>Yes</option>
-                                <option value="no" @if($employee -> active == 'no') selected @endif>No</option>
-                            </select>
-                        </div>
+                        @if($employee)
+                            <div class="col-span-1 m-2 sm:m-3"
+                            x-data="{ active: '{{ $employee -> active ?? 'yes' }}' }">
+                                <select
+                                class="form-element select md required"
+                                id="active"
+                                name="active"
+                                data-label="Active"
+                                x-model="active"
+                                :class="{ 'bg-green-50': active === 'yes', 'bg-red-50': active === 'no' }">
+                                    <option value="yes" @if($employee && $employee -> active == 'yes') selected @endif>Yes</option>
+                                    <option value="no" @if($employee && $employee -> active == 'no') selected @endif>No</option>
+                                </select>
+                            </div>
+                        @else
+                            <input type="hidden" name="active" id="active" value="yes">
+                        @endif
 
                         <div class="col-span-1 m-2 sm:m-3">
                             <input
@@ -38,23 +50,28 @@
                             id="start_date"
                             name="start_date"
                             data-label="Start Date"
-                            value="{{ $employee -> start_date }}">
+                            value="{{ $employee -> start_date ?? null }}">
                         </div>
 
-                        <div class="col-span-1 m-2 sm:m-3">
-                            <input
-                            type="date"
-                            class="form-element input md"
-                            id="term_date"
-                            name="term_date"
-                            data-label="Termination Date"
-                            value="{{ $employee -> term_date }}">
-                        </div>
+                        @if($employee)
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="date"
+                                class="form-element input md"
+                                id="term_date"
+                                name="term_date"
+                                data-label="Termination Date"
+                                value="{{ $employee -> term_date ?? null }}">
+                            </div>
+                        @else
+                            <input type="hidden" name="term_date" id="term_date" value="">
+                        @endif
 
+                    @if($employee)
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-4">
-
+                    @endif
                         <div class="m-2 sm:m-3">
                             <select
                             class="form-element select md required"
@@ -62,8 +79,8 @@
                             name="emp_position"
                             data-label="Position">
                                 <option value=""></option>
-                                <option value="admin" @if($employee -> emp_position == 'admin') selected @endif>Admin</option>
-                                <option value="manager" @if($employee -> emp_position == 'manager') selected @endif>Manager</option>
+                                <option value="admin" @if($employee && $employee -> emp_position == 'admin') selected @endif>Admin</option>
+                                <option value="super_admin" @if($employee && $employee -> emp_position == 'super_admin') selected @endif>Super Admin</option>
                             </select>
                         </div>
 
@@ -75,8 +92,8 @@
                             class="required"
                             data-label="Job Title">
                                 <option value=""></option>
-                                <option value="Admin Assistant" @if($employee -> job_title == 'Admin Assistant') selected @endif>Admin Assistant</option>
-                                <option value="Manager" @if($employee -> job_title == 'Manager') selected @endif>Manager</option>
+                                <option value="Admin Assistant" @if($employee && $employee -> job_title == 'Admin Assistant') selected @endif>Admin Assistant</option>
+                                <option value="Manager" @if($employee && $employee -> job_title == 'Manager') selected @endif>Manager</option>
                             </select>
                         </div>
 
@@ -93,7 +110,7 @@
                             id="first_name"
                             name="first_name"
                             data-label="First Name"
-                            value="{{ $employee -> first_name }}">
+                            value="{{ $employee -> first_name ?? null }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -103,7 +120,7 @@
                             id="last_name"
                             name="last_name"
                             data-label="Last Name"
-                            value="{{ $employee -> last_name }}">
+                            value="{{ $employee -> last_name ?? null }}">
                         </div>
 
                     </div>
@@ -117,18 +134,7 @@
                             id="phone"
                             name="phone"
                             data-label="Phone"
-                            value="{{ $employee -> phone }}">
-                        </div>
-
-                        <div class="m-2 sm:m-3 lg:col-span-2">
-                            <input
-                            type="text"
-                            class="form-element input md required"
-                            id="company_email"
-                            name="company_email"
-                            type="email"
-                            data-label="Company Email <span class='text-xs'>(For All Communications and Logins)</span>"
-                            value="{{ $employee -> company_email }}">
+                            value="{{ $employee -> phone ?? null }}">
                         </div>
 
                         <div class="m-2 sm:m-3 col-span-1 lg:col-span-2">
@@ -137,8 +143,8 @@
                             class="form-element input md required"
                             id="email"
                             name="email"
-                            data-label="Personal Email"
-                            value="{{ $employee -> email }}">
+                            data-label="Email"
+                            value="{{ $employee -> email ?? null }}">
                         </div>
 
                     </div>
@@ -152,7 +158,7 @@
                             id="address_street"
                             name="address_street"
                             data-label="Street"
-                            value="{{ $employee -> address_street }}">
+                            value="{{ $employee -> address_street ?? null }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
@@ -162,7 +168,7 @@
                             id="address_zip"
                             name="address_zip"
                             data-label="Zip"
-                            value="{{ $employee -> address_zip }}"
+                            value="{{ $employee -> address_zip ?? null }}"
                             x-on:keyup="get_location_details('#employee_form', '', '#address_zip', '#address_city', '#address_state');">
                         </div>
 
@@ -173,7 +179,7 @@
                             id="address_city"
                             name="address_city"
                             data-label="City"
-                            value="{{ $employee -> address_city }}">
+                            value="{{ $employee -> address_city ?? null }}">
                         </div>
 
                         <div class="m-2 sm:m-3 col-span-1">
@@ -181,11 +187,10 @@
                             class="form-element select md required"
                             id="address_state"
                             name="address_state"
-                            data-label="State"
-                            value="{{ $employee -> address_state }}">
+                            data-label="State">
                                 <option value=""></option>
                                 @foreach($states as $state)
-                                    <option value="{{ $state -> state }}" @if($employee -> address_state == $state -> state) selected @endif>{{ $state -> state }}</option>
+                                    <option value="{{ $state -> state }}" @if($employee && $employee -> address_state == $state -> state) selected @endif>{{ $state -> state }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -204,17 +209,27 @@
                             id="dob"
                             name="dob"
                             data-label="DOB"
-                            value="{{ $employee -> dob }}">
+                            value="{{ $employee -> dob ?? null }}">
                         </div>
 
                         <div class="m-2 sm:m-3">
-                            <input
-                            type="text"
-                            class="form-element input md ssn required"
-                            id="soc_sec"
-                            name="soc_sec"
-                            data-label="Social Security"
-                            value="{{ \Crypt::decrypt($employee -> soc_sec) }}">
+                            <div class="relative">
+                                <div class="absolute top-0 left-0">
+                                    <input
+                                    type="password"
+                                    :type="show_ssn === true ? 'text' : 'password'"
+                                    class="form-element input md ssn required"
+                                    id="soc_sec"
+                                    name="soc_sec"
+                                    data-label="Social Security"
+                                    value="@if($employee){{ \Crypt::decrypt($employee -> soc_sec) }}@endif"
+                                    @focus="show_ssn = true">
+                                </div>
+                                <div class="absolute top-6 right-3" @click="show_ssn = !show_ssn">
+                                    <i class="fad fa-eye"></i>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -235,7 +250,9 @@
 
             </div>
 
-            <div class="text-xl font-medium text-gray-700 border-b mb-6 mt-12 sm:mt-24">Employee Docs</div>
+            @if($employee)
+
+                <div class="text-xl font-medium text-gray-700 border-b mb-6 mt-12 sm:mt-24">Employee Docs</div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
@@ -255,67 +272,84 @@
 
                 </div>
 
-            <div class="">
+                <div class="">
 
-                <div class="text-xl font-medium text-gray-700 border-b mb-6 mt-12 sm:mt-24">Employee Photo</div>
+                    <div class="text-xl font-medium text-gray-700 border-b mb-6 mt-12 sm:mt-24">Employee Photo</div>
 
-                <div class="flex justify-start items-center max-w-500-px">
+                    <div class="flex justify-start items-center max-w-500-px">
 
-                    <div>
+                        <div>
 
-                        <div class="flex justify-around items-center">
-                            <i class="fad fa-user fa-4x text-primary"
-                            x-show="!has_photo"></i>
-                            <img class="rounded-lg shadow max-h-36" id="employee_image" src="{{ $employee -> photo_location_url }}"
-                            x-show="has_photo">
-                        </div>
-
-
-                        <button
-                        type="button"
-                        class="button danger sm mt-4"
-                        x-on:click="delete_photo()"
-                        x-show="has_photo">
-                            <i class="fal fa-times mr-2"></i> Delete Photo
-                        </button>
-
-                    </div>
-
-                    <div class="flex-grow ml-4 lg:mx-12">
-                        <div class="text-gray mb-3">Add/Replace Photo</div>
-                        <input type="file" id="employee_photo" name="employee_photo">
-
-                        <x-modals.modal
-                        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
-                        :modalTitle="'Crop Photo'"
-                        :modalId="'show_cropper_modal'"
-                        :clickOutside="'employee_photo_pond.removeFiles();'"
-                        x-show="show_cropper_modal">
-
-                            <div class="crop-container max-h-96"></div>
-
-                            <hr>
-
-                            <div class="flex justify-around items-center p-4">
-
-                                <button
-                                type="button"
-                                class="button primary md"
-                                x-on:click="save_cropped_image($el)">
-                                    <i class="fal fa-check mr-2"></i> Save Changes
-                                </button>
+                            <div class="flex justify-around items-center">
+                                <i class="fad fa-user fa-4x text-primary"
+                                x-show="!has_photo"></i>
+                                <img class="rounded-lg shadow max-h-36" id="employee_image" src="{{ $employee -> photo_location_url ?? null }}"
+                                x-show="has_photo">
                             </div>
 
-                        </x-modals.modal>
+
+                            <button
+                            type="button"
+                            class="button danger sm mt-4"
+                            x-on:click="delete_photo()"
+                            x-show="has_photo">
+                                <i class="fal fa-times mr-2"></i> Delete Photo
+                            </button>
+
+                        </div>
+
+                        <div class="flex-grow ml-4 lg:mx-12">
+                            <div class="text-gray mb-3">Add/Replace Photo</div>
+                            <input type="file" id="employee_photo" name="employee_photo">
+
+                            <x-modals.modal
+                            :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
+                            :modalTitle="'Crop Photo'"
+                            :modalId="'show_cropper_modal'"
+                            :clickOutside="'employee_photo_pond.removeFiles();'"
+                            x-show="show_cropper_modal">
+
+                                <div class="crop-container max-h-96"></div>
+
+                                <hr>
+
+                                <div class="flex justify-around items-center p-4">
+
+                                    <button
+                                    type="button"
+                                    class="button primary md"
+                                    x-on:click="save_cropped_image($el)">
+                                        <i class="fal fa-check mr-2"></i> Save Changes
+                                    </button>
+                                </div>
+
+                            </x-modals.modal>
+
+                        </div>
 
                     </div>
+
 
                 </div>
 
-
-            </div>
+            @endif
 
         </div>
+
+
+        <x-modals.modal
+        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
+        :modalTitle="''"
+        :modalId="'show_email_error_modal'"
+        x-show="show_email_error_modal">
+
+            <div class="p-6 flex items-center justify-around text-red-700">
+                <i class="fad fa-exclamation-circle mr-4 fa-2x"></i>
+                That company email address is already in use. Please use a different email address.
+            </div>
+
+        </x-modals.modal>
+
 
     </div>
 

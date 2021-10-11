@@ -1,12 +1,16 @@
+@php
+$title = 'Form Elements';
+$breadcrumbs = [
+    ['Super Admin', ''],
+    [$title],
+];
+@endphp
 <x-app-layout>
-
-    <div class="bg-gray-50">
-
-        @section('title') Form Elements @endsection
-
-        <x-slot name="header">
-            Form Elements
-        </x-slot>
+    @section('title') {{ $title }} @endsection
+    <x-slot name="header">
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
+    </x-slot>
 
         <div class="pb-36 pt-2 px-8">
 
@@ -424,8 +428,8 @@
                                 type="button"
                                 class="button primary md mb-3"
                                 @click="show_modal = true">
-                                Show Modal <i class="fal fa-plus ml-2"></i>
-                                </button&gt;
+                                Show Modal &gt;i class="fal fa-plus ml-2"&gt;&lt;/i&gt;
+                                &lt;/button&gt;
 
                                 &lt;x-modals.modal
                                 :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"

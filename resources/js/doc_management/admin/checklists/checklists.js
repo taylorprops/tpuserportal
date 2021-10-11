@@ -174,7 +174,7 @@ if (document.URL.match(/checklists$/)) {
 
 
 
-                let form_html = document.getElementById('form_template').innerHTML;
+                let form_html = document.getElementById('checklist_item_template').innerHTML;
                 form_html = form_html.replace(/%%name%%/g, name);
                 form_html = form_html.replace(/%%form_name%%/g, form_name);
                 form_html = form_html.replace(/%%form_id%%/g, form_id);

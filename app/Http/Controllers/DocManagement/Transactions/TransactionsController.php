@@ -206,11 +206,9 @@ class TransactionsController extends Controller
 
         $contacts = CRMContacts::where('user_id', auth() -> user() -> id) -> orderBy('contact_last') -> get();
 
-        $button_classes = 'px-3 py-2 text-sm bg-primary hover:bg-primary-dark active:bg-primary-dark focus:border-primary-dark ring-primary-dark inline-flex items-center rounded text-white shadow hover:shadow-lg outline-none tracking-wider focus:outline-none disabled:opacity-25 transition-all ease-in-out duration-150 shadow hover:shadow-md';
-
         return datatables() -> of($contacts)
-        -> addColumn('import', function ($contacts) use ($button_classes) {
-            return '<button class="'.$button_classes.'"
+        -> addColumn('import', function ($contacts) {
+            return '<button class="button primary sm"
                 data-id="'.$contacts -> id.'"
                 data-first="'.$contacts -> contact_first.'"
                 data-last="'.$contacts -> contact_last.'"

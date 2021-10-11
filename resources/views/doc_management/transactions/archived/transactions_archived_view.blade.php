@@ -1,7 +1,16 @@
+@php
+$title = $address;
+$breadcrumbs = [
+    ['Transactions', 'transactions/transactions'],
+    ['Transactions Archived', '/transactions_archived'],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') {{ $address }} @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        {{ $address }}
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2">
@@ -157,7 +166,7 @@
                         <div class="border-b mb-3 pb-2">
                             <div class="flex justify-start items-center">
                                 <div class="my-1">
-                                    <a href="/storage/{{ $doc -> file_location }}" class="view-link px-4 py-2 bg-primary text-white text-center shadow rounded-md" target="_blank">View</a>
+                                    <a href="/storage/{{ $doc -> file_location }}" class="view-link button primary md" target="_blank">View</a>
                                 </div>
                                 <div class="ml-4">
                                     {{ $doc -> fileName }}

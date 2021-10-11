@@ -1,12 +1,12 @@
 
-if(document.URL.match(/loan_officers$/)) {
+if(document.URL.match(/loan_officer$/)) {
 
 
     window.employees = function() {
 
         return {
             search_val: '',
-            active_url: '/employees/loan_officers/get_loan_officers',
+            active_url: '/employees/loan_officer/get_loan_officers',
             active: 'yes',
             init() {
                 show_loading();
@@ -16,7 +16,7 @@ if(document.URL.match(/loan_officers$/)) {
 
                 let scope = this;
                 if(!url) {
-                    url = '/employees/loan_officers/get_loan_officers';
+                    url = '/employees/loan_officer/get_loan_officers';
                 }
                 scope.active_url = url;
                 axios.get(url)
@@ -58,7 +58,7 @@ if(document.URL.match(/loan_officers$/)) {
                 this.search_val = val;
                 this.active = '';
                 document.querySelector('#active').value = '';
-                this.active_url = '/employees/loan_officers/get_loan_officers?search=' + val.trim();
+                this.active_url = '/employees/loan_officer/get_loan_officers?search=' + val.trim();
                 this.get_employees(this.active_url);
             },
             show_active(active) {

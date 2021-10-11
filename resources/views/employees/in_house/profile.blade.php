@@ -1,7 +1,15 @@
+@php
+$title = 'Edit Profile';
+$breadcrumbs = [
+    ['Employees', ''],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Edit Profile @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Edit Profile
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-24 lg:pb-48 pt-2"
@@ -101,7 +109,7 @@
                         <button
                         type="button"
                         class="button primary xl px-8 py-6 text-lg"
-                        x-on:click="save_bio($el)">
+                        x-on:click="save_signature($el)">
                             <i class="fal fa-check mr-2"></i> Save Signature
                         </button>
                     </div>

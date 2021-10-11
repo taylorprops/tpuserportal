@@ -1,7 +1,14 @@
+@php
+$title = 'Transactions';
+$breadcrumbs = [
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Transactions @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Transactions
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2">

@@ -1,21 +1,26 @@
+@php
+$title = 'Dashboard';
+$breadcrumbs = [];
+@endphp
 <x-app-layout>
-    @section('title') Dashboard @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Dashboard
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
-            <div class="h-screen w-full">
+            <div class="">
 
-                asefasdf
+                In House Dashboard
 
             </div>
 
         </div>
 
-
     </div>
+
 </x-app-layout>

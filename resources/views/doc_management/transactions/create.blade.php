@@ -1,7 +1,16 @@
+
+@php
+$title = 'Add '.$details['header'];
+$breadcrumbs = [
+    ['Transactions', '/transactions/transactions'],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Add {{ $details['header'] }} @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        <i class="{{ $details['icon'] }} mr-3"></i> Add {{ $details['header'] }}
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="create-div pb-36 pt-16"

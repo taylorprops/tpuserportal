@@ -1,7 +1,15 @@
+@php
+$title = 'Add In House Employee';
+$breadcrumbs = [
+    ['In House Employees', '/employees/in_house'],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Page Name @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Page Name
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2">

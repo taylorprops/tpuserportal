@@ -12,7 +12,7 @@ if(document.URL.match(/transactions\/create/)) {
         return {
             transaction_type: transaction_type,
             search_type: 'address',
-            active_step: 3,
+            active_step: 1,
             steps_complete: '0',
             show_no_property_error: false,
             show_street_error: false,

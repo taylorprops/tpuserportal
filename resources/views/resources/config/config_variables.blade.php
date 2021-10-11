@@ -1,7 +1,15 @@
+@php
+$title = 'Config Variables';
+$breadcrumbs = [
+    ['Super Admin', ''],
+    [$title],
+];
+@endphp
 <x-app-layout>
-    @section('title') Config Variables @endsection
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        Config Variables
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="pb-12 pt-2"

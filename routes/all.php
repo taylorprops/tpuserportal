@@ -19,6 +19,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     /***** Employee Profile ******/
     Route::get('/employees/profile', [EmployeesController::class, 'profile']) -> middleware(['all']);
     Route::post('/employees/profile/save_bio', [EmployeesController::class, 'save_bio']) -> middleware(['all']);
+    Route::post('/employees/profile/save_signature', [EmployeesController::class, 'save_signature']) -> middleware(['all']);
 
     /***** Employee Photos ******/
     Route::post('/employees/photos/save_cropped_upload', [EmployeesController::class, 'save_cropped_upload']) -> middleware(['all']);

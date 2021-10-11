@@ -1,11 +1,15 @@
+@php
+$title = 'Forms';
+$breadcrumbs = [
+    [$title],
+];
+$active_tab = $form_groups -> first() -> id; $default_state = $form_groups -> first() -> state;
+@endphp
 <x-app-layout>
-
-    @section('title') Forms @endsection
-
-    @php $active_tab = $form_groups -> first() -> id; $default_state = $form_groups -> first() -> state; @endphp
-
+    @section('title') {{ $title }} @endsection
     <x-slot name="header">
-        <i class="fad fa-copy mr-3"></i> Forms
+        <x-nav.bread-crumbs
+        :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
     <div class="page-container pt-2"
