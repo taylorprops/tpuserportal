@@ -54,6 +54,11 @@ $breadcrumbs = [
 
                 </div>
 
+                <div class="mt-4">
+                    <div class="font-semibold border-b">Profile Link</div>
+                    <a href="www.heritagefinancial.com/{{ $employee -> folder }}" target="_blank">www.heritagefinancial.com/{{ $employee -> folder }}</a>
+                </div>
+
             </div>
 
             <div class="p-2 lg:p-8 rounded-lg border mt-12 lg:mt-16">
@@ -67,6 +72,7 @@ $breadcrumbs = [
                         <a class="text-xs md:text-base p-1 border flex items-center rounded-md bg-white shadow hover:bg-blue-50" href="https://heritagefinancial.com/about_us/view_loan_officer/{{ $employee -> id }}" target="_blank">View Profile</a>
                     </div>
                 </div>
+
 
                 <div class="text-xl font-medium text-gray-700 border-b mb-6 mt-4">Your Profile Picture</div>
 

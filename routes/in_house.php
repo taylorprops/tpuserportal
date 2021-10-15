@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
@@ -72,6 +73,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // Escrow
     Route::get('/transactions_archived/escrow', [EscrowController::class, 'escrow']) -> middleware(['in_house']);
     Route::get('/transactions_archived/get_escrow_html', [EscrowController::class, 'get_escrow']) -> middleware(['in_house']);
+
+
+    // Billing
+    Route::get('/authnet/add_card', [AuthNetController::class, 'add_card']) -> middleware(['in_house']);
 
 
     // temp

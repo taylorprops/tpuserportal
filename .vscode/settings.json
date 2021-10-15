@@ -18,6 +18,7 @@
         "askedio",
         "atxetwx",
         "authenticatable",
+        "authnet",
         "autoscroller",
         "awobaz",
         "b",
@@ -301,6 +302,7 @@
         "town",
         "towncode",
         "tp",
+        "transkey",
         "translatex",
         "translatey",
         "translit",
@@ -336,5 +338,6 @@
         "zoomable"
     ],
     "git.ignoreLimitWarning": true,
-    "github.copilot.autocomplete.enable": true
+    "github.copilot.autocomplete.enable": true,
+    "cSpell.words": []
 }

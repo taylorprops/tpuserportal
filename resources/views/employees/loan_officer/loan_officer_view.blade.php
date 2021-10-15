@@ -13,7 +13,7 @@ $breadcrumbs = [
     </x-slot>
 
     <div class="pt-2 pb-48"
-    x-data="profile('{{ $employee -> id ?? null }}', 'loan_officer', @if($employee && $employee -> photo_location != '') true @else false @endif, '#bio');">
+    x-data="profile('{{ $employee -> id ?? null }}', 'loan_officer', @if($employee && $employee -> photo_location != '') true @else false @endif, '#bio', 'www.heritagefinancial.com');">
 
         <div class="max-w-900-px mx-auto pt-8 md:pt-12 xl:pt-16 px-4">
 
@@ -275,6 +275,30 @@ $breadcrumbs = [
 
                     </div>
 
+                    <hr class="bg-gray-300 my-6">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                        <div class="m-2 sm:m-3">
+                            <input
+                            type="text"
+                            class="form-element input md"
+                            id="folder"
+                            name="folder"
+                            data-label="Profile Link Name"
+                            value="{{ $employee -> folder }}"
+                            @keyup="show_profile_link()">
+                        </div>
+
+                        <div class="m-2 sm:m-3 col-span-1 sm:col-span-2 lg:col-span-3">
+                            <div class="text-gray-600 italic text-sm mt-1">Profile Link</div>
+                            <div class="mt-2">
+                                <a href="javascript:void(0)" class="text-primary" id="folder_url"></a>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <div class="flex justify-around items-center mt-12">
 
@@ -404,7 +428,7 @@ $breadcrumbs = [
 
         <div class="p-6 flex items-center justify-around text-red-700">
             <i class="fad fa-exclamation-circle mr-4 fa-2x"></i>
-            That company email address is already in use. Please use a different email address.
+            <span class="error-message"></span>
         </div>
 
         </x-modals.modal>

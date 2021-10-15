@@ -111,7 +111,7 @@ class EmployeesController extends Controller
 
         $search = $request -> search ?? null;
         $active = $request -> active;
-        $employees = LoanOfficers::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
+        $employees = LoanOfficers::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('fullname', 'like', '%'.$search.'%');
@@ -154,6 +154,33 @@ class EmployeesController extends Controller
         if(!$request -> commission_split) {
             $request -> merge(['commission_split' => 'N/A']);
         }
+        if(!$request -> folder) {
+            $request -> merge(['folder' => 'N/A']);
+        }
+
+        if($emp_type == 'loan_officer') {
+
+            $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
+            $ignore_cols = ['emp_id', 'license_state', 'license_number'];
+
+            // $folder = LoanOfficers::where('folder', $request -> folder) -> where('id', '!=', $emp_id) -> first();
+            // if($folder) {
+            //     return response() -> json(['error' => 'The profile name is already in use']);
+            // }
+
+        } else if($emp_type == 'in_house') {
+
+            $employee = InHouse::firstOrNew(['id' => $emp_id]);
+            $ignore_cols = ['emp_id', 'commission_split', 'license_state', 'license_number', 'folder'];
+
+        }
+
+
+
+        // get user email before it is changed to update user table
+        $orig_email = $employee -> email;
+
+        $user = User::where('email', $orig_email) -> first();
 
         $validator = $request -> validate([
             'emp_position' => 'required',
@@ -162,7 +189,7 @@ class EmployeesController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user -> id,
             'address_street' => 'required',
             'address_city' => 'required',
             'address_state' => 'required',
@@ -170,30 +197,15 @@ class EmployeesController extends Controller
             'commission_split' => 'required',
             'soc_sec' => 'required|regex:/[0-9]{3}-[0-9]{2}-[0-9]{4}/',
             'dob' => 'required',
+            'folder' => 'required|string|max:25|unique:emp_loan_officers,folder,'.$user -> user_id,
         ],
         [
             'required' => 'Required',
             'email' => 'You must enter a valid email address',
-            'unique' => 'The email address is already in use',
+            'email.unique' => 'The email address is already in use',
+            'folder.unique' => 'That profile name is already in use',
             'regex' => 'The social security number must be in the format ###-##-####'
         ]);
-
-        if($emp_type == 'loan_officer') {
-
-            $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
-            $ignore_cols = ['emp_id', 'license_state', 'license_number'];
-
-        } else if($emp_type == 'in_house') {
-
-            $employee = InHouse::firstOrNew(['id' => $emp_id]);
-            $ignore_cols = ['emp_id', 'commission_split', 'license_state', 'license_number'];
-
-        }
-
-
-
-        // get user email before it is changed to update user table
-        $orig_email = $employee -> email;
 
         foreach($request -> all() as $key => $val) {
             if(!in_array($key, $ignore_cols)) {
@@ -203,7 +215,9 @@ class EmployeesController extends Controller
                 $employee[$key] = $val;
             }
         }
+
         $employee -> fullname = $employee -> first_name . ' ' . $employee -> last_name;
+
         $employee -> save();
         $emp_id = $employee -> id;
 
@@ -501,6 +515,9 @@ class EmployeesController extends Controller
             $add_lo -> address_zip = $lo -> zip;
             $add_lo -> photo_location = $lo -> photo_loc;
             $add_lo -> signature = $lo -> signature;
+            if($add_lo -> active == 'yes') {
+                $add_lo -> folder = $lo -> first;
+            }
             $add_lo -> commission_split = (double) $lo -> comm_split * 100;
             if($lo -> start_date != '0000-00-00' && $lo -> start_date != '') {
                 $add_lo -> start_date = $lo -> start_date;
@@ -566,9 +583,9 @@ class EmployeesController extends Controller
 
 
             $email = $lo -> lo_email;
-            if($lo -> comp_email != '') {
-                $email = $lo -> comp_email;
-            }
+            // if($lo -> comp_email != '') {
+            //     $email = $lo -> comp_email;
+            // }
             $add_user = new User();
             $add_user -> user_id = $lo -> id;
             $add_user -> group = 'loan_officer';

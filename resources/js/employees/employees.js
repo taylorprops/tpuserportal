@@ -1,7 +1,7 @@
 if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
 
-    window.profile = function(emp_id, emp_type, photo_exists, text_editor_ele) {
+    window.profile = function(emp_id, emp_type, photo_exists, text_editor_ele, url = null) {
 
         if(!emp_id) {
             photo_exists = false;
@@ -16,6 +16,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
             has_photo: photo_exists,
             show_ssn: false,
             show_email_error_modal: false,
+            url: url,
             init() {
 
                 if(emp_id) {
@@ -35,6 +36,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     if(text_editor_ele != '') {
                         this.init_text_editor(text_editor_ele);
                     }
+                    this.show_profile_link();
                 }
             },
 
@@ -60,6 +62,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                                 toastr.success('Employee details successfully saved')
                             } else if(response.data.error) {
                                 scope.show_email_error_modal = true;
+                                document.querySelector('.error-message').innerHTML = response.data.error;
                             } else if(response.data.emp_id) {
                                 emp_id = response.data.emp_id;
                                 window.location = '/employees/'+emp_type+'/'+emp_type+'_view/'+emp_id;
@@ -80,7 +83,13 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                 }, 500);
             },
-
+            show_profile_link() {
+                if(document.querySelector('#folder')) {
+                    let folder = document.querySelector('#folder').value;
+                    let link = this.url+'/'+folder;
+                    document.querySelector('#folder_url').innerText = link;
+                }
+            },
             get_licenses() {
                 axios.get('/employees/get_licenses', {
                     params: {
