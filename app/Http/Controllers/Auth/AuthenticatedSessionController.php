@@ -33,7 +33,6 @@ class AuthenticatedSessionController extends Controller
         $request -> session() -> regenerate();
 
         // TODO: Add login middleware
-        return response() -> json(['test' => true]);
         return redirect() -> intended(RouteServiceProvider::HOME);
     }
 
