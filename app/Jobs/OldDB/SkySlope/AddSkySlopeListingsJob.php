@@ -51,8 +51,8 @@ class AddSkySlopeListingsJob implements ShouldQueue
             'Session' => $session
         ];
 
-        $modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-20 day')));
-        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-15 day')));
+        $modifiedAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-20 day')));
+        $modifiedBefore = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-15 day')));
 
         $query = [
             'modifiedAfter' => $modifiedAfter,
