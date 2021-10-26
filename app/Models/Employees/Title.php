@@ -13,4 +13,8 @@ class Title extends Model
     protected $table = 'emp_title';
     protected $guarded = [];
 
+    public function user() {
+        return $this -> hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+    }
+
 }

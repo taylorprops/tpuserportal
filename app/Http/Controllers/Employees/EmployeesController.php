@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Employees;
 
 use App\Models\User;
 use App\Helpers\Helper;
+use App\Helpers\AuthNet;
 use Illuminate\Http\Request;
 use App\Models\Employees\Title;
 use App\Models\Employees\Agents;
 use App\Models\Employees\InHouse;
+use App\Models\Billing\CreditCards;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
@@ -135,7 +137,7 @@ class EmployeesController extends Controller
         $id = $request -> id ? $request -> id : null;
         $employee = null;
         if($id) {
-            $employee = LoanOfficers::with(['docs', 'notes', 'licenses']) -> find($id);
+            $employee = LoanOfficers::with(['docs', 'notes', 'licenses', 'user.credit_cards']) -> find($id);
         }
 
         $states = LocationData::getStates();
@@ -482,6 +484,87 @@ class EmployeesController extends Controller
             ]);
         }
 
+
+        return response() -> json(['success' => true]);
+
+    }
+
+
+    public function get_credit_cards(Request $request) {
+
+        $emp_id = $request -> emp_id;
+        $emp_type = $request -> emp_type;
+
+        if($emp_type == 'agent') {
+            $employee = Agents::with(['user.credit_cards']) -> find($emp_id);
+        } else if($emp_type == 'loan_officer') {
+            $employee = LoanOfficers::with(['user.credit_cards']) -> find($emp_id);
+        } else if($emp_type == 'in_house') {
+            $employee = InHouse::with(['user.credit_cards']) -> find($emp_id);
+        } else if($emp_type == 'title') {
+            $employee = Title::with(['user.credit_cards']) -> find($emp_id);
+        } else if($emp_type == 'transaction_coordinator') {
+            $employee = TransactionCoordinators::with(['user.credit_cards']) -> find($emp_id);
+        }
+
+        $user = $employee -> user -> first();
+        $credit_cards = $user -> credit_cards -> where('active', '1');
+
+        return view('/employees/billing/get_credit_cards_html', compact('credit_cards'));
+
+    }
+    public function add_credit_card(Request $request) {
+
+
+        $validator = $request -> validate([
+            'first' => 'required',
+            'last' => 'required',
+            'number' => 'required',
+            'expire_month' => 'required',
+            'expire_year' => 'required',
+            'street' => 'required',
+            'zip' => 'required',
+            'code' => 'required',
+        ],
+        [
+            'required' => 'Required'
+        ]);
+
+        $user = User::where('group', $request -> emp_type) -> where('user_id', $request -> emp_id) -> first();
+        $user_id = $user -> id;
+        $email = $user -> email;
+        $profile_id = $user -> profile_id ?? null;
+
+        $result = AuthNet::AddCreditCard($user_id, $profile_id, $email, $request -> number, $request -> expire_month, $request -> expire_year, $request -> street, '', '', $request -> zip, $request -> first, $request -> last, $request -> code);
+
+        if ($result != '') {
+            return response() -> json(['error' => $result]);
+        }
+        return response() -> json(['success' => true]);
+
+    }
+
+    public function delete_credit_card(Request $request) {
+
+        AuthNet::deleteCustomerPaymentProfile($request -> profile_id, $request -> payment_profile_id);
+
+        return response() -> json(['success' => true]);
+
+    }
+
+    public function set_default_credit_card(Request $request) {
+
+        CreditCards::where('profile_id', $request -> profile_id)
+        -> update([
+            'default' => 'no'
+        ]);
+
+        CreditCards::where('profile_id', $request -> profile_id)
+        -> where('payment_profile_id', $request -> payment_profile_id)
+        -> first()
+        -> update([
+            'default' => 'yes'
+        ]);
 
         return response() -> json(['success' => true]);
 

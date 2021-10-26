@@ -58,7 +58,7 @@
                 <!-- Page Heading -->
                 @if($header != 'null')
                 <header>
-                    <div class="w-full border-gray-200 border-b bg-white pb-4 pt-2"
+                    <div class="w-full border-gray-200 border-b bg-white bp-0 pt-2"
                     :class="{
                         'pl-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
                         'pl-12 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,

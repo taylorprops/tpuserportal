@@ -6,7 +6,7 @@ $id = time() * rand();
 @if($level === '1')
 
     <li>
-        <a href="{{ $link }}" class="flex items-center h-full w-full px-2 py-2 text-sm font-medium rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary">
+        <a href="{{ $link }}" class="flex items-center h-full w-full px-2 py-1 text-sm font-medium rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary">
             <div class="flex justify-center items-center h-8 w-8 mr-4 rounded bg-white group-hover:bg-primary-light">
                 <i class="{{ $icon }} fa-lg"></i>
             </div>
@@ -22,7 +22,7 @@ $id = time() * rand();
 
     <li>
 
-        <div class="px-2 py-2 text-sm font-medium cursor-pointer rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary"
+        <div class="px-2 py-1 text-sm font-medium cursor-pointer rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary"
         :class="{ 'bg-primary text-white': active_menu === {{ $id }}, 'bg-none text-primary-dark': active_menu !== {{ $id }} }"
         @click="if(active_menu === {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
 
@@ -68,7 +68,7 @@ $id = time() * rand();
 
     <li>
 
-        <div class="relative px-2 py-2 text-sm font-medium cursor-pointer rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary"
+        <div class="relative px-2 py-1 text-sm font-medium cursor-pointer rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary"
         :class="{ 'bg-primary text-white': active_menu === {{ $id }}, 'bg-none text-primary-dark': active_menu !== {{ $id }} }">
 
             <div class="h-full w-full flex justify-between items-center rounded-md"

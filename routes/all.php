@@ -25,5 +25,11 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/employees/photos/save_cropped_upload', [EmployeesController::class, 'save_cropped_upload']) -> middleware(['all']);
     Route::post('/employees/photos/delete_photo', [EmployeesController::class, 'delete_photo']) -> middleware(['all']);
 
+    /***** Billing ******/
+    Route::get('/employees/billing/get_credit_cards', [EmployeesController::class, 'get_credit_cards']) -> middleware(['all']);
+    Route::post('/employees/billing/add_credit_card', [EmployeesController::class, 'add_credit_card']) -> middleware(['all']);
+    Route::post('/employees/billing/delete_credit_card', [EmployeesController::class, 'delete_credit_card']) -> middleware(['all']);
+    Route::post('/employees/billing/set_default_credit_card', [EmployeesController::class, 'set_default_credit_card']) -> middleware(['all']);
+
 
 });

@@ -108,6 +108,19 @@
     {{-- End Doc Management --}}
 
 
+    {{-- Heritage Financial --}}
+    <li>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Heritage Financial</div>
+    </li>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Loans'"
+    :link="'/heritage_financial/loans'"
+    :icon="'fad fa-copy'"/>
+
+    {{-- End Heritage Financial --}}
+
     {{-- Employees --}}
     <li>
         <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Employees</div>

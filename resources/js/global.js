@@ -13,6 +13,8 @@ window.addEventListener('load', (event) => {
     form_elements();
     setInterval(form_elements, 1000);
 
+    numbers_only();
+
 });
 
 
@@ -81,7 +83,7 @@ window.form_elements = function() {
             classes.add('label-added');
 
             if(element.hasAttribute('required') || element.classList.contains('required')) {
-                element.parentNode.insertAdjacentHTML('beforeend', '<div class="relative"> <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span> </div>');
+                element.parentNode.insertAdjacentHTML('beforeend', '<div class="relative"> <span class="text-red-500 text-xxs error-message h-4 inline-block absolute top-0"></span> </div>');
             }
 
         }
@@ -117,9 +119,17 @@ window.show_form_errors = function (errors) {
 
         let field = `${key}`;
         let message = `${value}`;
-        let element = document.querySelector('#' + field);
+        let element = '';
+        if(field.match(/\.[0-9]+$/)) {
+            let fields = field.split('.');
+            let elements = document.querySelectorAll('[name="'+fields[0]+'[]"]');
+            element = elements[fields[1]];
+            console.log(element);
+        } else {
+            element = document.querySelector('#' + field);
+        }
         let label = '';
-        let error_message = '<div class="error-message text-red-500 text-xs">' + message + '</div>';
+        let error_message = '<div class="error-message text-red-500 text-xxs">' + message + '</div>';
 
         if (element) {
             if(element.parentNode.tagName == 'LABEL') {
@@ -162,9 +172,9 @@ window.text_editor = function (options) {
         options.selector = '.text-editor';
     }
     options.content_style = 'body { font-size: .9rem; }',
-        //options.content_css = '/css/tinymce.css';
-        options.force_p_newlines = false;
-    options.forced_root_block = '';
+    //options.content_css = '/css/tinymce.css';
+    //options.force_p_newlines = false;
+    //options.forced_root_block = '';
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
 
@@ -547,33 +557,37 @@ document.querySelectorAll('.ssn').forEach(function (input) {
 
 
 // Numbers Only
-document.querySelectorAll('.numbers-only').forEach(function (input) {
+window.numbers_only = function() {
 
-    input.addEventListener('keydown', (event) => {
+    document.querySelectorAll('.numbers-only').forEach(function (input) {
 
-        // set attr  max with input type = text
-        let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v'];
+        input.addEventListener('keydown', (event) => {
 
-        if (!input.classList.contains('no-decimals')) {
-            allowed_keys.push('.');
-        }
-        if (!allowed_keys.includes(event.key)) {
-            event.preventDefault();
-        } else {
+            // set attr  max with input type = text
+            let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v'];
 
-            let max = input.getAttribute('max') ?? null;
+            if (!input.classList.contains('no-decimals')) {
+                allowed_keys.push('.');
+            }
+            if (!allowed_keys.includes(event.key)) {
+                event.preventDefault();
+            } else {
 
-            if (max) {
-                if (parseInt(input.value + event.key) > max) {
-                    event.preventDefault();
-                    input.value = event.key;
+                let max = input.getAttribute('max') ?? null;
+
+                if (max) {
+                    if (parseInt(input.value + event.key) > max) {
+                        event.preventDefault();
+                        input.value = event.key;
+                    }
                 }
             }
-        }
+
+        });
 
     });
 
-});
+}
 
 // Format Phone
 window.global_format_phone = function (obj) {

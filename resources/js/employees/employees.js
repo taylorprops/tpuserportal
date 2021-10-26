@@ -16,7 +16,11 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
             has_photo: photo_exists,
             show_ssn: false,
             show_email_error_modal: false,
+            show_add_credit_card_modal: false,
             url: url,
+            active_tab: '1',
+            show_add_card_error_div: false,
+            show_confirm_delete_credit_card: false,
             init() {
 
                 if(emp_id) {
@@ -37,6 +41,9 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         this.init_text_editor(text_editor_ele);
                     }
                     this.show_profile_link();
+
+                    this.get_credit_cards();
+
                 }
             },
 
@@ -362,8 +369,122 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         }
                     }
                 });
-            }
+            },
 
+            get_credit_cards() {
+                axios.get('/employees/billing/get_credit_cards', {
+                    params: {
+                        emp_type: emp_type,
+                        emp_id: emp_id
+                    },
+                })
+                .then(function (response) {
+                    document.getElementById('credit_cards_div').innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            add_credit_card(ele) {
+
+                let scope = this;
+
+                show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
+                scope.show_add_card_error_div = false;
+
+                let form = document.getElementById('add_credit_card_form');
+                let formData = new FormData(form);
+                formData.append('emp_id', emp_id);
+                formData.append('emp_type', emp_type);
+
+                axios.post('/employees/billing/add_credit_card', formData)
+                .then(function (response) {
+                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Credit Card';
+                    if(response.data.success) {
+                        scope.get_credit_cards();
+                        scope.show_add_credit_card_modal = false;
+                        //document.getElementById('add_credit_card_form').reset();
+                        toastr.success('Credit Card successfully added');
+                    } else if(response.data.error) {
+                        scope.show_add_card_error_div = true;
+                        document.getElementById('add_card_error_message').innerText = response.data.error;
+                    }
+                })
+                .catch(function (error) {
+                    if (error) {
+                        if (error.response) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                                ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Credit Card';
+                            }
+                        }
+                    }
+                });
+            },
+            show_delete_credit_card(ele, profile_id, payment_profile_id) {
+
+                let scope = this;
+
+                let button = document.getElementById('confirm_delete_credit_card');
+                button.setAttribute('data-profile-id', profile_id);
+                button.setAttribute('data-payment-profile-id', payment_profile_id);
+                button.setAttribute('data-ele', ele);
+
+                scope.show_confirm_delete_credit_card = true;
+
+            },
+            delete_credit_card() {
+
+                let scope = this;
+                let button = document.getElementById('confirm_delete_credit_card');
+                let ele = button.getAttribute('data-ele');
+                ele = document.getElementById(ele);
+                let profile_id  = button.getAttribute('data-profile-id');
+                let payment_profile_id = button.getAttribute('data-payment-profile-id');
+
+                ele.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+
+                let formData = new FormData();
+                formData.append('profile_id', profile_id);
+                formData.append('payment_profile_id', payment_profile_id);
+
+                axios.post('/employees/billing/delete_credit_card', formData)
+                .then(function (response) {
+                    ele.innerHTML = '<i class="fal fa-times"></i>';
+                    if(response.data.success) {
+                        scope.get_credit_cards();
+                        toastr.success('Credit Card successfully deleted');
+                        scope.show_confirm_delete_credit_card = false;
+                    } else if(response.data.error) {
+
+                    }
+                })
+                .catch(function (error) {
+                });
+
+            },
+            set_default_credit_card(profile_id, payment_profile_id) {
+
+                let scope = this;
+
+                let formData = new FormData();
+                formData.append('profile_id', profile_id);
+                formData.append('payment_profile_id', payment_profile_id);
+
+                axios.post('/employees/billing/set_default_credit_card', formData)
+                .then(function (response) {
+                    if(response.data.success) {
+                        scope.get_credit_cards();
+                        toastr.success('Default Credit Card Successfully Changed');
+                    } else if(response.data.error) {
+
+                    }
+                })
+                .catch(function (error) {
+                });
+            }
 
         }
 

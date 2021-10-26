@@ -44,5 +44,8 @@ require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');
 require('./doc_management/transactions/escrow.js');
 
+require('./heritage_financial/loans.js');
+require('./heritage_financial/view_loan.js');
+
 
 require('./tests/test');

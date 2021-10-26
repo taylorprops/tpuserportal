@@ -16,7 +16,7 @@
         <div class="mx-2 w-36">
             <input
             type="text"
-            class="form-element input md"
+            class="form-element input md required"
             name="license_number[]"
             data-label="Number"
             value="{{ $license -> license_number }}">

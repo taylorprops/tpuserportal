@@ -58,7 +58,8 @@ module.exports = {
                 '600-px': '600px',
                 '700-px': '700px',
                 '800-px': '800px',
-                '900-px': '900px'
+                '900-px': '900px',
+                '1000-px': '1000px'
             },
             height: theme => ({
                 'screen-5': '5vh',
@@ -96,6 +97,8 @@ module.exports = {
                 'screen-88': '88vw',
                 'screen-90': '90vw',
                 'screen-95': '95vw',
+                '112': '28rem',
+                '128': '32rem',
             }),
             colors: {
                 default: {
@@ -139,5 +142,7 @@ module.exports = {
             opacity: ['disabled'],
         },
     },
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [
+        require('@tailwindcss/forms')
+    ],
 };

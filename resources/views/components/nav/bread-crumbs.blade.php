@@ -1,5 +1,5 @@
 <nav class="flex mt-4 text-xs md:text-base w-full" aria-label="Breadcrumb">
-    <ol role="list" class="flex items-center space-x-1 md:space-x-4 overflow-x-auto whitespace-nowrap">
+    <ol role="list" class="flex items-center pb-4 space-x-1 md:space-x-4 overflow-x-auto whitespace-nowrap">
         <li>
             <div>
                 <a href="/dashboard" class="text-gray-400 hover:text-gray-500 flex items-center">

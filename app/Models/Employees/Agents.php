@@ -21,4 +21,8 @@ class Agents extends Model
         return $this -> hasMany(\App\Models\Employees\AgentsLicenses::class, 'agent_id');
     }
 
+    public function user() {
+        return $this -> hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+    }
+
 }

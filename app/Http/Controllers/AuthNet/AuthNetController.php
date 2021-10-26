@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AuthNet;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Billing\CreditCards;
 use App\Http\Controllers\Controller;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
@@ -30,20 +31,41 @@ class AuthNetController extends Controller {
 
     }
 
-    public function add_card(Request $request) {
+    public static function AddCreditCard($user_id, $number, $expire_month, $expire_year, $zip, $first, $last, $code) {
+
+
+        $user_id = $request -> user_id > 0 ? $request -> user_id : 'na_'.time();
+
+        $issuers = [
+            'Visa' => '/^4[0-9]{12}(?:[0-9]{3})?$/',
+            'Mastercard' => '/^5[1-5][0-9]{14}$/',
+            'American Express' => '/^3[47][0-9]{13}$/',
+            'Discover' => '/^6(?:011|5[0-9]{2})[0-9]{12}$/',
+        ];
+
+        $number = $request -> number;
+        foreach ($issuers as $key => $val) {
+            if (preg_match($val, $number)) {
+                $issuer = $key;
+            }
+        }
+
+        $expire = $request -> expire_year.'-'.$request -> expire_month;
 
         $card = [
-            'user_id' => '123',
-            'first' => 'Joe',
-            'last' => 'Jones',
-            'email' => 'info@taylorprops.com',
-            'street' => '123 Main Street',
-            'city' => 'Downtown',
-            'state' => 'WA',
-            'zip' => '98004',
-            'number' => '4242424242424242',
-            'expire' => '2038-12',
-            'code' => '145',
+            'user_id' => $user_id,
+            'profile_id' => $profile_id,
+            'first' => $request -> first,
+            'last' => $request -> last,
+            'email' => $request -> email,
+            'street' => $request -> street,
+            'city' => $request -> city,
+            'state' => $request -> state,
+            'zip' => $request -> zip,
+            'number' => $request -> number,
+            'expire' => $expire, // 2021-04
+            'code' => $request -> code,
+            'issuer' => $issuer,
         ];
 
         $this -> createCustomerPaymentProfile($card);
@@ -108,6 +130,23 @@ class AuthNetController extends Controller {
             $errorMessages = $response -> getMessages() -> getMessage();
             echo "Response : " . $errorMessages[0]-> getCode() . "  " . $errorMessages[0]-> getText() . "\n";
         }
+
+        $add_card = new CreditCards();
+        $add_card -> user_id = $card['user_id'];
+        $add_card -> first = $card['first'];
+        $add_card -> last = $card['last'];
+        $add_card -> email = $card['email'];
+        $add_card -> street = $card['street'];
+        $add_card -> city = $card['city'];
+        $add_card -> state = $card['state'];
+        $add_card -> zip = $card['zip'];
+        $add_card -> last_four = substr($card['number'], -4);
+        $add_card -> expire = $card['expire'];
+        $add_card -> code = $card['code'];
+        $add_card -> issuer = $card['issuer'];
+        $add_card -> profile_id = $response -> getCustomerProfileId();
+        $add_card -> payment_profile_id = $paymentProfiles[0];
+        $add_card -> save();
 
         return $response;
     }

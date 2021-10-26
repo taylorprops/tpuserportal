@@ -311,6 +311,7 @@
         "uc",
         "ucwords",
         "ui",
+        "uiid",
         "unit",
         "uploader",
         "url",
@@ -339,5 +340,6 @@
     ],
     "git.ignoreLimitWarning": true,
     "github.copilot.autocomplete.enable": true,
-    "cSpell.words": []
+    "cSpell.words": [],
+    "editor.wordWrap": "on"
 }

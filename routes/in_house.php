@@ -76,7 +76,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 
     // Billing
-    Route::get('/authnet/add_card', [AuthNetController::class, 'add_card']) -> middleware(['in_house']);
+    Route::get('/authnet/AddCreditCard', [AuthNetController::class, 'AddCreditCard']) -> middleware(['in_house']);
 
 
     // temp

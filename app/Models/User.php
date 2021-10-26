@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Compoships;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_id'
     ];
 
     /**
@@ -43,6 +45,10 @@ class User extends Authenticatable
 
     public function agent() {
         return $this -> hasOne(\App\Models\Employees\Agents::class, 'email', 'email');
+    }
+
+    public function credit_cards() {
+        return $this -> hasMany(\App\Models\Billing\CreditCards::class, 'user_id', 'id');
     }
 
 }

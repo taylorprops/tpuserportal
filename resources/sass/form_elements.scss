@@ -186,7 +186,7 @@ input.required,
 select.required,
 textarea.required,
 .file-input-div.required {
-    border-bottom: 1px solid rgb(240, 188, 188);
+    border-bottom: 1px solid rgb(240, 188, 188) !important;
 }
 
 .max-h-select {

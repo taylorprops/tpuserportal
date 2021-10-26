@@ -22,4 +22,8 @@ class InHouse extends Model
         return $this -> hasMany('App\Models\Employees\EmployeesDocs', ['emp_id', 'emp_type'], ['id', 'emp_type']);
     }
 
+    public function user() {
+        return $this -> hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+    }
+
 }
