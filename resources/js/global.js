@@ -11,7 +11,8 @@ window.addEventListener('load', (event) => {
     setInterval(global_format_phones, 1000);
 
     form_elements();
-    setInterval(form_elements, 1000);
+
+    setInterval(form_elements, 200);
 
     numbers_only();
 

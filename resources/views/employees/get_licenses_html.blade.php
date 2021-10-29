@@ -33,5 +33,5 @@
     </div>
 
 @empty
-    <div class="text-gray-400"><i class="fal fa-exclamation-triangle mr-2"></i> No Licenses Added</div>
+    <div class="text-gray-400 w-full text-center my-6"><i class="fal fa-exclamation-triangle mr-2"></i> No Licenses Added</div>
 @endforelse

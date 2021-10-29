@@ -268,10 +268,10 @@ $breadcrumbs = [
                                     <input
                                     type="text"
                                     class="form-element input md numbers-only required"
-                                    id="commission_split"
-                                    name="commission_split"
+                                    id="commission_percent"
+                                    name="commission_percent"
                                     data-label="Commission Split"
-                                    value="{{ $employee -> commission_split ?? null }}">
+                                    value="{{ $employee -> commission_percent ?? null }}">
                                 </div>
 
                                 <div class="m-2 sm:m-3">
@@ -346,7 +346,7 @@ $breadcrumbs = [
                                     id="folder"
                                     name="folder"
                                     data-label="Profile Link Name"
-                                    value="{{ $employee -> folder }}"
+                                    value="{{ $employee -> folder ?? null }}"
                                     @keyup="show_profile_link()">
                                 </div>
 

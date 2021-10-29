@@ -13,8 +13,24 @@ class Loans extends Model
     protected $table = 'heritage_financial_loans';
     protected $guarded = [];
 
+    public function loan_officer_1() {
+        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_id');
+    }
+
+    public function loan_officer_2() {
+        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_2_id');
+    }
+
     public function deductions() {
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansDeductions::class, 'loan_uuid', 'uuid');
+    }
+
+    public function checks_in() {
+        return $this -> hasMany(\App\Models\HeritageFinancial\LoansChecksIn::class, 'loan_uuid', 'uuid');
+    }
+
+    public function loan_officer_deductions() {
+        return $this -> hasMany(\App\Models\HeritageFinancial\LoansLoanOfficerDeductions::class, 'loan_uuid', 'uuid');
     }
 
 }

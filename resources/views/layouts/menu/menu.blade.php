@@ -48,7 +48,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                 </nav>
             </div>
 
-            <div class="flex-shrink-0 flex bg-gray-100 p-4 border-t-2">
+            <div class="flex-shrink-0 flex bg-gray-100 p-0 pb-4 border-t-2">
 
                 @include('layouts/menu/menu_footer')
 

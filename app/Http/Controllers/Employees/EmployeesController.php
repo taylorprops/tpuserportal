@@ -153,12 +153,12 @@ class EmployeesController extends Controller
         $emp_id = $request -> emp_id ?? null;
         $emp_type = $request -> emp_type;
 
-        if(!$request -> commission_split) {
-            $request -> merge(['commission_split' => 'N/A']);
-        }
-        if(!$request -> folder) {
-            $request -> merge(['folder' => 'N/A']);
-        }
+        // if(!$request -> commission_percent) {
+        //     $request -> merge(['commission_percent' => 'N/A']);
+        // }
+        // if(!$request -> folder) {
+        //     $request -> merge(['folder' => 'N/A']);
+        // }
 
         if($emp_type == 'loan_officer') {
 
@@ -173,7 +173,7 @@ class EmployeesController extends Controller
         } else if($emp_type == 'in_house') {
 
             $employee = InHouse::firstOrNew(['id' => $emp_id]);
-            $ignore_cols = ['emp_id', 'commission_split', 'license_state', 'license_number', 'folder'];
+            $ignore_cols = ['emp_id', 'commission_percent', 'license_state', 'license_number', 'folder'];
 
         }
 
@@ -183,6 +183,8 @@ class EmployeesController extends Controller
         $orig_email = $employee -> email;
 
         $user = User::where('email', $orig_email) -> first();
+        $id = $user -> id ?? null;
+        $user_id = $user -> user_id ?? null;
 
         $validator = $request -> validate([
             'emp_position' => 'required',
@@ -191,23 +193,34 @@ class EmployeesController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'phone' => 'required',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user -> id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'address_street' => 'required',
             'address_city' => 'required',
             'address_state' => 'required',
             'address_zip' => 'required',
-            'commission_split' => 'required',
             'soc_sec' => 'required|regex:/[0-9]{3}-[0-9]{2}-[0-9]{4}/',
             'dob' => 'required',
-            'folder' => 'required|string|max:25|unique:emp_loan_officers,folder,'.$user -> user_id,
         ],
         [
             'required' => 'Required',
             'email' => 'You must enter a valid email address',
             'email.unique' => 'The email address is already in use',
-            'folder.unique' => 'That profile name is already in use',
             'regex' => 'The social security number must be in the format ###-##-####'
         ]);
+
+        if ($emp_type == 'loan_officer') {
+
+            $validator = $request -> validate(
+                [
+                'commission_percent' => 'required',
+                'folder' => 'required|string|max:25|unique:emp_loan_officers,folder,'.$user_id,
+            ],
+                [
+                'required' => 'Required',
+                'folder.unique' => 'That profile name is already in use',
+            ]
+            );
+        }
 
         foreach($request -> all() as $key => $val) {
             if(!in_array($key, $ignore_cols)) {
@@ -601,7 +614,7 @@ class EmployeesController extends Controller
             if($add_lo -> active == 'yes') {
                 $add_lo -> folder = $lo -> first;
             }
-            $add_lo -> commission_split = (double) $lo -> comm_split * 100;
+            $add_lo -> commission_percent = (double) $lo -> comm_split * 100;
             if($lo -> start_date != '0000-00-00' && $lo -> start_date != '') {
                 $add_lo -> start_date = $lo -> start_date;
             }
