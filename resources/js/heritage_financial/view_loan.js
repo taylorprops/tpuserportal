@@ -1,19 +1,19 @@
 if(document.URL.match(/view_loan/)) {
 
 
-    window.loan = function(loan_officer_commission_type, loan_officer_2_commission_type, loan_officer_2_commission_sub_type, loan_amount, loan_officer_loan_amount_percent, loan_officer_2_loan_amount_percent) {
+    window.loan = function(loan_officer_1_commission_type, loan_officer_2_commission_type, loan_officer_2_commission_sub_type, loan_amount, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
 
         return {
 
             active_tab: '2',
             show_other_title: false,
             show_delete_check_in: false,
-            loan_officer_commission_type: loan_officer_commission_type,
-            loan_officer_2_commission_type: loan_officer_2_commission_type,
-            loan_officer_2_commission_sub_type: loan_officer_2_commission_sub_type,
+            loan_officer_1_commission_type: loan_officer_1_commission_type,
+            loan_officer_2_commission_type: loan_officer_2_commission_type || null,
+            loan_officer_2_commission_sub_type: loan_officer_2_commission_sub_type || null,
             loan_amount: loan_amount,
-            loan_officer_loan_amount_percent: loan_officer_loan_amount_percent,
-            loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent,
+            loan_officer_1_loan_amount_percent: loan_officer_1_loan_amount_percent,
+            loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent || null,
             init() {
 
                 this.total_commission();
@@ -33,6 +33,7 @@ if(document.URL.match(/view_loan/)) {
             },
             total_commission() {
 
+                let scope = this;
 
                 let checks_in_total = 0;
                 document.querySelectorAll('[name="check_in_amount[]"]').forEach(function(amount) {
@@ -57,77 +58,73 @@ if(document.URL.match(/view_loan/)) {
                     ele.innerText = global_format_number_with_decimals(net_commission_amount.toString());
                 });
 
-                // Loan Officer 1
-                let loan_officer_commission = '';
-                if(this.loan_officer_commission_type == 'commission') {
 
-                    let loan_officer_commission_percent = document.querySelector('[name="loan_officer_commission_percent"]').value;
-                    loan_officer_commission = (loan_officer_commission_percent / 100) * net_commission_amount;
-                    document.querySelector('.loan-officer-commission-amount').innerHTML = global_format_number_with_decimals(loan_officer_commission.toString());
+                let los = document.querySelector('#loan_officer_2_commission') ? ['1', '2'] : ['1'];
 
-                } else if(this.loan_officer_commission_type == 'loan_amount') {
+                los.forEach(function(index) {
 
-                    let commission_percent = (net_commission_amount / parseFloat(loan_amount)) * 100;
+                    let commission_type = index === '1' ? scope.loan_officer_1_commission_type : scope.loan_officer_2_commission_type;
+                    let loan_officer_commission = '';
+                    let loan_officer_loan_amount_percent = index === '1' ? scope.loan_officer_1_loan_amount_percent : scope.loan_officer_2_loan_amount_percent;
 
-                    let alert_icon, alert_text, details;
+                    if(commission_type == 'commission') {
 
-                    if(commission_percent < 2.5) {
+                        let loan_officer_commission_percent = document.querySelector('[name="loan_officer_'+index+'_commission_percent"]').value;
+                        loan_officer_commission = (loan_officer_commission_percent / 100) * net_commission_amount;
+                        document.querySelector('.loan-officer-'+index+'-commission-amount').innerHTML = global_format_number_with_decimals(loan_officer_commission.toString());
 
-                        let commission_deduction = (2.5 - commission_percent).toFixed(3) / 2;
-                        let commission_deduction_adjusted = (parseFloat('0.'+loan_officer_loan_amount_percent) - commission_deduction).toFixed(3);
+                    } else if(commission_type == 'loan_amount') {
 
-                        document.querySelector('[name="loan_officer_loan_amount_percent"]').value = commission_deduction_adjusted;
+                        let commission_percent = (net_commission_amount / parseFloat(loan_amount)) * 100;
 
-                        loan_officer_commission = (commission_deduction_adjusted * loan_amount) / 100;
+                        let alert_icon, alert_text, details;
 
-                        alert_icon = '<i class="fad fa-exclamation-circle fa-2x mr-3"></i>';
-                        alert_text = 'Commission is <span class="font-medium text-lg">'+commission_percent.toFixed(2)+'%</span> - less than 2.5% of the loan amount.';
-                        details = '2.5 - '+commission_percent.toFixed(3)+' = '+(2.5 - commission_percent).toFixed(3)+' / 2 = '+commission_deduction+'<br> \
-                            0.'+loan_officer_loan_amount_percent+' - '+commission_deduction+' = '+commission_deduction_adjusted+'<br> \
-                            <span>'+commission_deduction_adjusted+'% of <span ml-3">'+global_format_number_with_decimals(loan_amount.toString())+'</span> = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span></span>';
+                        if(commission_percent < 2.5) {
 
-                    } else {
+                            let commission_deduction = (2.5 - commission_percent).toFixed(3) / 2;
+                            let commission_deduction_adjusted = (parseFloat('0.'+loan_officer_loan_amount_percent) - commission_deduction).toFixed(3);
 
-                        document.querySelector('[name="loan_officer_loan_amount_percent"]').value = '0.'+loan_officer_loan_amount_percent;
+                            document.querySelector('[name="loan_officer_'+index+'_loan_amount_percent"]').value = commission_deduction_adjusted;
 
-                        loan_officer_commission = (parseFloat('0.'+loan_officer_loan_amount_percent) * loan_amount) / 100;
+                            loan_officer_commission = (commission_deduction_adjusted * loan_amount) / 100;
 
-                        alert_icon = '<i class="fal fa-check fa-2x mr-3"></i>';
-                        alert_text = 'Commission is more than 2.5% of the loan amount.';
-                        details = '0.'+loan_officer_loan_amount_percent+'% of '+global_format_number_with_decimals(loan_amount.toString())+' = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span>';
+                            alert_icon = '<i class="fad fa-exclamation-circle fa-2x mr-3"></i>';
+                            alert_text = 'Commission is <span class="font-medium text-lg">'+commission_percent.toFixed(2)+'%</span> - less than 2.5% of the loan amount.';
+                            details = '2.5 - '+commission_percent.toFixed(3)+' = '+(2.5 - commission_percent).toFixed(3)+' / 2 = '+commission_deduction+'<br> \
+                                0.'+loan_officer_loan_amount_percent+' - '+commission_deduction+' = '+commission_deduction_adjusted+'<br> \
+                                <span>'+commission_deduction_adjusted+'% of <span ml-3">'+global_format_number_with_decimals(loan_amount.toString())+'</span> = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span></span>';
 
+                        } else {
+
+                            document.querySelector('[name="loan_officer_'+index+'_loan_amount_percent"]').value = '0.'+loan_officer_loan_amount_percent;
+
+                            loan_officer_commission = (parseFloat('0.'+loan_officer_loan_amount_percent) * loan_amount) / 100;
+
+                            alert_icon = '<i class="fal fa-check fa-2x mr-3"></i>';
+                            alert_text = 'Commission is more than 2.5% of the loan amount.';
+                            details = '0.'+loan_officer_loan_amount_percent+'% of '+global_format_number_with_decimals(loan_amount.toString())+' = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span>';
+
+                        }
+                        document.querySelector('#loan_officer_'+index+'_loan_amount_alert_icon').innerHTML = alert_icon;
+                        document.querySelector('#loan_officer_'+index+'_loan_amount_alert_text').innerHTML = alert_text;
+                        document.querySelector('#loan_officer_'+index+'_loan_amount_details').innerHTML = details;
                     }
-                    document.querySelector('#loan_officer_loan_amount_alert_icon').innerHTML = alert_icon;
-                    document.querySelector('#loan_officer_loan_amount_alert_text').innerHTML = alert_text;
-                    document.querySelector('#loan_officer_loan_amount_details').innerHTML = details;
-                }
 
-                let loan_officer_deductions_total = 0;
-                document.querySelectorAll('[name="loan_officer_deduction_amount[]"]').forEach(function(amount) {
-                    if(amount.value != '') {
-                        let value = parseFloat(amount.value.replace(/[,\$]/g, ''));
-                        loan_officer_deductions_total += parseFloat(value);
-                    }
+                    let loan_officer_deductions_total = 0;
+                    let deduction_container = document.querySelector('.loan-officer-'+index+'-deductions');
+                    deduction_container.querySelectorAll('[name="loan_officer_deduction_amount[]"]').forEach(function(amount) {
+                        if(amount.value != '') {
+                            let value = parseFloat(amount.value.replace(/[,\$]/g, ''));
+                            loan_officer_deductions_total += parseFloat(value);
+                        }
+                    });
+                    console.log(loan_officer_deductions_total);
+                    loan_officer_commission = loan_officer_commission - loan_officer_deductions_total;
+
+                    document.querySelector('#loan_officer_'+index+'_commission_amount_ele').innerText = global_format_number_with_decimals(loan_officer_commission.toString());
+                    document.querySelector('#loan_officer_'+index+'_commission_amount').value = loan_officer_commission;
+
                 });
-                loan_officer_commission = loan_officer_commission - loan_officer_deductions_total;
-
-                document.querySelector('#loan_officer_commission_amount_ele').innerText = global_format_number_with_decimals(loan_officer_commission.toString());
-                document.querySelector('#loan_officer_commission_amount').value = loan_officer_commission;
-
-                // Loan Officer 2
-                /* let loan_officer_2_commission = '';
-
-                if(this.loan_officer_2_commission_type == 'commission') {
-
-                    let loan_officer_2_commission_percent = document.querySelector('[name="loan_officer_2_commission_percent"]').value;
-                    loan_officer_2_commission = (loan_officer_2_commission_percent / 100) * net_commission_amount;
-
-                } else if(this.loan_officer_2_commission_type == 'loan_amount') {
-
-                }
-
-                document.querySelector('#loan_officer_2_commission_amount_ele').innerText = global_format_number_with_decimals(loan_officer_2_commission.toString());
-                document.querySelector('#loan_officer_2_commission_amount').value = loan_officer_2_commission; */
 
 
                 this.set_checks_in_amount();
@@ -260,8 +257,9 @@ if(document.URL.match(/view_loan/)) {
             },
             add_loan_officer_deduction(index) {
                 let deduction = document.querySelector('#loan_officer_deduction_template').innerHTML;
-                document.querySelector('.loan-officer-deductions').insertAdjacentHTML('beforeend', deduction);
-                document.querySelector('.loan-officer-deductions').lastElementChild.getElementsByTagName('input')[0].select();
+                deduction = deduction.replace(/%%index%%/g, index);
+                document.querySelector('.loan-officer-'+index+'-deductions').insertAdjacentHTML('beforeend', deduction);
+                document.querySelector('.loan-officer-'+index+'-deductions').lastElementChild.getElementsByTagName('input')[0].select();
                 this.focus_money();
                 global_format_money();
                 numbers_only();

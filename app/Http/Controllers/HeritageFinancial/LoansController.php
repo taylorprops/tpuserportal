@@ -33,12 +33,12 @@ class LoansController extends Controller
         $loan = null;
         $deductions = [];
         $checks_in = [];
-        $loan_officer = null;
+        $loan_officer_1 = null;
         $loan_officer_2 = null;
-        $loan_officer_commission_type = null;
+        $loan_officer_1_commission_type = null;
         $loan_officer_2_commission_type = null;
         $loan_officer_2_commission_sub_type = null;
-        $loan_officer_active_commission_tab = null;
+        $loan_officer_1_active_commission_tab = null;
         $loan_officer_2_active_commission_tab = null;
         $loan_officer_deductions = null;
 
@@ -51,9 +51,9 @@ class LoansController extends Controller
             $deductions = $loan -> deductions;
             $checks_in = $loan -> checks_in;
 
-            $loan_officer = $loan -> loan_officer;
-            $loan_officer_commission_type = $loan -> loan_officer_commission_type;
-            $loan_officer_active_commission_tab = $loan -> loan_officer_commission_type  == 'loan_amount' ? '2' : '1';
+            $loan_officer_1 = $loan -> loan_officer_1;
+            $loan_officer_1_commission_type = $loan -> loan_officer_1_commission_type;
+            $loan_officer_1_active_commission_tab = $loan -> loan_officer_1_commission_type  == 'loan_amount' ? '2' : '1';
 
             $loan_officer_2 = $loan -> loan_officer_2;
             $loan_officer_2_commission_type = $loan -> loan_officer_2_commission_type;
@@ -65,20 +65,18 @@ class LoansController extends Controller
 
         }
 
-
-
         $states = LocationData::getStates();
 
         $loan_officers = LoanOfficers::where('active', 'yes') -> orderBy('last_name') -> get();
 
-        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer', 'loan_officer_2', 'loan_officer_commission_type', 'loan_officer_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers'));
+        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers'));
 
     }
 
     public function save_details(Request $request) {
 
         $request -> validate([
-            'loan_officer_id' => 'required',
+            'loan_officer_1_id' => 'required',
             'processor_id' => 'required',
             'borrower_first' => 'required',
             'borrower_last' => 'required',
@@ -122,10 +120,10 @@ class LoansController extends Controller
 
         }
 
-        $loan_officer = LoanOfficers::find($request -> loan_officer_id);
+        $loan_officer_1 = LoanOfficers::find($request -> loan_officer_1_id);
         $loan_officer_2 = LoanOfficers::find($request -> loan_officer_2_id);
 
-        $loan -> loan_officer_commission_type = $loan_officer -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
+        $loan -> loan_officer_1_commission_type = $loan_officer_1 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
         if ($loan_officer_2) {
             $loan -> loan_officer_2_commission_type = $loan_officer_2 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
         }
@@ -146,7 +144,7 @@ class LoansController extends Controller
 
         $request -> validate([
             'check_in_amount' => 'required|array',
-            'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'],
+            'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'], // cannot be 0.00
         ],
         [
             'required' => 'Required',
@@ -216,6 +214,7 @@ class LoansController extends Controller
         $descriptions = $request -> description;
         $paid_tos = $request -> paid_to;
         $paid_to_others = $request -> paid_to_other;
+        $loan_officer_deduction_indexes = $request -> loan_officer_deduction_index;
         $loan_officer_deduction_amounts = $request -> loan_officer_deduction_amount;
         $loan_officer_deduction_descriptions = $request -> loan_officer_deduction_description;
 
@@ -264,7 +263,7 @@ class LoansController extends Controller
 
                 $deduction = new LoansLoanOfficerDeductions();
                 $deduction -> loan_uuid = $loan_uuid;
-                $deduction -> lo_index =  '1';
+                $deduction -> lo_index =  $loan_officer_deduction_indexes[$index];
                 $deduction -> amount = $loan_officer_deduction_amount;
                 $deduction -> description = $loan_officer_deduction_descriptions[$index];
                 $deduction -> save();

@@ -17,7 +17,7 @@ $breadcrumbs = [
     </x-slot>
 
     <div class="pb-48 pt-2"
-    x-data="loan('{{ $loan_officer_commission_type }}', '{{ $loan_officer_2_commission_type ?? null }}', '{{ $loan_officer_2_commission_sub_type }}', '{{ $loan -> loan_amount ?? null }}', '{{ $loan_officer -> loan_amount_percent ?? null }}', '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
+    x-data="loan('{{ $loan_officer_1_commission_type }}', '{{ $loan_officer_2_commission_type ?? null }}', '{{ $loan_officer_2_commission_sub_type }}', '{{ $loan -> loan_amount ?? null }}', '{{ $loan_officer_1 -> loan_amount_percent ?? null }}', '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
 
         <div class="max-w-1400-px mx-auto pt-8 md:pt-12 lg:pt-16 px-4">
 
@@ -85,12 +85,12 @@ $breadcrumbs = [
                             <div class="col-span-1 m-2 sm:m-3">
                                 <select
                                 class="form-element select md required"
-                                id="loan_officer_id"
-                                name="loan_officer_id"
+                                id="loan_officer_1_id"
+                                name="loan_officer_1_id"
                                 data-label="Loan Officer">
                                     <option value=""></option>
                                     @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
-                                    <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
+                                    <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_1_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -467,7 +467,7 @@ $breadcrumbs = [
                                                                 @change="show_other = false; if($el.value == 'Other') { show_other = true }">
                                                                     <option value=""></option>
                                                                     <option value="Company" @if($deduction -> paid_to == 'Company') selected @endif>Company</option>
-                                                                    <option value="Loan Officer 1" @if($deduction -> paid_to == 'Loan Officer 1') selected @endif>{{ $loan_officer -> fullname ?? 'Loan Officer 1' }}</option>
+                                                                    <option value="Loan Officer 1" @if($deduction -> paid_to == 'Loan Officer 1') selected @endif>{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
                                                                     @if($loan_officer_2)
                                                                     <option value="Loan Officer 2" @if($deduction -> paid_to == 'Loan Officer 2') selected @endif>{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
                                                                     @endif
@@ -539,56 +539,92 @@ $breadcrumbs = [
 
                                     <div class="col-span-4">
 
-                                        <div class="p-4 border rounded-md"
-                                        x-data="{ active_commission_tab: '{{ $loan_officer_active_commission_tab }}', show_details: false }">
 
-                                            <div class="flex justify-between items-center">
+                                        @php
+                                        $los = ['1'];
+                                        if($loan_officer_2) {
+                                            $los[] = '2';
+                                        }
+                                        @endphp
 
-                                                <div class="flex jusify-start items-center">
+                                        @foreach($los as $index)
 
-                                                    <div class="mr-4">
-                                                        <a href="javascript:void(0)" class="block" @click="show_details = !show_details">
-                                                            <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-700': show_details === true }"></i>
+                                            @php
+                                            if($index == '1') {
+                                                $loan_officer = $loan_officer_1;
+                                                $loan_officer_active_commission_tab = $loan_officer_1_active_commission_tab;
+                                            } else if($index == '2') {
+                                                $loan_officer = $loan_officer_2;
+                                                $loan_officer_active_commission_tab = $loan_officer_2_active_commission_tab;
+                                            }
+                                            @endphp
+
+                                            <div class="p-4 mb-8 border rounded-md" id="loan_officer_{{ $index }}_commission"
+                                            x-data="{
+                                                active_commission_tab: '{{ $loan_officer_active_commission_tab }}',
+                                                show_details: false,
+                                                index: '{{ $index }}'
+                                            }">
+
+                                                <div class="flex justify-between items-center">
+
+                                                    <div class="flex jusify-start items-center">
+
+                                                        <div class="mr-4">
+                                                            <a href="javascript:void(0)" class="block" @click="show_details = !show_details">
+                                                                <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-700': show_details === true }"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="text-lg text-gray-800">{{ $loan_officer -> fullname ?? 'Loan Officer' }}</div>
+
+                                                    </div>
+
+                                                    <div class="col-span-1 whitespace-nowrap">
+
+                                                        <div class="text-right bg-red-50 text-red-800 p-2 rounded-md">
+                                                            <span id="loan_officer_{{ $index }}_commission_amount_ele">$0.00</span>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div x-show="show_details" x-transition>
+
+                                                    <nav class="flex space-x-4 my-4 items-center border-t pt-3" aria-label="Tabs">
+
+                                                        <div class="mr-6">Calculate By</div>
+
+                                                        <a href="javascript:void(0)" class=" px-3 py-2 font-medium text-sm rounded-md"
+                                                        @click="active_commission_tab = '1';
+                                                        if(index == 1) {
+                                                            loan_officer_1_commission_type = 'commission';
+                                                        } else if(index == 2) {
+                                                            loan_officer_2_commission_type = 'commission';
+                                                        }
+                                                        document.querySelector('#loan_officer_'+index+'_commission_type').value = 'commission';
+                                                        total_commission();"
+                                                        :class="{ 'bg-primary-lightest text-primary-dark': active_commission_tab === '1', 'text-gray-500 hover:text-gray-700': active_commission_tab !== '1' }">
+                                                            Commission
                                                         </a>
-                                                    </div>
 
-                                                    <div class="text-lg text-gray-800">{{ $loan_officer -> fullname ?? 'Loan Officer' }}</div>
-
-                                                </div>
-
-                                                <div class="col-span-1 whitespace-nowrap">
-
-                                                    <div class="text-right bg-red-50 text-red-800 p-2 rounded-md">
-                                                        <span id="loan_officer_commission_amount_ele">$0.00</span>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                            <div x-show="show_details" x-transition>
-
-                                                <nav class="flex space-x-4 my-4 items-center border-t pt-3" aria-label="Tabs">
-
-                                                    <div class="mr-6">Calculate By</div>
-
-                                                    <a href="javascript:void(0)" class=" px-3 py-2 font-medium text-sm rounded-md"
-                                                    @click="active_commission_tab = '1'; loan_officer_commission_type = 'commission'; document.querySelector('#loan_officer_commission_type').value = 'commission'; total_commission();"
-                                                    :class="{ 'bg-primary-lightest text-primary-dark': active_commission_tab === '1', 'text-gray-500 hover:text-gray-700': active_commission_tab !== '1' }">
-                                                        Commission
-                                                    </a>
-
-                                                    <a href="javascript:void(0)" class=" px-3 py-2 font-medium text-sm rounded-md"
-                                                    @click="active_commission_tab = '2'; loan_officer_commission_type = 'loan_amount'; document.querySelector('#loan_officer_commission_type').value = 'loan_amount'; total_commission()"
-                                                    :class="{ 'bg-primary-lightest text-primary-dark': active_commission_tab === '2', 'text-gray-500 hover:text-gray-700': active_commission_tab !== '2' }">
-                                                        Loan Amount
-                                                    </a>
-                                                </nav>
+                                                        <a href="javascript:void(0)" class=" px-3 py-2 font-medium text-sm rounded-md"
+                                                        @click="active_commission_tab = '2';
+                                                        if(index == 1) {
+                                                            loan_officer_1_commission_type = 'loan_amount';
+                                                        } else if(index == 2) {
+                                                            loan_officer_2_commission_type = 'loan_amount';
+                                                        }
+                                                        document.querySelector('#loan_officer_'+index+'_commission_type').value = 'loan_amount';
+                                                        total_commission()"
+                                                        :class="{ 'bg-primary-lightest text-primary-dark': active_commission_tab === '2', 'text-gray-500 hover:text-gray-700': active_commission_tab !== '2' }">
+                                                            Loan Amount
+                                                        </a>
+                                                    </nav>
 
 
-                                                <div class="mt-6">
-
-                                                    <div class="">
+                                                    <div class="mt-6">
 
                                                         <div x-show="active_commission_tab === '1'">
 
@@ -597,12 +633,24 @@ $breadcrumbs = [
                                                             <div class="flex justify-start items-center">
 
                                                                 <div class="w-24">
+                                                                    @php
+                                                                    $commission_percent = $loan_officer -> commission_percent;
+                                                                    if($index == '1') {
+                                                                        if($loan -> loan_officer_1_commission_percent) {
+                                                                            $commission_percent = $loan -> loan_officer_1_commission_percent;
+                                                                        }
+                                                                    } else if($index == '2') {
+                                                                        if($loan -> loan_officer_2_commission_percent) {
+                                                                            $commission_percent = $loan -> loan_officer_2_commission_percent;
+                                                                        }
+                                                                    }
+                                                                    @endphp
                                                                     <input
                                                                     type="text"
                                                                     class="form-element input md numbers-only no-decimals text-center commission-input required"
-                                                                    name="loan_officer_commission_percent"
+                                                                    name="loan_officer_{{ $index }}_commission_percent"
                                                                     data-label=""
-                                                                    value="@if($loan_officer){{ $loan -> loan_officer_commission_percent ?? $loan_officer -> commission_percent }}@endif">
+                                                                    value="{{ $commission_percent }}">
 
 
                                                                 </div>
@@ -614,7 +662,7 @@ $breadcrumbs = [
                                                                 </div>
 
                                                                 <div class="ml-4">
-                                                                    = <span class="loan-officer-commission-amount ml-3 text-lg font-bold"></span>
+                                                                    = <span class="loan-officer-{{ $index }}-commission-amount ml-3 text-lg font-bold"></span>
                                                                 </div>
 
                                                             </div>
@@ -624,21 +672,33 @@ $breadcrumbs = [
                                                         <div x-show="active_commission_tab === '2'">
 
                                                             <div class="flex justify-start items-center mb-3 bg-primary-lightest text-primary-dark p-2 rounded-md">
-                                                                <div id="loan_officer_loan_amount_alert_icon"></div>
-                                                                <div id="loan_officer_loan_amount_alert_text"></div>
+                                                                <div id="loan_officer_{{ $index }}_loan_amount_alert_icon"></div>
+                                                                <div id="loan_officer_{{ $index }}_loan_amount_alert_text"></div>
                                                             </div>
 
                                                             <div class="flex justify-start items-center">
-                                                                <div class="leading-loose" id="loan_officer_loan_amount_details"></div>
+                                                                <div class="leading-loose" id="loan_officer_{{ $index }}_loan_amount_details"></div>
                                                             </div>
 
                                                         </div>
 
-                                                        <input type="hidden" name="loan_officer_loan_amount_percent" value="@if($loan_officer){{ $loan -> loan_officer_loan_amount_percent ?? $loan_officer -> loan_amount_percent }}@endif">
+                                                        @php
+                                                        $loan_amount_percent = $loan_officer -> loan_amount_percent;
+                                                        if($index == '1') {
+                                                            if($loan -> loan_officer_1_loan_amount_percent) {
+                                                                $loan_amount_percent = $loan -> loan_officer_1_loan_amount_percent;
+                                                            }
+                                                        } else if($index == '2') {
+                                                            if($loan -> loan_officer_2_loan_amount_percent) {
+                                                                $loan_amount_percent = $loan -> loan_officer_2_loan_amount_percent;
+                                                            }
+                                                        }
+                                                        @endphp
+                                                        <input type="hidden" name="loan_officer_{{ $index }}_loan_amount_percent" value="{{ $loan_amount_percent }}">
 
-                                                        <input type="hidden" class="commission-paid-out" name="loan_officer_commission_amount" id="loan_officer_commission_amount">
+                                                        <input type="hidden" class="commission-paid-out" name="loan_officer_{{ $index }}_commission_amount" id="loan_officer_{{ $index }}_commission_amount">
 
-                                                        <input type="hidden" name="loan_officer_commission_type" id="loan_officer_commission_type">
+                                                        <input type="hidden" name="loan_officer_{{ $index }}_commission_type" id="loan_officer_{{ $index }}_commission_type">
 
                                                         <div class="my-4 pt-4 border-t">
 
@@ -648,17 +708,17 @@ $breadcrumbs = [
                                                                 </div>
                                                                 <div>
                                                                     <button type="button" class="button primary sm no-text ml-3"
-                                                                    @click="add_loan_officer_deduction('1')">
+                                                                    @click="add_loan_officer_deduction(index)">
                                                                         <i class="fal fa-plus"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
 
-                                                            <div class="loan-officer-deductions">
+                                                            <div class="loan-officer-{{ $index }}-deductions">
 
-                                                                @forelse($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
+                                                                @forelse($loan_officer_deductions -> where('lo_index', $index) as $loan_officer_deduction)
 
-                                                                    <div class="flex justify-between items-end loan-officer-deduction">
+                                                                    <div class="flex justify-between items-end loan-officer-{{ $index }}-deduction">
 
                                                                         <div class="grid grid-cols-1 sm:grid-cols-3">
 
@@ -680,12 +740,12 @@ $breadcrumbs = [
                                                                                 value="{{ $loan_officer_deduction -> description }}">
                                                                             </div>
 
-
+                                                                            <input type="hidden" name="loan_officer_deduction_index[]" value="{{ $index }}">
                                                                         </div>
 
                                                                         <div class="flex items-end mb-3 ml-3">
                                                                             <button type="button" class="button danger md no-text"
-                                                                            @click.prevent="$el.closest('.loan-officer-deduction').remove(); total_commission()">
+                                                                            @click.prevent="$el.closest('.loan-officer-{{ $index }}-deduction').remove(); total_commission()">
                                                                                 <i class="fal fa-times"></i>
                                                                             </button>
                                                                         </div>
@@ -706,14 +766,8 @@ $breadcrumbs = [
 
                                             </div>
 
+                                        @endforeach
 
-                                        </div>
-
-
-                                        @if($loan_officer_2)
-
-
-                                        @endif
 
                                     </div>
 
@@ -828,7 +882,7 @@ $breadcrumbs = [
                         @change="show_other = false; if($el.value == 'Other') { show_other = true }">
                             <option value=""></option>
                             <option value="Company">Company</option>
-                            <option value="Loan Officer 1">{{ $loan_officer -> fullname ?? 'Loan Officer 1' }}</option>
+                            <option value="Loan Officer 1">{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
                             @if($loan_officer_2)
                             <option value="Loan Officer 2">{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
                             @endif
@@ -862,7 +916,7 @@ $breadcrumbs = [
 
         <template id="loan_officer_deduction_template">
 
-            <div class="flex justify-between items-end loan-officer-deduction">
+            <div class="flex justify-between items-end loan-officer-%%index%%-deduction">
 
                 <div class="grid grid-cols-1 sm:grid-cols-3">
 
@@ -882,12 +936,12 @@ $breadcrumbs = [
                         data-label="Description">
                     </div>
 
-
+                    <input type="hidden" name="loan_officer_deduction_index[]" value="%%index%%">
                 </div>
 
                 <div class="flex items-end mb-3 ml-3">
                     <button type="button" class="button danger md no-text"
-                    @click.prevent="$el.closest('.loan-officer-deduction').remove(); total_commission()">
+                    @click.prevent="$el.closest('.loan-officer-%%index%%-deduction').remove(); total_commission()">
                         <i class="fal fa-times"></i>
                     </button>
                 </div>

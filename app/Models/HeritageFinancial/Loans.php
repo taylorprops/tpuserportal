@@ -14,7 +14,7 @@ class Loans extends Model
     protected $guarded = [];
 
     public function loan_officer_1() {
-        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_id');
+        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_1_id');
     }
 
     public function loan_officer_2() {
