@@ -201,8 +201,8 @@ $input_size = 'md';
                                 data-label="Title Company"
                                 @change="if($el.value != 'other') { $refs.title_company.value = $el.value } else { $refs.title_company.value = '' }">
                                     <option value=""></option>
-                                    <option value="Heritage Title" @if($loan && $loan -> title_company == "Heritage Title") selected @endif>Heritage Title</option>
-                                    <option value="Title Nation" @if($loan && $loan -> title_company == "Title Nation") selcted @endif>Title Nation</option>
+                                    <option value="Heritage Title" @if($loan && $loan -> title_company == 'Heritage Title') selected @endif>Heritage Title</option>
+                                    <option value="Title Nation" @if($loan && $loan -> title_company == 'Title Nation') selected @endif>Title Nation</option>
                                     <option value="other" @if($loan && $loan -> title_company != 'Heritage Title' && $loan -> title_company != 'Title Nation') selected @endif>Other</option>
                                 </select>
                             </div>
