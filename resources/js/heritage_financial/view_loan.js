@@ -5,7 +5,7 @@ if(document.URL.match(/view_loan/)) {
 
         return {
 
-            active_tab: '2',
+            active_tab: '1',
             show_other_title: false,
             show_delete_check_in: false,
             loan_officer_1_commission_amount: '',
