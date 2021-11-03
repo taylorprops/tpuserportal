@@ -15,6 +15,7 @@ class LoanOfficers extends Model
     protected $table = 'emp_loan_officers';
     protected $guarded = [];
 
+
     public function notes() {
         return $this -> hasMany('App\Models\Employees\EmployeesNotes', ['emp_id', 'emp_type'], ['id', 'emp_type']);
     }

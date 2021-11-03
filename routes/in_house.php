@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
+use App\Http\Controllers\HeritageFinancial\LoansController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
@@ -111,6 +112,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
+
+    // %%%% Import Loans
+    Route::get('/heritage_financial/loans/import_loans', [LoansController::class, 'import_loans']) -> middleware(['in_house']);
 
 
     // %%%% New Skyslope to old DB

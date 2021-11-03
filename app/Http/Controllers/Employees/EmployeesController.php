@@ -153,22 +153,10 @@ class EmployeesController extends Controller
         $emp_id = $request -> emp_id ?? null;
         $emp_type = $request -> emp_type;
 
-        // if(!$request -> commission_percent) {
-        //     $request -> merge(['commission_percent' => 'N/A']);
-        // }
-        // if(!$request -> folder) {
-        //     $request -> merge(['folder' => 'N/A']);
-        // }
-
         if($emp_type == 'loan_officer') {
 
             $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
-            $ignore_cols = ['emp_id', 'license_state', 'license_number'];
-
-            // $folder = LoanOfficers::where('folder', $request -> folder) -> where('id', '!=', $emp_id) -> first();
-            // if($folder) {
-            //     return response() -> json(['error' => 'The profile name is already in use']);
-            // }
+            $ignore_cols = ['emp_id', 'license_state', 'license_number', 'manager_bonus_type'];
 
         } else if($emp_type == 'in_house') {
 
@@ -176,8 +164,6 @@ class EmployeesController extends Controller
             $ignore_cols = ['emp_id', 'commission_percent', 'license_state', 'license_number', 'folder'];
 
         }
-
-
 
         // get user email before it is changed to update user table
         $orig_email = $employee -> email;
@@ -615,6 +601,8 @@ class EmployeesController extends Controller
                 $add_lo -> folder = $lo -> first;
             }
             $add_lo -> commission_percent = (double) $lo -> comm_split * 100;
+            $add_lo -> loan_amount_percent = '0';
+            $add_lo -> manager_bonus = '0';
             if($lo -> start_date != '0000-00-00' && $lo -> start_date != '') {
                 $add_lo -> start_date = $lo -> start_date;
             }
@@ -639,7 +627,21 @@ class EmployeesController extends Controller
                 $add_lo -> emp_position = 'loan_officer';
                 $add_lo -> job_title = 'Loan Officer';
             }
+
+            // 159 Tina Byrd change commission to 60 and manger_bonus to 4
+            if ($add_lo -> id == '159') {
+                $add_lo -> commission_percent = '60';
+                $add_lo -> manager_bonus = '4';
+            }
+
+            // 204 Kyle Stolte - change loan_amount_percent to .77 and change manger_bonus to 4
+            if ($add_lo -> id == '204') {
+                $add_lo -> loan_amount_percent = '.77';
+                $add_lo -> manager_bonus = '4';
+            }
+
             $add_lo -> save();
+
 
             if($lo -> lic1_state != '') {
                 $add_license = new EmployeesLicenses();

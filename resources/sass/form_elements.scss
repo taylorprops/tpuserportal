@@ -91,7 +91,7 @@
 
 .form-element-label {
 
-    @apply text-gray-500;
+    @apply text-gray-500 cursor-pointer;
 
     &.checkbox, &.radio {
         &.sm {

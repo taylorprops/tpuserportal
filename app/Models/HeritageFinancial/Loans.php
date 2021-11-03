@@ -21,6 +21,10 @@ class Loans extends Model
         return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_2_id');
     }
 
+    public function processor() {
+        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'processor_id');
+    }
+
     public function deductions() {
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansDeductions::class, 'loan_uuid', 'uuid');
     }

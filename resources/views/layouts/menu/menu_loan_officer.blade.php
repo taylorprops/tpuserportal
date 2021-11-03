@@ -12,13 +12,22 @@
     :level="'1'"
     :title="'Loans'"
     :link="'/heritage_financial/loans'"
-    :icon="'fad fa-tachometer-alt'"/>
+    :icon="'fad fa-copy'"/>
+
+    @if(auth() -> user() -> level == 'manager')
+    {{-- Loans --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Loan Officers'"
+    :link="'/employees/loan_officer'"
+    :icon="'fad fa-users'"/>
+    @endif
 
     {{-- Profile --}}
     <x-nav.menu
     :level="'1'"
     :title="'Profile'"
     :link="'/employees/profile/'"
-    :icon="'fad fa-tachometer-alt'"/>
+    :icon="'fad fa-user'"/>
 
 </ul>

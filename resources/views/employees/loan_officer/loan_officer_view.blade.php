@@ -266,16 +266,6 @@ $breadcrumbs = [
 
                                 <div class="m-2 sm:m-3">
                                     <input
-                                    type="text"
-                                    class="form-element input md numbers-only required"
-                                    id="commission_percent"
-                                    name="commission_percent"
-                                    data-label="Commission Split"
-                                    value="{{ $employee -> commission_percent ?? null }}">
-                                </div>
-
-                                <div class="m-2 sm:m-3">
-                                    <input
                                     type="date"
                                     class="form-element input md required"
                                     id="dob"
@@ -302,6 +292,118 @@ $breadcrumbs = [
                                         </div>
                                     </div>
                                 </div>
+
+                            </div>
+
+                            <hr class="bg-gray-300 my-6">
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                                <div class="m-2 sm:m-3 flex items-end">
+                                    <div>
+                                        <input
+                                        type="text"
+                                        class="form-element input md numbers-only required"
+                                        id="commission_percent"
+                                        name="commission_percent"
+                                        data-label="Commission Split Percent"
+                                        value="{{ $employee -> commission_percent ?? '0' }}">
+                                    </div>
+                                    <i class="fal fa-percent ml-1 mb-2"></i>
+                                </div>
+
+
+
+                                <div class="m-2 sm:m-3 flex items-end">
+                                    <div>
+                                        <input
+                                        type="text"
+                                        class="form-element input md numbers-only required"
+                                        id="loan_amount_percent"
+                                        name="loan_amount_percent"
+                                        data-label="Loan Amount Percent"
+                                        value="{{ $employee -> loan_amount_percent ?? '0.00' }}">
+                                    </div>
+                                    <i class="fal fa-percent ml-1 mb-2"></i>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4 mb-1 ml-4 sm:ml-5 text-sm italic text-gray-500">
+                                Manager Bonus
+                            </div>
+
+                            <div class="flex justify-start items-center flex-space-x-4">
+
+                                @php
+                                $bonus_type = 'standard';
+                                if($employee) {
+                                    if($employee -> manager_bonus != '0') {
+                                        $bonus_type = 'other';
+                                    }
+                                }
+                                @endphp
+
+                                <div class="flex ml-2 sm:ml-3"
+                                x-data="{ bonus_type: '{{ $bonus_type }}' }">
+
+                                    <div class="flex-1 border rounded py-1 px-2 mr-4"
+                                    :class="{ 'bg-primary-lightest text-primary-dark': bonus_type === 'standard' }">
+                                        <div class="pb-1 border-b"
+                                        :class="{ 'border-primary-dark': bonus_type === 'standard' }">
+                                            <input type="radio" class="form-element radio sm primary"
+                                            name="manager_bonus_type"
+                                            id="manager_bonus_type_1"
+                                            value="standard"
+                                            data-label="Standard"
+                                            @if($bonus_type == 'standard') checked @endif
+                                            @click="bonus_type = document.querySelector('[name=manager_bonus_type]:checked').value; $refs.manager_bonus.value = '0';">
+                                        </div>
+                                        <div class="h-20 flex items-center">
+                                            <label for="manager_bonus_type_1" class="cursor-pointer">
+                                                <div class="text-sm">
+                                                    3% - Loan Officer Leads<br>
+                                                    5% - Office Leads
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 border rounded py-1 px-2 mr-4"
+                                    :class="{ 'bg-primary-lightest text-primary-dark': bonus_type === 'other' }">
+                                        <div class="pb-1 border-b"
+                                        :class="{ 'border-primary-dark': bonus_type === 'other' }">
+                                            <input type="radio" class="form-element radio sm primary"
+                                            name="manager_bonus_type"
+                                            id="manager_bonus_type_2"
+                                            x-ref="other"
+                                            value="other"
+                                            data-label="Other"
+                                            @if($bonus_type == 'other') checked @endif
+                                            @click="bonus_type = document.querySelector('[name=manager_bonus_type]:checked').value;">
+                                        </div>
+                                        <div>
+                                            <label for="manager_bonus_type_2" class="block cursor-pointer">
+                                                <div class="m-2 sm:m-3 flex items-end">
+                                                    <div>
+                                                        <input
+                                                        type="text"
+                                                        class="form-element input md numbers-only required"
+                                                        name="manager_bonus"
+                                                        data-label="Manager Bonus Percent"
+                                                        value="{{ $employee -> manager_bonus ?? '0' }}"
+                                                        x-ref="manager_bonus"
+                                                        @focus="$refs.other.click()">
+                                                    </div>
+                                                    <i class="fal fa-percent ml-1 mb-2"></i>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
 
                             </div>
 
@@ -358,6 +460,8 @@ $breadcrumbs = [
                                 </div>
 
                             </div>
+
+                            <hr class="bg-gray-300 my-6">
 
 
                             <div class="flex justify-around items-center mt-12">

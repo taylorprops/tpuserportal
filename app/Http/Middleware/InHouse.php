@@ -16,7 +16,10 @@ class InHouse
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth() -> user() -> group != 'in_house') {
+        if (auth() -> user() -> group == 'loan_officer' && auth() -> user() -> level != 'manager') {
+            return redirect('/dashboard');
+        }
+        if (auth() -> user() -> group != 'in_house' && auth() -> user() -> group != 'loan_officer') {
             return redirect('/dashboard');
         }
         return $next($request);

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\HeritageFinancial;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Employees\LoanOfficers;
 use App\Models\HeritageFinancial\Loans;
+use App\Models\HeritageFinancial\LoansNotes;
 use App\Models\HeritageFinancial\LoansChecksIn;
+use App\Models\OldDB\Company\Loans as LoansOld;
 use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
@@ -23,7 +26,27 @@ class LoansController extends Controller
 
     public function get_loans(Request $request) {
 
-        $loans = Loans::get();
+        $direction = $request -> direction ? $request -> direction : 'desc';
+        $sort = $request -> sort ? $request -> sort : 'settlement_date';
+        $length = $request -> length ? $request -> length : 10;
+
+        $search = $request -> search ?? null;
+        $loans = Loans::select(['id', 'uuid', 'loan_amount', 'borrower_first', 'borrower_last', 'settlement_date', 'loan_officer_1_id', 'street', 'city', 'state', 'zip'])
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> where('street', 'like', '%'.$search.'%')
+                -> orWhereHas('loan_officer_1', function($query) use ($search) {
+                    $query -> where('first_name', 'like', '%'.$search.'%')
+                    -> orWhere('last_name', 'like', '%'.$search.'%')
+                    -> orWhere('fullname', 'like', '%'.$search.'%');
+                });
+            }
+        })
+        -> with(['loan_officer_1'])
+        -> orderBy($sort, $direction)
+        //-> sortable()
+        -> paginate($length);
+
         return view('heritage_financial/loans/get_loans_html', compact('loans'));
 
     }
@@ -41,6 +64,10 @@ class LoansController extends Controller
         $loan_officer_1_active_commission_tab = null;
         $loan_officer_2_active_commission_tab = null;
         $loan_officer_deductions = null;
+        $sub_type = null;
+        $manager = null;
+        $manager_bonus = null;
+        $manager_bonus_details = null;
 
         if ($request -> uuid) {
 
@@ -62,6 +89,24 @@ class LoansController extends Controller
 
             $loan_officer_deductions = $loan -> loan_officer_deductions;
 
+            $sub_type = 'commission';
+            if($loan -> loan_officer_2_commission_sub_type != '') {
+                $sub_type = $loan -> loan_officer_2_commission_sub_type;
+            }
+
+            $manager = LoanOfficers::where('emp_position', 'manager') -> first();
+            $manager = $manager -> fullname;
+
+            $manager_bonus = $loan_officer_1 -> manager_bonus;
+            $manager_bonus_details = 'Manager Bonus is always '.$loan_officer_1 -> manager_bonus.'% for all loans by '.$loan_officer_1 -> fullname;
+            if ($manager_bonus == '0.00' || $manager_bonus == '0') {
+                $manager_bonus = '3';
+                $manager_bonus_details = 'Manager Bonus is 3% for Loan Officer leads';
+                if ($loan -> source == 'Office') {
+                    $manager_bonus = '5';
+                    $manager_bonus_details = 'Manager Bonus is 5% for Office leads';
+                }
+            }
 
         }
 
@@ -69,7 +114,8 @@ class LoansController extends Controller
 
         $loan_officers = LoanOfficers::where('active', 'yes') -> orderBy('last_name') -> get();
 
-        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers'));
+
+        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'sub_type', 'manager', 'manager_bonus', 'manager_bonus_details'));
 
     }
 
@@ -96,9 +142,10 @@ class LoansController extends Controller
 
         $amounts = $request -> amount;
 
-
+        $original_loan_officer_1_id = null;
         if ($request -> uuid != '') {
             $loan = Loans::where('uuid', $request -> uuid) -> first();
+            $original_loan_officer_1_id = $loan -> loan_officer_1_id;
             $loan -> uuid = $request -> uuid;
         } else {
             $loan = new Loans();
@@ -120,12 +167,19 @@ class LoansController extends Controller
 
         }
 
-        $loan_officer_1 = LoanOfficers::find($request -> loan_officer_1_id);
-        $loan_officer_2 = LoanOfficers::find($request -> loan_officer_2_id);
+        if (!$original_loan_officer_1_id || $original_loan_officer_1_id != $loan -> loan_officer_1_id) {
 
-        $loan -> loan_officer_1_commission_type = $loan_officer_1 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
-        if ($loan_officer_2) {
-            $loan -> loan_officer_2_commission_type = $loan_officer_2 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
+            $loan_officer_1 = LoanOfficers::find($request -> loan_officer_1_id);
+            $loan_officer_2 = LoanOfficers::find($request -> loan_officer_2_id);
+
+            $loan -> loan_officer_1_commission_type = $loan_officer_1 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
+            if ($loan_officer_2) {
+                $loan -> loan_officer_2_commission_type = $loan_officer_2 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
+            }
+
+            $loan -> loan_officer_1_commission_percent = $loan_officer_1 -> commission_percent;
+            $loan -> loan_officer_1_loan_amount_percent = $loan_officer_1 -> loan_amount_percent;
+
         }
 
         $loan -> save();
@@ -219,6 +273,22 @@ class LoansController extends Controller
         $loan_officer_deduction_descriptions = $request -> loan_officer_deduction_description;
 
 
+        $loan = Loans::where('uuid', $request -> uuid) -> first();
+
+        $loan -> loan_officer_1_commission_type = $request -> loan_officer_1_commission_type;
+        $loan -> loan_officer_2_commission_type = $request -> loan_officer_2_commission_type ?? null;
+        $loan -> loan_officer_2_commission_sub_type = $request -> loan_officer_2_commission_sub_type ?? null;
+        $loan -> loan_officer_1_commission_percent = $request -> loan_officer_1_commission_percent;
+        $loan -> loan_officer_2_commission_percent = $request -> loan_officer_2_commission_percent ?? 0;
+        $loan -> loan_officer_1_loan_amount_percent = $request -> loan_officer_1_loan_amount_percent;
+        $loan -> loan_officer_2_loan_amount_percent = $request -> loan_officer_2_loan_amount_percent ?? 0;
+        $loan -> loan_officer_1_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_1_commission_amount);
+        $loan -> loan_officer_2_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_2_commission_amount ?? 0);
+        $loan -> manager_bonus = preg_replace('/[\$,]+/', '', $request -> manager_bonus);
+        $loan -> company_commission = preg_replace('/[\$,]+/', '', $request -> company_commission);
+        $loan -> save();
+
+
         LoansChecksIn::where('loan_uuid', $loan_uuid) -> delete();
 
         foreach ($checks_in as $check_in) {
@@ -272,5 +342,126 @@ class LoansController extends Controller
         }
 
     }
+
+
+
+    ////////// Import Loans from Old DB ////////////
+
+    public function import_loans(Request $request) {
+
+        $loans = LoansOld::get();
+
+        Loans::truncate();
+        LoansNotes::truncate();
+        LoansChecksIn::truncate();
+        LoansDeductions::truncate();
+        LoansLoanOfficerDeductions::truncate();
+
+        foreach ($loans as $loan) {
+
+            $id = $loan -> loan_id;
+            $uuid = (string) Str::uuid();
+            $settlement_date = $loan -> settlement_date != '0000-00-00' ? $loan -> settlement_date : null;
+            $commission_type = $loan -> lo_id == '204' ? 'loan_amount' : 'commission';
+            $loan_amount_percent = $loan -> lo_id == '204' ? '.77' : '0';
+            $source = 'Office';
+            if ($loan -> source == 'From Loan Officer' || $loan -> source == 'From One Of Our LOs') {
+                $source = 'Loan Officer';
+            }
+
+            $add_loan = new Loans();
+
+            $add_loan -> id = $id;
+            $add_loan -> uuid = $uuid;
+            $add_loan -> settlement_date = $settlement_date;
+            $add_loan -> borrower_first = $loan -> borrower_first;
+            $add_loan -> borrower_last = $loan -> borrower_last;
+            $add_loan -> co_borrower_first = $loan -> co_borrower_first;
+            $add_loan -> co_borrower_last = $loan -> co_borrower_last;
+            $add_loan -> street = $loan -> prop_address;
+            $add_loan -> city = $loan -> prop_city;
+            $add_loan -> state = $loan -> prop_state;
+            $add_loan -> county = $loan -> prop_county;
+            $add_loan -> zip = $loan -> prop_zip;
+            $add_loan -> source = $source;
+            $add_loan -> loan_amount = $loan -> loan_amount;
+            $add_loan -> points_charged = '2.5';
+            $add_loan -> loan_officer_1_id = $loan -> lo_id;
+            $add_loan -> loan_officer_2_id = $loan -> lo_2_id;
+            $add_loan -> processor_id = $loan -> processor_id;
+            $add_loan -> agent_id = $loan -> our_agent_id;
+            $add_loan -> agent_name = $loan -> our_agent;
+            $add_loan -> heritage_used = $loan -> heritage_used;
+            $add_loan -> title_nation_used = $loan -> title_nation_used;
+            $add_loan -> title_company = $loan -> title_co_used;
+            $add_loan -> loan_officer_1_commission_type = $commission_type;
+            $add_loan -> loan_officer_2_commission_type = 'commission';
+            $add_loan -> loan_officer_2_commission_sub_type = 'loan_officer_commission';
+            $add_loan -> loan_officer_1_commission_percent = (float)$loan -> lo_percent * 100;
+            $add_loan -> loan_officer_2_commission_percent = (float)$loan -> lo_2_percent * 100;
+            $add_loan -> loan_officer_1_loan_amount_percent = $loan_amount_percent;
+            $add_loan -> loan_officer_2_loan_amount_percent = '0';
+            $add_loan -> loan_officer_1_commission_amount = $loan -> amount_to_lo;
+            $add_loan -> loan_officer_2_commission_amount = $loan -> amount_to_lo2;
+            $add_loan -> manager_bonus = $loan -> manager_bonus;
+            $add_loan -> company_commission = $loan -> company_net;
+            $add_loan -> loan_number = $loan -> loan_number;
+
+            $add_loan -> save();
+
+            // add checks in
+            $add_check = new LoansChecksIn();
+            $add_check -> loan_uuid = $uuid;
+            $add_check -> amount = $loan -> check_from_title;
+            $add_check -> save();
+
+            // add deductions
+            for ($i=1; $i<7; $i++) {
+                $deduct = 'deduct'.$i;
+                $deduct_desc = 'deduct'.$i.'_desc';
+                if ($loan -> {$deduct} > 0) {
+                    $add_deduction = new LoansDeductions();
+                    $add_deduction -> loan_uuid = $uuid;
+                    $add_deduction -> description = $loan -> {$deduct_desc};
+                    $add_deduction -> amount = $loan -> {$deduct};
+                    $paid_to = 'Company';
+                    if (stristr($loan -> {$deduct_desc}, 'Credit')) {
+                        $paid_to = $loan -> lo;
+                    }
+                    $add_deduction -> paid_to = $paid_to;
+                    $add_deduction -> save();
+                }
+            }
+
+
+            // add lo deductions
+            if ($loan -> lo_comm_deduction > 0) {
+                $add_loan_officer_deduction = new LoansLoanOfficerDeductions();
+                $add_loan_officer_deduction -> loan_uuid = $uuid;
+                $add_loan_officer_deduction -> amount = $loan -> lo_comm_deduction;
+                $add_loan_officer_deduction -> lo_index = '1';
+                $add_loan_officer_deduction -> save();
+            }
+
+            // add notes
+            if ($loan -> loan_notes != '') {
+                $user = User::where('email', 'like', '%claure%') -> first();
+                $user_id = $user -> id;
+                $user_name = $user -> name;
+
+                $add_notes = new LoansNotes();
+                $add_notes -> loan_uuid = $uuid;
+                $add_notes -> user_id = $user_id;
+                $add_notes -> createdBy = $user_name;
+                $add_notes -> notes = $loan -> loan_notes;
+            }
+
+        }
+
+
+
+    }
+
+
 
 }
