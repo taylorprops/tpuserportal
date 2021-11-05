@@ -18,6 +18,7 @@ if(document.URL.match(/view_loan/)) {
             loan_officer_1_loan_amount_percent: loan_officer_1_loan_amount_percent,
             loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent || null,
             sub_type: sub_type,
+            show_alert: false,
             init() {
 
                 this.total_commission();
@@ -109,15 +110,19 @@ if(document.URL.match(/view_loan/)) {
 
                             loan_officer_commission = (parseFloat(loan_officer_loan_amount_percent) * loan_amount) / 100;
 
-                            alert_icon = '<i class="fal fa-check fa-2x mr-3"></i>';
-                            alert_text = 'Commission is more than 2.5 basis points.';
-                            details = loan_officer_loan_amount_percent+'% of '+global_format_number_with_decimals(loan_amount.toString())+' = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span>';
+                            alert_icon = null;
+                            alert_text = null;
+                            details = loan_officer_loan_amount_percent+'% <span class="ml-4">of</span> <span class="ml-4">'+global_format_number_with_decimals(loan_amount.toString())+'</span> <span class="ml-4">=</span> <span class="text-lg font-bold ml-4">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span>';
 
                         }
 
-
-                        document.querySelector('#loan_officer_'+index+'_loan_amount_alert_icon').innerHTML = alert_icon;
-                        document.querySelector('#loan_officer_'+index+'_loan_amount_alert_text').innerHTML = alert_text;
+                        if(alert_icon) {
+                            document.querySelector('#loan_officer_'+index+'_loan_amount_alert_icon').innerHTML = alert_icon;
+                            document.querySelector('#loan_officer_'+index+'_loan_amount_alert_text').innerHTML = alert_text;
+                            scope.show_alert = true;
+                        } else {
+                            scope.show_alert = false;
+                        }
                         document.querySelector('#loan_officer_'+index+'_loan_amount_details').innerHTML = details;
                     }
 

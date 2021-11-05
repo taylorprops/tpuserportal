@@ -9,7 +9,7 @@
         <thead class="bg-gray-50">
             <tr>
                 <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loan Officer</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('loan_officer_last', 'Loan Officer')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('street', 'Address')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('settlement_date', 'Close Date')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('borrower_last', 'Borrower')</th>
@@ -20,7 +20,7 @@
             @foreach($loans as $loan)
                 @php
                 $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
-                $loan_officer = $loan -> loan_officer_1 -> fullname;
+                $loan_officer = $loan -> loan_officer_last.', '.$loan -> loan_officer_first;
                 @endphp
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">
@@ -29,7 +29,13 @@
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan_officer }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $address }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> settlement_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> borrower_last.', '.$loan -> borrower_first }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                        {{ $loan -> borrower_last.', '.$loan -> borrower_first }}
+                        @if($loan -> co_borrower_last != '')
+                            <br>
+                            {{ $loan -> co_borrower_last.', '.$loan -> co_borrower_first }}
+                        @endif
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">${{ number_format($loan -> loan_amount) }}</td>
                 </tr>
             @endforeach

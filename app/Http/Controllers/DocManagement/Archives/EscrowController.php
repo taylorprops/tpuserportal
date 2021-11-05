@@ -25,15 +25,37 @@ class EscrowController extends Controller
         $direction = $request -> direction ? $request -> direction : 'desc';
         $sort = $request -> sort ? $request -> sort : 'contract_date';
         $length = $request -> length ? $request -> length : 10;
+        $holding_earnest = $request -> holding_earnest ? $request -> holding_earnest : null;
 
         $search = $request -> search ?? null;
-        $escrows = Escrow::select(['id', 'mls', 'TransactionId', 'contract_date', 'agent', 'address', 'city', 'state', 'zip'])
+        $escrows = Escrow::select([
+            'escrow.id',
+            'mls',
+            'TransactionId',
+            'contract_date',
+            'agent',
+            'address',
+            'city',
+            'state',
+            'zip'
+            ])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
+        /* -> where(function($query) use ($holding_earnest) {
+            if (!$holding_earnest) {
+                $query -> whereHas('checks', function($query) {
+                    $query -> having(DB::raw('
+                    sum(case
+                        when cleared = "yes" and amount > "0" and check_type = "in" then amount else 0 end) >
+                    sum(case
+                        when cleared = "yes" and amount > "0" and check_type = "out" then amount else 0 end)'));
+                });
+            }
+        }) */
         -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
         -> orderBy($sort, $direction)
         //-> sortable()

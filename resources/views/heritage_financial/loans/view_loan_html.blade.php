@@ -776,7 +776,8 @@ $input_size = 'md';
 
                                                         <div x-show="active_commission_tab === '2'">
 
-                                                            <div class="flex justify-start items-center mb-3 bg-primary-lightest text-primary-dark p-2 rounded-md">
+                                                            <div class="flex justify-start items-center mb-3 bg-primary-lightest text-primary-dark p-2 rounded-md"
+                                                            x-show="show_alert">
                                                                 <div id="loan_officer_{{ $index }}_loan_amount_alert_icon"></div>
                                                                 <div id="loan_officer_{{ $index }}_loan_amount_alert_text"></div>
                                                             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HeritageFinancial;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Employees\LoanOfficers;
 use App\Models\HeritageFinancial\Loans;
@@ -31,7 +32,43 @@ class LoansController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $loans = Loans::select(['id', 'uuid', 'loan_amount', 'borrower_first', 'borrower_last', 'settlement_date', 'loan_officer_1_id', 'street', 'city', 'state', 'zip'])
+
+        $loans = Loans::select([
+            'heritage_financial_loans.id',
+            'uuid',
+            'first_name as loan_officer_first',
+            'last_name as loan_officer_last',
+            'loan_amount',
+            'borrower_first',
+            'borrower_last',
+            'borrower_fullname',
+            'co_borrower_first',
+            'co_borrower_last',
+            'co_borrower_fullname',
+            'settlement_date',
+            'loan_officer_1_id',
+            'street',
+            'city',
+            'state',
+            'zip',
+            ])
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> whereHas('loan_officer_1', function($query) use ($search) {
+                    $query -> where('fullname', 'like', '%'.$search.'%');
+                })
+                -> orWhere('street', 'like', '%'.$search.'%')
+                -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
+                -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> leftJoin('emp_loan_officers', 'loan_officer_1_id', '=', 'emp_loan_officers.id')
+        -> orderBy($sort, $direction)
+        //-> sortable()
+        -> paginate($length);
+
+
+        /* $loans = Loans::select(['id', 'uuid', 'loan_amount', 'borrower_first', 'borrower_last', 'settlement_date', 'loan_officer_1_id', 'street', 'city', 'state', 'zip'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('street', 'like', '%'.$search.'%')
@@ -45,7 +82,7 @@ class LoansController extends Controller
         -> with(['loan_officer_1'])
         -> orderBy($sort, $direction)
         //-> sortable()
-        -> paginate($length);
+        -> paginate($length); */
 
         return view('heritage_financial/loans/get_loans_html', compact('loans'));
 
@@ -369,6 +406,9 @@ class LoansController extends Controller
                 $source = 'Loan Officer';
             }
 
+            $borrower_fullname = trim($loan -> borrower_first.' '.$loan -> borrower_last);
+            $co_borrower_fullname = trim($loan -> co_borrower_first.' '.$loan -> co_borrower_last);
+
             $add_loan = new Loans();
 
             $add_loan -> id = $id;
@@ -376,8 +416,10 @@ class LoansController extends Controller
             $add_loan -> settlement_date = $settlement_date;
             $add_loan -> borrower_first = $loan -> borrower_first;
             $add_loan -> borrower_last = $loan -> borrower_last;
+            $add_loan -> borrower_fullname = $borrower_fullname;
             $add_loan -> co_borrower_first = $loan -> co_borrower_first;
             $add_loan -> co_borrower_last = $loan -> co_borrower_last;
+            $add_loan -> co_borrower_fullname = $co_borrower_fullname;
             $add_loan -> street = $loan -> prop_address;
             $add_loan -> city = $loan -> prop_city;
             $add_loan -> state = $loan -> prop_state;
