@@ -463,6 +463,30 @@ $breadcrumbs = [
 
                             <hr class="bg-gray-300 my-6">
 
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+                                <div class="m-2 sm:m-3">
+                                    <input
+                                    type="text"
+                                    class="form-element input md required"
+                                    id="floify_folder"
+                                    name="floify_folder"
+                                    data-label="Floify Loan App Name"
+                                    value="{{ $employee -> floify_folder ?? null }}"
+                                    @keyup="show_floify_link()">
+                                </div>
+
+                                <div class="m-2 sm:m-3 col-span-1 sm:col-span-2 lg:col-span-3">
+                                    <div class="text-gray-600 italic text-sm mt-1">Floify Loan App Link</div>
+                                    <div class="mt-2">
+                                        <a href="javascript:void(0)" class="text-primary" id="floify_folder_url"></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <hr class="bg-gray-300 my-6">
+
 
                             <div class="flex justify-around items-center mt-12">
 

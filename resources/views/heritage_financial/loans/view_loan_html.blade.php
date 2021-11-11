@@ -275,6 +275,19 @@ $input_size = 'md';
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
                             <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="loan_status"
+                                name="loan_status"
+                                data-label="Loan Status">
+                                    <option value=""></option>
+                                    <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
+                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
+                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
                                 <input
                                 type="date"
                                 class="form-element input {{ $input_size }} required"
@@ -686,10 +699,12 @@ $input_size = 'md';
                                                                             $commission_percent = $loan -> loan_officer_2_commission_percent;
                                                                         }
                                                                     }
+                                                                    //$commission_percent = rtrim(rtrim($commission_percent, '0'), '.');
+                                                                    $commission_percent = $commission_percent + 0;
                                                                     @endphp
                                                                     <input
                                                                     type="text"
-                                                                    class="form-element input {{ $input_size }} numbers-only no-decimals text-center commission-input required"
+                                                                    class="form-element input {{ $input_size }} numbers-only text-center commission-input required"
                                                                     name="loan_officer_{{ $index }}_commission_percent"
                                                                     data-label=""
                                                                     value="{{ $commission_percent }}">

@@ -128,6 +128,7 @@ class EmployeesController extends Controller
         -> orderBy($sort, $direction)
         -> paginate(25);
 
+
         return view('/employees/loan_officer/get_loan_officers_html', compact('employees'));
 
     }

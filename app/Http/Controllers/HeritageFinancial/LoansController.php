@@ -12,6 +12,7 @@ use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\LoansNotes;
 use App\Models\HeritageFinancial\LoansChecksIn;
 use App\Models\OldDB\Company\Loans as LoansOld;
+use App\Models\OldDB\Company\LoansInProcess as LoansInProcessOld;
 use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
@@ -47,6 +48,7 @@ class LoansController extends Controller
             'co_borrower_fullname',
             'settlement_date',
             'loan_officer_1_id',
+            'loan_status',
             'street',
             'city',
             'state',
@@ -159,6 +161,7 @@ class LoansController extends Controller
     public function save_details(Request $request) {
 
         $request -> validate([
+            'loan_status' => 'required',
             'loan_officer_1_id' => 'required',
             'processor_id' => 'required',
             'borrower_first' => 'required',
@@ -387,6 +390,14 @@ class LoansController extends Controller
     public function import_loans(Request $request) {
 
         $loans = LoansOld::get();
+        $loans_in_process = LoansInProcessOld::where('did_not_settle_withdrawn', '!=', 'yes')
+        -> where('did_not_settle_denied', '!=', 'yes')
+        -> where('did_not_settle_inc', '!=', 'yes')
+        -> where(function($query) {
+            $query -> where('funded', '0000-00-00')
+            -> orWhereNull('funded');
+        })
+        -> get();
 
         Loans::truncate();
         LoansNotes::truncate();
@@ -394,9 +405,10 @@ class LoansController extends Controller
         LoansDeductions::truncate();
         LoansLoanOfficerDeductions::truncate();
 
+        // Add Closed Loans
         foreach ($loans as $loan) {
 
-            $id = $loan -> loan_id;
+            //$id = $loan -> loan_id;
             $uuid = (string) Str::uuid();
             $settlement_date = $loan -> settlement_date != '0000-00-00' ? $loan -> settlement_date : null;
             $commission_type = $loan -> lo_id == '204' ? 'loan_amount' : 'commission';
@@ -411,8 +423,9 @@ class LoansController extends Controller
 
             $add_loan = new Loans();
 
-            $add_loan -> id = $id;
+            //$add_loan -> id = $id;
             $add_loan -> uuid = $uuid;
+            $add_loan -> loan_status = 'Closed';
             $add_loan -> settlement_date = $settlement_date;
             $add_loan -> borrower_first = $loan -> borrower_first;
             $add_loan -> borrower_last = $loan -> borrower_last;
@@ -501,9 +514,80 @@ class LoansController extends Controller
         }
 
 
+        // Add Loans In Process
+        foreach ($loans_in_process as $loan_in_process) {
+
+            $uuid = (string) Str::uuid();
+            $settlement_date = $loan_in_process -> settlement_scheduled != '0000-00-00' ? $loan_in_process -> settlement_scheduled : null;
+            $commission_type = $loan_in_process -> lo_id == '204' ? 'loan_amount' : 'commission';
+            $loan_amount_percent = $loan_in_process -> lo_id == '204' ? '.77' : '0';
+            $source = 'Office';
+            if ($loan_in_process -> loan_source == 'From Loan Officer' || $loan_in_process -> loan_source == 'From One Of Our LOs') {
+                $source = 'Loan Officer';
+            }
+
+            $borrower_fullname = trim($loan_in_process -> borrower_first.' '.$loan_in_process -> borrower_last);
+            $co_borrower_fullname = trim($loan_in_process -> co_borrower_first.' '.$loan_in_process -> co_borrower_last);
+
+            $heritage_used = 'no';
+            if (stristr($loan_in_process -> title_company, 'heritage title')) {
+                $heritage_used = 'yes';
+            }
+            $title_nation_used = 'no';
+            if (stristr($loan_in_process -> title_company, 'title nation')) {
+                $title_nation_used = 'yes';
+            }
+
+            $loan_officer = LoanOfficers::find($loan_in_process -> lo_id);
+
+            $add_loan = new Loans();
+
+            $add_loan -> uuid = $uuid;
+            $add_loan -> loan_status = 'Open';
+            $add_loan -> settlement_date = $settlement_date;
+            $add_loan -> borrower_first = $loan_in_process -> borrower_first;
+            $add_loan -> borrower_last = $loan_in_process -> borrower_last;
+            $add_loan -> borrower_fullname = $borrower_fullname;
+            $add_loan -> co_borrower_first = $loan_in_process -> co_borrower_first;
+            $add_loan -> co_borrower_last = $loan_in_process -> co_borrower_last;
+            $add_loan -> co_borrower_fullname = $co_borrower_fullname;
+            $add_loan -> street = $loan_in_process -> street;
+            $add_loan -> city = $loan_in_process -> city;
+            $add_loan -> state = $loan_in_process -> state;
+            $add_loan -> county = $loan_in_process -> county;
+            $add_loan -> zip = $loan_in_process -> zip;
+            $add_loan -> source = $source;
+            $add_loan -> loan_number = $loan_in_process -> loan_number;
+            $add_loan -> loan_amount = preg_replace('/[\$,]+/', '', $loan_in_process -> loan_amount);
+            $add_loan -> points_charged = '2.5';
+            $add_loan -> loan_officer_1_id = $loan_in_process -> lo_id;
+            $add_loan -> processor_id = $loan_in_process -> processor_id;
+            $add_loan -> agent_id = $loan_in_process -> agent_id;
+            $add_loan -> agent_name = $loan_in_process -> agent;
+            $add_loan -> heritage_used = $heritage_used;
+            $add_loan -> title_nation_used = $title_nation_used;
+            $add_loan -> title_company = $loan_in_process -> title_company;
+            $add_loan -> loan_officer_1_commission_type = $commission_type;
+            $add_loan -> loan_officer_2_commission_type = 'commission';
+            $add_loan -> loan_officer_2_commission_sub_type = 'loan_officer_commission';
+            $add_loan -> loan_officer_1_commission_percent = (float)$loan_officer -> commission_percent;
+            $add_loan -> loan_officer_1_loan_amount_percent = $loan_amount_percent;
+            $add_loan -> loan_officer_2_loan_amount_percent = '0';
+
+            $add_loan -> save();
+
+            $company_commission = $loan_in_process -> commission != '' ? preg_replace('/[\$,]+/', '', $loan_in_process -> commission) : '0.00';
+
+            // add checks in
+            $add_check = new LoansChecksIn();
+            $add_check -> loan_uuid = $uuid;
+            $add_check -> amount = $company_commission;
+            $add_check -> save();
+
+
+        }
 
     }
-
 
 
 }

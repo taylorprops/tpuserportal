@@ -8,10 +8,12 @@ if(document.URL.match(/loans/)) {
             search_val: '',
             active_url: '',
             length: '10',
+            sort: 'settlement_date',
+            table: '.loans-table',
             init() {
-                this.get_loans();
+                this.get_data();
             },
-            get_loans(url = null) {
+            get_data(url = null) {
 
                 let scope = this;
                 if(!url) {
@@ -20,8 +22,8 @@ if(document.URL.match(/loans/)) {
                 scope.active_url = url;
                 axios.get(url)
                 .then(function (response) {
-                    document.querySelector('.loans-table').innerHTML = response.data;
-                    scope.links();
+                    document.querySelector(scope.table).innerHTML = response.data;
+                    scope.links(scope.table);
                     hide_loading();
                 })
                 .catch(function (error) {
@@ -29,26 +31,45 @@ if(document.URL.match(/loans/)) {
                 });
 
             },
-            links() {
+            links(table) {
                 let scope = this;
-                document.querySelector('.loans-table').querySelectorAll('a').forEach(function(link) {
+                let container = document.querySelector(table);
+                let container_table = container.querySelector('table');
+                container_table.querySelectorAll('th').forEach(function(th) {
+                    if(th.querySelector('a')) {
+                        th.querySelector('a').classList.add('sort-by');
+                    }
+                });
+
+                document.querySelector(table).querySelectorAll('a').forEach(function(link) {
                     if(!link.classList.contains('view-link')) {
                         link.addEventListener('click', function(e) {
+
                             show_loading();
                             e.preventDefault();
+
                             let url = this.href+'&length='+scope.length;
+                            let href = new URL(url);
+                            let params = new URLSearchParams(href.search);
+
                             if(this.search_val != '') {
                                 if(url.match(/\?/)) {
                                     url += '&';
                                 } else {
                                     url += '?';
                                 }
-                                let params = new URLSearchParams(url.search);
+
                                 params.delete('search');
                                 url += 'search=' + scope.search_val;
                             }
+
+                            if(link.classList.contains('sort-by')) {
+                                scope.sort = params.get('sort');
+                            }
+
+                            url += '&sort=' + scope.sort;
                             scope.active_url = url;
-                            scope.get_loans(url);
+                            scope.get_data(url);
                         });
                     }
                 });
@@ -56,13 +77,13 @@ if(document.URL.match(/loans/)) {
             search(val) {
                 this.search_val = val;
                 this.active_url = '/heritage_financial/loans/get_loans?search=' + val.trim()+'&length='+this.length;
-                this.get_loans(this.active_url);
+                this.get_data(this.active_url);
             },
             change_length(ele) {
                 let val = parseInt(ele.value);
                 this.length = val;
                 this.active_url = '/heritage_financial/loans/get_loans?length=' + val;
-                this.get_loans(this.active_url);
+                this.get_data(this.active_url);
             }
 
         }

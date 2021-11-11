@@ -41,6 +41,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         this.init_text_editor(text_editor_ele);
                     }
                     this.show_profile_link();
+                    this.show_floify_link();
 
                     this.get_credit_cards();
 
@@ -95,6 +96,13 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     let folder = document.querySelector('#folder').value;
                     let link = this.url+'/'+folder;
                     document.querySelector('#folder_url').innerText = link;
+                }
+            },
+            show_floify_link() {
+                if(document.querySelector('#floify_folder')) {
+                    let folder = document.querySelector('#floify_folder').value;
+                    let link = 'https://'+folder+'.floify.com';
+                    document.querySelector('#floify_folder_url').innerText = link;
                 }
             },
             get_licenses() {

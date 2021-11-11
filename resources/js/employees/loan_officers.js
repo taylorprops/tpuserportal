@@ -8,11 +8,13 @@ if(document.URL.match(/loan_officer$/)) {
             search_val: '',
             active_url: '/employees/loan_officer/get_loan_officers',
             active: 'yes',
+            sort: 'last_name',
+            table: '.employees-table',
             init() {
                 show_loading();
                 this.show_active('yes');
             },
-            get_employees(url) {
+            get_data(url) {
 
                 let scope = this;
                 if(!url) {
@@ -21,8 +23,8 @@ if(document.URL.match(/loan_officer$/)) {
                 scope.active_url = url;
                 axios.get(url)
                 .then(function (response) {
-                    document.querySelector('.employees-table').innerHTML = response.data;
-                    scope.links();
+                    document.querySelector(scope.table).innerHTML = response.data;
+                    scope.links(scope.table);
                     hide_loading();
                 })
                 .catch(function (error) {
@@ -30,26 +32,45 @@ if(document.URL.match(/loan_officer$/)) {
                 });
 
             },
-            links() {
+            links(table) {
                 let scope = this;
-                document.querySelector('.employees-table').querySelectorAll('a').forEach(function(link) {
+                let container = document.querySelector(table);
+                let container_table = container.querySelector('table');
+                container_table.querySelectorAll('th').forEach(function(th) {
+                    if(th.querySelector('a')) {
+                        th.querySelector('a').classList.add('sort-by');
+                    }
+                });
+
+                document.querySelector(table).querySelectorAll('a').forEach(function(link) {
                     if(!link.classList.contains('view-link')) {
                         link.addEventListener('click', function(e) {
+
                             show_loading();
                             e.preventDefault();
-                            let url = this.href;
+
+                            let url = this.href+'&length='+scope.length;
+                            let href = new URL(url);
+                            let params = new URLSearchParams(href.search);
+
                             if(this.search_val != '') {
                                 if(url.match(/\?/)) {
                                     url += '&';
                                 } else {
                                     url += '?';
                                 }
-                                let params = new URLSearchParams(url.search);
+
                                 params.delete('search');
                                 url += 'search=' + scope.search_val;
                             }
+
+                            if(link.classList.contains('sort-by')) {
+                                scope.sort = params.get('sort');
+                            }
+
+                            url += '&sort=' + scope.sort;
                             scope.active_url = url;
-                            scope.get_employees(url);
+                            scope.get_data(url);
                         });
                     }
                 });
@@ -59,7 +80,7 @@ if(document.URL.match(/loan_officer$/)) {
                 this.active = '';
                 document.querySelector('#active').value = '';
                 this.active_url = '/employees/loan_officer/get_loan_officers?search=' + val.trim();
-                this.get_employees(this.active_url);
+                this.get_data(this.active_url);
             },
             show_active(active) {
                 this.active = active;
@@ -70,7 +91,7 @@ if(document.URL.match(/loan_officer$/)) {
                     this.active_url += '?';
                 }
                 this.active_url += 'active=' + active;
-                this.get_employees(this.active_url);
+                this.get_data(this.active_url);
             },
         }
 

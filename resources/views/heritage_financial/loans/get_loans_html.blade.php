@@ -7,8 +7,9 @@
     <table class="w-full divide-y divide-gray-200">
 
         <thead class="bg-gray-50">
-            <tr>
+            <tr id="sortable_tr">
                 <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('loan_status', 'Status')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('loan_officer_last', 'Loan Officer')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('street', 'Address')</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('settlement_date', 'Close Date')</th>
@@ -26,6 +27,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View</a>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> loan_status }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan_officer }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $address }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> settlement_date }}</td>
