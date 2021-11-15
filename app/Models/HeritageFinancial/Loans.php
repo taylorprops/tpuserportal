@@ -13,6 +13,21 @@ class Loans extends Model
     protected $table = 'heritage_financial_loans';
     protected $guarded = [];
 
+    public static function boot() {
+        parent::boot();
+        static::addGlobalScope(function ($query) {
+            if (auth() -> user()) {
+                if (stristr(auth() -> user() -> group, 'loan_officer')) {
+                    $query -> where(function ($query) {
+                        $query -> where('loan_officer_1_id', auth() -> user() -> user_id)
+                        -> orWhere('loan_officer_2_id', auth() -> user() -> user_id);
+                    });
+                }
+            }
+
+        });
+    }
+
     public function loan_officer_1() {
         return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_1_id');
     }

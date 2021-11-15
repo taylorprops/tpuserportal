@@ -8,13 +8,14 @@
 
         <thead class="bg-gray-50">
             <tr>
-                <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('active', 'Active')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('last_name', 'Name')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('emp_position', 'Position')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('email', 'Email')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('cell_phone', 'Phone')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Licensed In</th>
+                @php $th_classes = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'; @endphp
+                <th width="100" scope="col" class="{{ $th_classes }}"></th>
+                <th scope="col" class="{{ $th_classes }}">@sortablelink('last_name', 'Name')</th>
+                <th scope="col" class="{{ $th_classes }}">@sortablelink('emp_position', 'Position')</th>
+                <th scope="col" class="{{ $th_classes }}">@sortablelink('email', 'Email')</th>
+                <th scope="col" class="{{ $th_classes }}">@sortablelink('cell_phone', 'Phone')</th>
+                <th scope="col" class="{{ $th_classes }}">Licensed In</th>
+                <th scope="col" class="{{ $th_classes }}">@sortablelink('active', 'Active')</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -27,17 +28,28 @@
                 }
                 $licenses = $employee -> licenses -> pluck('license_state') -> toArray();
                 $licenses = implode(', ', $licenses);
+                $td_classes = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
                 @endphp
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md" target="_blank">View</a>
+                    <td class="{{ $td_classes }}">
+                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $emp_position }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> phone }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $licenses }}</td>
+                    <td class="{{ $td_classes }}">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
+                    <td class="{{ $td_classes }}">{{ $emp_position }}</td>
+                    <td class="{{ $td_classes }}">{{ $employee -> email }}</td>
+                    <td class="{{ $td_classes }}">{{ $employee -> phone }}</td>
+                    <td class="{{ $td_classes }}">{{ $licenses }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs text-center">
+                        @if($employee -> active == 'yes')
+                            <div class="text-white p-0.5 w-14 rounded bg-success">
+                                <i class="fal fa-plus-circle mr-2"></i> Yes
+                            </div>
+                        @else
+                            <div class="text-white p-0.5 w-14 rounded bg-danger">
+                                <i class="fal fa-minus-circle mr-2"></i> No
+                            </div>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>

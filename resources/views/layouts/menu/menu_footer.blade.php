@@ -1,11 +1,11 @@
 
 
-<div class="grid grid-cols-4 w-full pt-3">
-    <div class="col-span-1 flex justify-around items-center">
-        <img class="inline-block h-12 w-12 rounded-full" src="{{ auth() -> user() -> photo_location_url }}" alt="">
+<div class="grid grid-cols-5 w-full pt-3">
+    <div class="col-span-1 flex justify-around items-center ml-2">
+        <img class="inline-block h-14 w-12 rounded-full" src="{{ auth() -> user() -> photo_location_url }}" alt="">
     </div>
-    <div class="ml-3 col-span-3">
-        <div class="text-sm text-gray-700 border-b pb-1 mb-1">
+    <div class="ml-3 col-span-4">
+        <div class="text-gray-700 border-b pb-1 mb-1">
             {{ auth() -> user() -> name }}
         </div>
         <div class="text-sm text-gray-600 hover:text-gray-500">

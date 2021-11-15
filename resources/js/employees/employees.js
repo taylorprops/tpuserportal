@@ -95,14 +95,14 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 if(document.querySelector('#folder')) {
                     let folder = document.querySelector('#folder').value;
                     let link = this.url+'/'+folder;
-                    document.querySelector('#folder_url').innerText = link;
+                    document.querySelector('#folder_url').innerHTML = link;
                 }
             },
             show_floify_link() {
                 if(document.querySelector('#floify_folder')) {
                     let folder = document.querySelector('#floify_folder').value;
                     let link = 'https://'+folder+'.floify.com';
-                    document.querySelector('#floify_folder_url').innerText = link;
+                    document.querySelector('#floify_folder_url').innerHTML = '<a href="'+link+'" target="_blank">'+link+'</a>';
                 }
             },
             get_licenses() {

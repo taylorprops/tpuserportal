@@ -15,53 +15,58 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <div class="text-default text-lg mb-2">Login</div>
+            <div class="text-white">
 
-            <!-- Email Address -->
-            <div class="pt-3">
+                <div class="text-bold text-xl mb-2">Employee Login</div>
 
-                <input type="text" class="form-element input md"
-                    id="email"
-                    type="email"
-                    name="email"
-                    :value="old('email')"
-                    data-label="Email"
-                    placeholder=""
-                    required
-                    autofocus>
+                <!-- Email Address -->
+                <div class="pt-3">
+
+                    <input type="text" class="form-element input lg"
+                        id="email"
+                        type="email"
+                        name="email"
+                        :value="old('email')"
+                        data-label=""
+                        placeholder="Email"
+                        required
+                        autofocus>
+                </div>
+
+                <!-- Password -->
+                <div class="mt-4">
+
+                    <input type="password" class="form-element input lg"
+                        id="password"
+                        name="password"
+                        data-label=""
+                        placeholder="Password"
+                        required autocomplete="current-password">
+                </div>
+
+                <!-- Remember Me -->
+                <div class="block mt-4">
+                    <label for="remember_me" class="inline-flex items-center">
+                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-primary shadow-sm focus:border-primary-dark focus:ring focus:ring-primary-lightest focus:ring-opacity-50" name="remember">
+                        <span class="ml-2 text-sm text-white">{{ __('Remember me') }}</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-between mt-4">
+                    @if (Route::has('password.request'))
+                        <a class="underline text-sm text-white hover:text-gray-50" href="{{ route('password.request') }}">
+                            {{ __('Forgot your password?') }}
+                        </a>
+                    @endif
+
+                    <button type="submit" class="button default lg ml-3">
+                        Login <i class="fal fa-sign-in ml-2"></i>
+                    </button>
+
+                </div>
+
             </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-
-                <input type="password" class="form-element input md"
-                    id="password"
-                    name="password"
-                    data-label="Password"
-                    placeholder=""
-                    required autocomplete="current-password">
-            </div>
-
-            <!-- Remember Me -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <button type="submit" class="button primary md ml-3">
-                    Login <i class="fal fa-sign-in ml-2"></i>
-                </button>
-
-            </div>
         </form>
     </x-auth-card>
 </x-guest-layout>
