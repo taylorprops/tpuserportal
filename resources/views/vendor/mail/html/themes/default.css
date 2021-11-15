@@ -98,7 +98,7 @@ img {
 /* Header */
 
 .header {
-    padding: 25px 0;
+    padding: 15px 0;
     text-align: center;
 }
 
@@ -111,13 +111,13 @@ img {
 
 /* Logo */
 
-.logo {
+/* .logo {
     height: 75px;
     max-height: 75px;
     //width: 75px;
-}
+} */
 .email-header-logo {
-    max-width: 120px;
+    max-width: 200px;
 }
 
 /* Body */
@@ -126,7 +126,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #edf2f7;
+    background-color: #3f629c;
     border-bottom: 1px solid #edf2f7;
     border-top: 1px solid #edf2f7;
     margin: 0;
@@ -173,13 +173,13 @@ img {
 }
 
 .footer p {
-    color: #b0adc5;
+    color: #ffffff;
     font-size: 12px;
     text-align: center;
 }
 
 .footer a {
-    color: #b0adc5;
+    color: #ffffff;
     text-decoration: underline;
 }
 
