@@ -17,7 +17,7 @@ class HttpRedirect
     public function handle(Request $request, Closure $next)
     {
         if (!$request -> secure() && config('app.env') == 'production') {
-            //return redirect() -> secure($request -> getRequestUri());
+            return redirect() -> secure($request -> getRequestUri());
         }
 
         return $next($request);
