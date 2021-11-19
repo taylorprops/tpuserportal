@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,6 +34,17 @@ class AuthenticatedSessionController extends Controller
         $request -> session() -> regenerate();
 
         // TODO: Add login middleware
+
+        $user = User::find(auth() -> user() -> id);
+        $group = auth() -> user() -> group;
+        $user_details = null;
+        if($group == 'agent') {
+            $user_details = $user -> agent;
+        } else if($group == 'loan_officer') {
+            $user_details = $user -> loan_officer;
+        }
+
+
         return redirect() -> intended(RouteServiceProvider::HOME);
     }
 

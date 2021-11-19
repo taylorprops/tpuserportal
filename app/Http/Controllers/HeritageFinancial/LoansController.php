@@ -97,6 +97,7 @@ class LoansController extends Controller
         $checks_in = [];
         $loan_officer_1 = null;
         $loan_officer_2 = null;
+        $processor = null;
         $loan_officer_1_commission_type = null;
         $loan_officer_2_commission_type = null;
         $loan_officer_2_commission_sub_type = null;
@@ -111,7 +112,7 @@ class LoansController extends Controller
         if ($request -> uuid) {
 
             $loan = Loans::where('uuid', $request -> uuid)
-            -> with(['deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'loan_officer_deductions'])
+            -> with(['deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_deductions'])
             -> first();
 
             $deductions = $loan -> deductions;
@@ -132,6 +133,8 @@ class LoansController extends Controller
             if($loan -> loan_officer_2_commission_sub_type != '') {
                 $sub_type = $loan -> loan_officer_2_commission_sub_type;
             }
+
+            $processor = $loan -> processor;
 
             $manager = LoanOfficers::where('emp_position', 'manager') -> first();
             $manager = $manager -> fullname;
@@ -154,7 +157,7 @@ class LoansController extends Controller
         $loan_officers = LoanOfficers::where('active', 'yes') -> orderBy('last_name') -> get();
 
 
-        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'sub_type', 'manager', 'manager_bonus', 'manager_bonus_details'));
+        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'sub_type', 'manager', 'manager_bonus', 'manager_bonus_details'));
 
     }
 

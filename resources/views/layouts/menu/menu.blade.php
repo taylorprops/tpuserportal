@@ -28,16 +28,21 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
             <div class="flex-1 flex flex-col pt-3 bg-gray-50">
 
-                <div class="hidden xl:flex xl:justify-center pl-8">
+                <div class="hidden xl:flex xl:justify-center xl:items-center h-10 pl-8">
                     <div class="w-3/4">
                         <img class="h-6" src="/images/logo/all_horizontal.svg" alt="Taylor Properties">
                     </div>
                 </div>
 
+                @php $no_access = ['loan_officer']; @endphp
+                @if(!in_array(auth() -> user() -> group, $no_access))
                 <div class="my-2 sm:my-4 mx-1 relative">
                     <input class="main-search-input appearance-none inline-block w-full bg-white text-gray-700 border border-gray-200 rounded py-1 sm:py-3 leading-tight  focus:bg-blue-50 focus:ring-blue-100 focus:border-blue-100" type="text" placeholder="Search">
                     <i class="fal fa-search absolute top-4 right-4"></i>
                 </div>
+                @else
+                <div class="mt-4 relative"></div>
+                @endif
 
                 <nav class="navigation flex-1 px-2 pt-3 bg-gray-50 space-y-1 border-t"
                 x-data="{ close_all: false }">

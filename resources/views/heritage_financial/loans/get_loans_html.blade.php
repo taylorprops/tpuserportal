@@ -25,7 +25,7 @@
                 @endphp
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View</a>
+                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> loan_status }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan_officer }}</td>

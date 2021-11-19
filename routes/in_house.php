@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\HeritageFinancial\LoansController;
+use App\Http\Controllers\Marketing\AgentAddressesController;
 use App\Http\Controllers\DocManagement\Admin\FormsController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
 use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
@@ -132,6 +133,13 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::prefix('jobs') -> group(function () {
         Route::queueMonitor();
     });
+
+
+
+    // Agent Addresses TEMP
+    Route::get('/marketing/import_agent_addresses', [AgentAddressesController::class, 'import_agent_addresses']) -> middleware(['in_house']);
+    Route::get('/marketing/merge_agents', [AgentAddressesController::class, 'merge_agents']) -> middleware(['in_house']);
+    Route::get('/marketing/merge_multiple_matches', [AgentAddressesController::class, 'merge_multiple_matches']) -> middleware(['in_house']);
 
 
 

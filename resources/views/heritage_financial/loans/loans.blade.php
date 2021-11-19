@@ -2,7 +2,7 @@
 $title = 'Loans';
 $breadcrumbs = [
     ['Heritage Financial', ''],
-    ['Loans', ''],
+    [$title, ''],
 ];
 @endphp
 <x-app-layout>

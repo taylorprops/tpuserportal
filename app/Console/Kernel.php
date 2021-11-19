@@ -43,6 +43,9 @@ class Kernel extends ConsoleKernel
         // ends - when no more transactions added to skyslope
         $schedule -> command('old_db:add_skyslope_listings') -> everyMinute();
 
+        // merge agent home addresses with bright agents
+        //$schedule -> command('agent_addresses:merge') -> everyMinute();
+
 
         // add mls_company to skyslope
         // ends - when all data added

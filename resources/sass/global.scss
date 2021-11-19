@@ -4,7 +4,9 @@ html {
     @apply text-gray-700;
 }
 
-
+a {
+    @apply text-primary hover:text-primary-light;
+}
 [x-cloak] {
     display: none !important;
 }

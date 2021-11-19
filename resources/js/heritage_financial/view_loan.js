@@ -50,7 +50,7 @@ if(document.URL.match(/view_loan/)) {
                     }
                 });
 
-                let net_commission_amount_ele = document.querySelector('#net_commission_amount');
+                let net_commission_amount_ele = document.querySelector('.net-commission-amount');
                 let deductions_total = 0;
                 document.querySelectorAll('[name="amount[]"]').forEach(function(amount) {
                     if(amount.value != '') {
@@ -116,6 +116,7 @@ if(document.URL.match(/view_loan/)) {
 
                         }
 
+
                         if(alert_icon) {
                             document.querySelector('#loan_officer_'+index+'_loan_amount_alert_icon').innerHTML = alert_icon;
                             document.querySelector('#loan_officer_'+index+'_loan_amount_alert_text').innerHTML = alert_text;
@@ -123,7 +124,11 @@ if(document.URL.match(/view_loan/)) {
                         } else {
                             scope.show_alert = false;
                         }
-                        document.querySelector('#loan_officer_'+index+'_loan_amount_details').innerHTML = details;
+
+                        document.querySelectorAll('.loan-officer-'+index+'-loan-amount-details').forEach(function(ele) {
+                            ele.innerHTML = details;
+                        });
+
                     }
 
                     let loan_officer_deductions_total = 0;
@@ -185,7 +190,7 @@ if(document.URL.match(/view_loan/)) {
                     let paid_to_value = paid_to.options[paid_to.selectedIndex].value;
                     let paid_to_other = deduction.querySelector('[name="paid_to_other[]"]');
 
-                    if(paid_to_value != 'Company') {
+                    if(paid_to_value != 'Company' && paid_to_other.value != 'Company') {
 
                         let paid_to_name = paid_to.options[paid_to.selectedIndex].text;
                         if(paid_to_value == 'Other') {
@@ -282,7 +287,7 @@ if(document.URL.match(/view_loan/)) {
             },
             set_checks_in_amount() {
 
-                let show_total = document.querySelector('#checks_in_amount_ele');
+                let show_total = document.querySelectorAll('.checks-in-amount');
                 let checks_in_total = 0;
                 document.querySelectorAll('[name="check_in_amount[]"]').forEach(function(amount) {
                     if(amount.value != '') {
@@ -291,12 +296,17 @@ if(document.URL.match(/view_loan/)) {
                         checks_in_total += amount;
                     }
                 });
-                show_total.innerText = global_format_number_with_decimals(checks_in_total.toString());
+                show_total.forEach(function(ele) {
+                    ele.innerText = global_format_number_with_decimals(checks_in_total.toString());
+                });
 
             },
             set_deductions_amount() {
-                let show_total = document.querySelector('#deductions_amount');
+
+                let deductions_eles = document.querySelectorAll('.deductions-total');
                 let deductions_total = 0;
+                let deductions_checks_in = document.querySelector('.deductions-checks-in');
+
                 document.querySelectorAll('[name="amount[]"]').forEach(function(amount) {
                     if(amount.value != '') {
                         let value = amount.value.replace(/[,\$]/g, '');
@@ -304,7 +314,24 @@ if(document.URL.match(/view_loan/)) {
                         deductions_total += amount;
                     }
                 });
-                show_total.innerText = global_format_number_with_decimals(deductions_total.toString());
+                deductions_eles.forEach(function(ele) {
+                    ele.innerText = global_format_number_with_decimals(deductions_total.toString());
+                });
+
+                document.querySelectorAll('.deduction').forEach(function(deduction) {
+                    let amount = deduction.querySelector('[name="amount[]"]').value;
+                    let description = deduction.querySelector('[name="description[]"]').value;
+                    //let paid_to = deduction.querySelector('[name="paid_to_other[]"]').value;
+                    if(amount != '') {
+                        let deduction_html = ' \
+                        <div class="grid grid-cols-2 py-2"> \
+                        <div class="">'+description+'</div> \
+                        <div class="text-right">'+amount+'</div> \
+                        </div> \
+                        ';
+                        deductions_checks_in.innerHTML += deduction_html;
+                    }
+                });
 
             },
             set_commissions_paid_amount() {

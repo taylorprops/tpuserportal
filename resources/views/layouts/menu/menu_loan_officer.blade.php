@@ -14,6 +14,13 @@
     :link="'/heritage_financial/loans'"
     :icon="'fad fa-copy'"/>
 
+    {{-- Loan Software --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Lending Pad/Floify'"
+    :link="'/heritage_financial/loan_software'"
+    :icon="'fad fa-save'"/>
+
     @if(auth() -> user() -> level == 'manager')
     {{-- Loans --}}
     <x-nav.menu
