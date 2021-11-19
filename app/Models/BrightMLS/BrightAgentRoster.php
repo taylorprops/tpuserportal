@@ -11,11 +11,15 @@ class BrightAgentRoster extends Model
 
     protected $connection = 'mysql';
     protected $table = 'bright_agent_roster';
+    protected $primaryKey = 'MemberKey';
     protected $guarded = [];
+    //protected $fillable = ['MemberKey'];
+    public $incrementing = false;
+    public $timestamps = false;
 
     public static function boot() {
         parent::boot();
-        static::addGlobalScope(function ($query) {
+        static::addGlobalScope('offices', function ($query) {
             $query -> join('bright_offices', 'bright_agent_roster.OfficeKey', '=', 'bright_offices.OfficeKey')
                 -> select('bright_agent_roster.MemberFirstName',
                 'bright_agent_roster.MemberFullName',

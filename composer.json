@@ -21,6 +21,7 @@
         "rennokki/laravel-eloquent-query-cache": "^3.0",
         "romanzipp/laravel-queue-monitor": "^2.1",
         "thiagoalessio/tesseract_ocr": "^2.11",
+        "troydavisson/phrets": "^2.6",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
