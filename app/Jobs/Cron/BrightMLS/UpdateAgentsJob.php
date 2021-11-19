@@ -9,10 +9,11 @@ use App\Models\BrightMLS\BrightAgentRoster;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class UpdateAgentsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
@@ -31,6 +32,9 @@ class UpdateAgentsJob implements ShouldQueue
      */
     public function handle()
     {
+
+        $progress = 0;
+        $this -> queueProgress($progress);
 
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
@@ -83,6 +87,8 @@ class UpdateAgentsJob implements ShouldQueue
             }
 
         }
+
+        $this -> queueProgress(100);
 
     }
 }
