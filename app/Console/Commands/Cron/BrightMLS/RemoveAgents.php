@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Cron\BrightMLS;
 
 use Illuminate\Console\Command;
-use App\Console\Commands\Cron\BrightMLS\RemoveAgents;
+use App\Jobs\Cron\BrightMLS\RemoveAgentsJob;
 
 class RemoveAgents extends Command
 {
@@ -38,6 +38,6 @@ class RemoveAgents extends Command
      */
     public function handle()
     {
-        RemoveAgents::dispatch();
+        RemoveAgentsJob::dispatch();
     }
 }
