@@ -35,6 +35,7 @@ class RemoveAgentsJob implements ShouldQueue
 
         $progress = 0;
         $this -> queueProgress($progress);
+        $data = [];
 
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
@@ -66,7 +67,8 @@ class RemoveAgentsJob implements ShouldQueue
             $search_for = count($agents_in_db_array);
         }
 
-        $data = null;
+        $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.$agents_in_db_array;
+
         if ($search_for > 0) {
 
             $agents_in_db_string = implode(', ', $agents_in_db_array);
@@ -84,11 +86,11 @@ class RemoveAgentsJob implements ShouldQueue
 
             $agents = $results -> toArray();
             $total_found = count($agents);
-
+            $data[] = ['total_found = '.$total_found];
 
             if ($total_found != $search_for) {
 
-                $data = 'Found Missing';
+                $data[] = 'Found Missing';
                 $MemberKeys = [];
 
                 foreach ($agents as $agent) {
