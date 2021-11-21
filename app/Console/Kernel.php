@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule -> command('telescope:prune') -> daily();
         // update bright mls agents
         $schedule -> command('bright_mls:update_agents') -> hourly();
+        // remove bright mls agents
+        $schedule -> command('bright_mls:remove_agents') -> everyFiveMinutes();
 
         // %%% TEMP %%% //
 

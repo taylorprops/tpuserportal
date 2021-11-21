@@ -79,8 +79,7 @@ class UpdateAgentsJob implements ShouldQueue
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
 
-                $add_agent = BrightAgentRoster::withoutGlobalScope('offices')
-                -> firstOrCreate(
+                $add_agent = BrightAgentRoster::firstOrCreate(
                     ['MemberKey' => $MemberKey],
                     $agent_details
                 );
