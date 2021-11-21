@@ -42,7 +42,7 @@ class RemoveAgentsJob implements ShouldQueue
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.8')
 		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
+		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
@@ -66,6 +66,7 @@ class RemoveAgentsJob implements ShouldQueue
             $search_for = count($agents_in_db_array);
         }
 
+        $data = null;
         if ($search_for > 0) {
 
             $agents_in_db_string = implode(', ', $agents_in_db_array);
@@ -84,7 +85,7 @@ class RemoveAgentsJob implements ShouldQueue
             $agents = $results -> toArray();
             $total_found = count($agents);
 
-            $data = null;
+
             if ($total_found != $search_for) {
 
                 $data = 'Found Missing';
@@ -108,10 +109,10 @@ class RemoveAgentsJob implements ShouldQueue
                 'removal_date_checked' => date('Y-m-d')
             ]);
 
-            $this -> queueData($data, true);
-            $this -> queueProgress(100);
-
         }
+
+        $this -> queueData($data, true);
+        $this -> queueProgress(100);
 
     }
 
