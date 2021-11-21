@@ -67,7 +67,7 @@ class RemoveAgentsJob implements ShouldQueue
             $search_for = count($agents_in_db_array);
         }
 
-        $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.$agents_in_db_array;
+        $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.count($agents_in_db_array);
 
         if ($search_for > 0) {
 
@@ -86,7 +86,7 @@ class RemoveAgentsJob implements ShouldQueue
 
             $agents = $results -> toArray();
             $total_found = count($agents);
-            $data[] = ['total_found = '.$total_found];
+            $data[] = 'total_found = '.$total_found;
 
             if ($total_found != $search_for) {
 
