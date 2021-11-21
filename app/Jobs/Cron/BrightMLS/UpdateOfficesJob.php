@@ -32,6 +32,10 @@ class UpdateOfficesJob implements ShouldQueue
      */
     public function handle()
     {
+
+        $progress = 0;
+        $this -> queueProgress($progress);
+
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
@@ -64,6 +68,8 @@ class UpdateOfficesJob implements ShouldQueue
         $offices = $results -> toArray();
         $total_found = count($offices);
 
+        $count_before = BrightOffices::get() -> count();
+
         if($total_found > 0) {
 
             foreach ($offices as $office) {
@@ -82,5 +88,10 @@ class UpdateOfficesJob implements ShouldQueue
             }
 
         }
+
+        $count_after = BrightOffices::get() -> count();
+        $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
+        $this -> queueProgress(100);
+
     }
 }
