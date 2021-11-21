@@ -33,6 +33,7 @@ class UpdateAgentsJob implements ShouldQueue
     public function handle()
     {
 
+
         $progress = 0;
         $this -> queueProgress($progress);
 
@@ -68,6 +69,8 @@ class UpdateAgentsJob implements ShouldQueue
         $agents = $results -> toArray();
         $total_found = count($agents);
 
+        $count_before = BrightAgentRoster::get() -> count();
+
         if($total_found > 0) {
 
             foreach ($agents as $agent) {
@@ -88,6 +91,8 @@ class UpdateAgentsJob implements ShouldQueue
 
         }
 
+        $count_after = BrightAgentRoster::get() -> count();
+        $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 
     }
