@@ -93,8 +93,15 @@ class RemoveAgentsJob implements ShouldQueue
                 $data[] = 'Found Missing';
                 $MemberKeys = [];
 
+                $increment = $total_found / $search_for;
+                $c = 0;
                 foreach ($agents as $agent) {
                     $MemberKeys[] = $agent['MemberKey'];
+                    $c += 1;
+                    if ($c % $increment == 0 && $percent < 100) {
+                        $percent = $c / $increment;
+                        $this -> queueProgress($percent);
+                    }
                 }
 
                 $not_found = array_diff($agents_in_db_array, $MemberKeys);
