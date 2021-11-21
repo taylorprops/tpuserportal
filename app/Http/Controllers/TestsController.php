@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\BrightMLS\BrightOffices;
 use App\Models\Employees\EmployeesNotes;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Employees\EmployeesLicenses;
@@ -34,7 +35,7 @@ class TestsController extends Controller
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 13000;
+        $search_for = 500;
 
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::select($select)
@@ -75,8 +76,16 @@ class TestsController extends Controller
                 dump(count($agents_in_db_array));
                 $MemberKeys = [];
 
+                $increment = $total_found / $search_for;
+                $c = 0;
                 foreach ($agents as $agent) {
                     $MemberKeys[] = $agent['MemberKey'];
+                    $c += 1;
+                    if ($c % $increment == 0 && $percent < 100) {
+                        $percent = $c / $increment;
+                        $this -> queueProgress($percent);
+                        dump($percent);
+                    }
                 }
 
                 dump(count($agents_in_db_array), count($MemberKeys));
@@ -97,30 +106,9 @@ class TestsController extends Controller
             }
         }
 
-
-
-        /* if($total_found > 0) {
-
-            foreach ($agents as $agent) {
-
-                $agent_details = array_filter($agent);
-                $MemberKey = $agent['MemberKey'];
-                unset($agent_details['MemberKey']);
-
-                $add_agent = BrightAgentRoster::firstOrCreate(
-                    ['MemberKey' => $MemberKey],
-                    $agent_details
-                );
-
-                $add_agent -> save();
-
-            }
-
-        } */
-
     }
 
-    public function rets_test(Request $request) {
+    public function bright_update_agents(Request $request) {
 
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
@@ -168,6 +156,61 @@ class TestsController extends Controller
                 );
 
                 $add_agent -> save();
+
+            }
+
+        }
+
+    }
+
+    public function bright_update_offices(Request $request) {
+
+        $rets_config = new \PHRETS\Configuration;
+        $rets_config -> setLoginUrl(config('global.rets_url'))
+        -> setUsername(config('global.rets_username'))
+        -> setPassword(config('global.rets_password'))
+        -> setRetsVersion('RETS/1.8')
+		-> setUserAgent('Bright RETS Application/1.0')
+		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
+		-> setOption('use_post_method', true)
+        -> setOption('disable_follow_location', false);
+
+        $rets = new \PHRETS\Session($rets_config);
+        $connect = $rets -> Login();
+
+        $resource = 'Office';
+        $class = 'Office';
+
+        $mod_time = date('Y-m-d H:i:s', strtotime('-1 hour'));
+        $mod_time = str_replace(' ', 'T', $mod_time);
+        $query = '(ModificationTimestamp='.$mod_time.'+)';
+
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query,
+            [
+                'Count' => 0
+            ]
+        );
+
+        $offices = $results -> toArray();
+        $total_found = count($offices);
+
+        if($total_found > 0) {
+
+            foreach ($offices as $office) {
+
+                $office_details = array_filter($office);
+                $OfficeKey = $office['OfficeKey'];
+                unset($office_details['OfficeKey']);
+
+                $add_office = BrightOffices::firstOrCreate(
+                    ['OfficeKey' => $OfficeKey],
+                    $office_details
+                );
+
+                $add_office -> save();
 
             }
 

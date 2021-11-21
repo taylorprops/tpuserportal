@@ -37,6 +37,6 @@ class UpdateOffices extends Command
      */
     public function handle()
     {
-        return 0;
+        UpdateOfficesJob::dispatch();
     }
 }

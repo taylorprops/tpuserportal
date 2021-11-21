@@ -148,7 +148,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/alpine', [TestsController::class, 'alpine']) -> middleware(['in_house']);
     Route::get('/tests/agent_data', [TestsController::class, 'agent_data']) -> middleware(['in_house']);
     Route::get('/tests/menu', [TestsController::class, 'menu']) -> middleware(['in_house']);
-    Route::get('/tests/rets_test', [TestsController::class, 'rets_test']) -> middleware(['in_house']);
+    Route::get('/tests/bright_update_agents', [TestsController::class, 'bright_update_agents']) -> middleware(['in_house']);
+    Route::get('/tests/bright_update_offices', [TestsController::class, 'bright_update_offices']) -> middleware(['in_house']);
     Route::get('/tests/remove_agents_from_bright', [TestsController::class, 'remove_agents_from_bright']) -> middleware(['in_house']);
 
     Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['in_house']);
