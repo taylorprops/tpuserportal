@@ -109,6 +109,8 @@ class TestsController extends Controller
             }
         }
 
+        $rets -> Disconnect();
+
     }
 
     public function bright_update_agents(Request $request) {
@@ -124,13 +126,7 @@ class TestsController extends Controller
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        try {
-            $connect = $rets -> Login();
-        } catch (Throwable $e) {
-            echo 'failed';
-            $this -> dispatch();
-            return false;
-        }
+        $connect = $rets -> Login();
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -170,6 +166,8 @@ class TestsController extends Controller
             }
 
         }
+
+        $rets -> Disconnect();
 
     }
 
@@ -225,6 +223,8 @@ class TestsController extends Controller
             }
 
         }
+
+        $rets -> Disconnect();
 
     }
 

@@ -37,6 +37,7 @@ class RemoveAgentsJob implements ShouldQueue
         $this -> queueProgress($progress);
         $data = [];
 
+        date_default_timezone_set('America/New_York');
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
@@ -48,13 +49,7 @@ class RemoveAgentsJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        try {
-            $connect = $rets -> Login();
-        } catch (Throwable $e) {
-            $this -> queueData(['error' => $e -> getMessage()], true);
-            $this -> queueProgress(100);
-            $this -> dispatch();
-        }
+        $connect = $rets -> Login();
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -131,6 +126,8 @@ class RemoveAgentsJob implements ShouldQueue
 
         $this -> queueData([$data], true);
         $this -> queueProgress(100);
+
+        $rets -> Disconnect();
 
     }
 

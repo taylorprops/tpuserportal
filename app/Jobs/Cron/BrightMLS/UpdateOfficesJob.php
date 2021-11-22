@@ -99,5 +99,7 @@ class UpdateOfficesJob implements ShouldQueue
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 
+        $rets -> Disconnect();
+
     }
 }
