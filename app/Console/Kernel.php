@@ -26,28 +26,28 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // telescope error finding - clear database
-        $schedule -> command('telescope:prune') -> daily();
+        $schedule -> command('telescope:prune') -> dailyAt('13:00');
         // update bright mls agents
-        $schedule -> command('bright_mls:update_agents') -> hourlyAt(20);
+        $schedule -> command('bright_mls:update_agents') -> hourlyAt(20) -> environments('production');
         // update bright mls offices
-        $schedule -> command('bright_mls:update_offices') -> hourlyAt(40);
+        $schedule -> command('bright_mls:update_offices') -> hourlyAt(40) -> environments('production');
         // remove bright mls agents
-        $schedule -> command('bright_mls:remove_agents') -> everyFiveMinutes();
+        $schedule -> command('bright_mls:remove_agents') -> everyFiveMinutes() -> environments('production');
 
         // %%% TEMP %%% //
 
         // add transactions from skyslope to db
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:get_transactions') -> everySixHours();
+        $schedule -> command('archives:get_transactions') -> everySixHours() -> environments('production');
         // add documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_documents') -> everyFourHours();
+        $schedule -> command('archives:add_documents') -> everyFourHours() -> environments('production');
         // add missing documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_missing_documents') -> hourly();
+        $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
         // add skyslope data to old db
         // ends - when no more transactions added to skyslope
-        $schedule -> command('old_db:add_skyslope_listings') -> everyMinute();
+        $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production');
 
         // merge agent home addresses with bright agents
         //$schedule -> command('agent_addresses:merge') -> everyMinute();
