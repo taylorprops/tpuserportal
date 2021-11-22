@@ -48,13 +48,7 @@ class UpdateAgentsJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        try {
-            $connect = $rets -> Login();
-        } catch (Throwable $e) {
-            $this -> queueData(['error' => $e -> getMessage()], true);
-            $this -> queueProgress(100);
-            $this -> dispatch();
-        }
+        $connect = $rets -> Login();
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
