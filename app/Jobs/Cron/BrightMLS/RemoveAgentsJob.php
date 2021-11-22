@@ -53,7 +53,7 @@ class RemoveAgentsJob implements ShouldQueue
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 10000;
+        $search_for = 1000;
 
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::withoutGlobalScope('offices')
