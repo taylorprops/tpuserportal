@@ -42,7 +42,7 @@ class UpdateOfficesJob implements ShouldQueue
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.8')
 		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
+		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
