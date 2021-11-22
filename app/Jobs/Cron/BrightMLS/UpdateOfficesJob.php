@@ -52,6 +52,7 @@ class UpdateOfficesJob implements ShouldQueue
         } catch (Throwable $e) {
             $this -> queueData(['error' => $e -> getMessage()], true);
             $this -> queueProgress(100);
+            $this -> dispatch();
         }
 
         $resource = 'Office';

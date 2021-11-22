@@ -127,8 +127,9 @@ class TestsController extends Controller
         try {
             $connect = $rets -> Login();
         } catch (Throwable $e) {
-            // echo $e -> getMessage();
-            return true;
+            echo 'failed';
+            $this -> dispatch();
+            return false;
         }
 
         $resource = 'ActiveAgent';
