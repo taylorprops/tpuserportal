@@ -28,9 +28,9 @@ class Kernel extends ConsoleKernel
         // telescope error finding - clear database
         $schedule -> command('telescope:prune') -> daily();
         // update bright mls agents
-        $schedule -> command('bright_mls:update_agents') -> hourly();
+        $schedule -> command('bright_mls:update_agents') -> hourlyAt(20);
         // update bright mls offices
-        $schedule -> command('bright_mls:update_offices') -> hourly();
+        $schedule -> command('bright_mls:update_offices') -> hourlyAt(40);
         // remove bright mls agents
         $schedule -> command('bright_mls:remove_agents') -> everyFiveMinutes();
 
