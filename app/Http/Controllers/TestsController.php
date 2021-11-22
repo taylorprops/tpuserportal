@@ -18,7 +18,7 @@ use App\Models\DocManagement\Resources\CommonFieldsGroups;
 class TestsController extends Controller
 {
 
-    public function remove_agents_from_bright(Request $request) {
+    public function bright_remove_agents(Request $request) {
 
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))

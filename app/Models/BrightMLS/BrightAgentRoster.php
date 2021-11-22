@@ -13,7 +13,6 @@ class BrightAgentRoster extends Model
     protected $table = 'bright_agent_roster';
     protected $primaryKey = 'MemberKey';
     protected $guarded = [];
-    //protected $fillable = ['MemberKey'];
     public $incrementing = false;
 
     public static function boot() {

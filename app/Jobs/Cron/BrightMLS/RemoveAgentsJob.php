@@ -60,8 +60,8 @@ class RemoveAgentsJob implements ShouldQueue
         $search_for = 10000;
 
         $select = ['MemberKey'];
-        $agents_in_db_array = withoutGlobalScope('offices')
-        -> BrightAgentRoster::select($select)
+        $agents_in_db_array = BrightAgentRoster::withoutGlobalScope('offices')
+        -> select($select)
         -> where('removal_date_checked', '!=', date('Y-m-d'))
         -> orWhereNull('removal_date_checked')
         -> limit($search_for)
