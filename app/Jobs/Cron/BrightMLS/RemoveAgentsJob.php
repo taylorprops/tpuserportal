@@ -48,14 +48,20 @@ class RemoveAgentsJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        $connect = $rets -> Login();
+        try {
+            $connect = $rets -> Login();
+        } catch (Throwable $e) {
+            $this -> queueData(['error' => $e -> getMessage()], true);
+            $this -> queueProgress(100);
+        }
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
         $search_for = 10000;
 
         $select = ['MemberKey'];
-        $agents_in_db_array = BrightAgentRoster::select($select)
+        $agents_in_db_array = withoutGlobalScope('offices')
+        -> BrightAgentRoster::select($select)
         -> where('removal_date_checked', '!=', date('Y-m-d'))
         -> orWhereNull('removal_date_checked')
         -> limit($search_for)
@@ -106,14 +112,16 @@ class RemoveAgentsJob implements ShouldQueue
 
                 $not_found = array_diff($agents_in_db_array, $MemberKeys);
 
-                $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
+                $deactivate_agents = BrightAgentRoster::withoutGlobalScope('offices')
+                -> whereIn('MemberKey', $agents_in_db_array)
                 -> update([
                     'active' => 'no'
                 ]);
 
             }
 
-            $update_removal_date_checked = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
+            $update_removal_date_checked = BrightAgentRoster::withoutGlobalScope('offices')
+            -> whereIn('MemberKey', $agents_in_db_array)
             -> update([
                 'removal_date_checked' => date('Y-m-d')
             ]);

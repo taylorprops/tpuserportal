@@ -43,12 +43,17 @@ class UpdateAgentsJob implements ShouldQueue
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.8')
 		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
+		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        $connect = $rets -> Login();
+        try {
+            $connect = $rets -> Login();
+        } catch (Throwable $e) {
+            $this -> queueData(['error' => $e -> getMessage()], true);
+            $this -> queueProgress(100);
+        }
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -69,7 +74,8 @@ class UpdateAgentsJob implements ShouldQueue
         $agents = $results -> toArray();
         $total_found = count($agents);
 
-        $count_before = BrightAgentRoster::get() -> count();
+        $count_before = BrightAgentRoster::withoutGlobalScope('offices')
+        -> get() -> count();
 
         if($total_found > 0) {
 
@@ -79,7 +85,8 @@ class UpdateAgentsJob implements ShouldQueue
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
 
-                $add_agent = BrightAgentRoster::firstOrCreate(
+                $add_agent = BrightAgentRoster::withoutGlobalScope('offices')
+                -> firstOrCreate(
                     ['MemberKey' => $MemberKey],
                     $agent_details
                 );
@@ -90,7 +97,8 @@ class UpdateAgentsJob implements ShouldQueue
 
         }
 
-        $count_after = BrightAgentRoster::get() -> count();
+        $count_after = BrightAgentRoster::withoutGlobalScope('offices')
+        -> get() -> count();
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 

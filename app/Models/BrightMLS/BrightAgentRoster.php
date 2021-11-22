@@ -42,8 +42,8 @@ class BrightAgentRoster extends Model
                 'bright_offices.OfficeCounty',
                 'bright_offices.OfficeMlsId',
                 'bright_offices.OfficeName',
-                'bright_offices.OfficePhone');
-                //-> where('bright_agent_roster.MemberSubType', 'like', '%salesperson%');
+                'bright_offices.OfficePhone')
+                -> where('bright_agent_roster.MemberSubType', 'like', '%salesperson%');
         });
     }
 

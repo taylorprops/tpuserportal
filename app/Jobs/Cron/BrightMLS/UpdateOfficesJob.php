@@ -47,7 +47,12 @@ class UpdateOfficesJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        $connect = $rets -> Login();
+        try {
+            $connect = $rets -> Login();
+        } catch (Throwable $e) {
+            $this -> queueData(['error' => $e -> getMessage()], true);
+            $this -> queueProgress(100);
+        }
 
         $resource = 'Office';
         $class = 'Office';
