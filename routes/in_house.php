@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
+use App\Http\Controllers\Marketing\Data\DataController;
 use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\HeritageFinancial\LoansController;
 use App\Http\Controllers\Marketing\AgentAddressesController;
@@ -110,6 +111,11 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/archives/update_old_escrow', [EscrowController::class, 'update_old_escrow']) -> middleware(['in_house']);
     Route::get('/archives/get_checks', [EscrowController::class, 'get_checks']) -> middleware(['in_house']);
     Route::get('/archives/add_guids', [EscrowController::class, 'add_guids']) -> middleware(['in_house']);
+
+    // %%%% Marketing
+    Route::get('/marketing/data/agent_database', [DataController::class, 'agent_database']) -> middleware(['in_house']);
+    Route::post('/marketing/data/location_data', [DataController::class, 'location_data']) -> middleware(['in_house']);
+    Route::get('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);

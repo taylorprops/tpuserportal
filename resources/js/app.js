@@ -47,5 +47,7 @@ require('./doc_management/transactions/escrow.js');
 require('./heritage_financial/loans.js');
 require('./heritage_financial/view_loan.js');
 
+require('./marketing/data/agent_database.js');
+
 
 require('./tests/test');

@@ -115,16 +115,25 @@ $breadcrumbs = [
 
                         <hr class="my-4">
 
-                        <div class="font-semibold mb-4 text-xl">Support</div>
+                        <div class="font-semibold mt-8 mb-4 text-xl">Support</div>
 
                         <div class="ml-4">
 
-
+                            Help Center - <a href="https://help.floify.com/hc/en-us" target="_blank">https://help.floify.com/hc/en-us</a>
+                            <br>
+                            <br>
+                            There is also an online chat option wehn logged on.
 
                         </div>
 
 
-                        <div class="font-semibold mb-4 text-xl">Training</div>
+                        <div class="font-semibold mb-4 mt-8 text-xl">Training</div>
+
+                        <div class="ml-4">
+
+                            To access the Resource Center log on to Floify and at the bottom of the page you will see a link for "Help". Hover over that to see the options.
+
+                        </div>
 
                     </div>
 

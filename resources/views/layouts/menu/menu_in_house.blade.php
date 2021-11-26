@@ -165,6 +165,19 @@
     {{-- End Employees --}}
 
 
+    {{-- Marketing --}}
+    <li>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Marketing</div>
+    </li>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Agent Database'"
+    :link="'/marketing/data/agent_database'"
+    :icon="'fad fa-users'"/>
+    {{-- End Marketing --}}
+
+
     @if(auth() -> user() -> level == 'super_admin')
     {{-- Super Admin --}}
     <li>

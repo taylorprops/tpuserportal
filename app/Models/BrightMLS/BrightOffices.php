@@ -13,4 +13,8 @@ class BrightOffices extends Model
     protected $table = 'bright_offices';
     protected $guarded = [];
 
+    public function agents() {
+        return $this -> hasMany(\App\Models\BrightMLS\BrightAgentRoster::class, 'OfficeKey', 'OfficeKey');
+    }
+
 }
