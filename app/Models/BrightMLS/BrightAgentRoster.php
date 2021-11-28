@@ -15,7 +15,7 @@ class BrightAgentRoster extends Model
     protected $guarded = [];
     public $incrementing = false;
 
-    public static function boot() {
+    /* public static function boot() {
         parent::boot();
         static::addGlobalScope('offices', function ($query) {
             $query -> join('bright_offices', 'bright_agent_roster.OfficeKey', '=', 'bright_offices.OfficeKey')
@@ -44,6 +44,6 @@ class BrightAgentRoster extends Model
                 'bright_offices.OfficePhone')
                 -> where('bright_agent_roster.MemberSubType', 'like', '%salesperson%');
         });
-    }
+    } */
 
 }

@@ -12,137 +12,153 @@ $breadcrumbs = [
         :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
-    <div class="pb-12 pt-2">
+    <div class="pb-48 pt-2">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12"
         x-data="agent_database()">
 
-            <div class="">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
 
-                <form id="search_form">
+                <div class="border p-4 rounded-lg">
 
-                    <div class="mt-12 mb-4 text-xl font-semibold">
-                        Enter The List Criteria
-                    </div>
+                    <form id="search_form">
 
-                    <div class="my-6">
+                        <div class="mb-4 text-xl font-semibold">
+                            Enter The List Criteria
+                        </div>
 
-                        <div class="text-base font-medium text-gray-900 mb-2">List Type</div>
-                        <p class="text-sm leading-5 text-gray-500">Is this for an Email or Address list?</p>
+                        <div class="my-6">
 
-                        <fieldset class="mt-4">
+                            <div class="text-base font-medium text-gray-900 mb-2">List Type</div>
+                            <p class="text-sm leading-5 text-gray-500">Is this for an Email or Address list?</p>
 
-                            <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
+                            <fieldset class="mt-4">
 
-                                <div class="flex items-center">
-                                    <input id="type_email" name="list_type" type="radio" value="email" checked class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
-                                    <label for="type_email" class="ml-3 block text-sm font-medium text-gray-700">
-                                        Emails
-                                    </label>
+                                <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
+
+                                    <div class="">
+                                        <input type="radio"
+                                        class="form-element radio lg primary"
+                                        name="list_type"
+                                        value="email"
+                                        data-label="Emails"
+                                        checked>
+                                    </div>
+
+                                    <div class="">
+                                        <input type="radio"
+                                        class="form-element radio lg primary"
+                                        name="list_type"
+                                        value="address"
+                                        data-label="Home Addresses">
+                                    </div>
+
                                 </div>
 
-                                <div class="flex items-center">
-                                    <input id="type_address" name="list_type" type="radio" value="address" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300">
-                                    <label for="type_address" class="ml-3 block text-sm font-medium text-gray-700">
-                                        Home Addresses
-                                    </label>
+                            </fieldset>
+
+                        </div>
+
+                        <div class="text-base font-medium text-gray-900 mb-2 mt-12">Location</div>
+
+                        <div class="flex">
+
+                            <div class="p-2">
+
+                                <div class="text-gray-500 mb-3">States</div>
+
+                                <div class="p-2 rounded bg-gray-50 w-64 max-h-300-px overflow-y-auto">
+
+                                    @foreach($states as $state)
+
+                                        <div class="">
+
+                                            <input type="checkbox"
+                                            class="form-element checkbox xl primary"
+                                            name="states[]" value="{{ $state }}"
+                                            data-label="{{ $state }}"
+                                            @if($state == 'MD') checked @endif
+                                            @click="location_data('{{ $state }}', true, false);">
+
+                                        </div>
+
+                                    @endforeach
+
+                                </div>
+
+                                <div class="mt-2 flex justify-between">
+                                    <div class="ml-2.5">
+                                        <input type="checkbox"
+                                        class="form-element checkbox lg primary"
+                                        data-label="Select All"
+                                        @click="select_all_options('states', $el.checked);">
+                                    </div>
+                                    <span class="bg-yellow-600 rounded-full py-1 px-3 text-xs text-white inline-block"><span id="state_count"></span> Selected</span>
                                 </div>
 
                             </div>
 
-                        </fieldset>
+                            <div class="ml-8 p-2">
 
+                                <div class="text-gray-500 mb-3">Counties</div>
+
+
+                                <div class="p-2 rounded bg-gray-50 w-96 max-h-300-px overflow-y-auto">
+
+                                    <template
+                                    x-for="county in counties">
+                                        <div class="county-checkbox">
+                                            <input type="checkbox"
+                                            class="form-element checkbox xl primary"
+                                            name="counties[]"
+                                            :data-state="county.state"
+                                            :data-label="county.state+' - '+county.county"
+                                            :value="county.state+'-'+county.county"
+                                            @click="search_offices(); update_details(); get_checked(false)">
+                                        </div>
+                                    </template>
+
+                                </div>
+
+                                <div class="mt-2 flex justify-between">
+                                    <div class="ml-2.5">
+                                        <input type="checkbox"
+                                        x-ref="select_all_counties"
+                                        class="form-element checkbox lg primary"
+                                        data-label="Select All"
+                                        @click="select_all_options('counties', $el.checked);">
+                                    </div>
+                                    <span class="bg-yellow-600 rounded-full py-1 px-3 text-xs text-white inline-block"><span id="county_count"></span> Selected</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-base font-medium text-gray-900 mb-2 mt-12">Offices</div>
+
+                        <div class="max-w-sm">
+                            <input type="text" id="office_search" class="form-element input md" placeholder="Search..." data-label="Office Name"
+                            @input.debounce="search_offices()">
+                        </div>
+
+                        <div id="office_search_results"></div>
+
+
+
+                    </form>
+
+                </div>
+
+
+                <div class="border p-4 rounded-lg">
+
+                    <div class="mb-4 text-xl font-semibold">
+                        Results
                     </div>
 
-                    <div class="text-base font-medium text-gray-900 mb-2 mt-12">Location</div>
+                </div>
 
-                    <div class="grid grid-cols-4 gap-4">
-
-                        <div>
-                            <select
-                            class="form-element select md h-48"
-                            id="states"
-                            name="states[]"
-                            data-label="State"
-                            multiple
-                            @change="document.querySelector('#counties').value = ''; location_data();">
-                                @foreach($states as $state)
-                                    <option value="{{ $state -> OfficeStateOrProvince }}" @if($state -> OfficeStateOrProvince == 'MD') selected @endif>{{ $state -> OfficeStateOrProvince }}</option>
-                                @endforeach
-                            </select>
-                            <div class="mt-2 flex justify-around">
-                                <span class="bg-yellow-600 rounded-full p-2 text-sm text-white inline-block"><span id="state_count"></span> Selected</span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <select
-                            class="form-element select md h-48"
-                            id="counties"
-                            name="counties[]"
-                            data-label="Counties"
-                            multiple
-                            x-ref="counties_select"
-                            @change="location_data()">
-                                <option value=""></option>
-                                <template
-                                x-for="county in counties">
-                                    <option :value="county.county" x-text="county.state+' - '+county.county"></option>
-                                </template>
-                            </select>
-                            <div class="mt-2 flex justify-around">
-                                <span class="bg-yellow-600 rounded-full p-2 text-sm text-white inline-block"><span id="county_count"></span> Selected</span>
-                                <button type="button" class="button primary md"
-                                @click="select_all_options($refs.counties_select); $nextTick(() => { location_data() });">
-                                    <i class="fal fa-check mr-2"></i> Select All
-                                </button>
-                            </div>
-                        </div>
-
-                        {{-- <div>
-                            <select
-                            class="form-element select md h-48"
-                            id="cities"
-                            name="cities[]"
-                            data-label="Cities"
-                            multiple
-                            x-ref="cities_select"
-                            @change="$refs.city_count.innerText = Array.from($el.selectedOptions).length">
-                                <option value=""></option>
-                                <template
-                                x-for="city in cities">
-                                    <option :value="city.city" x-text="city.city+' - '+city.state"></option>
-                                </template>
-                            </select>
-                            <div class="mt-2 flex justify-around">
-                                <span class="bg-yellow-600 rounded-full p-2 text-sm text-white inline-block"><span x-ref="city_count" id="city_count"></span> Selected</span>
-                                <button type="button" class="button primary md"
-                                @click="select_all_options($refs.cities_select)">
-                                    <i class="fal fa-check mr-2"></i> Select All
-                                </button>
-                            </div>
-                        </div> --}}
-
-                    </div>
-
-                    <div class="text-base font-medium text-gray-900 mb-2 mt-12">Offices</div>
-
-                    <div class="flex justify-start items-start">
-
-                        <div class="mr-4">
-                            <input type="text" class="form-element input md" placeholder="Search..." data-label="Office Name"
-                            @input.debounce="search_offices($el.value)">
-                        </div>
-
-                        <div>
-                            <div id="office_search_results" class="max-h-96 overflow-y-auto"></div>
-                        </div>
-
-                    </div>
-
-                </form>
-
-            </div>
 
         </div>
 

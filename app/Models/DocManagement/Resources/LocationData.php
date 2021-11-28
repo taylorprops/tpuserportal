@@ -18,4 +18,8 @@ class LocationData extends Model
         return $this -> select('state') -> distinct() -> orderBy('state') -> get();
     }
 
+    public function scopeActiveStates() {
+        return config('global.company_active_states');
+    }
+
 }

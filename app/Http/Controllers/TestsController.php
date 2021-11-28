@@ -38,8 +38,7 @@ class TestsController extends Controller
         $search_for = 500;
 
         $select = ['MemberKey'];
-        $agents_in_db_array = BrightAgentRoster::withoutGlobalScope('offices')
-        -> select($select)
+        $agents_in_db_array = BrightAgentRoster::select($select)
         -> where('removal_date_checked', '!=', date('Y-m-d'))
         -> orWhereNull('removal_date_checked')
         -> limit($search_for)
@@ -95,14 +94,12 @@ class TestsController extends Controller
 
                 dump($not_found);
 
-                $deactivate_agents = BrightAgentRoster::withoutGlobalScope('offices')
-                -> whereIn('MemberKey', $agents_in_db_array)
+                $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
                 -> update([
                     'active' => 'no'
                 ]);
             } else {
-                $update_removal_date_checked = BrightAgentRoster::withoutGlobalScope('offices')
-                -> whereIn('MemberKey', $agents_in_db_array)
+                $update_removal_date_checked = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
                 -> update([
                     'removal_date_checked' => date('Y-m-d')
                 ]);
@@ -155,8 +152,7 @@ class TestsController extends Controller
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
 
-                $add_agent = BrightAgentRoster::withoutGlobalScope('offices')
-                -> firstOrCreate(
+                $add_agent = BrightAgentRoster::firstOrCreate(
                     ['MemberKey' => $MemberKey],
                     $agent_details
                 );

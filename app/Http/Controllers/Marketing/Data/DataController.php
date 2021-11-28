@@ -11,8 +11,7 @@ class DataController extends Controller
 {
     public function agent_database(Request $request) {
 
-        // $states = LocationData::select('state') -> groupBy('state') -> orderBy('state') -> get();
-        $states = BrightOffices::select('OfficeStateOrProvince') -> groupBy('OfficeStateOrProvince') -> orderBy('OfficeStateOrProvince') -> get();
+        $states = LocationData::ActiveStates();
 
         return view('/marketing/data/agent_database', compact('states'));
 
@@ -25,32 +24,22 @@ class DataController extends Controller
 
         $counties = LocationData::select(['county', 'state'])
         -> whereIn('state', $states_data)
+        -> where('county', '!=', '')
         -> groupBy('state')
         -> groupBy('county')
         -> orderBy('state')
         -> orderBy('county')
         -> get();
-        /* $cities = LocationData::select(['city', 'state'])
-        -> whereIn('state', $states_data)
-        -> where(function($query) use ($counties_data) {
-            if (count($counties_data) > 0) {
-                $query -> whereIn('county', $counties_data);
-            }
-        })
-        -> groupBy('state')
-        -> groupBy('city')
-        -> orderBy('state')
-        -> orderBy('city')
-        -> get(); */
 
-        return compact(/* 'cities',  */'counties');
+
+        return compact('counties');
 
     }
 
     public function search_offices(Request $request) {
 
         $val = $request -> val;
-        $counties = $request -> counties;
+        $counties = json_decode($request -> counties);
         $offices = null;
 
         if ($val != '') {
@@ -58,7 +47,6 @@ class DataController extends Controller
             $states = [];
 
             foreach ($counties as $county) {
-                $county = json_decode($county);
                 $state = $county -> state;
                 $states[] = $county -> state;
                 $county = $county -> county;
@@ -82,19 +70,20 @@ class DataController extends Controller
                 $locations[] = $details;
             }
 
-
             $offices = BrightOffices::where('OfficeName', 'like', '%'.$val.'%')
             -> where(function ($query) use ($locations) {
                 foreach ($locations as $location) {
-                    $query -> where('OfficeStateOrProvince', $location['state'])
-                    -> whereIn('OfficeCounty', $location['counties']);
+                    $query -> orWhere(function($query) use ($location) {
+                        $query -> where('OfficeStateOrProvince', $location['state'])
+                        -> whereIn('OfficeCounty', $location['counties']);
+                    });
                 }
             })
             -> has('agents')
-            -> with(['agents'])
+            -> with(['agents:MemberKey,MemberFirstName,MemberLastName,MemberAddress1,MemberCity,MemberStateOrProvince,MemberPostalCode,MemberEmail,MemberPreferredPhone'])
             -> get();
         }
-
+        dd($offices -> first());
 
         return view('/marketing/data/office_search_results_html', compact('offices'));
 

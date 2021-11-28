@@ -115,7 +115,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% Marketing
     Route::get('/marketing/data/agent_database', [DataController::class, 'agent_database']) -> middleware(['in_house']);
     Route::post('/marketing/data/location_data', [DataController::class, 'location_data']) -> middleware(['in_house']);
-    Route::get('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
+    Route::post('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);

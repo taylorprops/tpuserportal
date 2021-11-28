@@ -1,38 +1,71 @@
+<div class="mt-6 max-h-96 overflow-y-auto">
 
-@forelse($offices as $office)
+    <div class="text-xs text-gray-400 mb-3">{{ count($offices) }} Offices Found</div>
 
-    @if(count($office -> agents) > 0)
+    @forelse($offices as $office)
 
-        <div class="p-2 border-b text-sm">
+        @if(count($office -> agents) > 0)
 
-            <div class="grid grid-cols-11 gap-2">
+            <div x-data="{ show_agents: false }">
 
-                <div class="col-span-1">
-                    <input type="checkbox" class="form-element checkbox xl primary" data-office-mls-id="{{ $office -> OfficeMlsId }}" checked>
+                <div class="flex p-2 border-b text-xs" :class="{ 'bg-gray-50': show_agents === true }">
+
+                    <div class="ml-2 w-6">
+                        <input type="checkbox" class="form-element checkbox xl primary" data-office-mls-id="{{ $office -> OfficeMlsId }}" checked>
+                    </div>
+
+                    <div class="ml-2 w-48">
+                        {{ $office -> OfficeName }}
+                    </div>
+
+                    <div class="ml-2 w-60">
+                        {{ $office -> OfficeAddress1 }}<br>{{ $office -> OfficeCity }} {{ $office -> OfficeStateOrProvince }} {{ $office -> OfficePostalCode }}
+                    </div>
+
+                    <div class="ml-2 w-16">
+                        {{ $office -> OfficeMlsId }}
+                    </div>
+
+                    <div class="ml-2 flex-1 text-right">
+                        {{ count($office -> agents) }} Agents <br>
+                        <a href="javascript:void(0)" @click="show_agents = !show_agents">View Agents</a>
+                    </div>
+
                 </div>
 
-                <div class="col-span-4">
-                    {{ $office -> OfficeName }}
-                </div>
+                <div class="mt-0 p-2 bg-gray-50 text-xs max-h-300-px overflow-y-auto"
+                x-show="show_agents" x-transition>
 
-                <div class="col-span-4">
-                    {{ $office -> OfficeAddress1 }} {{ $office -> OfficeCity }}, {{ $office -> OfficeStateOrProvince }} {{ $office -> OfficePostalCode }}
-                </div>
+                    @foreach($office -> agents as $agent)
 
-                <div class="col-span-1">
-                    {{ $office -> OfficeMlsId }}
-                </div>
+                        <div class="grid grid-cols-10 gap-2 border-b">
 
-                <div class="col-span-1">
-                    {{ count($office -> agents) }} Agents
+                            <div class="col-span-2">
+                                {{ $agent -> MemberLastName }}, {{ $agent -> MemberFirstName }}
+                            </div>
+                            <div class="col-span-3">
+                                {{ $agent -> MemberEmail }}
+                            </div>
+                            <div class="col-span-3">
+                                {{ $agent -> MemberAddress1 }}<br>
+                                {{ $agent -> MemberCity }}, {{ $agent -> MemberStateOrProvince }} {{ $agent -> MemberPostalCode }}
+                            </div>
+                            <div class="col-span-2">
+                                {{ $agent -> MemberPreferredPhone }}
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
                 </div>
 
             </div>
 
-        </div>
+        @endif
 
-    @endif
+    @empty
+        <div class="text-gray-400 font-semibold text-xl">No Records Found</div>
+    @endforelse
 
-@empty
-    <div class="text-gray-400 font-semibold text-xl">No Records Found</div>
-@endforelse
+</div>
