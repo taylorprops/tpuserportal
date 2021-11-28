@@ -39,6 +39,7 @@ class DataController extends Controller
     public function search_offices(Request $request) {
 
         $val = $request -> val;
+        $list_type = $request -> list_type;
         $counties = json_decode($request -> counties);
         $offices = null;
 
@@ -80,10 +81,18 @@ class DataController extends Controller
                 }
             })
             -> has('agents')
-            -> with(['agents:MemberKey,MemberFirstName,MemberLastName,MemberAddress1,MemberCity,MemberStateOrProvince,MemberPostalCode,MemberEmail,MemberPreferredPhone'])
+            -> with(['agents' => function ($query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } else if ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+            }])
             -> get();
         }
-        dd($offices -> first());
 
         return view('/marketing/data/office_search_results_html', compact('offices'));
 

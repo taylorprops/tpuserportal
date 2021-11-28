@@ -63,6 +63,7 @@ if(document.URL.match('agent_database')) {
             search_offices() {
 
                 let val = document.querySelector('#office_search').value;
+                let list_type = document.querySelector('[name="list_type"]:checked').value;
                 if(val != '') {
 
                     let counties = [];
@@ -82,6 +83,7 @@ if(document.URL.match('agent_database')) {
                     let formData = new FormData();
                     formData.append('val', val);
                     formData.append('counties', counties);
+                    formData.append('list_type', list_type);
 
                     axios.post('/marketing/data/search_offices', formData)
                     .then(function (response) {

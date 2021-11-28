@@ -42,7 +42,8 @@ $breadcrumbs = [
                                         name="list_type"
                                         value="email"
                                         data-label="Emails"
-                                        checked>
+                                        checked
+                                        @change="search_offices()">
                                     </div>
 
                                     <div class="">
@@ -50,7 +51,8 @@ $breadcrumbs = [
                                         class="form-element radio lg primary"
                                         name="list_type"
                                         value="address"
-                                        data-label="Home Addresses">
+                                        data-label="Home Addresses"
+                                        @change="search_offices()">
                                     </div>
 
                                 </div>

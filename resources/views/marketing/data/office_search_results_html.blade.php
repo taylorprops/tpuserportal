@@ -47,11 +47,13 @@
                                 {{ $agent -> MemberEmail }}
                             </div>
                             <div class="col-span-3">
+                                @if($agent -> MemberAddress1)
                                 {{ $agent -> MemberAddress1 }}<br>
                                 {{ $agent -> MemberCity }}, {{ $agent -> MemberStateOrProvince }} {{ $agent -> MemberPostalCode }}
+                                @endif
                             </div>
                             <div class="col-span-2">
-                                {{ $agent -> MemberPreferredPhone }}
+                                {{ \App\Helpers\Helper::format_phone($agent -> MemberPreferredPhone) }}
                             </div>
 
                         </div>
