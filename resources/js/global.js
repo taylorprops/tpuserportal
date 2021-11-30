@@ -104,12 +104,12 @@ window.hide_loading = function () {
 }
 
 window.ele_loading = function (ele) {
-    ele.html(' \
-    <div class="page-loading w-full h-full fixed block top-0 left-0 bg-white opacity-75 z-50"> \
-        <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0"> \
+    ele.innerHTML = ' \
+    <div class="w-full h-full absolute top-0 left-0 flex justify-around items-center bg-white opacity-75 z-50"> \
+        <span class="text-gray-700 opacity-75"> \
             <i class="fas fa-circle-notch fa-spin fa-4x"></i> \
         </span> \
-    </div>');
+    </div>';
 }
 
 window.show_form_errors = function (errors) {

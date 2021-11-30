@@ -15,6 +15,11 @@ class BrightAgentRoster extends Model
     protected $guarded = [];
     public $incrementing = false;
 
+
+    public function office() {
+        return $this -> hasOne(\App\Models\BrightMLS\BrightOffices::class, 'OfficeKey', 'OfficeKey');
+    }
+
     /* public static function boot() {
         parent::boot();
         static::addGlobalScope('offices', function ($query) {

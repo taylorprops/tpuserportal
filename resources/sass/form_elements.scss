@@ -117,7 +117,7 @@
 
     }
     &:not(.checkbox):not(.radio) {
-        @apply  mb-2 ml-2 italic;
+        @apply  mb-2 ml-2;
         &.sm {
             @apply text-xs;
         }

@@ -8,9 +8,12 @@ use App\Models\Employees\Agents;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
 use App\Models\Employees\EmployeesNotes;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Employees\EmployeesLicenses;
+use App\Models\OldDB\Company\BillingInvoices;
 use App\Models\DocManagement\Admin\Forms\Forms;
+use App\Models\OldDB\Company\BillingInvoicesItems;
 use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
 use App\Models\Employees\LoanOfficers as LoanOfficersNew;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
@@ -239,6 +242,41 @@ class TestsController extends Controller
             $loan_officer -> soc_sec = Crypt::encrypt($loan_officer -> soc_sec);
             $loan_officer -> save();
         }
+
+    }
+
+    public function signs_and_posts(Request $request) {
+
+        // $invoices = BillingInvoices::select(['in_id', 'in_date_sent', 'in_amount', 'in_agent_fullname'])
+        // -> where('in_date_sent', '>', '2021-07-31')
+        // -> whereHas('items', function (Builder $query) {
+        //     $query -> where('in_item_desc', 'like', '%sign%')
+        //     -> orWhere('in_item_desc', 'like', '%post%');
+        // })
+        // -> with(['items' => function($query) {
+        //     $query -> where('in_item_desc', 'like', '%sign%')
+        //     -> orWhere('in_item_desc', 'like', '%post%');
+        // }])
+        // -> limit(10)
+        // -> get();
+
+        $items = BillingInvoicesItems::select(['in_invoice_id', 'in_item_quantity', 'in_item_desc', 'in_item_total'])
+        -> where(function($query) {
+            $query -> where('in_item_desc', 'like', '%sign%')
+            -> orWhere('in_item_desc', 'like', '%post%');
+        })
+        -> whereHas('invoice', function (Builder $query) {
+            $query -> where('in_date_sent', '>', '2021-07-31')
+            -> where('in_type', 'charge');
+        })
+        -> with(['invoice' => function($query) {
+            $query -> where('in_date_sent', '>', '2021-07-31')
+            -> where('in_type', 'charge')
+            -> select(['in_id', 'in_type', 'in_agent_fullname', 'in_date_sent']);
+        }])
+        -> get();
+
+        dd($items);
 
     }
 

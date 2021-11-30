@@ -116,6 +116,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/data/agent_database', [DataController::class, 'agent_database']) -> middleware(['in_house']);
     Route::post('/marketing/data/location_data', [DataController::class, 'location_data']) -> middleware(['in_house']);
     Route::post('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
+    Route::post('/marketing/data/get_results', [DataController::class, 'get_results']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
@@ -157,6 +158,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/bright_update_agents', [TestsController::class, 'bright_update_agents']) -> middleware(['in_house']);
     Route::get('/tests/bright_update_offices', [TestsController::class, 'bright_update_offices']) -> middleware(['in_house']);
     Route::get('/tests/bright_remove_agents', [TestsController::class, 'bright_remove_agents']) -> middleware(['in_house']);
+    Route::get('/tests/signs_and_posts', [TestsController::class, 'signs_and_posts']) -> middleware(['in_house']);
 
     Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['in_house']);
 

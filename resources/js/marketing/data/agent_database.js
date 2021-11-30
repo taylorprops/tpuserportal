@@ -6,21 +6,43 @@ if(document.URL.match('agent_database')) {
 
             counties: [],
             counties_checked: [],
+            results_time: '',
 
             init() {
                 this.location_data('MD', true, true);
-                this.get_results();
             },
 
             get_results() {
+
+                let scope = this;
+                ele_loading(document.querySelector('#results_div'));
+                let time = Date.now();
+                scope.results_time = time;
+
+                setTimeout(function() {
+
+                    let form = document.getElementById('options_form');
+                    let formData = new FormData(form);
+
+                    axios.post('/marketing/data/get_results', formData)
+                    .then(function (response) {
+                        if(time >= scope.results_time) {
+                            document.querySelector('#results_div').innerHTML = response.data;
+                        }
+
+                    })
+                    .catch(function (error) {
+                    });
+
+                }, 800);
 
             },
 
             location_data(state, remove_current = true, on_init = null) {
 
                 let scope = this;
-                let search_form = document.querySelector('#search_form');
-                let formData = new FormData(search_form);
+                let options_form = document.querySelector('#options_form');
+                let formData = new FormData(options_form);
 
                 scope.get_checked(true);
 
@@ -45,8 +67,8 @@ if(document.URL.match('agent_database')) {
                             });
                         }
 
-                        scope.get_results();
                         scope.search_offices();
+                        //scope.get_results();
 
                     }, 100);
 
@@ -62,6 +84,7 @@ if(document.URL.match('agent_database')) {
 
             search_offices() {
 
+                let scope = this;
                 let val = document.querySelector('#office_search').value;
                 let list_type = document.querySelector('[name="list_type"]:checked').value;
                 if(val != '') {
@@ -129,6 +152,8 @@ if(document.URL.match('agent_database')) {
             update_details() {
                 let county_checks = document.querySelectorAll('[name="counties[]"]');
                 let county_checks_checked = document.querySelectorAll('[name="counties[]"]:checked');
+                let state_checks = document.querySelectorAll('[name="states[]"]');
+                let state_checks_checked = document.querySelectorAll('[name="states[]"]:checked');
                 let state_count = document.querySelectorAll('[name="states[]"]:checked').length;
                 let county_count = document.querySelectorAll('[name="counties[]"]:checked').length;
 
@@ -136,6 +161,12 @@ if(document.URL.match('agent_database')) {
                     this.$refs.select_all_counties.checked = true;
                 } else {
                     this.$refs.select_all_counties.checked = false;
+                }
+
+                if(state_checks.length === state_checks_checked.length) {
+                    this.$refs.select_all_states.checked = true;
+                } else {
+                    this.$refs.select_all_states.checked = false;
                 }
 
                 document.querySelector('#state_count').innerText = state_count;
@@ -148,7 +179,9 @@ if(document.URL.match('agent_database')) {
                     input.checked = checked;
                 });
                 this.search_offices();
+                this.get_results();
                 this.update_details();
+
                 if(elements == 'states') {
                     this.location_data('', false, false);
                 }

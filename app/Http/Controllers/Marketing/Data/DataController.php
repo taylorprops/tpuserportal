@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Marketing\Data;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightOffices;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
@@ -14,6 +16,52 @@ class DataController extends Controller
         $states = LocationData::ActiveStates();
 
         return view('/marketing/data/agent_database', compact('states'));
+
+    }
+
+    public function get_results(Request $request) {
+
+        $list_type = $request -> list_type;
+        $states = $request -> states;
+        $locations = $request -> counties;
+        $office_codes = $request -> offices ?? null;
+        $offices = null;
+
+        if ($locations) {
+            $counties = [];
+            foreach ($locations as $location) {
+                $parts = explode('-', $location);
+                $counties[] = ['state' => $parts[0], 'county' => $parts[1]];
+            }
+            $counties = json_decode(json_encode($counties));
+
+            if ($office_codes) {
+                $offices = $this -> get_offices('', $list_type, '', $office_codes);
+            } else {
+                $offices = $this -> get_offices('', $list_type, $counties, null);
+            }
+
+            $agents = [];
+            $file_name = 'agent_list_'.time().'.csv';
+            $file = Storage::path('/tmp/'.$file_name);
+            $handle = fopen($file, 'w');
+            fputcsv($handle, ['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'], ',');
+            foreach ($offices as $office) {
+                foreach ($office -> agents as $agent) {
+                    $agents[] = $agent -> toArray();
+                    fputcsv($handle, $agent -> toArray(), ',');
+                }
+            }
+            $agent_count = count($agents);
+            $file_location = '/storage/tmp/'.$file_name;
+
+            return view('/marketing/data/get_results_html', compact('agent_count', 'list_type', 'file_location'));
+
+        } else {
+            return true;
+        }
+
+
 
     }
 
@@ -38,14 +86,52 @@ class DataController extends Controller
 
     public function search_offices(Request $request) {
 
-        $val = $request -> val;
+        $search_value = $request -> val;
         $list_type = $request -> list_type;
         $counties = json_decode($request -> counties);
         $offices = null;
 
-        if ($val != '') {
-            $state_and_county = [];
-            $states = [];
+        if ($search_value != '') {
+            $offices = $this -> get_offices($search_value, $list_type, $counties, null);
+        }
+
+        return view('/marketing/data/office_search_results_html', compact('offices'));
+
+    }
+
+    public function get_offices($search_value, $list_type, $counties, $office_codes) {
+
+        $offices = null;
+        $state_and_county = [];
+        $states = [];
+
+        if ($office_codes) {
+
+            $offices = BrightOffices::whereIn('OfficeMlsId', $office_codes)
+            -> whereHas('agents', function (Builder $query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } elseif ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+            })
+            -> with(['agents' => function ($query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } elseif ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+                $query -> select(['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType']);
+            }])
+            -> get();
+
+        } else {
 
             foreach ($counties as $county) {
                 $state = $county -> state;
@@ -71,30 +157,50 @@ class DataController extends Controller
                 $locations[] = $details;
             }
 
-            $offices = BrightOffices::where('OfficeName', 'like', '%'.$val.'%')
+            $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+            -> where(function ($query) use ($search_value) {
+                if ($search_value != '') {
+                    $query -> where('OfficeName', 'like', '%'.$search_value.'%');
+                }
+            })
             -> where(function ($query) use ($locations) {
                 foreach ($locations as $location) {
-                    $query -> orWhere(function($query) use ($location) {
+                    $query -> orWhere(function ($query) use ($location) {
                         $query -> where('OfficeStateOrProvince', $location['state'])
-                        -> whereIn('OfficeCounty', $location['counties']);
+                        -> where(function ($query) use ($location) {
+                            if ($location['state'] != 'DC') {
+                                $query -> whereIn('OfficeCounty', $location['counties']);
+                            }
+                        });
                     });
                 }
             })
-            -> has('agents')
+            -> whereHas('agents', function (Builder $query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } elseif ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+            })
             -> with(['agents' => function ($query) use ($list_type) {
                 $query -> where('MemberType', 'Agent');
                 if ($list_type == 'email') {
                     $query -> where('MemberEmail', '!=', '')
                     -> whereNotNull('MemberEmail');
-                } else if ($list_type == 'address') {
+                } elseif ($list_type == 'address') {
                     $query -> where('MemberAddress1', '!=', '')
                     -> whereNotNull('MemberAddress1');
                 }
+                $query -> select(['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType']);
             }])
             -> get();
+
         }
 
-        return view('/marketing/data/office_search_results_html', compact('offices'));
+        return $offices;
 
     }
 
