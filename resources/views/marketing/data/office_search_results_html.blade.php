@@ -42,7 +42,7 @@
                         <div class="col-span-2">
                             {{ $agent -> MemberLastName }}, {{ $agent -> MemberFirstName }}
                         </div>
-                        <div class="col-span-3">
+                        <div class="col-span-3 overflow-hidden">
                             {{ $agent -> MemberEmail }}
                         </div>
                         <div class="col-span-3">

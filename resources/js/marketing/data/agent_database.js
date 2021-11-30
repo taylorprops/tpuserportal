@@ -24,15 +24,19 @@ if(document.URL.match('agent_database')) {
                     let form = document.getElementById('options_form');
                     let formData = new FormData(form);
 
-                    axios.post('/marketing/data/get_results', formData)
-                    .then(function (response) {
-                        if(time >= scope.results_time) {
-                            document.querySelector('#results_div').innerHTML = response.data;
-                        }
+                    if(time == scope.results_time) {
 
-                    })
-                    .catch(function (error) {
-                    });
+                        axios.post('/marketing/data/get_results', formData)
+                        .then(function (response) {
+                            if(time >= scope.results_time) {
+                                document.querySelector('#results_div').innerHTML = response.data;
+                            }
+
+                        })
+                        .catch(function (error) {
+                        });
+
+                    }
 
                 }, 800);
 

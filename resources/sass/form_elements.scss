@@ -177,6 +177,9 @@
     &.circle {
         @apply rounded-full;
     }
+    &:disabled {
+        @apply opacity-40 shadow-none;
+    }
 
 }
 

@@ -1031,26 +1031,27 @@ $input_size = 'md';
                                                             </div>
 
                                                             @if($loan_officer)
-                                                            @php
-                                                            $loan_amount_percent = $loan_officer -> loan_amount_percent;
-                                                            if($index == '1') {
-                                                                if($loan -> loan_officer_1_loan_amount_percent) {
-                                                                    $loan_amount_percent = $loan -> loan_officer_1_loan_amount_percent;
+                                                                @php
+                                                                $loan_amount_percent = $loan_officer -> loan_amount_percent;
+
+                                                                if($index == '1') {
+                                                                    if($loan -> loan_officer_1_loan_amount_percent) {
+                                                                        $loan_amount_percent = $loan -> loan_officer_1_loan_amount_percent;
+                                                                    }
+                                                                    $loan_officer_commission_type = $loan -> loan_officer_1_commission_type;
+                                                                } else if($index == '2') {
+                                                                    if($loan -> loan_officer_2_loan_amount_percent) {
+                                                                        $loan_amount_percent = $loan -> loan_officer_2_loan_amount_percent;
+                                                                    }
+                                                                    $loan_officer_commission_type = $loan -> loan_officer_2_commission_type;
                                                                 }
-                                                                $loan_officer_commission_type = $loan -> loan_officer_1_commission_type;
-                                                            } else if($index == '2') {
-                                                                if($loan -> loan_officer_2_loan_amount_percent) {
-                                                                    $loan_amount_percent = $loan -> loan_officer_2_loan_amount_percent;
-                                                                }
-                                                                $loan_officer_commission_type = $loan -> loan_officer_2_commission_type;
-                                                            }
-                                                            @endphp
-                                                            <input type="hidden" name="loan_officer_{{ $index }}_loan_amount_percent" value="{{ $loan_amount_percent }}">
+                                                                @endphp
+                                                                <input type="hidden" name="loan_officer_{{ $index }}_loan_amount_percent" value="{{ $loan_amount_percent }}">
                                                             @endif
 
                                                             <input type="hidden" class="commission-paid-out" name="loan_officer_{{ $index }}_commission_amount" id="loan_officer_{{ $index }}_commission_amount">
 
-                                                            <input type="hidden" name="loan_officer_{{ $index }}_commission_type" id="loan_officer_{{ $index }}_commission_type" value="{{ $loan_officer_commission_type }}">
+                                                            <input type="hidden" name="loan_officer_{{ $index }}_commission_type" id="loan_officer_{{ $index }}_commission_type" value="{{ $loan_officer_commission_type ?? null }}">
 
                                                             <div class="my-4 pt-4 border-t">
 
@@ -1253,7 +1254,7 @@ $input_size = 'md';
 
                                                 <div class="grid grid-cols-3 border-b border-white pb-2">
                                                     <div class="col-span-2 border-b">
-                                                        {{ $loan_officer_1 -> fullname }}
+                                                        {{ $loan_officer_1 -> fullname ?? null }}
                                                     </div>
                                                     <div>
                                                         <span class="loan-officer-1-commission-amount-ele"></span>

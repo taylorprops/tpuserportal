@@ -8,7 +8,7 @@
     <span class="font-semibold">{{ $agent_count }}</span>
 
     <div class="col-span-2 flex justify-around pt-6">
-        <a href="{{ $file_location }}" target="_blank" class="button primary xl"><i class="fa fa-download mr-2"></i> Download File</a>
+        <button type="button" @click="window.location = '{{ $file_location }}'" target="_blank" class="button primary xl" @if(!$file_location) disabled @endif><i class="fa fa-download mr-2"></i> Download File</button>
     </div>
 
 </div>

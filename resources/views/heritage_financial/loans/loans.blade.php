@@ -19,7 +19,7 @@ $breadcrumbs = [
 
             @if(auth() -> user() -> group != 'loan_officer')
             <div class="mt-4 float-right">
-                <button @click="window.location='/heritage_financial/view_loan'" class="button primary lg"><i class="fal fa-plus mr-2"></i> Add Loan</button>
+                <button @click="window.location='/heritage_financial/loans/view_loan'" class="button primary lg"><i class="fal fa-plus mr-2"></i> Add Loan</button>
             </div>
             @endif
 

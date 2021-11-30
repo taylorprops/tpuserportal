@@ -11,6 +11,7 @@ use App\Models\Employees\Agents;
 use App\Models\Employees\InHouse;
 use App\Models\Billing\CreditCards;
 use App\Http\Controllers\Controller;
+use App\Models\Users\PasswordResets;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
 use App\Models\Employees\LoanOfficers;
@@ -246,11 +247,16 @@ class EmployeesController extends Controller
         if($request -> emp_id) {
             $user = User::where('email', $orig_email) -> first();
         } else {
+            $password = str_random(10);
+            $hash = Hash::make($password);
             $user = new User();
             $user -> user_id = $emp_id;
             $user -> group = $emp_type;
             $user -> active = 'yes';
-            $user -> password = '$2y$10$P.O4F.rVfRRin81HksyCie0Wf0TEJQ9KlPYFoI2dMEzdtPFYD11FC';
+            $user -> password = $hash;
+
+            // send registration email
+
         }
         $user -> name = $employee -> first_name.' '.$employee -> last_name;
         $user -> first_name = $employee -> first_name;
@@ -264,6 +270,36 @@ class EmployeesController extends Controller
         }
 
         return response() -> json(['success' => true]);
+
+    }
+
+    public function register_employee(Request $request) {
+
+        $email = $request -> email;
+        $user = User::where('email', $email) -> first();
+        $url = $this -> create_password_reset_url($user, 'register');
+
+
+        //Notification::send($user, new RegisterEmployee($url));
+
+    }
+
+    public function create_password_reset_url($user, $action) {
+
+        $token = str_random(60);
+        PasswordResets::where('email', $user -> email) -> delete();
+        PasswordResets::insert([
+            'email' => $user -> email,
+            'token' => Hash::make($token),
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        $url = url(route('password.reset', [
+            'token' => $token,
+            'email' => $user -> email,
+            'action' => $action
+        ], false));
+
+        return $url;
 
     }
 

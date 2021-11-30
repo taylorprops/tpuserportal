@@ -15,6 +15,7 @@
         "kyslik/column-sortable": "^6.0",
         "laravel/framework": "^8.40",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.3",
         "lorisleiva/artisan-ui": "^0.3.0",
         "mikehaertl/php-pdftk": "^0.10.1",
         "mojtabaahn/laravel-web-logs": "^1.3",

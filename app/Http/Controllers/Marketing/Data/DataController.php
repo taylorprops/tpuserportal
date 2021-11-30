@@ -11,6 +11,9 @@ use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
 {
+
+    private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
+
     public function agent_database(Request $request) {
 
         $states = LocationData::ActiveStates();
@@ -26,6 +29,8 @@ class DataController extends Controller
         $locations = $request -> counties;
         $office_codes = $request -> offices ?? null;
         $offices = null;
+        $agent_count = '0';
+        $file_location = null;
 
         if ($locations) {
             $counties = [];
@@ -45,7 +50,7 @@ class DataController extends Controller
             $file_name = 'agent_list_'.time().'.csv';
             $file = Storage::path('/tmp/'.$file_name);
             $handle = fopen($file, 'w');
-            fputcsv($handle, ['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'], ',');
+            fputcsv($handle, $this -> agent_columns, ',');
             foreach ($offices as $office) {
                 foreach ($office -> agents as $agent) {
                     $agents[] = $agent -> toArray();
@@ -55,11 +60,9 @@ class DataController extends Controller
             $agent_count = count($agents);
             $file_location = '/storage/tmp/'.$file_name;
 
-            return view('/marketing/data/get_results_html', compact('agent_count', 'list_type', 'file_location'));
-
-        } else {
-            return true;
         }
+
+        return view('/marketing/data/get_results_html', compact('agent_count', 'list_type', 'file_location'));
 
 
 
@@ -69,16 +72,19 @@ class DataController extends Controller
 
         $states_data = $request -> states;
         $counties_data = $request -> counties ?? [];
+        $counties = [];
 
-        $counties = LocationData::select(['county', 'state'])
-        -> whereIn('state', $states_data)
-        -> where('county', '!=', '')
-        -> groupBy('state')
-        -> groupBy('county')
-        -> orderBy('state')
-        -> orderBy('county')
-        -> get();
+        if ($states_data) {
+            $counties = LocationData::select(['county', 'state'])
+            -> whereIn('state', $states_data)
+            -> where('county', '!=', '')
+            -> groupBy('state')
+            -> groupBy('county')
+            -> orderBy('state')
+            -> orderBy('county')
+            -> get();
 
+        }
 
         return compact('counties');
 
@@ -127,7 +133,7 @@ class DataController extends Controller
                     $query -> where('MemberAddress1', '!=', '')
                     -> whereNotNull('MemberAddress1');
                 }
-                $query -> select(['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType']);
+                $query -> select($this -> agent_columns);
             }])
             -> get();
 
@@ -194,7 +200,7 @@ class DataController extends Controller
                     $query -> where('MemberAddress1', '!=', '')
                     -> whereNotNull('MemberAddress1');
                 }
-                $query -> select(['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType']);
+                $query -> select($this -> agent_columns);
             }])
             -> get();
 

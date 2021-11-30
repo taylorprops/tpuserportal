@@ -108,7 +108,7 @@ $breadcrumbs = [
                                     <div class="text-gray-500 mb-3">Counties</div>
 
 
-                                    <div class="p-2 rounded bg-gray-50 w-96 max-h-300-px overflow-y-auto">
+                                    <div class="p-2 rounded bg-gray-50 w-96 h-300-px overflow-y-auto">
 
                                         <template
                                         x-for="county in counties">
