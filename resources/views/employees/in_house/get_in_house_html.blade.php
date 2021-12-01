@@ -27,7 +27,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ucwords($emp_position) }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ucwords(str_replace('_', ' ', $emp_position)) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> email }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> phone }}</td>
                 </tr>

@@ -10,8 +10,7 @@
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
         </div>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
 
         <form method="POST" action="{{ route('password.confirm') }}">
             @csrf
@@ -34,5 +33,9 @@
                 </x-button>
             </div>
         </form>
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mt-4 text-red-600 bg-white p-2 border border-red-500 rounded" :errors="$errors" />
+
     </x-auth-card>
 </x-guest-layout>

@@ -326,7 +326,7 @@ if(document.URL.match(/view_loan/)) {
                         let deduction_html = ' \
                         <div class="grid grid-cols-2 py-2"> \
                         <div class="">'+description+'</div> \
-                        <div class="text-right">'+amount+'</div> \
+                        <div class="text-right">$'+amount+'</div> \
                         </div> \
                         ';
                         deductions_checks_in.innerHTML += deduction_html;

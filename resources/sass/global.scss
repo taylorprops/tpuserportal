@@ -5,7 +5,7 @@ html {
 }
 
 
-a {
+a:not(.button) {
     @apply text-primary hover:text-primary-light;
 }
 [x-cloak] {

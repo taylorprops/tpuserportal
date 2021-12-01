@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Employees;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Helpers\AuthNet;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Employees\Title;
 use App\Models\Employees\Agents;
@@ -12,12 +13,15 @@ use App\Models\Employees\InHouse;
 use App\Models\Billing\CreditCards;
 use App\Http\Controllers\Controller;
 use App\Models\Users\PasswordResets;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
 use App\Models\Employees\LoanOfficers;
 use App\Models\Employees\EmployeesDocs;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Employees\EmployeesNotes;
+use Illuminate\Support\Facades\Password;
+use App\Notifications\Users\Registration;
 use App\Models\Employees\EmployeesLicenses;
 use App\Models\Employees\TransactionCoordinators;
 use App\Models\DocManagement\Resources\LocationData;
@@ -159,11 +163,19 @@ class EmployeesController extends Controller
 
             $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
             $ignore_cols = ['emp_id', 'license_state', 'license_number', 'manager_bonus_type'];
+            $company = 'Heritage Financial';
 
         } else if($emp_type == 'in_house') {
 
             $employee = InHouse::firstOrNew(['id' => $emp_id]);
             $ignore_cols = ['emp_id', 'commission_percent', 'license_state', 'license_number', 'folder'];
+            $company = 'Taylor Properties';
+
+        } else if($emp_type == 'title') {
+
+            $employee = InHouse::firstOrNew(['id' => $emp_id]);
+            $ignore_cols = ['emp_id', 'commission_percent', 'license_state', 'license_number', 'folder'];
+            $company = 'Heritage Title';
 
         }
 
@@ -247,15 +259,15 @@ class EmployeesController extends Controller
         if($request -> emp_id) {
             $user = User::where('email', $orig_email) -> first();
         } else {
-            $password = str_random(10);
+
+            $password = Str::random(10);
             $hash = Hash::make($password);
+
             $user = new User();
             $user -> user_id = $emp_id;
             $user -> group = $emp_type;
             $user -> active = 'yes';
             $user -> password = $hash;
-
-            // send registration email
 
         }
         $user -> name = $employee -> first_name.' '.$employee -> last_name;
@@ -263,9 +275,18 @@ class EmployeesController extends Controller
         $user -> last_name = $employee -> last_name;
         $user -> email = $request -> email;
         $user -> level = $request -> emp_position;
+
         $user -> save();
 
         if(!$request -> emp_id) {
+
+            $url = $this -> create_password_reset_url($user, 'register');
+            $user -> registration_link = $url;
+            $user -> company = $company;
+
+            // send registration email
+            $user -> notify(new Registration($user));
+
             return response() -> json(['emp_id' => $emp_id]);
         }
 
@@ -273,27 +294,17 @@ class EmployeesController extends Controller
 
     }
 
-    public function register_employee(Request $request) {
-
-        $email = $request -> email;
-        $user = User::where('email', $email) -> first();
-        $url = $this -> create_password_reset_url($user, 'register');
-
-
-        //Notification::send($user, new RegisterEmployee($url));
-
-    }
 
     public function create_password_reset_url($user, $action) {
 
-        $token = str_random(60);
+        $token = Str::random(60);
         PasswordResets::where('email', $user -> email) -> delete();
         PasswordResets::insert([
             'email' => $user -> email,
             'token' => Hash::make($token),
             'created_at' => date('Y-m-d H:i:s')
         ]);
-        $url = url(route('password.reset', [
+        $url = url(route('register', [
             'token' => $token,
             'email' => $user -> email,
             'action' => $action
@@ -607,6 +618,73 @@ class EmployeesController extends Controller
     }
 
 
+
+    // Users //
+
+    public function users(Request $request) {
+
+        return view('/users/users');
+
+    }
+
+    public function get_users(Request $request) {
+
+        $active = $request -> active ?? 'yes';
+
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'last_name';
+
+        $search = $request -> search ?? null;
+        $active = $request -> active;
+        $users = User::select(['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'])
+        -> where(function($query) use ($search) {
+            if($search) {
+                $query -> where('name', 'like', '%'.$search.'%');
+            }
+        })
+        -> where(function($query) use ($active) {
+            if($active != '') {
+                $query -> where('active', $active);
+            }
+        })
+        -> orderBy($sort, $direction)
+        -> paginate(25);
+
+
+        return view('/users/get_users_html', compact('users'));
+
+    }
+
+    public function send_welcome_email(Request $request) {
+
+        $user = User::find($request -> id);
+        $company = 'Taylor Properties';
+        if ($user -> group == 'loan_officer') {
+            $company = 'Heritage Financial';
+        } elseif ($user -> group == 'title') {
+            $company = 'Heritage Title';
+        }
+
+        $url = $this -> create_password_reset_url($user, 'register');
+        $user -> registration_link = $url;
+        $user -> company = $company;
+
+        // send registration email
+        $user -> notify(new Registration($user));
+
+        return response() -> json(['success' => true]);
+
+    }
+
+    public function reset_password(Request $request) {
+
+        $user = User::find($request -> id);
+
+        Password::sendResetLink(['email' => $user -> email]);
+
+        return response() -> json(['success' => true]);
+
+    }
 
     //////////////// IMPORT DATA ////////////////
     public function import_los(Request $request) {

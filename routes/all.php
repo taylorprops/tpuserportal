@@ -9,7 +9,7 @@ use App\Http\Controllers\Employees\EmployeesController;
 Route::middleware(['auth', 'web']) -> group(function () {
 
     /***** Dashboard ******/
-    Route::get('/dashboard', [DashboardController::class, 'dashboard']) -> middleware(['all']);
+    Route::get('/dashboard', [DashboardController::class, 'dashboard']) -> name('dashboard') -> middleware(['all']);
 
     /***** file upload ******/
     Route::post('/filepond_upload', [FilepondUploadController::class, 'upload']) -> middleware(['all']);

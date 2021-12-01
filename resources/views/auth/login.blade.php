@@ -1,16 +1,12 @@
 <x-guest-layout>
     <x-auth-card>
+
         <x-slot name="logo">
             <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a>
         </x-slot>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
-
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -68,5 +64,13 @@
             </div>
 
         </form>
+
+        <!-- Session Status -->
+        <x-auth-session-status class="mt-4 bg-white p-2  rounded" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mt-4 text-red-600 bg-white p-2 border border-red-500 rounded" :errors="$errors" />
+
+
     </x-auth-card>
 </x-guest-layout>

@@ -39,6 +39,8 @@ require('./employees/employees.js');
 require('./employees/loan_officers.js');
 require('./employees/in_house.js');
 
+require('./users/users.js');
+
 
 require('./doc_management/transactions/create.js');
 require('./doc_management/transactions/archives.js');

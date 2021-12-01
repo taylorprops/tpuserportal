@@ -1,4 +1,4 @@
-<ul class="overflow-visible z-50 d-block">
+<ul class="overflow-auto z-50 d-block h-screen-70">
 
     {{-- Dashboard --}}
     <x-nav.menu
@@ -35,11 +35,6 @@
             'title' => 'Add Referral',
             'link' => '/transactions/create/referral',
             'icon' => 'fad fa-plus mr-2'
-        ],
-        [
-            'title' => 'Archived Transactions',
-            'link' => '/transactions_archived',
-            'icon' => 'fad fa-file-archive mr-2'
         ],
     ];
 
@@ -98,13 +93,6 @@
     {{-- End Admin --}}
 
 
-    {{-- Escrow --}}
-    <x-nav.menu
-    :level="'1'"
-    :title="'Escrow'"
-    :link="'/transactions_archived/escrow'"
-    :icon="'fad fa-money-check'"/>
-
     {{-- End Doc Management --}}
 
 
@@ -130,7 +118,7 @@
 
     {{-- Employees --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Employees</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Employees/Users</div>
     </li>
 
         @php
@@ -161,6 +149,12 @@
         :icon="'fad fa-users'"
         :level2="$level2"/>
 
+        <x-nav.menu
+        :level="'1'"
+        :title="'Website Users'"
+        :link="'/users'"
+        :icon="'fad fa-users-cog'"/>
+
 
     {{-- End Employees --}}
 
@@ -176,6 +170,25 @@
     :link="'/marketing/data/agent_database'"
     :icon="'fad fa-users'"/>
     {{-- End Marketing --}}
+
+    {{-- Archives --}}
+    <li>
+        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Archives</div>
+    </li>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Transactions'"
+    :link="'/transactions_archived'"
+    :icon="'fad fa-file-archive'"/>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Escrow'"
+    :link="'/transactions_archived/escrow'"
+    :icon="'fad fa-money-check'"/>
+
+    {{-- End Archives --}}
 
 
     @if(auth() -> user() -> level == 'super_admin')

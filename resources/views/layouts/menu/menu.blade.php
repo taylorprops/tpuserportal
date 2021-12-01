@@ -44,20 +44,20 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                 <div class="mt-4 relative"></div>
                 @endif
 
-                <nav class="navigation flex-1 px-2 pt-3 bg-gray-50 space-y-1 border-t"
+                <nav class="navigation flex-1 pl-2 pt-3 pb-2 bg-gray-50 space-y-1 border-t"
                 x-data="{ close_all: false }">
 
-                @include('layouts/menu/menu_'.auth() -> user() -> group)
+                    @include('layouts/menu/menu_'.auth() -> user() -> group)
 
 
                 </nav>
             </div>
 
-            <div class="flex-shrink-0 flex bg-gray-100 p-0 pb-4 border-t-2">
+        </div>
 
-                @include('layouts/menu/menu_footer')
+        <div class="flex-shrink-0 flex bg-gray-100 p-0 pb-4 border-t-2">
 
-            </div>
+            @include('layouts/menu/menu_footer')
 
         </div>
 

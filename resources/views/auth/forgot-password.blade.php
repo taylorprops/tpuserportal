@@ -10,11 +10,7 @@
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4 bg-white p-2 rounded" :status="session('status')" />
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
@@ -38,5 +34,12 @@
                 <button type="submit" class="button default lg">Email Reset Link <i class="fa fa-share ml-2"></i></button>
             </div>
         </form>
+
+        <!-- Session Status -->
+        <x-auth-session-status class="mt-4 bg-white p-2 rounded" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mt-4 text-red-600 bg-white p-2 border border-red-500 rounded" :errors="$errors" />
+
     </x-auth-card>
 </x-guest-layout>

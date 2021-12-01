@@ -42,11 +42,11 @@
                     <td class="px-6 py-4 whitespace-nowrap text-xs text-center">
                         @if($employee -> active == 'yes')
                             <div class="text-white p-0.5 w-14 rounded bg-success">
-                                <i class="fal fa-plus-circle mr-2"></i> Yes
+                                <i class="fal fa-check mr-2"></i> Yes
                             </div>
                         @else
                             <div class="text-white p-0.5 w-14 rounded bg-danger">
-                                <i class="fal fa-minus-circle mr-2"></i> No
+                                <i class="fal fa-minus mr-2"></i> No
                             </div>
                         @endif
                     </td>

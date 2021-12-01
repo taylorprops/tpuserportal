@@ -540,38 +540,65 @@ $input_size = 'md';
 
                         </div>
 
-                        <div class="grid grid-cols-2 border p-4 rounded mb-3 mt-8 bg-green-50">
+                        <div class="border p-4 rounded mb-3 mt-8 bg-green-50">
 
                             <div class="text-xl">
                                 Loan Officer Commission
                             </div>
 
-                            <div class="font-bold text-right text-xl">
-                                <span class="loan-officer-1-commission-amount-ele text-success"></span>
-                            </div>
-
-                            <div class="col-span-2 mt-4">
+                            <div class="mt-4">
                                 <div class="loan-officer-1-loan-amount-details"></div>
                             </div>
 
-                            <div class="col-span-2 mt-4">
-                                <div class="w-3/4 deductions-from-lo text-sm border bg-gray-50 rounded-lg">
+                            @if(count($loan_officer_deductions -> where('lo_index', '1')) > 0)
 
-                                    <div class="p-2 border-b">Deductions</div>
+                                <div class="mt-4">
+                                    <div class="deductions-from-lo text-sm border bg-gray-50 rounded-lg">
 
-                                    @if($loan_officer_deductions)
+                                        <div class="p-2 border-b">Deductions</div>
 
-                                        @forelse($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
+                                        @php $total_deductions = 0; @endphp
+
+                                        @foreach($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
+                                            @php $total_deductions += $loan_officer_deduction -> amount; @endphp
                                             <div class="grid grid-cols-2 p-2">
                                                 <div class="">{{ $loan_officer_deduction -> description }}</div>
                                                 <div class="text-right">${{ number_format($loan_officer_deduction -> amount, 2) }}</div>
                                             </div>
-                                        @empty
+                                        @endforeach
 
-                                        @endforelse
+                                        @if($loan_officer_2 && $loan -> loan_officer_2_commission_sub_type == 'loan_officer_commission')
 
-                                    @endif
+                                            @php $total_deductions += $loan -> loan_officer_2_commission_amount; @endphp
 
+                                            <div class="grid grid-cols-2 p-2">
+
+                                                <div>Commission Split with {{ $loan_officer_2 -> fullname }} - {{ $loan -> loan_officer_2_commission_percent + 0 }}%</div>
+                                                <div class="text-right">${{ number_format($loan -> loan_officer_2_commission_amount, 2) }}</div>
+
+                                            </div>
+
+                                        @endif
+
+                                        <hr>
+
+                                        <div class="grid grid-cols-2 p-2">
+                                            <div class="font-semibold">Total Deductions</div>
+                                            <div class="font-semibold text-right text-red-600">- ${{ number_format($total_deductions, 2) }}</div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+                            <div class="grid grid-cols-2 mt-6">
+
+                                <div class="font-bold text-xl">Total Commission</div>
+
+                                <div class="font-bold text-right text-xl">
+                                    <span class="loan-officer-1-commission-amount-ele text-success"></span>
                                 </div>
 
                             </div>

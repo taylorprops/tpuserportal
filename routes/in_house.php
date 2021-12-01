@@ -67,6 +67,12 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     Route::post('/employees/save_details', [EmployeesController::class, 'save_details']) -> middleware(['in_house']);
 
+    // %%%% Users
+    Route::get('/users', [EmployeesController::class, 'users']) -> middleware(['in_house']);
+    Route::get('/users/get_users', [EmployeesController::class, 'get_users']) -> middleware(['in_house']);
+    Route::post('/users/send_welcome_email', [EmployeesController::class, 'send_welcome_email']) -> middleware(['in_house']);
+    Route::post('/users/reset_password', [EmployeesController::class, 'reset_password']) -> middleware(['in_house']);
+
 
     // archived
     Route::get('/transactions_archived', [ArchivedTransactionsController::class, 'transactions_archived']) -> middleware(['in_house']);

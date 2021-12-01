@@ -43,7 +43,9 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     this.show_profile_link();
                     this.show_floify_link();
 
-                    this.get_credit_cards();
+                    if(emp_type == 'loan_officer') {
+                        this.get_credit_cards();
+                    }
 
                 }
             },
