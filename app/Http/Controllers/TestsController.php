@@ -178,17 +178,19 @@ class TestsController extends Controller
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.8')
 		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
+		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
         $connect = $rets -> Login();
 
+        dump($connect);
+
         $resource = 'Office';
         $class = 'Office';
 
-        $mod_time = date('Y-m-d H:i:s', strtotime('-1 hour'));
+        $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
@@ -203,6 +205,8 @@ class TestsController extends Controller
 
         $offices = $results -> toArray();
         $total_found = count($offices);
+        dump($total_found);
+        $count_before = BrightOffices::get() -> count();
 
         if($total_found > 0) {
 
@@ -222,6 +226,8 @@ class TestsController extends Controller
             }
 
         }
+
+        $count_after = BrightOffices::get() -> count();
 
         $rets -> Disconnect();
 
