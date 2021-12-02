@@ -205,9 +205,9 @@ class TestsController extends Controller
 
         $offices = $results -> toArray();
         $total_found = count($offices);
-        //dump($total_found);
+        dump($total_found);
         //$count_before = BrightOffices::get() -> count();
-        dump($offices);
+
         if($total_found > 0) {
 
             foreach ($offices as $office) {
@@ -222,13 +222,12 @@ class TestsController extends Controller
                 );
 
                 $add_office -> save();
-                dump($add_office);
 
             }
 
         }
 
-        $count_after = BrightOffices::get() -> count();
+        //$count_after = BrightOffices::get() -> count();
 
         $rets -> Disconnect();
 
