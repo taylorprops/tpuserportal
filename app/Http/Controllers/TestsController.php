@@ -222,6 +222,7 @@ class TestsController extends Controller
                 );
 
                 $add_office -> save();
+                dump($add_office);
 
             }
 
