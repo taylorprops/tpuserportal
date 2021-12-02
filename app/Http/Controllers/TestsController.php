@@ -207,7 +207,7 @@ class TestsController extends Controller
         $total_found = count($offices);
         dump($total_found);
         $count_before = BrightOffices::get() -> count();
-
+        dump($offices);
         if($total_found > 0) {
 
             foreach ($offices as $office) {
