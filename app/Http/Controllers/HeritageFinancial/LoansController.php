@@ -100,11 +100,9 @@ class LoansController extends Controller
         $processor = null;
         $loan_officer_1_commission_type = null;
         $loan_officer_2_commission_type = null;
-        $loan_officer_2_commission_sub_type = null;
         $loan_officer_1_active_commission_tab = null;
         $loan_officer_2_active_commission_tab = null;
         $loan_officer_deductions = null;
-        $sub_type = null;
         $manager = null;
         $manager_bonus = null;
         $manager_bonus_details = null;
@@ -124,15 +122,9 @@ class LoansController extends Controller
 
             $loan_officer_2 = $loan -> loan_officer_2;
             $loan_officer_2_commission_type = $loan -> loan_officer_2_commission_type;
-            $loan_officer_2_commission_sub_type = $loan -> loan_officer_2_commission_sub_type;
             $loan_officer_2_active_commission_tab = $loan -> loan_officer_2_commission_type  == 'loan_amount' ? '2' : '1';
 
             $loan_officer_deductions = $loan -> loan_officer_deductions;
-
-            $sub_type = 'commission';
-            if($loan -> loan_officer_2_commission_sub_type != '') {
-                $sub_type = $loan -> loan_officer_2_commission_sub_type;
-            }
 
             $processor = $loan -> processor;
 
@@ -157,7 +149,7 @@ class LoansController extends Controller
         $loan_officers = LoanOfficers::where('active', 'yes') -> orderBy('last_name') -> get();
 
 
-        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_commission_sub_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'sub_type', 'manager', 'manager_bonus', 'manager_bonus_details'));
+        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
 
     }
 
@@ -320,7 +312,6 @@ class LoansController extends Controller
 
         $loan -> loan_officer_1_commission_type = $request -> loan_officer_1_commission_type;
         $loan -> loan_officer_2_commission_type = $request -> loan_officer_2_commission_type ?? null;
-        $loan -> loan_officer_2_commission_sub_type = $request -> loan_officer_2_commission_sub_type ?? null;
         $loan -> loan_officer_1_commission_percent = $request -> loan_officer_1_commission_percent;
         $loan -> loan_officer_2_commission_percent = $request -> loan_officer_2_commission_percent ?? 0;
         $loan -> loan_officer_1_loan_amount_percent = $request -> loan_officer_1_loan_amount_percent;
@@ -454,7 +445,6 @@ class LoansController extends Controller
             $add_loan -> title_company = $loan -> title_co_used;
             $add_loan -> loan_officer_1_commission_type = $commission_type;
             $add_loan -> loan_officer_2_commission_type = 'commission';
-            $add_loan -> loan_officer_2_commission_sub_type = 'loan_officer_commission';
             $add_loan -> loan_officer_1_commission_percent = (float)$loan -> lo_percent * 100;
             $add_loan -> loan_officer_2_commission_percent = (float)$loan -> lo_2_percent * 100;
             $add_loan -> loan_officer_1_loan_amount_percent = $loan_amount_percent;
@@ -572,7 +562,6 @@ class LoansController extends Controller
             $add_loan -> title_company = $loan_in_process -> title_company;
             $add_loan -> loan_officer_1_commission_type = $commission_type;
             $add_loan -> loan_officer_2_commission_type = 'commission';
-            $add_loan -> loan_officer_2_commission_sub_type = 'loan_officer_commission';
             $add_loan -> loan_officer_1_commission_percent = (float)$loan_officer -> commission_percent;
             $add_loan -> loan_officer_1_loan_amount_percent = $loan_amount_percent;
             $add_loan -> loan_officer_2_loan_amount_percent = '0';

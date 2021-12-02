@@ -1,5 +1,5 @@
 
-<div class="fixed z-100">
+<div class="absolute top-0 left-0 z-100">
     <div class="h-16 flex items-center">
         <button class="py-2 px-4 sm:py-3"
         @click="main_nav_open = !main_nav_open;"

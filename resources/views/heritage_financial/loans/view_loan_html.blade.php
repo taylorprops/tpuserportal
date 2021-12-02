@@ -18,7 +18,7 @@ $input_size = 'md';
     </x-slot>
 
     <div class="pb-48 pt-2"
-    x-data="loan('{{ $loan_officer_1_commission_type }}', '{{ $loan_officer_2_commission_type ?? 'commission' }}', '{{ $loan_officer_2_commission_sub_type }}', '{{ $loan -> loan_amount ?? null }}', '{{ $loan -> points_charged ?? '2.5' }}', '{{ $manager_bonus }}', '{{ $loan_officer_1 -> loan_amount_percent ?? null }}', '{{ $loan_officer_2 -> loan_amount_percent ?? null }}', '{{ $sub_type }}')">
+    x-data="loan('{{ $loan_officer_1_commission_type }}', '{{ $loan_officer_2_commission_type ?? 'commission' }}', '{{ $loan -> loan_amount ?? null }}', '{{ $loan -> points_charged ?? '2.5' }}', '{{ $manager_bonus }}', '{{ $loan_officer_1 -> loan_amount_percent ?? null }}', '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
 
         <div class="max-w-1400-px mx-auto pt-8 md:pt-12 lg:pt-16 px-4">
 
@@ -970,54 +970,7 @@ $input_size = 'md';
 
                                                                             @elseif($index == '2')
 
-                                                                                @php
-                                                                                $sub_type = 'commission';
-                                                                                if($loan -> loan_officer_2_commission_sub_type != '') {
-                                                                                    $sub_type = $loan -> loan_officer_2_commission_sub_type;
-                                                                                }
-                                                                                @endphp
-
-                                                                                <div class="flex">
-
-                                                                                    <div class="border-4 rounded py-1 px-2 mr-4"
-                                                                                    :class="{ 'bg-primary-lightest text-primary-dark': sub_type === 'commission' }">
-                                                                                        <div class="pb-1 border-b"
-                                                                                        :class="{ 'border-primary-dark': sub_type === 'commission' }">
-                                                                                            <input type="radio" class="form-element radio sm primary"
-                                                                                            name="loan_officer_2_commission_sub_type"
-                                                                                            id="loan_officer_2_commission_sub_type_1"
-                                                                                            value="commission"
-                                                                                            data-label="Total Commission"
-                                                                                            @if($loan -> loan_officer_2_commission_sub_type == 'commission' || $loan -> loan_officer_2_commission_sub_type == '') checked @endif
-                                                                                            @click="sub_type = document.querySelector('[name=loan_officer_2_commission_sub_type]:checked').value; total_commission()">
-                                                                                        </div>
-                                                                                        <div class="pt-1 text-center">
-                                                                                            <label for="loan_officer_2_commission_sub_type_1" class="block cursor-pointer">
-                                                                                                <span class="net-commission-amount ml-3"></span>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                    <div class="border-4 rounded py-1 px-2 mr-4"
-                                                                                    :class="{ 'bg-primary-lightest text-primary-dark': sub_type === 'loan_officer_commission' }">
-                                                                                        <div class="pb-1 border-b"
-                                                                                        :class="{ 'border-primary-dark': sub_type === 'loan_officer_commission' }">
-                                                                                            <input type="radio" class="form-element radio sm primary"
-                                                                                            name="loan_officer_2_commission_sub_type"
-                                                                                            id="loan_officer_2_commission_sub_type_2"
-                                                                                            value="loan_officer_commission"
-                                                                                            data-label="Loan Officer Commission"
-                                                                                            @if($loan -> loan_officer_2_commission_sub_type == 'loan_officer_commission') checked @endif
-                                                                                            @click="sub_type = document.querySelector('[name=loan_officer_2_commission_sub_type]:checked').value; total_commission()">
-                                                                                        </div>
-                                                                                        <div class="pt-1 text-center">
-                                                                                            <label for="loan_officer_2_commission_sub_type_2" class="block cursor-pointer">
-                                                                                                <span class="loan-officer-1-commission-amount ml-3"></span>
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                </div>
+                                                                                <span class="net-commission-amount ml-3"></span>
 
                                                                             @endif
 

@@ -1,7 +1,7 @@
 if(document.URL.match(/view_loan/)) {
 
 
-    window.loan = function(loan_officer_1_commission_type, loan_officer_2_commission_type, loan_officer_2_commission_sub_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent, sub_type) {
+    window.loan = function(loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
 
         return {
 
@@ -11,13 +11,11 @@ if(document.URL.match(/view_loan/)) {
             loan_officer_1_commission_amount: '',
             loan_officer_1_commission_type: loan_officer_1_commission_type,
             loan_officer_2_commission_type: loan_officer_2_commission_type || null,
-            loan_officer_2_commission_sub_type: loan_officer_2_commission_sub_type || null,
             loan_amount: loan_amount,
             points_charged: points_charged,
             manager_bonus: manager_bonus,
             loan_officer_1_loan_amount_percent: loan_officer_1_loan_amount_percent,
             loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent || null,
-            sub_type: sub_type,
             show_alert: false,
             init() {
 
@@ -78,10 +76,6 @@ if(document.URL.match(/view_loan/)) {
 
                         let loan_officer_commission_percent = document.querySelector('[name="loan_officer_'+index+'_commission_percent"]').value;
                         loan_officer_commission = (loan_officer_commission_percent / 100) * net_commission_amount;
-
-                        if(scope.sub_type == 'loan_officer_commission' && index === '2') {
-                            loan_officer_commission = (loan_officer_commission_percent / 100) * scope.loan_officer_1_commission_amount;
-                        }
 
                     } else if(commission_type == 'loan_amount') {
 
