@@ -33,9 +33,6 @@ class UpdateOfficesJob implements ShouldQueue
     public function handle()
     {
 
-        $progress = 0;
-        $this -> queueProgress($progress);
-
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
@@ -64,6 +61,9 @@ class UpdateOfficesJob implements ShouldQueue
                 'Count' => 0
             ]
         );
+
+        $progress = 0;
+        $this -> queueProgress($progress);
 
         $offices = $results -> toArray();
         $total_found = count($offices);
