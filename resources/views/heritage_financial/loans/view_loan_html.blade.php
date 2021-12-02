@@ -365,7 +365,7 @@ $input_size = 'md';
 
                             <div class="col-span-1">
 
-                                <div class="border rounded">
+                                <div class="border-4 rounded">
 
                                     <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-calendar-day mr-2"></i> Loan Details</div>
 
@@ -431,7 +431,7 @@ $input_size = 'md';
 
                             <div class="col-span-1">
 
-                                <div class="border rounded">
+                                <div class="border-4 rounded">
 
                                     <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-users mr-2"></i> People</div>
 
@@ -500,47 +500,50 @@ $input_size = 'md';
 
                     <div class="mt-4 max-w-lg @if(auth() -> user() -> group != 'loan_officer') hidden @endif">
 
-                        <div class="grid grid-cols-2 border p-2 rounded mb-3">
+                        <div class="grid grid-cols-2 border-4 p-2 rounded mb-3">
 
                             <div>
                                 Checks In
                             </div>
 
                             <div class="font-bold text-right">
-                                <span class="checks-in-amount text-success"></span>
+                                <span class="checks-in-amount text-green-600"></span>
                             </div>
 
                         </div>
 
-                        <div class="grid grid-cols-2 border p-2 rounded mb-3">
+                        <div class="border-4 p-2 rounded mb-3">
 
                             <div>
                                 Deductions
                             </div>
 
-                            <div class="font-bold text-right text-danger">
-                                <span>-</span> <span class="deductions-total"></span>
+                            <div class="mt-4">
+                                <div class="w-3/4 deductions-checks-in text-sm border p-2 rounded-xl"></div>
                             </div>
 
-                            <div class="col-span-2 mt-4">
-                                <div class="w-3/4 deductions-checks-in text-sm border bg-gray-50 p-2 rounded-lg"></div>
+                            <div class="grid grid-cols-2 mt-4">
+                                <div>Total Deductions</div>
+                                <div class="font-bold text-right text-red-600">
+                                    <span>-</span> <span class="deductions-total"></span>
+                                </div>
                             </div>
 
                         </div>
 
-                        <div class="grid grid-cols-2 border p-2 rounded mb-3 mt-8">
+                        <div class="grid grid-cols-2 border-4 p-2 rounded mb-3 mt-8">
 
                             <div>
                                 Net Commission
                             </div>
 
-                            <div class="font-bold text-right text-success">
+                            <div class="font-bold text-right text-green-600">
                                 <span>=</span> <span class="net-commission-amount"></span>
                             </div>
 
                         </div>
 
-                        <div class="border p-4 rounded mb-3 mt-8 bg-green-50">
+                        <div class="border-4 border-green-200 p-4 rounded mb-3 mt-8">
 
                             <div class="text-xl">
                                 Loan Officer Commission
@@ -553,7 +556,7 @@ $input_size = 'md';
                             @if(count($loan_officer_deductions -> where('lo_index', '1')) > 0)
 
                                 <div class="mt-4">
-                                    <div class="deductions-from-lo text-sm border bg-gray-50 rounded-lg">
+                                    <div class="deductions-from-lo text-xs border bg-white rounded-xl">
 
                                         <div class="p-2 border-b">Deductions</div>
 
@@ -566,19 +569,6 @@ $input_size = 'md';
                                                 <div class="text-right">${{ number_format($loan_officer_deduction -> amount, 2) }}</div>
                                             </div>
                                         @endforeach
-
-                                        @if($loan_officer_2 && $loan -> loan_officer_2_commission_sub_type == 'loan_officer_commission')
-
-                                            @php $total_deductions += $loan -> loan_officer_2_commission_amount; @endphp
-
-                                            <div class="grid grid-cols-2 p-2">
-
-                                                <div>Commission Split with {{ $loan_officer_2 -> fullname }} - {{ $loan -> loan_officer_2_commission_percent + 0 }}%</div>
-                                                <div class="text-right">${{ number_format($loan -> loan_officer_2_commission_amount, 2) }}</div>
-
-                                            </div>
-
-                                        @endif
 
                                         <hr>
 
@@ -598,7 +588,7 @@ $input_size = 'md';
                                 <div class="font-bold text-xl">Total Commission</div>
 
                                 <div class="font-bold text-right text-xl">
-                                    <span class="loan-officer-1-commission-amount-ele text-success"></span>
+                                    <span class="loan-officer-1-commission-amount-ele text-green-600"></span>
                                 </div>
 
                             </div>
@@ -686,7 +676,7 @@ $input_size = 'md';
 
                                         <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
 
-                                            <div class="text-lg text-right bg-green-50 text-green-800 p-4 rounded-md">
+                                            <div class="text-lg text-right bg-green-50 text-green-600 p-4 rounded-md">
                                                 <div class="text-xs">Checks In</div>
                                                 <span class="checks-in-amount">$0.00</span>
                                             </div>
@@ -798,7 +788,7 @@ $input_size = 'md';
 
                                         <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
 
-                                            <div class="text-lg text-right bg-red-50 text-red-800 p-4 rounded-md">
+                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
                                                 <div class="text-xs">Deductions</div>
                                                 <span class="deductions-total">$0.00</span>
                                             </div>
@@ -815,7 +805,7 @@ $input_size = 'md';
 
                                         <div class="col-span-1 ml-8 whitespace-nowrap">
 
-                                            <div class="text-right bg-green-50 text-green-800 p-4 rounded-md">
+                                            <div class="text-right bg-green-50 text-green-600 p-4 rounded-md">
                                                 <div class="text-xs">Net Commisison</div>
                                                 <span class="net-commission-amount">$0.00</span>
                                             </div>
@@ -865,7 +855,7 @@ $input_size = 'md';
 
                                                             <div class="mr-6">
                                                                 <a href="javascript:void(0)" class="block">
-                                                                    <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-700': show_details === true }"></i>
+                                                                    <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-600': show_details === true }"></i>
                                                                 </a>
                                                             </div>
 
@@ -932,7 +922,7 @@ $input_size = 'md';
 
                                                             <div x-show="active_commission_tab === '1'">
 
-                                                                <div class="bg-primary-lightest p-3 rounded-lg">
+                                                                <div class="bg-primary-lightest p-3 rounded-xl">
 
                                                                     <div class="text-sm mb-2">Commission Percent</div>
 
@@ -989,7 +979,7 @@ $input_size = 'md';
 
                                                                                 <div class="flex">
 
-                                                                                    <div class="border rounded py-1 px-2 mr-4"
+                                                                                    <div class="border-4 rounded py-1 px-2 mr-4"
                                                                                     :class="{ 'bg-primary-lightest text-primary-dark': sub_type === 'commission' }">
                                                                                         <div class="pb-1 border-b"
                                                                                         :class="{ 'border-primary-dark': sub_type === 'commission' }">
@@ -1008,7 +998,7 @@ $input_size = 'md';
                                                                                         </div>
                                                                                     </div>
 
-                                                                                    <div class="border rounded py-1 px-2 mr-4"
+                                                                                    <div class="border-4 rounded py-1 px-2 mr-4"
                                                                                     :class="{ 'bg-primary-lightest text-primary-dark': sub_type === 'loan_officer_commission' }">
                                                                                         <div class="pb-1 border-b"
                                                                                         :class="{ 'border-primary-dark': sub_type === 'loan_officer_commission' }">
@@ -1051,7 +1041,7 @@ $input_size = 'md';
                                                                     <div id="loan_officer_{{ $index }}_loan_amount_alert_text"></div>
                                                                 </div>
 
-                                                                <div class="flex justify-start items-center bg-primary-lightest p-3 rounded-lg">
+                                                                <div class="flex justify-start items-center bg-primary-lightest p-3 rounded-xl">
                                                                     <div class="loan-officer-{{ $index }}-loan-amount-details"></div>
                                                                 </div>
 
@@ -1162,7 +1152,7 @@ $input_size = 'md';
 
                                                         <div class="mr-6">
                                                             <a href="javascript:void(0)" class="block">
-                                                                <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-700': show_details === true }"></i>
+                                                                <i :class="{ 'fas fa-plus-circle fa-lg text-yellow-600': show_details === false, 'fas fa-times-circle fa-lg text-red-600': show_details === true }"></i>
                                                             </a>
                                                         </div>
 
@@ -1226,7 +1216,7 @@ $input_size = 'md';
 
                                         <div class="col-span-1 ml-8 whitespace-nowrap place-self-end w-full">
 
-                                            <div class="text-lg text-right bg-red-50 text-red-800 p-4 rounded-md">
+                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
                                                 <div class="text-xs">Commissions Out</div>
                                                 <span id="commissions_paid_amount">$0.00</span>
                                             </div>
@@ -1243,7 +1233,7 @@ $input_size = 'md';
 
                                         <div class="col-span-1 ml-7 whitespace-nowrap">
 
-                                            <div class="text-right bg-green-50 text-green-800 p-4 rounded-md">
+                                            <div class="text-right bg-green-50 text-green-600 p-4 rounded-md">
                                                 <div class="text-xs">Company Commisison</div>
                                                 <span id="company_commission_amount">$0.00</span>
                                             </div>
@@ -1273,7 +1263,7 @@ $input_size = 'md';
 
                                     <div class="sticky top-12">
 
-                                        <div class="bg-primary-lightest ml-0 lg:ml-8 border rounded-lg">
+                                        <div class="bg-primary-lightest ml-0 lg:ml-8 border-4 rounded-xl">
 
                                             <div class="bg-primary text-white text-lg rounded-t-lg p-2">Checks Out</div>
 
