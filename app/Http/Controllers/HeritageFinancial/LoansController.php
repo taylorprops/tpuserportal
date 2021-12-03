@@ -377,6 +377,37 @@ class LoansController extends Controller
 
     }
 
+    public function commission_reports(Request $request) {
+
+        return view('/heritage_financial/loans/commission_reports');
+
+    }
+
+    public function get_commission_reports(Request $request) {
+
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'borrower_last';
+        $length = $request -> length ? $request -> length : 10;
+
+        $search = $request -> search ?? null;
+        $active = $request -> active;
+        $loans = Loans::where(function($query) use ($search) {
+            if($search) {
+                $query -> whereHas('loan_officer_1', function($query) use ($search) {
+                    $query -> where('fullname', 'like', '%'.$search.'%');
+                })
+                -> orWhere('street', 'like', '%'.$search.'%')
+                -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
+                -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> orderBy($sort, $direction)
+        -> paginate($length);
+
+        return view('/heritage_financial/loans/get_commission_reports_html', compact('loans'));
+
+    }
+
 
 
     ////////// Import Loans from Old DB ////////////

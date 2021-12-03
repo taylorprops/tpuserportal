@@ -26,6 +26,8 @@ require('./nav/nav.js');
 require('./dashboard/dashboard.js');
 require('./admin/monitor.js');
 
+require('./tables/tables.js');
+
 
 require('./doc_management/admin/forms/forms.js');
 require('./doc_management/admin/forms/form_fields.js');
@@ -48,6 +50,7 @@ require('./doc_management/transactions/escrow.js');
 
 require('./heritage_financial/loans.js');
 require('./heritage_financial/view_loan.js');
+require('./heritage_financial/commission_reports');
 
 require('./marketing/data/agent_database.js');
 

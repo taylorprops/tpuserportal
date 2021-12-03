@@ -14,6 +14,12 @@
     :link="'/heritage_financial/loans'"
     :icon="'fad fa-copy'"/>
 
+    <x-nav.menu
+    :level="'1'"
+    :title="'Commission Reports'"
+    :link="'/heritage_financial/loans/commission_reports'"
+    :icon="'fad fa-money-check'"/>
+
     {{-- Loan Software --}}
     <x-nav.menu
     :level="'1'"

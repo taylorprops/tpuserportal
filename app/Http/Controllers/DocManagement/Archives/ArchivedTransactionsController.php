@@ -24,6 +24,7 @@ class ArchivedTransactionsController extends Controller
 
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'actualClosingDate';
+        $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
         $transactions = Transactions::select(['listingGuid', 'saleGuid', 'agent_name', 'listingDate', 'actualClosingDate', 'escrowClosingDate', 'status', 'address', 'city', 'state', 'zip', 'data_source'])
@@ -36,7 +37,7 @@ class ArchivedTransactionsController extends Controller
         -> with(['docs_listing:id,listingGuid,saleGuid,fileName', 'docs_sale:id,listingGuid,saleGuid,fileName'])
         -> orderBy($sort, $direction)
         //-> sortable()
-        -> paginate(25);
+        -> paginate($length);
 
         return view('/doc_management/transactions/archived/get_transactions_archived_html', compact('transactions'));
 

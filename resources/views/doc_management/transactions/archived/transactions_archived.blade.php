@@ -25,9 +25,8 @@ $breadcrumbs = [
                         <input
                         type="text"
                         class="form-element input lg"
-                        id="search"
                         placeholder="Search"
-                        x-on:keyup="search($el.value)"/>
+                        x-on:keyup="init_table_search($el.value)"/>
                     </div>
 
                     {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}

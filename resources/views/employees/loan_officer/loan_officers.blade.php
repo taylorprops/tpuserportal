@@ -29,17 +29,16 @@
                                 <input
                                 type="text"
                                 class="form-element input md"
-                                    id="search"
                                     data-label="Search"
-                                    x-on:keyup="search($el.value)">
+                                    x-on:keyup="init_table_search($el.value)">
                             </div>
 
                             <div class="p-2 ml-6 w-48">
                                 <select
                                 class="form-element select md"
-                                id="active"
+                                id="table_show_active"
                                 data-label="Active"
-                                x-on:change="show_active($el.value)">
+                                x-on:change="init_table_show_active($el.value)">
                                     <option value="">All</option>
                                     <option value="yes" selected>Active</option>
                                     <option value="no">Not Active</option>

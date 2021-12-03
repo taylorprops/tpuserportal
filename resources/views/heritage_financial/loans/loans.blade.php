@@ -30,7 +30,7 @@ $breadcrumbs = [
                     type="text"
                     class="form-element input md"
                     placeholder="Search"
-                    x-on:keyup="search($el.value)"/>
+                    x-on:keyup="init_table_search($el.value)"/>
                 </div>
 
                 <div class="w-screen-95 mx-auto sm:w-full overflow-x-auto">

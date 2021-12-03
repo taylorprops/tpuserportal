@@ -68,6 +68,7 @@ class EmployeesController extends Controller
 
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'last_name';
+        $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
         $active = $request -> active;
@@ -83,7 +84,7 @@ class EmployeesController extends Controller
             }
         })
         -> orderBy($sort, $direction)
-        -> paginate(25);
+        -> paginate($length);
 
         return view('/employees/in_house/get_in_house_html', compact('employees'));
 
@@ -115,6 +116,7 @@ class EmployeesController extends Controller
 
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'last_name';
+        $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
         $active = $request -> active;
@@ -131,7 +133,7 @@ class EmployeesController extends Controller
         })
         -> with(['licenses'])
         -> orderBy($sort, $direction)
-        -> paginate(25);
+        -> paginate($length);
 
 
         return view('/employees/loan_officer/get_loan_officers_html', compact('employees'));
@@ -633,6 +635,7 @@ class EmployeesController extends Controller
 
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'last_name';
+        $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
         $active = $request -> active;
@@ -648,7 +651,7 @@ class EmployeesController extends Controller
             }
         })
         -> orderBy($sort, $direction)
-        -> paginate(25);
+        -> paginate($length);
 
 
         return view('/users/get_users_html', compact('users'));

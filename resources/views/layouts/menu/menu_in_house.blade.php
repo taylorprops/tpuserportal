@@ -10,7 +10,7 @@
 
     {{-- Doc Management --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Doc Management</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Doc Management</div>
     </li>
 
     {{-- Transactions --}}
@@ -98,7 +98,7 @@
 
     {{-- Heritage Financial --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Heritage Financial</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Heritage Financial</div>
     </li>
 
     <x-nav.menu
@@ -112,13 +112,13 @@
     :level="'1'"
     :title="'Lending Pad/Floify'"
     :link="'/heritage_financial/loan_software'"
-    :icon="'fad fa-save'"/>
+    :icon="'fad fa-desktop'"/>
 
     {{-- End Heritage Financial --}}
 
     {{-- Employees --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Employees/Users</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Employees/Users</div>
     </li>
 
         @php
@@ -161,19 +161,19 @@
 
     {{-- Marketing --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Marketing</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
     <x-nav.menu
     :level="'1'"
     :title="'Agent Database'"
     :link="'/marketing/data/agent_database'"
-    :icon="'fad fa-users'"/>
+    :icon="'fad fa-database'"/>
     {{-- End Marketing --}}
 
     {{-- Archives --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Archives</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Archives</div>
     </li>
 
     <x-nav.menu
@@ -194,7 +194,7 @@
     @if(auth() -> user() -> level == 'super_admin')
     {{-- Super Admin --}}
     <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-3 pb-2 text-sm border-t mt-3">Super Admin</div>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Super Admin</div>
     </li>
 
         @php

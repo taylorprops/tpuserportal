@@ -7,8 +7,8 @@ $id = time() * rand();
 
     <li>
         <a href="{{ $link }}" class="flex items-center h-full w-full px-2 py-1 text-sm font-medium rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary">
-            <div class="flex justify-center items-center h-8 w-8 mr-4 rounded bg-white group-hover:bg-primary-light group-hover:text-white">
-                <i class="{{ $icon }} fa-lg"></i>
+            <div class="flex justify-center items-center h-6 w-6 mr-4 rounded bg-white group-hover:bg-primary-light group-hover:text-white">
+                <i class="{{ $icon }}"></i>
             </div>
             <span class="group-hover:text-white">{{ $title }}</span>
         </a>
@@ -26,12 +26,12 @@ $id = time() * rand();
         :class="{ 'bg-primary text-white': active_menu === {{ $id }}, 'bg-none text-primary-dark': active_menu !== {{ $id }} }"
         @click="if(active_menu === {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
 
-            <div class="h-full w-full flex justify-between items-center rounded-md">
+            <div class="h-full w-full flex justify-between items-center rounded-md pr-3">
 
                 <div class="flex justify-start items-center">
-                    <div class="flex justify-center items-center h-8 w-8 mr-4 rounded group-hover:bg-primary-light group-hover:text-white"
+                    <div class="flex justify-center items-center h-6 w-6 mr-4 rounded group-hover:bg-primary-light group-hover:text-white"
                     :class="{ 'bg-primary-light text-white': active_menu === {{ $id }}, 'bg-white text-primary-dark': active_menu !== {{ $id }} }">
-                        <i class="{{ $icon }} fa-lg"></i>
+                        <i class="{{ $icon }}"></i>
                     </div>
                     <span>{{ $title }}</span>
                 </div>
@@ -71,13 +71,13 @@ $id = time() * rand();
         <div class="relative px-2 py-1 text-sm font-medium cursor-pointer rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary"
         :class="{ 'bg-primary text-white': active_menu === {{ $id }}, 'bg-none text-primary-dark': active_menu !== {{ $id }} }">
 
-            <div class="h-full w-full flex justify-between items-center rounded-md"
+            <div class="h-full w-full flex justify-between items-center rounded-md pr-3"
             @click="if(active_menu === {{ $id }}) { active_menu = '' } else { active_menu = {{ $id }} }; active_sub_menu = '';">
 
                 <div class="flex justify-start items-center">
-                    <div class="flex justify-center items-center h-8 w-8 mr-4 rounded group-hover:bg-primary-light group-hover:text-white"
+                    <div class="flex justify-center items-center h-6 w-6 mr-4 rounded group-hover:bg-primary-light group-hover:text-white"
                     :class="{ 'bg-primary-light text-white': active_menu === {{ $id }}, 'bg-white text-primary-dark': active_menu !== {{ $id }} }">
-                        <i class="{{ $icon }} fa-lg"></i>
+                        <i class="{{ $icon }}"></i>
                     </div>
                     <span>{{ $title }}</span>
                 </div>

@@ -4,65 +4,21 @@ if(document.URL.match(/escrow/)) {
 
         return {
             search_val: '',
-            active_url: '',
+            active_url: '/transactions_archived/get_escrow_html',
+            page_url: '/transactions_archived/get_escrow_html',
+            sort: '',
+            table: '.escrow-table',
             length: '10',
             init() {
                 show_loading();
-                this.get_escrow();
+                table_init(this, this.active_url);
             },
-            get_escrow(url = null) {
-
-                let scope = this;
-                if(!url) {
-                    url = '/transactions_archived/get_escrow_html';
-                }
-                scope.active_url = url;
-                axios.get(url)
-                .then(function (response) {
-                    document.querySelector('.escrow-table').innerHTML = response.data;
-                    scope.links();
-                    hide_loading();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
+            init_table_change_length(val) {
+                table_change_length(this, val);
             },
-            links() {
-                let scope = this;
-                document.querySelector('.escrow-table').querySelectorAll('a').forEach(function(link) {
-                    if(!link.classList.contains('view-link')) {
-                        link.addEventListener('click', function(e) {
-                            show_loading();
-                            e.preventDefault();
-                            let url = this.href+'&length='+scope.length;
-                            if(this.search_val != '') {
-                                if(url.match(/\?/)) {
-                                    url += '&';
-                                } else {
-                                    url += '?';
-                                }
-                                let params = new URLSearchParams(url.search);
-                                params.delete('search');
-                                url += 'search=' + scope.search_val;
-                            }
-                            scope.active_url = url;
-                            scope.get_escrow(url);
-                        });
-                    }
-                });
+            init_table_search(val) {
+                table_search(this, val);
             },
-            search(val) {
-                this.search_val = val;
-                this.active_url = '/transactions_archived/get_escrow_html?search=' + val.trim()+'&length='+this.length;
-                this.get_escrow(this.active_url);
-            },
-            change_length(ele) {
-                let val = parseInt(ele.value);
-                this.length = val;
-                this.active_url = '/transactions_archived/get_escrow_html?length=' + val;
-                this.get_escrow(this.active_url);
-            }
         }
 
     }

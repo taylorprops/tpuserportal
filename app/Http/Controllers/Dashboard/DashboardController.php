@@ -11,7 +11,7 @@ class DashboardController extends Controller
 
         $group = auth() -> user() -> group;
 
-        return view('/dashboard/dashboard_'.$group);
+        return view('/dashboard/dashboard_'.$group, compact('group'));
 
     }
 }

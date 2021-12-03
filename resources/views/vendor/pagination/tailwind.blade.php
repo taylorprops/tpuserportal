@@ -43,7 +43,7 @@
                         <select
                         class="form-element select sm shadow-sm pr-6"
                         data-label=""
-                        x-on:change="change_length($el)">
+                        x-on:change="init_table_change_length($el.value)">
                             <option value="10" @if($paginator -> perPage() == 10) selected @endif>10</option>
                             <option value="25" @if($paginator -> perPage() == 25) selected @endif>25</option>
                             <option value="50" @if($paginator -> perPage() ==50) selected @endif>50</option>

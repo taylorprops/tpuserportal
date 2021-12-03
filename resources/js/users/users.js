@@ -1,4 +1,3 @@
-const { default: Toastr } = require("toastr2");
 
 if(document.URL.match(/users$/)) {
 
@@ -6,99 +5,34 @@ if(document.URL.match(/users$/)) {
     window.employees = function() {
 
         return {
+
+            show_confirm_reset_password: false,
+            show_confirm_send_welcome_email: false,
+            reset_password_id: '',
+            send_welcome_email_id: '',
+
             search_val: '',
             active_url: '/users/get_users',
             page_url: '/users/get_users',
             active: 'yes',
             sort: 'last_name',
             table: '.employees-table',
-            show_confirm_reset_password: false,
-            show_confirm_send_welcome_email: false,
-            reset_password_id: '',
-            send_welcome_email_id: '',
+            length: '10',
+
             init() {
                 show_loading();
-                this.show_active('yes');
+                table_show_active(this, 'yes');
             },
-            get_data(url) {
-
-                let scope = this;
-                if(!url) {
-                    url = scope.page_url;
-                }
-                scope.active_url = url;
-                axios.get(url)
-                .then(function (response) {
-                    document.querySelector(scope.table).innerHTML = response.data;
-                    scope.links(scope.table);
-                    hide_loading();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
+            init_table_change_length(val) {
+                table_change_length(this, val);
             },
-            links(table) {
-                let scope = this;
-                let container = document.querySelector(table);
-                let container_table = container.querySelector('table');
-                container_table.querySelectorAll('th').forEach(function(th) {
-                    if(th.querySelector('a')) {
-                        th.querySelector('a').classList.add('sort-by');
-                    }
-                });
-
-                document.querySelector(table).querySelectorAll('a').forEach(function(link) {
-                    if(!link.classList.contains('view-link')) {
-                        link.addEventListener('click', function(e) {
-
-                            show_loading();
-                            e.preventDefault();
-
-                            let url = this.href+'&length='+scope.length;
-                            let href = new URL(url);
-                            let params = new URLSearchParams(href.search);
-
-                            if(this.search_val != '') {
-                                if(url.match(/\?/)) {
-                                    url += '&';
-                                } else {
-                                    url += '?';
-                                }
-
-                                params.delete('search');
-                                url += 'search=' + scope.search_val;
-                            }
-
-                            if(link.classList.contains('sort-by')) {
-                                scope.sort = params.get('sort');
-                            }
-
-                            url += '&sort=' + scope.sort;
-                            scope.active_url = url;
-                            scope.get_data(url);
-                        });
-                    }
-                });
+            init_table_show_active(val) {
+                table_show_active(this, val);
             },
-            search(val) {
-                this.search_val = val;
-                this.active = '';
-                document.querySelector('#active').value = '';
-                this.active_url = this.page_url+'?search=' + val.trim();
-                this.get_data(this.active_url);
+            init_table_search(val) {
+                table_search(this, val);
             },
-            show_active(active) {
-                this.active = active;
-                this.active_url = this.active_url.replace(/[&]*active=[a-z]*/, '');
-                if(this.active_url.match(/\?/)) {
-                    this.active_url += '&';
-                } else {
-                    this.active_url += '?';
-                }
-                this.active_url += 'active=' + active;
-                this.get_data(this.active_url);
-            },
+
             confirm_reset_password(id, name) {
                 this.show_confirm_reset_password = true;
                 this.reset_password_id = id;
@@ -149,6 +83,9 @@ if(document.URL.match(/users$/)) {
 
 
     }
+
+
+
 
 
 }
