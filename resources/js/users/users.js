@@ -11,28 +11,6 @@ if(document.URL.match(/users$/)) {
             reset_password_id: '',
             send_welcome_email_id: '',
 
-            search_val: '',
-            active_url: '/users/get_users',
-            page_url: '/users/get_users',
-            active: 'yes',
-            sort: 'last_name',
-            table: '.employees-table',
-            length: '10',
-
-            init() {
-                show_loading();
-                table_show_active(this, 'yes');
-            },
-            init_table_change_length(val) {
-                table_change_length(this, val);
-            },
-            init_table_show_active(val) {
-                table_show_active(this, val);
-            },
-            init_table_search(val) {
-                table_search(this, val);
-            },
-
             confirm_reset_password(id, name) {
                 this.show_confirm_reset_password = true;
                 this.reset_password_id = id;
@@ -65,7 +43,7 @@ if(document.URL.match(/users$/)) {
 
                 let scope = this;
 
-                show_loading_button(ele, 'sending Welcome Email ... ');
+                show_loading_button(ele, 'Sending Welcome Email ... ');
 
                 let formData = new FormData();
                 formData.append('id', scope.send_welcome_email_id);

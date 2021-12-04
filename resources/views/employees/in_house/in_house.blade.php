@@ -19,47 +19,20 @@
 
             <div class="flex flex-col">
 
-                <div class="sm:-mx-6 lg:-mx-8">
+                <div class="sm:-mx-6 lg:-mx-8"
+                x-data="table({
+                    'container': $refs.container,
+                    'data_url': '/employees/in_house/get_in_house',
+                    'active': true,
+                    'length': '10',
+                    'sort_by': 'last_name',
+                    'button': {
+                        'html': '<i class=\'fal fa-plus mr-2\'></i> Add In House Employee',
+                        'url': '/employees/in_house/in_house_view'
+                    }
+                })">
 
-                    <div class="flex justify-between items-center">
-
-                        <div class="flex justify-start items-center">
-
-                            <div class="p-2 ml-6 w-48">
-                                <input
-                                type="text"
-                                class="form-element input md"
-                                    id="table_search"
-                                    data-label="Search"
-                                    x-on:keyup="init_table_search($el.value)">
-                            </div>
-
-                            <div class="p-2 ml-6 w-48">
-                                <select
-                                class="form-element select md"
-                                id="table_show_active"
-                                data-label="Active"
-                                x-on:change="init_table_show_active($el.value)">
-                                    <option value="">All</option>
-                                    <option value="yes" selected>Active</option>
-                                    <option value="no">Not Active</option>
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div class="mr-0 sm:mr-4 md:mr-10">
-                            <a href="/employees/in_house/in_house_view" class="button primary lg"><i class="fal fa-plus mr-3"></i> Add Employee</a>
-                        </div>
-
-                    </div>
-
-                    {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}
-
-                        <div class="employees-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow">
-                        </div>
-
-                    {{-- </div> --}}
+                    <div class="table-container"  x-ref="container"></div>
 
                 </div>
 

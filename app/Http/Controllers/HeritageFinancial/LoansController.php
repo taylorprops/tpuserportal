@@ -390,7 +390,7 @@ class LoansController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active;
+
         $loans = Loans::where(function($query) use ($search) {
             if($search) {
                 $query -> whereHas('loan_officer_1', function($query) use ($search) {

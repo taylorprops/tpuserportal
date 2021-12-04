@@ -19,22 +19,15 @@ $breadcrumbs = [
 
             <div class="flex flex-col">
 
-                <div class="sm:-mx-6 lg:-mx-8">
+                <div class="sm:-mx-6 lg:-mx-8"
+                x-data="table({
+                    'container': $refs.container,
+                    'data_url': '/get_transactions_archived',
+                    'length': '10',
+                    'sort_by': 'actualClosingDate'
+                })">
 
-                    <div class="p-2 ml-6 w-80">
-                        <input
-                        type="text"
-                        class="form-element input lg"
-                        placeholder="Search"
-                        x-on:keyup="init_table_search($el.value)"/>
-                    </div>
-
-                    {{-- <div class="w-screen-75 sm:w-screen-60 md:w-full overflow-x-auto"> --}}
-
-                        <div class="archives-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                        </div>
-
-                    {{-- </div> --}}
+                    <div class="table-container"  x-ref="container"></div>
 
                 </div>
 

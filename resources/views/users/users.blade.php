@@ -18,40 +18,14 @@ $breadcrumbs = [
 
             <div class="flex flex-col">
 
-                <div class="sm:-mx-6 lg:-mx-8">
-
-                    <div class="flex justify-between items-center">
-
-                        <div class="flex justify-start items-center">
-
-                            <div class="p-2 ml-6 w-48">
-                                <input
-                                type="text"
-                                class="form-element input md"
-                                    id="table_search"
-                                    data-label="Search"
-                                    x-on:keyup="init_table_search($el.value)">
-                            </div>
-
-                            <div class="p-2 ml-6 w-48">
-                                <select
-                                class="form-element select md"
-                                id="table_show_active"
-                                data-label="Active"
-                                x-on:change="init_table_show_active($el.value)">
-                                    <option value="">All</option>
-                                    <option value="yes" selected>Active</option>
-                                    <option value="no">Not Active</option>
-                                </select>
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                    <div class="employees-table py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow">
-                    </div>
+                <div class="sm:-mx-6 lg:-mx-8"
+                x-data="table({
+                    'container': $el,
+                    'data_url': '/users/get_users',
+                    'active': true,
+                    'length': '10',
+                    'sort_by': 'last_name'
+                })">
 
                 </div>
 

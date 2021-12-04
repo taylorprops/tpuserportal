@@ -65,6 +65,10 @@ a:not(.button) {
 	display: block;
 }
 
+.table-container {
+    @apply py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow-auto;
+}
+
 /* sortablejs */
 .drag-clone {
     @apply bg-secondary-lightest;

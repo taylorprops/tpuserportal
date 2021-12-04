@@ -71,7 +71,8 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active;
+        $active = $request -> active ?? 'yes';
+
         $employees = InHouse::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
             if($search) {
@@ -79,7 +80,7 @@ class EmployeesController extends Controller
             }
         })
         -> where(function($query) use ($active) {
-            if($active != '') {
+            if($active != 'all') {
                 $query -> where('active', $active);
             }
         })
@@ -119,7 +120,8 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active;
+        $active = $request -> active ?? 'yes';
+
         $employees = LoanOfficers::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
             if($search) {
@@ -127,7 +129,7 @@ class EmployeesController extends Controller
             }
         })
         -> where(function($query) use ($active) {
-            if($active != '') {
+            if($active != 'all') {
                 $query -> where('active', $active);
             }
         })
@@ -260,6 +262,7 @@ class EmployeesController extends Controller
         // add or update users table
         if($request -> emp_id) {
             $user = User::where('email', $orig_email) -> first();
+            $user -> active = $request -> active;
         } else {
 
             $password = Str::random(10);
@@ -631,14 +634,13 @@ class EmployeesController extends Controller
 
     public function get_users(Request $request) {
 
-        $active = $request -> active ?? 'yes';
-
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'last_name';
         $length = $request -> length ? $request -> length : 10;
 
+        $active = $request -> active ?? 'yes';
         $search = $request -> search ?? null;
-        $active = $request -> active;
+
         $users = User::select(['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'])
         -> where(function($query) use ($search) {
             if($search) {
@@ -646,7 +648,7 @@ class EmployeesController extends Controller
             }
         })
         -> where(function($query) use ($active) {
-            if($active != '') {
+            if($active != 'all') {
                 $query -> where('active', $active);
             }
         })
