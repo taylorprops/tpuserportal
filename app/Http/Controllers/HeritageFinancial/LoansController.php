@@ -147,7 +147,7 @@ class LoansController extends Controller
         $states = LocationData::getStates();
 
         $loan_officers = Mortgage::where('active', 'yes') -> orderBy('last_name') -> get();
-
+        dd($loan_officers);
 
         return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
 
