@@ -86,6 +86,7 @@ $input_size = 'md';
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
                                 <div class="col-span-1 m-2 sm:m-3">
+                                    {{ dd($loan_officers) }}
                                     <select
                                     class="form-element select {{ $input_size }} required"
                                     id="loan_officer_1_id"
