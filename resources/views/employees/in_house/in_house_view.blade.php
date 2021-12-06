@@ -124,17 +124,7 @@ $breadcrumbs = [
 
                             <div class="grid grid-cols-1 sm:grid-cols-4">
                             @endif
-                                <div class="m-2 sm:m-3">
-                                    <select
-                                    class="form-element select md required"
-                                    id="emp_position"
-                                    name="emp_position"
-                                    data-label="Position">
-                                        <option value=""></option>
-                                        <option value="admin" @if($employee && $employee -> emp_position == 'admin') selected @endif>Admin</option>
-                                        <option value="super_admin" @if($employee && $employee -> emp_position == 'super_admin') selected @endif>Super Admin</option>
-                                    </select>
-                                </div>
+
 
                                 <div class="m-2 sm:m-3">
                                     <select
@@ -142,12 +132,29 @@ $breadcrumbs = [
                                     id="job_title"
                                     name="job_title"
                                     class="required"
-                                    data-label="Job Title">
+                                    data-label="Position">
                                         <option value=""></option>
                                         <option value="Admin Assistant" @if($employee && $employee -> job_title == 'Admin Assistant') selected @endif>Admin Assistant</option>
+                                        <option value="marketing">Marketing</option>
                                         <option value="Manager" @if($employee && $employee -> job_title == 'Manager') selected @endif>Manager</option>
                                     </select>
                                 </div>
+
+                                @if(auth() -> user() -> level == 'super_admin')
+                                <div class="m-2 sm:m-3">
+                                    <select
+                                    class="form-element select md required"
+                                    id="emp_position"
+                                    name="emp_position"
+                                    data-label="Website Level">
+                                        <option value=""></option>
+                                        <option value="admin" @if($employee && $employee -> emp_position == 'admin') selected @endif>Admin</option>
+                                        <option value="super_admin" @if($employee && $employee -> emp_position == 'super_admin') selected @endif>Super Admin</option>
+                                    </select>
+                                </div>
+                                @else
+                                <input type="hidden" name="emp_position" value="admin">
+                                @endif
 
                             </div>
 
