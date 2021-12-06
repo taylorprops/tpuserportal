@@ -135,7 +135,7 @@ $breadcrumbs = [
                                     data-label="Position">
                                         <option value=""></option>
                                         <option value="Admin Assistant" @if($employee && $employee -> job_title == 'Admin Assistant') selected @endif>Admin Assistant</option>
-                                        <option value="marketing">Marketing</option>
+                                        <option value="Marketing" @if($employee && $employee -> job_title == 'Marketing') selected @endif>Marketing</option>
                                         <option value="Manager" @if($employee && $employee -> job_title == 'Manager') selected @endif>Manager</option>
                                     </select>
                                 </div>
