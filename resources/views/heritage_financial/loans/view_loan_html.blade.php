@@ -77,7 +77,7 @@ $input_size = 'md';
 
                 <div x-show="active_tab === '1'" class="pt-4 sm:pt-12 max-w-1000-px">
 
-                    @if(auth() -> user() -> group != 'loan_officer')
+                    @if(auth() -> user() -> group != 'mortgage')
 
                         <form id="details_form">
 
