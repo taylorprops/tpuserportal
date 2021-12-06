@@ -64,7 +64,7 @@ class LoansController extends Controller
                 -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
             }
         })
-        -> leftJoin('emp_loan_officers', 'loan_officer_1_id', '=', 'emp_loan_officers.id')
+        -> leftJoin('emp_mortgage', 'loan_officer_1_id', '=', 'emp_mortgage.id')
         -> orderBy($sort, $direction)
         //-> sortable()
         -> paginate($length);
