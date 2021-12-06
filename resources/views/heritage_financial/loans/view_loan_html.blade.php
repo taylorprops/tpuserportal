@@ -553,7 +553,7 @@ $input_size = 'md';
                                 <div class="loan-officer-1-loan-amount-details"></div>
                             </div>
 
-                            @if(count($loan_officer_deductions -> where('lo_index', '1')) > 0)
+                            @if($loan_officer_deductions && count($loan_officer_deductions -> where('lo_index', '1')) > 0)
 
                                 <div class="mt-4">
                                     <div class="deductions-from-lo text-xs border bg-white rounded-xl">
