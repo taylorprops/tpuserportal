@@ -18,7 +18,7 @@
     Hello {{ $user -> first_name }}!<br><br>
     You are receiving this email because an account was set up for you by {{ $user -> company }}. Please click the link below to set up your account.<br><br>
     <div style="width: 100%; text-align: center; padding: 10px">
-        <a class="background: #; border-radius: 8px; color: white;" target="_blank" href="{{ $user -> registration_link }}">Register Account</a>
+        <a class="button button-primary" target="_blank" href="{{ $user -> registration_link }}">Register Account</a>
     </div>
     <div style="margin-top: 15px; font-size: 10px">
     If the above link is not working you can also copy and paste the following into your browser: {{ $user -> registration_link }}
