@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         $user_details = null;
         if($group == 'agent') {
             $user_details = $user -> agent;
-        } else if($group == 'loan_officer') {
+        } else if($group == 'mortgage') {
             $user_details = $user -> loan_officer;
         }
 

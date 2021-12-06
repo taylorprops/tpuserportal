@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Employees\LoanOfficers;
+use App\Models\Employees\Mortgage;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\LoansNotes;
 use App\Models\HeritageFinancial\LoansChecksIn;
@@ -128,7 +128,7 @@ class LoansController extends Controller
 
             $processor = $loan -> processor;
 
-            $manager = LoanOfficers::where('emp_position', 'manager') -> first();
+            $manager = Mortgage::where('emp_position', 'manager') -> first();
             $manager = $manager -> fullname;
 
             $manager_bonus = $loan_officer_1 -> manager_bonus;
@@ -146,7 +146,7 @@ class LoansController extends Controller
 
         $states = LocationData::getStates();
 
-        $loan_officers = LoanOfficers::where('active', 'yes') -> orderBy('last_name') -> get();
+        $loan_officers = Mortgage::where('active', 'yes') -> orderBy('last_name') -> get();
 
 
         return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
@@ -204,8 +204,8 @@ class LoansController extends Controller
 
         if (!$original_loan_officer_1_id || $original_loan_officer_1_id != $loan -> loan_officer_1_id) {
 
-            $loan_officer_1 = LoanOfficers::find($request -> loan_officer_1_id);
-            $loan_officer_2 = LoanOfficers::find($request -> loan_officer_2_id);
+            $loan_officer_1 = Mortgage::find($request -> loan_officer_1_id);
+            $loan_officer_2 = Mortgage::find($request -> loan_officer_2_id);
 
             $loan -> loan_officer_1_commission_type = $loan_officer_1 -> loan_amount_percent > 0 ? 'loan_amount' : 'commission';
             if ($loan_officer_2) {
@@ -562,7 +562,7 @@ class LoansController extends Controller
                 $title_nation_used = 'yes';
             }
 
-            $loan_officer = LoanOfficers::find($loan_in_process -> lo_id);
+            $loan_officer = Mortgage::find($loan_in_process -> lo_id);
 
             $add_loan = new Loans();
 

@@ -498,7 +498,7 @@ $input_size = 'md';
                 <div x-show="active_tab === '2'" class="pt-4 sm:pt-12">
 
 
-                    <div class="mt-4 max-w-lg @if(auth() -> user() -> group != 'loan_officer') hidden @endif">
+                    <div class="mt-4 max-w-lg @if(auth() -> user() -> group != 'mortgage') hidden @endif">
 
                         <div class="grid grid-cols-2 border-4 p-2 rounded mb-3">
 
@@ -598,7 +598,7 @@ $input_size = 'md';
                     </div>
 
 
-                    <div @if(auth() -> user() -> group == 'loan_officer') class="hidden" @endif>
+                    <div @if(auth() -> user() -> group == 'mortgage') class="hidden" @endif>
 
                         <form id="commission_form">
 

@@ -48,7 +48,7 @@ class User extends Authenticatable
     }
 
     public function loan_officer() {
-        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'email', 'email');
+        return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'email', 'email');
     }
 
     public function credit_cards() {

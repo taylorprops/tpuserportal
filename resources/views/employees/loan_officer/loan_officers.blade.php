@@ -1,6 +1,6 @@
 <x-app-layout>
     @php
-    $title = 'Loan Officers';
+    $title = 'Mortgage';
     $breadcrumbs = [
         ['Employees', ''],
         [$title]

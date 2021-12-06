@@ -17,7 +17,7 @@ class Loans extends Model
         parent::boot();
         static::addGlobalScope(function ($query) {
             if (auth() -> user()) {
-                if (stristr(auth() -> user() -> group, 'loan_officer')) {
+                if (stristr(auth() -> user() -> group, 'mortgage')) {
                     $query -> where(function ($query) {
                         $query -> where('loan_officer_1_id', auth() -> user() -> user_id)
                         -> orWhere('loan_officer_2_id', auth() -> user() -> user_id);
@@ -29,15 +29,15 @@ class Loans extends Model
     }
 
     public function loan_officer_1() {
-        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_1_id');
+        return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'loan_officer_1_id');
     }
 
     public function loan_officer_2() {
-        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'loan_officer_2_id');
+        return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'loan_officer_2_id');
     }
 
     public function processor() {
-        return $this -> hasOne(\App\Models\Employees\LoanOfficers::class, 'id', 'processor_id');
+        return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'processor_id');
     }
 
     public function deductions() {

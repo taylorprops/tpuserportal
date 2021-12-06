@@ -13,7 +13,7 @@ $breadcrumbs = [
     </x-slot>
 
     <div class="pt-2 pb-48"
-    x-data="profile('{{ $employee -> id ?? null }}', 'loan_officer', @if($employee && $employee -> photo_location != '') true @else false @endif, '#bio', 'www.heritagefinancial.com');">
+    x-data="profile('{{ $employee -> id ?? null }}', 'mortgage', @if($employee && $employee -> photo_location != '') true @else false @endif, '#bio', 'www.heritagefinancial.com');">
 
         <div class="max-w-1000-px mx-auto pt-8 md:pt-12 xl:pt-16 px-4">
 

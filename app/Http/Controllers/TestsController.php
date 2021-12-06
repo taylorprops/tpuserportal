@@ -15,7 +15,7 @@ use App\Models\OldDB\Company\BillingInvoices;
 use App\Models\DocManagement\Admin\Forms\Forms;
 use App\Models\OldDB\Company\BillingInvoicesItems;
 use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
-use App\Models\Employees\LoanOfficers as LoanOfficersNew;
+use App\Models\Employees\Mortgage as LoanOfficersNew;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class TestsController extends Controller

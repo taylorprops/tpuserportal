@@ -44,7 +44,7 @@ class Registration extends Notification
     {
         return (new MailMessage)
         -> subject('Registration Notification')
-        -> html(
+        -> markdown(
             '/vendor/mail/auth/register', ['user' => $this -> user]
         );
                     // -> subject('Registration Notification')

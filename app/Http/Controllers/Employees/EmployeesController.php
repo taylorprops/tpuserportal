@@ -16,7 +16,7 @@ use App\Models\Users\PasswordResets;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
-use App\Models\Employees\LoanOfficers;
+use App\Models\Employees\Mortgage;
 use App\Models\Employees\EmployeesDocs;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Employees\EmployeesNotes;
@@ -122,7 +122,7 @@ class EmployeesController extends Controller
         $search = $request -> search ?? null;
         $active = $request -> active ?? 'yes';
 
-        $employees = LoanOfficers::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
+        $employees = Mortgage::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('fullname', 'like', '%'.$search.'%');
@@ -147,7 +147,7 @@ class EmployeesController extends Controller
         $id = $request -> id ? $request -> id : null;
         $employee = null;
         if($id) {
-            $employee = LoanOfficers::with(['docs', 'notes', 'licenses', 'user.credit_cards']) -> find($id);
+            $employee = Mortgage::with(['docs', 'notes', 'licenses', 'user.credit_cards']) -> find($id);
         }
 
         $states = LocationData::getStates();
@@ -163,9 +163,9 @@ class EmployeesController extends Controller
         $emp_id = $request -> emp_id ?? null;
         $emp_type = $request -> emp_type;
 
-        if($emp_type == 'loan_officer') {
+        if($emp_type == 'mortgage') {
 
-            $employee = LoanOfficers::firstOrNew(['id' => $emp_id]);
+            $employee = Mortgage::firstOrNew(['id' => $emp_id]);
             $ignore_cols = ['emp_id', 'license_state', 'license_number', 'manager_bonus_type'];
             $company = 'Heritage Financial';
 
@@ -212,12 +212,12 @@ class EmployeesController extends Controller
             'regex' => 'The social security number must be in the format ###-##-####'
         ]);
 
-        if ($emp_type == 'loan_officer') {
+        if ($emp_type == 'mortgage') {
 
             $validator = $request -> validate(
                 [
                 'commission_percent' => 'required',
-                'folder' => 'required|string|max:25|unique:emp_loan_officers,folder,'.$user_id,
+                'folder' => 'required|string|max:25|unique:emp_mortgage,folder,'.$user_id,
             ],
                 [
                 'required' => 'Required',
@@ -253,7 +253,7 @@ class EmployeesController extends Controller
                 $license -> license_number = $license_numbers[$i];
                 $license -> license_state = $license_states[$i];
                 $license -> emp_id = $emp_id;
-                $license -> emp_type = 'loan_officer';
+                $license -> emp_type = 'mortgage';
                 $license -> save();
             }
 
@@ -328,8 +328,8 @@ class EmployeesController extends Controller
 
         if($emp_type == 'agent') {
             $employee = Agents::find($emp_id);
-        } else if($emp_type == 'loan_officer') {
-            $employee = LoanOfficers::with(['licenses']) -> find($emp_id);
+        } else if($emp_type == 'mortgage') {
+            $employee = Mortgage::with(['licenses']) -> find($emp_id);
         } else if($emp_type == 'in_house') {
             $employee = InHouse::find($emp_id);
         } else if($emp_type == 'title') {
@@ -411,8 +411,8 @@ class EmployeesController extends Controller
 
         if($emp_type == 'agent') {
             $employee = Agents::find($emp_id);
-        } else if($emp_type == 'loan_officer') {
-            $employee = LoanOfficers::find($emp_id);
+        } else if($emp_type == 'mortgage') {
+            $employee = Mortgage::find($emp_id);
         } else if($emp_type == 'in_house') {
             $employee = InHouse::find($emp_id);
         } else if($emp_type == 'title') {
@@ -451,8 +451,8 @@ class EmployeesController extends Controller
 
         if($emp_type == 'agent') {
             $employee = Agents::find($emp_id);
-        } else if($emp_type == 'loan_officer') {
-            $employee = LoanOfficers::find($emp_id);
+        } else if($emp_type == 'mortgage') {
+            $employee = Mortgage::find($emp_id);
         } else if($emp_type == 'in_house') {
             $employee = InHouse::find($emp_id);
         } else if($emp_type == 'title') {
@@ -485,8 +485,8 @@ class EmployeesController extends Controller
             Agents::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
-        } else if($emp_type == 'loan_officer') {
-            LoanOfficers::find($emp_id) -> update([
+        } else if($emp_type == 'mortgage') {
+            Mortgage::find($emp_id) -> update([
                 'bio' => $request -> bio
             ]);
         } else if($emp_type == 'in_house') {
@@ -518,8 +518,8 @@ class EmployeesController extends Controller
             Agents::find($emp_id) -> update([
                 'signature' => $request -> signature
             ]);
-        } else if($emp_type == 'loan_officer') {
-            LoanOfficers::find($emp_id) -> update([
+        } else if($emp_type == 'mortgage') {
+            Mortgage::find($emp_id) -> update([
                 'signature' => $request -> signature
             ]);
         } else if($emp_type == 'in_house') {
@@ -549,8 +549,8 @@ class EmployeesController extends Controller
 
         if($emp_type == 'agent') {
             $employee = Agents::with(['user.credit_cards']) -> find($emp_id);
-        } else if($emp_type == 'loan_officer') {
-            $employee = LoanOfficers::with(['user.credit_cards']) -> find($emp_id);
+        } else if($emp_type == 'mortgage') {
+            $employee = Mortgage::with(['user.credit_cards']) -> find($emp_id);
         } else if($emp_type == 'in_house') {
             $employee = InHouse::with(['user.credit_cards']) -> find($emp_id);
         } else if($emp_type == 'title') {
@@ -664,7 +664,7 @@ class EmployeesController extends Controller
 
         $user = User::find($request -> id);
         $company = 'Taylor Properties';
-        if ($user -> group == 'loan_officer') {
+        if ($user -> group == 'mortgage') {
             $company = 'Heritage Financial';
         } elseif ($user -> group == 'title') {
             $company = 'Heritage Title';
@@ -694,18 +694,18 @@ class EmployeesController extends Controller
     //////////////// IMPORT DATA ////////////////
     public function import_los(Request $request) {
 
-        LoanOfficers::truncate();
-        EmployeesLicenses::where('emp_type', 'loan_officer') -> delete();
-        EmployeesNotes::where('emp_type', 'loan_officer') -> delete();
-        User::where('group', 'loan_officer') -> delete();
+        Mortgage::truncate();
+        EmployeesLicenses::where('emp_type', 'mortgage') -> delete();
+        EmployeesNotes::where('emp_type', 'mortgage') -> delete();
+        User::where('group', 'mortgage') -> delete();
 
         $old_los = LoanOfficersOld::get();
 
         foreach($old_los as $lo) {
 
-            $add_lo = new LoanOfficers();
+            $add_lo = new Mortgage();
             $add_lo -> id = $lo -> id;
-            $add_lo -> emp_type = 'loan_officer';
+            $add_lo -> emp_type = 'mortgage';
             $add_lo -> active = $lo -> active;
             $add_lo -> first_name = $lo -> first;
             $add_lo -> last_name = $lo -> last;
@@ -766,7 +766,7 @@ class EmployeesController extends Controller
             if($lo -> lic1_state != '') {
                 $add_license = new EmployeesLicenses();
                 $add_license -> emp_id = $lo -> id;
-                $add_license -> emp_type = 'loan_officer';
+                $add_license -> emp_type = 'mortgage';
                 $add_license -> license_state = $lo -> lic1_state;
                 $add_license -> license_number = $lo -> lic1_num;
                 $add_license -> license_expiration_date = $lo -> lic1_expire;
@@ -775,7 +775,7 @@ class EmployeesController extends Controller
             if($lo -> lic2_state != '') {
                 $add_license = new EmployeesLicenses();
                 $add_license -> emp_id = $lo -> id;
-                $add_license -> emp_type = 'loan_officer';
+                $add_license -> emp_type = 'mortgage';
                 $add_license -> license_state = $lo -> lic2_state;
                 $add_license -> license_number = $lo -> lic2_num;
                 $add_license -> license_expiration_date = $lo -> lic2_expire;
@@ -784,7 +784,7 @@ class EmployeesController extends Controller
             if($lo -> lic3_state != '') {
                 $add_license = new EmployeesLicenses();
                 $add_license -> emp_id = $lo -> id;
-                $add_license -> emp_type = 'loan_officer';
+                $add_license -> emp_type = 'mortgage';
                 $add_license -> license_state = $lo -> lic3_state;
                 $add_license -> license_number = $lo -> lic3_num;
                 $add_license -> license_expiration_date = $lo -> lic3_expire;
@@ -793,7 +793,7 @@ class EmployeesController extends Controller
             if($lo -> notes != '') {
                 $add_notes = new EmployeesNotes();
                 $add_notes -> emp_id = $lo -> id;
-                $add_notes -> emp_type = 'loan_officer';
+                $add_notes -> emp_type = 'mortgage';
                 $add_notes -> emp_name = $lo -> fullname;
                 $add_notes -> notes = $lo -> notes;
                 $add_notes -> save();
@@ -806,7 +806,7 @@ class EmployeesController extends Controller
             // }
             $add_user = new User();
             $add_user -> user_id = $lo -> id;
-            $add_user -> group = 'loan_officer';
+            $add_user -> group = 'mortgage';
             $add_user -> level = $add_lo -> emp_position;
             $add_user -> active = $lo -> active;
             $add_user -> name = $lo -> first.' '.$lo -> last;

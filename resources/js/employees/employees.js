@@ -24,7 +24,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
             init() {
 
                 if(emp_id) {
-                    let show_licenses = ['agent', 'loan_officer'];
+                    let show_licenses = ['agent', 'mortgage'];
                     if(show_licenses.includes(emp_type)) {
                         this.get_licenses();
                     }
@@ -43,7 +43,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     this.show_profile_link();
                     this.show_floify_link();
 
-                    if(emp_type == 'loan_officer') {
+                    if(emp_type == 'mortgage') {
                         this.get_credit_cards();
                     }
 

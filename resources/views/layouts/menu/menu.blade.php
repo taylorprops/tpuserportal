@@ -35,7 +35,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
                     </div>
                 </div>
 
-                @php $no_access = ['loan_officer']; @endphp
+                @php $no_access = ['mortgage']; @endphp
                 @if(!in_array(auth() -> user() -> group, $no_access))
                 <div class="my-2 sm:my-4 mx-1 relative">
                     <input class="main-search-input appearance-none inline-block w-full bg-white text-gray-700 border border-gray-200 rounded py-1 sm:py-3 leading-tight  focus:bg-blue-50 focus:ring-blue-100 focus:border-blue-100" type="text" placeholder="Search">

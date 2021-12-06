@@ -134,7 +134,7 @@
                 'icon' => 'fad fa-person-sign mr-2'
             ],
             [
-                'title' => 'Loan Officers',
+                'title' => 'Mortgage',
                 'link' => '/employees/loan_officer',
                 'icon' => 'fad fa-user-chart mr-2'
             ],
