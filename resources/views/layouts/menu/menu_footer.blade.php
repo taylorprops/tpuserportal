@@ -2,7 +2,13 @@
 
 <div class="grid grid-cols-5 w-full pt-3">
     <div class="col-span-1 flex justify-around items-center ml-2">
+        @if(auth() -> user() -> photo_location_url)
         <img class="inline-block h-14 w-12 rounded-full" src="{{ auth() -> user() -> photo_location_url }}" alt="">
+        @else
+        <div class="rounded-full bg-primary text-white p-1 h-8 w-8 text-center">
+            {{ App\Helpers\Helper::get_initials(auth() -> user() -> first_name.' '.auth() -> user() -> last_name) }}
+        </div>
+        @endif
     </div>
     <div class="ml-3 col-span-4">
         <div class="text-gray-700 border-b pb-1 mb-1">
