@@ -24,6 +24,7 @@ class DataController extends Controller
 
     public function get_results(Request $request) {
 
+        ini_set('memory_limit', '1024M');
         $list_type = $request -> list_type;
         $states = $request -> states;
         $locations = $request -> counties;
