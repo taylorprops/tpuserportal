@@ -38,7 +38,7 @@ if(document.URL.match('agent_database')) {
 
                     }
 
-                }, 800);
+                }, 1500);
 
             },
 
@@ -48,7 +48,7 @@ if(document.URL.match('agent_database')) {
                 let options_form = document.querySelector('#options_form');
                 let formData = new FormData(options_form);
 
-                scope.get_checked(true);
+                // scope.get_checked(true);
 
                 axios.post('/marketing/data/location_data', formData)
                 .then(function (response) {
@@ -56,29 +56,40 @@ if(document.URL.match('agent_database')) {
                     scope.counties = response.data.counties;
 
                     setTimeout(function() {
-                        if(on_init) {
-                            scope.select_all_options('counties', true);
-                            scope.$refs.select_all_counties.checked = true;
-                        }
 
-                        if(state != '') {
-                            document.querySelectorAll('[data-state="'+state+'"]').forEach(function(input) {
-                                input.checked = true;
-                            });
-                        } else {
-                            document.querySelectorAll('[name="counties[]"]').forEach(function(input) {
-                                input.checked = true;
-                            });
-                        }
-
+                        scope.select_all_options('counties', true);
+                        scope.$refs.select_all_counties.checked = true;
                         scope.search_offices();
-                        //scope.get_results();
+
+                        // if(on_init) {
+                        //     scope.select_all_options('counties', true);
+                        //     scope.$refs.select_all_counties.checked = true;
+                        // }
+
+                        // document.querySelectorAll('[name="counties[]"]').forEach(function(input) {
+                        //     input.checked = true;
+                        // });
+                        // scope.$refs.select_all_counties.checked = true;
+
+                        // scope.search_offices();
+
+                        // if(state != '') {
+                        //     document.querySelectorAll('[data-state="'+state+'"]').forEach(function(input) {
+                        //         input.checked = true;
+                        //     });
+                        // } else {
+                        //     document.querySelectorAll('[name="counties[]"]').forEach(function(input) {
+                        //         input.checked = true;
+                        //     });
+                        // }
+
+
 
                     }, 100);
 
-                    setTimeout(function() {
-                        scope.add_checked();
-                    }, 300);
+                    // setTimeout(function() {
+                    //     scope.add_checked();
+                    // }, 300);
 
                 })
                 .catch(function (error) {
@@ -124,7 +135,7 @@ if(document.URL.match('agent_database')) {
                 }
             },
 
-            get_checked(remove_current) {
+            /* get_checked(remove_current) {
                 let scope = this;
                 scope.counties_checked = [];
                 let checked = document.querySelectorAll('[name="counties[]"]:checked');
@@ -151,7 +162,7 @@ if(document.URL.match('agent_database')) {
                     }
                 });
                 this.update_details();
-            },
+            }, */
 
             update_details() {
                 let county_checks = document.querySelectorAll('[name="counties[]"]');
@@ -178,6 +189,7 @@ if(document.URL.match('agent_database')) {
             },
 
             select_all_options(elements, checked) {
+
                 inputs = document.querySelectorAll('[name="'+elements+'[]"]');
                 inputs.forEach(function(input) {
                     input.checked = checked;

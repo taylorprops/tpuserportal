@@ -119,7 +119,7 @@ $breadcrumbs = [
                                                 :data-state="county.state"
                                                 :data-label="county.state+' - '+county.county"
                                                 :value="county.state+'-'+county.county"
-                                                @click="search_offices(); update_details(); get_checked(false); get_results();">
+                                                @click="search_offices(); update_details(); get_results();">
                                             </div>
                                         </template>
 
