@@ -49,18 +49,7 @@ class RemoveAgentsJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-
-        try {
-            $connect = $rets -> Login();
-            $this -> queueData([$connect], true);
-        } catch (Throwable $e) {
-            $this -> queueData(['sleeping' => true], true);
-            sleep(5);
-            $rets = new \PHRETS\Session($rets_config);
-            $connect = $rets -> Login();
-        }
-
-
+        $connect = $rets -> Login();
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -87,14 +76,21 @@ class RemoveAgentsJob implements ShouldQueue
 
             $query = '(MemberKey='.$agents_in_db_string.')';
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Count' => 0
-                ]
-            );
+            try {
+
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Count' => 0
+                    ]
+                );
+
+            } catch (Throwable $e) {
+                return $e -> getMessage();
+            }
+
 
             $agents = $results -> toArray();
             $total_found = count($agents);
