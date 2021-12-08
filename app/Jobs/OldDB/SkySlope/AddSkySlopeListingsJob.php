@@ -211,7 +211,7 @@ class AddSkySlopeListingsJob implements ShouldQueue
 
                 $add_transaction -> save();
 
-                $this -> queueData(['address' => $address], true);
+                $this -> queueData([$address], true);
 
             }
 
