@@ -74,7 +74,11 @@ class UpdateAgentsJob implements ShouldQueue
 
         if($total_found > 0) {
 
+            $increment = 99 / count($agents);
             foreach ($agents as $agent) {
+
+                $progress += $increment;
+                $this -> queueProgress($progress);
 
                 $agent_details = array_filter($agent);
                 $MemberKey = $agent['MemberKey'];
