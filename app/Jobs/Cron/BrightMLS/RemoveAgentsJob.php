@@ -53,6 +53,7 @@ class RemoveAgentsJob implements ShouldQueue
         try {
             $connect = $rets -> Login();
         } catch (Throwable $e) {
+            $this -> queueData(['sleeping' => true], true);
             sleep(5);
             $rets = new \PHRETS\Session($rets_config);
             $connect = $rets -> Login();
