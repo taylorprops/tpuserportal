@@ -229,7 +229,10 @@ class AddSkySlopeListingsJob implements ShouldQueue
     }
 
     function county($zip) {
-        return LocationData::select('county') -> where('zip', $zip) -> first() -> county;
+        $county = LocationData::select('county') -> where('zip', $zip) -> first();
+        if ($county) {
+            return $county -> county;
+        }
     }
 
     public function skyslope_auth() {

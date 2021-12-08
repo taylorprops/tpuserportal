@@ -2,6 +2,10 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Helper
 {
 
@@ -40,6 +44,39 @@ class Helper
         mb_strtolower($clean, 'UTF-8') :
         strtolower($clean) :
         $clean;
+
+    }
+
+    public static function to_excel($rows, $filename, $select) {
+
+        $spreadsheet = new Spreadsheet();
+        $Excel_writer = new Xlsx($spreadsheet);
+
+        $spreadsheet -> setActiveSheetIndex(0);
+        $activeSheet = $spreadsheet -> getActiveSheet();
+
+        for ($i = 0, $char = 'A'; $i < count($select); $i++, $char++) {
+            $activeSheet -> setCellValue($char.'1', ucwords(str_replace('_', ' ', $select[$i])));
+        }
+
+        $count = 2;
+        foreach ($rows as $row) {
+            $char = 'A';
+            foreach ($row as $key => $value) {
+                $activeSheet -> setCellValue($char.$count, $value);
+                $char++;
+            }
+            $count++;
+        }
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename='. $filename);
+        header('Cache-Control: max-age=0');
+        $file_location = Storage::path('tmp/'.$filename);
+        $url = Storage::url('tmp/'.$filename);
+        $Excel_writer -> save($file_location);
+
+        return $url;
 
     }
 

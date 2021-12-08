@@ -6,6 +6,8 @@ window.table = function(options) {
     let active = options.active == true ? 'yes' : null;
     let sort = options.sort_by || null;
     let length = options.length || null;
+    let button_export = options.button_export || false;
+    let export_url = options.export_url || null;
     let button = options.button || null;
 
     return {
@@ -14,6 +16,8 @@ window.table = function(options) {
         search_val: '',
         active_url: data_url,
         page_url: data_url,
+        button_export: button_export,
+        export_url: export_url,
         button: button,
         active: active,
         sort: sort,
@@ -35,7 +39,7 @@ window.table = function(options) {
             ';
         },
 
-        load_table(url = null) {
+        load_table(url = null, to_excel = false) {
 
             let scope = this;
 
@@ -44,11 +48,24 @@ window.table = function(options) {
             }
             scope.active_url = url;
 
-            axios.get(url)
+            axios.get(url, {
+                params: {
+                    to_excel: to_excel
+                },
+            })
             .then(function (response) {
-                scope.container.querySelector('.table-container').innerHTML = response.data;
+                if(to_excel == false) {
+                    scope.container.querySelector('.table-container').innerHTML = response.data;
+                    scope.table_links();
+                } else {
+                    window.location = response.data.file;
+                }
                 hide_loading();
-                scope.table_links();
+
+                scope.container.querySelectorAll('tr:not(first-child)').forEach(function(row) {
+                    row.classList.add('hover:bg-gray-50');
+                });
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -57,6 +74,12 @@ window.table = function(options) {
 
 
 
+
+        },
+
+        to_excel() {
+            show_loading();
+            this.load_table(this.active_url, true);
         },
 
         show_options() {
@@ -99,8 +122,6 @@ window.table = function(options) {
             options_html += '</div>';
 
             if(scope.button) {
-                console.log(scope.button.url);
-
                 options_html += ' \
                 <div> \
                     <a href="'+scope.button.url+'" target="_blank" class="button primary lg">'+scope.button.html+'</a> \
@@ -221,7 +242,8 @@ window.table = function(options) {
             url += '&'+key+'='+val;
             return url;
 
-        }
+        },
+
 
     }
 

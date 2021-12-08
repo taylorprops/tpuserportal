@@ -22,38 +22,21 @@ class ResourcesController extends Controller
 
     public function get_config_variables(Request $request) {
 
-        $config = Config::get();
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'config_key';
+        $length = $request -> length ? $request -> length : 10;
 
-        return datatables() -> of($config)
-        -> editColumn('config_key', function($config) {
-            return '<span class="font-semibold">'.$config -> config_key.'</span>';
-        })
-        -> editColumn('config_value', function($config) {
-            return '<textarea class="form-element textarea md config-input config-value w-full" rows="'.(strlen($config -> config_value) / 110).'"
-            data-id="'.$config -> id.'"
-            data-field="config_value"
-            >'.$config -> config_value.'</textarea>';
-        })
-        -> editColumn('value_type', function($config) {
-            $string = '';
-            $array = '';
-            if($config -> value_type == 'string') {
-                $string = 'selected';
-            } else {
-                $array = 'selected';
+        $search = $request -> search ?? null;
+
+        $configs = Config::where(function($query) use ($search) {
+            if($search) {
+                $query -> where('config_key', 'like', '%'.$search.'%');
             }
-            return '
-            <select class="form-element select md config-input config-key"
-            data-id="'.$config -> id.'"
-            data-field="value_type"
-            >
-                <option value="string" '.$string.'>String</option>
-                <option value="array" '.$array.'>Array</option>
-            </select>';
-
         })
-        -> escapeColumns([])
-        -> make(true);
+        -> orderBy($sort, $direction)
+        -> paginate($length);
+
+        return view('resources/config/get_config_variables_html', compact('configs'));
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\DocManagement\Archives;
 
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -26,9 +27,7 @@ class EscrowController extends Controller
         $sort = $request -> sort ? $request -> sort : 'contract_date';
         $length = $request -> length ? $request -> length : 10;
         $holding_earnest = $request -> holding_earnest ? $request -> holding_earnest : null;
-
-        $search = $request -> search ?? null;
-        $escrows = Escrow::select([
+        $select = [
             'escrow.id',
             'mls',
             'TransactionId',
@@ -38,7 +37,10 @@ class EscrowController extends Controller
             'city',
             'state',
             'zip'
-            ])
+        ];
+
+        $search = $request -> search ?? null;
+        $escrows = Escrow::select($select)
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('address', 'like', '%'.$search.'%')
@@ -57,11 +59,77 @@ class EscrowController extends Controller
             }
         }) */
         -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
-        -> orderBy($sort, $direction)
-        //-> sortable()
-        -> paginate($length);
+        -> orderBy($sort, $direction);
 
-        return view('doc_management/transactions/archived/get_escrow_html', compact('escrows'));
+        if ($request -> to_excel == 'false') {
+
+            $escrows = $escrows -> paginate($length);
+            return view('doc_management/transactions/archived/get_escrow_html', compact('escrows'));
+
+        } else {
+
+            $escrows = $escrows -> get();
+
+            $data = [];
+            $select = ['Address', 'Agent', 'Close Date', 'Money In', 'Money Out', 'Holding'];
+
+            foreach($escrows as $escrow) {
+
+                $address = $escrow -> address.' '.$escrow -> city.', '.$escrow -> state.' '.$escrow -> zip;
+                if($escrow -> mls != '') {
+                    $transaction = $escrow -> transaction_company;
+                } else {
+                    $transaction = $escrow -> transaction_skyslope;
+                }
+                $close_date = null;
+                if($transaction) {
+                    $close_date = substr($transaction -> escrowClosingDate, 0, 10);
+                    if($transaction -> actualClosingDate != '') {
+                        $close_date = substr($transaction -> actualClosingDate, 0, 10);
+                    }
+                }
+                if(!$close_date) {
+                    $close_date = $escrow -> contract_date;
+                }
+
+                $checks = $escrow -> checks;
+
+                $escrow_total_in = $checks -> where('cleared', 'yes')
+                -> where('amount', '>', '0')
+                -> where('check_type', 'in')
+                -> sum('amount');
+
+                $escrow_total_out = $checks -> where('cleared', 'yes')
+                -> where('amount', '>', '0')
+                -> where('check_type', 'out')
+                -> sum('amount');
+
+                $escrow_total_left = $escrow_total_in - $escrow_total_out;
+
+                $escrow_total_in = '$'.number_format($escrow_total_in, 0);
+                $escrow_total_out = '$'.number_format($escrow_total_out, 0);
+                $escrow_total_left = '$'.number_format($escrow_total_left, 0);
+
+                $data[] = [
+                    'address' => $address,
+                    'agent' => $escrow -> agent,
+                    'close_date' => $close_date,
+                    'escrow_total_in' => $escrow_total_in,
+                    'escrow_total_out' => $escrow_total_out,
+                    'escrow_total_left' => $escrow_total_left,
+                ];
+
+            }
+
+
+            $filename = 'escrows_'.time().'.xlsx';
+            $file = Helper::to_excel($data, $filename, $select);
+
+            return response() -> json(['file' => $file]);
+
+        }
+
+
 
     }
 

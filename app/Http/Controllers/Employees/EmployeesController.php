@@ -640,8 +640,9 @@ class EmployeesController extends Controller
 
         $active = $request -> active ?? 'yes';
         $search = $request -> search ?? null;
+        $select = ['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'];
 
-        $users = User::select(['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'])
+        $users = User::select($select)
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('name', 'like', '%'.$search.'%');
@@ -652,11 +653,24 @@ class EmployeesController extends Controller
                 $query -> where('active', $active);
             }
         })
-        -> orderBy($sort, $direction)
-        -> paginate($length);
+        -> orderBy($sort, $direction);
 
+        if ($request -> to_excel == 'false') {
 
-        return view('/users/get_users_html', compact('users'));
+            $users = $users -> paginate($length);
+            return view('/users/get_users_html', compact('users'));
+
+        } else {
+
+            $users = $users -> get()
+            -> toArray();
+
+            $filename = 'users_'.time().'.xlsx';
+            $file = Helper::to_excel($users, $filename, $select);
+
+            return response() -> json(['file' => $file]);
+
+        }
 
     }
 

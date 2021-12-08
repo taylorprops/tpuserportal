@@ -24,7 +24,8 @@ $breadcrumbs = [
                     'data_url': '/users/get_users',
                     'active': true,
                     'length': '10',
-                    'sort_by': 'last_name'
+                    'sort_by': 'last_name',
+                    'button_export': true,
                 })">
 
                 </div>

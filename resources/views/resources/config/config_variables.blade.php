@@ -72,23 +72,21 @@ $breadcrumbs = [
 
             </form>
 
-            <div class="no-wrap">
+            <div class="flex flex-col">
 
-                <table id="config_table" class="data-table hover order-column row-border">
+                <div class="sm:-mx-6 lg:-mx-8"
+                x-data="table({
+                    'container': $refs.container,
+                    'data_url': '/resources/config/get_config_variables',
+                    'active': false,
+                    'length': '10',
+                    'sort_by': 'config_key',
+                    'button_export': false
+                })">
 
-                    <thead>
-                        <tr>
-                            <th>Key</th>
-                            <th class="w-screen-50">Value</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
+                    <div class="table-container" x-ref="container"></div>
 
-                    <tbody>
-
-                    </body>
-
-                </table>
+                </div>
 
             </div>
 

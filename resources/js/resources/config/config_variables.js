@@ -7,7 +7,13 @@ if(document.URL.match(/config_variables/)) {
 
         return {
             init() {
-                get_config();
+                setTimeout(function() {
+                    document.querySelectorAll('.config-input').forEach(function(input) {
+                        input.addEventListener('change', (event) => {
+                            config_edit(event.target.getAttribute('data-id'), event.target.getAttribute('data-field'), event.target.value);
+                        });
+                    });
+                }, 500);
             },
             config_add() {
                 let form = document.getElementById('config_add_form');
@@ -46,7 +52,7 @@ if(document.URL.match(/config_variables/)) {
 
     }
 
-    window.get_config = function() {
+    /* window.get_config = function() {
 
         let cols = [
             { data: 'config_key' },
@@ -64,6 +70,6 @@ if(document.URL.match(/config_variables/)) {
                 });
             });
         }, 500);
-    }
+    } */
 
 }
