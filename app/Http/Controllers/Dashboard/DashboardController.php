@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\HeritageFinancial\Loans;
 
 class DashboardController extends Controller
 {
@@ -11,7 +12,16 @@ class DashboardController extends Controller
 
         $group = auth() -> user() -> group;
 
-        return view('/dashboard/dashboard_'.$group, compact('group'));
+        // Mortgage
+        if ($group == 'mortgage') {
+
+            $active_loans = Loans::orderBy('settlement_date', 'desc')
+            -> get();
+
+            return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans'));
+        }
+
+
 
     }
 }

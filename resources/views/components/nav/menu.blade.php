@@ -6,11 +6,11 @@ $id = time() * rand();
 @if($level === '1')
 
     <li>
-        <a href="{{ $link }}" class="flex items-center h-full w-full px-2 py-1 text-sm font-medium rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary focus:text-white">
-            <div class="flex justify-center items-center h-6 w-6 mr-4 rounded bg-white group-hover:bg-primary-light group-hover:text-white">
+        <a href="{{ $link }}" class="menu-link flex items-center h-full w-full px-2 py-1 text-sm font-medium rounded-md group text-primary-dark hover:text-white hover:bg-primary focus:bg-primary focus:text-white">
+            <div class="flex justify-center items-center h-6 w-6 mr-4 rounded bg-white group-hover:bg-primary-light group-hover:text-white group-focus:bg-primary-light group-focus:text-white">
                 <i class="{{ $icon }}"></i>
             </div>
-            <span class="group-hover:text-white">{{ $title }}</span>
+            <span class="group-hover:text-white group-focus:text-white">{{ $title }}</span>
         </a>
     </li>
 

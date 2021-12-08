@@ -134,7 +134,7 @@
 }
 
 .button {
-    @apply cursor-pointer flex items-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply cursor-pointer border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
     &.sm {
         @apply px-3.5 h-6 text-xs;
         &.no-text {
