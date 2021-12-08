@@ -109,7 +109,7 @@ class TestsController extends Controller
             }
         }
 
-        $rets -> Disconnect();
+        //$rets -> Disconnect();
 
     }
 
@@ -166,7 +166,7 @@ class TestsController extends Controller
 
         }
 
-        $rets -> Disconnect();
+        //$rets -> Disconnect();
 
     }
 
@@ -229,7 +229,7 @@ class TestsController extends Controller
 
         //$count_after = BrightOffices::get() -> count();
 
-        $rets -> Disconnect();
+        //$rets -> Disconnect();
 
     }
 
