@@ -28,7 +28,7 @@ class DashboardController extends Controller
 
         } else if ($group == 'in_house') {
 
-            return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions'));
+            return view('/dashboard/dashboard_'.$group, compact('group'));
 
         }
 
