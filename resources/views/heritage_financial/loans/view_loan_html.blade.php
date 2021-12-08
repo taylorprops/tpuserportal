@@ -378,7 +378,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                             <div class="col-span-1">
 
-                                <div class="border-4 rounded">
+                                <div class="border-4 rounded-lg">
 
                                     <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-calendar-day mr-2"></i> Loan Details</div>
 
@@ -444,7 +444,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                             <div class="col-span-1">
 
-                                <div class="border-4 rounded">
+                                <div class="border-4 rounded-lg">
 
                                     <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-users mr-2"></i> People</div>
 
@@ -513,7 +513,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                     <div class="mt-4 max-w-lg @if(auth() -> user() -> group != 'mortgage') hidden @endif">
 
-                        <div class="grid grid-cols-2 border-4 p-2 rounded mb-3">
+                        <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3">
 
                             <div>
                                 Checks In
@@ -525,7 +525,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         </div>
 
-                        <div class="border-4 p-2 rounded mb-3">
+                        <div class="border-4 p-2 rounded-lg mb-3">
 
                             <div>
                                 Deductions
@@ -544,7 +544,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         </div>
 
-                        <div class="grid grid-cols-2 border-4 p-2 rounded mb-3 mt-8">
+                        <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3 mt-8">
 
                             <div>
                                 Net Commission
@@ -556,7 +556,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         </div>
 
-                        <div class="border-4 border-green-200 p-4 rounded mb-3 mt-8">
+                        <div class="border-4 border-green-200 p-4 rounded-lg mb-3 mt-8">
 
                             <div class="text-xl">
                                 Loan Officer Commission

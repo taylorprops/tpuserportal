@@ -30,7 +30,7 @@
             </div>
 
             <div class="flex items-center justify-between mt-4">
-                <a href="/login" class="text-white">Back to Login</a>
+                <a href="/login" class="light text-white">Back to Login</a>
                 <button type="submit" class="button default lg">Email Reset Link <i class="fa fa-share ml-2"></i></button>
             </div>
         </form>

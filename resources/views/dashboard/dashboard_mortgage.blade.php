@@ -12,17 +12,20 @@ $breadcrumbs = [];
     <div class="pb-12 pt-2"
     x-data="dashboard('{{ $group }}')">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12 pt-4 md:pt-8 lg:pt-16">
+        <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-12 pt-4 md:pt-8 lg:pt-16">
 
             <div class="grid grid-cols-1 lg:grid-cols-2 max-w-1400-px gap-12 mx-auto">
 
-                <div class="border-4 rounded-lg">
+                <div class="border-4 rounded-lg overflow-x-auto min-w-600-px">
 
-                    <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
-                        Active Loans
+                    <div class="flex justify-between items-center rounded-t-lg border-b">
+                        <div class="p-3 text-lg font-semibold">Active Loans</div>
+                        <div class="mr-4">
+                            <a href="/heritage_financial/loans" class="button primary sm">View All</a>
+                        </div>
                     </div>
 
-                    <div class="p-2 max-h-400-px overflow-y-auto">
+                    <div class="p-2 max-h-400-px overflow-auto whitespace-nowrap">
 
                         @forelse($active_loans as $loan)
 
@@ -64,13 +67,13 @@ $breadcrumbs = [];
 
                 </div>
 
-                <div class="border-4 rounded-lg">
+                <div class="border-4 rounded-lg overflow-x-auto min-w-600-px">
 
                     <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
                         Recent Commissions
                     </div>
 
-                    <div class="p-2 max-h-400-px overflow-y-auto">
+                    <div class="p-2 max-h-400-px overflow-auto whitespace-nowrap">
 
                         @forelse($recent_commissions as $loan)
 
@@ -108,6 +111,15 @@ $breadcrumbs = [];
 
                         @endforelse
 
+                    </div>
+
+                </div>
+
+
+                <div class="border-4 rounded-lg">
+
+                    <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
+                        Software/Marketing
                     </div>
 
                 </div>
