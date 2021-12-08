@@ -72,7 +72,9 @@ class AddSkySlopeListingsJob implements ShouldQueue
         $contents = json_decode($contents, true);
         $data = $contents['value'];
 
-        $progress_increment = round((1 / count($data)) * 100);
+        $this -> queueData(['count' => count($data)], true);
+
+        $progress_increment = 99 / count($data);
 
         foreach($data as $transaction) {
 

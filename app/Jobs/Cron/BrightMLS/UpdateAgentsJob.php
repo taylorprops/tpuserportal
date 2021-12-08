@@ -58,6 +58,9 @@ class UpdateAgentsJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
+        $progress = 5;
+        $this -> queueProgress($progress);
+
         $results = $rets -> Search(
             $resource,
             $class,
@@ -67,6 +70,9 @@ class UpdateAgentsJob implements ShouldQueue
             ]
         );
 
+        $progress = 15;
+        $this -> queueProgress($progress);
+
         $agents = $results -> toArray();
         $total_found = count($agents);
 
@@ -74,7 +80,7 @@ class UpdateAgentsJob implements ShouldQueue
 
         if($total_found > 0) {
 
-            $increment = 99 / count($agents);
+            $increment = 85 / count($agents);
             foreach ($agents as $agent) {
 
                 $progress += $increment;
