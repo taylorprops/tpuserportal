@@ -52,7 +52,9 @@ class RemoveAgentsJob implements ShouldQueue
 
         try {
             $connect = $rets -> Login();
+            $this -> queueData(['connected' => true], true);
         } catch (Throwable $e) {
+            $this -> queueData(['connected' => false], true);
             sleep(5);
             $connect = $rets -> Login();
         }
