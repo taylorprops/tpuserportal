@@ -45,12 +45,7 @@ class UpdateOfficesJob implements ShouldQueue
 
         $rets = new \PHRETS\Session($rets_config);
 
-        try {
-            $connect = $rets -> Login();
-        } catch (Throwable $e) {
-            sleep(5);
-            $connect = $rets -> Login();
-        }
+        $connect = $rets -> Login();
 
         $resource = 'Office';
         $class = 'Office';
