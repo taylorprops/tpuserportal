@@ -25,6 +25,11 @@ class DashboardController extends Controller
             -> get();
 
             return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions'));
+
+        } else if ($group == 'in_house') {
+
+            return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions'));
+
         }
 
 
