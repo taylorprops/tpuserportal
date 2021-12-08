@@ -63,7 +63,7 @@ $breadcrumbs = [
 
             <div class="p-2 lg:p-8 rounded-lg border mt-12 lg:mt-16">
 
-                <div class="flex justify-start items-center bg-yellow-50 text-yellow-600 p-2 rounded-lg w-auto border border-yellow-300">
+                <div class="flex justify-start items-center bg-primary-lightest text-primary p-2 rounded-lg w-auto border border-primary-light">
                     <i class="fad fa-exclamation-circle fa-lg mr-4"></i>
                     <div class="text-xs md:text-base">
                         Your Profile Picture and Bio will appear on our public website - www.heritagefinancial.com

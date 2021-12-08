@@ -15,10 +15,16 @@ class DashboardController extends Controller
         // Mortgage
         if ($group == 'mortgage') {
 
-            $active_loans = Loans::orderBy('settlement_date', 'desc')
+            $active_loans = Loans::where('loan_status', 'Open')
+            -> orderBy('settlement_date', 'desc')
             -> get();
 
-            return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans'));
+            $recent_commissions = Loans::where('loan_status', 'Closed')
+            -> where('settlement_date', '>', date('Y-m-d', strtotime('-3 month')))
+            -> orderBy('settlement_date', 'desc')
+            -> get();
+
+            return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions'));
         }
 
 

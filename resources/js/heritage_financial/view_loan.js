@@ -1,11 +1,11 @@
 if(document.URL.match(/view_loan/)) {
 
 
-    window.loan = function(loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
+    window.loan = function(active_tab, loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
 
         return {
 
-            active_tab: '1',
+            active_tab: active_tab,
             show_other_title: false,
             show_delete_check_in: false,
             loan_officer_1_commission_amount: '',

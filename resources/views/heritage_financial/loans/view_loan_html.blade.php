@@ -9,6 +9,11 @@ $breadcrumbs = [
     [$title, ''],
 ];
 $input_size = 'md';
+
+$active_tab = '1';
+if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
+    $active_tab = '2';
+}
 @endphp
 <x-app-layout>
     @section('title') {{ $title }} @endsection
@@ -18,7 +23,15 @@ $input_size = 'md';
     </x-slot>
 
     <div class="pb-48 pt-2"
-    x-data="loan('{{ $loan_officer_1_commission_type }}', '{{ $loan_officer_2_commission_type ?? 'commission' }}', '{{ $loan -> loan_amount ?? null }}', '{{ $loan -> points_charged ?? '2.5' }}', '{{ $manager_bonus }}', '{{ $loan_officer_1 -> loan_amount_percent ?? null }}', '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
+    x-data="loan(
+        '{{ $active_tab }}',
+        '{{ $loan_officer_1_commission_type }}',
+        '{{ $loan_officer_2_commission_type ?? 'commission' }}',
+        '{{ $loan -> loan_amount ?? null }}',
+        '{{ $loan -> points_charged ?? '2.5' }}',
+        '{{ $manager_bonus }}',
+        '{{ $loan_officer_1 -> loan_amount_percent ?? null }}',
+        '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
 
         <div class="max-w-1400-px mx-auto pt-8 md:pt-12 lg:pt-16 px-4">
 
@@ -448,7 +461,7 @@ $input_size = 'md';
 
                                     <div class="grid grid-cols-3 gap-4 p-4">
                                         <div class="text-right">
-                                            Proceessor
+                                            Processor
                                         </div>
                                         <div class="font-bold col-span-2">
                                             {{ $processor -> fullname }}

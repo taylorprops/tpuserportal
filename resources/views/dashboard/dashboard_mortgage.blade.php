@@ -22,7 +22,7 @@ $breadcrumbs = [];
                         Active Loans
                     </div>
 
-                    <div class="p-2">
+                    <div class="p-2 max-h-400-px overflow-y-auto">
 
                         @forelse($active_loans as $loan)
 
@@ -34,19 +34,22 @@ $breadcrumbs = [];
                             $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                             @endphp
 
-                            <div class="grid grid-cols-7 p-2 mb-2 border-b text-sm">
+                            <div class="grid grid-cols-11 p-2 mb-2 border-b text-sm">
 
-                                <div class="col-span-1">
-                                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
-                                </div>
-                                <div class="col-span-2 pl-2">
-                                    {!! $borrower !!}
+                                <div class="col-span-2">
+                                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md w-16">View</a>
                                 </div>
                                 <div class="col-span-3 pl-2">
+                                    {!! $borrower !!}
+                                </div>
+                                <div class="col-span-4 pl-2">
                                     {!! $address !!}
                                 </div>
-                                <div class="col-span-1 -pl-2">
+                                <div class="col-span-2 -pl-2">
                                     ${{ number_format($loan -> loan_amount) }}
+                                    <div class="text-xs">
+                                        CD - {{ $loan -> settlement_date }}
+                                    </div>
                                 </div>
 
                             </div>
@@ -67,7 +70,43 @@ $breadcrumbs = [];
                         Recent Commissions
                     </div>
 
-                    <div class="p-2">
+                    <div class="p-2 max-h-400-px overflow-y-auto">
+
+                        @forelse($recent_commissions as $loan)
+
+                            @php
+                            $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
+                            if($loan -> co_borrower_first != '') {
+                                $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
+                            }
+                            $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
+                            @endphp
+
+                            <div class="grid grid-cols-11 p-2 mb-2 border-b text-sm">
+
+                                <div class="col-span-2">
+                                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}?tab=commission" class="button primary md w-16">View</a>
+                                </div>
+                                <div class="col-span-3 pl-2">
+                                    {!! $borrower !!}
+                                </div>
+                                <div class="col-span-4 pl-2">
+                                    {!! $address !!}
+                                </div>
+                                <div class="col-span-2 -pl-2">
+                                    <div class="text-green-600">${{ number_format($loan -> loan_officer_1_commission_amount, 2) }}</div>
+                                    <div class="text-xs">
+                                        CD - {{ $loan -> settlement_date }}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        @empty
+
+                            <div class="w-full px-4 py-12 text-gray-400 text-xl text-center">No Active Loans</div>
+
+                        @endforelse
 
                     </div>
 

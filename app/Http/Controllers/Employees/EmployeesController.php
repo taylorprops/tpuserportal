@@ -330,6 +330,7 @@ class EmployeesController extends Controller
             $employee = Agents::find($emp_id);
         } else if($emp_type == 'mortgage') {
             $employee = Mortgage::with(['licenses']) -> find($emp_id);
+            $emp_type = 'loan_officer';
         } else if($emp_type == 'in_house') {
             $employee = InHouse::find($emp_id);
         } else if($emp_type == 'title') {
