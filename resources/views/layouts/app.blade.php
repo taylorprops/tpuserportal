@@ -49,6 +49,8 @@
     x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
     @keydown.window.escape="main_nav_open = false">
 
+    {{ phpinfo(); }}
+
         <div class="min-h-screen flex">
 
             @include('layouts.menu.menu')
