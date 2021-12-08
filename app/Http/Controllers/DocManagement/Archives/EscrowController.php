@@ -26,7 +26,8 @@ class EscrowController extends Controller
         $direction = $request -> direction ? $request -> direction : 'desc';
         $sort = $request -> sort ? $request -> sort : 'contract_date';
         $length = $request -> length ? $request -> length : 10;
-        $holding_earnest = $request -> holding_earnest ? $request -> holding_earnest : null;
+        $active = $request -> active;
+
         $select = [
             'escrow.id',
             'mls',
@@ -47,17 +48,20 @@ class EscrowController extends Controller
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
-        -> where(function($query) use ($holding_earnest) {
-            if ($holding_earnest) {
+        /* -> where(function($query) use ($active) {
+            if ($active != 'all') {
                 $query -> whereHas('checks', function($query) {
-                    $query -> having(DB::raw('
-                    sum(case
-                        when cleared = "yes" and amount > "0" and check_type = "in" then amount else 0 end) >
-                    sum(case
-                        when cleared = "yes" and amount > "0" and check_type = "out" then amount else 0 end)'));
+                    $query -> select(DB::raw('sum(case when cleared = "yes" and amount > "0" and check_type = "in" then amount else 0 end) as checks_in, sum(case when cleared = "yes" and amount > "0" and check_type = "out" then amount else 0 end) as checks_out'))
+                    -> havingRaw('checks_in > checks_out')
+                    -> groupBy('escrow_id');
+                    // $query -> having(DB::raw('
+                    // sum(case
+                    //     when cleared = "yes" and amount > "0" and check_type = "in" then amount else 0 end) >
+                    // sum(case
+                    //     when cleared = "yes" and amount > "0" and check_type = "out" then amount else 0 end)'));
                 });
             }
-        })
+        }) */
         -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
         -> orderBy($sort, $direction);
 

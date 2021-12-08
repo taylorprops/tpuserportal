@@ -37,6 +37,21 @@ class RemoveAgentsJob implements ShouldQueue
         $this -> queueProgress($progress);
         $data = [];
 
+        $select = ['MemberKey'];
+        $agents_in_db_array = BrightAgentRoster::select($select)
+        -> where('removal_date_checked', '!=', date('Y-m-d'))
+        -> orWhereNull('removal_date_checked')
+        -> limit($search_for)
+        -> get()
+        -> pluck('MemberKey')
+        -> toArray();
+
+        if (count($agents_in_db_array) < $search_for) {
+            $search_for = count($agents_in_db_array);
+        }
+
+        $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.count($agents_in_db_array);
+
         date_default_timezone_set('America/New_York');
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
@@ -63,20 +78,7 @@ class RemoveAgentsJob implements ShouldQueue
         $class = 'ActiveMember';
         $search_for = 1000;
 
-        $select = ['MemberKey'];
-        $agents_in_db_array = BrightAgentRoster::select($select)
-        -> where('removal_date_checked', '!=', date('Y-m-d'))
-        -> orWhereNull('removal_date_checked')
-        -> limit($search_for)
-        -> get()
-        -> pluck('MemberKey')
-        -> toArray();
 
-        if (count($agents_in_db_array) < $search_for) {
-            $search_for = count($agents_in_db_array);
-        }
-
-        $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.count($agents_in_db_array);
 
         if ($search_for > 0) {
 

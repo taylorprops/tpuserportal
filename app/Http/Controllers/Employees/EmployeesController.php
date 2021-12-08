@@ -71,7 +71,7 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active ?? 'yes';
+        $active = $request -> active;
 
         $employees = InHouse::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'job_title'])
         -> where(function($query) use ($search) {
@@ -81,7 +81,7 @@ class EmployeesController extends Controller
         })
         -> where(function($query) use ($active) {
             if($active != 'all') {
-                $query -> where('active', $active);
+                $query -> where('active', 'like', '%'.$active.'%');
             }
         })
         -> orderBy($sort, $direction)
@@ -120,7 +120,7 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active ?? 'yes';
+        $active = $request -> active;
 
         $employees = Mortgage::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {
@@ -130,7 +130,7 @@ class EmployeesController extends Controller
         })
         -> where(function($query) use ($active) {
             if($active != 'all') {
-                $query -> where('active', $active);
+                $query -> where('active', 'like', '%'.$active.'%');
             }
         })
         -> with(['licenses'])
@@ -638,7 +638,7 @@ class EmployeesController extends Controller
         $sort = $request -> sort ? $request -> sort : 'last_name';
         $length = $request -> length ? $request -> length : 10;
 
-        $active = $request -> active ?? 'yes';
+        $active = $request -> active;
         $search = $request -> search ?? null;
         $select = ['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'];
 
@@ -650,7 +650,7 @@ class EmployeesController extends Controller
         })
         -> where(function($query) use ($active) {
             if($active != 'all') {
-                $query -> where('active', $active);
+                $query -> where('active', 'like', '%'.$active.'%');
             }
         })
         -> orderBy($sort, $direction);

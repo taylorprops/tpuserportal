@@ -37,6 +37,8 @@ window.table = function(options) {
             <div class="options-container"></div> \
             <div class="table-container"></div> \
             ';
+            this.active_url = this.add_url_param('active', this.active);
+            console.log(this.active_url);
         },
 
         load_table(url = null, to_excel = false) {

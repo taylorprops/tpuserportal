@@ -20,8 +20,7 @@ $breadcrumbs = [
             'data_url': '/transactions_archived/get_escrow_html',
             'length': '10',
             'sort_by': 'contract_date',
-            'button_export': true,
-            'active': 'all'
+            'button_export': true
         })">
 
 
