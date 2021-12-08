@@ -23,7 +23,7 @@ $breadcrumbs = [
             x-data="table({
                 'container': $refs.container,
                 'data_url': '/users/get_users',
-                'active': true,
+                'active': 'yes',
                 'length': '10',
                 'sort_by': 'last_name'
             })">

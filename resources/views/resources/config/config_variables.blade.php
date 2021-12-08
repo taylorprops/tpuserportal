@@ -78,7 +78,6 @@ $breadcrumbs = [
                 x-data="table({
                     'container': $refs.container,
                     'data_url': '/resources/config/get_config_variables',
-                    'active': false,
                     'length': '10',
                     'sort_by': 'config_key',
                     'button_export': false

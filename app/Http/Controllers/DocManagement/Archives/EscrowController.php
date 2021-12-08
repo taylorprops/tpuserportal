@@ -47,8 +47,8 @@ class EscrowController extends Controller
                 -> orWhere('agent', 'like', '%'.$search.'%');
             }
         })
-        /* -> where(function($query) use ($holding_earnest) {
-            if (!$holding_earnest) {
+        -> where(function($query) use ($holding_earnest) {
+            if ($holding_earnest) {
                 $query -> whereHas('checks', function($query) {
                     $query -> having(DB::raw('
                     sum(case
@@ -57,7 +57,7 @@ class EscrowController extends Controller
                         when cleared = "yes" and amount > "0" and check_type = "out" then amount else 0 end)'));
                 });
             }
-        }) */
+        })
         -> with(['transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'transaction_company:transactionId,mlsNumber,listingGuid,saleGuid,actualClosingDate,escrowClosingDate', 'checks'])
         -> orderBy($sort, $direction);
 

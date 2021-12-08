@@ -3,12 +3,12 @@ window.table = function(options) {
 
     let container = options.container;
     let data_url = options.data_url;
-    let active = options.active == true ? 'yes' : null;
+    let active = options.active ? options.active : null;
     let sort = options.sort_by || null;
     let length = options.length || null;
     let button_export = options.button_export || false;
     let export_url = options.export_url || null;
-    let button = options.button || null;
+    let buttons = options.buttons || null;
 
     return {
 
@@ -18,7 +18,7 @@ window.table = function(options) {
         page_url: data_url,
         button_export: button_export,
         export_url: export_url,
-        button: button,
+        buttons: buttons,
         active: active,
         sort: sort,
         direction: 'asc',
@@ -71,10 +71,6 @@ window.table = function(options) {
                 console.log(error);
             });
 
-
-
-
-
         },
 
         to_excel() {
@@ -85,8 +81,6 @@ window.table = function(options) {
         show_options() {
 
             let scope = this;
-
-            options_div = document.createElement('div');
 
             let options_html = '<div class="flex justify-between options-div"> \
             <div class="flex">';
@@ -109,10 +103,25 @@ window.table = function(options) {
                     class="form-element select md" \
                     data-label="Active" \
                     x-ref="active" \
-                    x-on:change="option_show_active($el.value)"> \
-                        <option value="all">All</option> \
-                        <option value="yes" selected>Active</option> \
-                        <option value="no">Not Active</option> \
+                    x-on:change="option_show_active($el.value);"> \
+                        <option value="all" \
+                        ';
+                        if(scope.active == 'all') {
+                            options_html += ' selected';
+                        }
+                        options_html += '>All</option> \
+                        <option value="yes" \
+                        ';
+                        if(scope.active == 'yes') {
+                            options_html += ' selected';
+                        }
+                        options_html += '>Active</option> \
+                        <option value="no" \
+                        ';
+                        if(scope.active == 'no') {
+                            options_html += ' selected';
+                        }
+                        options_html += '>Not Active</option> \
                     </select> \
                 </div> \
                 ';
@@ -121,19 +130,19 @@ window.table = function(options) {
 
             options_html += '</div>';
 
-            if(scope.button) {
-                options_html += ' \
-                <div> \
-                    <a href="'+scope.button.url+'" target="_blank" class="button primary lg">'+scope.button.html+'</a> \
-                </div> \
-                ';
+            if(scope.buttons) {
+                scope.buttons.forEach(function(button) {
+                    options_html += ' \
+                    <div> \
+                        <a href="'+button.url+'" target="_blank" class="button primary md">'+button.html+'</a> \
+                    </div> \
+                    ';
+                });
             }
 
             options_html += '</div>';
 
-            options_div.innerHTML = options_html;
-
-            scope.container.querySelector('.options-container').append(options_div);
+            scope.container.querySelector('.options-container').insertAdjacentHTML('beforeend', options_html);
 
         },
 

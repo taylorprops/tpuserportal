@@ -23,13 +23,15 @@
                 x-data="table({
                     'container': $refs.container,
                     'data_url': '/employees/in_house/get_in_house',
-                    'active': true,
+                    'active': 'yes',
                     'length': '10',
                     'sort_by': 'last_name',
-                    'button': {
-                        'html': '<i class=\'fal fa-plus mr-2\'></i> Add In House Employee',
-                        'url': '/employees/in_house/in_house_view'
-                    }
+                    'buttons': [
+                        {
+                            'html': '<i class=\'fal fa-plus mr-2\'></i> Add In House Employee',
+                            'url': '/employees/in_house/in_house_view'
+                        }
+                    ]
                 })">
 
                     <div class="table-container"  x-ref="container"></div>

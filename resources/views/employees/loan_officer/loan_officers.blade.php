@@ -23,13 +23,15 @@
                 x-data="table({
                     'container': $refs.container,
                     'data_url': '/employees/loan_officer/get_loan_officers',
-                    'active': true,
+                    'active': 'yes',
                     'length': '10',
                     'sort_by': 'last_name',
-                    'button': {
-                        'html': '<i class=\'fal fa-plus mr-2\'></i> Add Loan Officer',
-                        'url': '/employees/loan_officer/loan_officer_view'
-                    }
+                    'buttons': [
+                        {
+                            'html': '<i class=\'fal fa-plus mr-2\'></i> Add Loan Officer',
+                            'url': '/employees/loan_officer/loan_officer_view'
+                        }
+                    ]
                 })">
 
                     <div class="table-container"  x-ref="container"></div>
