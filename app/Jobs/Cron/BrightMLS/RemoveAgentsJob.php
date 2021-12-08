@@ -37,6 +37,7 @@ class RemoveAgentsJob implements ShouldQueue
         $this -> queueProgress($progress);
         $data = [];
 
+        $search_for = 1000;
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::select($select)
         -> where('removal_date_checked', '!=', date('Y-m-d'))
@@ -76,7 +77,7 @@ class RemoveAgentsJob implements ShouldQueue
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 1000;
+
 
 
 
