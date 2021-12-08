@@ -50,6 +50,8 @@ class UpdateAgentsJob implements ShouldQueue
         $rets = new \PHRETS\Session($rets_config);
         $connect = $rets -> Login();
 
+        sleep(1);
+
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
