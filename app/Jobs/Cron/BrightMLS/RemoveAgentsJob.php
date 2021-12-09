@@ -15,8 +15,6 @@ class RemoveAgentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $retryAfter = 5;
-
     /**
      * Create a new job instance.
      *
@@ -78,20 +76,14 @@ class RemoveAgentsJob implements ShouldQueue
 
             $query = '(MemberKey='.$agents_in_db_string.')';
 
-            try {
-
-                $results = $rets -> Search(
-                    $resource,
-                    $class,
-                    $query,
-                    [
-                        'Count' => 0
-                    ]
-                );
-
-            } catch (Throwable $e) {
-                return 'XXXXXXXXXXX'.$e -> getMessage();
-            }
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Count' => 0
+                ]
+            );
 
 
             $agents = $results -> toArray();

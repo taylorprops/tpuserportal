@@ -15,8 +15,6 @@ class UpdateAgentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $retryAfter = 5;
-
     /**
      * Create a new job instance.
      *
@@ -63,20 +61,14 @@ class UpdateAgentsJob implements ShouldQueue
         $progress = 5;
         $this -> queueProgress($progress);
 
-        try {
-
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Count' => 0
-                ]
-            );
-
-        } catch (Throwable $e) {
-            return 'XXXXXXXXXXX'.$e -> getMessage();
-        }
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query,
+            [
+                'Count' => 0
+            ]
+        );
 
         $progress = 15;
         $this -> queueProgress($progress);

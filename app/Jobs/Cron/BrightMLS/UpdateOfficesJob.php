@@ -15,8 +15,6 @@ class UpdateOfficesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $retryAfter = 5;
-
     /**
      * Create a new job instance.
      *
@@ -56,20 +54,14 @@ class UpdateOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        try {
-
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Count' => 0
-                ]
-            );
-
-        } catch (Throwable $e) {
-            return 'XXXXXXXXXXX'.$e -> getMessage();
-        }
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query,
+            [
+                'Count' => 0
+            ]
+        );
 
         $progress = 0;
         $this -> queueProgress($progress);
