@@ -9,7 +9,7 @@ $breadcrumbs = [];
         :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
-    <div class="pb-12 pt-2"
+    <div class="pb-24 lg:pb-36 pt-2"
     x-data="dashboard('{{ $group }}')">
 
         <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-12 pt-4 md:pt-8 lg:pt-16">

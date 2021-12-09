@@ -391,6 +391,9 @@ class LoansController extends Controller
 
         $search = $request -> search ?? null;
         $active = $request -> active ?? 'yes';
+        $start_date = $request -> start_date ?? null;
+        $end_date = $request -> end_date ?? null;
+        $date_col = $request -> date_col ?? null;
 
         $select = ['id', 'uuid', 'settlement_date', 'street', 'city', 'state', 'zip', 'loan_amount', 'loan_officer_1_commission_amount', 'borrower_first', 'borrower_last', 'co_borrower_first', 'co_borrower_last'];
         $select_excel = ['settlement_date', 'borrower_first', 'borrower_last', 'co_borrower_first', 'co_borrower_last', 'street', 'city', 'state', 'zip', 'loan_amount', 'loan_officer_1_commission_amount'];
@@ -400,6 +403,16 @@ class LoansController extends Controller
                 $query -> orWhere('street', 'like', '%'.$search.'%')
                 -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
                 -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> where(function($query) use ($date_col, $start_date, $end_date) {
+            if($date_col) {
+                if ($start_date != '') {
+                    $query -> where($date_col, '>=', $start_date);
+                }
+                if ($end_date != '') {
+                    $query -> where($date_col, '<=', $end_date);
+                }
             }
         })
         -> orderBy($sort, $direction);

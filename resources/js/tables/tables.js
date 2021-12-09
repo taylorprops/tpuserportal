@@ -18,18 +18,21 @@ window.table = function(options) {
         search: search,
         search_val: '',
         active_url: data_url,
+        active: active,
         page_url: data_url,
         button_export: button_export,
         export_url: export_url,
         buttons: buttons,
         dates: dates,
+        date_col: dates.col,
+        start_date: null,
+        end_date: null,
         sort: sort,
         direction: 'asc',
         length: length,
         page: '1',
 
         init() {
-            console.log(this.search);
             show_loading();
             this.init_table();
             this.load_table();
@@ -41,7 +44,7 @@ window.table = function(options) {
             <div class="options-container"></div> \
             <div class="table-container"></div> \
             ';
-            this.active_url = this.add_url_param('active', this.active);
+            this.add_url_param('active', this.active);
         },
 
         load_table(url = null, to_excel = false) {
@@ -147,8 +150,9 @@ window.table = function(options) {
                             type="date" \
                             class="form-element input md" \
                                 data-label="'+scope.dates.text+'" \
-                                data-placeholder="Start Date" \
-                                x-on:change="dates(\'start\', $el.value)"> \
+                                placeholder="Start Date" \
+                                x-ref="start_date" \
+                                x-on:change="option_dates()"> \
                         </div> \
                         <div> to </div> \
                         <div> \
@@ -156,8 +160,9 @@ window.table = function(options) {
                             type="date" \
                             class="form-element input md" \
                                 data-label="" \
-                                data-placeholder="End Date" \
-                                x-on:change="dates(\'end\', $el.value)"> \
+                                placeholder="End Date" \
+                                x-ref="end_date" \
+                                x-on:change="option_dates()"> \
                         </div> \
                 </div> \
                 ';
@@ -245,7 +250,6 @@ window.table = function(options) {
 
             let url = scope.add_url_param('search', val.trim());
 
-            scope.active_url = url;
             scope.load_table(url);
 
         },
@@ -258,7 +262,6 @@ window.table = function(options) {
 
             let url = scope.add_url_param('active', active);
 
-            scope.active_url = url;
             scope.load_table(url);
 
         },
@@ -272,23 +275,39 @@ window.table = function(options) {
 
             let url = scope.add_url_param('length', length);
 
-            scope.active_url = url;
             scope.load_table(url);
 
         },
 
-        dates(position, val) {
+        option_dates() {
 
+            let scope = this;
+            let start_date = scope.$refs.start_date.value;
+            let end_date = scope.$refs.end_date.value;
+
+            scope.start_date = start_date;
+            scope.end_date = end_date;
+
+            scope.add_url_param('date_col', scope.date_col);
+            scope.add_url_param('start_date', start_date);
+            scope.add_url_param('end_date', end_date);
+
+            setTimeout(function() {
+                scope.load_table(scope.active_url);
+            }, 100);
         },
 
         add_url_param(key, val) {
 
             let scope = this;
 
-            let url = scope.page_url+'?search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction;
+            let url = scope.page_url+'?search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction+'&start_date='+scope.start_date+'&end_date='+scope.end_date+'&date_col='+scope.date_col;
             let param = new RegExp('[&]*'+key+'=[a-zA-Z0-9_]*');
             url = url.replace(param, '');
             url += '&'+key+'='+val;
+
+            scope.active_url = url;
+
             return url;
 
         },
@@ -297,4 +316,9 @@ window.table = function(options) {
     }
 
 }
+
+
+
+
+
 
