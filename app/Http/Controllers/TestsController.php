@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Monolog\Logger;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
+use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Employees\EmployeesNotes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
@@ -14,8 +17,8 @@ use App\Models\Employees\EmployeesLicenses;
 use App\Models\OldDB\Company\BillingInvoices;
 use App\Models\DocManagement\Admin\Forms\Forms;
 use App\Models\OldDB\Company\BillingInvoicesItems;
-use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
 use App\Models\Employees\Mortgage as LoanOfficersNew;
+use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class TestsController extends Controller
@@ -127,6 +130,12 @@ class TestsController extends Controller
 
         $rets = new \PHRETS\Session($rets_config);
         $connect = $rets -> Login();
+
+        $log = new Logger('PHRETS');
+        $log -> pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+        $log -> warning('Foo');
+        $log -> error('Bar');
+        $rets -> setLogger($log);
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';

@@ -1,0 +1,8 @@
+[2021-12-09T14:18:49.332944-05:00] PHRETS.WARNING: Foo [] []
+[2021-12-09T14:18:49.333745-05:00] PHRETS.ERROR: Bar [] []
+[2021-12-09T14:18:49.333843-05:00] PHRETS.DEBUG: Loading Monolog\Logger logger [] []
+[2021-12-09T14:18:49.334588-05:00] PHRETS.DEBUG: Sending HTTP Request for http://bright-rets.brightmls.com:6103/cornerstone/search (Search) {"auth":["3237448","vU2uduS8GAvHBb2leFRBW3umu","digest"],"headers":{"User-Agent":"Bright RETS Application/1.0","RETS-Version":"RETS/1.7.2","Accept-Encoding":"gzip","Accept":"*/*"},"curl":{"10031":"/tmp/phretsy7Y9Ko"},"query":{"SearchType":"ActiveAgent","Class":"ActiveMember","Query":"(ModificationTimestamp=2021-12-08T13:18:49+)","QueryType":"DMQL2","Count":0,"Format":"COMPACT-DECODED","Limit":99999999,"StandardNames":0}} []
+[2021-12-09T14:18:49.334738-05:00] PHRETS.DEBUG: Using POST method per use_post_method option [] []
+[2021-12-09T14:18:54.619582-05:00] PHRETS.DEBUG: Response: HTTP 200 [] []
+[2021-12-09T14:18:54.656171-05:00] PHRETS.DEBUG: 43 column headers/fields given [] []
+[2021-12-09T14:18:54.693484-05:00] PHRETS.DEBUG: 4507 results given [] []
