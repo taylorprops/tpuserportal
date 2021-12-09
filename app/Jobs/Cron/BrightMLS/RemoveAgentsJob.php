@@ -51,9 +51,9 @@ class RemoveAgentsJob implements ShouldQueue
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        dump($rets);
+        $this -> queueData([$rets], true);
         $connect = $rets -> Login();
-        dump($rets);
+        $this -> queueData([$rets], true);
 
         // try {
         //     $connect = $rets -> Login();
