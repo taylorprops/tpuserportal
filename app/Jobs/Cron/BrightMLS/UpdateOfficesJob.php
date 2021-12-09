@@ -56,14 +56,20 @@ class UpdateOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        $results = $rets -> Search(
-            $resource,
-            $class,
-            $query,
-            [
-                'Count' => 0
-            ]
-        );
+        try {
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Count' => 0
+                ]
+            );
+
+        } catch (Throwable $e) {
+            return 'XXXXXXXXXXX'.$e -> getMessage();
+        }
 
         $progress = 0;
         $this -> queueProgress($progress);
