@@ -43,16 +43,15 @@ class RemoveAgentsJob implements ShouldQueue
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.7.2')
-		-> setUserAgent('Bright RETS Application/1.0')
+		//-> setUserAgent('Bright RETS Application/1.0')
 		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        dd($rets);
+
         try {
             $connect = $rets -> Login();
-            dd($connect);
             $this -> queueData(['connected' => true], true);
         } catch (Throwable $e) {
             $this -> queueData(['connected' => false], true);
