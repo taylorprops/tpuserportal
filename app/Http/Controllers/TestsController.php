@@ -27,7 +27,7 @@ class TestsController extends Controller
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.8')
+        -> setRetsVersion('RETS/1.7.2')
 		-> setUserAgent('Bright RETS Application/1.0')
 		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
 		-> setOption('use_post_method', true)
@@ -119,7 +119,7 @@ class TestsController extends Controller
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.8')
+        -> setRetsVersion('RETS/1.7.2')
 		-> setUserAgent('Bright RETS Application/1.0')
 		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
 		-> setOption('use_post_method', true)
@@ -176,7 +176,7 @@ class TestsController extends Controller
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.8')
+        -> setRetsVersion('RETS/1.7.2')
 		-> setUserAgent('Bright RETS Application/1.0')
 		-> setHttpAuthenticationMethod('digest')
 		-> setOption('use_post_method', true)
