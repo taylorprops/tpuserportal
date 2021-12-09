@@ -18,7 +18,82 @@ $breadcrumbs = [
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-                <div class="rounded-lg border">
+                <div>
+
+                    <div class="rounded-lg border">
+
+                        <div class="p-4 border-b text-xl rounded-t-lg bg-primary text-white">Floify</div>
+
+                        <div class="p-4">
+
+                            <div class="py-4">
+                                Floify is our online application and document management system.
+                            </div>
+
+                            <div class="py-2">
+                                Website - <a href="https://app.floify.com" class="text-primary hover:text-primary-light" target="_blank">https://app.floify.com</a>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="font-semibold mt-8 mb-4 text-xl">Support</div>
+
+                            <div class="ml-4">
+
+                                Help Center - <a href="https://help.floify.com/hc/en-us" target="_blank">https://help.floify.com/hc/en-us</a>
+                                <br>
+                                <br>
+                                There is also an online chat option wehn logged on.
+
+                            </div>
+
+
+                            <div class="font-semibold mb-4 mt-8 text-xl">Training</div>
+
+                            <div class="ml-4">
+
+                                To access the Resource Center log on to Floify and at the bottom of the page you will see a link for "Help". Hover over that to see the options.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="rounded-lg border mt-6">
+
+                        <div class="p-4 border-b text-xl rounded-t-lg bg-primary text-white">Marketing Links</div>
+
+                        <div class="p-4">
+                            <div class="text-lg font-semibold mb-4">Your Marketing and Online Application Links</div>
+
+                                <div class="flex justify-start p-2 mb-2 border-b">
+                                    <div class="font-bold">Profile Link</div>
+                                    <div class="ml-4">
+                                        <a href="https://heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder }}" target="_blank">heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder }}</a>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-start p-2 mb-2 border-b">
+                                    <div class="font-bold">Floify Application Landing Page</div>
+                                    <div class="ml-4">
+                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/</a>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-start p-2 mb-2 border-b">
+                                    <div class="font-bold">Floify Start Application Page</div>
+                                    <div class="ml-4">
+                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/apply-now" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/apply-now</a>
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="rounded-lg border mt-6 lg:mt-0">
 
                     <div class="p-4 border-b text-xl rounded-t-lg bg-primary text-white">Lending Pad</div>
 
@@ -92,46 +167,6 @@ $breadcrumbs = [
                             <div>
                                 Search by keywords, related articles will show up in LendingPad <a href="https://www.lendingpad.com/kb" target="_blank">Knowledge Base</a>, available under Support menu.
                             </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="rounded-lg border">
-
-                    <div class="p-4 border-b text-xl rounded-t-lg bg-primary text-white">Floify</div>
-
-                    <div class="p-4">
-
-                        <div class="py-4">
-                            Floify is our online application and document management system.
-                        </div>
-
-                        <div class="py-2">
-                            Website - <a href="https://app.floify.com" class="text-primary hover:text-primary-light" target="_blank">https://app.floify.com</a>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div class="font-semibold mt-8 mb-4 text-xl">Support</div>
-
-                        <div class="ml-4">
-
-                            Help Center - <a href="https://help.floify.com/hc/en-us" target="_blank">https://help.floify.com/hc/en-us</a>
-                            <br>
-                            <br>
-                            There is also an online chat option wehn logged on.
-
-                        </div>
-
-
-                        <div class="font-semibold mb-4 mt-8 text-xl">Training</div>
-
-                        <div class="ml-4">
-
-                            To access the Resource Center log on to Floify and at the bottom of the page you will see a link for "Help". Hover over that to see the options.
 
                         </div>
 
