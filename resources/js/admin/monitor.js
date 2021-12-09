@@ -39,7 +39,7 @@ if (document.URL.match(/monitor/)) {
                 if(this.play_interval) {
                     clearInterval(this.play_interval);
                 }
-                this.play_interval = setInterval(jobs, 1000);
+                this.play_interval = setInterval(jobs, 3000);
             },
             stop() {
                 clearInterval(this.play_interval);
