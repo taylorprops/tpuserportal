@@ -38,7 +38,6 @@ window.table = function(options) {
             <div class="table-container"></div> \
             ';
             this.active_url = this.add_url_param('active', this.active);
-            console.log(this.active_url);
         },
 
         load_table(url = null, to_excel = false) {
@@ -46,7 +45,7 @@ window.table = function(options) {
             let scope = this;
 
             if(!url) {
-                url = scope.page_url;
+                url = scope.page_url+'?active='+scope.active;
             }
             scope.active_url = url;
 

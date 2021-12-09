@@ -134,27 +134,27 @@
 }
 
 .button {
-    @apply cursor-pointer text-center flex items-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-block cursor-pointer text-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
     &.sm {
-        @apply px-3.5 h-6 text-xs;
+        @apply px-3.5 py-1 text-xs;
         &.no-text {
             @apply h-6 w-6 p-0 flex items-center justify-around;
         }
     }
     &.md {
-        @apply px-3.5 h-8 text-sm;
+        @apply px-3.5 py-2 text-sm;
         &.no-text {
             @apply h-8 w-8 p-0 flex items-center justify-around;
         }
     }
     &.lg {
-        @apply px-6 h-12 text-base;
+        @apply px-6 py-3 text-base;
         &.no-text {
             @apply h-10 w-10 p-0 flex items-center justify-around;
         }
     }
     &.xl {
-        @apply px-8 h-16 text-lg;
+        @apply px-8 py-4 text-lg;
         &.no-text {
             @apply h-14 w-14 p-0 flex items-center justify-around;
         }
