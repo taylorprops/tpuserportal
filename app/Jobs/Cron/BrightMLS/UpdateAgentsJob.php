@@ -51,14 +51,6 @@ class UpdateAgentsJob implements ShouldQueue
 
         $connect = $rets -> Login();
 
-        try {
-            $system = $rets -> GetSystemMetadata();
-            $this -> queueData(['connected' => 'yes'], true);
-        } catch(Throwable $e) {
-            $this -> queueData(['connected' => 'no'], true);
-            $connect = $rets -> Login();
-        }
-
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
