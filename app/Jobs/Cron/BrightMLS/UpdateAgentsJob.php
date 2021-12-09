@@ -15,6 +15,8 @@ class UpdateAgentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
+    public $retryAfter = 5;
+
     /**
      * Create a new job instance.
      *
