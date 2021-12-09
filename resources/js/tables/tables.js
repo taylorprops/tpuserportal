@@ -4,28 +4,32 @@ window.table = function(options) {
     let container = options.container;
     let data_url = options.data_url;
     let active = options.active ? options.active : null;
+    let dates = options.dates || null;
     let sort = options.sort_by || null;
     let length = options.length || null;
     let button_export = options.button_export || false;
     let export_url = options.export_url || null;
     let buttons = options.buttons || null;
+    let search = options.search == false ? false : true;
 
     return {
 
         container: container,
+        search: search,
         search_val: '',
         active_url: data_url,
         page_url: data_url,
         button_export: button_export,
         export_url: export_url,
         buttons: buttons,
-        active: active,
+        dates: dates,
         sort: sort,
         direction: 'asc',
         length: length,
         page: '1',
 
         init() {
+            console.log(this.search);
             show_loading();
             this.init_table();
             this.load_table();
@@ -86,15 +90,19 @@ window.table = function(options) {
             let options_html = '<div class="flex justify-between options-div"> \
             <div class="flex">';
 
-            options_html += ' \
-            <div class="p-2 ml-6 w-36"> \
-                <input \
-                type="text" \
-                class="form-element input md" \
-                    data-label="Search" \
-                    x-on:keyup="option_search($el.value)"> \
-            </div> \
-            ';
+            if(scope.search == true) {
+
+                options_html += ' \
+                <div class="p-2 ml-6 w-36"> \
+                    <input \
+                    type="text" \
+                    class="form-element input md" \
+                        data-label="Search" \
+                        x-on:keyup="option_search($el.value)"> \
+                </div> \
+                ';
+
+            }
 
             if(scope.active) {
 
@@ -124,6 +132,33 @@ window.table = function(options) {
                         }
                         options_html += '>Not Active</option> \
                     </select> \
+                </div> \
+                ';
+
+            }
+
+            if(scope.dates) {
+
+                options_html += ' \
+                <div class="p-2 ml-6 w-36"> \
+                    <div class="flex items-end justify-start space-x-4"> \
+                        <div> \
+                            <input \
+                            type="date" \
+                            class="form-element input md" \
+                                data-label="'+scope.dates.text+'" \
+                                data-placeholder="Start Date" \
+                                x-on:change="dates(\'start\', $el.value)"> \
+                        </div> \
+                        <div> to </div> \
+                        <div> \
+                            <input \
+                            type="date" \
+                            class="form-element input md" \
+                                data-label="" \
+                                data-placeholder="End Date" \
+                                x-on:change="dates(\'end\', $el.value)"> \
+                        </div> \
                 </div> \
                 ';
 
@@ -239,6 +274,10 @@ window.table = function(options) {
 
             scope.active_url = url;
             scope.load_table(url);
+
+        },
+
+        dates(position, val) {
 
         },
 

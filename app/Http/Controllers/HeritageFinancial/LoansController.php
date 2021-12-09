@@ -3,19 +3,20 @@
 namespace App\Http\Controllers\HeritageFinancial;
 
 use App\Models\User;
+use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Employees\Mortgage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Employees\Mortgage;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\LoansNotes;
 use App\Models\HeritageFinancial\LoansChecksIn;
 use App\Models\OldDB\Company\Loans as LoansOld;
-use App\Models\OldDB\Company\LoansInProcess as LoansInProcessOld;
 use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
+use App\Models\OldDB\Company\LoansInProcess as LoansInProcessOld;
 
 class LoansController extends Controller
 {
@@ -383,6 +384,44 @@ class LoansController extends Controller
     }
 
     public function get_commission_reports(Request $request) {
+
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'borrower_last';
+        $length = $request -> length ? $request -> length : 10;
+
+        $search = $request -> search ?? null;
+        $active = $request -> active ?? 'yes';
+
+        $select = ['id', 'uuid', 'settlement_date', 'street', 'city', 'state', 'zip', 'loan_amount', 'loan_officer_1_commission_amount', 'borrower_first', 'borrower_last', 'co_borrower_first', 'co_borrower_last'];
+        $select_excel = ['settlement_date', 'borrower_first', 'borrower_last', 'co_borrower_first', 'co_borrower_last', 'street', 'city', 'state', 'zip', 'loan_amount', 'loan_officer_1_commission_amount'];
+
+        $loans = Loans::where(function($query) use ($search) {
+            if($search) {
+                $query -> orWhere('street', 'like', '%'.$search.'%')
+                -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
+                -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> orderBy($sort, $direction);
+
+        if ($request -> to_excel == 'false') {
+
+            $loans = $loans -> select($select) -> paginate($length);
+            return view('/heritage_financial/loans/get_commission_reports_html', compact('loans'));
+
+        } else {
+
+            $loans = $loans -> select($select_excel) -> get()
+            -> toArray();
+
+            $filename = 'loans_'.time().'.xlsx';
+            $file = Helper::to_excel($loans, $filename, $select_excel);
+
+            return response() -> json(['file' => $file]);
+
+        }
+
+
 
         $direction = $request -> direction ? $request -> direction : 'asc';
         $sort = $request -> sort ? $request -> sort : 'borrower_last';

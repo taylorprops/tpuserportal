@@ -30,9 +30,9 @@ class Kernel extends ConsoleKernel
         // prune failed jobs
         $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('01:00');
         // update bright mls agents
-        $schedule -> command('bright_mls:update_agents') -> hourlyAt(20) -> environments('production');
+        $schedule -> command('bright_mls:update_agents') -> hourlyAt(3) -> environments('production');
         // update bright mls offices
-        $schedule -> command('bright_mls:update_offices') -> hourlyAt(40) -> environments('production');
+        $schedule -> command('bright_mls:update_offices') -> hourlyAt(13) -> environments('production');
         // remove bright mls agents
         $schedule -> command('bright_mls:remove_agents') -> everyFiveMinutes() -> environments('production');
 
