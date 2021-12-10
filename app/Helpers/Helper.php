@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use ReflectionClass;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -156,6 +157,18 @@ class Helper
         }
 
         return '';
+    }
+
+    public static function get_session_id($rets) {
+
+        $reflection = new ReflectionClass($rets);
+        $property = $reflection -> getProperty('rets_session_id');
+        $property -> setAccessible(true);
+        if ($property -> getValue($rets) != '') {
+            return true;
+        }
+        return false;
+
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Monolog\Logger;
 use App\Models\User;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
 use Monolog\Handler\StreamHandler;
@@ -192,9 +193,8 @@ class TestsController extends Controller
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
-        $connect = $rets -> Login();
 
-        dump($connect);
+        $connect = $rets -> Login();
 
         $resource = 'Office';
         $class = 'Office';
@@ -202,6 +202,12 @@ class TestsController extends Controller
         $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
+
+        if (Helper::get_session_id($rets) === false) {
+            sleep(5);
+            $connect = $rets -> Login();
+        }
+
 
         $results = $rets -> Search(
             $resource,
@@ -212,10 +218,13 @@ class TestsController extends Controller
             ]
         );
 
+
         $offices = $results -> toArray();
         $total_found = count($offices);
-        dump($total_found);
-        //$count_before = BrightOffices::get() -> count();
+
+        echo 'found = '.$total_found.'<br>';
+
+        $count_before = BrightOffices::get() -> count();
 
         if($total_found > 0) {
 
@@ -236,9 +245,8 @@ class TestsController extends Controller
 
         }
 
-        //$count_after = BrightOffices::get() -> count();
 
-        //$rets -> Disconnect();
+        $rets -> Disconnect();
 
     }
 
