@@ -69,8 +69,7 @@ class UpdateAgentsJob implements ShouldQueue
             sleep(1);
             if (Helper::get_session_id($rets) === false) {
                 $this -> queueData(['login failed again, quitting'], true);
-                $this -> release();
-                return true;
+                $this -> fail();
             }
         }
 
