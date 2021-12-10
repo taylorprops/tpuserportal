@@ -59,6 +59,12 @@ class UpdateOfficesJob implements ShouldQueue
             $this -> queueData(['login failed, retrying'], true);
             sleep(5);
             $connect = $rets -> Login();
+            sleep(1);
+            if (Helper::get_session_id($rets) === false) {
+                $this -> queueData(['login failed again, quitting'], true);
+                $this -> release();
+                return true;
+            }
         }
 
         $results = $rets -> Search(
