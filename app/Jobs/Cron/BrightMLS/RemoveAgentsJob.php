@@ -16,6 +16,8 @@ class RemoveAgentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
+    public $failOnTimeout = true;
+
     /**
      * Create a new job instance.
      *
