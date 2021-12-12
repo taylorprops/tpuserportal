@@ -57,11 +57,11 @@ class UpdateOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        if (Helper::get_session_id($rets) === false) {
-            $this -> fail();
-            $this -> queueData(['login failed, quitting'], true);
-            return false;
-        }
+        // if (Helper::get_session_id($rets) === false) {
+        //     $this -> fail();
+        //     $this -> queueData(['login failed, quitting'], true);
+        //     return false;
+        // }
 
         $results = $rets -> Search(
             $resource,

@@ -79,11 +79,11 @@ class RemoveAgentsJob implements ShouldQueue
 
             $query = '(MemberKey='.$agents_in_db_string.')';
 
-            if (Helper::get_session_id($rets) === false) {
-                $this -> fail();
-                $this -> queueData(['login failed, quitting'], true);
-                return false;
-            }
+            // if (Helper::get_session_id($rets) === false) {
+            //     $this -> fail();
+            //     $this -> queueData(['login failed, quitting'], true);
+            //     return false;
+            // }
 
             $results = $rets -> Search(
                 $resource,
