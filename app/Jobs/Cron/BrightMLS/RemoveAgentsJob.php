@@ -58,11 +58,12 @@ class RemoveAgentsJob implements ShouldQueue
 
         if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
             $rets -> Disconnect();
-            $this -> queueData(['login failed, retrying'], true);
-            sleep(5);
+            $this -> queueData(['login failed, retrying' => $rets], true);
+            sleep(1);
             $rets = new \PHRETS\Session($rets_config);
             $connect = $rets -> Login();
-            sleep(2);
+            $this -> queueData(['login attempt 2' => $rets], true);
+            sleep(1);
         }
 
         $resource = 'ActiveAgent';
