@@ -95,7 +95,7 @@ class RemoveAgentsJob implements ShouldQueue
                     ]
                 );
             } catch (Throwable $e) {
-                return $e -> getMessage();
+                report($e);
             }
 
 

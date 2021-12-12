@@ -75,7 +75,7 @@ class UpdateOfficesJob implements ShouldQueue
             );
 
         } catch (Throwable $e) {
-            return $e -> getMessage();
+            report($e);
         }
 
         $progress = 0;
