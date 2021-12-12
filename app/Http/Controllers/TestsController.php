@@ -10,6 +10,7 @@ use App\Models\Employees\Agents;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Employees\EmployeesNotes;
 use Illuminate\Database\Eloquent\Builder;
@@ -203,9 +204,10 @@ class TestsController extends Controller
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        if (Helper::get_session_id($rets) === false) {
+        if (Helper::access_protected_property($rets, 'rets_session_id') != '') {
             // $this -> queueData(['login failed, retrying'], true);
             sleep(5);
+            $rets = new \PHRETS\Session($rets_config);
             $connect = $rets -> Login();
         }
 
