@@ -119,6 +119,7 @@ class UpdateAgentsJob implements ShouldQueue
         }
 
         $count_after = BrightAgentRoster::get() -> count();
+        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 

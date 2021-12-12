@@ -137,6 +137,7 @@ class RemoveAgentsJob implements ShouldQueue
 
         }
 
+        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
         $this -> queueData([$data], true);
         $this -> queueProgress(100);
 
