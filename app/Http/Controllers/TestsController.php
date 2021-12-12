@@ -204,6 +204,7 @@ class TestsController extends Controller
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
         if (Helper::get_session_id($rets) === false) {
+            // $this -> queueData(['login failed, retrying'], true);
             sleep(5);
             $connect = $rets -> Login();
         }

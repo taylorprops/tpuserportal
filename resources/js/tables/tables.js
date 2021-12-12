@@ -5,6 +5,10 @@ window.table = function(options) {
     let data_url = options.data_url;
     let active = options.active ? options.active : null;
     let dates = options.dates || null;
+    let dates_col = null;
+    if(options.dates) {
+        dates_col = options.dates.col;
+    }
     let sort = options.sort_by || null;
     let length = options.length || null;
     let button_export = options.button_export || false;
@@ -24,7 +28,7 @@ window.table = function(options) {
         export_url: export_url,
         buttons: buttons,
         dates: dates,
-        date_col: dates.col,
+        date_col: dates_col,
         start_date: null,
         end_date: null,
         sort: sort,
