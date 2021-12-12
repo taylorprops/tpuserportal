@@ -56,13 +56,13 @@ class UpdateAgentsJob implements ShouldQueue
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
-        if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
-            $this -> queueData(['login failed, retrying'], true);
-            sleep(5);
-            $rets = new \PHRETS\Session($rets_config);
-            $connect = $rets -> Login();
-            sleep(2);
-        }
+        // if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
+        //     $this -> queueData(['login failed, retrying'], true);
+        //     sleep(5);
+        //     $rets = new \PHRETS\Session($rets_config);
+        //     $connect = $rets -> Login();
+        //     sleep(2);
+        // }
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -124,7 +124,9 @@ class UpdateAgentsJob implements ShouldQueue
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 
-        $rets -> Disconnect();
+        //$rets -> Disconnect();
+
+        return true;
 
     }
 }

@@ -56,14 +56,14 @@ class RemoveAgentsJob implements ShouldQueue
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
-        if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
-            $this -> queueData(['login failed, retrying' => $rets], true);
-            sleep(1);
-            $rets = new \PHRETS\Session($rets_config);
-            $connect = $rets -> Login();
-            $this -> queueData(['login attempt 2' => $rets], true);
-            sleep(1);
-        }
+        // if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
+        //     $this -> queueData(['login failed, retrying' => $rets], true);
+        //     sleep(1);
+        //     $rets = new \PHRETS\Session($rets_config);
+        //     $connect = $rets -> Login();
+        //     $this -> queueData(['login attempt 2' => $rets], true);
+        //     sleep(1);
+        // }
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
@@ -144,6 +144,8 @@ class RemoveAgentsJob implements ShouldQueue
         $this -> queueProgress(100);
 
         //$rets -> Disconnect();
+
+        return true;
 
     }
 
