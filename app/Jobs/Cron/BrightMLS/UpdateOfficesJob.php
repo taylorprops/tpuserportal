@@ -4,6 +4,7 @@ namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Queue\InteractsWithQueue;
@@ -109,6 +110,7 @@ class UpdateOfficesJob implements ShouldQueue
         }
 
         $count_after = BrightOffices::get() -> count();
+        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 

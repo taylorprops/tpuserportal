@@ -8,6 +8,7 @@ use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
 use Monolog\Handler\StreamHandler;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Artisan;
@@ -204,13 +205,16 @@ class TestsController extends Controller
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        if (Helper::access_protected_property($rets, 'rets_session_id') != '') {
+        if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
             // $this -> queueData(['login failed, retrying'], true);
             sleep(5);
             $rets = new \PHRETS\Session($rets_config);
             $connect = $rets -> Login();
         }
 
+        Log::debug($this -> job -> uuid());
+
+        return false;
 
         $results = $rets -> Search(
             $resource,
