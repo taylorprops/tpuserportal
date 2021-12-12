@@ -66,6 +66,8 @@ class UpdateAgentsJob implements ShouldQueue
 
         if (Helper::get_session_id($rets) === false) {
             $this -> release(5);
+            $this -> queueData(['login failed, retrying'], true);
+            return true;
         }
 
         // if (Helper::get_session_id($rets) === false) {
