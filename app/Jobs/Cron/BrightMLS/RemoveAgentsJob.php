@@ -54,6 +54,8 @@ class RemoveAgentsJob implements ShouldQueue
         $rets = new \PHRETS\Session($rets_config);
         $connect = $rets -> Login();
 
+        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
+
         if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
             $this -> queueData(['login failed, retrying'], true);
             sleep(5);
@@ -137,7 +139,6 @@ class RemoveAgentsJob implements ShouldQueue
 
         }
 
-        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
         $this -> queueData([$data], true);
         $this -> queueProgress(100);
 

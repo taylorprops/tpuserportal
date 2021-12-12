@@ -51,6 +51,8 @@ class UpdateOfficesJob implements ShouldQueue
 
         $connect = $rets -> Login();
 
+        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
+
         if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
             $this -> queueData(['login failed, retrying'], true);
             sleep(5);
@@ -110,7 +112,6 @@ class UpdateOfficesJob implements ShouldQueue
         }
 
         $count_after = BrightOffices::get() -> count();
-        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
         $this -> queueData(['count before' => $count_before, 'count after' => $count_after], true);
         $this -> queueProgress(100);
 
