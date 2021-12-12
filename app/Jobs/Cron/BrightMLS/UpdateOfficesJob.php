@@ -53,7 +53,7 @@ class UpdateOfficesJob implements ShouldQueue
         $resource = 'Office';
         $class = 'Office';
 
-        $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
+        $mod_time = date('Y-m-d H:i:s', strtotime('-80 hour'));
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
