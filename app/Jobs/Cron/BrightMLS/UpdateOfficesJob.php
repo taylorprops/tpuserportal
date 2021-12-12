@@ -57,11 +57,6 @@ class UpdateOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        // if (Helper::get_session_id($rets) === false) {
-        //     $this -> fail();
-        //     $this -> queueData(['login failed, quitting'], true);
-        //     return false;
-        // }
 
         try {
 
@@ -75,7 +70,7 @@ class UpdateOfficesJob implements ShouldQueue
             );
 
         } catch (Throwable $e) {
-            report($e);
+            return $e -> getTraceAsString();
         }
 
         $progress = 0;

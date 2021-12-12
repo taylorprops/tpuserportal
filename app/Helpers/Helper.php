@@ -159,15 +159,12 @@ class Helper
         return '';
     }
 
-    public static function get_session_id($rets) {
+    public static function access_protected_property($object, $key) {
 
-        $reflection = new ReflectionClass($rets);
-        $property = $reflection -> getProperty('rets_session_id');
+        $reflection = new ReflectionClass($object);
+        $property = $reflection -> getProperty($key);
         $property -> setAccessible(true);
-        if ($property -> getValue($rets) != '') {
-            return true;
-        }
-        return false;
+        return $property -> getValue($object);
 
     }
 

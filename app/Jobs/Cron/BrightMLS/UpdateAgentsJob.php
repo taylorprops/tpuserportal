@@ -64,23 +64,6 @@ class UpdateAgentsJob implements ShouldQueue
         $progress = 5;
         $this -> queueProgress($progress);
 
-        // if (Helper::get_session_id($rets) === false) {
-        //     $this -> fail();
-        //     $this -> queueData(['login failed, quitting'], true);
-        //     return false;
-        // }
-
-        // if (Helper::get_session_id($rets) === false) {
-        //     $this -> queueData(['login failed, retrying'], true);
-        //     sleep(5);
-        //     $connect = $rets -> Login();
-        //     sleep(1);
-        //     if (Helper::get_session_id($rets) === false) {
-        //         $this -> queueData(['login failed again, quitting'], true);
-        //         $this -> release();
-        //     }
-        // }
-
         try {
 
             $results = $rets -> Search(
@@ -93,7 +76,7 @@ class UpdateAgentsJob implements ShouldQueue
             );
 
         } catch (Throwable $e) {
-            report($e);
+            return $e -> getTraceAsString();
         }
 
         $progress = 15;
