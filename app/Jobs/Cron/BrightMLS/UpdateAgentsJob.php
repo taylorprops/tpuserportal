@@ -81,14 +81,20 @@ class UpdateAgentsJob implements ShouldQueue
         //     }
         // }
 
-        $results = $rets -> Search(
-            $resource,
-            $class,
-            $query,
-            [
-                'Count' => 0
-            ]
-        );
+        try {
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Count' => 0
+                ]
+            );
+
+        } catch (Throwable $e) {
+            return $e -> getMessage();
+        }
 
         $progress = 15;
         $this -> queueProgress($progress);

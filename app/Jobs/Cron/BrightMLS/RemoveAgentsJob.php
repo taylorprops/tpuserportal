@@ -85,14 +85,18 @@ class RemoveAgentsJob implements ShouldQueue
             //     return false;
             // }
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Count' => 0
-                ]
-            );
+            try {
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Count' => 0
+                    ]
+                );
+            } catch (Throwable $e) {
+                return $e -> getMessage();
+            }
 
 
             $agents = $results -> toArray();

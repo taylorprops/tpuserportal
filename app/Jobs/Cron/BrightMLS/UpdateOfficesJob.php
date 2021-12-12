@@ -63,14 +63,20 @@ class UpdateOfficesJob implements ShouldQueue
         //     return false;
         // }
 
-        $results = $rets -> Search(
-            $resource,
-            $class,
-            $query,
-            [
-                'Count' => 0
-            ]
-        );
+        try {
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Count' => 0
+                ]
+            );
+
+        } catch (Throwable $e) {
+            return $e -> getMessage();
+        }
 
         $progress = 0;
         $this -> queueProgress($progress);
