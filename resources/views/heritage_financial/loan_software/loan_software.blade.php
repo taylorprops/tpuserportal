@@ -70,21 +70,21 @@ $breadcrumbs = [
                                 <div class="flex justify-start p-2 mb-2 border-b">
                                     <div class="font-bold">Profile Link</div>
                                     <div class="ml-4">
-                                        <a href="https://heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder }}" target="_blank">heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder }}</a>
+                                        <a href="https://heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder ?? 'heritage' }}" target="_blank">heritagefinancial.com/{{ auth() -> user() -> loan_officer -> folder ?? 'USER' }}</a>
                                     </div>
                                 </div>
 
                                 <div class="flex justify-start p-2 mb-2 border-b">
                                     <div class="font-bold">Floify Application Landing Page</div>
                                     <div class="ml-4">
-                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/</a>
+                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder ?? 'heritage' }}.floify.com/" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder ?? 'USER' }}.floify.com/</a>
                                     </div>
                                 </div>
 
                                 <div class="flex justify-start p-2 mb-2 border-b">
                                     <div class="font-bold">Floify Start Application Page</div>
                                     <div class="ml-4">
-                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/apply-now" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder }}.floify.com/apply-now</a>
+                                        <a href="https://{{ auth() -> user() -> loan_officer -> floify_folder ?? 'heritage' }}.floify.com/apply-now" target="_blank">{{ auth() -> user() -> loan_officer -> floify_folder ?? 'USER' }}.floify.com/apply-now</a>
                                     </div>
                                 </div>
                         </div>
