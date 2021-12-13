@@ -37,7 +37,7 @@ class UpdateOfficesJob implements ShouldQueue
     public function handle()
     {
 
-        $this -> rets_login();
+        $rets = $this -> rets_login();
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
@@ -123,6 +123,8 @@ class UpdateOfficesJob implements ShouldQueue
         $rets = new \PHRETS\Session($rets_config);
 
         $connect = $rets -> Login();
+
+        return $rets;
     }
 
 }
