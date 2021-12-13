@@ -132,7 +132,7 @@ class RemoveAgentsJob implements ShouldQueue
         $this -> queueProgress(100);
 
         // sleep(5);
-        // $rets -> Disconnect();
+        $rets -> Disconnect();
         return true;
 
     }
