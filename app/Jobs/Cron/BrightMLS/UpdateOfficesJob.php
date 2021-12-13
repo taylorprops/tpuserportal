@@ -37,17 +37,9 @@ class UpdateOfficesJob implements ShouldQueue
     public function handle()
     {
 
-        $rets = $this -> rets_login();
+        $rets = Helper::rets_login();
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
-
-        // if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
-        //     $this -> queueData(['login failed, retrying'], true);
-        //     sleep(5);
-        //     $rets = new \PHRETS\Session($rets_config);
-        //     $connect = $rets -> Login();
-        //     sleep(2);
-        // }
 
         $resource = 'Office';
         $class = 'Office';
@@ -109,22 +101,5 @@ class UpdateOfficesJob implements ShouldQueue
 
     }
 
-    function rets_login() {
-        $rets_config = new \PHRETS\Configuration;
-        $rets_config -> setLoginUrl(config('global.rets_url'))
-        -> setUsername(config('global.rets_username'))
-        -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.7.2')
-        -> setUserAgent('Bright RETS Application/1.0')
-        -> setHttpAuthenticationMethod('digest')
-        -> setOption('use_post_method', true)
-        -> setOption('disable_follow_location', false);
-
-        $rets = new \PHRETS\Session($rets_config);
-
-        $connect = $rets -> Login();
-
-        return $rets;
-    }
 
 }

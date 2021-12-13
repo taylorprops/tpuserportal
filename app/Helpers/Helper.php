@@ -168,6 +168,26 @@ class Helper
 
     }
 
+    public static function rets_login() {
+
+        date_default_timezone_set('America/New_York');
+        $rets_config = new \PHRETS\Configuration;
+        $rets_config -> setLoginUrl(config('global.rets_url'))
+        -> setUsername(config('global.rets_username'))
+        -> setPassword(config('global.rets_password'))
+        -> setRetsVersion('RETS/1.7.2')
+        -> setUserAgent('Bright RETS Application/1.0')
+        -> setHttpAuthenticationMethod('digest')
+        -> setOption('use_post_method', true)
+        -> setOption('disable_follow_location', false);
+
+        $rets = new \PHRETS\Session($rets_config);
+
+        $connect = $rets -> Login();
+
+        return $rets;
+    }
+
 
 
 
