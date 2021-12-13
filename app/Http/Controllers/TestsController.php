@@ -44,12 +44,15 @@ class TestsController extends Controller
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 500;
+        $search_for = 10000;
 
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::select($select)
-        -> where('removal_date_checked', '!=', date('Y-m-d'))
-        -> orWhereNull('removal_date_checked')
+        -> where(function($query) {
+            $query -> where('removal_date_checked', '!=', date('Y-m-d'))
+            -> orWhereNull('removal_date_checked');
+        })
+        -> where('active', 'yes')
         -> limit($search_for)
         -> get()
         -> pluck('MemberKey')
@@ -70,10 +73,7 @@ class TestsController extends Controller
             $results = $rets -> Search(
                 $resource,
                 $class,
-                $query,
-                [
-                    'Count' => 0
-                ]
+                $query
             );
 
             $agents = $results -> toArray();
@@ -82,18 +82,20 @@ class TestsController extends Controller
             dump('total_found '.$total_found.' - search_for '.$search_for);
 
             if ($total_found != $search_for) {
-                dump(count($agents_in_db_array));
+
+                // keys found in bright
                 $MemberKeys = [];
 
                 $increment = $total_found / $search_for;
                 $c = 0;
+                $percent = 0;
                 foreach ($agents as $agent) {
                     $MemberKeys[] = $agent['MemberKey'];
                     $c += 1;
                     if ($c % $increment == 0 && $percent < 100) {
                         $percent = $c / $increment;
-                        $this -> queueProgress($percent);
-                        dump($percent);
+                        //$this -> queueProgress($percent);
+
                     }
                 }
 
@@ -101,17 +103,19 @@ class TestsController extends Controller
 
                 $not_found = array_diff($agents_in_db_array, $MemberKeys);
 
-                dump($not_found);
+                dump($not_found, $agents_in_db_array);
 
-                $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
-                -> update([
-                    'active' => 'no'
-                ]);
+                // $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
+                // -> update([
+                //     'active' => 'no',
+                // 'removal_date_checked' => date('Y-m-d')
+                // ]);
+
             } else {
-                $update_removal_date_checked = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
-                -> update([
-                    'removal_date_checked' => date('Y-m-d')
-                ]);
+                // $update_removal_date_checked = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
+                // -> update([
+                //     'removal_date_checked' => date('Y-m-d')
+                // ]);
             }
         }
 

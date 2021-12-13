@@ -151,12 +151,15 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 2000;
+        $search_for = 5000;
 
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::select($select)
-        -> where('removal_date_checked', '!=', date('Y-m-d'))
-        -> orWhereNull('removal_date_checked')
+        -> where(function($query) {
+            $query -> where('removal_date_checked', '!=', date('Y-m-d'))
+            -> orWhereNull('removal_date_checked');
+        })
+        // -> where('active', 'yes')
         -> limit($search_for)
         -> get()
         -> pluck('MemberKey')
@@ -187,6 +190,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             $total_found = count($agents);
             $data[] = 'total_found = '.$total_found;
 
+            // if not all agents in db are found in bright
             if ($total_found != $search_for) {
 
                 $data[] = 'Found Missing';
@@ -202,9 +206,10 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                 $not_found = array_diff($agents_in_db_array, $MemberKeys);
 
-                $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
+                $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $not_found)
                 -> update([
-                    'active' => 'no'
+                    'active' => 'no',
+                    'removal_date_checked' => date('Y-m-d')
                 ]);
 
             }
