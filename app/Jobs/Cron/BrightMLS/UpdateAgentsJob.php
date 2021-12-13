@@ -44,14 +44,6 @@ class UpdateAgentsJob implements ShouldQueue
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
-        // if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
-        //     $this -> queueData(['login failed, retrying'], true);
-        //     sleep(5);
-        //     $rets = new \PHRETS\Session($rets_config);
-        //     $connect = $rets -> Login();
-        //     sleep(2);
-        // }
-
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 

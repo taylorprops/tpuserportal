@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Cron\BrightMLS;
 
+use Throwable;
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -103,6 +104,7 @@ class RemoveAgentsJob implements ShouldQueue
 
                 $increment = $total_found / $search_for;
                 $c = 0;
+                $percent = 0;
                 foreach ($agents as $agent) {
                     $MemberKeys[] = $agent['MemberKey'];
                     $c += 1;
