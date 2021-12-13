@@ -128,6 +128,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 $this -> queueProgress($progress);
 
                 $agent_details = array_filter($agent);
+                $agent['active'] = 'yes';
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
 
