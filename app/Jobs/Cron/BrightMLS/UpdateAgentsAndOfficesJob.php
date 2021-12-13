@@ -151,7 +151,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
-        $search_for = 5000;
+        $search_for = 10000;
 
         $select = ['MemberKey'];
         $agents_in_db_array = BrightAgentRoster::select($select)
