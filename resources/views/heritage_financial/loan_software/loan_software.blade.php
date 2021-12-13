@@ -146,7 +146,7 @@ $breadcrumbs = [
                             </div>
 
 
-                            <div class="font-semibold mb-3">YouTube Videos</div>
+                            <div class="font-semibold my-3">YouTube Videos</div>
 
                             <div>
                                 You may have questions on many of the how-to's for both system administrators as well as loan officers, processors.  Watch it at your own time, pause the video if needed to follow along.
