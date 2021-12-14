@@ -36,6 +36,7 @@ class AddSkySlopeListingsJob implements ShouldQueue
     public function handle()
     {
         $this -> update_listings();
+        return true;
     }
 
     public function update_listings() {

@@ -166,8 +166,8 @@
 
     <x-nav.menu
     :level="'1'"
-    :title="'Agent Database'"
-    :link="'/marketing/data/agent_database'"
+    :title="'Address Database'"
+    :link="'/marketing/data/address_database'"
     :icon="'fad fa-database'"/>
     {{-- End Marketing --}}
 

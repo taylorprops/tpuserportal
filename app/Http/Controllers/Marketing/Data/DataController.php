@@ -14,11 +14,11 @@ class DataController extends Controller
 
     private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
 
-    public function agent_database(Request $request) {
+    public function address_database(Request $request) {
 
         $states = LocationData::ActiveStates();
 
-        return view('/marketing/data/agent_database', compact('states'));
+        return view('/marketing/data/address_database', compact('states'));
 
     }
 
@@ -72,13 +72,13 @@ class DataController extends Controller
 
     public function location_data(Request $request) {
 
-        $states_data = $request -> states;
-        $counties_data = $request -> counties ?? [];
+        $states = $request -> states;
+        //$counties_data = $request -> counties ?? [];
         $counties = [];
 
-        if ($states_data) {
+        if ($states) {
             $counties = LocationData::select(['county', 'state'])
-            -> whereIn('state', $states_data)
+            -> whereIn('state', $states)
             -> where('county', '!=', '')
             -> groupBy('state')
             -> groupBy('county')
@@ -110,8 +110,10 @@ class DataController extends Controller
     public function get_offices($search_value, $list_type, $counties, $office_codes) {
 
         $offices = null;
-        $state_and_county = [];
-        $states = [];
+        /* $state_and_county = [];
+        $states = []; */
+
+        //dd($search_value, $list_type, $counties, $office_codes);
 
         if ($office_codes) {
 
@@ -141,7 +143,49 @@ class DataController extends Controller
 
         } else {
 
-            foreach ($counties as $county) {
+            $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+            -> where(function ($query) use ($search_value) {
+                if ($search_value != '') {
+                    $query -> where('OfficeName', 'like', '%'.$search_value.'%');
+                }
+            })
+            -> where(function ($query) use ($counties) {
+                foreach ($counties as $county) {
+                    $query -> orWhere(function ($query) use ($county) {
+                        $query -> where('OfficeStateOrProvince', $county -> state)
+                        -> where(function ($query) use ($county) {
+                            if ($county -> state != 'DC') {
+                                $query -> where('OfficeCounty', $county -> county);
+                            }
+                        });
+                    });
+                }
+            })
+            -> whereHas('agents', function (Builder $query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } elseif ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+            })
+            -> with(['agents' => function ($query) use ($list_type) {
+                $query -> where('MemberType', 'Agent');
+                if ($list_type == 'email') {
+                    $query -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                } elseif ($list_type == 'address') {
+                    $query -> where('MemberAddress1', '!=', '')
+                    -> whereNotNull('MemberAddress1');
+                }
+                $query -> select($this -> agent_columns);
+            }])
+            -> get();
+
+
+            /* foreach ($counties as $county) {
                 $state = $county -> state;
                 $states[] = $county -> state;
                 $county = $county -> county;
@@ -204,7 +248,7 @@ class DataController extends Controller
                 }
                 $query -> select($this -> agent_columns);
             }])
-            -> get();
+            -> get(); */
 
         }
 

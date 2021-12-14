@@ -119,7 +119,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/archives/add_guids', [EscrowController::class, 'add_guids']) -> middleware(['in_house']);
 
     // %%%% Marketing
-    Route::get('/marketing/data/agent_database', [DataController::class, 'agent_database']) -> middleware(['in_house']);
+    Route::get('/marketing/data/address_database', [DataController::class, 'address_database']) -> middleware(['in_house']);
     Route::post('/marketing/data/location_data', [DataController::class, 'location_data']) -> middleware(['in_house']);
     Route::post('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_results', [DataController::class, 'get_results']) -> middleware(['in_house']);

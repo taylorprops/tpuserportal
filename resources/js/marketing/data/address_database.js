@@ -1,6 +1,6 @@
-if(document.URL.match('agent_database')) {
+if(document.URL.match('address_database')) {
 
-    window.agent_database = function() {
+    window.address_database = function() {
 
         return {
 
@@ -9,7 +9,7 @@ if(document.URL.match('agent_database')) {
             results_time: '',
 
             init() {
-                this.location_data('MD', true, true);
+                this.location_data('MD'/* , true, true */);
             },
 
             get_results() {
@@ -42,11 +42,12 @@ if(document.URL.match('agent_database')) {
 
             },
 
-            location_data(state, remove_current = true, on_init = null) {
+            location_data(state,/*  remove_current = true, */ /* on_init = null */) {
 
                 let scope = this;
                 let options_form = document.querySelector('#options_form');
                 let formData = new FormData(options_form);
+                scope.counties = [];
 
                 // scope.get_checked(true);
 
@@ -54,6 +55,8 @@ if(document.URL.match('agent_database')) {
                 .then(function (response) {
 
                     scope.counties = response.data.counties;
+
+                    console.log(scope.counties);
 
                     setTimeout(function() {
 
@@ -199,7 +202,7 @@ if(document.URL.match('agent_database')) {
                 this.update_details();
 
                 if(elements == 'states') {
-                    this.location_data('', false, false);
+                    this.location_data('');
                 }
             },
 

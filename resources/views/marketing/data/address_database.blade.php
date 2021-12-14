@@ -15,7 +15,7 @@ $breadcrumbs = [
     <div class="pb-64 pt-2">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12"
-        x-data="agent_database()">
+        x-data="address_database()">
 
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-12">
 
@@ -82,7 +82,7 @@ $breadcrumbs = [
                                                 name="states[]" value="{{ $state }}"
                                                 data-label="{{ $state }}"
                                                 @if($state == 'MD') checked @endif
-                                                @click="location_data('{{ $state }}', true, false); get_results();">
+                                                @click="location_data('{{ $state }}'); get_results();">
 
                                             </div>
 
