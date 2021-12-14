@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Employees\Agents;
+use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Crypt;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Employees\EmployeesLicenses;
 use App\Models\OldDB\Company\BillingInvoices;
+use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\DocManagement\Admin\Forms\Forms;
 use App\Models\OldDB\Company\BillingInvoicesItems;
 use App\Models\Employees\Mortgage as LoanOfficersNew;
@@ -26,6 +28,33 @@ use App\Models\DocManagement\Resources\CommonFieldsGroups;
 
 class TestsController extends Controller
 {
+
+    public function edit_los(Request $request) {
+
+        //dump(count(LoanOfficerAddresses::whereNull('full_name') -> get()));
+
+        // LoanOfficerAddresses::chunkById(10, function($loan_officers) {
+        //     foreach ($loan_officers as $loan_officer) {
+        //         $loan_officer -> full_name = $loan_officer -> first_name.' '.$loan_officer -> last_name;
+        //         dump($loan_officer -> first_name.' '.$loan_officer -> last_name);
+        //         $loan_officer -> save();
+        //     }
+        // }) -> limit(50);
+
+        $loan_officers = LoanOfficerAddresses::whereRaw('length(state) > 2') -> limit(10000) -> get();
+
+        foreach ($loan_officers as $loan_officer) {
+            $state = 'MD';
+            if (stristr($loan_officer -> state, 'dc')) {
+                $state = 'DC';
+            } else if (stristr($loan_officer -> state, 'va')) {
+                $state = 'VA';
+            }
+            $loan_officer -> state = $state;
+            $loan_officer -> save();
+        }
+
+    }
 
     public function bright_remove_agents(Request $request) {
 

@@ -165,6 +165,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/bright_update_offices', [TestsController::class, 'bright_update_offices']) -> middleware(['in_house']);
     Route::get('/tests/bright_remove_agents', [TestsController::class, 'bright_remove_agents']) -> middleware(['in_house']);
     Route::get('/tests/signs_and_posts', [TestsController::class, 'signs_and_posts']) -> middleware(['in_house']);
+    Route::get('/tests/edit_los', [TestsController::class, 'edit_los']) -> middleware(['in_house']);
 
     Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['in_house']);
 

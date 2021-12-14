@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
@@ -14,27 +15,34 @@ class DataController extends Controller
 
     private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName','MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
 
+    private $loan_officer_columns = ['id', 'first_name', 'last_name', 'full_name', 'email', 'phone', 'ext', 'city', 'state', 'county'];
+
     public function address_database(Request $request) {
 
         $states = LocationData::ActiveStates();
+        $states_loan_officers = LoanOfficerAddresses::select(['state'])
+        -> groupBy('state')
+        -> orderBy('state')
+        -> pluck('state')
+        -> toArray();
 
-        return view('/marketing/data/address_database', compact('states'));
+        return view('/marketing/data/address_database', compact('states', 'states_loan_officers'));
 
     }
 
     public function get_results(Request $request) {
 
-        ini_set('memory_limit', '1024M');
-
+        $list_group = $request -> list_group;
         $list_type = $request -> list_type;
         $states = $request -> states;
         $locations = $request -> counties;
         $office_codes = $request -> offices ?? null;
         $offices = null;
-        $agent_count = '0';
+        $results_count = '0';
         $file_location = null;
 
         if ($locations) {
+
             $counties = [];
             foreach ($locations as $location) {
                 $parts = explode('-', $location);
@@ -42,29 +50,62 @@ class DataController extends Controller
             }
             $counties = json_decode(json_encode($counties));
 
-            if ($office_codes) {
-                $offices = $this -> get_offices('', $list_type, '', $office_codes);
-            } else {
-                $offices = $this -> get_offices('', $list_type, $counties, null);
-            }
+            if ($list_group == 'agents') {
 
-            $agents = [];
-            $file_name = 'agent_list_'.time().'.csv';
-            $file = Storage::path('/tmp/'.$file_name);
-            $handle = fopen($file, 'w');
-            fputcsv($handle, $this -> agent_columns, ',');
-            foreach ($offices as $office) {
-                foreach ($office -> agents as $agent) {
-                    $agents[] = $agent -> toArray();
-                    fputcsv($handle, $agent -> toArray(), ',');
+                if ($office_codes) {
+                    $offices = $this -> get_offices('', $list_type, '', $office_codes);
+                } else {
+                    $offices = $this -> get_offices('', $list_type, $counties, null);
                 }
+
+                $results_count = 0;
+                $file_name = 'agent_list_'.time().'.csv';
+                $file = Storage::path('/tmp/'.$file_name);
+                $handle = fopen($file, 'w');
+                fputcsv($handle, $this -> agent_columns, ',');
+                foreach ($offices as $office) {
+                    foreach ($office -> agents as $agent) {
+                        $results_count += 1;
+                        fputcsv($handle, $agent -> toArray(), ',');
+                    }
+                }
+
+            } else if ($list_group == 'loan_officers') {
+
+                $loan_officers = LoanOfficerAddresses::select($this -> loan_officer_columns)
+                -> where(function ($query) use ($counties) {
+                    foreach ($counties as $county) {
+                        $query -> orWhere(function ($query) use ($county) {
+                            $query -> where('state', $county -> state)
+                            -> where(function ($query) use ($county) {
+                                if ($county -> state != 'DC') {
+                                    $query -> where('county', $county -> county);
+                                }
+                            });
+                        });
+                    }
+                })
+                -> orderBy('state')
+                -> orderBy('county')
+                -> get();
+
+                $file_name = 'loan_officer_list_'.time().'.csv';
+                $file = Storage::path('/tmp/'.$file_name);
+                $handle = fopen($file, 'w');
+                fputcsv($handle, $this -> loan_officer_columns, ',');
+
+                $results_count = 0;
+                foreach ($loan_officers as $loan_officer) {
+                    fputcsv($handle, $loan_officer -> toArray(), ',');
+                    $results_count += 1;
+                }
+
             }
-            $agent_count = count($agents);
             $file_location = '/storage/tmp/'.$file_name;
 
         }
 
-        return view('/marketing/data/get_results_html', compact('agent_count', 'list_type', 'file_location'));
+        return view('/marketing/data/get_results_html', compact('results_count', 'list_type', 'file_location'));
 
 
 

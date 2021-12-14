@@ -7,6 +7,7 @@ if(document.URL.match('address_database')) {
             counties: [],
             counties_checked: [],
             results_time: '',
+            list_group: 'agents',
 
             init() {
                 this.location_data('MD'/* , true, true */);
@@ -19,27 +20,27 @@ if(document.URL.match('address_database')) {
                 let time = Date.now();
                 scope.results_time = time;
 
-                setTimeout(function() {
+                let form = document.getElementById('options_form');
+                let formData = new FormData(form);
 
-                    let form = document.getElementById('options_form');
-                    let formData = new FormData(form);
+                if(time == scope.results_time) {
 
-                    if(time == scope.results_time) {
+                    axios.post('/marketing/data/get_results', formData)
+                    .then(function (response) {
+                        if(time >= scope.results_time) {
+                            document.querySelector('#results_div').innerHTML = response.data;
+                        }
 
-                        axios.post('/marketing/data/get_results', formData)
-                        .then(function (response) {
-                            if(time >= scope.results_time) {
-                                document.querySelector('#results_div').innerHTML = response.data;
-                            }
+                    })
+                    .catch(function (error) {
+                    });
 
-                        })
-                        .catch(function (error) {
-                        });
+                }
 
-                    }
+            },
 
-                }, 1500);
-
+            clear_results() {
+                document.querySelector('#results_div').innerHTML = '';
             },
 
             location_data(state,/*  remove_current = true, */ /* on_init = null */) {
@@ -55,8 +56,6 @@ if(document.URL.match('address_database')) {
                 .then(function (response) {
 
                     scope.counties = response.data.counties;
-
-                    console.log(scope.counties);
 
                     setTimeout(function() {
 
@@ -138,39 +137,45 @@ if(document.URL.match('address_database')) {
                 }
             },
 
-            /* get_checked(remove_current) {
-                let scope = this;
-                scope.counties_checked = [];
-                let checked = document.querySelectorAll('[name="counties[]"]:checked');
-                if(checked.length > 0) {
-                    checked.forEach(function(input) {
-                        scope.counties_checked.push(input.value);
-                    });
-                }
+            loan_officers_selected() {
 
-                if(remove_current == true) {
-                    document.querySelectorAll('.county-checkbox').forEach(function(input) {
-                        input.remove();
-                    });
-                    scope.counties = [];
-                }
+                this.list_group = 'loan_officers';
+                this.$refs.office_search.innerHTML = '';
+                this.$refs.office_name.value = '';
+                this.$refs.address_input.setAttribute('disabled', true);
+                this.$refs.email_input.setAttribute('checked', true);
+                this.$refs.address_input_div.classList.remove('opacity-100');
+                this.$refs.address_input_div.classList.add('opacity-20');
+                document.querySelectorAll('.disabled_loan_officer').forEach(function(state) {
+                    state.classList.remove('opacity-100');
+                    state.classList.add('opacity-20');
+                    state.querySelector('input').setAttribute('disabled', true);
+                    state.querySelector('input').checked = false;
+                });
+                this.update_details();
 
             },
 
-            add_checked() {
-                let checked = Object.values(this.counties_checked);
-                checked.forEach(function(input) {
-                    if(document.querySelector('[value="' + input + '"]')) {
-                        document.querySelector('[value="' + input + '"]').checked = true;
-                    }
+            agents_selected() {
+
+                this.list_group = 'agents_selected';
+                this.$refs.address_input.removeAttribute('disabled');
+                this.$refs.address_input_div.classList.remove('opacity-20');
+                this.$refs.address_input_div.classList.add('opacity-100');
+
+                document.querySelectorAll('.disabled_loan_officer').forEach(function(state) {
+                    state.classList.remove('opacity-20');
+                    state.classList.add('opacity-100');
+                    state.querySelector('input').removeAttribute('disabled');
                 });
                 this.update_details();
-            }, */
+
+            },
 
             update_details() {
                 let county_checks = document.querySelectorAll('[name="counties[]"]');
                 let county_checks_checked = document.querySelectorAll('[name="counties[]"]:checked');
-                let state_checks = document.querySelectorAll('[name="states[]"]');
+                let state_checks = document.querySelectorAll('[name="states[]"]:not([disabled])');
                 let state_checks_checked = document.querySelectorAll('[name="states[]"]:checked');
                 let state_count = document.querySelectorAll('[name="states[]"]:checked').length;
                 let county_count = document.querySelectorAll('[name="counties[]"]:checked').length;
@@ -193,12 +198,11 @@ if(document.URL.match('address_database')) {
 
             select_all_options(elements, checked) {
 
-                inputs = document.querySelectorAll('[name="'+elements+'[]"]');
+                inputs = document.querySelectorAll('[name="'+elements+'[]"]:not([disabled])');
                 inputs.forEach(function(input) {
                     input.checked = checked;
                 });
                 this.search_offices();
-                this.get_results();
                 this.update_details();
 
                 if(elements == 'states') {
