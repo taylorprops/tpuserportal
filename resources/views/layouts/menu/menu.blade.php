@@ -59,7 +59,7 @@
 
             </div>
 
-            <div class="h-36">
+            <div class="h-44">
                 <div class="pb-4 bg-gray-50 flex items-center">
                     @include('layouts/menu/menu_footer')
                 </div>
