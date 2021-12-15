@@ -47,7 +47,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
         </div>
 
-        <div class="h-screen-60 lg:h-screen-73 overflow-x-auto">
+        <div class="h-screen-70 lg:h-screen-60 overflow-x-auto">
 
             <nav class="navigation flex-1 pl-2 pt-3 pb-2 bg-gray-50 space-y-1 border-t"
             x-data="{ close_all: false }">
@@ -56,7 +56,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
         </div>
 
-        <div class="h-screen-15">
+        <div class="h-screen-20">
             <div class="pb-4 bg-gray-50 flex items-center">
                 @include('layouts/menu/menu_footer')
             </div>
