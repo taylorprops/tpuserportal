@@ -1,6 +1,6 @@
 
 
-<div class="grid grid-cols-5 w-full py-3 border-t absolute bottom-0">
+<div class="grid grid-cols-5 w-full py-3 border-t">
 
     <div class="col-span-1 flex justify-around items-center ml-2">
         @if(auth() -> user() -> photo_location_url)

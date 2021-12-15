@@ -1,5 +1,5 @@
 
-<div class="absolute top-0 left-0 z-100">
+<div class="fixed top-0 left-0 z-100">
     <div class="h-16 flex items-center">
         <button class="py-2 px-4 sm:py-3"
         @click="main_nav_open = !main_nav_open;"
@@ -25,11 +25,11 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
 
 
-    <div class="h-screen pt-3 bg-gray-50">
+    <div class="flex flex-col h-screen bg-gray-50">
 
-        <div class="h-screen-15 lg:h-screen-12">
+        <div class="h-28">
 
-            <div class="flex justify-center items-center h-10 pl-8">
+            <div class="flex justify-center items-center h-10 pl-8 pt-3">
                 <div class="w-3/4">
                     <img class="h-6" src="/images/logo/all_horizontal.svg" alt="Taylor Properties">
                 </div>
@@ -47,16 +47,20 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
         </div>
 
-        <div class="h-screen-70 lg:h-screen-60 overflow-x-auto">
+        <div class="flex-1 overflow-x-auto">
 
-            <nav class="navigation flex-1 pl-2 pt-3 pb-2 bg-gray-50 space-y-1 border-t"
-            x-data="{ close_all: false }">
-                @include('layouts/menu/menu_'.auth() -> user() -> group)
-            </nav>
+            <div class="h-full">
+
+                <nav class="navigation pl-2 pt-3 pb-2 bg-gray-50 border-t h-full"
+                x-data="{ close_all: false }">
+                    @include('layouts/menu/menu_'.auth() -> user() -> group)
+                </nav>
+
+            </div>
 
         </div>
 
-        <div class="h-screen-20">
+        <div class="h-28">
             <div class="pb-4 bg-gray-50 flex items-center">
                 @include('layouts/menu/menu_footer')
             </div>
