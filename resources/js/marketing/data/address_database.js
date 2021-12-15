@@ -137,7 +137,7 @@ if(document.URL.match('address_database')) {
                     });
 
                 } else {
-                    clear_office_search_results();
+                    this.clear_office_search_results();
                 }
             },
 
