@@ -30,7 +30,7 @@ $breadcrumbs = [
                             </div>
 
                             <div>
-                                <button type="button" class="button primary lg"
+                                <button type="button" class="button primary xl"
                                 @click="get_results()">Get Results <i class="fa fa-share ml-2"></i></button>
                             </div>
 
@@ -196,11 +196,23 @@ $breadcrumbs = [
 
                             <div class="text-lg font-medium text-gray-900 mb-2">Offices</div>
 
-                            <div class="max-w-sm">
-                                <input type="text" id="office_search" class="form-element input md" placeholder="Search..." data-label="Office Name"
-                                @input.debounce="search_offices(); clear_results();"
-                                :disabled="list_group == 'loan_officers' ? true : false"
-                                x-ref="office_name">
+                            <div class="flex justify-start items-end">
+
+                                <div class="max-w-xs">
+                                    <input type="text"
+                                    id="office_search"
+                                    class="form-element input md"
+                                    placeholder="Search..."
+                                    data-label="Office Name"
+                                    @input.debounce="search_offices(); clear_results();"
+                                    :disabled="list_group == 'loan_officers' ? true : false"
+                                    x-ref="office_name">
+                                </div>
+
+                                <div class="ml-2 mb-1.5">
+                                    <button type="button" class="button secondary sm" @click="$refs.office_name.value = ''; clear_office_search_results();">Clear <i class="fal fa-times ml-2"></i></button>
+                                </div>
+
                             </div>
 
                             <div id="office_search_results" x-ref="office_search"></div>

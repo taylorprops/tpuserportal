@@ -43,6 +43,10 @@ if(document.URL.match('address_database')) {
                 document.querySelector('#results_div').innerHTML = '';
             },
 
+            clear_office_search_results() {
+                document.querySelector('#office_search_results').innerHTML = '';
+            },
+
             location_data(state,/*  remove_current = true, */ /* on_init = null */) {
 
                 let scope = this;
@@ -133,7 +137,7 @@ if(document.URL.match('address_database')) {
                     });
 
                 } else {
-                    document.querySelector('#office_search_results').innerHTML = '';
+                    clear_office_search_results();
                 }
             },
 

@@ -78,9 +78,7 @@ class DataController extends Controller
                         $query -> orWhere(function ($query) use ($county) {
                             $query -> where('state', $county -> state)
                             -> where(function ($query) use ($county) {
-                                if ($county -> state != 'DC') {
-                                    $query -> where('county', $county -> county);
-                                }
+                                $query -> where('county', $county -> county);
                             });
                         });
                     }
