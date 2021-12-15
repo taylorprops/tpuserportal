@@ -48,7 +48,7 @@
 
             <div class="flex-1 overflow-x-auto">
 
-                <div class="h-full">
+                <div class="">
 
                     <nav class="navigation pl-2 pt-3 pb-2 bg-gray-50 border-t h-full"
                     x-data="{ close_all: false }">
@@ -59,8 +59,8 @@
 
             </div>
 
-            <div class="h-44 xl:h-32 bg-gray-200">
-                <div class="pb-4 flex items-center">
+            <div class="h-32 bg-gray-200">
+                <div class="flex items-center">
                     @include('layouts/menu/menu_footer')
                 </div>
             </div>
