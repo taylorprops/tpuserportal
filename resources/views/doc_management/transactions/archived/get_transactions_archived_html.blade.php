@@ -34,16 +34,16 @@
                 }
                 @endphp
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="p-2 text-sm text-gray-500">
                         <a href="transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link button primary md" target="_blank">View</a>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ucwords($transaction -> status) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $address }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $transaction -> agent_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $close_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $data_source }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $docs_count }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ ucwords($transaction -> status) }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $address }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $transaction -> agent_name }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ substr($transaction -> listingDate, 0, 10) }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $close_date }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $data_source }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $docs_count }}</td>
                 </tr>
             @endforeach
         </tbody>

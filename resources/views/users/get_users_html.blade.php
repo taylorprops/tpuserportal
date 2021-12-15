@@ -20,11 +20,11 @@
         <tbody class="bg-white divide-y divide-gray-200">
             @foreach($users as $user)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $user -> last_name }}, {{ $user -> first_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ ucwords(str_replace('_', ' ', $user -> group)) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ ucwords(str_replace('_', ' ', $user -> level)) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $user -> email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ ucwords($user -> active) }}</td>
+                    <td class="p-2 text-gray-500">{{ $user -> last_name }}, {{ $user -> first_name }}</td>
+                    <td class="p-2 text-gray-500">{{ ucwords(str_replace('_', ' ', $user -> group)) }}</td>
+                    <td class="p-2 text-gray-500">{{ ucwords(str_replace('_', ' ', $user -> level)) }}</td>
+                    <td class="p-2 text-gray-500">{{ $user -> email }}</td>
+                    <td class="p-2 text-gray-500">{{ ucwords($user -> active) }}</td>
                     <td><button type="button" class="button primary sm" @click="confirm_send_welcome_email('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-envelope mr-2"></i> Send Welcome Email</button></td>
                     <td><button type="button" class="button primary sm" @click="confirm_reset_password('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-key mr-2"></i> Reset Password</button></td>
                     <td></td>

@@ -24,7 +24,7 @@ $breadcrumbs = [
         })">
 
 
-            <div class="table-container"  x-ref="container"></div>
+            <div x-ref="container"></div>
 
         </div>
 

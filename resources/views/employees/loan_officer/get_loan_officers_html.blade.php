@@ -28,7 +28,7 @@
                 }
                 $licenses = $employee -> licenses -> pluck('license_state') -> toArray();
                 $licenses = implode(', ', $licenses);
-                $td_classes = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                $td_classes = 'p-2 text-sm text-gray-500';
                 @endphp
                 <tr>
                     <td class="{{ $td_classes }}">
@@ -39,13 +39,13 @@
                     <td class="{{ $td_classes }}">{{ $employee -> email }}</td>
                     <td class="{{ $td_classes }}">{{ $employee -> phone }}</td>
                     <td class="{{ $td_classes }}">{{ $licenses }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-xs text-center">
+                    <td class="p-2 text-xs text-center">
                         @if($employee -> active == 'yes')
-                            <div class="text-white p-0.5 w-14 rounded bg-success">
+                            <div class="inline-block text-white py-2 px-4 rounded-lg bg-success">
                                 <i class="fal fa-check mr-2"></i> Yes
                             </div>
                         @else
-                            <div class="text-white p-0.5 w-14 rounded bg-danger">
+                            <div class="inline-block text-white py-2 px-4 rounded-lg bg-danger">
                                 <i class="fal fa-minus mr-2"></i> No
                             </div>
                         @endif

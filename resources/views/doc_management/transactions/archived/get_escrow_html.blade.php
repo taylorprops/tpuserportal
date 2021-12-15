@@ -60,17 +60,17 @@
                 $escrow_total_left = '$'.number_format($escrow_total_left, 0);
                 @endphp
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <td class="p-2 text-gray-500">
                         @if($transaction)
                         <a href="/transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link button primary md" target="_blank">View</a>
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $address }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow -> agent }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $close_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow_total_in }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $escrow_total_out }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
+                    <td class="p-2 text-gray-500">{{ $address }}</td>
+                    <td class="p-2 text-gray-500">{{ $escrow -> agent }}</td>
+                    <td class="p-2 text-gray-500">{{ $close_date }}</td>
+                    <td class="p-2 text-gray-500">{{ $escrow_total_in }}</td>
+                    <td class="p-2 text-gray-500">{{ $escrow_total_out }}</td>
+                    <td class="p-2 text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -31,7 +31,7 @@ $breadcrumbs = [
                 'sort_by': 'settlement_date'
             })">
 
-                <div class="table-container"  x-ref="container"></div>
+                <div x-ref="container"></div>
 
             </div>
 

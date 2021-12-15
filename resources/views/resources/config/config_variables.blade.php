@@ -83,7 +83,7 @@ $breadcrumbs = [
                     'button_export': false
                 })">
 
-                    <div class="table-container" x-ref="container"></div>
+                    <div x-ref="container"></div>
 
                 </div>
 

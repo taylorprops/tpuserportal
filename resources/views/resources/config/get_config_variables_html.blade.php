@@ -17,7 +17,7 @@
         <tbody class="bg-white divide-y divide-gray-200">
             @foreach($configs as $config)
                 @php
-                $td_classes = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                $td_classes = 'p-2 text-sm text-gray-500';
                 @endphp
                 <tr>
                     <td class="{{ $td_classes }}">{{ $config -> config_key }}</td>

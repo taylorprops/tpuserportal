@@ -22,20 +22,20 @@
                 $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
                 @endphp
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <td class="p-2 text-gray-500">
                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $address }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $loan -> settlement_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <td class="p-2 text-gray-500">{{ $address }}</td>
+                    <td class="p-2 text-gray-500">{{ $loan -> settlement_date }}</td>
+                    <td class="p-2 text-gray-500">
                         {{ $loan -> borrower_last.', '.$loan -> borrower_first }}
                         @if($loan -> co_borrower_last != '')
                             <br>
                             {{ $loan -> co_borrower_last.', '.$loan -> co_borrower_first }}
                         @endif
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">${{ number_format($loan -> loan_amount) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">${{ number_format($loan -> loan_officer_1_commission_amount) }}</td>
+                    <td class="p-2 text-gray-500">${{ number_format($loan -> loan_amount) }}</td>
+                    <td class="p-2 text-gray-500">${{ number_format($loan -> loan_officer_1_commission_amount) }}</td>
                 </tr>
             @endforeach
         </tbody>

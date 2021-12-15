@@ -19,14 +19,14 @@
         <tbody class="bg-white divide-y divide-gray-200">
             @foreach($employees as $employee)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td class="p-2 text-sm text-gray-500">
                         <a href="/employees/in_house/in_house_view/{{ $employee -> id }}" class="view-link button primary md">View</a>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> job_title }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $employee -> phone }}</td>
+                    <td class="p-2 text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $employee -> job_title }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $employee -> email }}</td>
+                    <td class="p-2 text-sm text-gray-500">{{ $employee -> phone }}</td>
                 </tr>
             @endforeach
         </tbody>
