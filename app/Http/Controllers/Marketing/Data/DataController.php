@@ -116,14 +116,25 @@ class DataController extends Controller
         $counties = [];
 
         if ($states) {
-            $counties = LocationData::select(['county', 'state'])
-            -> whereIn('state', $states)
-            -> where('county', '!=', '')
-            -> groupBy('state')
-            -> groupBy('county')
-            -> orderBy('state')
-            -> orderBy('county')
-            -> get();
+
+            if($request -> list_group == 'agents') {
+                $counties = LocationData::select(['county', 'state'])
+                -> whereIn('state', $states)
+                -> where('county', '!=', '')
+                -> groupBy('state')
+                -> groupBy('county')
+                -> orderBy('state')
+                -> orderBy('county')
+                -> get();
+            } else if($request -> list_group == 'loan_officers') {
+                $counties = LoanOfficerAddresses::select(['county', 'state'])
+                -> whereIn('state', $states)
+                -> groupBy('state')
+                -> groupBy('county')
+                -> orderBy('state')
+                -> orderBy('county')
+                -> get();
+            }
 
         }
 

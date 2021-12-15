@@ -10,7 +10,7 @@ if(document.URL.match('address_database')) {
             list_group: 'agents',
 
             init() {
-                this.location_data('MD'/* , true, true */);
+                this.location_data();
             },
 
             get_results() {
@@ -47,14 +47,12 @@ if(document.URL.match('address_database')) {
                 document.querySelector('#office_search_results').innerHTML = '';
             },
 
-            location_data(state,/*  remove_current = true, */ /* on_init = null */) {
+            location_data() {
 
                 let scope = this;
                 let options_form = document.querySelector('#options_form');
                 let formData = new FormData(options_form);
                 scope.counties = [];
-
-                // scope.get_checked(true);
 
                 axios.post('/marketing/data/location_data', formData)
                 .then(function (response) {
@@ -67,35 +65,7 @@ if(document.URL.match('address_database')) {
                         scope.$refs.select_all_counties.checked = true;
                         scope.search_offices();
 
-                        // if(on_init) {
-                        //     scope.select_all_options('counties', true);
-                        //     scope.$refs.select_all_counties.checked = true;
-                        // }
-
-                        // document.querySelectorAll('[name="counties[]"]').forEach(function(input) {
-                        //     input.checked = true;
-                        // });
-                        // scope.$refs.select_all_counties.checked = true;
-
-                        // scope.search_offices();
-
-                        // if(state != '') {
-                        //     document.querySelectorAll('[data-state="'+state+'"]').forEach(function(input) {
-                        //         input.checked = true;
-                        //     });
-                        // } else {
-                        //     document.querySelectorAll('[name="counties[]"]').forEach(function(input) {
-                        //         input.checked = true;
-                        //     });
-                        // }
-
-
-
                     }, 100);
-
-                    // setTimeout(function() {
-                    //     scope.add_checked();
-                    // }, 300);
 
                 })
                 .catch(function (error) {
@@ -113,14 +83,14 @@ if(document.URL.match('address_database')) {
                     let counties = [];
                     let inputs = document.querySelectorAll('[name="counties[]"]:checked');
                     inputs.forEach(function(input) {
-                        let location_data = input.value.split('-');
-                        let state = location_data[0];
-                        let county = location_data[1];
-                        let data = {
+                        let data = input.value.split('-');
+                        let state = data[0];
+                        let county = data[1];
+                        let values = {
                             'state': state,
                             'county': county
                         }
-                        counties.push(data);
+                        counties.push(values);
                     });
                     counties = JSON.stringify(counties);
 
@@ -210,7 +180,7 @@ if(document.URL.match('address_database')) {
                 this.update_details();
 
                 if(elements == 'states') {
-                    this.location_data('');
+                    this.location_data();
                 }
             },
 

@@ -53,7 +53,7 @@ $breadcrumbs = [
                                         value="agents"
                                         data-label="Agents"
                                         checked
-                                        @click="agents_selected(); clear_results();">
+                                        @click="agents_selected(); clear_results(); location_data();">
                                     </div>
 
                                     <div class="">
@@ -62,7 +62,7 @@ $breadcrumbs = [
                                         name="list_group"
                                         value="loan_officers"
                                         data-label="Loan Officers"
-                                        @click="loan_officers_selected(); clear_results();">
+                                        @click="loan_officers_selected(); clear_results(); location_data();">
                                     </div>
 
                                 </div>
