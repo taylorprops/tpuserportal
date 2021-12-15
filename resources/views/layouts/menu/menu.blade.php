@@ -26,7 +26,7 @@
 
         <div class="flex flex-col h-screen bg-gray-50">
 
-            <div class="h-28">
+            <div class="h-28 bg-gray-200">
 
                 <div class="flex justify-center items-center h-10 pl-8 pt-3">
                     <div class="w-3/4">
@@ -59,8 +59,8 @@
 
             </div>
 
-            <div class="h-44">
-                <div class="pb-4 bg-gray-50 flex items-center">
+            <div class="h-44 xl:h-32 bg-gray-200">
+                <div class="pb-4 flex items-center">
                     @include('layouts/menu/menu_footer')
                 </div>
             </div>
