@@ -14,15 +14,13 @@
     </div>
 </div>
 
-<div class="w-full max-w-sm sm:w-64 xl:flex xl:flex-shrink-0 h-screen fixed border-r shadow z-10" x-show="main_nav_open"
+<div class="fixed top-0 left-0 w-full max-w-sm sm:w-64 h-screen border-r shadow z-10" x-show="main_nav_open"
 x-transition:enter="transition ease-in-out duration-300"
 x-transition:enter-start="opacity-0 transform scale-x-0 -translate-x-1/2"
 x-transition:enter-end="opacity-100 transform scale-x-100 translate-x-0"
 x-transition:leave="transition ease-in-out duration-300"
 x-transition:leave-start="opacity-100 transform scale-x-100 translate-x-0"
 x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
-
-
 
 
     <div class="flex flex-col h-screen bg-gray-50">
