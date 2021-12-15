@@ -1,4 +1,4 @@
-<ul class="overflow-auto z-50 d-block h-screen-70">
+<ul class="">
 
     {{-- Dashboard --}}
     <x-nav.menu

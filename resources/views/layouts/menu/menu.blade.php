@@ -22,14 +22,61 @@ x-transition:leave="transition ease-in-out duration-300"
 x-transition:leave-start="opacity-100 transform scale-x-100 translate-x-0"
 x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
-    <div class="flex flex-col w-full">
+
+
+
+    <div class="h-screen pt-3 bg-gray-50">
+
+        <div class="h-screen-15 lg:h-screen-12">
+
+            <div class="flex justify-center items-center h-10 pl-8">
+                <div class="w-3/4">
+                    <img class="h-6" src="/images/logo/all_horizontal.svg" alt="Taylor Properties">
+                </div>
+            </div>
+
+            @php $no_access = ['mortgage']; @endphp
+            @if(!in_array(auth() -> user() -> group, $no_access))
+            <div class="my-2 sm:my-2 mx-1 relative">
+                <input class="main-search-input form-element input md" type="text" placeholder="Search">
+                <i class="fal fa-search absolute top-2 sm:top-3 right-4"></i>
+            </div>
+            @else
+            <div class="mt-4 relative"></div>
+            @endif
+
+        </div>
+
+        <div class="h-screen-70 lg:h-screen-73 overflow-x-auto">
+
+            <nav class="navigation flex-1 pl-2 pt-3 pb-2 bg-gray-50 space-y-1 border-t"
+            x-data="{ close_all: false }">
+                @include('layouts/menu/menu_'.auth() -> user() -> group)
+            </nav>
+
+        </div>
+
+        <div class="h-screen-15 pb-4 bg-gray-50 flex items-center">
+            @include('layouts/menu/menu_footer')
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    {{-- <div class="flex flex-col w-full">
 
         <div class="flex flex-col h-0 flex-1">
 
-            <div class="flex-1 flex flex-col pt-3 bg-gray-50">
+            <div class="flex-1 flex flex-col pt-3 bg-gray-50"> --}}
 
                 {{-- <div class="hidden xl:flex xl:justify-center xl:items-center h-10 pl-8"> --}}
-                <div class="flex justify-center items-center h-10 pl-8">
+                {{-- <div class="flex justify-center items-center h-10 pl-8">
                     <div class="w-3/4">
                         <img class="h-6" src="/images/logo/all_horizontal.svg" alt="Taylor Properties">
                     </div>
@@ -62,7 +109,7 @@ x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
         </div>
 
-    </div>
+    </div> --}}
 
 </div>
 
