@@ -108,10 +108,10 @@ class AddSkySlopeListingsJob implements ShouldQueue
                 $address .= ' '.$transaction['property']['city'].', '.$transaction['property']['state'].' '.$transaction['property']['zip'];
 
                 $agent = $this -> agent($transaction['agent']['publicId']);
-                $agent_first = $agent['first'];
-                $agent_last = $agent['last'];
-                $agent_email = $agent['email'];
-                $agent_phone = $agent['phone'];
+                $agent_first = $agent['first'] ?? null;
+                $agent_last = $agent['last'] ?? null;
+                $agent_email = $agent['email'] ?? null;
+                $agent_phone = $agent['phone'] ?? null;
 
                 $county = $transaction['property']['county'];
                 if($county == '') {
@@ -221,8 +221,8 @@ class AddSkySlopeListingsJob implements ShouldQueue
 
         }
 
-        $progress = 100;
-        $this -> queueProgress($progress);
+        $this -> queueProgress(100);
+        return true;
 
     }
 

@@ -1,4 +1,5 @@
-<div class="fixed h-screen overflow-y-auto xl:overflow-y-none z-100">
+<div class="fixed h-screen overflow-y-auto xl:overflow-y-none z-100"
+@click.outside="main_nav_open = false">
 
     <div class="fixed top-0 left-0 z-100">
         <div class="h-16 flex items-center">
