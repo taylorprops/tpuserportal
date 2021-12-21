@@ -2,33 +2,29 @@
     {!! $configs -> links() !!}
 </div>
 
-<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<div class="table-div">
 
-    <table class="min-w-full divide-y divide-gray-200">
+    <table>
 
-        <thead class="bg-gray-50">
+        <thead>
             <tr>
-                @php $th_classes = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'; @endphp
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('config_key', 'Key')</th>
-                <th scope="col" class="{{ $th_classes }}">Value</th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('config_type', 'Type')</th>
+                <th scope="col">@sortablelink('config_key', 'Key')</th>
+                <th scope="col">Value</th>
+                <th scope="col">@sortablelink('config_type', 'Type')</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
             @foreach($configs as $config)
-                @php
-                $td_classes = 'p-2 text-sm text-gray-500';
-                @endphp
                 <tr>
-                    <td class="{{ $td_classes }}">{{ $config -> config_key }}</td>
-                    <td class="{{ $td_classes }}">
+                    <td>{{ $config -> config_key }}</td>
+                    <td>
                         <textarea class="form-element textarea md config-input config-value w-full"
                         rows="{{ (strlen($config -> config_value) / 110) }}"
                         data-id="{{ $config -> id }}"
                         data-field="config_value"
                         >{{ $config -> config_value }}</textarea>
                     </td>
-                    <td class="{{ $td_classes }}">
+                    <td>
                         @php
                         $string = '';
                         $array = '';

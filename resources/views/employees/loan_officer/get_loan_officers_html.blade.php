@@ -2,23 +2,22 @@
     {!! $employees -> links() !!}
 </div>
 
-<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<div class="table-div">
 
-    <table class="min-w-full divide-y divide-gray-200">
+    <table>
 
-        <thead class="bg-gray-50">
+        <thead>
             <tr>
-                @php $th_classes = 'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'; @endphp
-                <th width="100" scope="col" class="{{ $th_classes }}"></th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('last_name', 'Name')</th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('emp_position', 'Position')</th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('email', 'Email')</th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('cell_phone', 'Phone')</th>
-                <th scope="col" class="{{ $th_classes }}">Licensed In</th>
-                <th scope="col" class="{{ $th_classes }}">@sortablelink('active', 'Active')</th>
+                <th width="100" scope="col"></th>
+                <th scope="col">@sortablelink('last_name', 'Name')</th>
+                <th scope="col">@sortablelink('emp_position', 'Position')</th>
+                <th scope="col">@sortablelink('email', 'Email')</th>
+                <th scope="col">@sortablelink('cell_phone', 'Phone')</th>
+                <th scope="col">Licensed In</th>
+                <th scope="col">@sortablelink('active', 'Active')</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
             @foreach($employees as $employee)
                 @php
                 if($employee -> emp_position == 'loan_officer') {
@@ -28,18 +27,17 @@
                 }
                 $licenses = $employee -> licenses -> pluck('license_state') -> toArray();
                 $licenses = implode(', ', $licenses);
-                $td_classes = 'p-2 text-sm text-gray-500';
                 @endphp
                 <tr>
-                    <td class="{{ $td_classes }}">
+                    <td>
                         <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
-                    <td class="{{ $td_classes }}">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
-                    <td class="{{ $td_classes }}">{{ $emp_position }}</td>
-                    <td class="{{ $td_classes }}">{{ $employee -> email }}</td>
-                    <td class="{{ $td_classes }}">{{ $employee -> phone }}</td>
-                    <td class="{{ $td_classes }}">{{ $licenses }}</td>
-                    <td class="p-2 text-xs text-center">
+                    <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
+                    <td>{{ $emp_position }}</td>
+                    <td>{{ $employee -> email }}</td>
+                    <td>{{ $employee -> phone }}</td>
+                    <td>{{ $licenses }}</td>
+                    <td class="text-center">
                         @if($employee -> active == 'yes')
                             <div class="inline-block text-white py-2 px-4 rounded-lg bg-success">
                                 <i class="fal fa-check mr-2"></i> Yes

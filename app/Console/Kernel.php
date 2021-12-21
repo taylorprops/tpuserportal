@@ -25,8 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // telescope error finding - clear database
-        $schedule -> command('telescope:prune') -> dailyAt('13:00');
+
         // prune failed jobs
         $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('01:00');
 

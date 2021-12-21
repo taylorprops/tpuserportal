@@ -1,4 +1,4 @@
-<div class="fixed h-screen overflow-y-auto xl:overflow-y-none z-100"
+<div class="fixed h-screen overflow-y-auto xl:overflow-y-none z-10"
 @click.outside="if(screen.width < 1000) { main_nav_open = false }">
 
     <div class="fixed top-0 left-0 z-100">
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div class="w-full max-w-sm sm:w-64 h-full border-r shadow z-10" x-show="main_nav_open"
+    <div class="relative w-full max-w-sm sm:w-64 h-full border-r shadow z-10" x-show="main_nav_open"
     x-transition:enter="transition ease-in-out duration-300"
     x-transition:enter-start="opacity-0 transform scale-x-0 -translate-x-1/2"
     x-transition:enter-end="opacity-100 transform scale-x-100 translate-x-0"
@@ -35,15 +35,12 @@
                     </div>
                 </div>
 
-                @php $no_access = ['mortgage']; @endphp
-                @if(!in_array(auth() -> user() -> group, $no_access))
-                <div class="my-2 sm:my-2 mx-1 relative">
-                    <input class="main-search-input form-element input md" type="text" placeholder="Search">
+                <div class="my-2 sm:mb-0 mt-4 mx-1 relative">
+                    <input class="main-search-input form-element input md" type="text" placeholder="Search"
+                    x-ref="search_input"
+                    @keyup.debounce="search()">
                     <i class="fal fa-search absolute top-2 sm:top-3 right-4"></i>
                 </div>
-                @else
-                <div class="mt-4 relative"></div>
-                @endif
 
             </div>
 
@@ -67,8 +64,6 @@
             </div>
 
         </div>
-
-
 
     </div>
 

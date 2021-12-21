@@ -2,22 +2,22 @@
     {{ $escrows -> onEachSide(1) -> links() }}
 </div>
 
-<div class="shadow border-b border-gray-200 sm:rounded-lg">
+<div class="table-div">
 
-    <table class="w-full divide-y divide-gray-200">
+    <table>
 
-        <thead class="bg-gray-50">
+        <thead>
             <tr>
-                <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('address', 'Address')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('agent', 'Agent')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Close Date</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Money In</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Money Out</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Holding</th>
+                <th width="100" scope="col"></th>
+                <th scope="col">@sortablelink('address', 'Address')</th>
+                <th scope="col">@sortablelink('agent', 'Agent')</th>
+                <th scope="col">Close Date</th>
+                <th scope="col">Money In</th>
+                <th scope="col">Money Out</th>
+                <th scope="col">Holding</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
             @foreach($escrows as $escrow)
                 @php
                 $address = $escrow -> address.' '.$escrow -> city.', '.$escrow -> state.' '.$escrow -> zip;
@@ -60,16 +60,16 @@
                 $escrow_total_left = '$'.number_format($escrow_total_left, 0);
                 @endphp
                 <tr>
-                    <td class="p-2 text-gray-500">
+                    <td>
                         @if($transaction)
                         <a href="/transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link button primary md" target="_blank">View</a>
                         @endif
                     </td>
-                    <td class="p-2 text-gray-500">{{ $address }}</td>
-                    <td class="p-2 text-gray-500">{{ $escrow -> agent }}</td>
-                    <td class="p-2 text-gray-500">{{ $close_date }}</td>
-                    <td class="p-2 text-gray-500">{{ $escrow_total_in }}</td>
-                    <td class="p-2 text-gray-500">{{ $escrow_total_out }}</td>
+                    <td>{{ $address }}</td>
+                    <td>{{ $escrow -> agent }}</td>
+                    <td>{{ $close_date }}</td>
+                    <td>{{ $escrow_total_in }}</td>
+                    <td>{{ $escrow_total_out }}</td>
                     <td class="p-2 text-gray-700 font-semibold">{{ $escrow_total_left }}</td>
                 </tr>
             @endforeach

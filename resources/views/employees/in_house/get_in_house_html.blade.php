@@ -2,31 +2,31 @@
     {!! $employees -> links() !!}
 </div>
 
-<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+<div class="table-div">
 
-    <table class="min-w-full divide-y divide-gray-200">
+    <table>
 
-        <thead class="bg-gray-50">
+        <thead>
             <tr>
-                <th width="100" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('active', 'Active')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('last_name', 'Name')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('job_title', 'Position')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('email', 'Email')</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">@sortablelink('cell_phone', 'Phone')</th>
+                <th width="100" scope="col"></th>
+                <th scope="col">@sortablelink('active', 'Active')</th>
+                <th scope="col">@sortablelink('last_name', 'Name')</th>
+                <th scope="col">@sortablelink('job_title', 'Position')</th>
+                <th scope="col">@sortablelink('email', 'Email')</th>
+                <th scope="col">@sortablelink('cell_phone', 'Phone')</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody>
             @foreach($employees as $employee)
                 <tr>
-                    <td class="p-2 text-sm text-gray-500">
+                    <td>
                         <a href="/employees/in_house/in_house_view/{{ $employee -> id }}" class="view-link button primary md">View</a>
                     </td>
                     <td class="p-2 text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
-                    <td class="p-2 text-sm text-gray-500">{{ $employee -> last_name.', '.$employee -> first_name }}</td>
-                    <td class="p-2 text-sm text-gray-500">{{ $employee -> job_title }}</td>
-                    <td class="p-2 text-sm text-gray-500">{{ $employee -> email }}</td>
-                    <td class="p-2 text-sm text-gray-500">{{ $employee -> phone }}</td>
+                    <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
+                    <td>{{ $employee -> job_title }}</td>
+                    <td>{{ $employee -> email }}</td>
+                    <td>{{ $employee -> phone }}</td>
                 </tr>
             @endforeach
         </tbody>

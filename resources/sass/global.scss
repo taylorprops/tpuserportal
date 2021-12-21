@@ -67,6 +67,24 @@ a:not(.button):not(.light):not(.menu-link) {
 
 .table-container {
     @apply py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow-auto;
+    .table-div {
+        @apply shadow overflow-hidden border-b border-gray-200 sm:rounded-lg;
+        table {
+            @apply min-w-full divide-y divide-gray-200;
+            thead {
+                @apply bg-gray-50;
+                th {
+                    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+                }
+            }
+            tbody {
+                @apply  bg-white divide-y divide-gray-200;
+                td {
+                    @apply p-2 text-gray-500 text-sm;
+                }
+            }
+        }
+    }
 }
 
 /* sortablejs */

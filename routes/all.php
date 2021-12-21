@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\FilepondUploadController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
@@ -10,6 +11,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     /***** Dashboard ******/
     Route::get('/dashboard', [DashboardController::class, 'dashboard']) -> name('dashboard') -> middleware(['all']);
+
+    /***** Search ******/
+    Route::get('/search', [SearchController::class, 'search']) -> middleware(['all']);
 
     /***** file upload ******/
     Route::post('/filepond_upload', [FilepondUploadController::class, 'upload']) -> middleware(['all']);

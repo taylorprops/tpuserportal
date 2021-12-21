@@ -112,6 +112,39 @@ window.ele_loading = function (ele) {
     </div>';
 }
 
+window.main_search = function() {
+
+    return {
+
+        search() {
+
+            let search_input = this.$refs.search_input;
+            let value = search_input.value;
+            let search_results_div = this.$refs.search_results_div;
+
+            if(value.length > 0) {
+
+                axios.get('/search', {
+                    params: {
+                        value: value
+                    },
+                })
+                .then(function (response) {
+                    search_results_div.innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            } else {
+
+            }
+
+        }
+
+    }
+
+}
+
 window.show_form_errors = function (errors) {
 
     remove_form_errors();

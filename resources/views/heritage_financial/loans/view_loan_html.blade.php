@@ -616,9 +616,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                         <form id="commission_form">
 
 
-                            <div class="grid grid-cols-4">
+                            <div class="grid grid-cols-7 max-w-1200-px">
 
-                                <div class="col-span-4 lg:col-span-3">
+                                <div class="col-span-7 lg:col-span-5">
 
 
                                     <div class="flex justify-start items-center">
@@ -1147,7 +1147,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                         {{ $manager_bonus_details }}
                                                     </div>
 
-                                                    <div class="flex m-2 sm:m-3 mt-5">
+                                                    <div class="flex m-2 sm:m-3 mt-5 bg-primary-lightest text-primary-dark p-4 rounded-md">
 
                                                         <div>
                                                             {{ $manager_bonus }}%
@@ -1225,7 +1225,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                 </div>
 
-                                <div class="col-span-4 lg:col-span-1">
+                                <div class="col-span-7 lg:col-span-2">
 
                                     <div class="sticky top-12">
 
