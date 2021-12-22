@@ -4,9 +4,12 @@
 
     @foreach ($loans as $loan)
 
-        <div class="grid grid-cols-7 m-2 p-2 border rounded-md text-sm">
+        <div class="grid grid-cols-9 m-2 p-2 border rounded-md text-sm">
             <div>
                 <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
+            </div>
+            <div>
+                {{ $loan -> loan_officer_1 -> fullname }}
             </div>
             <div>
                 {{ $loan -> loan_status }}
@@ -18,7 +21,7 @@
                 Close Date<br>
                 {{ $loan -> settlement_date }}
             </div>
-            <div>
+            <div class="col-span-2">
                 {{ $loan -> borrower_fullname }}
                 @if($loan -> co_borrower_first)
                 <br>
