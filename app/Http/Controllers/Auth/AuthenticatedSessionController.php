@@ -39,8 +39,9 @@ class AuthenticatedSessionController extends Controller
         $user = User::find(auth() -> user() -> id);
         $group = auth() -> user() -> group;
 
-        if($user -> active != 'yes') {
-            return redirect('/') -> with('error', 'not active');
+        if($user -> active == 'yes') {
+            Auth::logout();
+            return redirect('login') -> withErrors(['Your account is inactive']);
         }
         $user_details = null;
         if($group == 'agent') {
