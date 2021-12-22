@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         $group = auth() -> user() -> group;
 
         if($user -> active != 'yes') {
-            dd('error');
+            return redirect('/') -> with('error', 'not active');
         }
         $user_details = null;
         if($group == 'agent') {
@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
         }
 
 
-        //return redirect() -> intended(RouteServiceProvider::HOME);
+        return redirect() -> intended(RouteServiceProvider::HOME);
     }
 
     /**
