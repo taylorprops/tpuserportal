@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
     {
 
         if (!Auth::attempt(['email' => $request -> email, 'password' => $request -> password, 'active' => 'yes'])) {
-            return back() -> response() -> json(['status' => 'not active']);
+            return back() -> json(['status' => 'not active']);
         }
         $request -> authenticate();
 
