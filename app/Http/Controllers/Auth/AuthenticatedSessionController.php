@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
     {
 
         if (!Auth::attempt(['email' => $request -> email, 'password' => $request -> password, 'active' => 'yes'])) {
-            return redirect('/');
+            return redirect('/') -> with('active', 'no');
         }
         $request -> authenticate();
 
