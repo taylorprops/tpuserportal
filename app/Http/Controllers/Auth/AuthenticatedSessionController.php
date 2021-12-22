@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::find(auth() -> user() -> id);
         $group = auth() -> user() -> group;
-
+dd('test');
         if($user -> active != 'yes') {
             dd('error');
         }
