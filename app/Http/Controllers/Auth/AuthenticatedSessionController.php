@@ -30,9 +30,6 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
 
-        if (!Auth::attempt(['email' => $request -> email, 'password' => $request -> password, 'active' => 'yes'])) {
-            return redirect('login') -> with('status', 'not active');
-        }
         $request -> authenticate();
 
         $request -> session() -> regenerate();
