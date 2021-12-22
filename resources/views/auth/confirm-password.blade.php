@@ -35,7 +35,7 @@
         </form>
 
         <!-- Validation Errors -->
-        <x-auth-validation-errors class="mt-4 text-red-600 bg-white p-2 border border-red-500 rounded" :errors="$errors" />
+        <x-auth-validation-errors class="validation-errors" :errors="$errors" />
 
     </x-auth-card>
 </x-guest-layout>

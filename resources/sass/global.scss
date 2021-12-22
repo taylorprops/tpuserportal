@@ -87,6 +87,10 @@ a:not(.button):not(.light):not(.menu-link) {
     }
 }
 
+/* auth errors */
+.validation-errors {
+    @apply mt-4 bg-red-50 text-red-700 p-2 border border-red-700 rounded-lg shadow;
+}
 /* sortablejs */
 .drag-clone {
     @apply bg-secondary-lightest;
