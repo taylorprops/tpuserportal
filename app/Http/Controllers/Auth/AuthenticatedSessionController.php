@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
         $group = auth() -> user() -> group;
 
         if($user -> active != 'yes') {
-            return redirect('/') -> with('error', 'not active');
+            return redirect('/');
         }
         $user_details = null;
         if($group == 'agent') {
