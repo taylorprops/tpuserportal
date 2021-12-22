@@ -37,6 +37,10 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::find(auth() -> user() -> id);
         $group = auth() -> user() -> group;
+
+        if($user -> active != 'yes') {
+            return redirect('/');
+        }
         $user_details = null;
         if($group == 'agent') {
             $user_details = $user -> agent;

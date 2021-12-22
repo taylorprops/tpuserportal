@@ -53,11 +53,6 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if (!Auth::attempt(['active' => 'yes'])) {
-            throw ValidationException::withMessages([
-                'failed' => 'not_active',
-            ]);
-        }
 
         RateLimiter::clear($this -> throttleKey());
     }
