@@ -27,7 +27,7 @@
 
         <div class="flex flex-col justify-between bg-gray-50 h-full">
 
-            <div class="h-28 flex-none bg-gray-200">
+            <div class="h-24 flex-none bg-gray-200">
 
                 <div class="flex justify-center items-center h-10 pl-8 pt-3">
                     <div class="w-3/4">
@@ -35,11 +35,11 @@
                     </div>
                 </div>
 
-                <div class="my-2 sm:mb-0 mt-4 mx-1 relative">
-                    <input class="main-search-input form-element input md" type="text" placeholder="Search"
+                <div class="my-2 sm:mb-0 mt-4 mx-auto max-w-200-px relative">
+                    <input class="main-search-input form-element input sm" type="text" placeholder="Search"
                     x-ref="search_input"
                     @keyup.debounce="search()">
-                    <i class="fal fa-search absolute top-2 sm:top-3 right-4"></i>
+                    <i class="fal fa-search absolute top-2 sm:top-2 right-3"></i>
                 </div>
 
             </div>

@@ -1299,6 +1299,8 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 <div x-show="active_tab === '3'" class="pt-4 sm:pt-12">
 
+
+
                 </div>
 
             </div>
