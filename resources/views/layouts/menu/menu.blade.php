@@ -57,8 +57,8 @@
 
             </div>
 
-            <div class="h-48 xl:h-32 flex-none bg-gray-200">
-                <div class="flex items-center">
+            <div class="h-16 flex-none bg-gray-200">
+                <div>
                     @include('layouts/menu/menu_footer')
                 </div>
             </div>

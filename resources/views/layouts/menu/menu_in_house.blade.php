@@ -190,6 +190,16 @@
 
     {{-- End Archives --}}
 
+    <li>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">My Account</div>
+    </li>
+    {{-- Profile --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Profile'"
+    :link="'/employees/profile/'"
+    :icon="'fad fa-user'"/>
+
 
     @if(auth() -> user() -> level == 'super_admin')
     {{-- Super Admin --}}
