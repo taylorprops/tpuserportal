@@ -43,12 +43,12 @@ class AuthenticatedSessionController extends Controller
             Auth::logout();
             return back() -> withErrors(['Your account is inactive']);
         }
-        $user_details = null;
-        if($group == 'agent') {
-            $user_details = $user -> agent;
-        } else if($group == 'mortgage') {
-            $user_details = $user -> loan_officer;
-        }
+        // $user_details = null;
+        // if($group == 'agent') {
+        //     $user_details = $user -> agent;
+        // } else if($group == 'mortgage') {
+        //     $user_details = $user -> loan_officer;
+        // }
 
 
         return redirect() -> intended(RouteServiceProvider::HOME);
