@@ -51,6 +51,9 @@ class SkySlopeController extends Controller
         $contents = json_decode($contents, true);
         $data = $contents['value'];
 
+        dd(config('global.skyslope_key'));
+        dd($data);
+
         //$progress_increment = (int)round((1 / 15) * 100);
 
         foreach($data as $transaction) {
