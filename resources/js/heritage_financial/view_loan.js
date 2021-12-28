@@ -18,6 +18,7 @@ if(document.URL.match(/view_loan/)) {
             loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent || null,
             show_alert: false,
             show_deleted_docs_div: false,
+            show_deleted: false,
             uuid: uuid,
             init() {
 
@@ -431,6 +432,7 @@ if(document.URL.match(/view_loan/)) {
                     document.querySelector('.docs-div').innerHTML = '';
                     document.querySelector('.deleted-docs-div').innerHTML = '';
                     scope.show_deleted_docs_div = false;
+                    scope.show_deleted = false;
                     document.querySelector('#check_all').checked = false;
                     document.querySelector('#check_all_deleted').checked = false;
 

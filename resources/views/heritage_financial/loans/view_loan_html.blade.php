@@ -1314,8 +1314,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                     </div>
 
-                    <div class="mt-12 max-w-4xl"
-                    x-data="{ show_deleted: false }">
+                    <div class="mt-12 max-w-4xl">
 
                         <div class="text-gray-800 text-xl mb-8">Uploaded Documents</div>
 
