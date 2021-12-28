@@ -4,12 +4,12 @@
 
     @foreach ($loans as $loan)
 
-        <div class="grid grid-cols-9 m-2 p-2 border rounded-md text-sm">
+        <div class="grid grid-cols-5 sm:grid-cols-9 m-2 p-2 border rounded-md text-xs sm:text-sm">
             <div class="hidden sm:inline-block">
                 <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
             </div>
             <div class="inline-block sm:hidden">
-                <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}"></a>
+                <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}">View</a>
             </div>
             <div class="hidden sm:inline-block">
                 {{ $loan -> loan_officer_1 -> fullname }}
