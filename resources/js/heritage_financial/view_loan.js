@@ -1,11 +1,11 @@
 if(document.URL.match(/view_loan/)) {
 
 
-    window.loan = function(active_tab, loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
+    window.loan = function(uuid, active_tab, loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
 
         return {
 
-            active_tab: 3, //active_tab,
+            active_tab: '3', //active_tab,
             show_other_title: false,
             show_delete_check_in: false,
             loan_officer_1_commission_amount: '',
@@ -17,6 +17,8 @@ if(document.URL.match(/view_loan/)) {
             loan_officer_1_loan_amount_percent: loan_officer_1_loan_amount_percent,
             loan_officer_2_loan_amount_percent: loan_officer_2_loan_amount_percent || null,
             show_alert: false,
+            show_deleted_docs_div: false,
+            uuid: uuid,
             init() {
 
                 this.total_commission();
@@ -24,6 +26,9 @@ if(document.URL.match(/view_loan/)) {
                 this.focus_money();
 
                 this.run_show_delete_check_in();
+
+                this.docs();
+                this.get_docs();
 
             },
             trigger_total() {
@@ -383,6 +388,174 @@ if(document.URL.match(/view_loan/)) {
                     input.addEventListener('focus', function() {
                         this.select();
                     });
+                });
+            },
+
+            docs() {
+
+                let scope = this;
+                let loan_docs = document.getElementById('loan_docs');
+                scope.loan_docs_pond = FilePond.create(loan_docs);
+
+                scope.loan_docs_pond.setOptions({
+                    allowImagePreview: false,
+                    multiple: true,
+                    server: {
+                        process: {
+                            url: '/heritage_financial/loans/docs_upload',
+                            onerror: (response) => response.data,
+                            ondata: (formData) => {
+                                formData.append('uuid', scope.uuid);
+                                formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
+                                return formData;
+                            }
+                        }
+                    },
+                    labelIdle: 'Drag & Drop here or <span class="filepond--label-action"> Browse </span>',
+                    onprocessfiles: () => {
+                        scope.loan_docs_pond.removeFiles();
+                        scope.get_docs();
+                    }
+                });
+            },
+            get_docs() {
+
+                let scope = this;
+                let formData = new FormData();
+                formData.append('uuid', uuid);
+                formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
+
+                axios.post('/heritage_financial/loans/get_docs', formData, axios_options)
+                .then(function (response) {
+
+                    document.querySelector('.docs-div').innerHTML = '';
+                    document.querySelector('.deleted-docs-div').innerHTML = '';
+                    scope.show_deleted_docs_div = false;
+                    document.querySelector('#check_all').checked = false;
+                    document.querySelector('#check_all_deleted').checked = false;
+
+                    if(response.data.docs.length > 0) {
+
+                        response.data.docs.forEach(function(doc) {
+
+                            if(doc.trashed === true) {
+                                scope.show_deleted_docs_div = true;
+                            }
+
+                            let div = doc.trashed === false ? 'docs-div': 'deleted-docs-div';
+                            let input_class = doc.trashed === false ? 'doc-input': 'deleted-doc-input';
+
+                            let html = '<div id="doc_'+doc.id+'">'+document.querySelector('#doc_template').innerHTML+'</div>';
+                            html = html.replace(/%%doc_id%%/g, doc.id);
+                            html = html.replace(/%%file_name%%/g, doc.file_name);
+                            html = html.replace(/%%url%%/g, doc.file_location_url);
+                            html = html.replace(/%%file_size%%/g, doc.file_size);
+                            html = html.replace(/%%created%%/g, doc.created);
+                            html = html.replace(/%%input_class%%/g, input_class);
+
+
+                            document.querySelector('.'+div).insertAdjacentHTML('beforeend', html);
+
+                            let button = '.restore-button';
+                            if(doc.trashed === true) {
+                                button = '.delete-button';
+                            }
+
+                            setTimeout(function() {
+                                document.querySelector('#doc_'+doc.id).querySelector(button).remove();
+                            }, 100);
+
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            },
+            delete_docs(id = null) {
+
+                let confirm_text = id ? 'this document' : 'these documents';
+                let s = id ? '' : 's';
+
+                let ids = [];
+                if(id) {
+                    ids.push(id);
+                } else {
+                    document.querySelectorAll('.doc-input:checked').forEach(function(input) {
+                        ids.push(input.value);
+                    });
+                }
+
+                if(confirm('Are you sure you want to delete '+confirm_text+'?')) {
+                    let scope = this;
+                    let formData = new FormData();
+                    formData.append('ids', ids);
+                    axios.post('/heritage_financial/loans/delete_docs', formData)
+                    .then(function (response) {
+                        scope.get_docs();
+                        toastr.success('Document'+s+' deleted successfully.');
+                    })
+                    .catch(function (error) {
+                    });
+                }
+            },
+
+            restore_docs(id = null) {
+
+                let s = id ? '' : 's';
+
+                let ids = [];
+                if(id) {
+                    ids.push(id);
+                } else {
+                    document.querySelectorAll('.deleted-doc-input:checked').forEach(function(input) {
+                        ids.push(input.value);
+                    });
+                }
+
+                let scope = this;
+                let formData = new FormData();
+                formData.append('ids', ids);
+                axios.post('/heritage_financial/loans/restore_docs', formData)
+                .then(function (response) {
+                    scope.get_docs();
+                    toastr.success('Document'+s+' restored successfully.');
+                })
+                .catch(function (error) {
+                });
+            },
+
+            check_all(deleted) {
+
+                let check_all = !deleted ? document.querySelector('#check_all').checked : document.querySelector('#check_all_deleted').checked;
+                let inputs = !deleted ? '.doc-input' : '.deleted-doc-input';
+                document.querySelectorAll(inputs).forEach(function (input) {
+                    input.checked = check_all;
+                });
+
+                this.show_bulk_options(deleted);
+            },
+
+            show_bulk_options(deleted) {
+
+                let checked = false;
+                let inputs = !deleted ? '.doc-input' : '.deleted-doc-input';
+                let bulk_options = !deleted ? this.$refs.bulk_options : this.$refs.bulk_options_deleted;
+
+                document.querySelectorAll(inputs).forEach(function (input) {
+                    if(input.checked === true) {
+                        checked = true;
+                    }
+                });
+
+
+                bulk_options.querySelectorAll('button').forEach(function(button) {
+                    if(checked === true) {
+                        button.removeAttribute('disabled');
+                    } else {
+                        button.setAttribute('disabled', 'disabled');
+                    }
                 });
             }
 

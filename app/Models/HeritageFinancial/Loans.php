@@ -52,4 +52,8 @@ class Loans extends Model
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansLoanOfficerDeductions::class, 'loan_uuid', 'uuid');
     }
 
+    public function documents() {
+        return $this -> hasMany(\App\Models\HeritageFinancial\LoansDocuments::class, 'loan_uuid', 'uuid');
+    }
+
 }

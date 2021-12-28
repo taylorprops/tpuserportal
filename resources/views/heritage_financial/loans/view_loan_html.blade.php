@@ -24,6 +24,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
     <div class="pb-48 pt-2"
     x-data="loan(
+        '{{ $loan -> uuid }}',
         '{{ $active_tab }}',
         '{{ $loan_officer_1_commission_type }}',
         '{{ $loan_officer_2_commission_type ?? 'commission' }}',
@@ -1299,7 +1300,64 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 <div x-show="active_tab === '3'" class="pt-4 sm:pt-12">
 
+                    <div class="">
 
+                        <div class="max-w-sm">
+                            <div class="text-gray-800 text-xl mb-8">Add Documents</div>
+                            <input
+                            type="file"
+                            class="form-element input md"
+                            id="loan_docs"
+                            name="loan_docs"
+                            multiple>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12 max-w-4xl"
+                    x-data="{ show_deleted: false }">
+
+                        <div class="text-gray-800 text-xl mb-8">Uploaded Documents</div>
+
+                        <div class="border-b mb-4 pb-2 flex justify-start items-center">
+                            <div>
+                                <input type="checkbox" class="form-element checkbox md primary"
+                                data-label="Select All"
+                                id="check_all"
+                                @click="check_all()">
+                            </div>
+                            <div class="flex justify-start items-center ml-6" x-ref="bulk_options">
+                                <button type="button" class="button primary sm" disabled="true" @click="delete_docs()">Delete Selected</button>
+                            </div>
+                        </div>
+
+                        <div class="docs-div text-sm"></div>
+
+                        <div class="mt-6 pt-8" x-show="show_deleted_docs_div">
+
+                            <button type="button" class="button primary sm" @click="show_deleted = !show_deleted">Show Deleted Documents</button>
+
+                            <div class="mt-12" x-show="show_deleted">
+
+                                <div class="border-b mb-4 pb-2 flex justify-start items-center">
+                                    <div>
+                                        <input type="checkbox" class="form-element checkbox md primary"
+                                        data-label="Select All"
+                                        id="check_all_deleted"
+                                        @click="check_all(true)">
+                                    </div>
+                                    <div class="flex justify-start items-center ml-6" x-ref="bulk_options_deleted">
+                                        <button type="button" class="button primary sm" disabled="true" @click="restore_docs()">Restore Selected</button>
+                                    </div>
+                                </div>
+
+                                <div class="deleted-docs-div text-sm"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -1307,6 +1365,46 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
         </div>
 
+
+        <template id="doc_template">
+
+            <div class="flex justify-start items-center border-b mb-4 pb-2">
+
+                <div class="mr-4">
+                    <input type="checkbox" class="form-element checkbox md primary %%input_class%%" value="%%doc_id%%"
+                    @click="show_bulk_options()">
+                </div>
+
+                <div class="flex flex-grow justify-between items-center">
+                    <div class="mr-4 t">
+                        <a href="%%url%%" target="_blank">%%file_name%%</a>
+                    </div>
+                    <div class="flex justify-end items-center">
+
+                        <div class="mx-4 text-xs text-right whitespace-nowrap">%%file_size%%<br>%%created%%</div>
+
+                        <div>
+                            <button
+                            type="button"
+                            class="button danger md delete-button"
+                            x-on:click="delete_docs([%%doc_id%%])">
+                                <i class="fal fa-times"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                            type="button"
+                            class="button primary md restore-button"
+                            x-on:click="restore_docs([%%doc_id%%])">
+                                Restore <i class="fal fa-undo ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </template>
 
         <template id="check_in_template">
 

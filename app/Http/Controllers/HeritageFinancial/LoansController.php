@@ -10,9 +10,11 @@ use App\Models\Employees\Mortgage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
+use Illuminate\Support\Facades\Storage;
 use App\Models\HeritageFinancial\LoansNotes;
 use App\Models\HeritageFinancial\LoansChecksIn;
 use App\Models\OldDB\Company\Loans as LoansOld;
+use App\Models\HeritageFinancial\LoansDocuments;
 use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
@@ -456,6 +458,72 @@ class LoansController extends Controller
         -> paginate($length);
 
         return view('/heritage_financial/loans/get_commission_reports_html', compact('loans'));
+
+    }
+
+    public function docs_upload(Request $request) {
+
+        $file = $request -> file('loan_docs');
+        $uuid = $request -> uuid;
+        $size = Helper::get_mb($file -> getSize()).'MB';
+
+        $file_name_orig = $file -> getClientOriginalName();
+        $file_name = Helper::clean_file_name($file, '', false, true);
+
+        $dir = 'mortgage/loans/'.$uuid;
+        if(!is_dir($dir)) {
+            Storage::makeDirectory($dir);
+        }
+        $file -> storeAs($dir, $file_name);
+        $file_location = $dir.'/'.$file_name;
+        $file_location_url = Storage::url($dir.'/'.$file_name);
+
+        LoansDocuments::create([
+            'loan_uuid' => $uuid,
+            'file_name' => $file_name_orig,
+            'file_location' => $file_location,
+            'file_location_url' => $file_location_url,
+            'file_size' => $size
+        ]);
+
+
+
+    }
+
+    public function get_docs(Request $request) {
+
+        $docs = LoansDocuments::withTrashed()
+        -> where('loan_uuid', $request -> uuid)
+        -> orderBy('created_at', 'desc')
+        -> get()
+        -> map(function($field) {
+            $field['created'] = date('M jS, Y g:iA', strtotime($field['created_at']));
+            $field['trashed'] = $field -> trashed();
+            return $field;
+        });
+
+        return compact('docs');
+
+    }
+
+    public function delete_docs(Request $request) {
+
+        $ids = explode(',', $request -> ids);
+
+        LoansDocuments::whereIn('id', $ids) -> delete();
+
+        return response() -> json(['status' => 'success']);
+
+    }
+
+    public function restore_docs(Request $request) {
+
+        $ids = explode(',', $request -> ids);
+        LoansDocuments::withTrashed()
+        -> whereIn('id', $ids)
+        -> restore();
+
+        return response() -> json(['status' => 'success']);
 
     }
 

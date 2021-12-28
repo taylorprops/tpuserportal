@@ -16,6 +16,10 @@ window.addEventListener('load', (event) => {
 
     numbers_only();
 
+    document.querySelectorAll('.filepond--credits').forEach(function(div) {
+        div.style.display = 'none';
+    });
+
 });
 
 

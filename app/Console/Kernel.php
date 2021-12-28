@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
         // add skyslope data to old db
         // ends - when no more transactions added to skyslope
-        //$schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production');
+        $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production');
 
         // merge agent home addresses with bright agents
         //$schedule -> command('agent_addresses:merge') -> everyMinute();

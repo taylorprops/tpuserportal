@@ -10,6 +10,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/heritage_financial/loans', [LoansController::class, 'loans']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/loans/get_loans', [LoansController::class, 'get_loans']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/loans/view_loan/{uuid?}', [LoansController::class, 'view_loan']) -> middleware(['mortgage']);
+    Route::post('/heritage_financial/loans/docs_upload', [LoansController::class, 'docs_upload']) -> middleware(['in_house']);
+    Route::post('/heritage_financial/loans/get_docs', [LoansController::class, 'get_docs']) -> middleware(['in_house']);
+    Route::post('/heritage_financial/loans/delete_docs', [LoansController::class, 'delete_docs']) -> middleware(['in_house']);
+    Route::post('/heritage_financial/loans/restore_docs', [LoansController::class, 'restore_docs']) -> middleware(['in_house']);
     Route::get('/heritage_financial/loans/commission_reports', [LoansController::class, 'commission_reports']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/loans/get_commission_reports', [LoansController::class, 'get_commission_reports']) -> middleware(['mortgage']);
 

@@ -34,9 +34,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         this.get_docs();
                     }
                     this.photo();
-                    document.querySelectorAll('.filepond--credits').forEach(function(div) {
-                        div.style.display = 'none';
-                    });
+
                     if(text_editor_ele != '') {
                         this.init_text_editor(text_editor_ele);
                     }
