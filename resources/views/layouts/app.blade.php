@@ -35,21 +35,21 @@
 
     <body class="font-sans antialiased overflow-x-hidden"
     x-data="nav();"
-    {{-- x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
-    @keydown.window.escape="main_nav_open = false" --}}>
+    x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
+    @keydown.window.escape="main_nav_open = false">
 
         <div class="flex relative"
         x-data="main_search()">
 
             <div class="absolute top-24 left-0 z-100">
-                <div class="flex justify-end w-full items-center">
+                {{-- <div class="flex justify-end w-full items-center">
                     <div>
                         <button type="button" class="button danger md no-text"
                         @click="$refs.search_results_div.innerHTML = ''; $refs.search_input.value = ''">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                </div>
+                </div> --}}
                 <div class="absolute top-12 left-0 w-screen lg:w-screen-60 xl:w-screen-50 bg-gray-100 z-100 shadow max-h-500-px overflow-y-auto" x-ref="search_results_div"
                 @click.outside="$el.innerHTML = '';
                 document.querySelectorAll('.main-search-input').forEach(function(input) {
