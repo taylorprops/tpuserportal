@@ -25,7 +25,7 @@
     x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
 
-        {{-- <div class="flex flex-col justify-between bg-gray-50 h-full w-64">
+        <div class="flex flex-col justify-between bg-gray-50 h-full w-64">
 
             <div class="h-24 flex-none bg-gray-200">
 
@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-        </div> --}}
+        </div>
 
     </div>
 

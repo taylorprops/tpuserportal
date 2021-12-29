@@ -38,7 +38,7 @@
     x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
     @keydown.window.escape="main_nav_open = false">
 
-        <div class="min-h-screen flex relative"
+        <div class="flex relative"
         x-data="main_search()">
 
             <div class="absolute top-24 left-0 z-100">
@@ -48,7 +48,7 @@
 
             @include('layouts.menu.menu')
 
-            <div class="flex flex-col w-0 flex-1">
+            <div class="flex flex-col w-0 flex-1 min-h-screen">
 
                 <!-- Page Heading -->
                 @if($header != 'null')
