@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="my-2 sm:mb-0 mt-4 mx-auto max-w-200-px relative">
+                <div class="hidden sm:block my-2 sm:mb-0 mt-4 mx-auto max-w-200-px relative">
                     <input class="main-search-input form-element input sm" type="text" placeholder="Search"
                     @keyup.debounce="search($el)">
                     <i class="fal fa-search absolute top-2 sm:top-2 right-3"></i>
