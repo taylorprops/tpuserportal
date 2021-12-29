@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\HeritageFinancial\Loans;
 
 class APIController extends Controller
 {
