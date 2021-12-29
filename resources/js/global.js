@@ -120,9 +120,8 @@ window.main_search = function() {
 
     return {
 
-        search() {
+        search(search_input) {
 
-            let search_input = this.$refs.search_input;
             let value = search_input.value;
             let search_results_div = this.$refs.search_results_div;
 

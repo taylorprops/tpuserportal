@@ -1,14 +1,7 @@
 <div class="p-2 border rounded bg-white">
 
-    <div class="flex justify-between items-center">
-        <div class="text-lg font-semibold text-gray-700 ml-4 mb-2">Loans</div>
-        <div>
-            <button type="button" class="button danger md no-text"
-            @click="$refs.search_results_div.innerHTML = ''; $refs.search_input.value = ''">
-                <i class="fa fa-times"></i>
-            </button>
-        </div>
-    </div>
+    <div class="text-lg font-semibold text-gray-700 ml-4 mb-2">Loans</div>
+
 
     @foreach ($loans as $loan)
 

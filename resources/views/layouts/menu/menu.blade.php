@@ -1,5 +1,5 @@
 <div class="fixed top-0 left-0 h-screen overflow-y-auto xl:overflow-y-none z-10"
-{{-- @click.outside="if(screen.width < 1000) { main_nav_open = false }" --}}>
+@click.outside="if(screen.width < 1000) { main_nav_open = false }">
 
     <div class="fixed top-0 left-0 z-100">
         <div class="h-16 flex items-center">
@@ -37,8 +37,7 @@
 
                 <div class="my-2 sm:mb-0 mt-4 mx-auto max-w-200-px relative">
                     <input class="main-search-input form-element input sm" type="text" placeholder="Search"
-                    x-ref="search_input"
-                    @keyup.debounce="search()">
+                    @keyup.debounce="search($el)">
                     <i class="fal fa-search absolute top-2 sm:top-2 right-3"></i>
                 </div>
 

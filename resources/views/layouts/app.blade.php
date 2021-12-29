@@ -35,30 +35,50 @@
 
     <body class="font-sans antialiased overflow-x-hidden"
     x-data="nav();"
-    x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
-    {{-- @keydown.window.escape="main_nav_open = false" --}}>
+    {{-- x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
+    @keydown.window.escape="main_nav_open = false" --}}>
 
         <div class="flex relative"
         x-data="main_search()">
 
             <div class="absolute top-24 left-0 z-100">
-                <div class="absolute top-0 left-0 w-screen lg:w-screen-60 xl:w-screen-50 bg-gray-100 z-100 shadow max-h-500-px overflow-y-auto" x-ref="search_results_div"
-                @click.outside="$el.innerHTML = ''; $refs.search_input.value = ''"></div>
+                <div class="flex justify-end w-full items-center">
+                    <div>
+                        <button type="button" class="button danger md no-text"
+                        @click="$refs.search_results_div.innerHTML = ''; $refs.search_input.value = ''">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="absolute top-12 left-0 w-screen lg:w-screen-60 xl:w-screen-50 bg-gray-100 z-100 shadow max-h-500-px overflow-y-auto" x-ref="search_results_div"
+                @click.outside="$el.innerHTML = '';
+                document.querySelectorAll('.main-search-input').forEach(function(input) {
+                    input.value = '';
+                });"></div>
             </div>
 
             @include('layouts.menu.menu')
 
             <div class="flex flex-col w-0 flex-1 min-h-screen">
 
+                <div class="flex justify-end mr-6 mt-3 sm:hidden">
+                    <div class="max-w-100-px relative">
+                        <input class="main-search-input form-element input sm" type="text" placeholder="Search"
+                        @keyup.debounce="search($el)">
+                        <i class="fal fa-search absolute top-2 sm:top-2 right-3"></i>
+                    </div>
+                </div>
+
+
                 <!-- Page Heading -->
                 @if($header != 'null')
                 <header>
-                    <div class="w-full border-gray-200 border-b bg-white bp-0 pt-2"
+                    <div class="hidden sm:inline-block relative w-full border-gray-200 border-b bg-white pt-2"
                     :class="{
-                        'pl-72 pl-0': main_nav_open && (window.outerWidth >= 1280),
+                        'pl-72 ml-0': main_nav_open && (window.outerWidth >= 1280),
                         'pl-12 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
-                        'relative': (window.outerWidth >= 1280),
-                        'fixed': (window.outerWidth < 1280)
+                        /* 'relative': (window.outerWidth >= 1280),
+                        'fixed': (window.outerWidth < 1280) */
                     }">
                         <h2 class="text-gray-600 tracking-wider"
                         :class="{
