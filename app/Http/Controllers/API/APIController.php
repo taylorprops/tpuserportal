@@ -10,7 +10,7 @@ class APIController extends Controller
 {
     public function check_loan_exists(Request $request) {
 
-        $loan_id = $request -> loan_id;
+        $loan_id = $request -> loan_id[0];
         $loan = Loans::find($loan_id);
 
         if($loan) {
