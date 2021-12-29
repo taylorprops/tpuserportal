@@ -5,7 +5,7 @@ if(document.URL.match(/view_loan/)) {
 
         return {
 
-            active_tab: '3', //active_tab,
+            active_tab: active_tab,
             show_other_title: false,
             show_delete_check_in: false,
             loan_officer_1_commission_amount: '',
@@ -390,6 +390,15 @@ if(document.URL.match(/view_loan/)) {
                         this.select();
                     });
                 });
+            },
+
+            require_title(status) {
+                this.$refs.title_company.classList.remove('required');
+                this.$refs.title_company_select.classList.remove('required');
+                if(status == 'Closed') {
+                    this.$refs.title_company.classList.add('required');
+                    this.$refs.title_company_select.classList.add('required');
+                }
             },
 
             docs() {

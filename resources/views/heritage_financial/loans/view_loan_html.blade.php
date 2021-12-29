@@ -211,9 +211,10 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                                 <div class="col-span-1 m-2 sm:m-3">
                                     <select
-                                    class="form-element select {{ $input_size }} required"
+                                    class="form-element select {{ $input_size }} @if($loan -> loan_status == 'Closed') required @endif"
                                     name="title_company_select"
                                     id="title_company_select"
+                                    x-ref="title_company_select"
                                     data-label="Title Company"
                                     @change="if($el.value != 'other') { $refs.title_company.value = $el.value } else { $refs.title_company.value = '' }">
                                         <option value=""></option>
@@ -226,7 +227,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 <div class="col-span-1 m-2 sm:m-3">
                                     <input
                                     type="text"
-                                    class="form-element input {{ $input_size }} required"
+                                    class="form-element input {{ $input_size }} @if($loan -> loan_status == 'Closed') required @endif"
                                     id="title_company"
                                     name="title_company"
                                     data-label="Title Company Name"
@@ -295,7 +296,8 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     class="form-element select {{ $input_size }} required"
                                     id="loan_status"
                                     name="loan_status"
-                                    data-label="Loan Status">
+                                    data-label="Loan Status"
+                                    @change="require_title($el.value)">
                                         <option value=""></option>
                                         <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
                                         <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
