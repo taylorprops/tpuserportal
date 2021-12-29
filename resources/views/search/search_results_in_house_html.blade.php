@@ -12,7 +12,7 @@
                 <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}">View</a>
             </div>
             <div class="hidden sm:inline-block">
-                {{ $loan -> loan_officer_1 -> fullname }}
+                {{ $loan -> loan_officer_1 -> fullname ?? null }}
             </div>
             <div class="hidden sm:inline-block">
                 {{ $loan -> loan_status }}

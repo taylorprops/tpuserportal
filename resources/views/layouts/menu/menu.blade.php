@@ -1,5 +1,5 @@
-<div class="fixed h-screen overflow-y-auto xl:overflow-y-none z-10"
-{{-- @click.outside="if(screen.width < 1000) { main_nav_open = false }" --}}>
+<div class="fixed top-0 left-0 h-screen overflow-y-auto xl:overflow-y-none z-10"
+@click.outside="if(screen.width < 1000) { main_nav_open = false }">
 
     <div class="fixed top-0 left-0 z-100">
         <div class="h-16 flex items-center">
@@ -11,7 +11,7 @@
             <button class="py-2 px-4 sm:py-3"
             @click="main_nav_open = !main_nav_open;"
             x-show="main_nav_open" x-transition:enter.duration.500ms>
-                <i class="fal fa-sign-out-alt fa-rotate-180 text-gray-600"></i>
+                <i class="fal fa-times fa-lg text-gray-600"></i>
             </button>
         </div>
     </div>
@@ -25,7 +25,7 @@
     x-transition:leave-end="opacity-0 transform scale-x-0 -translate-x-1/2">
 
 
-        <div class="flex flex-col justify-between bg-gray-50 h-full w-64">
+        {{-- <div class="flex flex-col justify-between bg-gray-50 h-full w-64">
 
             <div class="h-24 flex-none bg-gray-200">
 
@@ -63,7 +63,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
     </div>
 
