@@ -85,8 +85,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/transactions_archived/get_escrow_html', [EscrowController::class, 'get_escrow']) -> middleware(['in_house']);
 
 
-    // API
-    Route::get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']) -> middleware(['in_house']);
 
     // Billing
     Route::get('/authnet/AddCreditCard', [AuthNetController::class, 'AddCreditCard']) -> middleware(['in_house']);
