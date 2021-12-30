@@ -86,7 +86,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 
     // API
-    Route::post('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']) -> middleware(['in_house']);
+    Route::get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']) -> middleware(['in_house']);
 
     // Billing
     Route::get('/authnet/AddCreditCard', [AuthNetController::class, 'AddCreditCard']) -> middleware(['in_house']);
