@@ -177,3 +177,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
 });
 
 
+Route::middleware('auth:api') -> get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']);
+
+
