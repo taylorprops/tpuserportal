@@ -19,8 +19,6 @@ Route::middleware('auth:api') -> get('/user', function (Request $request) {
     return $request -> user();
 });
 
-Route::get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']);
-
 Route::middleware('auth:api') -> get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']);
 
 
