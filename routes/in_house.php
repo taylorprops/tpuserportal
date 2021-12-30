@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
+use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
