@@ -8,7 +8,7 @@ use App\Models\HeritageFinancial\Loans;
 
 class APIController extends Controller
 {
-    public function check_loan_exists(Request $request) {
+    public function update_loan(Request $request) {
 
         return 'working';
         $loan_id = $request -> loan_id[0];
