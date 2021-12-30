@@ -19,6 +19,7 @@ Route::middleware('auth:api') -> get('/user', function (Request $request) {
     return $request -> user();
 });
 
-Route::middleware('auth:api') -> get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']);
+// TODO: 'auth:api' needs to be set up
+Route::/* middleware('auth:api') ->  */get('/api/lending_pad/check_loan_exists', [APIController::class, 'check_loan_exists']);
 
 
