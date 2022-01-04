@@ -24,7 +24,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
     <div class="pb-48 pt-2"
     x-data="loan(
-        '{{ $loan -> uuid }}',
+        '{{ $loan -> uuid ?? null }}',
         '{{ $active_tab }}',
         '{{ $loan_officer_1_commission_type }}',
         '{{ $loan_officer_2_commission_type ?? 'commission' }}',
@@ -211,7 +211,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                                 <div class="col-span-1 m-2 sm:m-3">
                                     <select
-                                    class="form-element select {{ $input_size }} @if($loan -> loan_status == 'Closed') required @endif"
+                                    class="form-element select {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
                                     name="title_company_select"
                                     id="title_company_select"
                                     x-ref="title_company_select"
@@ -227,7 +227,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 <div class="col-span-1 m-2 sm:m-3">
                                     <input
                                     type="text"
-                                    class="form-element input {{ $input_size }} @if($loan -> loan_status == 'Closed') required @endif"
+                                    class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
                                     id="title_company"
                                     name="title_company"
                                     data-label="Title Company Name"
@@ -514,9 +514,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 <div x-show="active_tab === '2'" class="pt-4 sm:pt-12">
 
                     {{-- if Loan Officer --}}
-                    <div class="mt-4 @if($loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> level != 'loan_officer') hidden @endif">
+                    <div class="mt-4 @if($loan && $loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> level != 'loan_officer') hidden @endif">
 
-                        <div class="@if($loan -> loan_status != 'Closed') hidden @endif">
+                        <div class="@if($loan && $loan -> loan_status != 'Closed') hidden @endif">
 
                             <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3">
 
@@ -615,7 +615,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         </div>
 
-                        <div class="@if($loan -> loan_status == 'Closed') hidden @endif">
+                        <div class="@if($loan && $loan -> loan_status == 'Closed') hidden @endif">
 
                             @if(auth() -> user() -> level == 'loan_officer')
 
