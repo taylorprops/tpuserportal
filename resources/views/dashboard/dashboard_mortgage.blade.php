@@ -45,7 +45,7 @@ $breadcrumbs = [];
                                 <div class="col-span-3 pl-2">
                                     {!! $borrower !!}
                                 </div>
-                                <div class="col-span-4 pl-2 overflow-hidden">
+                                <div class="col-span-4 pl-2">
                                     {!! $address !!}
                                 </div>
                                 <div class="col-span-2 -pl-2">
@@ -93,7 +93,7 @@ $breadcrumbs = [];
                                 <div class="col-span-3 pl-2">
                                     {!! $borrower !!}
                                 </div>
-                                <div class="col-span-4 pl-2 overflow-hidden">
+                                <div class="col-span-4 pl-2">
                                     {!! $address !!}
                                 </div>
                                 <div class="col-span-2 -pl-2">
