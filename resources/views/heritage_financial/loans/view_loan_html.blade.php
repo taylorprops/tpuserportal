@@ -513,196 +513,113 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 <div x-show="active_tab === '2'" class="pt-4 sm:pt-12">
 
+                    {{-- if Loan Officer --}}
+                    <div class="mt-4 @if($loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> group != 'mortgage') hidden @endif">
 
-                    <div class="mt-4 max-w-lg @if(auth() -> user() -> group != 'mortgage') hidden @endif">
+                        <div class="@if($loan -> loan_status != 'Closed') hidden @endif">
 
-                        <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3">
+                            <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3">
 
-                            <div>
-                                Checks In
-                            </div>
-
-                            <div class="font-bold text-right">
-                                <span class="checks-in-amount text-green-600"></span>
-                            </div>
-
-                        </div>
-
-                        <div class="border-4 p-2 rounded-lg mb-3">
-
-                            <div>
-                                Deductions
-                            </div>
-
-                            <div class="mt-4">
-                                <div class="w-3/4 deductions-checks-in text-sm border p-2 rounded-xl"></div>
-                            </div>
-
-                            <div class="grid grid-cols-2 mt-4">
-                                <div>Total Deductions</div>
-                                <div class="font-bold text-right text-red-600">
-                                    <span>-</span> <span class="deductions-total"></span>
+                                <div>
+                                    Checks In
                                 </div>
+
+                                <div class="font-bold text-right">
+                                    <span class="checks-in-amount text-green-600"></span>
+                                </div>
+
                             </div>
 
-                        </div>
+                            <div class="border-4 p-2 rounded-lg mb-3">
 
-                        <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3 mt-8">
-
-                            <div>
-                                Net Commission
-                            </div>
-
-                            <div class="font-bold text-right text-green-600">
-                                <span>=</span> <span class="net-commission-amount"></span>
-                            </div>
-
-                        </div>
-
-                        <div class="border-4 border-green-200 p-4 rounded-lg mb-3 mt-8">
-
-                            <div class="text-xl">
-                                Loan Officer Commission
-                            </div>
-
-                            <div class="mt-4">
-                                <div class="loan-officer-1-loan-amount-details"></div>
-                            </div>
-
-                            @if($loan_officer_deductions && count($loan_officer_deductions -> where('lo_index', '1')) > 0)
+                                <div>
+                                    Deductions
+                                </div>
 
                                 <div class="mt-4">
-                                    <div class="deductions-from-lo text-xs border bg-white rounded-xl">
+                                    <div class="w-3/4 deductions-checks-in text-sm border p-2 rounded-xl"></div>
+                                </div>
 
-                                        <div class="p-2 border-b">Deductions</div>
+                                <div class="grid grid-cols-2 mt-4">
+                                    <div>Total Deductions</div>
+                                    <div class="font-bold text-right text-red-600">
+                                        <span>-</span> <span class="deductions-total"></span>
+                                    </div>
+                                </div>
 
-                                        @php $total_deductions = 0; @endphp
+                            </div>
 
-                                        @foreach($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
-                                            @php $total_deductions += $loan_officer_deduction -> amount; @endphp
+                            <div class="grid grid-cols-2 border-4 p-2 rounded-lg mb-3 mt-8">
+
+                                <div>
+                                    Net Commission
+                                </div>
+
+                                <div class="font-bold text-right text-green-600">
+                                    <span>=</span> <span class="net-commission-amount"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="border-4 border-green-200 p-4 rounded-lg mb-3 mt-8">
+
+                                <div class="text-xl">
+                                    Loan Officer Commission
+                                </div>
+
+                                <div class="mt-4">
+                                    <div class="loan-officer-1-loan-amount-details"></div>
+                                </div>
+
+                                @if($loan_officer_deductions && count($loan_officer_deductions -> where('lo_index', '1')) > 0)
+
+                                    <div class="mt-4">
+                                        <div class="deductions-from-lo text-xs border bg-white rounded-xl">
+
+                                            <div class="p-2 border-b">Deductions</div>
+
+                                            @php $total_deductions = 0; @endphp
+
+                                            @foreach($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
+                                                @php $total_deductions += $loan_officer_deduction -> amount; @endphp
+                                                <div class="grid grid-cols-2 p-2">
+                                                    <div class="">{{ $loan_officer_deduction -> description }}</div>
+                                                    <div class="text-right">${{ number_format($loan_officer_deduction -> amount, 2) }}</div>
+                                                </div>
+                                            @endforeach
+
+                                            <hr>
+
                                             <div class="grid grid-cols-2 p-2">
-                                                <div class="">{{ $loan_officer_deduction -> description }}</div>
-                                                <div class="text-right">${{ number_format($loan_officer_deduction -> amount, 2) }}</div>
+                                                <div class="font-semibold">Total Deductions</div>
+                                                <div class="font-semibold text-right text-red-600">- ${{ number_format($total_deductions, 2) }}</div>
                                             </div>
-                                        @endforeach
 
-                                        <hr>
-
-                                        <div class="grid grid-cols-2 p-2">
-                                            <div class="font-semibold">Total Deductions</div>
-                                            <div class="font-semibold text-right text-red-600">- ${{ number_format($total_deductions, 2) }}</div>
                                         </div>
 
                                     </div>
 
-                                </div>
+                                @endif
 
-                            @endif
+                                <div class="grid grid-cols-2 mt-6">
 
-                            <div class="grid grid-cols-2 mt-6">
+                                    <div class="font-bold text-xl">Total Commission</div>
 
-                                <div class="font-bold text-xl">Total Commission</div>
+                                    <div class="font-bold text-right text-xl">
+                                        <span class="loan-officer-1-commission-amount-ele text-green-600"></span>
+                                    </div>
 
-                                <div class="font-bold text-right text-xl">
-                                    <span class="loan-officer-1-commission-amount-ele text-green-600"></span>
                                 </div>
 
                             </div>
 
                         </div>
 
-                    </div>
+                        <div class="@if($loan -> loan_status == 'Closed') hidden @endif">
 
+                            @if(auth() -> user() -> group == 'mortgage')
 
-                    <div @if(auth() -> user() -> group == 'mortgage') class="hidden" @endif>
-
-                        <form id="commission_form">
-
-
-                            <div class="grid grid-cols-7 max-w-1200-px">
-
-                                <div class="col-span-7 lg:col-span-5">
-
-
-                                    <div class="flex justify-start items-center">
-
-                                        <div class="font-medium text-xl">Checks In</div>
-
-                                        <button type="button" class="button primary sm no-text ml-3"
-                                        @click="add_check_in()">
-                                            <i class="fal fa-plus"></i>
-                                        </button>
-
-                                    </div>
-
-                                    <div class="grid grid-cols-5 mt-4 gap-8">
-
-                                        <div class="col-span-4 grid grid-cols-4 checks-in">
-
-                                            @forelse($checks_in as $check_in)
-
-                                                <div class="flex justify-start items-end mt-2 check-in">
-
-                                                    <div class="w-36">
-                                                        <input
-                                                        type="text"
-                                                        class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
-                                                        name="check_in_amount[]"
-                                                        data-label="Check Amount"
-                                                        value="{{ $check_in -> amount }}"
-                                                        @keyup="set_checks_in_amount();">
-                                                    </div>
-
-                                                    <div class="mx-2 mb-1">
-                                                        <button type="button" class="button danger md no-text delete-check-in-button"
-                                                        @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
-                                                        x-show="show_delete_check_in">
-                                                            <i class="fal fa-times"></i>
-                                                        </button>
-                                                    </div>
-
-                                                </div>
-
-                                            @empty
-
-                                                <div class="flex justify-start items-end mt-2 check-in">
-
-                                                    <div class="w-36">
-                                                        <input
-                                                        type="text"
-                                                        class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
-                                                        name="check_in_amount[]"
-                                                        data-label="Check Amount"
-                                                        @keyup="set_checks_in_amount();">
-                                                    </div>
-
-                                                    <div class="mx-2 mb-1">
-                                                        <button type="button" class="button danger md no-text delete-check-in-button"
-                                                        @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
-                                                        x-show="show_delete_check_in">
-                                                            <i class="fal fa-times"></i>
-                                                        </button>
-                                                    </div>
-
-                                                </div>
-
-                                            @endforelse
-
-                                        </div>
-
-                                        <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
-
-                                            <div class="text-lg text-right bg-green-50 text-green-600 p-4 rounded-md">
-                                                <div class="text-xs">Checks In</div>
-                                                <span class="checks-in-amount">$0.00</span>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <hr class="bg-gray-300 my-6">
-
+                                <form id="commission_form_lo">
 
                                     <div class="flex justify-start items-center mt-6">
 
@@ -812,6 +729,222 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         </div>
 
                                     </div>
+
+                                    <div class="mt-8 flex justify-start">
+                                        <button type="button" class="button primary lg" @click="save_commission($el, 'lo')"><i class="fal fa-check mr-3"></i> Save Deductions</button>
+                                    </div>
+
+                                    <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+                                    <input type="hidden" name="form_type" value="lo">
+
+                                </form>
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                    {{-- if Processor or Manager --}}
+                    <div @if(auth() -> user() -> group == 'mortgage') class="hidden" @endif>
+
+                        <form id="commission_form">
+
+
+                            <div class="grid grid-cols-7 max-w-1200-px">
+
+                                <div class="col-span-7 lg:col-span-5">
+
+
+                                    <div class="flex justify-start items-center">
+
+                                        <div class="font-medium text-xl">Checks In</div>
+
+                                        <button type="button" class="button primary sm no-text ml-3"
+                                        @click="add_check_in()">
+                                            <i class="fal fa-plus"></i>
+                                        </button>
+
+                                    </div>
+
+                                    <div class="grid grid-cols-5 mt-4 gap-8">
+
+                                        <div class="col-span-4 grid grid-cols-4 checks-in">
+
+                                            @forelse($checks_in as $check_in)
+
+                                                <div class="flex justify-start items-end mt-2 check-in">
+
+                                                    <div class="w-36">
+                                                        <input
+                                                        type="text"
+                                                        class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                        name="check_in_amount[]"
+                                                        data-label="Check Amount"
+                                                        value="{{ $check_in -> amount }}"
+                                                        @keyup="set_checks_in_amount();">
+                                                    </div>
+
+                                                    <div class="mx-2 mb-1">
+                                                        <button type="button" class="button danger md no-text delete-check-in-button"
+                                                        @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
+                                                        x-show="show_delete_check_in">
+                                                            <i class="fal fa-times"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            @empty
+
+                                                <div class="flex justify-start items-end mt-2 check-in">
+
+                                                    <div class="w-36">
+                                                        <input
+                                                        type="text"
+                                                        class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                        name="check_in_amount[]"
+                                                        data-label="Check Amount"
+                                                        @keyup="set_checks_in_amount();">
+                                                    </div>
+
+                                                    <div class="mx-2 mb-1">
+                                                        <button type="button" class="button danger md no-text delete-check-in-button"
+                                                        @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
+                                                        x-show="show_delete_check_in">
+                                                            <i class="fal fa-times"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+
+                                            @endforelse
+
+                                        </div>
+
+                                        <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
+
+                                            <div class="text-lg text-right bg-green-50 text-green-600 p-4 rounded-md">
+                                                <div class="text-xs">Checks In</div>
+                                                <span class="checks-in-amount">$0.00</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <hr class="bg-gray-300 my-6">
+
+                                    @if(auth() -> user() -> group != 'mortgage')
+                                    <div class="flex justify-start items-center mt-6">
+
+                                        <div class="font-medium text-xl">Deductions</div>
+
+                                        <button type="button" class="button primary sm no-text ml-3"
+                                        @click="add_deduction(); if($refs.no_deductions) { $refs.no_deductions.remove() }">
+                                            <i class="fal fa-plus"></i>
+                                        </button>
+
+                                    </div>
+
+                                    <div class="grid grid-cols-5 gap-8 mt-4">
+
+                                        <div class="col-span-4">
+
+                                            <div class="deductions h-full">
+
+                                                @forelse($deductions as $deduction)
+
+                                                    @php
+                                                    $non_other = ['Company', 'Loan Officer 1', 'Loan Officer 2'];
+                                                    $show_other = null;
+                                                    if(!in_array($deduction -> paid_to, $non_other)) {
+                                                        $show_other = 'yes';
+                                                    }
+                                                    @endphp
+
+                                                    <div class="flex justify-between items-end deduction">
+
+                                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
+                                                        x-data="{ show_other: @if($show_other) true @else false @endif }">
+
+                                                            <div class="col-span-2 mr-2 mb-2">
+                                                                <input
+                                                                type="text"
+                                                                class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                                name="amount[]"
+                                                                data-label="Amount"
+                                                                value="{{ $deduction -> amount }}">
+                                                            </div>
+
+                                                            <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
+                                                                <input
+                                                                type="text"
+                                                                class="form-element input {{ $input_size }} commission-input required"
+                                                                name="description[]"
+                                                                data-label="Description"
+                                                                value="{{ $deduction -> description }}">
+                                                            </div>
+
+                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                <select
+                                                                class="form-element select {{ $input_size }} required"
+                                                                name="paid_to[]"
+                                                                data-label="Paid To"
+                                                                @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
+                                                                    <option value=""></option>
+                                                                    <option value="Company" @if($deduction -> paid_to == 'Company') selected @endif>Company</option>
+                                                                    <option value="Loan Officer 1" @if($deduction -> paid_to == 'Loan Officer 1') selected @endif>{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
+                                                                    @if($loan_officer_2)
+                                                                    <option value="Loan Officer 2" @if($deduction -> paid_to == 'Loan Officer 2') selected @endif>{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
+                                                                    @endif
+                                                                    <option value="Other" @if($show_other) selected @endif>Other</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                <div x-show="show_other">
+                                                                    <input
+                                                                    type="text"
+                                                                    class="form-element input {{ $input_size }} commission-input required"
+                                                                    name="paid_to_other[]"
+                                                                    data-label="Paid To Name"
+                                                                    value="{{ $deduction -> paid_to }}">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="flex items-end mb-2 ml-3">
+                                                            <button type="button" class="button danger md no-text"
+                                                            @click.prevent="$el.closest('.deduction').remove(); total_commission();">
+                                                                <i class="fal fa-times"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+
+                                                @empty
+
+                                                    <div class="flex items-center text-gray-400 h-full" x-ref="no_deductions"><i class="fad fa-minus-circle mr-2"></i> No Deductions Added</div>
+
+                                                @endforelse
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
+
+                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
+                                                <div class="text-xs">Deductions</div>
+                                                <span class="deductions-total">$0.00</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    @endif
 
                                     <hr class="bg-gray-300 my-6">
 
@@ -1214,13 +1347,13 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     <hr class="bg-gray-300 my-6">
 
-
+                                    @if(auth() -> user() -> group != 'mortgage')
                                     <div class="p-8 flex justify-around">
-                                        <button type="button" class="button primary xl" @click="save_commission($el)"><i class="fal fa-check mr-3"></i> Save Commission</button>
+                                        <button type="button" class="button primary xl" @click="save_commission($el, '')"><i class="fal fa-check mr-3"></i> Save Commission</button>
                                     </div>
 
                                     <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
-
+                                    @endif
 
                                     <hr class="bg-gray-300 my-6">
 

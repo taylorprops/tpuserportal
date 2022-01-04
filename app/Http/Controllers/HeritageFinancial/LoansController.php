@@ -231,16 +231,20 @@ class LoansController extends Controller
 
     public function save_commission(Request $request) {
 
-        $checks_in_amounts = $request -> check_in_amount;
+        if(!$request -> form_type) {
 
-        $request -> validate([
-            'check_in_amount' => 'required|array',
-            'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'], // cannot be 0.00
-        ],
-        [
-            'required' => 'Required',
-            'regex' => 'Must be greater than 0'
-        ]);
+            $checks_in_amounts = $request -> check_in_amount;
+
+            $request -> validate([
+                'check_in_amount' => 'required|array',
+                'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'], // cannot be 0.00
+            ],
+            [
+                'required' => 'Required',
+                'regex' => 'Must be greater than 0'
+            ]);
+
+        }
 
         $deduction_amounts = $request -> amount;
 
@@ -278,23 +282,27 @@ class LoansController extends Controller
 
         }
 
-        $loan_officer_deduction_amounts = $request -> loan_officer_deduction_amount;
-        if ($loan_officer_deduction_amounts) {
+        if(!$request -> form_type) {
 
-            $request -> validate([
-                'loan_officer_deduction_amount'    => 'required|array',
-                'loan_officer_deduction_amount.*'  => 'required',
-            ],
-            [
-                'required' => 'Required'
-            ]);
-            $request -> validate([
-                'loan_officer_deduction_description'    => 'required|array',
-                'loan_officer_deduction_description.*'  => 'required',
-            ],
-            [
-                'required' => 'Required'
-            ]);
+            $loan_officer_deduction_amounts = $request -> loan_officer_deduction_amount;
+            if ($loan_officer_deduction_amounts) {
+
+                $request -> validate([
+                    'loan_officer_deduction_amount'    => 'required|array',
+                    'loan_officer_deduction_amount.*'  => 'required',
+                ],
+                [
+                    'required' => 'Required'
+                ]);
+                $request -> validate([
+                    'loan_officer_deduction_description'    => 'required|array',
+                    'loan_officer_deduction_description.*'  => 'required',
+                ],
+                [
+                    'required' => 'Required'
+                ]);
+
+            }
 
         }
 
@@ -312,26 +320,50 @@ class LoansController extends Controller
 
         $loan = Loans::where('uuid', $request -> uuid) -> first();
 
-        $loan -> loan_officer_1_commission_type = $request -> loan_officer_1_commission_type;
-        $loan -> loan_officer_2_commission_type = $request -> loan_officer_2_commission_type ?? null;
-        $loan -> loan_officer_1_commission_percent = $request -> loan_officer_1_commission_percent;
-        $loan -> loan_officer_2_commission_percent = $request -> loan_officer_2_commission_percent ?? 0;
-        $loan -> loan_officer_1_loan_amount_percent = $request -> loan_officer_1_loan_amount_percent;
-        $loan -> loan_officer_2_loan_amount_percent = $request -> loan_officer_2_loan_amount_percent ?? 0;
-        $loan -> loan_officer_1_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_1_commission_amount);
-        $loan -> loan_officer_2_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_2_commission_amount ?? 0);
-        $loan -> manager_bonus = preg_replace('/[\$,]+/', '', $request -> manager_bonus);
-        $loan -> company_commission = preg_replace('/[\$,]+/', '', $request -> company_commission);
-        $loan -> save();
+        if(!$request -> form_type) {
+
+            $loan -> loan_officer_1_commission_type = $request -> loan_officer_1_commission_type;
+            $loan -> loan_officer_2_commission_type = $request -> loan_officer_2_commission_type ?? null;
+            $loan -> loan_officer_1_commission_percent = $request -> loan_officer_1_commission_percent;
+            $loan -> loan_officer_2_commission_percent = $request -> loan_officer_2_commission_percent ?? 0;
+            $loan -> loan_officer_1_loan_amount_percent = $request -> loan_officer_1_loan_amount_percent;
+            $loan -> loan_officer_2_loan_amount_percent = $request -> loan_officer_2_loan_amount_percent ?? 0;
+            $loan -> loan_officer_1_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_1_commission_amount);
+            $loan -> loan_officer_2_commission_amount = preg_replace('/[\$,]+/', '', $request -> loan_officer_2_commission_amount ?? 0);
+            $loan -> manager_bonus = preg_replace('/[\$,]+/', '', $request -> manager_bonus);
+            $loan -> company_commission = preg_replace('/[\$,]+/', '', $request -> company_commission);
+            $loan -> save();
 
 
-        LoansChecksIn::where('loan_uuid', $loan_uuid) -> delete();
+            LoansChecksIn::where('loan_uuid', $loan_uuid) -> delete();
 
-        foreach ($checks_in as $check_in) {
-            $check = new LoansChecksIn();
-            $check -> loan_uuid  = $loan_uuid;
-            $check -> amount = preg_replace('/[\$,]+/', '', $check_in);
-            $check -> save();
+            foreach ($checks_in as $check_in) {
+                $check = new LoansChecksIn();
+                $check -> loan_uuid  = $loan_uuid;
+                $check -> amount = preg_replace('/[\$,]+/', '', $check_in);
+                $check -> save();
+            }
+
+            LoansLoanOfficerDeductions::where('loan_uuid', $loan_uuid) -> delete();
+
+            if($loan_officer_deduction_amounts) {
+
+                foreach ($loan_officer_deduction_amounts as $index => $loan_officer_deduction_amount) {
+
+                    if (preg_match('/^\$/', $loan_officer_deduction_amount)) {
+                        $loan_officer_deduction_amount = preg_replace('/[\$,]+/', '', $loan_officer_deduction_amount);
+                    }
+
+                    $deduction = new LoansLoanOfficerDeductions();
+                    $deduction -> loan_uuid = $loan_uuid;
+                    $deduction -> lo_index =  $loan_officer_deduction_indexes[$index];
+                    $deduction -> amount = $loan_officer_deduction_amount;
+                    $deduction -> description = $loan_officer_deduction_descriptions[$index];
+                    $deduction -> save();
+                }
+
+            }
+
         }
 
         LoansDeductions::where('loan_uuid', $loan_uuid) -> delete();
@@ -357,25 +389,7 @@ class LoansController extends Controller
 
         }
 
-        LoansLoanOfficerDeductions::where('loan_uuid', $loan_uuid) -> delete();
 
-        if($loan_officer_deduction_amounts) {
-
-            foreach ($loan_officer_deduction_amounts as $index => $loan_officer_deduction_amount) {
-
-                if (preg_match('/^\$/', $loan_officer_deduction_amount)) {
-                    $loan_officer_deduction_amount = preg_replace('/[\$,]+/', '', $loan_officer_deduction_amount);
-                }
-
-                $deduction = new LoansLoanOfficerDeductions();
-                $deduction -> loan_uuid = $loan_uuid;
-                $deduction -> lo_index =  $loan_officer_deduction_indexes[$index];
-                $deduction -> amount = $loan_officer_deduction_amount;
-                $deduction -> description = $loan_officer_deduction_descriptions[$index];
-                $deduction -> save();
-            }
-
-        }
 
     }
 

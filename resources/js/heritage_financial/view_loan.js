@@ -259,12 +259,17 @@ if(document.URL.match(/view_loan/)) {
                 });
 
             },
-            save_commission(ele) {
+            save_commission(ele, user) {
 
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
-                let form = document.querySelector('#commission_form');
+                let form = '';
+                if(user == 'lo') {
+                    form = document.querySelector('#commission_form_lo');
+                } else {
+                    form = document.querySelector('#commission_form');
+                }
                 let formData = new FormData(form);
 
                 axios.post('/heritage_financial/save_commission', formData)
