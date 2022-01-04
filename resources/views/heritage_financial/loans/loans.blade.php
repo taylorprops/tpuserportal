@@ -17,7 +17,7 @@ $breadcrumbs = [
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
-            @if(auth() -> user() -> group != 'mortgage' && auth() -> user() -> level != 'loan_officer')
+            @if(auth() -> user() -> level != 'loan_officer')
             <div class="mt-4 float-right">
                 <button @click="window.location='/heritage_financial/loans/view_loan'" class="button primary lg"><i class="fal fa-plus mr-2"></i> Add Loan</button>
             </div>
