@@ -91,7 +91,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 <div x-show="active_tab === '1'" class="pt-4 sm:pt-12 max-w-1000-px">
 
-                    @if(auth() -> user() -> group != 'mortgage')
+                    @if(auth() -> user() -> level != 'loan_officer')
 
                         <form id="details_form">
 
@@ -514,7 +514,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 <div x-show="active_tab === '2'" class="pt-4 sm:pt-12">
 
                     {{-- if Loan Officer --}}
-                    <div class="mt-4 @if($loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> group != 'mortgage') hidden @endif">
+                    <div class="mt-4 @if($loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> level != 'loan_officer') hidden @endif">
 
                         <div class="@if($loan -> loan_status != 'Closed') hidden @endif">
 
@@ -617,7 +617,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         <div class="@if($loan -> loan_status == 'Closed') hidden @endif">
 
-                            @if(auth() -> user() -> group == 'mortgage')
+                            @if(auth() -> user() -> level == 'loan_officer')
 
                                 <form id="commission_form_lo">
 
@@ -746,7 +746,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     </div>
 
                     {{-- if Processor or Manager --}}
-                    <div @if(auth() -> user() -> group == 'mortgage') class="hidden" @endif>
+                    <div @if(auth() -> user() -> level == 'loan_officer') class="hidden" @endif>
 
                         <form id="commission_form">
 
@@ -835,7 +835,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     <hr class="bg-gray-300 my-6">
 
-                                    @if(auth() -> user() -> group != 'mortgage')
+                                    @if(auth() -> user() -> level != 'loan_officer')
                                     <div class="flex justify-start items-center mt-6">
 
                                         <div class="font-medium text-xl">Deductions</div>
@@ -1347,7 +1347,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     <hr class="bg-gray-300 my-6">
 
-                                    @if(auth() -> user() -> group != 'mortgage')
+                                    @if(auth() -> user() -> level != 'loan_officer')
                                     <div class="p-8 flex justify-around">
                                         <button type="button" class="button primary xl" @click="save_commission($el, '')"><i class="fal fa-check mr-3"></i> Save Commission</button>
                                     </div>
