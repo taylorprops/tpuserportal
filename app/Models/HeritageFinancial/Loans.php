@@ -17,7 +17,7 @@ class Loans extends Model
         parent::boot();
         static::addGlobalScope(function ($query) {
             if (auth() -> user()) {
-                if (stristr(auth() -> user() -> group, 'mortgage') && auth() -> user() -> level != 'manager') {
+                if (stristr(auth() -> user() -> group, 'mortgage') && auth() -> user() -> level == 'loan_officer') {
                     $query -> where(function ($query) {
                         $query -> where('loan_officer_1_id', auth() -> user() -> user_id)
                         -> orWhere('loan_officer_2_id', auth() -> user() -> user_id);
