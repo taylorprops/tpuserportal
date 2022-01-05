@@ -1433,7 +1433,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     <div class="printable-checks-out hidden">
 
                                         <span style="font-size: 20px; font-weight: bold; font-family:Arial, Helvetica, sans-serif">
+                                            @if($loan)
                                             {{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip}}
+                                            @endif
                                         </span>
                                         <br><br>
                                         <table style="font-family:Arial, Helvetica, sans-serif">

@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class APIController extends Controller {
     public function update_loan(Request $request) {
 
+        return $this -> parse_address_google('777 7th St NW #310 Washington, D.C., DC 20001');
+
         $loan_id = $request -> loan_id[0];
         $loan = Loans::find($loan_id);
-
-        return $this -> parse_address_google('millersville md');
 
         if ($loan) {
             return response() -> json(['found', 'yes']);
@@ -23,11 +23,13 @@ class APIController extends Controller {
     }
 
     public function parse_address_google($address) {
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' . urlencode($address);
+
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' . urlencode($address).'&key='.config('global.google_api_key');
         $results = json_decode(file_get_contents($url), 1);
-        //die('<pre>'.print_r($results,true));
+
         $parts = array(
             'address' => array('street_number', 'route'),
+            'unit' => array('subpremise'),
             'city' => array('locality'),
             'state' => array('administrative_area_level_1'),
             'zip' => array('postal_code'),
@@ -51,7 +53,7 @@ class APIController extends Controller {
             }
 
         } else {
-            echo 'empty results';
+            return 'error';
         }
 
         return $address_out;
