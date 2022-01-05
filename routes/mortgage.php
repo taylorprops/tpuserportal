@@ -21,6 +21,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     Route::post('/heritage_financial/save_commission', [LoansController::class, 'save_commission']) -> middleware(['mortgage']);
 
+    Route::get('/heritage_financial/get_notes', [LoansController::class, 'get_notes']) -> middleware(['mortgage']);
+    Route::post('/heritage_financial/add_notes', [LoansController::class, 'add_notes']) -> middleware(['mortgage']);
+    Route::post('/heritage_financial/delete_note', [LoansController::class, 'delete_note']) -> middleware(['mortgage']);
+
     Route::get('/heritage_financial/loan_software', function() {
         return view('/heritage_financial/loan_software/loan_software');
     });

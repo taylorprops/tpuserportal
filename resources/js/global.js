@@ -155,13 +155,16 @@ window.show_form_errors = function (errors) {
     Object.entries(errors).forEach(([key, value]) => {
 
         let field = `${key}`;
-        let message = `${value}`;
+        value = `${value}`;
+        let message = value;
+        if(Array.isArray(value)) {
+            message = value[0];
+        }
         let element = '';
         if(field.match(/\.[0-9]+$/)) {
             let fields = field.split('.');
             let elements = document.querySelectorAll('[name="'+fields[0]+'[]"]');
             element = elements[fields[1]];
-            console.log(element);
         } else {
             element = document.querySelector('#' + field);
         }

@@ -89,7 +89,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
             <div>
 
-                <div x-show="active_tab === '1'" class="pt-4 sm:pt-12 max-w-1000-px">
+                <div x-show="active_tab === '1'" x-transition class="pt-4 sm:pt-12 max-w-1000-px">
 
                     @if(auth() -> user() -> level != 'loan_officer')
 
@@ -511,7 +511,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 </div>
 
 
-                <div x-show="active_tab === '2'" class="pt-4 sm:pt-12">
+                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12">
 
                     {{-- if Loan Officer --}}
                     <div class="mt-4 @if($loan && $loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> level != 'loan_officer') hidden @endif">
@@ -688,7 +688,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                             </div>
 
                                                             <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <div x-show="show_other">
+                                                                <div x-show="show_other" x-transition>
                                                                     <input
                                                                     type="text"
                                                                     class="form-element input {{ $input_size }} commission-input required"
@@ -748,12 +748,11 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     {{-- if Processor or Manager --}}
                     <div @if(auth() -> user() -> level == 'loan_officer') class="hidden" @endif>
 
-                        <form id="commission_form">
+                        <div class="grid grid-cols-7 max-w-1200-px">
 
+                            <div class="col-span-7 lg:col-span-5">
 
-                            <div class="grid grid-cols-7 max-w-1200-px">
-
-                                <div class="col-span-7 lg:col-span-5">
+                                <form id="commission_form">
 
 
                                     <div class="flex justify-start items-center">
@@ -788,7 +787,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                     <div class="mx-2 mb-1">
                                                         <button type="button" class="button danger md no-text delete-check-in-button"
                                                         @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
-                                                        x-show="show_delete_check_in">
+                                                        x-show="show_delete_check_in" x-transition>
                                                             <i class="fal fa-times"></i>
                                                         </button>
                                                     </div>
@@ -811,7 +810,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                     <div class="mx-2 mb-1">
                                                         <button type="button" class="button danger md no-text delete-check-in-button"
                                                         @click="$el.closest('.check-in').remove(); total_commission(); run_show_delete_check_in();"
-                                                        x-show="show_delete_check_in">
+                                                        x-show="show_delete_check_in" x-transition>
                                                             <i class="fal fa-times"></i>
                                                         </button>
                                                     </div>
@@ -903,7 +902,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                             </div>
 
                                                             <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <div x-show="show_other">
+                                                                <div x-show="show_other" x-transition>
                                                                     <input
                                                                     type="text"
                                                                     class="form-element input {{ $input_size }} commission-input required"
@@ -1069,7 +1068,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                                         <div class="mt-6">
 
-                                                            <div x-show="active_commission_tab === '1'">
+                                                            <div x-show="active_commission_tab === '1'" x-transition>
 
                                                                 <div class="bg-primary-lightest p-3 rounded-xl">
 
@@ -1135,10 +1134,10 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                                             </div>
 
-                                                            <div x-show="active_commission_tab === '2'">
+                                                            <div x-show="active_commission_tab === '2'" x-transition>
 
                                                                 <div class="flex justify-start items-center mb-3 bg-primary-lightest text-primary-dark p-2 rounded-md"
-                                                                x-show="show_alert">
+                                                                x-show="show_alert" x-transition>
                                                                     <div id="loan_officer_{{ $index }}_loan_amount_alert_icon"></div>
                                                                     <div id="loan_officer_{{ $index }}_loan_amount_alert_text"></div>
                                                                 </div>
@@ -1345,27 +1344,34 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     </div>
 
-                                    <hr class="bg-gray-300 my-6">
 
                                     @if(auth() -> user() -> level != 'loan_officer')
-                                    <div class="p-8 flex justify-around">
-                                        <button type="button" class="button primary xl" @click="save_commission($el, '')"><i class="fal fa-check mr-3"></i> Save Commission</button>
-                                    </div>
 
-                                    <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+                                        <hr class="bg-gray-300 my-6">
+
+                                        <div class="p-8 flex justify-around">
+                                            <button type="button" class="button primary xl" @click="save_commission($el, '')"><i class="fal fa-check mr-3"></i> Save Commission</button>
+                                        </div>
+
+                                        <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+
+
                                     @endif
 
-                                    <hr class="bg-gray-300 my-6">
+                                </form>
 
-                                    <div class="font-medium text-xl">Notes</div>
 
-                                </div>
 
-                                <div class="col-span-7 lg:col-span-2">
 
-                                    <div class="sticky top-12">
+                            </div>
 
-                                        <div class="bg-primary-lightest ml-0 lg:ml-8 border-4 rounded-xl">
+                            <div class="col-span-7 lg:col-span-2">
+
+                                <div class="sticky top-12 ml-0 lg:ml-8">
+
+                                    <div>
+
+                                        <div class="bg-primary-lightest border-4 rounded-xl">
 
                                             <div class="bg-primary text-white text-lg rounded-t-lg p-2">Checks Out</div>
 
@@ -1420,12 +1426,93 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     </div>
 
+                                    <div class="flex justify-around my-3">
+                                        <button type="button" class="button primary md" @click="print_checks_out()"><i class="fad fa-print mr-2"></i> Print</button>
+                                    </div>
+
+                                    <div class="printable-checks-out hidden">
+
+                                        <span style="font-size: 20px; font-weight: bold; font-family:Arial, Helvetica, sans-serif">
+                                            {{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip}}
+                                        </span>
+                                        <br><br>
+                                        <table style="font-family:Arial, Helvetica, sans-serif">
+                                            <tr>
+                                                <th colspan="3" align="left" style="padding-bottom: 20px; font-size: 18px">Checks Out</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="3" align="left">Commission/Bonuses</th>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-right: 10px">{{ $loan_officer_1 -> fullname ?? null }}</td>
+                                                <td style="padding-right: 10px">Loan Officer</td>
+                                                <td><span class="loan-officer-1-commission-amount-ele"></span></td>
+                                            </tr>
+
+                                            @if($loan_officer_2)
+                                                <tr>
+                                                    <td style="padding-right: 10px">{{ $loan_officer_2 -> fullname }}</td>
+                                                    <td style="padding-right: 10px">Loan Officer</td>
+                                                    <td><span class="loan-officer-2-commission-amount-ele"></span></td>
+                                                </tr>
+                                            @endif
+
+                                            <tr>
+                                                <td style="padding-right: 10px">{{ $manager }}</td>
+                                                <td style="padding-right: 10px">Manager</td>
+                                                <td><span class="manager-commission-amount-ele"></span></td>
+                                            </tr>
+
+                                        </table>
+
+                                        <div class="deductions-out-div-print"></div>
+
+                                    </div>
+
+
+                                    <div class="max-w-600-px mt-20">
+
+                                        <div class="flex justify-between">
+                                            <div class="font-medium text-xl">Notes</div>
+                                            <div>
+                                                <button type="button" class="button primary md"
+                                                @click="show_add_notes = ! show_add_notes"
+                                                x-show="show_add_notes === false">
+                                                    <i class="fal fa-plus mr-2"></i> Add Note
+                                                </button>
+                                                <button type="button" class="button danger md no-text"
+                                                @click="show_add_notes = ! show_add_notes"
+                                                x-show="show_add_notes === true">
+                                                    <i class="fal fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="border rounded-md p-4 my-3"
+                                        x-show="show_add_notes" x-transition>
+                                            <form id="add_notes_form">
+                                                <div>
+                                                    <textarea class="form-element textarea md" name="notes" id="notes"
+                                                    x-ref="notes"></textarea>
+                                                </div>
+                                                <div class="flex justify-around mt-3">
+                                                    <button type="button" class="button primary md"
+                                                    @click.prevent="add_notes($el)">
+                                                        <i class="fal fa-check mr-2"></i> Save Note
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="border-t-2 mt-4 max-w-600-px"
+                                    x-ref="notes_div"></div>
+
                                 </div>
 
                             </div>
 
-
-                        </form>
+                        </div>
 
                     </div>
 
@@ -1433,7 +1520,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 </div>
 
 
-                <div x-show="active_tab === '3'" class="pt-4 sm:pt-12">
+                <div x-show="active_tab === '3'" x-transition class="pt-4 sm:pt-12">
 
                     <div class="">
 
@@ -1467,11 +1554,11 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         <div class="docs-div text-sm"></div>
 
-                        <div class="mt-6 pt-8" x-show="show_deleted_docs_div">
+                        <div class="mt-6 pt-8" x-show="show_deleted_docs_div" x-transition>
 
                             <button type="button" class="button primary sm" @click="show_deleted = !show_deleted">Show Deleted Documents</button>
 
-                            <div class="mt-12" x-show="show_deleted">
+                            <div class="mt-12" x-show="show_deleted" x-transition>
 
                                 <div class="border-b mb-4 pb-2 flex justify-start items-center">
                                     <div>
@@ -1606,7 +1693,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     </div>
 
                     <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                        <div x-show="show_other">
+                        <div x-show="show_other" x-transition>
                             <input
                             type="text"
                             class="form-element input {{ $input_size }} commission-input required"

@@ -20,6 +20,7 @@ if(document.URL.match(/view_loan/)) {
             show_deleted_docs_div: false,
             show_deleted: false,
             uuid: uuid,
+            show_add_notes: false,
             init() {
 
                 this.total_commission();
@@ -30,6 +31,8 @@ if(document.URL.match(/view_loan/)) {
 
                 this.docs();
                 this.get_docs();
+
+                this.get_notes();
 
             },
             trigger_total() {
@@ -181,40 +184,62 @@ if(document.URL.match(/view_loan/)) {
 
                 });
 
-                document.querySelector('.deductions-out-div').innerHTML = '';
-                document.querySelectorAll('.deduction').forEach(function(deduction) {
+                if(document.querySelectorAll('.deduction').length > 0) {
 
-                    let amount = deduction.querySelector('[name="amount[]"]');
-                    let description = deduction.querySelector('[name="description[]"]');
-                    let paid_to = deduction.querySelector('[name="paid_to[]"]');
-                    let paid_to_value = paid_to.options[paid_to.selectedIndex].value;
-                    let paid_to_other = deduction.querySelector('[name="paid_to_other[]"]');
+                    document.querySelector('.deductions-out-div').innerHTML = '';
+                    document.querySelector('.deductions-out-div-print').innerHTML = '';
 
-                    if(paid_to_value != 'Company' && paid_to_other.value != 'Company') {
+                    let deduction_html_print = ' \
+                    <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px"> \
+                        <tr> \
+                            <th align="left">Other</th> \
+                        </tr>';
 
-                        let paid_to_name = paid_to.options[paid_to.selectedIndex].text;
-                        if(paid_to_value == 'Other') {
-                            paid_to_name = paid_to_other.value;
-                        }
-                        let deduction_html = ' \
-                        <div class="col-span-2 border-b border-white py-2"> \
-                            <div class="grid grid-cols-3"> \
-                                <div class="col-span-2"> \
-                                    '+paid_to_name+' \
+                    document.querySelectorAll('.deduction').forEach(function(deduction) {
+
+                        let amount = deduction.querySelector('[name="amount[]"]');
+                        let description = deduction.querySelector('[name="description[]"]');
+                        let paid_to = deduction.querySelector('[name="paid_to[]"]');
+                        let paid_to_value = paid_to.options[paid_to.selectedIndex].value;
+                        let paid_to_other = deduction.querySelector('[name="paid_to_other[]"]');
+
+                        if(paid_to_value != 'Company' && paid_to_other.value != 'Company') {
+
+                            let paid_to_name = paid_to.options[paid_to.selectedIndex].text;
+                            if(paid_to_value == 'Other') {
+                                paid_to_name = paid_to_other.value;
+                            }
+                            let deduction_html = ' \
+                            <div class="col-span-2 border-b border-white py-2"> \
+                                <div class="grid grid-cols-3"> \
+                                    <div class="col-span-2"> \
+                                        '+paid_to_name+' \
+                                    </div> \
+                                    <div> \
+                                        '+global_format_number_with_decimals(amount.value.toString())+' \
+                                    </div> \
                                 </div> \
-                                <div> \
-                                    '+global_format_number_with_decimals(amount.value.toString())+' \
-                                </div> \
+                                <div class="text-sm text-gray-500">'+description.value+'</div> \
                             </div> \
-                            <div class="text-sm text-gray-500">'+description.value+'</div> \
-                        </div> \
-                        ';
-                        document.querySelector('.deductions-out-div').insertAdjacentHTML('beforeend', deduction_html);
+                            ';
+                            document.querySelector('.deductions-out-div').insertAdjacentHTML('beforeend', deduction_html);
 
-                    }
+                            deduction_html_print += ' \
+                            <tr> \
+                                <td style="padding-right: 10px">'+paid_to_name+'</td> \
+                                <td style="padding-right: 10px">'+global_format_number_with_decimals(amount.value.toString())+'</td> \
+                                <td>'+description.value+'</td> \
+                            </tr>';
 
-                });
+                        }
 
+                    });
+
+                    deduction_html_print += '</table>';
+
+                    document.querySelector('.deductions-out-div-print').insertAdjacentHTML('beforeend', deduction_html_print);
+
+                }
 
                 this.set_checks_in_amount();
                 this.set_deductions_amount();
@@ -573,6 +598,86 @@ if(document.URL.match(/view_loan/)) {
                         button.setAttribute('disabled', 'disabled');
                     }
                 });
+            },
+
+            get_notes() {
+                let scope = this;
+                axios.get('/heritage_financial/get_notes', {
+                    params: {
+                        uuid: scope.uuid
+                    },
+                })
+                .then(function (response) {
+                    scope.$refs.notes_div.innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            add_notes(ele) {
+
+                show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
+
+                let scope = this;
+                let form = document.querySelector('#add_notes_form');
+                let formData = new FormData(form);
+                formData.append('uuid', uuid);
+
+                axios.post('/heritage_financial/add_notes', formData)
+                .then(function (response) {
+                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Note';
+                    scope.get_notes();
+                    scope.show_add_notes = false;
+                    toastr.success('Note Saved');
+                })
+                .catch(function (error) {
+                    if (error) {
+                        if (error.response) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                                ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Note';
+                            }
+                        }
+                    }
+                });
+            },
+
+            delete_note(ele, id) {
+                let scope = this;
+                show_loading_button(ele, 'Deleting ... ');
+                remove_form_errors();
+
+                let formData = new FormData();
+                formData.append('id', id);
+
+                axios.post('/heritage_financial/delete_note', formData)
+                .then(function (response) {
+                    ele.innerHTML = '<i class="fal fa-times mr-2"></i> Delete';
+                    scope.get_notes();
+                    toastr.success('Note Deleted');
+                })
+                .catch(function (error) {
+                    if (error) {
+                        if (error.response) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                                ele.innerHTML = '<i class="fal fa-times mr-2"></i> Delete';
+                            }
+                        }
+                    }
+                });
+            },
+
+            print_checks_out() {
+                let print_page = window.open('');
+                print_page.document.write(document.querySelector('.printable-checks-out').innerHTML);
+                print_page.stop();
+                print_page.print();
+                print_page.close();
             }
 
         }

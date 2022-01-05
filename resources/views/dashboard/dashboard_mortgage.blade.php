@@ -150,6 +150,7 @@ $breadcrumbs = [];
 
                             </div>
 
+                            @if(auth() -> user() -> level == 'loan_officer')
                             <div class="col-span-1 sm:col-span-2">
 
                                 <div class="text-lg font-semibold mb-4">Your Marketing and Online Application Links</div>
@@ -176,6 +177,7 @@ $breadcrumbs = [];
                                 </div>
 
                             </div>
+                            @endif
 
                         </div>
 

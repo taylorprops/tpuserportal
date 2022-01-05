@@ -541,7 +541,38 @@ class LoansController extends Controller
 
     }
 
+    public function get_notes(Request $request) {
 
+        $notes = LoansNotes::where('loan_uuid', $request -> uuid)
+        -> with(['user'])
+        -> orderBy('created_at', 'desc')
+        -> get();
+
+        return view('heritage_financial/loans/get_notes_html', compact('notes'));
+    }
+
+    public function add_notes(Request $request) {
+
+        $request -> validate([
+            'notes' => 'required'
+        ],
+        [
+            'required' => 'Required'
+        ]);
+
+        LoansNotes::create([
+            'loan_uuid' => $request -> uuid,
+            'notes' => $request -> notes,
+            'user_id' => auth() -> user() -> id
+        ]);
+
+    }
+
+    public function delete_note(Request $request) {
+
+        LoansNotes::find($request -> id) -> delete();
+
+    }
 
     ////////// Import Loans from Old DB ////////////
 
