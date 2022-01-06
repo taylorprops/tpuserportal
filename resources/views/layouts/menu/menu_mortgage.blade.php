@@ -27,13 +27,22 @@
     :link="'/heritage_financial/loan_software'"
     :icon="'fad fa-save'"/>
 
-    @if(auth() -> user() -> level == 'manager')
+    @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
     {{-- Loans --}}
     <x-nav.menu
     :level="'1'"
     :title="'Loan Officers'"
     :link="'/employees/loan_officer'"
     :icon="'fad fa-users'"/>
+    @endif
+
+    @if(auth() -> user() -> level == 'manager')
+    {{-- Manager Bonus --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Manager Bonuses'"
+    :link="'/heritage_financial/manager_bonuses'"
+    :icon="'fad fa-money-check'"/>
     @endif
 
     {{-- Profile --}}

@@ -51,6 +51,7 @@ require('./doc_management/transactions/escrow.js');
 require('./heritage_financial/loans.js');
 require('./heritage_financial/view_loan.js');
 require('./heritage_financial/commission_reports');
+require('./heritage_financial/manager_bonuses');
 
 require('./marketing/data/address_database.js');
 

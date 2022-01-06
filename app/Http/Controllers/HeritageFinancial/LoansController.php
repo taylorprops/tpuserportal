@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 use App\Models\Employees\Mortgage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Models\HeritageFinancial\Loans;
 use Illuminate\Support\Facades\Storage;
 use App\Models\HeritageFinancial\LoansNotes;
+use App\Mail\HeritageFinancial\ManagerBonuses;
 use App\Models\HeritageFinancial\LoansChecksIn;
 use App\Models\OldDB\Company\Loans as LoansOld;
 use App\Models\HeritageFinancial\LoansDocuments;
@@ -571,6 +573,48 @@ class LoansController extends Controller
     public function delete_note(Request $request) {
 
         LoansNotes::find($request -> id) -> delete();
+
+    }
+
+    public function manager_bonuses(Request $request) {
+
+        $years = [];
+        $months = [];
+        $years_ago = 4;
+        $year = date('Y');
+        for($i = $year; $i >= $year - $years_ago; $i--) {
+            $years[] = $i;
+        }
+        for($i = 1; $i <= 12; $i++) {
+            $months[] = $i;
+        }
+
+        $loans = Loans::select(DB::raw('year(settlement_date) as year, month(settlement_date) as month, loan_officer_1_id, borrower_fullname, co_borrower_fullname, street, city, state, zip, settlement_date, manager_bonus'))
+        -> where('loan_status', 'Closed')
+        -> where('settlement_date', '>', date(($year - $years_ago).'-01-01'))
+        -> with(['loan_officer_1'])
+        -> orderBy('year', 'desc')
+        -> orderBy('month', 'desc')
+        -> get();
+
+        return view('/heritage_financial/loans/manager_bonuses', compact('loans', 'years', 'months'));
+
+    }
+
+    public function email_manager_bonuses(Request $request) {
+
+        $html = $request -> html;
+        $to_email = $request -> to_email;
+        $subject = 'Monthly Manager Bonus Report';
+
+        Mail::html($html, function ($message) use($to_email, $subject) {
+            $message
+            -> to($to_email)
+            -> from(auth() -> user() -> email, auth() -> user() -> name)
+            -> subject($subject);
+        });
+
+
 
     }
 

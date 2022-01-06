@@ -114,6 +114,15 @@
     :link="'/heritage_financial/loan_software'"
     :icon="'fad fa-desktop'"/>
 
+    @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']))
+    {{-- Manager Bonus --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Manager Bonuses'"
+    :link="'/heritage_financial/manager_bonuses'"
+    :icon="'fad fa-money-check'"/>
+    @endif
+
     {{-- End Heritage Financial --}}
 
     {{-- Employees --}}

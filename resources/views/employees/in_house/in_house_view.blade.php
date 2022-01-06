@@ -149,6 +149,7 @@ $breadcrumbs = [
                                     data-label="Website Level">
                                         <option value=""></option>
                                         <option value="admin" @if($employee && $employee -> emp_position == 'admin') selected @endif>Admin</option>
+                                        <option value="manager" @if($employee && $employee -> emp_position == 'manager') selected @endif>Manager</option>
                                         <option value="super_admin" @if($employee && $employee -> emp_position == 'super_admin') selected @endif>Super Admin</option>
                                     </select>
                                 </div>

@@ -5,7 +5,7 @@ html {
 }
 
 
-a:not(.button):not(.light):not(.menu-link) {
+a:not(.button):not(.light):not(.menu-link):not(.no-color) {
     @apply text-primary hover:text-primary-light;
 }
 [x-cloak] {
