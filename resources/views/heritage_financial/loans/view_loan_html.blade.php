@@ -852,6 +852,70 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                             <div class="deductions h-full">
 
+                                                @if(count($deductions) == 0)
+
+                                                    <div class="flex justify-between items-end deduction">
+
+                                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
+                                                        x-data="{ show_other: false }">
+
+                                                            <div class="col-span-2 mr-2 mb-2">
+                                                                <input
+                                                                type="text"
+                                                                class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                                name="amount[]"
+                                                                data-label="Amount"
+                                                                value="$500.00">
+                                                            </div>
+
+                                                            <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
+                                                                <input
+                                                                type="text"
+                                                                class="form-element input {{ $input_size }} commission-input required"
+                                                                name="description[]"
+                                                                data-label="Description"
+                                                                value="Processing Fee">
+                                                            </div>
+
+                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                <select
+                                                                class="form-element select {{ $input_size }} required"
+                                                                name="paid_to[]"
+                                                                data-label="Paid To"
+                                                                @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
+                                                                    <option value=""></option>
+                                                                    <option value="Company" selected>Company</option>
+                                                                    <option value="Loan Officer 1">{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
+                                                                    @if($loan_officer_2)
+                                                                    <option value="Loan Officer 2">{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
+                                                                    @endif
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                <div x-show="show_other" x-transition>
+                                                                    <input
+                                                                    type="text"
+                                                                    class="form-element input {{ $input_size }} commission-input required"
+                                                                    name="paid_to_other[]"
+                                                                    data-label="Paid To Name">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="flex items-end mb-2 ml-3">
+                                                            <button type="button" class="button danger md no-text"
+                                                            @click.prevent="$el.closest('.deduction').remove(); total_commission()">
+                                                                <i class="fal fa-times"></i>
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+
+                                                @endif
+
                                                 @forelse($deductions as $deduction)
 
                                                     @php
