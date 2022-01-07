@@ -34,7 +34,9 @@ $breadcrumbs = [
                         type: 'select',
                         db_field: 'processor_id',
                         label: 'Processor',
+                        @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
                         value: '{{ auth() -> user() -> user_id }}',
+                        @endif
                         options: [
                             ['', ''],
                             @foreach($processors as $processor)
