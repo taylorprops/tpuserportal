@@ -15,6 +15,7 @@ window.table = function(options) {
     let export_url = options.export_url || null;
     let buttons = options.buttons || null;
     let search = options.search == false ? false : true;
+    let fields = options.fields || null;
 
     return {
 
@@ -27,10 +28,12 @@ window.table = function(options) {
         button_export: button_export,
         export_url: export_url,
         buttons: buttons,
+        fields: fields,
         dates: dates,
         date_col: dates_col,
         start_date: null,
         end_date: null,
+        option_db_fields: [],
         sort: sort,
         direction: 'asc',
         length: length,
@@ -173,6 +176,36 @@ window.table = function(options) {
 
             }
 
+            if(scope.fields) {
+
+                Object.entries(scope.fields).forEach(([key, option]) => {
+
+                    let field_type = option.type;
+                    let db_field = option.db_field;
+                    let label = option.label;
+                    let options = option.options;
+                    let value = option.value;
+
+                    if(field_type === 'select') {
+                        options_html += ' \
+                        <div class="p-2 ml-6 w-auto"> \
+                            <select \
+                            class="form-element select md" \
+                            data-label="'+label+'" \
+                            x-on:change="option_db_field(\''+db_field+'\', $el.value);">';
+                            Object.entries(options).forEach(([key, option]) => {
+                                let selected = option[0] == value ? 'selected' : '';
+                                options_html += '<option value="'+option[0]+'" '+selected+'>'+option[1]+'</option>';
+                            });
+                            options_html += '</select> \
+                        </div>';
+                    }
+                });
+
+
+            }
+
+
             options_html += '</div>';
 
             if(scope.buttons) {
@@ -216,11 +249,11 @@ window.table = function(options) {
 
                     /*
                         URL params
-                        sort, direction, page, length, search, active
+                        sort, direction, page, length, search, active, option_db_fields
                     */
 
                     if(link.classList.contains('sort-by')) {
-
+                        // leave out sort and direction because they are in the link already
                         scope.sort = params.get('sort');
                         scope.direction = params.get('direction');
                         url += '&search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&page='+scope.page;
@@ -231,6 +264,9 @@ window.table = function(options) {
                         url += '&search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction;
 
                     }
+                    scope.option_db_fields.forEach(function(field) {
+                        url += '&'+field.db_field+'='+field.value;
+                    });
 
                     scope.active_url = url;
                     scope.load_table(url);
@@ -238,6 +274,34 @@ window.table = function(options) {
                 });
 
             });
+
+        },
+
+        option_db_field(db_field, value) {
+
+            let scope = this;
+
+            let field = {
+                db_field: db_field,
+                value: value
+            }
+
+            let option_added = false;
+            this.option_db_fields.forEach(function(field) {
+                if(field.db_field === db_field) {
+                    field.value = value;
+                    option_added = true;
+                }
+            });
+            if(option_added === false) {
+                this.option_db_fields.push(field);
+            }
+
+            this.option_db_fields.forEach(function(field) {
+                scope.add_url_param(field.db_field, field.value);
+            });
+
+            scope.load_table(scope.active_url);
 
         },
 
@@ -306,11 +370,18 @@ window.table = function(options) {
             let scope = this;
 
             let url = scope.page_url+'?search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction+'&start_date='+scope.start_date+'&end_date='+scope.end_date+'&date_col='+scope.date_col;
+
+            this.option_db_fields.forEach(function(field) {
+                url += '&'+field.db_field+'='+field.value;
+            });
+
             let param = new RegExp('[&]*'+key+'=[a-zA-Z0-9_]*');
             url = url.replace(param, '');
             url += '&'+key+'='+val;
 
             scope.active_url = url;
+
+
 
             return url;
 

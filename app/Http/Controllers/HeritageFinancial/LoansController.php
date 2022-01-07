@@ -21,13 +21,18 @@ use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
 use App\Models\OldDB\Company\LoansInProcess as LoansInProcessOld;
+use App\Models\OldDB\LoanOfficers;
 
 class LoansController extends Controller
 {
 
     public function loans(Request $request) {
 
-        return view('heritage_financial/loans/loans');
+        $processors = Mortgage::whereIn('emp_position', ['processor', 'manager'])
+        -> where('active', 'yes')
+        -> get();
+
+        return view('heritage_financial/loans/loans', compact('processors'));
 
     }
 
@@ -37,6 +42,12 @@ class LoansController extends Controller
         $sort = $request -> sort ? $request -> sort : 'settlement_date';
         $length = $request -> length ? $request -> length : 10;
 
+        $processor_id = $request -> processor_id ?? auth() -> user() -> user_id;
+        $loan_status = $request -> loan_status;
+        if(!$loan_status || $loan_status == '') {
+            $loan_status = null;
+        }
+
         $search = $request -> search ?? null;
 
         $loans = Loans::select([
@@ -44,6 +55,7 @@ class LoansController extends Controller
             'uuid',
             'first_name as loan_officer_first',
             'last_name as loan_officer_last',
+            'processor_id',
             'loan_amount',
             'borrower_first',
             'borrower_last',
@@ -69,27 +81,21 @@ class LoansController extends Controller
                 -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
             }
         })
-        -> leftJoin('emp_mortgage', 'loan_officer_1_id', '=', 'emp_mortgage.id')
-        -> orderBy($sort, $direction)
-        //-> sortable()
-        -> paginate($length);
-
-
-        /* $loans = Loans::select(['id', 'uuid', 'loan_amount', 'borrower_first', 'borrower_last', 'settlement_date', 'loan_officer_1_id', 'street', 'city', 'state', 'zip'])
-        -> where(function($query) use ($search) {
-            if($search) {
-                $query -> where('street', 'like', '%'.$search.'%')
-                -> orWhereHas('loan_officer_1', function($query) use ($search) {
-                    $query -> where('first_name', 'like', '%'.$search.'%')
-                    -> orWhere('last_name', 'like', '%'.$search.'%')
-                    -> orWhere('fullname', 'like', '%'.$search.'%');
-                });
+        -> where(function($query) use ($processor_id) {
+            if($processor_id) {
+                $query -> where('processor_id', $processor_id);
             }
         })
-        -> with(['loan_officer_1'])
+        -> where(function($query) use ($loan_status) {
+            if($loan_status) {
+                $query -> where('loan_status', $loan_status);
+            }
+        })
+        -> leftJoin('emp_mortgage', 'loan_officer_1_id', '=', 'emp_mortgage.id')
+        -> with(['processor'])
         -> orderBy($sort, $direction)
-        //-> sortable()
-        -> paginate($length); */
+        -> paginate($length);
+
 
         return view('heritage_financial/loans/get_loans_html', compact('loans'));
 

@@ -28,7 +28,32 @@ $breadcrumbs = [
                 'container': $refs.container,
                 'data_url': '/heritage_financial/loans/get_loans',
                 'length': '10',
-                'sort_by': 'settlement_date'
+                'sort_by': 'settlement_date',
+                'fields': {
+                    '1': {
+                        type: 'select',
+                        db_field: 'processor_id',
+                        label: 'Processor',
+                        value: '{{ auth() -> user() -> user_id }}',
+                        options: [
+                            ['', ''],
+                            @foreach($processors as $processor)
+                                ['{{ $processor -> id }}', '{{ $processor -> fullname }}'],
+                            @endforeach
+                        ]
+                    },
+                    '2': {
+                        type: 'select',
+                        db_field: 'loan_status',
+                        label: 'Status',
+                        value: 'Open',
+                        options: [
+                            ['', ''],
+                            ['Open', 'Open'],
+                            ['Closed', 'Closed'],
+                        ]
+                    }
+                }
             })">
 
                 <div x-ref="container"></div>
