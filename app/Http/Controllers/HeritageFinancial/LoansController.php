@@ -49,7 +49,11 @@ class LoansController extends Controller
             }
         }
         $loan_status = $request -> loan_status;
-        if(!$loan_status || $loan_status == '') {
+
+        if($loan_status == null) {
+            $loan_status = 'Open';
+        }
+        if($loan_status == '') {
             $loan_status = null;
         }
 
