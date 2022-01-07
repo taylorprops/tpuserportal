@@ -42,7 +42,12 @@ class LoansController extends Controller
         $sort = $request -> sort ? $request -> sort : 'settlement_date';
         $length = $request -> length ? $request -> length : 10;
 
-        $processor_id = $request -> processor_id ?? auth() -> user() -> user_id;
+        $processor_id = $request -> processor_id ?? null;
+        if(!$processor_id) {
+            if(in_array(auth() -> user() -> level, ['manager', 'processor'])) {
+                $processor_id = auth() -> user() -> user_id;
+            }
+        }
         $loan_status = $request -> loan_status;
         if(!$loan_status || $loan_status == '') {
             $loan_status = null;
