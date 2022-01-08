@@ -831,24 +831,79 @@ class LoansController extends Controller
     public function add_time_line(Request $request) {
 
 
-        $loans_in_process = LoansInProcessOld::where('did_not_settle_withdrawn', '!=', 'yes')
-        -> where('did_not_settle_denied', '!=', 'yes')
-        -> where('did_not_settle_inc', '!=', 'yes')
-        -> where(function($query) {
-            $query -> where('funded', '0000-00-00')
-            -> orWhereNull('funded');
-        })
-        -> get();
+        $loans_old = LoansInProcessOld::get();
 
-        foreach($loans_in_process as $loan) {
+        foreach($loans_old as $loan_old) {
 
-            $found_loan = Loans::where('loan_number', $loan -> loan_number)
+            $loan_new = Loans::where('loan_number', $loan_old -> loan_number)
             -> first();
 
-            if($found_loan) {
-                echo 'found<br>';
-            } else {
-                echo $loan -> street.'<br>';
+            if($loan_new) {
+
+                if($loan_old -> package_sub == '0000-00-00') {
+                    $loan_old -> package_sub = null;
+                }
+                if($loan_old -> processor_sub == '0000-00-00') {
+                    $loan_old -> processor_sub = null;
+                }
+                if($loan_old -> cond_rec_date == '0000-00-00') {
+                    $loan_old -> cond_rec_date = null;
+                }
+                if($loan_old -> title_sub == '0000-00-00') {
+                    $loan_old -> title_sub = null;
+                }
+                if($loan_old -> title_rec == '0000-00-00') {
+                    $loan_old -> title_rec = null;
+                }
+                if($loan_old -> uw_sub == '0000-00-00') {
+                    $loan_old -> uw_sub = null;
+                }
+                if($loan_old -> appraisal_sub == '0000-00-00') {
+                    $loan_old -> appraisal_sub = null;
+                }
+                if($loan_old -> appraisal_rec == '0000-00-00') {
+                    $loan_old -> appraisal_rec = null;
+                }
+                if($loan_old -> voe_sub == '0000-00-00') {
+                    $loan_old -> voe_sub = null;
+                }
+                if($loan_old -> voe_rec == '0000-00-00') {
+                    $loan_old -> voe_rec = null;
+                }
+                if($loan_old -> cond_sub == '0000-00-00') {
+                    $loan_old -> cond_sub = null;
+                }
+                if($loan_old -> clear_to_close == '0000-00-00') {
+                    $loan_old -> clear_to_close = null;
+                }
+                if($loan_old -> settlement_scheduled == '0000-00-00') {
+                    $loan_old -> settlement_scheduled = null;
+                }
+                if($loan_old -> closed == '0000-00-00') {
+                    $loan_old -> closed = null;
+                }
+                if($loan_old -> funded == '0000-00-00') {
+                    $loan_old -> funded = null;
+                }
+
+                $loan_new -> time_line_package_to_borrower = $loan_old -> package_sub;
+                $loan_new -> time_line_sent_to_processing = $loan_old -> processor_sub;
+                $loan_new -> time_line_conditions_received_status = $loan_old -> cond_rec_status;
+                $loan_new -> time_line_conditions_received = $loan_old -> cond_rec_date;
+                $loan_new -> time_line_title_ordered = $loan_old -> title_sub;
+                $loan_new -> time_line_title_received = $loan_old -> title_rec;
+                $loan_new -> time_line_submitted_to_uw = $loan_old -> uw_sub;
+                $loan_new -> time_line_appraisal_ordered = $loan_old -> appraisal_sub;
+                $loan_new -> time_line_appraisal_received = $loan_old -> appraisal_rec;
+                $loan_new -> time_line_voe_ordered = $loan_old -> voe_sub;
+                $loan_new -> time_line_voe_received = $loan_old -> voe_rec;
+                $loan_new -> time_line_conditions_submitted = $loan_old -> cond_sub;
+                $loan_new -> time_line_clear_to_close = $loan_old -> clear_to_close;
+                $loan_new -> time_line_scheduled_settlement = $loan_old -> settlement_scheduled;
+                $loan_new -> time_line_closed = $loan_old -> closed;
+                $loan_new -> time_line_funded = $loan_old -> funded;
+                $loan_new -> save();
+
             }
 
         }
