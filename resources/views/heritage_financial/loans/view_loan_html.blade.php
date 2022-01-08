@@ -68,16 +68,24 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                         <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
                         :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2', 'border-primary text-primary-dark': active_tab === '2' }"
                         @click="active_tab = '2'">
-                            <i class="fad fa-calculator mr-3"
+                            <i class="fad fa-calendar mr-3"
                             :class="{ 'text-primary': active_tab === '2', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2' }"></i>
-                            <span>Commission</span>
+                            <span>Time Line</span>
                         </a>
 
                         <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
                         :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3', 'border-primary text-primary-dark': active_tab === '3' }"
                         @click="active_tab = '3'">
-                            <i class="fad fa-copy mr-3"
+                            <i class="fad fa-calculator mr-3"
                             :class="{ 'text-primary': active_tab === '3', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3' }"></i>
+                            <span>Commission</span>
+                        </a>
+
+                        <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                        :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4', 'border-primary text-primary-dark': active_tab === '4' }"
+                        @click="active_tab = '4'">
+                            <i class="fad fa-copy mr-3"
+                            :class="{ 'text-primary': active_tab === '4', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4' }"></i>
                             <span>Documents</span>
                         </a>
 

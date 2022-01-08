@@ -48,7 +48,7 @@ $breadcrumbs = [
                         type: 'select',
                         db_field: 'loan_status',
                         label: 'Status',
-                        value: 'open',
+                        value: 'Open',
                         options: [
                             ['all', 'All'],
                             ['Open', 'Open'],
