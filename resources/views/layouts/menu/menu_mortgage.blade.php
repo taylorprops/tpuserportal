@@ -27,6 +27,13 @@
     :link="'/heritage_financial/loan_software'"
     :icon="'fad fa-save'"/>
 
+    {{-- Lenders --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Lenders'"
+    :link="'/heritage_financial/lenders'"
+    :icon="'fad fa-sack-dollar'"/>
+
     @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
     {{-- Loans --}}
     <x-nav.menu
@@ -42,7 +49,7 @@
     :level="'1'"
     :title="'Manager Bonuses'"
     :link="'/heritage_financial/manager_bonuses'"
-    :icon="'fad fa-money-check'"/>
+    :icon="'fad fa-money-bill-wave'"/>
     @endif
 
     {{-- Profile --}}

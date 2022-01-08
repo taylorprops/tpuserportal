@@ -48,14 +48,7 @@ class LoansController extends Controller
                 $processor_id = auth() -> user() -> user_id;
             }
         }
-        $loan_status = $request -> loan_status;
-
-        if($loan_status == null) {
-            $loan_status = 'Open';
-        }
-        if($loan_status == '') {
-            $loan_status = null;
-        }
+        $loan_status = $request -> loan_status ?? 'open';
 
         $search = $request -> search ?? null;
 
@@ -96,7 +89,7 @@ class LoansController extends Controller
             }
         })
         -> where(function($query) use ($loan_status) {
-            if($loan_status) {
+            if($loan_status && $loan_status != null) {
                 $query -> where('loan_status', $loan_status);
             }
         })

@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HeritageFinancial\LoansController;
+use App\Http\Controllers\HeritageFinancial\LendersController;
 use App\Http\Controllers\HeritageFinancial\LoanOfficerController;
 
 
@@ -27,6 +28,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     Route::get('/heritage_financial/manager_bonuses', [LoansController::class, 'manager_bonuses']) -> middleware(['mortgage']);
     Route::post('/heritage_financial/email_manager_bonuses', [LoansController::class, 'email_manager_bonuses']) -> middleware(['mortgage']);
+
+    Route::get('/heritage_financial/lenders', [LendersController::class, 'lenders']) -> middleware(['mortgage']);
 
     Route::get('/heritage_financial/loan_software', function() {
         return view('/heritage_financial/loan_software/loan_software');
