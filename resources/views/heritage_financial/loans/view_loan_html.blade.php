@@ -43,8 +43,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 <select id="tabs" name="tabs" class="block w-full focus:ring-primary focus:border-primary border-gray-300 rounded-md"
                 @change="active_tab = $el.value">
                     <option selected value="1">Details</option>
-                    <option value="2">Commission</option>
-                    <option value="3">Documents</option>
+                    <option value="2">Time Line</option>
+                    <option value="3">Commission</option>
+                    <option value="4">Documents</option>
                 </select>
                 @endif
             </div>
@@ -297,7 +298,10 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     id="loan_status"
                                     name="loan_status"
                                     data-label="Loan Status"
-                                    @change="require_title($el.value)">
+                                    @change="require_title($el.value);
+                                    require_close_date($el.value);
+                                    let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
+                                    $refs.settlement_date.previousElementSibling.innerText = label_text;">
                                         <option value=""></option>
                                         <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
                                         <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
@@ -308,10 +312,11 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 <div class="col-span-1 m-2 sm:m-3">
                                     <input
                                     type="date"
-                                    class="form-element input {{ $input_size }} required"
+                                    class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status != 'Open') required @endif"
                                     id="settlement_date"
                                     name="settlement_date"
-                                    data-label="Settlement Date"
+                                    x-ref="settlement_date"
+                                    data-label=" @if($loan && $loan -> loan_status == 'Cancelled') Cancelled Date @else Settlement Date @endif"
                                     value="{{ $loan -> settlement_date ?? null }}">
                                 </div>
 
@@ -511,7 +516,14 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 </div>
 
 
-                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12">
+                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12 max-w-1000-px">
+
+
+
+                </div>
+
+
+                <div x-show="active_tab === '3'" x-transition class="pt-4 sm:pt-12">
 
                     {{-- if Loan Officer --}}
                     <div class="mt-4 @if($loan && $loan -> loan_status == 'Closed') max-w-xl @else max-w-4xl @endif @if(auth() -> user() -> level != 'loan_officer') hidden @endif">
@@ -1586,7 +1598,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 </div>
 
 
-                <div x-show="active_tab === '3'" x-transition class="pt-4 sm:pt-12">
+                <div x-show="active_tab === '4'" x-transition class="pt-4 sm:pt-12">
 
                     <div class="">
 

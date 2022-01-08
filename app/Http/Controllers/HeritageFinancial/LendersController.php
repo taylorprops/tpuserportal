@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Lenders;
-use App\Models\HeritageFinancial\LendersNotes;
 use App\Models\OldDB\Company\Lenders as LendersOld;
 
 class LendersController extends Controller
@@ -21,10 +20,20 @@ class LendersController extends Controller
 
     public function get_lenders(Request $request) {
 
-        $active = $request -> active;
+        $direction = $request -> direction ? $request -> direction : 'desc';
+        $sort = $request -> sort ? $request -> sort : 'settlement_date';
+        $length = $request -> length ? $request -> length : 10;
 
-        $lenders = Lenders::where('active', $active) -> get();
-        dd($lenders);
+        $search = $request -> search ?? null;
+
+        $lenders = Lenders::where(function($query) use ($search) {
+            $query -> where('company_name', 'like', '%'.$search.'%')
+                -> orWhere('account_exec_name', 'like', '%'.$search.'%')
+                -> orWhere('notes', 'like', '%'.$search.'%');
+        })
+        -> orderBy($sort, $direction)
+        -> paginate($length);
+
 
         return view('heritage_financial/lenders/get_lenders_html', compact('lenders'));
 
@@ -38,7 +47,6 @@ class LendersController extends Controller
 
 
         Lenders::truncate();
-        LendersNotes::truncate();
 
         // Add Lenders
         foreach ($lenders as $lender) {
@@ -61,23 +69,10 @@ class LendersController extends Controller
             $add_lender -> basis_points = $lender -> basis_points;
             $add_lender -> minimum = $lender -> minimum;
             $add_lender -> maximum = $lender -> maximum;
+            $add_lender -> notes = $lender -> notes;
 
             $add_lender -> save();
 
-            $add_lender_id = $add_lender -> id;
-
-            // add notes
-            if ($lender -> notes != '') {
-                $user = User::where('email', 'like', '%claure%') -> first();
-                $user_id = $user -> id;
-                $user_name = $user -> name;
-
-                $add_notes = new LendersNotes();
-                $add_notes -> lender_id = $add_lender_id;
-                $add_notes -> user_id = $user_id;
-                $add_notes -> createdBy = $user_name;
-                $add_notes -> notes = $lender -> notes;
-            }
 
         }
 

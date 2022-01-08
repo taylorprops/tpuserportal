@@ -431,6 +431,13 @@ if(document.URL.match(/view_loan/)) {
                 }
             },
 
+            require_close_date(status) {
+                this.$refs.settlement_date.classList.remove('required');
+                if(status == 'Closed' || status == 'Cancelled') {
+                    this.$refs.settlement_date.classList.add('required');
+                }
+            },
+
             docs() {
 
                 let scope = this;

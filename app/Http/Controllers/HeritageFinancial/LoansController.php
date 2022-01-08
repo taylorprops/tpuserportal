@@ -828,5 +828,32 @@ class LoansController extends Controller
 
     }
 
+    public function add_time_line(Request $request) {
+
+
+        $loans_in_process = LoansInProcessOld::where('did_not_settle_withdrawn', '!=', 'yes')
+        -> where('did_not_settle_denied', '!=', 'yes')
+        -> where('did_not_settle_inc', '!=', 'yes')
+        -> where(function($query) {
+            $query -> where('funded', '0000-00-00')
+            -> orWhereNull('funded');
+        })
+        -> get();
+
+        foreach($loans_in_process as $loan) {
+
+            $found_loan = Loans::where('loan_number', $loan -> loan_number)
+            -> first();
+
+            if($found_loan) {
+                echo 'found<br>';
+            } else {
+                echo $loan -> street.'<br>';
+            }
+
+        }
+
+    }
+
 
 }

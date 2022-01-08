@@ -38,7 +38,7 @@ $breadcrumbs = [
                         value: '{{ auth() -> user() -> user_id }}',
                         @endif
                         options: [
-                            ['', ''],
+                            ['', 'All'],
                             @foreach($processors as $processor)
                                 ['{{ $processor -> id }}', '{{ $processor -> fullname }}'],
                             @endforeach
@@ -50,9 +50,10 @@ $breadcrumbs = [
                         label: 'Status',
                         value: 'open',
                         options: [
-                            ['all', ''],
-                            ['open', 'Open'],
-                            ['closed', 'Closed'],
+                            ['all', 'All'],
+                            ['Open', 'Open'],
+                            ['Closed', 'Closed'],
+                            ['Cancelled', 'Cancelled'],
                         ]
                     }
                 }
