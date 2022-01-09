@@ -238,6 +238,13 @@ class LoansController extends Controller
 
     }
 
+    public function save_time_line(Request $request) {
+
+        Loans::where('uuid', $request -> uuid) -> first() -> update($request -> all());
+
+        return response() -> json(['status' => 'success']);
+
+    }
 
     public function save_commission(Request $request) {
 

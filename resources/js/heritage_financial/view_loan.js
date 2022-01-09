@@ -315,6 +315,22 @@ if(document.URL.match(/view_loan/)) {
                 });
 
             },
+            save_time_line(ele) {
+                show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
+
+                let form = document.getElementById('time_line_form');
+                let formData = new FormData(form);
+
+                axios.post('/heritage_financial/save_time_line', formData)
+                .then(function (response) {
+                    ele.innerHTML = 'Save Time Line <i class="fal fa-check ml-2"></i>';
+                    toastr.success('Time Line Successfully Saved');
+                })
+                .catch(function (error) {
+
+                });
+            },
             set_checks_in_amount() {
 
                 let show_total = document.querySelectorAll('.checks-in-amount');

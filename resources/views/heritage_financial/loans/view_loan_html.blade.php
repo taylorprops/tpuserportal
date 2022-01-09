@@ -524,9 +524,109 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 </div>
 
 
-                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12 max-w-1000-px">
+                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12 max-w-600-px">
+
+                    <form id="time_line_form">
+
+                        <div class="mt-12 border-2 rounded-lg p-4 divide-y">
+
+                            @php
+                            $fields = [
+                                ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
+                                ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
+                                ['date', 'time_line_clear_to_close', 'Clear To Close'],
+                                ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date'],
+                                ['date', 'time_line_closed', 'Closed'],
+                                ['date', 'time_line_funded', 'Funded']
+                            ];
+                            $processing_fields = [
+                                ['select', 'time_line_conditions_received_status', 'Conditions Received Status'],
+                                ['date', 'time_line_conditions_received', 'Conditions Received'],
+                                ['date', 'time_line_title_ordered', 'Title Ordered'],
+                                ['date', 'time_line_title_received', 'Title Received'],
+                                ['date', 'time_line_submitted_to_uw', 'Submitted To UW'],
+                                ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered'],
+                                ['date', 'time_line_appraisal_received', 'Appraisal Received'],
+                                ['date', 'time_line_voe_ordered', 'VOE Ordered'],
+                                ['date', 'time_line_voe_received', 'VOE Received'],
+                                ['date', 'time_line_conditions_submitted', 'Conditions Submitted'],
+                            ];
+                            @endphp
+
+                            @foreach($fields as $field)
+
+                                @php $db_field = $field[1]; @endphp
+
+                                <div class="grid grid-cols-5 py-2">
+
+                                    <div class="col-span-3 flex justify-end items-center mr-4">
+                                        {{ $field[2] }}
+                                    </div>
+
+                                    <div class="col-span-2">
+
+                                        <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field }}">
+
+                                    </div>
+
+                                    @if($db_field == 'time_line_sent_to_processing')
+
+                                        <div class="col-span-5 mt-4 border p-4 rounded-md bg-gray-50 divide-y">
+
+                                            <div class="text-gray-400 text-lg font-semibold text-center mb-3">Processing Tasks</div>
+
+                                            @foreach($processing_fields as $processing_field)
+
+                                                @php $db_processing_field = $processing_field[1]; @endphp
+
+                                                <div class="grid grid-cols-5 py-2">
+
+                                                    <div class="col-span-3 flex justify-end items-center mr-4">
+                                                        {{ $processing_field[2] }}
+                                                    </div>
+
+                                                    <div class="col-span-2">
 
 
+
+                                                        @if($processing_field[0] == 'date')
+                                                            <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field }}">
+                                                        @else
+                                                            <select
+                                                            class="form-element select md"
+                                                            name="{{ $db_processing_field }}"
+                                                            data-label="">
+                                                                <option value=""></option>
+                                                                <option value="approved" @if($loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
+                                                                <option value="suspended" @if($loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
+                                                            </select>
+                                                        @endif
+
+
+
+                                                    </div>
+
+                                                </div>
+
+                                            @endforeach
+
+                                        </div>
+
+                                    @endif
+
+                                </div>
+
+                            @endforeach
+
+                            <div class="mt-4 flex justify-around p-6">
+                                <button type="button" class="button primary lg" @click="save_time_line($el)">Save Time Line <i class="fal fa-check ml-2"></i></button>
+                            </div>
+
+                        </div>
+
+                        <input type="hidden" name="uuid" value="{{ $loan -> uuid }}">
+
+                    </form>
 
                 </div>
 
