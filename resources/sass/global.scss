@@ -74,7 +74,7 @@ a:not(.button):not(.light):not(.menu-link):not(.no-color) {
             thead {
                 @apply bg-gray-50;
                 th {
-                    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+                    @apply pl-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap;
                 }
             }
             tbody {

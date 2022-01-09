@@ -1,8 +1,6 @@
 @php
-$title = 'Add Loan';
-if($loan) {
-    $title = $loan -> street;
-}
+$title = $loan ? $loan -> street : 'Add Loan';
+
 $breadcrumbs = [
     ['Heritage Financial', ''],
     ['Loans', '/heritage_financial/loans'],
@@ -565,7 +563,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     <div class="col-span-2">
 
-                                        <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field }}">
+                                        <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
 
                                     </div>
 
@@ -590,15 +588,15 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
 
                                                         @if($processing_field[0] == 'date')
-                                                            <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field }}">
+                                                            <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field ?? null }}">
                                                         @else
                                                             <select
                                                             class="form-element select md"
                                                             name="{{ $db_processing_field }}"
                                                             data-label="">
                                                                 <option value=""></option>
-                                                                <option value="approved" @if($loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
-                                                                <option value="suspended" @if($loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
+                                                                <option value="approved" @if($loan && $loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
+                                                                <option value="suspended" @if($loan && $loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
                                                             </select>
                                                         @endif
 
@@ -624,7 +622,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         </div>
 
-                        <input type="hidden" name="uuid" value="{{ $loan -> uuid }}">
+                        <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
 
                     </form>
 

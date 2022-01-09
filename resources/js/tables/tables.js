@@ -59,7 +59,7 @@ window.table = function(options) {
             let scope = this;
 
             if(!url) {
-                url = scope.page_url+'?active='+scope.active;
+                url = scope.page_url+'?active='+scope.active+'&length='+scope.length;
             }
             scope.active_url = url;
 

@@ -136,6 +136,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% Import Lenders
     Route::get('/heritage_financial/lenders/import_lenders', [LendersController::class, 'import_lenders']) -> middleware(['in_house']);
+    Route::get('/heritage_financial/lenders/add_uuids', [LendersController::class, 'add_uuids']) -> middleware(['mortgage']);
 
 
     // %%%% New Skyslope to old DB

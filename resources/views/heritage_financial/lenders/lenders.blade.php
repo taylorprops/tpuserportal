@@ -14,12 +14,12 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="w-full mx-auto">
 
             <div class=""
             x-data="lenders()">
 
-                <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+                <div class="w-full mx-auto">
 
                     @if(auth() -> user() -> level != 'loan_officer')
                     <div class="mt-4 float-right">
@@ -31,7 +31,7 @@ $breadcrumbs = [
                     x-data="table({
                         'container': $refs.container,
                         'data_url': '/heritage_financial/lenders/get_lenders',
-                        'length': '10',
+                        'length': '25',
                         'sort_by': 'company_name',
                         'fields': {
                             '1': {

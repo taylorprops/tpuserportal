@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HeritageFinancial;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Lenders;
@@ -10,6 +11,8 @@ use App\Models\OldDB\Company\Lenders as LendersOld;
 
 class LendersController extends Controller
 {
+
+
 
 
     public function lenders(Request $request) {
@@ -20,22 +23,41 @@ class LendersController extends Controller
 
     public function get_lenders(Request $request) {
 
-        $direction = $request -> direction ? $request -> direction : 'desc';
-        $sort = $request -> sort ? $request -> sort : 'settlement_date';
+        $direction = $request -> direction ? $request -> direction : 'asc';
+        $sort = $request -> sort ? $request -> sort : 'company_name';
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
+        $active = $request -> active ?? 'Yes';
 
         $lenders = Lenders::where(function($query) use ($search) {
             $query -> where('company_name', 'like', '%'.$search.'%')
                 -> orWhere('account_exec_name', 'like', '%'.$search.'%')
                 -> orWhere('notes', 'like', '%'.$search.'%');
         })
+        -> where(function($query) use ($active) {
+            if($active == 'No') {
+                $query -> onlyTrashed();
+            } else if($active == '') {
+                $query -> withTrashed();
+            }
+        })
         -> orderBy($sort, $direction)
         -> paginate($length);
 
 
         return view('heritage_financial/lenders/get_lenders_html', compact('lenders'));
+
+    }
+
+    public function view_lender(Request $request) {
+
+        $lender = null;
+        if($request -> uuid) {
+            $lender = Lenders::where('uuid', $request -> uuid) -> first();
+        }
+
+        return view('heritage_financial/lenders/view_lender', compact('lender'));
 
     }
 
@@ -76,6 +98,17 @@ class LendersController extends Controller
 
         }
 
+
+    }
+
+    public function add_uuids(Request $request) {
+
+        $lenders = Lenders::get();
+
+        foreach($lenders as $lender) {
+            $lender -> uuid = (string) Str::uuid();
+            $lender -> save();
+        }
 
     }
 

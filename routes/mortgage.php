@@ -33,6 +33,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 
     Route::get('/heritage_financial/lenders', [LendersController::class, 'lenders']) -> middleware(['mortgage']);
+    Route::get('/heritage_financial/lenders/get_lenders', [LendersController::class, 'get_lenders']) -> middleware(['mortgage']);
+    Route::get('/heritage_financial/lenders/view_lender/{uuid?}', [LendersController::class, 'view_lender']) -> middleware(['mortgage']);
 
     Route::get('/heritage_financial/loan_software', function() {
         return view('/heritage_financial/loan_software/loan_software');

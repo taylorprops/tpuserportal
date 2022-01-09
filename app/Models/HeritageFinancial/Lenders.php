@@ -19,4 +19,8 @@ class Lenders extends Model
         return $this -> hasMany(\App\Models\HeritageFinancial\LendersNotes::class, 'lender_id', 'id');
     }
 
+    public function documents() {
+        return $this -> hasMany(\App\Models\HeritageFinancial\LendersDocuments::class, 'lender_id', 'id');
+    }
+
 }
