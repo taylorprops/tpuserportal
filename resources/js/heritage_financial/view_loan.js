@@ -627,11 +627,25 @@ if(document.URL.match(/view_loan/)) {
                 let scope = this;
                 axios.get('/heritage_financial/get_notes', {
                     params: {
-                        uuid: scope.uuid
+                        uuid: scope.uuid,
+                        print: false
                     },
                 })
                 .then(function (response) {
                     scope.$refs.notes_div.innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                axios.get('/heritage_financial/get_notes', {
+                    params: {
+                        uuid: scope.uuid,
+                        print: true
+                    },
+                })
+                .then(function (response) {
+                    scope.$refs.notes_div_print.innerHTML = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);

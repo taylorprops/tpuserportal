@@ -561,12 +561,13 @@ class LoansController extends Controller
 
     public function get_notes(Request $request) {
 
+        $print = $request -> print;
         $notes = LoansNotes::where('loan_uuid', $request -> uuid)
         -> with(['user'])
         -> orderBy('created_at', 'desc')
         -> get();
 
-        return view('heritage_financial/loans/get_notes_html', compact('notes'));
+        return view('heritage_financial/loans/get_notes_html', compact('notes', 'print'));
     }
 
     public function add_notes(Request $request) {

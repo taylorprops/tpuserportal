@@ -1622,6 +1622,14 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         <br><br>
                                         <table style="font-family:Arial, Helvetica, sans-serif">
                                             <tr>
+                                                <th align="left" style="padding-bottom: 10px; font-size: 18px">Checks In</th>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="checks-in-amount"></span></td>
+                                            </tr>
+                                        </table>
+                                        <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 10px">
+                                            <tr>
                                                 <th colspan="3" align="left" style="padding-bottom: 20px; font-size: 18px">Checks Out</th>
                                             </tr>
                                             <tr>
@@ -1650,6 +1658,17 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         </table>
 
                                         <div class="deductions-out-div-print"></div>
+
+                                        <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px">
+                                            <tr>
+                                                <th align="left" style="padding-bottom: 10px; font-size: 18px">Notes</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div x-ref="notes_div_print"></div>
+                                                </td>
+                                            </tr>
+                                        </table>
 
                                     </div>
 
