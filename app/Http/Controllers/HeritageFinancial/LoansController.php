@@ -72,6 +72,7 @@ class LoansController extends Controller
             'city',
             'state',
             'zip',
+            'heritage_financial_loans.created_at'
             ])
         -> where(function($query) use ($search) {
             if($search) {

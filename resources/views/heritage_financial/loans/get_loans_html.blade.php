@@ -16,6 +16,7 @@
                 <th scope="col">@sortablelink('borrower_last', 'Borrower')</th>
                 <th scope="col">@sortablelink('loan_amount', 'Loan Amount')</th>
                 <th scope="col">@sortablelink('processor_id', 'Processor')</th>
+                <th scope="col">@sortablelink('created_at', 'Added On')</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@
                     </td>
                     <td>${{ number_format($loan -> loan_amount) }}</td>
                     <td>@if($loan -> processor) {{ $loan -> processor -> fullname }} @endif</td>
+                <td>{{ date('M jS, Y', strtotime($loan -> created_at)) }} {{ date('g:i A', strtotime($loan -> created_at)) }}</td>
                 </tr>
             @endforeach
         </tbody>
