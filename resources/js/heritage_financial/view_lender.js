@@ -6,6 +6,7 @@ if(document.URL.match(/view_lender/)) {
         return {
 
             uuid: uuid,
+            lender_docs_pond: '',
 
             init() {
                 this.textarea_height(this.$refs.notes);

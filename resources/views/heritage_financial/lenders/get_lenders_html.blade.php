@@ -35,7 +35,13 @@
                     </td>
                     <td class="w-32">{{ $lender -> basis_points }}</td>
                     <td class="w-32">{{ $lender -> minimum }} - {{ $lender -> maximum }}</td>
-                    <td></td>
+                    <td>
+                        @foreach($lender -> documents as $doc)
+                            <div>
+                                <a href="{{ $doc -> file_location_url }}" target="_blank">{{ $doc -> file_name }}</a>
+                            </div>
+                        @endforeach
+                    </td>
                     <td>
                         <div class="max-h-28 overflow-y-auto">
                             {!! nl2br($lender -> notes) !!}

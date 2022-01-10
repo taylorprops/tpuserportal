@@ -44,6 +44,7 @@ class LendersController extends Controller
                 -> orWhere('account_exec_name', 'like', '%'.$search.'%')
                 -> orWhere('notes', 'like', '%'.$search.'%');
         })
+        -> with(['documents'])
         -> orderBy($sort, $direction)
         -> paginate($length);
 
