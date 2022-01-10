@@ -108,8 +108,7 @@ $breadcrumbs = [
                                     </button>
                                 </div>
 
-                                <input type="hidden" name="id" value="{{ $lender -> id ?? null }}">
-                                <input type="hidden" name="uuid" value="{{ $lender -> uuid ?? null }}">
+
 
                             </div>
 
@@ -117,10 +116,37 @@ $breadcrumbs = [
 
                                 <div class="border-2 rounded-lg p-4">
                                     <div class="text-gray-700 font-semibold text-lg"><i class="fad fa-copy mr-2"></i> Documents</div>
+
+                                    <div class="mb-8 mt-6">
+                                        <div class="text-gray mb-3">Add Documents</div>
+                                        <input
+                                        type="file"
+                                        class="form-element input md"
+                                        id="lender_docs"
+                                        name="lender_docs"
+                                        multiple>
+                                    </div>
+
+                                    <div class="mt-12 mb-3">Uploaded Documents</div>
+                                    <div class="border rounded-md p-4">
+                                        <div class="docs-div"></div>
+                                    </div>
+
                                 </div>
 
                                 <div class="border-2 rounded-lg p-4 mt-8">
                                     <div class="text-gray-700 font-semibold text-lg"><i class="fad fa-sticky-note mr-2"></i> Notes</div>
+
+                                    <div>
+                                        <textarea class="form-element textarea md" x-ref="notes" name="notes">{!! $lender -> notes ?? null !!}</textarea>
+                                    </div>
+
+                                    <div class="flex justify-around p-4">
+                                        <button type="button" class="button primary md"
+                                        @click="save_details($el)">
+                                            Save Notes <i class="fal fa-check ml-2"></i>
+                                        </button>
+                                    </div>
                                 </div>
 
                             </div>
@@ -129,11 +155,31 @@ $breadcrumbs = [
 
                     </div>
 
+                    <input type="hidden" name="id" value="{{ $lender -> id ?? null }}">
+                    <input type="hidden" name="uuid" value="{{ $lender -> uuid ?? null }}">
+
                 </form>
 
             </div>
 
         </div>
+
+        <template id="doc_template">
+            <div class="flex justify-between items-center border-b pb-2 mb-4 text-sm">
+                <div>
+                    <a href="%%url%%" target="_blank">%%file_name%%</a>
+                </div>
+                <div>
+
+                    <button
+                    type="button"
+                    class="button danger sm no-text"
+                    x-on:click="delete_doc(%%id%%)">
+                        <i class="fal fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </template>
 
     </div>
 

@@ -7,7 +7,9 @@ use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\HeritageFinancial\Lenders;
+use App\Models\HeritageFinancial\LendersDocuments;
 use App\Models\OldDB\Company\Lenders as LendersOld;
 use App\Models\DocManagement\Resources\LocationData;
 
@@ -100,6 +102,51 @@ class LendersController extends Controller
             'success' => true,
             'uuid' => $lender -> uuid ?? null
         ]);
+
+    }
+
+    public function get_docs(Request $request) {
+
+        $docs = LendersDocuments::where('lender_uuid', $request -> uuid) -> get();
+
+        return compact('docs');
+
+    }
+
+    public function docs_upload(Request $request) {
+
+        $file = $request -> file('lender_docs');
+        $uuid = $request -> uuid;
+
+        $file_name_orig = $file -> getClientOriginalName();
+        $file_name = Helper::clean_file_name($file, '', false, true);
+
+        $dir = 'mortgage/lenders/docs/'.$uuid;
+        if(!is_dir($dir)) {
+            Storage::makeDirectory($dir);
+        }
+        $file -> storeAs($dir, $file_name);
+        $file_location = $dir.'/'.$file_name;
+        $file_location_url = Storage::url($dir.'/'.$file_name);
+
+        LendersDocuments::create([
+            'lender_uuid' => $uuid,
+            'file_name' => $file_name_orig,
+            'file_location' => $file_location,
+            'file_location_url' => $file_location_url,
+        ]);
+
+
+
+    }
+
+    public function delete_doc(Request $request) {
+
+        $id = $request -> id;
+
+        LendersDocuments::find($id) -> delete();
+
+        return response() -> json(['status' => 'success']);
 
     }
 

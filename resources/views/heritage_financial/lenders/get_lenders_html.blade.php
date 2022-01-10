@@ -36,7 +36,11 @@
                     <td class="w-32">{{ $lender -> basis_points }}</td>
                     <td class="w-32">{{ $lender -> minimum }} - {{ $lender -> maximum }}</td>
                     <td></td>
-                    <td>{{ $lender -> notes }}</td>
+                    <td>
+                        <div class="max-h-28 overflow-y-auto">
+                            {!! nl2br($lender -> notes) !!}
+                        </div>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
