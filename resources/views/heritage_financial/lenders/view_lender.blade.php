@@ -123,7 +123,8 @@ $breadcrumbs = [
                                         type="file"
                                         class="form-element input md"
                                         id="lender_docs"
-                                        name="lender_docs">
+                                        name="lender_docs"
+                                        multiple>
                                     </div>
 
                                     <div class="mt-12 mb-3">Uploaded Documents</div>
