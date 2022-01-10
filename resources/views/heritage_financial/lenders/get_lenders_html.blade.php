@@ -8,7 +8,9 @@
 
         <thead>
             <tr id="sortable_tr">
+                @if(auth() -> user() -> level != 'loan_officer')
                 <th width="100" scope="col"></th>
+                @endif
                 <th scope="col">@sortablelink('company_name', 'Lender')</th>
                 <th scope="col">@sortablelink('account_exec_name', 'Account Exec')</th>
                 <th scope="col">@sortablelink('basis_points', 'Basis Points')</th>
@@ -20,17 +22,19 @@
         <tbody>
             @foreach($lenders as $lender)
                 <tr>
+                    @if(auth() -> user() -> level != 'loan_officer')
                     <td>
                         <a href="/heritage_financial/lenders/view_lender/{{ $lender -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
+                    @endif
                     <td class="w-64">{{ $lender -> company_name }}</td>
                     <td>
                         {{ $lender -> account_exec_name }}<br>
                         {{ $lender -> account_exec_phone }}<br>
                         <a href="mailto:{{ $lender -> account_exec_email }}" target="_blank">{{ $lender -> account_exec_email }}</a>
                     </td>
-                    <td>{{ $lender -> basis_points }}</td>
-                    <td>{{ $lender -> minimum }} - {{ $lender -> maximum }}</td>
+                    <td class="w-32">{{ $lender -> basis_points }}</td>
+                    <td class="w-32">{{ $lender -> minimum }} - {{ $lender -> maximum }}</td>
                     <td></td>
                     <td>{{ $lender -> notes }}</td>
                 </tr>

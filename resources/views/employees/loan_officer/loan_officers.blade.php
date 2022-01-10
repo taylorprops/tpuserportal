@@ -23,7 +23,6 @@
                 x-data="table({
                     'container': $refs.container,
                     'data_url': '/employees/loan_officer/get_loan_officers',
-                    'active': 'yes',
                     'length': '10',
                     'sort_by': 'last_name',
                     'buttons': [
@@ -31,7 +30,19 @@
                             'html': '<i class=\'fal fa-plus mr-2\'></i> Add Loan Officer',
                             'url': '/employees/loan_officer/loan_officer_view'
                         }
-                    ]
+                    ],
+                    'fields': {
+                        '1': {
+                            type: 'select',
+                            db_field: 'active',
+                            label: 'Active',
+                            value: 'yes',
+                            options: [
+                                ['yes', 'Yes'],
+                                ['no', 'No'],
+                            ]
+                        }
+                    }
                 })">
 
                     <div x-ref="container"></div>

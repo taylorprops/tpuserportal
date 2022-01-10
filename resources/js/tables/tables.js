@@ -3,7 +3,6 @@ window.table = function(options) {
 
     let container = options.container;
     let data_url = options.data_url;
-    let active = options.active ? options.active : null;
     let dates = options.dates || null;
     let dates_col = null;
     if(options.dates) {
@@ -16,6 +15,7 @@ window.table = function(options) {
     let buttons = options.buttons || null;
     let search = options.search == false ? false : true;
     let fields = options.fields || null;
+    let additional_html = options.additional_html || null;
 
     return {
 
@@ -23,7 +23,6 @@ window.table = function(options) {
         search: search,
         search_val: '',
         active_url: data_url,
-        active: active,
         page_url: data_url,
         button_export: button_export,
         export_url: export_url,
@@ -33,6 +32,7 @@ window.table = function(options) {
         date_col: dates_col,
         start_date: null,
         end_date: null,
+        additional_html: additional_html,
         option_db_fields: [],
         sort: sort,
         direction: 'asc',
@@ -51,7 +51,6 @@ window.table = function(options) {
             <div class="options-container"></div> \
             <div class="table-container"></div> \
             ';
-            this.add_url_param('active', this.active);
         },
 
         load_table(url = null, to_excel = false) {
@@ -59,7 +58,7 @@ window.table = function(options) {
             let scope = this;
 
             if(!url) {
-                url = scope.page_url+'?active='+scope.active+'&length='+scope.length;
+                url = scope.page_url+'?length='+scope.length;
             }
             scope.active_url = url;
 
@@ -97,82 +96,52 @@ window.table = function(options) {
 
             let scope = this;
 
-            let options_html = '<div class="flex justify-between options-div"> \
-            <div class="flex">';
+            let options_html = ' \
+            <div> \
+                <div class="flex justify-between options-div"> \
+                    <div class="flex">';
 
             if(scope.search == true) {
 
-                options_html += ' \
-                <div class="p-2 ml-6 w-36"> \
-                    <input \
-                    type="text" \
-                    class="form-element input md" \
-                        data-label="Search" \
-                        x-on:keyup="option_search($el.value)"> \
-                </div> \
-                ';
-
-            }
-
-            if(scope.active) {
-
-                options_html += ' \
-                <div class="p-2 ml-6 w-36"> \
-                    <select \
-                    class="form-element select md" \
-                    data-label="Active" \
-                    x-ref="active" \
-                    x-on:change="option_show_active($el.value);"> \
-                        <option value="all" \
+                        options_html += ' \
+                        <div class="p-2 ml-6 w-36"> \
+                            <input \
+                            type="text" \
+                            class="form-element input md" \
+                                data-label="Search" \
+                                x-on:keyup="option_search($el.value)"> \
+                        </div> \
                         ';
-                        if(scope.active == 'all') {
-                            options_html += ' selected';
-                        }
-                        options_html += '>All</option> \
-                        <option value="yes" \
-                        ';
-                        if(scope.active == 'yes') {
-                            options_html += ' selected';
-                        }
-                        options_html += '>Active</option> \
-                        <option value="no" \
-                        ';
-                        if(scope.active == 'no') {
-                            options_html += ' selected';
-                        }
-                        options_html += '>Not Active</option> \
-                    </select> \
-                </div> \
-                ';
 
             }
 
             if(scope.dates) {
 
-                options_html += ' \
-                <div class="p-2 ml-6 w-36"> \
-                    <div class="flex items-end justify-start space-x-4"> \
-                        <div> \
-                            <input \
-                            type="date" \
-                            class="form-element input md" \
-                                data-label="'+scope.dates.text+'" \
-                                placeholder="Start Date" \
-                                x-ref="start_date" \
-                                x-on:change="option_dates()"> \
+                        options_html += ' \
+                        <div class="p-2 ml-6 w-36"> \
+                            <div class="flex items-end justify-start space-x-4"> \
+                                <div> \
+                                    <input \
+                                    type="date" \
+                                    class="form-element input md" \
+                                        data-label="'+scope.dates.text+'" \
+                                        placeholder="Start Date" \
+                                        x-ref="start_date" \
+                                        x-on:change="option_dates()"> \
+                                </div> \
+                                <div> to </div> \
+                                <div> \
+                                    <input \
+                                    type="date" \
+                                    class="form-element input md" \
+                                        data-label="" \
+                                        placeholder="End Date" \
+                                        x-ref="end_date" \
+                                        x-on:change="option_dates()"> \
+                                </div> \
+                            </div> \
                         </div> \
-                        <div> to </div> \
-                        <div> \
-                            <input \
-                            type="date" \
-                            class="form-element input md" \
-                                data-label="" \
-                                placeholder="End Date" \
-                                x-ref="end_date" \
-                                x-on:change="option_dates()"> \
-                        </div> \
-                </div> \
-                ';
+                        ';
 
             }
 
@@ -205,8 +174,8 @@ window.table = function(options) {
 
             }
 
-
-            options_html += '</div>';
+            options_html += ' \
+                    </div>';
 
             if(scope.buttons) {
                 scope.buttons.forEach(function(button) {
@@ -218,9 +187,24 @@ window.table = function(options) {
                 });
             }
 
-            options_html += '</div>';
+            options_html += ' \
+                </div>';
+
+            if(scope.additional_html) {
+
+                options_html += ' \
+                <div class="ml-8 my-8"> \
+                    '+scope.additional_html+' \
+                </div>';
+
+            }
+
+            options_html += ' \
+            </div>';
 
             scope.container.querySelector('.options-container').insertAdjacentHTML('beforeend', options_html);
+
+
 
         },
 
@@ -249,19 +233,19 @@ window.table = function(options) {
 
                     /*
                         URL params
-                        sort, direction, page, length, search, active, option_db_fields
+                        sort, direction, page, length, search, option_db_fields
                     */
 
                     if(link.classList.contains('sort-by')) {
                         // leave out sort and direction because they are in the link already
                         scope.sort = params.get('sort');
                         scope.direction = params.get('direction');
-                        url += '&search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&page='+scope.page;
+                        url += '&search='+scope.search_val+'&length='+scope.length+'&page='+scope.page;
 
                     } else {
 
                         scope.page = params.get('page');
-                        url += '&search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction;
+                        url += '&search='+scope.search_val+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction;
 
                     }
                     scope.option_db_fields.forEach(function(field) {
@@ -310,25 +294,8 @@ window.table = function(options) {
             let scope = this;
 
             scope.search_val = val;
-            scope.active = '';
-
-            if(scope.$refs.active) {
-                scope.$refs.active.value = '';
-            }
 
             let url = scope.add_url_param('search', val.trim());
-
-            scope.load_table(url);
-
-        },
-
-        option_show_active(active) {
-
-            let scope = this;
-
-            scope.active = active;
-
-            let url = scope.add_url_param('active', active);
 
             scope.load_table(url);
 
@@ -369,7 +336,7 @@ window.table = function(options) {
 
             let scope = this;
 
-            let url = scope.page_url+'?search='+scope.search_val+'&active='+scope.active+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction+'&start_date='+scope.start_date+'&end_date='+scope.end_date+'&date_col='+scope.date_col;
+            let url = scope.page_url+'?search='+scope.search_val+'&length='+scope.length+'&sort='+scope.sort+'&direction='+scope.direction+'&start_date='+scope.start_date+'&end_date='+scope.end_date+'&date_col='+scope.date_col;
 
             this.option_db_fields.forEach(function(field) {
                 url += '&'+field.db_field+'='+field.value;

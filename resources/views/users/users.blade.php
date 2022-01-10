@@ -22,10 +22,21 @@ $breadcrumbs = [
                 x-data="table({
                     'container': $el,
                     'data_url': '/users/get_users',
-                    'active': 'yes',
                     'length': '10',
                     'sort_by': 'last_name',
                     'button_export': true,
+                    'fields': {
+                        '1': {
+                            type: 'select',
+                            db_field: 'active',
+                            label: 'Active',
+                            value: 'yes',
+                            options: [
+                                ['yes', 'Yes'],
+                                ['no', 'No'],
+                            ]
+                        }
+                    }
                 })">
 
                 </div>

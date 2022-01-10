@@ -53,6 +53,7 @@ require('./heritage_financial/view_loan.js');
 require('./heritage_financial/commission_reports');
 require('./heritage_financial/manager_bonuses');
 require('./heritage_financial/lenders');
+require('./heritage_financial/view_lender');
 
 require('./marketing/data/address_database.js');
 

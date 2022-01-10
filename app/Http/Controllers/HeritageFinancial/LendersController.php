@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\HeritageFinancial;
 
 use App\Models\User;
+use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Lenders;
 use App\Models\OldDB\Company\Lenders as LendersOld;
+use App\Models\DocManagement\Resources\LocationData;
 
 class LendersController extends Controller
 {
@@ -28,19 +30,17 @@ class LendersController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active ?? 'Yes';
+        $active = $request -> active ?? 'yes';
 
-        $lenders = Lenders::where(function($query) use ($search) {
+        $lenders = Lenders::where(function($query) use ($active) {
+            if($active != 'all') {
+                $query -> where('active', $active);
+            }
+        })
+        -> where(function($query) use ($search) {
             $query -> where('company_name', 'like', '%'.$search.'%')
                 -> orWhere('account_exec_name', 'like', '%'.$search.'%')
                 -> orWhere('notes', 'like', '%'.$search.'%');
-        })
-        -> where(function($query) use ($active) {
-            if($active == 'No') {
-                $query -> onlyTrashed();
-            } else if($active == '') {
-                $query -> withTrashed();
-            }
         })
         -> orderBy($sort, $direction)
         -> paginate($length);
@@ -57,7 +57,49 @@ class LendersController extends Controller
             $lender = Lenders::where('uuid', $request -> uuid) -> first();
         }
 
-        return view('heritage_financial/lenders/view_lender', compact('lender'));
+        $states = LocationData::getStates();
+
+        return view('heritage_financial/lenders/view_lender', compact('lender', 'states'));
+
+    }
+
+    public function save_details(Request $request) {
+
+        $request -> validate([
+            'company_name' => 'required',
+        ],
+        [
+            'required' => 'Required'
+        ]);
+
+
+        if ($request -> uuid != '') {
+
+            $lender = Lenders::where('uuid', $request -> uuid) -> first -> update($request -> all());
+
+        } else {
+
+            $lender = new Lenders();
+            $uuid = (string) Str::uuid();
+
+            $ignore = ['uuid', 'id'];
+            foreach ($request -> all() as $key => $value) {
+                if (!in_array($key, $ignore)) {
+                    $lender -> $key = $value;
+                }
+            }
+            $lender -> uuid = $uuid;
+
+            $lender -> save();
+
+        }
+
+
+
+        return response() -> json([
+            'success' => true,
+            'uuid' => $lender -> uuid
+        ]);
 
     }
 
@@ -111,5 +153,25 @@ class LendersController extends Controller
         }
 
     }
+
+    public function parse_address(Request $request) {
+
+        $lenders = Lenders::get();
+
+        foreach($lenders as $lender) {
+            $address = $lender -> account_exec_address;
+            if($address != '') {
+                $parsed = Helper::parse_address_google($address);
+                $lender -> company_street = $parsed['street_number'].' '.$parsed['address'];
+                $lender -> company_unit = $parsed['unit'];
+                $lender -> company_city = $parsed['city'];
+                $lender -> company_state = $parsed['state'];
+                $lender -> company_zip = $parsed['zip'];
+                //$lender -> save();
+            }
+        }
+
+    }
+
 
 }

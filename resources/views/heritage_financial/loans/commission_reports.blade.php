@@ -15,6 +15,10 @@ $breadcrumbs = [
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
+            <div class="text-xl text-gray-700 my-4">
+                Select the dates and then click the "To Excel" button to generate a report
+            </div>
+
             <div class="flex flex-col">
 
                 <div class="sm:-mx-6 lg:-mx-8" x-data="table({
@@ -27,7 +31,8 @@ $breadcrumbs = [
                 'dates': {
                     'col': 'settlement_date',
                     'text': 'Settlement Date'
-                }
+                },
+                'additional_html': '<div class=\'text-xl text-gray-700\'>Results</div>',
             })">
 
                     <div x-ref="container"></div>

@@ -188,7 +188,44 @@ class Helper
         return $rets;
     }
 
+    public static function parse_address_google($address) {
 
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' . urlencode($address).'&key='.config('global.google_api_key');
+        $results = json_decode(file_get_contents($url), 1);
+
+        $parts = array(
+            'street_number' => array('street_number'),
+            'address' => array('street_number', 'route'),
+            'unit' => array('subpremise'),
+            'city' => array('locality'),
+            'state' => array('administrative_area_level_1'),
+            'zip' => array('postal_code'),
+        );
+
+        if (!empty($results['results'][0]['address_components'])) {
+            $ac = $results['results'][0]['address_components'];
+            dump($ac);
+            foreach ($parts as $need => &$types) {
+
+                foreach ($ac as &$a) {
+
+                    if (in_array($a['types'][0], $types)) {
+                        $address_out[$need] = $a['short_name'];
+                    } elseif (empty($address_out[$need])) {
+                        $address_out[$need] = '';
+                    }
+
+                }
+
+            }
+
+        } else {
+            return 'error';
+        }
+
+        return $address_out;
+
+    }
 
 
 }

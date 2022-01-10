@@ -19,10 +19,10 @@ $breadcrumbs = [
             <div class=""
             x-data="lenders()">
 
-                <div class="w-full mx-auto">
+                <div class="w-full">
 
                     @if(auth() -> user() -> level != 'loan_officer')
-                    <div class="mt-4 float-right">
+                    <div class="mt-4 mr-8 float-right">
                         <button @click="window.location='/heritage_financial/lenders/view_lender'" class="button primary lg"><i class="fal fa-plus mr-2"></i> Add Lender</button>
                     </div>
                     @endif
@@ -38,9 +38,11 @@ $breadcrumbs = [
                                 type: 'select',
                                 db_field: 'active',
                                 label: 'Active',
+                                value: 'yes',
                                 options: [
-                                    ['Yes', 'Yes'],
-                                    ['No', 'No'],
+                                    ['all', 'All'],
+                                    ['yes', 'Yes'],
+                                    ['no', 'No'],
                                 ]
                             }
                         }

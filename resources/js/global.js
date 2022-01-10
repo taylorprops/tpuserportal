@@ -160,14 +160,16 @@ window.show_form_errors = function (errors) {
         if(Array.isArray(value)) {
             message = value[0];
         }
+
         let element = '';
         if(field.match(/\.[0-9]+$/)) {
             let fields = field.split('.');
             let elements = document.querySelectorAll('[name="'+fields[0]+'[]"]');
             element = elements[fields[1]];
         } else {
-            element = document.querySelector('#' + field);
+            element = document.querySelector('[name="'+field+'"]');
         }
+        console.log(element);
         let label = '';
         let error_message = '<div class="error-message text-red-500 text-xxs">' + message + '</div>';
 
