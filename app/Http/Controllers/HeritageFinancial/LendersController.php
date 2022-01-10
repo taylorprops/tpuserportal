@@ -75,7 +75,7 @@ class LendersController extends Controller
 
         if ($request -> uuid != '') {
 
-            $lender = Lenders::where('uuid', $request -> uuid) -> first -> update($request -> all());
+            $lender = Lenders::where('uuid', $request -> uuid) -> first() -> update($request -> all());
 
         } else {
 
@@ -98,7 +98,7 @@ class LendersController extends Controller
 
         return response() -> json([
             'success' => true,
-            'uuid' => $lender -> uuid
+            'uuid' => $lender -> uuid ?? null
         ]);
 
     }
