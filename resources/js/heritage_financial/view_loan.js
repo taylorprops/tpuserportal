@@ -324,8 +324,8 @@ if(document.URL.match(/view_loan/)) {
 
                 axios.post('/heritage_financial/save_time_line', formData)
                 .then(function (response) {
-                    ele.innerHTML = 'Save Time Line <i class="fal fa-check ml-2"></i>';
-                    toastr.success('Time Line Successfully Saved');
+                    ele.innerHTML = 'Save Timeline <i class="fal fa-check ml-2"></i>';
+                    toastr.success('Timeline Successfully Saved');
                 })
                 .catch(function (error) {
 
