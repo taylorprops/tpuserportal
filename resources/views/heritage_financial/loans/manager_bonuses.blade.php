@@ -50,7 +50,7 @@ $breadcrumbs = [
                                                     <a href="javascript:void(0)" class="block w-full pl-4 text-lg no-color text-gray-500"
                                                     @click="month_selected = month_selected === {{ $month }} ? null : {{ $month }};
                                                     $refs.arrow_month_{{ $year.$month }}.classList.toggle('rotate-90');">
-                                                        {{ date('F', strtotime('2000-'.$month.'-01')) }} <i class="fal fa-arrow-right ml-2 transform @if($c == 1 && $month == 12) rotate-90 @endif" x-ref="arrow_month_{{ $year.$month }}"></i>
+                                                        {{ date('F', strtotime('2000-'.$month.'-01')) }} <i class="fal fa-arrow-right ml-2 transform @if($c == 1 && $month == date('m')) rotate-90 @endif" x-ref="arrow_month_{{ $year.$month }}"></i>
                                                     </a>
                                                 </div>
 
