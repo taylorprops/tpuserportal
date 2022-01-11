@@ -38,7 +38,7 @@ $breadcrumbs = [
                                 x-ref="container{{ $c }}"
                                 x-show="year_selected === {{ $c }}"
                                 x-transition
-                                x-data="{ month_selected: 12 }">
+                                x-data="{ month_selected: {{ date('m') }} }">
 
                                     @foreach($months as $month)
 
