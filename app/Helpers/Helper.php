@@ -236,22 +236,39 @@ class Helper
             $user = User::find(auth() -> user() -> id);
         }
 
-        $colors = [
-            'bg-blue-500',
-            'bg-red-500',
-            'bg-emerald-500',
-            'bg-orange-500',
-            'bg-green-500',
-            'bg-teal-500',
-            'bg-cyan-500',
-            'bg-indigo-500',
-            'bg-purple-500',
+        /* $colors = [
+            'bg-blue-700',
+            'bg-red-700',
+            'bg-emerald-700',
+            'bg-orange-700',
+            'bg-green-700',
+            'bg-teal-700',
+            'bg-cyan-700',
+            'bg-indigo-700',
+            'bg-purple-700',
         ];
 
-        if($user && $user -> photo_location_url) {
-            return '<img class="inline-block h-10 w-8 rounded-full" src="{{ $user -> photo_location_url }}" alt="">';
+        $selected_color = $colors[0];
+
+        $cont = true;
+        if(session() -> has('avatar_colors')) {
+            foreach($colors as $color) {
+                if($cont == true) {
+                    if(!in_array($color, session() -> get('avatar_colors'))) {
+                        $selected_color = $color;
+                        session() -> push('avatar_colors', $colors[0]);
+                        $cont = false;
+                    }
+                }
+            }
         } else {
-            return '<div class="rounded-full bg-primary text-white flex items-center justify-around h-8 w-8">
+            session(['avatar_colors' => [$colors[0]]]);
+        } */
+
+        if($user && $user -> photo_location_url) {
+            return '<img class="inline-block h-10 w-8 rounded-full" src="'.$user -> photo_location_url.'" alt="">';
+        } else {
+            return '<div class="rounded-full bg-primary-700 text-white flex items-center justify-around h-8 w-8">
                 '.Helper::get_initials($user -> first_name.' '.$user -> last_name).'
             </div>';
         }

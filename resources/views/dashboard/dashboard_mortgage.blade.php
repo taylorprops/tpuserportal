@@ -12,7 +12,7 @@ $breadcrumbs = [];
     <div class="pb-24 lg:pb-36 pt-2"
     x-data="dashboard('{{ $group }}')">
 
-        <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-12 pt-4 md:pt-8 lg:pt-16">
+        <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-12 pt-4 md:pt-8">
 
             <div class="max-w-1400-px mx-auto">
 
@@ -27,12 +27,12 @@ $breadcrumbs = [];
 
                     <div class="flex border-b">
 
-                        <div class="w-116"></div>
+                        <div class="w-128"></div>
 
                         <div class="flex bg-gray-100">
                             @foreach($table_headers as $header)
-                                <div class="w-12 h-48 whitespace-nowrap border-r border-gray-500">
-                                    <div class="transform rotate-270 translate-y-36 text-sm">
+                                <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
+                                    <div class="transform rotate-270 translate-y-30 text-sm">
                                         {{ $header['title'] }}
                                     </div>
                                 </div>
@@ -41,7 +41,7 @@ $breadcrumbs = [];
 
                     </div>
 
-                    <div class="p-2 max-h-600-px overflow-auto whitespace-nowrap">
+                    <div class="p-2 max-h-600-px overflow-auto whitespace-nowrap pb-96">
 
                         @forelse($active_loans as $loan)
 
@@ -55,20 +55,20 @@ $breadcrumbs = [];
 
                             <div class="flex justify-start items-center p-2 mb-2 border-b text-sm">
 
-                                <div class="w-20">
+                                <div class="w-16">
                                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
                                 </div>
 
-                                <div class="w-20">
+                                <div class="w-20 flex justify-around">
                                     {!! App\Helpers\Helper::avatar($loan -> processor_id, 'mortgage') !!}
                                 </div>
 
-                                <div class="w-40">
+                                <div class="w-52">
                                     <div class="font-semibold text-gray-700">{!! $borrower !!}</div>
                                     <div class="text-xs">{!! $address !!}</div>
                                 </div>
 
-                                <div class="w-32">
+                                <div class="w-36">
                                     ${{ number_format($loan -> loan_amount) }}
                                     <div class="text-xs">
                                         CD - {{ $loan -> settlement_date }}
@@ -78,9 +78,40 @@ $breadcrumbs = [];
                                 <div class="flex">
 
                                     @foreach($table_headers as $header)
-                                        <div class="w-12 border border-r">
-                                            x
+
+                                        @php
+                                        $field = $header['db_field'];
+                                        $complete = '<i class="fal fa-check fa-2x text-green-600"></i>';
+                                        $incomplete = '<i class="fal fa-times fa-2x text-red-600"></i>';
+                                        $not_available = '<i class="fal fa-minus fa-2x text-gray-300"></i>';
+                                        @endphp
+
+                                        <div class="flex items-center justify-around w-12 border-r border-gray-400">
+
+                                            @if($field == 'locked')
+                                                @if($loan -> locked == 'yes')
+                                                    {!! $complete !!}
+                                                @else
+                                                    {!! $incomplete !!}
+                                                @endif
+                                            @elseif($field == 'time_line_conditions_received_status')
+                                                @if($loan -> time_line_conditions_received_status == 'approved')
+                                                    {!! $complete !!}
+                                                @elseif($loan -> time_line_conditions_received_status == 'suspended')
+                                                    {!! $incomplete !!}
+                                                @else
+                                                    {!! $not_available !!}
+                                                @endif
+                                            @else
+                                                @if($loan -> $field)
+                                                    {!! $complete !!}
+                                                @else
+                                                    {!! $incomplete !!}
+                                                @endif
+                                            @endif
+
                                         </div>
+
                                     @endforeach
                                 </div>
 

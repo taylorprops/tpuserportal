@@ -25,22 +25,22 @@ class DashboardController extends Controller
             -> get();
 
             $table_headers = [
-                ['title' => 'Locked', 'db_field' => 'locked', 'type' => 'yes_no'],
-                ['title' => 'Approved/Suspended', 'db_field' => 'time_line_conditions_received_status', 'type' => 'approved_suspended'],
-                ['title' => 'Package Sent', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Sent To Processor', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Title Ordered', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Title Received', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Sent To UW', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Appraisal Ordered', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Appraisal Received', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'VOE Ordered', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'VOE Received', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Conditions Sent', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Clear To Close', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Settlement Scheduled', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Closed', 'db_field' => '', 'type' => 'date'],
-                ['title' => 'Funded', 'db_field' => '', 'type' => 'date'],
+                ['title' => 'Locked', 'db_field' => 'locked'],
+                ['title' => 'Approved/Suspended', 'db_field' => 'time_line_conditions_received_status'],
+                ['title' => 'Package Sent', 'db_field' => 'time_line_package_to_borrower'],
+                ['title' => 'Sent To Processor', 'db_field' => 'time_line_sent_to_processing'],
+                ['title' => 'Title Ordered', 'db_field' => 'time_line_title_ordered'],
+                ['title' => 'Title Received', 'db_field' => 'time_line_title_received'],
+                ['title' => 'Sent To UW', 'db_field' => 'time_line_submitted_to_uw'],
+                ['title' => 'Appraisal Ordered', 'db_field' => 'time_line_appraisal_ordered'],
+                ['title' => 'Appraisal Received', 'db_field' => 'time_line_appraisal_received'],
+                ['title' => 'VOE Ordered', 'db_field' => 'time_line_voe_ordered'],
+                ['title' => 'VOE Received', 'db_field' => 'time_line_voe_received'],
+                ['title' => 'Conditions Sent', 'db_field' => 'time_line_conditions_submitted'],
+                ['title' => 'Clear To Close', 'db_field' => 'time_line_clear_to_close'],
+                ['title' => 'Settlement Scheduled', 'db_field' => 'time_line_scheduled_settlement'],
+                ['title' => 'Closed', 'db_field' => 'time_line_closed'],
+                ['title' => 'Funded', 'db_field' => 'time_line_funded'],
             ];
 
             return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions', 'table_headers'));

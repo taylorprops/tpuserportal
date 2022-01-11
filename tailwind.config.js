@@ -23,6 +23,9 @@ module.exports = {
             rotate: {
                 '270': '270deg',
             },
+            translate: {
+                '30': '7.5rem',
+            },
             zIndex: {
                 '60': 60,
                 '70': 70,
