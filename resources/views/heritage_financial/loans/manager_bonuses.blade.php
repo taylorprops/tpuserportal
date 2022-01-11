@@ -29,26 +29,28 @@ $breadcrumbs = [
                             <div>
 
                                 <button class="block w-full text-left border-b bg-gray-50 p-4 pb-2 text-xl font-semibold"
-                                @click="year_selected = year_selected === {{ $c }} ? null : {{ $c }}">
-                                    {{ $year }}
+                                @click="year_selected = year_selected === {{ $c }} ? null : {{ $c }};
+                                $refs.arrow_year_{{ $year }}.classList.toggle('rotate-90');">
+                                    {{ $year }} <i class="fal fa-arrow-right ml-2 transform @if($c == 1) rotate-90 @endif" x-ref="arrow_year_{{ $year }}"></i>
                                 </button>
 
                                 <div class=""
                                 x-ref="container{{ $c }}"
                                 x-show="year_selected === {{ $c }}"
                                 x-transition
-                                x-data="{ month_selected: 1 }">
+                                x-data="{ month_selected: 12 }">
 
                                     @foreach($months as $month)
 
                                         @if(count($loans -> where('year', $year) -> where('month', $month)) > 0)
 
-                                            <div class="flex justify-between mt-4 border-b pb-3">
+                                            <div class="flex justify-between items-center py-2 border-b">
 
-                                                <div>
+                                                <div class="w-full">
                                                     <a href="javascript:void(0)" class="block w-full pl-4 text-lg no-color text-gray-500"
-                                                    @click="month_selected = month_selected === {{ $month }} ? null : {{ $month }}">
-                                                        {{ date('F', strtotime('2000-'.$month.'-01')) }}
+                                                    @click="month_selected = month_selected === {{ $month }} ? null : {{ $month }};
+                                                    $refs.arrow_month_{{ $year.$month }}.classList.toggle('rotate-90');">
+                                                        {{ date('F', strtotime('2000-'.$month.'-01')) }} <i class="fal fa-arrow-right ml-2 transform @if($c == 1 && $month == 12) rotate-90 @endif" x-ref="arrow_month_{{ $year.$month }}"></i>
                                                     </a>
                                                 </div>
 
