@@ -19,10 +19,10 @@ if(document.URL.match(/manager_bonuses/)) {
                 print_page.close();
             },
 
-            send_email(ele) {
+            send_email(button) {
 
-                let button_html = ele.innerHTML;
-                show_loading_button(ele, 'Sending Email ... ');
+                let button_html = button.innerHTML;
+                show_loading_button(button, 'Sending Email ... ');
 
                 let scope = this;
                 ele = scope.email_ele;
@@ -41,7 +41,7 @@ if(document.URL.match(/manager_bonuses/)) {
                 .then(function (response) {
                     toastr.success('Email successfully sent');
                     scope.show_email_bonuses = false;
-                    ele.innerHTML = button_html;
+                    button.innerHTML = button_html;
                 })
                 .catch(function (error) {
                 });
