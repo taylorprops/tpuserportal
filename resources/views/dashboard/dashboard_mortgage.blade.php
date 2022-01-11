@@ -55,8 +55,8 @@ $breadcrumbs = [];
 
                             <div class="flex justify-start items-center p-2 mb-2 border-b text-sm">
 
-                                <div class="w-16">
-                                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
+                                <div class="w-20">
+                                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                                 </div>
 
                                 <div class="w-20 flex justify-around">
@@ -68,7 +68,7 @@ $breadcrumbs = [];
                                     <div class="text-xs">{!! $address !!}</div>
                                 </div>
 
-                                <div class="w-36">
+                                <div class="w-32">
                                     ${{ number_format($loan -> loan_amount) }}
                                     <div class="text-xs">
                                         CD - {{ $loan -> settlement_date }}
@@ -79,36 +79,61 @@ $breadcrumbs = [];
 
                                     @foreach($table_headers as $header)
 
-                                        @php
-                                        $field = $header['db_field'];
-                                        $complete = '<i class="fal fa-check fa-2x text-green-600"></i>';
-                                        $incomplete = '<i class="fal fa-times fa-2x text-red-600"></i>';
-                                        $not_available = '<i class="fal fa-minus fa-2x text-gray-300"></i>';
-                                        @endphp
-
                                         <div class="flex items-center justify-around w-12 border-r border-gray-400">
 
-                                            @if($field == 'locked')
-                                                @if($loan -> locked == 'yes')
-                                                    {!! $complete !!}
-                                                @else
-                                                    {!! $incomplete !!}
-                                                @endif
-                                            @elseif($field == 'time_line_conditions_received_status')
-                                                @if($loan -> time_line_conditions_received_status == 'approved')
-                                                    {!! $complete !!}
-                                                @elseif($loan -> time_line_conditions_received_status == 'suspended')
-                                                    {!! $incomplete !!}
-                                                @else
-                                                    {!! $not_available !!}
-                                                @endif
-                                            @else
-                                                @if($loan -> $field)
-                                                    {!! $complete !!}
-                                                @else
-                                                    {!! $incomplete !!}
-                                                @endif
-                                            @endif
+                                            @php
+                                            $field = $header['db_field'];
+
+                                            $complete = false;
+                                            $incomplete = false;
+                                            $not_available = false;
+
+                                            if($field == 'locked') {
+
+                                                if($loan -> locked == 'yes') {
+                                                    $complete = true;
+                                                } else {
+                                                    $incomplete = true;
+                                                }
+
+                                                $text_complete = 'Yes<br>Expires: '.$loan -> lock_expiration;
+                                                $text_incomplete = 'No';
+
+                                            } elseif($field == 'time_line_conditions_received_status') {
+
+                                                if($loan -> time_line_conditions_received_status == 'approved') {
+                                                    $complete = true;
+                                                } elseif($loan -> time_line_conditions_received_status == 'suspended') {
+                                                    $incomplete = true;
+                                                } else {
+                                                    $not_available = true;
+                                                }
+
+                                                $text_complete = 'Approved';
+                                                $text_incomplete = 'Suspended';
+
+                                            } else {
+
+                                                if($loan -> $field) {
+                                                    $complete = true;
+                                                } else {
+                                                    $incomplete = true;
+                                                }
+
+                                                $text_complete = 'Completed<br>'.$loan -> $field;
+                                                $text_incomplete = 'Not Completed';
+
+                                            }
+
+
+                                            if($complete == true) {
+                                                echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
+                                            } else if($incomplete == true) {
+                                                echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times fa-2x text-red-600"></i></span>';
+                                            } else if($not_available == true) {
+                                                echo '<span data-tippy-content="N/A"><i class="fal fa-minus fa-2x text-gray-300"></i></span>';
+                                            }
+                                            @endphp
 
                                         </div>
 

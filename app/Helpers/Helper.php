@@ -230,10 +230,12 @@ class Helper
 
     public static function avatar($user_id = null, $user_type = null) {
 
-        if($user_id) {
+        $bg_color = 'bg-blue-400';
+        if($user_id && $user_id != auth() -> user() -> user_id) {
             $user = User::where('user_id', $user_id) -> where('group', $user_type) -> first();
         } else {
             $user = User::find(auth() -> user() -> id);
+            $bg_color = 'bg-green-400';
         }
 
         /* $colors = [
@@ -268,7 +270,7 @@ class Helper
         if($user && $user -> photo_location_url) {
             return '<img class="inline-block h-10 w-8 rounded-full" src="'.$user -> photo_location_url.'" alt="">';
         } else {
-            return '<div class="rounded-full bg-primary-700 text-white flex items-center justify-around h-8 w-8">
+            return '<div class="rounded-full '.$bg_color.' text-white text-lg flex items-center justify-around h-10 w-10">
                 '.Helper::get_initials($user -> first_name.' '.$user -> last_name).'
             </div>';
         }

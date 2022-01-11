@@ -1,7 +1,12 @@
 import Toastr from 'toastr2';
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
+
 window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
-
+tippy('[data-tippy-content]', {
+    allowHTML: true,
+});
 
 
 window.addEventListener('load', (event) => {

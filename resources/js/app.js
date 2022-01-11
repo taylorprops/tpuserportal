@@ -12,6 +12,8 @@ FilePond.registerPlugin(FilePondPluginFileValidateType);
 import Cropper from 'cropperjs';
 window.Cropper = Cropper;
 
+
+
 require('./bootstrap');
 
 

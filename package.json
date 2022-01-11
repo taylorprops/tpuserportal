@@ -34,7 +34,7 @@
         "filepond-plugin-file-validate-type": "^1.2.6",
         "filepond-plugin-image-preview": "^4.6.9",
         "sortablejs": "^1.13.0",
-        "tippy.js": "^6.3.1",
+        "tippy.js": "^6.3.7",
         "toastr2": "*"
     }
 }
