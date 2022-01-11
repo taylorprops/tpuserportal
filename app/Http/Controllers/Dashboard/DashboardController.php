@@ -13,7 +13,7 @@ class DashboardController extends Controller
         $group = auth() -> user() -> group;
 
         // Mortgage
-        if ($group == 'mortgage') {
+        if ($group == 'mortgage' || $group == 'in_house') {
 
             $active_loans = Loans::where('loan_status', 'Open')
             -> orderBy('settlement_date', 'desc')
