@@ -268,7 +268,7 @@ class Helper
         } */
 
         if($user && $user -> photo_location_url) {
-            return '<div class="mt-3 flex -space-x-2 overflow-hidden">
+            return '<div class="mt-3 flex -space-x-6 overflow-hidden">
                 <img class="inline-block h-10 w-10 rounded-full" src="'.$user -> photo_location_url.'" alt="'.$user -> name.'">
                 </div>';
         } else {
