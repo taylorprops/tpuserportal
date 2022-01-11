@@ -50,6 +50,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
             save_details(ele) {
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
@@ -64,7 +65,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                     axios.post('/employees/save_details', formData)
                     .then(function (response) {
-                        ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                        ele.innerHTML = button_html;
                         if(response.data) {
                             if(response.data.success) {
                                 toastr.success('Employee details successfully saved')
@@ -333,6 +334,8 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
             },
             save_bio(button) {
+
+                let button_html = button.innerHTML;
                 show_loading_button(button, 'Saving Bio...');
                 let bio = tinyMCE.activeEditor.getContent();
                 bio = '<div style="width: 100%">'+bio+'</div>';
@@ -344,7 +347,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 axios.post('/employees/profile/save_bio', formData)
                 .then(function (response) {
                     toastr.success('Your Bio has been saved successfully!');
-                    button.innerHTML = '<i class="fal fa-check mr-2"></i> Save Bio';
+                    button.innerHTML = button_html;
                 })
                 .catch(function (error) {
                     if(error) {
@@ -355,8 +358,10 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     }
                 });
             },
-            save_signature(button) {
-                show_loading_button(button, 'Saving Signature...');
+            save_signature(ele) {
+
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Saving Signature...');
                 let signature = tinyMCE.activeEditor.getContent();
                 signature = '<div style="width: 100%">'+signature+'</div>';
 
@@ -367,7 +372,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 axios.post('/employees/profile/save_signature', formData)
                 .then(function (response) {
                     toastr.success('Your Signature has been saved successfully!');
-                    button.innerHTML = '<i class="fal fa-check mr-2"></i> Save Signature';
+                    ele.innerHTML = button_html;
                 })
                 .catch(function (error) {
                     if(error) {
@@ -397,6 +402,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                 let scope = this;
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
                 scope.show_add_card_error_div = false;
@@ -408,10 +414,11 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                 axios.post('/employees/billing/add_credit_card', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Credit Card';
+                    ele.innerHTML = button_html;
                     if(response.data.success) {
                         scope.get_credit_cards();
                         scope.show_add_credit_card_modal = false;
+                        ele.innerHTML = button_html;
                         //document.getElementById('add_credit_card_form').reset();
                         toastr.success('Credit Card successfully added');
                     } else if(response.data.error) {
@@ -420,15 +427,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     }
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Credit Card';
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
             },
             show_delete_credit_card(ele, profile_id, payment_profile_id) {

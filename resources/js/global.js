@@ -148,6 +148,18 @@ window.main_search = function() {
 
 }
 
+window.display_errors = function(error, ele, button_html) {
+    if (error) {
+        if (error.response) {
+            if (error.response.status == 422) {
+                let errors = error.response.data.errors;
+                show_form_errors(errors);
+                ele.innerHTML = button_html;
+            }
+        }
+    }
+}
+
 window.show_form_errors = function (errors) {
 
     remove_form_errors();

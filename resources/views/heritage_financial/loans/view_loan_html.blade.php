@@ -530,6 +530,8 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                             @php
                             $fields = [
+                                ['select', 'locked', 'Locked'],
+                                ['date', 'lock_expiration', 'Lock Expiration'],
                                 ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
                                 ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
                                 ['date', 'time_line_clear_to_close', 'Clear To Close'],
@@ -563,7 +565,18 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     <div class="col-span-2">
 
-                                        <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
+                                        @if($field[0] == 'date')
+                                            <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
+                                        @else
+                                            <select
+                                            class="form-element select md"
+                                            name="{{ $db_field }}"
+                                            data-label="">
+                                                <option value=""></option>
+                                                <option value="yes" @if($loan && $loan -> $db_field == 'yes') selected @endif>Yes</option>
+                                                <option value="no" @if($loan && $loan -> $db_field == 'no') selected @endif>No</option>
+                                            </select>
+                                        @endif
 
                                     </div>
 

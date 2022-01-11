@@ -248,6 +248,7 @@ if(document.URL.match(/view_loan/)) {
             },
             save_details(ele) {
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
@@ -259,7 +260,7 @@ if(document.URL.match(/view_loan/)) {
                 axios.post('/heritage_financial/save_details', formData)
                 .then(function (response) {
 
-                    ele.innerHTML = '<i class="fal fa-check mr-3"></i> Save Details';
+                    ele.innerHTML = button_html;
                     toastr.success('Loan Details successfully saved');
 
                     setTimeout(function() {
@@ -272,20 +273,13 @@ if(document.URL.match(/view_loan/)) {
 
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-check mr-3"></i> Save Details';
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
 
             },
             save_commission(ele, user) {
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
@@ -299,23 +293,17 @@ if(document.URL.match(/view_loan/)) {
 
                 axios.post('/heritage_financial/save_commission', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-check mr-3"></i> Save Commission';
+                    ele.innerHTML = button_html;
                     toastr.success('Loan Commission successfully saved');
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-check mr-3"></i> Save Commission';
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
 
             },
             save_time_line(ele) {
+
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
@@ -324,11 +312,11 @@ if(document.URL.match(/view_loan/)) {
 
                 axios.post('/heritage_financial/save_time_line', formData)
                 .then(function (response) {
-                    ele.innerHTML = 'Save Timeline <i class="fal fa-check ml-2"></i>';
+                    ele.innerHTML = button_html;
                     toastr.success('Timeline Successfully Saved');
                 })
                 .catch(function (error) {
-
+                    display_errors(error, ele, button_html);
                 });
             },
             set_checks_in_amount() {
@@ -654,6 +642,7 @@ if(document.URL.match(/view_loan/)) {
 
             add_notes(ele) {
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
@@ -664,26 +653,19 @@ if(document.URL.match(/view_loan/)) {
 
                 axios.post('/heritage_financial/add_notes', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Note';
+                    ele.innerHTML = button_html;
                     scope.get_notes();
                     scope.show_add_notes = false;
                     toastr.success('Note Saved');
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save Note';
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
             },
 
             delete_note(ele, id) {
                 let scope = this;
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Deleting ... ');
                 remove_form_errors();
 
@@ -692,20 +674,12 @@ if(document.URL.match(/view_loan/)) {
 
                 axios.post('/heritage_financial/delete_note', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-times mr-2"></i> Delete';
+                    ele.innerHTML = button_html;
                     scope.get_notes();
                     toastr.success('Note Deleted');
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = '<i class="fal fa-times mr-2"></i> Delete';
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
             },
 

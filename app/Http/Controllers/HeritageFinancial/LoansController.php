@@ -241,6 +241,14 @@ class LoansController extends Controller
 
     public function save_time_line(Request $request) {
 
+        $request -> validate([
+            'lock_expiration' => 'required_if:locked,yes',
+
+        ],
+        [
+            'required' => 'Required'
+        ]);
+
         Loans::where('uuid', $request -> uuid) -> first() -> update($request -> all());
 
         return response() -> json(['status' => 'success']);
@@ -911,6 +919,32 @@ class LoansController extends Controller
                 $loan_new -> time_line_scheduled_settlement = $loan_old -> settlement_scheduled;
                 $loan_new -> time_line_closed = $loan_old -> closed;
                 $loan_new -> time_line_funded = $loan_old -> funded;
+                $loan_new -> save();
+
+            }
+
+        }
+
+    }
+
+    public function add_lock_details(Request $request) {
+
+
+        $loans_old = LoansInProcessOld::get();
+
+        foreach($loans_old as $loan_old) {
+
+            $loan_new = Loans::where('loan_number', $loan_old -> loan_number)
+            -> first();
+
+            if($loan_new) {
+
+                if($loan_old -> lock_expire == '0000-00-00') {
+                    $loan_old -> lock_expire = null;
+                }
+
+                $loan_new -> locked = $loan_old -> locked;
+                $loan_new -> lock_expiration = $loan_old -> lock_expire;
                 $loan_new -> save();
 
             }

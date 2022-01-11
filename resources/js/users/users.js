@@ -25,6 +25,7 @@ if(document.URL.match(/users$/)) {
 
                 let scope = this;
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Resetting Password ... ');
 
                 let formData = new FormData();
@@ -32,7 +33,7 @@ if(document.URL.match(/users$/)) {
 
                 axios.post('/users/reset_password', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Reset Password';
+                    ele.innerHTML = button_html;
                     toastr.success('Password reset email sent successfully');
                     scope.show_confirm_reset_password = false;
                 })
@@ -43,6 +44,7 @@ if(document.URL.match(/users$/)) {
 
                 let scope = this;
 
+                let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Sending Welcome Email ... ');
 
                 let formData = new FormData();
@@ -50,7 +52,7 @@ if(document.URL.match(/users$/)) {
 
                 axios.post('/users/send_welcome_email', formData)
                 .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Send Welcome Email';
+                    ele.innerHTML = button_html;
                     toastr.success('Welcome email sent successfully');
                     scope.show_confirm_send_welcome_email = false;
                 })

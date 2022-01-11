@@ -39,15 +39,7 @@ if(document.URL.match(/view_lender/)) {
 
                 })
                 .catch(function (error) {
-                    if (error) {
-                        if (error.response) {
-                            if (error.response.status == 422) {
-                                let errors = error.response.data.errors;
-                                show_form_errors(errors);
-                                ele.innerHTML = button_html;
-                            }
-                        }
-                    }
+                    display_errors(error, ele, button_html);
                 });
 
             },
