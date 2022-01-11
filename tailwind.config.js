@@ -20,6 +20,9 @@ module.exports = {
             fontSize: {
                 'xxs': '.60rem',
             },
+            rotate: {
+                '270': '270deg',
+            },
             zIndex: {
                 '60': 60,
                 '70': 70,
@@ -140,6 +143,7 @@ module.exports = {
                 'screen-90': '90vw',
                 'screen-95': '95vw',
                 '112': '28rem',
+                '116': '29rem',
                 '128': '32rem',
             }),
             colors: {

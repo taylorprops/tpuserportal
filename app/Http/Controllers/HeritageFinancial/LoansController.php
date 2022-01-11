@@ -215,6 +215,9 @@ class LoansController extends Controller
 
         }
 
+        $loan -> borrower_fullname = $loan -> borrower_first.' '.$loan -> borrower_last;
+        $loan -> co_borrower_fullname = $loan -> co_borrower_first.' '.$loan -> co_borrower_last;
+
         if (!$original_loan_officer_1_id || $original_loan_officer_1_id != $loan -> loan_officer_1_id) {
 
             $loan_officer_1 = Mortgage::find($request -> loan_officer_1_id);

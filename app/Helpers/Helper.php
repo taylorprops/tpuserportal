@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\User;
 use ReflectionClass;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -227,5 +228,32 @@ class Helper
 
     }
 
+    public static function avatar($user_id = null, $user_type = null) {
 
+        if($user_id) {
+            $user = User::where('user_id', $user_id) -> where('group', $user_type) -> first();
+        } else {
+            $user = User::find(auth() -> user() -> id);
+        }
+
+        $colors = [
+            'bg-blue-500',
+            'bg-red-500',
+            'bg-emerald-500',
+            'bg-orange-500',
+            'bg-green-500',
+            'bg-teal-500',
+            'bg-cyan-500',
+            'bg-indigo-500',
+            'bg-purple-500',
+        ];
+
+        if($user && $user -> photo_location_url) {
+            return '<img class="inline-block h-10 w-8 rounded-full" src="{{ $user -> photo_location_url }}" alt="">';
+        } else {
+            return '<div class="rounded-full bg-primary text-white flex items-center justify-around h-8 w-8">
+                '.Helper::get_initials($user -> first_name.' '.$user -> last_name).'
+            </div>';
+        }
+    }
 }

@@ -14,9 +14,9 @@ $breadcrumbs = [];
 
         <div class="max-w-full mx-auto px-2 sm:px-6 lg:px-12 pt-4 md:pt-8 lg:pt-16">
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 max-w-1400-px gap-12 mx-auto">
+            <div class="max-w-1400-px mx-auto">
 
-                <div class="border-4 rounded-lg overflow-x-auto min-w-600-px">
+                <div class="border-4 rounded-lg">
 
                     <div class="flex justify-between items-center rounded-t-lg border-b">
                         <div class="p-3 text-lg font-semibold">Active Loans</div>
@@ -25,7 +25,23 @@ $breadcrumbs = [];
                         </div>
                     </div>
 
-                    <div class="p-2 max-h-400-px overflow-auto whitespace-nowrap">
+                    <div class="flex border-b">
+
+                        <div class="w-116"></div>
+
+                        <div class="flex bg-gray-100">
+                            @foreach($table_headers as $header)
+                                <div class="w-12 h-48 whitespace-nowrap border-r border-gray-500">
+                                    <div class="transform rotate-270 translate-y-36 text-sm">
+                                        {{ $header['title'] }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+
+                    <div class="p-2 max-h-600-px overflow-auto whitespace-nowrap">
 
                         @forelse($active_loans as $loan)
 
@@ -37,22 +53,35 @@ $breadcrumbs = [];
                             $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                             @endphp
 
-                            <div class="grid grid-cols-11 p-2 mb-2 border-b text-sm">
+                            <div class="flex justify-start items-center p-2 mb-2 border-b text-sm">
 
-                                <div class="col-span-2">
+                                <div class="w-20">
                                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View</a>
                                 </div>
-                                <div class="col-span-3 pl-2">
-                                    {!! $borrower !!}
+
+                                <div class="w-20">
+                                    {!! App\Helpers\Helper::avatar($loan -> processor_id, 'mortgage') !!}
                                 </div>
-                                <div class="col-span-4 pl-2">
-                                    {!! $address !!}
+
+                                <div class="w-40">
+                                    <div class="font-semibold text-gray-700">{!! $borrower !!}</div>
+                                    <div class="text-xs">{!! $address !!}</div>
                                 </div>
-                                <div class="col-span-2 -pl-2">
+
+                                <div class="w-32">
                                     ${{ number_format($loan -> loan_amount) }}
                                     <div class="text-xs">
                                         CD - {{ $loan -> settlement_date }}
                                     </div>
+                                </div>
+
+                                <div class="flex">
+
+                                    @foreach($table_headers as $header)
+                                        <div class="w-12 border border-r">
+                                            x
+                                        </div>
+                                    @endforeach
                                 </div>
 
                             </div>
@@ -67,7 +96,7 @@ $breadcrumbs = [];
 
                 </div>
 
-                <div class="border-4 rounded-lg overflow-x-auto min-w-600-px">
+                <div class="border-4 rounded-lg mt-12">
 
                     <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
                         Recent Commissions
@@ -116,7 +145,7 @@ $breadcrumbs = [];
                 </div>
 
 
-                <div class="col-span-1 lg:col-span-2 border-4 rounded-lg">
+                <div class="border-4 rounded-lg mt-12">
 
                     <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
                         Software/Marketing

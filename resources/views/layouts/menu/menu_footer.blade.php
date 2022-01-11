@@ -4,13 +4,7 @@
 <div class="flex justify-start items-center p-2">
 
     <div class="flex justify-around items-center ml-2">
-        @if(auth() -> user() -> photo_location_url)
-        <img class="inline-block h-10 w-8 rounded-full" src="{{ auth() -> user() -> photo_location_url }}" alt="">
-        @else
-        <div class="rounded-full bg-primary text-white p-1 h-8 w-8 text-center">
-            {{ App\Helpers\Helper::get_initials(auth() -> user() -> first_name.' '.auth() -> user() -> last_name) }}
-        </div>
-        @endif
+        {!! App\Helpers\Helper::avatar() !!}
     </div>
 
     <div class="ml-4">
