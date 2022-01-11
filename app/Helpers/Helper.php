@@ -268,7 +268,9 @@ class Helper
         } */
 
         if($user && $user -> photo_location_url) {
-            return '<img class="inline-block h-10 w-10 rounded-full" src="'.$user -> photo_location_url.'" alt="">';
+            return '<div class="mt-3 flex -space-x-2 overflow-hidden">
+                <img class="inline-block h-10 w-10 rounded-full" src="'.$user -> photo_location_url.'" alt="'.$user -> name.'">
+                </div>';
         } else {
             return '<div class="rounded-full '.$bg_color.' text-white text-lg flex items-center justify-around h-10 w-10">
                 '.Helper::get_initials($user -> first_name.' '.$user -> last_name).'
