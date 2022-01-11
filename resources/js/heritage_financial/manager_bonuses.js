@@ -41,7 +41,27 @@ if(document.URL.match(/manager_bonuses/)) {
                 })
                 .catch(function (error) {
                 });
-            }
+            },
+
+            toggle_link(ele, type, year) {
+
+                document.querySelectorAll('.year-container').forEach(function(container) {
+
+                    let year_icon = container.querySelector('.year-icon');
+                    let container_year = container.getAttribute('data-year');
+
+                    if(container_year == year) {
+                        if(year_icon.classList.contains('rotate-90')) {
+                            year_icon.classList.remove('rotate-90');
+                        } else {
+                            year_icon.classList.add('rotate-90');
+                        }
+                    } else {
+                        year_icon.classList.remove('rotate-90');
+                    }
+                });
+
+            },
 
         }
 
