@@ -167,7 +167,7 @@ $breadcrumbs = [
                 <input type="text" class="form-element input lg" x-ref="to_email" value="delia@taylorprops.com" data-label="Send To Email">
             </div>
             <button type="button" class="button primary lg mt-4"
-            @click="send_email()">
+            @click="send_email($el)">
                 Send Email <i class="fa fa-share ml-2"></i>
             </button>
 

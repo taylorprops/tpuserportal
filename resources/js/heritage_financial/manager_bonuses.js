@@ -19,13 +19,16 @@ if(document.URL.match(/manager_bonuses/)) {
                 print_page.close();
             },
 
-            send_email() {
+            send_email(ele) {
+
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Sending Email ... ');
 
                 let scope = this;
                 ele = scope.email_ele;
                 ele.querySelector('table').setAttribute('border', '1');
                 ele.querySelector('table').setAttribute('cellpadding', '6');
-                ele.querySelector('table').style.fontSize = '10px';
+                ele.querySelector('table').style.fontSize = '12px';
                 ele.querySelector('table').style.fontFamily = 'Arial';
                 let html = ele.innerHTML;
                 let to_email = scope.$refs.to_email.value;
@@ -38,6 +41,7 @@ if(document.URL.match(/manager_bonuses/)) {
                 .then(function (response) {
                     toastr.success('Email successfully sent');
                     scope.show_email_bonuses = false;
+                    ele.innerHTML = button_html;
                 })
                 .catch(function (error) {
                 });
