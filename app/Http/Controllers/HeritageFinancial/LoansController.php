@@ -610,7 +610,7 @@ class LoansController extends Controller
         for($i = $year; $i >= $year - $years_ago; $i--) {
             $years[] = $i;
         }
-        for($i = 1; $i <= 12; $i++) {
+        for($i = 12; $i >= 1; $i--) {
             $months[] = $i;
         }
 
