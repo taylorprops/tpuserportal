@@ -27,7 +27,7 @@
                 @endphp
                 <tr>
                     <td>
-                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
+                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $loan -> loan_status }}</td>
                     <td>{{ $loan_officer }}</td>

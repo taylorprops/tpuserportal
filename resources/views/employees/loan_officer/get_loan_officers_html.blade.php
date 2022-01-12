@@ -30,7 +30,7 @@
                 @endphp
                 <tr>
                     <td>
-                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
+                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
                     <td>{{ $emp_position }}</td>
