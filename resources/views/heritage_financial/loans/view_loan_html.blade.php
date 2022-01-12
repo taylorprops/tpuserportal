@@ -1450,7 +1450,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                             @endforeach
 
 
-                                            <div class="p-4 border rounded-md @if(auth() -> user() -> level != 'manager') hidden @endif"
+                                            <div class="p-4 border rounded-md @if(auth() -> user() -> level != 'manager' && auth() -> user() -> level != 'super_admin') hidden @endif"
                                             x-data="{ show_details: false }">
 
                                                 <div class="flex justify-between items-center">
@@ -1524,7 +1524,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         <div class="col-span-1 ml-8 whitespace-nowrap place-self-end w-full">
 
                                             <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md
-                                            @if(auth() -> user() -> level != 'manager') hidden @endif">
+                                            @if(auth() -> user() -> level != 'manager' && auth() -> user() -> level != 'super_admin') hidden @endif">
                                                 <div class="text-xs">Commissions Out</div>
                                                 <span id="commissions_paid_amount">$0.00</span>
                                             </div>
@@ -1533,9 +1533,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     </div>
 
-                                    <hr class="bg-gray-300 my-6 @if(auth() -> user() -> level != 'manager') hidden @endif">
+                                    <hr class="bg-gray-300 my-6 @if(auth() -> user() -> level != 'manager' && auth() -> user() -> level != 'super_admin') hidden @endif">
 
-                                    <div class="grid grid-cols-5 @if(auth() -> user() -> level != 'manager') hidden @endif">
+                                    <div class="grid grid-cols-5 @if(auth() -> user() -> level != 'manager' && auth() -> user() -> level != 'super_admin') hidden @endif">
 
                                         <div class="col-span-4 flex items-center font-bold text-xl">Company Commission</div>
 
