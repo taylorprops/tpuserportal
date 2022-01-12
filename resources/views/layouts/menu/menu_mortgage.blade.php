@@ -36,7 +36,7 @@
     :link="'/heritage_financial/lenders'"
     :icon="'fad fa-sack-dollar'"/>
 
-    @if(in_array(auth() -> user() -> level, ['manager']))
+    @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
     {{-- Loans --}}
     <x-nav.menu
     :level="'1'"

@@ -120,7 +120,7 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active;
+        $active = $request -> active ?? 'yes';
 
         $employees = Mortgage::select(['id', 'emp_type', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'emp_position'])
         -> where(function($query) use ($search) {

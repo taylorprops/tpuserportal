@@ -38,6 +38,7 @@
                             label: 'Active',
                             value: 'yes',
                             options: [
+                                ['all', 'All'],
                                 ['yes', 'Yes'],
                                 ['no', 'No'],
                             ]
