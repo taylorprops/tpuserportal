@@ -101,16 +101,16 @@ $breadcrumbs = [
                                                                     @foreach($loans -> where('year', $year) -> where('month', $month) as $loan)
 
                                                                         <tr class="bg-white">
-                                                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                            <td class="px-6 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                                 {{ $loan -> settlement_date }}
                                                                             </td>
-                                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                                                                                 {{ $loan -> loan_officer_1 -> fullname ?? null }}
                                                                             </td>
-                                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                                                                                 {{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip }}
                                                                             </td>
-                                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                                            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
                                                                                 {{ $loan -> borrower_fullname }}
                                                                                 @if($loan -> co_borrower_fullname)
                                                                                     <br>
@@ -118,7 +118,7 @@ $breadcrumbs = [
                                                                                 @endif
 
                                                                             </td>
-                                                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-gray-500">
+                                                                            <td class="px-6 py-2 whitespace-nowrap text-right text-sm text-gray-500">
                                                                                 ${{ number_format($loan -> manager_bonus, 2) }}
                                                                             </td>
                                                                         </tr>
