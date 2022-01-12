@@ -888,7 +888,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     {{-- if Processor or Manager --}}
                     <div @if(auth() -> user() -> level == 'loan_officer') class="hidden" @endif>
 
-                        <div class="grid grid-cols-7 max-w-1200-px">
+                        <div class="grid grid-cols-7 max-w-1400-px gap-16">
 
                             <div class="col-span-7 lg:col-span-5">
 

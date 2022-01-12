@@ -16,13 +16,10 @@
             <ul role="list" class="divide-y">
                 <li class="py-4 border-b">
                     <div class="flex space-x-3">
-                        @if(auth() -> user() -> photo_location_url)
-                        <img class="h-8 w-8 rounded-full" src="{{ $note -> user -> photo_location_url }}" alt="">
-                        @else
-                        <div class="rounded-full bg-primary text-white p-1 h-8 w-8 text-center">
-                            {{ App\Helpers\Helper::get_initials(auth() -> user() -> first_name.' '.auth() -> user() -> last_name) }}
+
+                        <div>
+                            {!! App\Helpers\Helper::avatar('8', $note -> user -> user_id, $note -> user -> group) !!}
                         </div>
-                        @endif
 
                         <div class="flex-1 space-y-1">
                             <div class="flex items-center justify-between">

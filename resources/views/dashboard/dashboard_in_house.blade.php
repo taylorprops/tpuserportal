@@ -60,7 +60,7 @@ $breadcrumbs = [];
                                 </div>
 
                                 <div class="w-20 flex justify-around">
-                                    {!! App\Helpers\Helper::avatar($loan -> processor_id, 'mortgage') !!}
+                                    {!! App\Helpers\Helper::avatar(null, $loan -> processor_id, 'mortgage') !!}
                                 </div>
 
                                 <div class="w-52">
