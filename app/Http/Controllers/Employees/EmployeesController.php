@@ -134,6 +134,11 @@ class EmployeesController extends Controller
                 $query -> where('active', 'like', '%'.$active.'%');
             }
         })
+        -> where(function($query) {
+            if(in_array(auth() -> user() -> group, ['loan_officer', 'processor'])) {
+                $query -> where('emp_position', '!=', 'manager');
+            }
+        })
         -> with(['licenses'])
         -> orderBy($sort, $direction)
         -> paginate($length);
