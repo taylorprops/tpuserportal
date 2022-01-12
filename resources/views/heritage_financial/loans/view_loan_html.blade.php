@@ -41,7 +41,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                 <select id="tabs" name="tabs" class="block w-full focus:ring-primary focus:border-primary border-gray-300 rounded-md"
                 @change="active_tab = $el.value">
                     <option selected value="1">Details</option>
+                    @if(auth() -> user() -> level != 'loan_officer')
                     <option value="2">Timeline</option>
+                    @endif
                     <option value="3">Commission</option>
                     <option value="4">Documents</option>
                 </select>
@@ -63,29 +65,33 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                         </a>
 
                         @if($loan)
-                        <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
-                        :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2', 'border-primary text-primary-dark': active_tab === '2' }"
-                        @click="active_tab = '2'">
-                            <i class="fad fa-calendar mr-3"
-                            :class="{ 'text-primary': active_tab === '2', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2' }"></i>
-                            <span>Timeline</span>
-                        </a>
 
-                        <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
-                        :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3', 'border-primary text-primary-dark': active_tab === '3' }"
-                        @click="active_tab = '3'">
-                            <i class="fad fa-calculator mr-3"
-                            :class="{ 'text-primary': active_tab === '3', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3' }"></i>
-                            <span>Commission</span>
-                        </a>
+                            @if(auth() -> user() -> level != 'loan_officer')
 
-                        <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
-                        :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4', 'border-primary text-primary-dark': active_tab === '4' }"
-                        @click="active_tab = '4'">
-                            <i class="fad fa-copy mr-3"
-                            :class="{ 'text-primary': active_tab === '4', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4' }"></i>
-                            <span>Documents</span>
-                        </a>
+                                <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                                :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2', 'border-primary text-primary-dark': active_tab === '2' }"
+                                @click="active_tab = '2'">
+                                    <i class="fad fa-calendar mr-3"
+                                    :class="{ 'text-primary': active_tab === '2', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '2' }"></i>
+                                    <span>Timeline</span>
+                                </a>
+                            @endif
+
+                            <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                            :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3', 'border-primary text-primary-dark': active_tab === '3' }"
+                            @click="active_tab = '3'">
+                                <i class="fad fa-calculator mr-3"
+                                :class="{ 'text-primary': active_tab === '3', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3' }"></i>
+                                <span>Commission</span>
+                            </a>
+
+                            <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                            :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4', 'border-primary text-primary-dark': active_tab === '4' }"
+                            @click="active_tab = '4'">
+                                <i class="fad fa-copy mr-3"
+                                :class="{ 'text-primary': active_tab === '4', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4' }"></i>
+                                <span>Documents</span>
+                            </a>
 
                         @endif
                     </nav>
@@ -521,125 +527,128 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 </div>
 
+                @if(auth() -> user() -> level != 'loan_officer')
 
-                <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12 max-w-600-px">
+                    <div x-show="active_tab === '2'" x-transition class="pt-4 sm:pt-12 max-w-600-px">
 
-                    <form id="time_line_form">
+                        <form id="time_line_form">
 
-                        <div class="mt-12 border-2 rounded-lg p-4 divide-y">
+                            <div class="mt-12 border-2 rounded-lg p-4 divide-y">
 
-                            @php
-                            $fields = [
-                                ['select', 'locked', 'Locked'],
-                                ['date', 'lock_expiration', 'Lock Expiration'],
-                                ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
-                                ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
-                                ['date', 'time_line_clear_to_close', 'Clear To Close'],
-                                ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date'],
-                                ['date', 'time_line_closed', 'Closed'],
-                                ['date', 'time_line_funded', 'Funded']
-                            ];
-                            $processing_fields = [
-                                ['select', 'time_line_conditions_received_status', 'Conditions Received Status'],
-                                ['date', 'time_line_conditions_received', 'Conditions Received'],
-                                ['date', 'time_line_title_ordered', 'Title Ordered'],
-                                ['date', 'time_line_title_received', 'Title Received'],
-                                ['date', 'time_line_submitted_to_uw', 'Submitted To UW'],
-                                ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered'],
-                                ['date', 'time_line_appraisal_received', 'Appraisal Received'],
-                                ['date', 'time_line_voe_ordered', 'VOE Ordered'],
-                                ['date', 'time_line_voe_received', 'VOE Received'],
-                                ['date', 'time_line_conditions_submitted', 'Conditions Submitted'],
-                            ];
-                            @endphp
+                                @php
+                                $fields = [
+                                    ['select', 'locked', 'Locked'],
+                                    ['date', 'lock_expiration', 'Lock Expiration'],
+                                    ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
+                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
+                                    ['date', 'time_line_clear_to_close', 'Clear To Close'],
+                                    ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date'],
+                                    ['date', 'time_line_closed', 'Closed'],
+                                    ['date', 'time_line_funded', 'Funded']
+                                ];
+                                $processing_fields = [
+                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status'],
+                                    ['date', 'time_line_conditions_received', 'Conditions Received'],
+                                    ['date', 'time_line_title_ordered', 'Title Ordered'],
+                                    ['date', 'time_line_title_received', 'Title Received'],
+                                    ['date', 'time_line_submitted_to_uw', 'Submitted To UW'],
+                                    ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered'],
+                                    ['date', 'time_line_appraisal_received', 'Appraisal Received'],
+                                    ['date', 'time_line_voe_ordered', 'VOE Ordered'],
+                                    ['date', 'time_line_voe_received', 'VOE Received'],
+                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted'],
+                                ];
+                                @endphp
 
-                            @foreach($fields as $field)
+                                @foreach($fields as $field)
 
-                                @php $db_field = $field[1]; @endphp
+                                    @php $db_field = $field[1]; @endphp
 
-                                <div class="grid grid-cols-5 py-2">
+                                    <div class="grid grid-cols-5 py-2">
 
-                                    <div class="col-span-3 flex justify-end items-center mr-4">
-                                        {{ $field[2] }}
-                                    </div>
+                                        <div class="col-span-3 flex justify-end items-center mr-4">
+                                            {{ $field[2] }}
+                                        </div>
 
-                                    <div class="col-span-2">
+                                        <div class="col-span-2">
 
-                                        @if($field[0] == 'date')
-                                            <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
-                                        @else
-                                            <select
-                                            class="form-element select md"
-                                            name="{{ $db_field }}"
-                                            data-label="">
-                                                <option value=""></option>
-                                                <option value="yes" @if($loan && $loan -> $db_field == 'yes') selected @endif>Yes</option>
-                                                <option value="no" @if($loan && $loan -> $db_field == 'no') selected @endif>No</option>
-                                            </select>
+                                            @if($field[0] == 'date')
+                                                <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
+                                            @else
+                                                <select
+                                                class="form-element select md"
+                                                name="{{ $db_field }}"
+                                                data-label="">
+                                                    <option value=""></option>
+                                                    <option value="yes" @if($loan && $loan -> $db_field == 'yes') selected @endif>Yes</option>
+                                                    <option value="no" @if($loan && $loan -> $db_field == 'no') selected @endif>No</option>
+                                                </select>
+                                            @endif
+
+                                        </div>
+
+                                        @if($db_field == 'time_line_sent_to_processing')
+
+                                            <div class="col-span-5 mt-4 border p-4 rounded-md bg-gray-50 divide-y">
+
+                                                <div class="text-gray-400 text-lg font-semibold text-center mb-3">Processing Tasks</div>
+
+                                                @foreach($processing_fields as $processing_field)
+
+                                                    @php $db_processing_field = $processing_field[1]; @endphp
+
+                                                    <div class="grid grid-cols-5 py-2">
+
+                                                        <div class="col-span-3 flex justify-end items-center mr-4">
+                                                            {{ $processing_field[2] }}
+                                                        </div>
+
+                                                        <div class="col-span-2">
+
+
+
+                                                            @if($processing_field[0] == 'date')
+                                                                <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field ?? null }}">
+                                                            @else
+                                                                <select
+                                                                class="form-element select md"
+                                                                name="{{ $db_processing_field }}"
+                                                                data-label="">
+                                                                    <option value=""></option>
+                                                                    <option value="approved" @if($loan && $loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
+                                                                    <option value="suspended" @if($loan && $loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
+                                                                </select>
+                                                            @endif
+
+
+
+                                                        </div>
+
+                                                    </div>
+
+                                                @endforeach
+
+                                            </div>
+
                                         @endif
 
                                     </div>
 
-                                    @if($db_field == 'time_line_sent_to_processing')
+                                @endforeach
 
-                                        <div class="col-span-5 mt-4 border p-4 rounded-md bg-gray-50 divide-y">
-
-                                            <div class="text-gray-400 text-lg font-semibold text-center mb-3">Processing Tasks</div>
-
-                                            @foreach($processing_fields as $processing_field)
-
-                                                @php $db_processing_field = $processing_field[1]; @endphp
-
-                                                <div class="grid grid-cols-5 py-2">
-
-                                                    <div class="col-span-3 flex justify-end items-center mr-4">
-                                                        {{ $processing_field[2] }}
-                                                    </div>
-
-                                                    <div class="col-span-2">
-
-
-
-                                                        @if($processing_field[0] == 'date')
-                                                            <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field ?? null }}">
-                                                        @else
-                                                            <select
-                                                            class="form-element select md"
-                                                            name="{{ $db_processing_field }}"
-                                                            data-label="">
-                                                                <option value=""></option>
-                                                                <option value="approved" @if($loan && $loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
-                                                                <option value="suspended" @if($loan && $loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
-                                                            </select>
-                                                        @endif
-
-
-
-                                                    </div>
-
-                                                </div>
-
-                                            @endforeach
-
-                                        </div>
-
-                                    @endif
-
+                                <div class="mt-4 flex justify-around p-6">
+                                    <button type="button" class="button primary lg" @click="save_time_line($el)">Save Timeline <i class="fal fa-check ml-2"></i></button>
                                 </div>
 
-                            @endforeach
-
-                            <div class="mt-4 flex justify-around p-6">
-                                <button type="button" class="button primary lg" @click="save_time_line($el)">Save Timeline <i class="fal fa-check ml-2"></i></button>
                             </div>
 
-                        </div>
+                            <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
 
-                        <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+                        </form>
 
-                    </form>
+                    </div>
 
-                </div>
+                @endif
 
 
                 <div x-show="active_tab === '3'" x-transition class="pt-4 sm:pt-12">
@@ -966,178 +975,180 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     <hr class="bg-gray-300 my-6">
 
                                     @if(auth() -> user() -> level != 'loan_officer')
-                                    <div class="flex justify-start items-center mt-6">
 
-                                        <div class="font-medium text-xl">Deductions</div>
+                                        <div class="flex justify-start items-center mt-6">
 
-                                        <button type="button" class="button primary sm no-text ml-3"
-                                        @click="add_deduction(); if($refs.no_deductions) { $refs.no_deductions.remove() }">
-                                            <i class="fal fa-plus"></i>
-                                        </button>
+                                            <div class="font-medium text-xl">Deductions</div>
 
-                                    </div>
+                                            <button type="button" class="button primary sm no-text ml-3"
+                                            @click="add_deduction(); if($refs.no_deductions) { $refs.no_deductions.remove() }">
+                                                <i class="fal fa-plus"></i>
+                                            </button>
 
-                                    <div class="grid grid-cols-5 gap-8 mt-4">
+                                        </div>
 
-                                        <div class="col-span-4">
+                                        <div class="grid grid-cols-5 gap-8 mt-4">
 
-                                            <div class="deductions h-full">
+                                            <div class="col-span-4">
 
-                                                @if(count($deductions) == 0)
+                                                <div class="deductions h-full">
 
-                                                    <div class="flex justify-between items-end deduction">
+                                                    @if(count($deductions) == 0)
 
-                                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
-                                                        x-data="{ show_other: false }">
+                                                        <div class="flex justify-between items-end deduction">
 
-                                                            <div class="col-span-2 mr-2 mb-2">
-                                                                <input
-                                                                type="text"
-                                                                class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
-                                                                name="amount[]"
-                                                                data-label="Amount"
-                                                                value="$500.00">
-                                                            </div>
+                                                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
+                                                            x-data="{ show_other: false }">
 
-                                                            <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
-                                                                <input
-                                                                type="text"
-                                                                class="form-element input {{ $input_size }} commission-input required"
-                                                                name="description[]"
-                                                                data-label="Description"
-                                                                value="Processing Fee">
-                                                            </div>
+                                                                <div class="col-span-2 mr-2 mb-2">
+                                                                    <input
+                                                                    type="text"
+                                                                    class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                                    name="amount[]"
+                                                                    data-label="Amount"
+                                                                    value="$500.00">
+                                                                </div>
 
-                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <select
-                                                                class="form-element select {{ $input_size }} required"
-                                                                name="paid_to[]"
-                                                                data-label="Paid To"
-                                                                @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
-                                                                    <option value=""></option>
-                                                                    <option value="Company" selected>Company</option>
-                                                                    <option value="Loan Officer 1">{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
-                                                                    @if($loan_officer_2)
-                                                                    <option value="Loan Officer 2">{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
-                                                                    @endif
-                                                                    <option value="Other">Other</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <div x-show="show_other" x-transition>
+                                                                <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
                                                                     <input
                                                                     type="text"
                                                                     class="form-element input {{ $input_size }} commission-input required"
-                                                                    name="paid_to_other[]"
-                                                                    data-label="Paid To Name">
+                                                                    name="description[]"
+                                                                    data-label="Description"
+                                                                    value="Processing Fee">
                                                                 </div>
+
+                                                                <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                    <select
+                                                                    class="form-element select {{ $input_size }} required"
+                                                                    name="paid_to[]"
+                                                                    data-label="Paid To"
+                                                                    @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
+                                                                        <option value=""></option>
+                                                                        <option value="Company" selected>Company</option>
+                                                                        <option value="Loan Officer 1">{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
+                                                                        @if($loan_officer_2)
+                                                                        <option value="Loan Officer 2">{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
+                                                                        @endif
+                                                                        <option value="Other">Other</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                    <div x-show="show_other" x-transition>
+                                                                        <input
+                                                                        type="text"
+                                                                        class="form-element input {{ $input_size }} commission-input required"
+                                                                        name="paid_to_other[]"
+                                                                        data-label="Paid To Name">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="flex items-end mb-2 ml-3">
+                                                                <button type="button" class="button danger md no-text"
+                                                                @click.prevent="$el.closest('.deduction').remove(); total_commission()">
+                                                                    <i class="fal fa-times"></i>
+                                                                </button>
                                                             </div>
 
                                                         </div>
 
-                                                        <div class="flex items-end mb-2 ml-3">
-                                                            <button type="button" class="button danger md no-text"
-                                                            @click.prevent="$el.closest('.deduction').remove(); total_commission()">
-                                                                <i class="fal fa-times"></i>
-                                                            </button>
-                                                        </div>
+                                                    @endif
 
-                                                    </div>
+                                                    @forelse($deductions as $deduction)
 
-                                                @endif
+                                                        @php
+                                                        $non_other = ['Company', 'Loan Officer 1', 'Loan Officer 2'];
+                                                        $show_other = null;
+                                                        if(!in_array($deduction -> paid_to, $non_other)) {
+                                                            $show_other = 'yes';
+                                                        }
+                                                        @endphp
 
-                                                @forelse($deductions as $deduction)
+                                                        <div class="flex justify-between items-end deduction">
 
-                                                    @php
-                                                    $non_other = ['Company', 'Loan Officer 1', 'Loan Officer 2'];
-                                                    $show_other = null;
-                                                    if(!in_array($deduction -> paid_to, $non_other)) {
-                                                        $show_other = 'yes';
-                                                    }
-                                                    @endphp
+                                                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
+                                                            x-data="{ show_other: @if($show_other) true @else false @endif }">
 
-                                                    <div class="flex justify-between items-end deduction">
+                                                                <div class="col-span-2 mr-2 mb-2">
+                                                                    <input
+                                                                    type="text"
+                                                                    class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
+                                                                    name="amount[]"
+                                                                    data-label="Amount"
+                                                                    value="{{ $deduction -> amount }}">
+                                                                </div>
 
-                                                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-9"
-                                                        x-data="{ show_other: @if($show_other) true @else false @endif }">
-
-                                                            <div class="col-span-2 mr-2 mb-2">
-                                                                <input
-                                                                type="text"
-                                                                class="form-element input {{ $input_size }} numbers-only money-decimal commission-input required"
-                                                                name="amount[]"
-                                                                data-label="Amount"
-                                                                value="{{ $deduction -> amount }}">
-                                                            </div>
-
-                                                            <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
-                                                                <input
-                                                                type="text"
-                                                                class="form-element input {{ $input_size }} commission-input required"
-                                                                name="description[]"
-                                                                data-label="Description"
-                                                                value="{{ $deduction -> description }}">
-                                                            </div>
-
-                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <select
-                                                                class="form-element select {{ $input_size }} required"
-                                                                name="paid_to[]"
-                                                                data-label="Paid To"
-                                                                @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
-                                                                    <option value=""></option>
-                                                                    <option value="Company" @if($deduction -> paid_to == 'Company') selected @endif>Company</option>
-                                                                    <option value="Loan Officer 1" @if($deduction -> paid_to == 'Loan Officer 1') selected @endif>{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
-                                                                    @if($loan_officer_2)
-                                                                    <option value="Loan Officer 2" @if($deduction -> paid_to == 'Loan Officer 2') selected @endif>{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
-                                                                    @endif
-                                                                    <option value="Other" @if($show_other) selected @endif>Other</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="col-span-1 md:col-span-2 mr-2 mb-2">
-                                                                <div x-show="show_other" x-transition>
+                                                                <div class="col-span-1 sm:col-span-2 md:col-span-3 mr-2 mb-2">
                                                                     <input
                                                                     type="text"
                                                                     class="form-element input {{ $input_size }} commission-input required"
-                                                                    name="paid_to_other[]"
-                                                                    data-label="Paid To Name"
-                                                                    value="{{ $deduction -> paid_to }}">
+                                                                    name="description[]"
+                                                                    data-label="Description"
+                                                                    value="{{ $deduction -> description }}">
                                                                 </div>
+
+                                                                <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                    <select
+                                                                    class="form-element select {{ $input_size }} required"
+                                                                    name="paid_to[]"
+                                                                    data-label="Paid To"
+                                                                    @change="show_other = false; if($el.value == 'Other') { show_other = true }; total_commission();">
+                                                                        <option value=""></option>
+                                                                        <option value="Company" @if($deduction -> paid_to == 'Company') selected @endif>Company</option>
+                                                                        <option value="Loan Officer 1" @if($deduction -> paid_to == 'Loan Officer 1') selected @endif>{{ $loan_officer_1 -> fullname ?? 'Loan Officer 1' }}</option>
+                                                                        @if($loan_officer_2)
+                                                                        <option value="Loan Officer 2" @if($deduction -> paid_to == 'Loan Officer 2') selected @endif>{{ $loan_officer_2 -> fullname ?? 'Loan Officer 2' }}</option>
+                                                                        @endif
+                                                                        <option value="Other" @if($show_other) selected @endif>Other</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-1 md:col-span-2 mr-2 mb-2">
+                                                                    <div x-show="show_other" x-transition>
+                                                                        <input
+                                                                        type="text"
+                                                                        class="form-element input {{ $input_size }} commission-input required"
+                                                                        name="paid_to_other[]"
+                                                                        data-label="Paid To Name"
+                                                                        value="{{ $deduction -> paid_to }}">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="flex items-end mb-2 ml-3">
+                                                                <button type="button" class="button danger md no-text"
+                                                                @click.prevent="$el.closest('.deduction').remove(); total_commission();">
+                                                                    <i class="fal fa-times"></i>
+                                                                </button>
                                                             </div>
 
                                                         </div>
 
-                                                        <div class="flex items-end mb-2 ml-3">
-                                                            <button type="button" class="button danger md no-text"
-                                                            @click.prevent="$el.closest('.deduction').remove(); total_commission();">
-                                                                <i class="fal fa-times"></i>
-                                                            </button>
-                                                        </div>
+                                                    @empty
 
-                                                    </div>
+                                                        {{-- <div class="flex items-center text-gray-400 h-20" x-ref="no_deductions"><i class="fad fa-minus-circle mr-2"></i> No Deductions Added</div> --}}
 
-                                                @empty
+                                                    @endforelse
 
-                                                    <div class="flex items-center text-gray-400 h-full" x-ref="no_deductions"><i class="fad fa-minus-circle mr-2"></i> No Deductions Added</div>
+                                                </div>
 
-                                                @endforelse
+                                            </div>
+
+                                            <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
+
+                                                <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
+                                                    <div class="text-xs">Deductions</div>
+                                                    <span class="deductions-total">$0.00</span>
+                                                </div>
 
                                             </div>
 
                                         </div>
 
-                                        <div class="col-span-1 ml-7 whitespace-nowrap place-self-end w-full">
-
-                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
-                                                <div class="text-xs">Deductions</div>
-                                                <span class="deductions-total">$0.00</span>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
                                     @endif
 
                                     <hr class="bg-gray-300 my-6">
@@ -1439,7 +1450,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                             @endforeach
 
 
-                                            <div class="p-4 border rounded-md"
+                                            <div class="p-4 border rounded-md @if(auth() -> user() -> level != 'manager') hidden @endif"
                                             x-data="{ show_details: false }">
 
                                                 <div class="flex justify-between items-center">
@@ -1512,7 +1523,8 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                         <div class="col-span-1 ml-8 whitespace-nowrap place-self-end w-full">
 
-                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md">
+                                            <div class="text-lg text-right bg-red-50 text-red-600 p-4 rounded-md
+                                            @if(auth() -> user() -> level != 'manager') hidden @endif">
                                                 <div class="text-xs">Commissions Out</div>
                                                 <span id="commissions_paid_amount">$0.00</span>
                                             </div>
@@ -1521,9 +1533,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                     </div>
 
-                                    <hr class="bg-gray-300 my-6">
+                                    <hr class="bg-gray-300 my-6 @if(auth() -> user() -> level != 'manager') hidden @endif">
 
-                                    <div class="grid grid-cols-5">
+                                    <div class="grid grid-cols-5 @if(auth() -> user() -> level != 'manager') hidden @endif">
 
                                         <div class="col-span-4 flex items-center font-bold text-xl">Company Commission</div>
 

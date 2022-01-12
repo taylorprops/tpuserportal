@@ -16,6 +16,7 @@ class Loans extends Model
     public static function boot() {
         parent::boot();
         static::addGlobalScope(function ($query) {
+            $query -> where('duplicate', 'no');
             if (auth() -> user()) {
                 if (stristr(auth() -> user() -> group, 'mortgage') && auth() -> user() -> level == 'loan_officer') {
                     $query -> where(function ($query) {
