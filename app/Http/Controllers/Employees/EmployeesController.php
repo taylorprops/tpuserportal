@@ -10,13 +10,14 @@ use Illuminate\Http\Request;
 use App\Models\Employees\Title;
 use App\Models\Employees\Agents;
 use App\Models\Employees\InHouse;
+use App\Models\Employees\Mortgage;
 use App\Models\Billing\CreditCards;
 use App\Http\Controllers\Controller;
 use App\Models\Users\PasswordResets;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Intervention\Image\Facades\Image;
-use App\Models\Employees\Mortgage;
 use App\Models\Employees\EmployeesDocs;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Employees\EmployeesNotes;
@@ -639,7 +640,7 @@ class EmployeesController extends Controller
         $sort = $request -> sort ? $request -> sort : 'last_name';
         $length = $request -> length ? $request -> length : 10;
 
-        $active = $request -> active;
+        $active = $request -> active ?? 'yes';
         $search = $request -> search ?? null;
         $select = ['id', 'name', 'first_name', 'last_name', 'email', 'active', 'group', 'level'];
 
@@ -672,6 +673,14 @@ class EmployeesController extends Controller
             return response() -> json(['file' => $file]);
 
         }
+
+    }
+
+    public function login_as_user(Request $request) {
+
+        $user = User::find($request -> id);
+        Auth::login($user);
+        return redirect('dashboard');
 
     }
 

@@ -74,6 +74,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/users/get_users', [EmployeesController::class, 'get_users']) -> middleware(['in_house']);
     Route::post('/users/send_welcome_email', [EmployeesController::class, 'send_welcome_email']) -> middleware(['in_house']);
     Route::post('/users/reset_password', [EmployeesController::class, 'reset_password']) -> middleware(['in_house']);
+    Route::get('/users/login_as_user/{id}', [EmployeesController::class, 'login_as_user']) -> middleware(['in_house']) -> name('login_as_user');
 
 
     // archived

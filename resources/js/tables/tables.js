@@ -97,7 +97,7 @@ window.table = function(options) {
             let scope = this;
 
             let options_html = ' \
-            <div> \
+            <div class="mb-8"> \
                 <div class="flex justify-between options-div"> \
                     <div class="flex">';
 

@@ -37,7 +37,7 @@ class AuthenticatedSessionController extends Controller
         // TODO: Add login middleware
 
         $user = User::find(auth() -> user() -> id);
-        $group = auth() -> user() -> group;
+        //$group = auth() -> user() -> group;
 
         if($user -> active != 'yes') {
             Auth::logout();

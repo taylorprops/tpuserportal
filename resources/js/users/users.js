@@ -16,11 +16,13 @@ if(document.URL.match(/users$/)) {
                 this.reset_password_id = id;
                 document.querySelector('.user-name-reset-password').innerText = name;
             },
+
             confirm_send_welcome_email(id, name) {
                 this.show_confirm_send_welcome_email = true;
                 this.send_welcome_email_id = id;
                 document.querySelector('.user-name-send-welcome-email').innerText = name;
             },
+
             reset_password(ele) {
 
                 let scope = this;
@@ -40,6 +42,7 @@ if(document.URL.match(/users$/)) {
                 .catch(function (error) {
                 });
             },
+
             send_welcome_email(ele) {
 
                 let scope = this;
@@ -59,6 +62,8 @@ if(document.URL.match(/users$/)) {
                 .catch(function (error) {
                 });
             },
+
+
         }
 
 

@@ -15,6 +15,7 @@
                 <th scope="col">@sortablelink('active', 'Active')</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -25,9 +26,15 @@
                     <td>{{ ucwords(str_replace('_', ' ', $user -> level)) }}</td>
                     <td>{{ $user -> email }}</td>
                     <td>{{ ucwords($user -> active) }}</td>
-                    <td><button type="button" class="button primary sm" @click="confirm_send_welcome_email('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-envelope mr-2"></i> Send Welcome Email</button></td>
-                    <td><button type="button" class="button primary sm" @click="confirm_reset_password('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-key mr-2"></i> Reset Password</button></td>
-                    <td></td>
+                    <td>
+                        <button type="button" class="button primary sm" @click="confirm_send_welcome_email('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-envelope mr-2"></i> Send Welcome Email</button>
+                    </td>
+                    <td>
+                        <button type="button" class="button primary sm" @click="confirm_reset_password('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-key mr-2"></i> Reset Password</button>
+                    </td>
+                    <td>
+                        <a href="{{ route('login_as_user', $user -> id) }}" class="button primary sm"><i class="fa fa-user mr-2"></i> Login As User</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>
