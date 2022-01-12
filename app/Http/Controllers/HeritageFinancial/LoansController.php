@@ -143,6 +143,7 @@ class LoansController extends Controller
             $processor = $loan -> processor;
 
             $manager = Mortgage::where('emp_position', 'manager') -> first();
+            dd($manager);
             $manager = $manager -> fullname;
 
             $manager_bonus = $loan_officer_1 -> manager_bonus;
