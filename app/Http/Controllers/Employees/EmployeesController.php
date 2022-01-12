@@ -135,7 +135,7 @@ class EmployeesController extends Controller
             }
         })
         -> where(function($query) {
-            if(in_array(auth() -> user() -> group, ['loan_officer', 'processor'])) {
+            if(in_array(auth() -> user() -> group, ['mortgage', 'processor'])) {
                 $query -> where('emp_position', '!=', 'manager');
             }
         })
