@@ -1612,6 +1612,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                 </div>
                                                 @endif
 
+                                                @if(auth() -> user() -> level == 'manager' || auth() -> user() -> level == 'super_admin')
                                                 <div class="grid grid-cols-3 border-b border-white py-2">
                                                     <div class="col-span-2 border-b">
                                                         {{ $manager }}
@@ -1624,6 +1625,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                         Manager
                                                     </div>
                                                 </div>
+                                                @endif
 
                                             </div>
 
@@ -1634,7 +1636,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     </div>
 
                                     <div class="flex justify-around my-3">
+                                        @if(auth() -> user() -> level == 'manager' || auth() -> user() -> level == 'super_admin')
                                         <button type="button" class="button primary md" @click="print_checks_out()"><i class="fad fa-print mr-2"></i> Print</button>
+                                        @endif
                                     </div>
 
                                     <div class="printable-checks-out hidden">

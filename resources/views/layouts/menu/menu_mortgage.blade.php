@@ -14,11 +14,13 @@
     :link="'/heritage_financial/loans'"
     :icon="'fad fa-copy'"/>
 
+    @if(in_array(auth() -> user() -> level, ['loan_officer']))
     <x-nav.menu
     :level="'1'"
     :title="'Commission Reports'"
     :link="'/heritage_financial/loans/commission_reports'"
     :icon="'fad fa-money-check'"/>
+    @endif
 
     {{-- Loan Software --}}
     <x-nav.menu
@@ -34,7 +36,7 @@
     :link="'/heritage_financial/lenders'"
     :icon="'fad fa-sack-dollar'"/>
 
-    @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
+    @if(in_array(auth() -> user() -> level, ['manager']))
     {{-- Loans --}}
     <x-nav.menu
     :level="'1'"
