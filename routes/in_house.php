@@ -56,18 +56,18 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/employees/agent', [EmployeesController::class, 'agents']) -> middleware(['in_house']);
     Route::get('/employees/agent/get_agents', [EmployeesController::class, 'get_agents']) -> middleware(['in_house']);
 
-    Route::get('/employees/loan_officer', [EmployeesController::class, 'loan_officers']) -> middleware(['in_house']);
-    Route::get('/employees/loan_officer/get_loan_officers', [EmployeesController::class, 'get_loan_officers']) -> middleware(['in_house']);
-    Route::get('/employees/loan_officer/loan_officer_view/{id?}', [EmployeesController::class, 'loan_officer_view']) -> middleware(['in_house']);
+    Route::get('/employees/loan_officer', [EmployeesController::class, 'loan_officers']) -> middleware(['mortgage']);
+    Route::get('/employees/loan_officer/get_loan_officers', [EmployeesController::class, 'get_loan_officers']) -> middleware(['mortgage']);
+    Route::get('/employees/loan_officer/loan_officer_view/{id?}', [EmployeesController::class, 'loan_officer_view']) -> middleware(['mortgage']);
 
 
-    Route::post('/employees/docs/docs_upload', [EmployeesController::class, 'docs_upload']) -> middleware(['in_house']);
-    Route::post('/employees/docs/get_docs', [EmployeesController::class, 'get_docs']) -> middleware(['in_house']);
-    Route::post('/employees/docs/delete_doc', [EmployeesController::class, 'delete_doc']) -> middleware(['in_house']);
+    Route::post('/employees/docs/docs_upload', [EmployeesController::class, 'docs_upload']) -> middleware(['mortgage']);
+    Route::post('/employees/docs/get_docs', [EmployeesController::class, 'get_docs']) -> middleware(['mortgage']);
+    Route::post('/employees/docs/delete_doc', [EmployeesController::class, 'delete_doc']) -> middleware(['mortgage']);
 
-    Route::get('/employees/get_licenses', [EmployeesController::class, 'get_licenses']) -> middleware(['in_house']);
+    Route::get('/employees/get_licenses', [EmployeesController::class, 'get_licenses']) -> middleware(['mortgage']);
 
-    Route::post('/employees/save_details', [EmployeesController::class, 'save_details']) -> middleware(['in_house']);
+    Route::post('/employees/save_details', [EmployeesController::class, 'save_details']) -> middleware(['mortgage']);
 
     // %%%% Users
     Route::get('/users', [EmployeesController::class, 'users']) -> middleware(['in_house']);

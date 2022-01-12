@@ -4,6 +4,8 @@ $breadcrumbs = [
     ['Loan Officers', '/employees/loan_officer'],
     [$title],
 ];
+
+$hidden_from_processor = auth() -> user() -> level == 'processor' ? 'hidden' : '';
 @endphp
 <x-app-layout>
     @section('title') {{ $title }} @endsection
@@ -295,9 +297,9 @@ $breadcrumbs = [
 
                             </div>
 
-                            <hr class="bg-gray-300 my-6">
+                            <hr class="bg-gray-300 my-6 {{ $hidden_from_processor }}">
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 {{ $hidden_from_processor }}">
 
                                 <div class="m-2 sm:m-3 flex items-end">
                                     <div>
@@ -329,11 +331,11 @@ $breadcrumbs = [
 
                             </div>
 
-                            <div class="mt-4 mb-1 ml-4 sm:ml-5 text-sm italic text-gray-500">
+                            <div class="mt-4 mb-1 ml-4 sm:ml-5 text-sm italic text-gray-500 {{ $hidden_from_processor }}">
                                 Manager Bonus
                             </div>
 
-                            <div class="flex justify-start items-center flex-space-x-4">
+                            <div class="flex justify-start items-center flex-space-x-4 {{ $hidden_from_processor }}">
 
                                 @php
                                 $bonus_type = 'standard';
