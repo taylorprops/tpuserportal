@@ -16,7 +16,7 @@ $breadcrumbs = [];
 
             <div class="">
 
-                <div class="border-4 rounded-lg">
+                <div class="border-4 rounded-lg max-w-1400-px">
 
                     <div class="flex justify-between items-center rounded-t-lg border-b">
                         <div class="p-3 text-lg font-semibold">Active Loans</div>
