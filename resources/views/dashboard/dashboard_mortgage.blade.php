@@ -41,7 +41,7 @@ $breadcrumbs = [];
 
                     </div>
 
-                    <div class="p-2 max-h-600-px overflow-auto whitespace-nowrap pb-96">
+                    <div class="p-2 pt-0 h-auto max-h-600-px overflow-auto whitespace-nowrap{{--  @if(count($active_loans) > 7) pb-96 @endif --}}">
 
                         @forelse($active_loans as $loan)
 
@@ -53,7 +53,7 @@ $breadcrumbs = [];
                             $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                             @endphp
 
-                            <div class="flex justify-start items-center p-2 mb-2 border-b text-sm">
+                            <div class="flex justify-start items-center p-2 border-b text-sm hover:bg-gray-50">
 
                                 <div class="w-20">
                                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
@@ -148,14 +148,36 @@ $breadcrumbs = [];
 
                         @endforelse
 
+                        @if(count($active_loans) > 7)
+
+                            <div class="flex border-b">
+
+                                <div class="w-128"></div>
+
+                                <div class="flex bg-gray-100">
+                                    @foreach($table_headers as $header)
+                                        <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
+                                            <div class="transform rotate-90 translate-y-5 text-sm">
+                                                {{ $header['title'] }}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                            </div>
+
+                        @endif
+
                     </div>
+
+
 
                 </div>
 
-                <div class="border-4 rounded-lg mt-12">
+                <div class="border-4 rounded-lg mt-12 max-w-900-px">
 
                     <div class="rounded-t-lg border-b p-3 text-lg font-semibold">
-                        Recent Commissions
+                        Recent @if(auth() -> user() -> level == 'loan_officer') Commissions @else Settlements @endif
                     </div>
 
                     <div class="p-2 max-h-400-px overflow-auto whitespace-nowrap">
@@ -170,23 +192,29 @@ $breadcrumbs = [];
                             $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                             @endphp
 
-                            <div class="grid grid-cols-11 p-2 mb-2 border-b text-sm">
+                            <div class="flex items-center justify-start p-2 mb-2 border-b text-sm">
 
-                                <div class="col-span-2">
+                                <div class="px-2">
                                     <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}?tab=commission" class="button primary md">View</a>
                                 </div>
-                                <div class="col-span-3 pl-2">
+                                <div class="w-48 px-2">
                                     {!! $borrower !!}
                                 </div>
-                                <div class="col-span-4 pl-2">
+                                <div class="w-72 px-2 overflow-x-hidden">
                                     {!! $address !!}
                                 </div>
-                                <div class="col-span-2 -pl-2">
-                                    <div class="text-green-600">${{ number_format($loan -> loan_officer_1_commission_amount, 2) }}</div>
-                                    <div class="text-xs">
-                                        CD - {{ $loan -> settlement_date }}
-                                    </div>
+                                <div class="w-32 px-2">
+                                    CD - {{ $loan -> settlement_date }}
                                 </div>
+                                @if(auth() -> user() -> level == 'loan_officer')
+                                    <div class="px-2 flex-grow text-right">
+                                        <div class="text-green-600">${{ number_format($loan -> loan_officer_1_commission_amount, 2) }}</div>
+                                    </div>
+                                @else
+                                    <div class="pl-4 flex-grow">
+                                        {{ $loan -> loan_officer_1 -> fullname }}
+                                    </div>
+                                @endif
 
                             </div>
 
