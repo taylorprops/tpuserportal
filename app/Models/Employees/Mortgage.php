@@ -16,20 +16,6 @@ class Mortgage extends Model
     protected $guarded = [];
 
 
-    public static function boot() {
-        parent::boot();
-        static::addGlobalScope(function ($query) {
-            if (auth() -> user()) {
-                if (auth() -> user() -> group == 'mortgage' && auth() -> user() -> level == 'processor') {
-                    $query -> where(function ($query) {
-                        $query -> where('emp_position', '!=', 'manager');
-                    });
-                }
-            }
-
-        });
-    }
-
 
     public function notes() {
         return $this -> hasMany('App\Models\Employees\EmployeesNotes', ['emp_id', 'emp_type'], ['id', 'emp_type']);

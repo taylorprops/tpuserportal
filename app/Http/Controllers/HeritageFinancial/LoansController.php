@@ -144,7 +144,7 @@ class LoansController extends Controller
 
             $manager = Mortgage::where('emp_position', 'manager') -> first();
 
-            $manager = $manager -> fullname ?? null;
+            $manager = $manager -> fullname;
 
             $manager_bonus = $loan_officer_1 -> manager_bonus;
             $manager_bonus_details = 'Manager Bonus is always '.$loan_officer_1 -> manager_bonus.'% for all loans by '.$loan_officer_1 -> fullname;
