@@ -2,13 +2,22 @@
     {{ $lenders -> onEachSide(1) -> links() }}
 </div>
 
+<div class=" py-3">
+    <button type="button" class="button primary md" @click="email_modal = true;" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Lenders</button>
+</div>
+
 <div class="table-div">
 
-    <table>
+    <table class="data-table">
 
         <thead>
             <tr id="sortable_tr">
                 @if(auth() -> user() -> level != 'loan_officer')
+                <th>
+                    <div class="w-12 flex justify-around items-center">
+                        <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email();">
+                    </div>
+                </th>
                 <th width="100" scope="col"></th>
                 @endif
                 <th scope="col">@sortablelink('company_name', 'Lender')</th>
@@ -23,6 +32,15 @@
             @foreach($lenders as $lender)
                 <tr>
                     @if(auth() -> user() -> level != 'loan_officer')
+                    <td>
+                        <div class="flex justify-around items-center">
+                            <input type="checkbox" class="form-element checkbox success md lender-checkbox"
+                            data-company-name="{{ $lender -> company_name }}"
+                            data-ae-name="{{ $lender -> account_exec_name }}"
+                            data-ae-email="{{ $lender -> account_exec_email }}"
+                            @click="show_email()">
+                        </div>
+                    </td>
                     <td>
                         <a href="/heritage_financial/lenders/view_lender/{{ $lender -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>

@@ -75,7 +75,7 @@ $breadcrumbs = [
                                                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
                                                         x-ref="table_{{ $c }}_{{ $month }}">
-                                                            <table class="min-w-full divide-y divide-gray-200">
+                                                            <table class="data-table">
                                                                 <thead class="bg-gray-50">
                                                                     <tr>
                                                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\HeritageFinancial;
 
-use App\Models\User;
 use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\General\SendEmail;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Models\HeritageFinancial\Lenders;
 use App\Models\HeritageFinancial\LendersDocuments;
 use App\Models\OldDB\Company\Lenders as LendersOld;
 use App\Models\DocManagement\Resources\LocationData;
 
-class LendersController extends Controller
-{
-
-
-
+class LendersController extends Controller {
 
     public function lenders(Request $request) {
 
@@ -34,20 +31,21 @@ class LendersController extends Controller
         $search = $request -> search ?? null;
         $active = $request -> active ?? 'yes';
 
-        $lenders = Lenders::where(function($query) use ($active) {
-            if($active != 'all') {
+        $lenders = Lenders::where(function ($query) use ($active) {
+
+            if ($active != 'all') {
                 $query -> where('active', $active);
             }
-        })
-        -> where(function($query) use ($search) {
-            $query -> where('company_name', 'like', '%'.$search.'%')
-                -> orWhere('account_exec_name', 'like', '%'.$search.'%')
-                -> orWhere('notes', 'like', '%'.$search.'%');
-        })
-        -> with(['documents'])
-        -> orderBy($sort, $direction)
-        -> paginate($length);
 
+        })
+            -> where(function ($query) use ($search) {
+                $query -> where('company_name', 'like', '%' . $search . '%')
+                      -> orWhere('account_exec_name', 'like', '%' . $search . '%')
+                      -> orWhere('notes', 'like', '%' . $search . '%');
+            })
+            -> with(['documents'])
+            -> orderBy($sort, $direction)
+            -> paginate($length);
 
         return view('heritage_financial/lenders/get_lenders_html', compact('lenders'));
 
@@ -56,7 +54,8 @@ class LendersController extends Controller
     public function view_lender(Request $request) {
 
         $lender = null;
-        if($request -> uuid) {
+
+        if ($request -> uuid) {
             $lender = Lenders::where('uuid', $request -> uuid) -> first();
         }
 
@@ -71,10 +70,9 @@ class LendersController extends Controller
         $request -> validate([
             'company_name' => 'required',
         ],
-        [
-            'required' => 'Required'
-        ]);
-
+            [
+                'required' => 'Required',
+            ]);
 
         if ($request -> uuid != '') {
 
@@ -83,25 +81,27 @@ class LendersController extends Controller
         } else {
 
             $lender = new Lenders();
-            $uuid = (string) Str::uuid();
+            $uuid = (string)Str::uuid();
 
             $ignore = ['uuid', 'id'];
+
             foreach ($request -> all() as $key => $value) {
+
                 if (!in_array($key, $ignore)) {
                     $lender -> $key = $value;
                 }
+
             }
+
             $lender -> uuid = $uuid;
 
             $lender -> save();
 
         }
 
-
-
         return response() -> json([
             'success' => true,
-            'uuid' => $lender -> uuid ?? null
+            'uuid' => $lender -> uuid ?? null,
         ]);
 
     }
@@ -122,13 +122,15 @@ class LendersController extends Controller
         $file_name_orig = $file -> getClientOriginalName();
         $file_name = Helper::clean_file_name($file, '', false, true);
 
-        $dir = 'mortgage/lenders/docs/'.$uuid;
-        if(!is_dir($dir)) {
+        $dir = 'mortgage/lenders/docs/' . $uuid;
+
+        if (!is_dir($dir)) {
             Storage::makeDirectory($dir);
         }
+
         $file -> storeAs($dir, $file_name);
-        $file_location = $dir.'/'.$file_name;
-        $file_location_url = Storage::url($dir.'/'.$file_name);
+        $file_location = $dir . '/' . $file_name;
+        $file_location_url = Storage::url($dir . '/' . $file_name);
 
         LendersDocuments::create([
             'lender_uuid' => $uuid,
@@ -136,8 +138,6 @@ class LendersController extends Controller
             'file_location' => $file_location,
             'file_location_url' => $file_location_url,
         ]);
-
-
 
     }
 
@@ -157,10 +157,9 @@ class LendersController extends Controller
 
         $lenders = LendersOld::get();
 
-
         Lenders::truncate();
 
-        // Add Lenders
+// Add Lenders
         foreach ($lenders as $lender) {
 
             $add_lender = new Lenders();
@@ -185,9 +184,7 @@ class LendersController extends Controller
 
             $add_lender -> save();
 
-
         }
-
 
     }
 
@@ -195,8 +192,8 @@ class LendersController extends Controller
 
         $lenders = Lenders::get();
 
-        foreach($lenders as $lender) {
-            $lender -> uuid = (string) Str::uuid();
+        foreach ($lenders as $lender) {
+            $lender -> uuid = (string)Str::uuid();
             $lender -> save();
         }
 
@@ -206,20 +203,33 @@ class LendersController extends Controller
 
         $lenders = Lenders::get();
 
-        foreach($lenders as $lender) {
+        foreach ($lenders as $lender) {
             $address = $lender -> account_exec_address;
-            if($address != '') {
+            if ($address != '') {
                 $parsed = Helper::parse_address_google($address);
-                $lender -> company_street = $parsed['street_number'].' '.$parsed['address'];
+                $lender -> company_street = $parsed['street_number'] . ' ' . $parsed['address'];
                 $lender -> company_unit = $parsed['unit'];
                 $lender -> company_city = $parsed['city'];
                 $lender -> company_state = $parsed['state'];
                 $lender -> company_zip = $parsed['zip'];
                 //$lender -> save();
             }
+
         }
 
     }
 
+    public function test(Request $request) {
+
+        $message = [
+            'company' => 'Taylor Properties',
+            'subject' => 'test subject',
+            'from' => 'mike@taylorprops.com',
+            'body' => '<strong>Hello Dude!</strong><br>How are you?',
+        ];
+        Mail::to('miketaylor0101@gmail.com')
+            -> send(new SendEmail($message));
+
+    }
 
 }

@@ -4,7 +4,7 @@
 
 <div class="table-div">
 
-    <table>
+    <table class="data-table">
 
         <thead>
             <tr>

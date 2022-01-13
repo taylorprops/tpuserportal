@@ -12,12 +12,12 @@ $breadcrumbs = [
         :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
-    <div class="pb-12 pt-2">
+    <div class="pb-12 pt-2"
+    x-data="lenders()">
 
         <div class="w-full mx-auto">
 
-            <div class=""
-            x-data="lenders()">
+            <div class="">
 
                 <div class="w-full">
 
@@ -57,6 +57,16 @@ $breadcrumbs = [
             </div>
 
         </div>
+
+        <x-modals.modal
+        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
+        :modalTitle="'Email Lenders'"
+        :modalId="'email_modal'"
+        x-show="email_modal">
+
+        Stuff goes here
+
+        </x-modals.modal>
 
     </div>
 
