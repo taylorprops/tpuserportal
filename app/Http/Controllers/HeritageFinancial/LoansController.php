@@ -7,11 +7,13 @@ use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Employees\Mortgage;
+use App\Models\OldDB\LoanOfficers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\HeritageFinancial\Loans;
 use Illuminate\Support\Facades\Storage;
+use App\Models\HeritageFinancial\Lenders;
 use App\Models\HeritageFinancial\LoansNotes;
 use App\Mail\HeritageFinancial\ManagerBonuses;
 use App\Models\HeritageFinancial\LoansChecksIn;
@@ -21,7 +23,6 @@ use App\Models\HeritageFinancial\LoansDeductions;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\HeritageFinancial\LoansLoanOfficerDeductions;
 use App\Models\OldDB\Company\LoansInProcess as LoansInProcessOld;
-use App\Models\OldDB\LoanOfficers;
 
 class LoansController extends Controller
 {
@@ -161,9 +162,11 @@ class LoansController extends Controller
 
         $states = LocationData::getStates();
 
+        $lenders = Lenders::where('active', 'yes') -> orderBy('company_name') -> get();
+
         $loan_officers = Mortgage::where('active', 'yes') -> orderBy('last_name') -> get();
 
-        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
+        return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'lenders', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
 
     }
 
@@ -181,9 +184,15 @@ class LoansController extends Controller
             'city' => 'required',
             'state' => 'required',
             'zip' => 'required',
-            'settlement_date' => 'required',
-            'loan_amount' => 'required',
-            'loan_number' => 'required',
+            'settlement_date' => 'required_if:loan_status,Closed',
+            'source' => 'required_if:loan_status,Closed',
+            'reverse' => 'required_if:loan_status,Closed',
+            'mortgage_type' => 'required_if:loan_status,Closed',
+            'loan_type' => 'required_if:loan_status,Closed',
+            'loan_purpose' => 'required_if:loan_status,Closed',
+            'lender' => 'required_if:loan_status,Closed',
+            'loan_amount' => 'required_if:loan_status,Closed',
+            'loan_number' => 'required_if:loan_status,Closed',
         ],
         [
             'required' => 'Required'
@@ -949,6 +958,64 @@ class LoansController extends Controller
 
                 $loan_new -> locked = $loan_old -> locked;
                 $loan_new -> lock_expiration = $loan_old -> lock_expire;
+                $loan_new -> save();
+
+            }
+
+        }
+
+    }
+
+    public function add_missing_details(Request $request) {
+
+
+        $loans_old = LoansOld::where('lender', '!=', '') -> get();
+
+        foreach($loans_old as $loan_old) {
+
+            $loan_new = Loans::where('loan_number', $loan_old -> loan_number)
+            -> first();
+
+            if($loan_new) {
+
+                $lender_name = $loan_old -> lender;
+                if($lender_name == 'Amtrust') {
+                    $lender_name = 'AmTrust Bank';
+                } elseif($lender_name == 'Homecomings') {
+                    $lender_name = 'Homecomings Financial';
+                } elseif($lender_name == 'Cardinal Financial Company') {
+                    $lender_name = 'Cardinal Mortgage';
+                } elseif($lender_name == 'Pacific Union') {
+                    $lender_name = 'Pacific Union Financial';
+                } elseif($lender_name == 'American Financial') {
+                    $lender_name = 'American Financial Resources';
+                } elseif($lender_name == 'E Mortgage Management, LLC.') {
+                    $lender_name = 'EMM Loans, LLC.';
+                }
+
+                $lender = Lenders::where('company_name', $lender_name) -> first();
+                $lender_uuid = $lender ? $lender -> uuid : null;
+
+                $loan_purpose = $loan_old -> loan_type;
+                if($loan_purpose == 'Buy A Home') {
+                    $loan_purpose = 'purchase';
+                } else if($loan_purpose == 'Refinance Mortgage') {
+                    $loan_purpose = 'refi';
+                }
+
+                $loan_type = $loan_old -> loan_type2;
+                if($loan_type == 'First Mortgage') {
+                    $loan_type = 'first';
+                } else if($loan_type == 'Second Mortgage') {
+                    $loan_type = 'second';
+                }
+
+                $loan_new -> mortgage_type  = $loan_type;
+                $loan_new -> loan_purpose = $loan_purpose;
+                $loan_new -> loan_type = $loan_old -> loan_type3;
+                $loan_new -> lender_uuid = $lender_uuid;
+                $loan_new -> reverse = $loan_old -> reverse;
+
                 $loan_new -> save();
 
             }

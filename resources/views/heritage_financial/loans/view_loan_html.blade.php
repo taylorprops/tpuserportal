@@ -342,6 +342,18 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     value="{{ $loan -> loan_number ?? null }}">
                                 </div>
 
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }} required"
+                                    id="lender_uuid"
+                                    name="lender_uuid"
+                                    data-label="Lender">
+                                        @foreach($lenders as $lender)
+                                            <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -375,6 +387,60 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         <option value=""></option>
                                         <option value="Office" @if($loan && $loan -> source == 'Office') selected @endif>Office</option>
                                         <option value="Loan Officer" @if($loan && $loan -> source == 'Loan Officer') selected @endif>Loan Officer</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }} required"
+                                    id="reverse"
+                                    name="reverse"
+                                    data-label="Reverse Mortgage">
+                                        <option value=""></option>
+                                        <option value="yes" @if($loan && $loan -> reverse == 'yes') selected @endif>Yes</option>
+                                        <option value="no" @if($loan && $loan -> reverse == 'no') selected @endif>No</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }} required"
+                                    id="mortgage_type"
+                                    name="mortgage_type"
+                                    data-label="Mortgage Type">
+                                        <option value=""></option>
+                                        <option value="first" @if($loan && $loan -> mortgage_type == 'first') selected @endif>First</option>
+                                        <option value="second" @if($loan && $loan -> mortgage_type == 'second') selected @endif>Second</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }} required"
+                                    id="loan_type"
+                                    name="loan_type"
+                                    data-label="Loan Type">
+                                        <option value=""></option>
+                                        <option value="conventional" @if($loan && $loan -> loan_type == 'conventional') selected @endif>Conventional</option>
+                                        <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
+                                        <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
+                                        <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }} required"
+                                    id="loan_purpose"
+                                    name="loan_purpose"
+                                    data-label="Loan Purpose">
+                                        <option value=""></option>
+                                        <option value="purchase" @if($loan && $loan -> loan_purpose == 'purchase') selected @endif>Purchase</option>
+                                        <option value="refi" @if($loan && $loan -> loan_purpose == 'refi') selected @endif>Refinance</option>
                                     </select>
                                 </div>
 
