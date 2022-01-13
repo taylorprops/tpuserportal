@@ -190,12 +190,13 @@ class LoansController extends Controller
             'mortgage_type' => 'required_if:loan_status,Closed',
             'loan_type' => 'required_if:loan_status,Closed',
             'loan_purpose' => 'required_if:loan_status,Closed',
-            'lender_id' => 'required_if:loan_status,Closed',
+            'lender_uuid' => 'required_if:loan_status,Closed',
             'loan_amount' => 'required_if:loan_status,Closed',
             'loan_number' => 'required_if:loan_status,Closed',
         ],
         [
-            'required' => 'Required'
+            'required' => 'Required',
+            'lender_uuid.required_if' => 'Lender is Required'
         ]);
 
         $amounts = $request -> amount;

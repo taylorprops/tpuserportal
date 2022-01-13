@@ -348,6 +348,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     id="lender_uuid"
                                     name="lender_uuid"
                                     data-label="Lender">
+                                        <option value=""></option>
                                         @foreach($lenders as $lender)
                                             <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
                                         @endforeach
