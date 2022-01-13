@@ -7,11 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendEmail extends Mailable
+class EmailGeneral extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $message;
+
     /**
      * Create a new message instance.
      *
@@ -29,7 +30,7 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this -> view('mail.general.send_email')
+        return $this -> markdown('mail.general')
         -> from($this -> message['from'])
         -> subject($this -> message['subject'])
         -> with([

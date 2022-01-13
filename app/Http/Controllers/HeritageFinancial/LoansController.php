@@ -172,7 +172,7 @@ class LoansController extends Controller
 
     public function save_details(Request $request) {
 
-        $request -> validate([
+        $validated = $request -> validate([
             'loan_status' => 'required',
             'loan_officer_1_id' => 'required',
             'processor_id' => 'required',
@@ -198,6 +198,7 @@ class LoansController extends Controller
             'required' => 'Required',
             'lender_uuid.required_if' => 'Lender is Required'
         ]);
+
 
         $amounts = $request -> amount;
 

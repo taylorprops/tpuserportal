@@ -31,15 +31,14 @@
         <tr>
             <td align="center">
                 <table class="content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+
                     <tr>
                         <td class="header">
-                            <a href="{{ config('app.url') }}" style="display: inline-block;">
-                                {{-- <img class="email-header-logo" src="https://tpuserportal.com/images/logo/logo_email_{{ str_replace(' ', '', $user -> company) }}.png"> --}}
-                                <img class="email-header-logo" src="https://tpuserportal.com/images/logo/logo_all_white.png">
-                            </a>
+                        <a href="{{ $url }}" style="display: inline-block;">
+                            <img class="email-header-logo" src="{{ config('app.url') }}/images/logo/logo_email_{{ str_replace(' ', '', $company) }}.png">
+                        </a>
                         </td>
-                    </tr>
-
+                        </tr>
                     <!-- Email Body -->
                     <tr>
                         <td class="body" width="100%" cellpadding="0" cellspacing="0">
