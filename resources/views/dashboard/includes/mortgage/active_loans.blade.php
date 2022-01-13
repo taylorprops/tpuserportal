@@ -69,6 +69,7 @@
                         $complete = false;
                         $incomplete = false;
                         $not_available = false;
+                        $suspended = false;
 
                         if($field == 'locked') {
 
@@ -87,6 +88,7 @@
                                 $complete = true;
                             } elseif($loan -> time_line_conditions_received_status == 'suspended') {
                                 $incomplete = true;
+                                $suspended = true;
                             } else {
                                 $not_available = true;
                             }
@@ -110,8 +112,10 @@
 
                         if($complete == true) {
                             echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
-                        } else if($incomplete == true) {
+                        } else if($incomplete == true && $suspended == false) {
                             echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times fa-2x text-red-600"></i></span>';
+                        } else if($incomplete == true && $suspended == true) {
+                            echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle fa-2x text-red-600"></i></span>';
                         } else if($not_available == true) {
                             echo '<span data-tippy-content="N/A"><i class="fal fa-minus fa-2x text-gray-300"></i></span>';
                         }
