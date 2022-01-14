@@ -688,6 +688,10 @@ class EmployeesController extends Controller
 
     public function login_as_user(Request $request) {
 
+        Auth::logout();
+        $request -> session() -> invalidate();
+        $request -> session() -> regenerateToken();
+
         $user = User::find($request -> id);
         Auth::login($user);
         return redirect('dashboard');
