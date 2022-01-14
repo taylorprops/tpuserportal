@@ -12,13 +12,13 @@
 
         <thead>
             <tr id="sortable_tr">
-                @if(auth() -> user() -> level != 'loan_officer')
                 <th>
                     <div class="w-12 flex justify-around items-center">
                         <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
                     </div>
                 </th>
                 <th width="100" scope="col"></th>
+                @if(auth() -> user() -> level != 'loan_officer')
                 @endif
                 <th scope="col">@sortablelink('company_name', 'Lender')</th>
                 <th scope="col">@sortablelink('account_exec_name', 'Account Exec')</th>
@@ -31,7 +31,6 @@
         <tbody>
             @foreach($lenders as $lender)
                 <tr>
-                    @if(auth() -> user() -> level != 'loan_officer')
                     <td>
                         <div class="flex justify-around items-center">
                             <input type="checkbox" class="form-element checkbox success md lender-checkbox"
@@ -41,6 +40,7 @@
                             @click="show_email_button()">
                         </div>
                     </td>
+                    @if(auth() -> user() -> level != 'loan_officer')
                     <td>
                         <a href="/heritage_financial/lenders/view_lender/{{ $lender -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
