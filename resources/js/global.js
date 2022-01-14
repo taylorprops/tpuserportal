@@ -233,6 +233,7 @@ window.text_editor = function (options) {
     options.content_style = 'body { font-size: .9rem; }',
     // options.content_css = '/css/tinymce.css';
     options.content_style = "body { font-size: 12pt; font-family: Arial; }";
+    options.force_br_newlines = true;
     options.force_p_newlines = false;
     //options.forced_root_block = '';
     options.branding = false;
