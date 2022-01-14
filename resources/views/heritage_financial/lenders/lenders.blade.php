@@ -65,7 +65,7 @@ $breadcrumbs = [
         x-show="email_modal">
 
             <div class="mb-3">
-                <input type="text" class="form-element input md" placeholder="Subject" x-ref="subject">
+                <input type="text" class="form-element input md" name="subject" id="subject" placeholder="Subject" x-ref="subject">
             </div>
             <div>
                 <textarea id="message" name="message" x-ref="message"></textarea>

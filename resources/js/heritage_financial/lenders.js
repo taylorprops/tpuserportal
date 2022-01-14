@@ -46,6 +46,7 @@ if(document.URL.match(/lenders/)) {
 
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Sending Emails ... ');
+                remove_form_errors();
 
                 let formData = new FormData();
                 formData.append('subject', subject);
@@ -59,6 +60,7 @@ if(document.URL.match(/lenders/)) {
                     toastr.success('Emails Successfully Sent');
                 })
                 .catch(function (error) {
+                    display_errors(error, ele, button_html);
                 });
             },
 
