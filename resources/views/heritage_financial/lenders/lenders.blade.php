@@ -59,12 +59,23 @@ $breadcrumbs = [
         </div>
 
         <x-modals.modal
-        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/3'"
+        :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-2/5'"
         :modalTitle="'Email Lenders'"
         :modalId="'email_modal'"
         x-show="email_modal">
 
-        Stuff goes here
+            <div class="mb-3">
+                <input type="text" class="form-element input md" placeholder="Subject" x-ref="subject">
+            </div>
+            <div>
+                <textarea id="message" name="message" x-ref="message"></textarea>
+            </div>
+            <div class="flex justify-around pt-8">
+                <button type="button" class="button primary lg"
+                @click="send_email($el)">
+                    Send Email <i class="fa fa-share ml-2"></i>
+                </button>
+            </div>
 
         </x-modals.modal>
 

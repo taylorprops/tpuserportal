@@ -231,11 +231,13 @@ window.text_editor = function (options) {
         options.selector = '.text-editor';
     }
     options.content_style = 'body { font-size: .9rem; }',
-    //options.content_css = '/css/tinymce.css';
+    // options.content_css = '/css/tinymce.css';
+    options.content_style = "body { font-size: 12pt; font-family: Arial; }";
     //options.force_p_newlines = false;
     //options.forced_root_block = '';
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
+
 
     tinymce.remove(options.selector);
     tinymce.init(options);
@@ -720,6 +722,7 @@ window.global_get_url_parameters = function (key) {
     }
     return false;
 }
+
 
 
 

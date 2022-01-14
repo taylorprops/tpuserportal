@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\FilepondUploadController;
@@ -34,6 +35,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/employees/billing/add_credit_card', [EmployeesController::class, 'add_credit_card']) -> middleware(['all']);
     Route::post('/employees/billing/delete_credit_card', [EmployeesController::class, 'delete_credit_card']) -> middleware(['all']);
     Route::post('/employees/billing/set_default_credit_card', [EmployeesController::class, 'set_default_credit_card']) -> middleware(['all']);
+
+    Route::get('/global/get_signature', [GlobalController::class, 'get_signature']) -> middleware(['all']);
 
 
 });

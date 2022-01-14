@@ -152,6 +152,30 @@ class LendersController extends Controller {
 
     }
 
+    public function email_lenders(Request $request) {
+
+        $message = [
+            'company' => 'Heritage Financial',
+            'subject' => $request -> subject,
+            'from' => ['email' => auth() -> user() -> email, 'name' => auth() -> user() -> name],
+        ];
+
+        $lenders = json_decode($request -> lenders);
+
+        foreach($lenders as $lender) {
+
+            $message['body'] = preg_replace('/%%AE_FirstName%%/', substr($lender -> ae_name, 0, strpos($lender -> ae_name, ' ')), $request -> message);
+            $to = ['email' => $lender -> ae_email, 'name' => $lender -> ae_name];
+
+            Mail::to([$to])
+                -> send(new EmailGeneral($message));
+
+        }
+
+
+
+    }
+
     ////////// Import Loans from Old DB ////////////
 
     public function import_lenders(Request $request) {
@@ -229,9 +253,9 @@ class LendersController extends Controller {
             'body' => '<strong>Hello Dude!</strong><br>How are you?',
         ];
 
-        return (new EmailGeneral($message)) -> render();
+        //return (new EmailGeneral($message)) -> render();
 
-        Mail::to('miketaylor0101@gmail.com')
+        Mail::to([['email' => 'miketaylor0101@gmail.com', 'name' => 'Mike Taylor']])
             -> send(new EmailGeneral($message));
 
     }

@@ -39,6 +39,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/heritage_financial/lenders/docs_upload', [LendersController::class, 'docs_upload']) -> middleware(['mortgage']);
     Route::post('/heritage_financial/lenders/get_docs', [LendersController::class, 'get_docs']) -> middleware(['mortgage']);
     Route::post('/heritage_financial/lenders/delete_doc', [LendersController::class, 'delete_doc']) -> middleware(['mortgage']);
+    Route::post('/heritage_financial/lenders/email_lenders', [LendersController::class, 'email_lenders']) -> middleware(['mortgage']);
 
     Route::get('/heritage_financial/loan_software', function() {
         return view('/heritage_financial/loan_software/loan_software');

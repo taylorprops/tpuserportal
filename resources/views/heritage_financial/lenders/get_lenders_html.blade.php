@@ -15,7 +15,7 @@
                 @if(auth() -> user() -> level != 'loan_officer')
                 <th>
                     <div class="w-12 flex justify-around items-center">
-                        <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email();">
+                        <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
                     </div>
                 </th>
                 <th width="100" scope="col"></th>
@@ -38,7 +38,7 @@
                             data-company-name="{{ $lender -> company_name }}"
                             data-ae-name="{{ $lender -> account_exec_name }}"
                             data-ae-email="{{ $lender -> account_exec_email }}"
-                            @click="show_email()">
+                            @click="show_email_button()">
                         </div>
                     </td>
                     <td>

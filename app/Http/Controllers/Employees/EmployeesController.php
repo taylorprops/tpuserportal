@@ -543,6 +543,11 @@ class EmployeesController extends Controller
             ]);
         }
 
+        $user = User::where('group', $emp_type) -> where('user_id', $emp_id) -> first();
+
+        $user -> signature = $request -> signature;
+        $user -> save();
+
 
         return response() -> json(['success' => true]);
 
