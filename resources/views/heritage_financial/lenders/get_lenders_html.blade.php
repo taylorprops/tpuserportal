@@ -17,8 +17,8 @@
                         <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
                     </div>
                 </th>
-                <th width="100" scope="col"></th>
                 @if(auth() -> user() -> level != 'loan_officer')
+                <th width="100" scope="col"></th>
                 @endif
                 <th scope="col">@sortablelink('company_name', 'Lender')</th>
                 <th scope="col">@sortablelink('account_exec_name', 'Account Exec')</th>
