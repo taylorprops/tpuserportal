@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\General\SendEmail;
+use App\Mail\General\EmailGeneral;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -222,13 +223,16 @@ class LendersController extends Controller {
     public function test(Request $request) {
 
         $message = [
-            'company' => 'Taylor Properties',
+            'company' => 'Heritage Financial',
             'subject' => 'test subject',
             'from' => 'mike@taylorprops.com',
             'body' => '<strong>Hello Dude!</strong><br>How are you?',
         ];
+
+        return (new EmailGeneral($message)) -> render();
+
         Mail::to('miketaylor0101@gmail.com')
-            -> send(new SendEmail($message));
+            -> send(new EmailGeneral($message));
 
     }
 

@@ -34,7 +34,7 @@ class EmailGeneral extends Mailable
         -> from($this -> message['from'])
         -> subject($this -> message['subject'])
         -> with([
-            'body' => $this -> message['body'],
+            'message' => $this -> message,
         ]);
     }
 }
