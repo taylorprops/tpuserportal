@@ -13,5 +13,5 @@ npm-debug.log
 yarn-error.log
 _notes
 .editorconfig
-/storage/app/public
+/storage/app/public/*
 
