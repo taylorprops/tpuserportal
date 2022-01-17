@@ -28,10 +28,10 @@ class Kernel extends ConsoleKernel
 
         // Backups
         $schedule -> command('backup:clean') -> twiceDaily(1, 13) -> environments(['production']);
-        $schedule -> command('backup:run --only-db --disable-notifications') -> twiceDaily(2, 14) -> environments(['production']);
+        $schedule -> command('backup:run --only-db') -> twiceDaily(2, 14) -> environments(['production']);
 
         // prune failed jobs
-        $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('12:00');
+        $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('11:00');
 
         // update bright agents and offices
         $schedule -> command('bright_mls:update_agents_and_offices') -> everyThirtyMinutes() -> environments('production');
