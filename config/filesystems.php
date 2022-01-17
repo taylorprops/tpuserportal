@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Storage;
+
 return [
 
     /*
@@ -46,7 +48,10 @@ return [
             'url' => '/storage',
             'visibility' => 'public',
         ],
-
+        'backupLocal' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/backups'),
+        ],
         'staging' => [
             'driver' => 'local',
             'root' => '/var/www/taylor-properties.net/storage/app/public',
@@ -79,6 +84,11 @@ return [
             ],
             'url' => '/storage',
             'visibility' => 'public',
+        ],
+
+        'backup' => [
+            'driver' => 'local',
+            'root' => '/mnt/vol2/backups',
         ],
 
         // 'local' => [
