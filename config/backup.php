@@ -1,6 +1,5 @@
 <?php
 
-use Spatie\DbDumper\Compressors\GzipCompressor;
 
 return [
 
@@ -97,7 +96,7 @@ return [
          *
          * If you do not want any compressor at all, set it to null.
          */
-        'database_dump_compressor' => new GzipCompressor(),
+        'database_dump_compressor' => '',
 
         'destination' => [
 
