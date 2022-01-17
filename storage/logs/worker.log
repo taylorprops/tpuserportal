@@ -1,0 +1,3019 @@
+[2021-07-23 14:42:30][1] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:42:31][1] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:47:02][2] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:47:03][2] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:50:35][3] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:50:35][4] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:50:36][5] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:50:36][5] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:53:04][6] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 14:53:45][6] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 15:00:01][7] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-23 15:00:56][7] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][14] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][15] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][16] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][17] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][18] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:33:47][19] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:47][15] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:47][14] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:48][16] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:48][17] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:48][18] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:35:48][19] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:36:47][14] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:36:50][20] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:37:48][15] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:37:48][16] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:37:48][17] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:37:48][18] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:37:48][19] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:48][16] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:50][17] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:51][15] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:51][18] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:51][20] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:38:51][19] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:40:51][20] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 09:41:51][20] Failed:     App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:06:05][21] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:08:11][22] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:09:42][23] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:15:17][21] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:15:17][22] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:15:17][23] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:16:17][21] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:16:17][22] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:16:17][23] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:17:17][21] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:17:17][22] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:17:17][23] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:17][21] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:17][22] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:17][23] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:18][21] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:19][22] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:18:56][23] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:24][21] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:24][23] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:25][22] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:37][23] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:39][21] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:39][22] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:21:45][22] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:22:01][23] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:22:01][21] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:58:45][25] Processing: App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-07-24 11:59:12][25] Processed:  App\Jobs\Cron\SkySlope\AddDocumentsJob
+[2021-08-11 16:49:54][98] Processing: App\Jobs\Cron\Archives\GetEscrowChecksJob
+[2021-08-11 16:49:54][98] Processed:  App\Jobs\Cron\Archives\GetEscrowChecksJob
+[2021-08-11 16:53:21][99] Processing: App\Jobs\Cron\Archives\GetEscrowChecksJob
+[2021-08-11 16:56:21][99] Processing: App\Jobs\Cron\Archives\GetEscrowChecksJob
+[2021-08-11 16:56:50][99] Processed:  App\Jobs\Cron\Archives\GetEscrowChecksJob
+[2021-08-11 16:58:36][99] Processed:  App\Jobs\Cron\Archives\GetEscrowChecksJob
+
+   Illuminate\Database\QueryException 
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cachetelescope:dump-watcher limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+35 vendor frames [22m
+  37  [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+   Illuminate\Database\QueryException 
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+
+      [2m+42 vendor frames [22m
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `cache` where `key` = admin_cacheilluminate:queue:restart limit 1)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+      [2m+42 vendor frames [22m
+  43  /var/www/admin-tail/artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[HY000] [2002] Connection refused (SQL: select `config_key`, `config_value`, `value_type` from `config`)
+
+  at /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Database/Connection.php:692
+    688▕         // If an exception occurs when attempting to run a query, we'll format the error
+    689▕         // message to include the bindings with SQL, which will make this exception a
+    690▕         // lot more helpful to the developer instead of just the database's errors.
+    691▕         catch (Exception $e) {
+  ➜ 692▕             throw new QueryException(
+    693▕                 $query, $this->prepareBindings($bindings), $e
+    694▕             );
+    695▕         }
+    696▕     }
+
+  1   [internal]:0
+      Illuminate\Foundation\Application::Illuminate\Foundation\{closure}()
+
+      [2m+23 vendor frames [22m
+  25  /var/www/admin-tail/app/Providers/AppServiceProvider.php:40
+      Illuminate\Database\Eloquent\Model::all()
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../nunomaduro/collision/src/Adapters/Laravel/IgnitionSolutionsRepository.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/CollisionServiceProvider.php(50): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(869): NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider->NunoMaduro\Collision\Adapters\Laravel\{closure}()
+#5 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(754): Illuminate\Container\Container->build()
+#6 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(841): Illuminate\Container\Container->resolve()
+#7 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Container/Container.php(692): Illuminate\Foundation\Application->resolve()
+#8 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(826): Illuminate\Container\Container->make()
+#9 /var/www/admin-tail/vendor/nunomaduro/collision/src/Adapters/Laravel/ExceptionHandler.php(65): Illuminate\Foundation\Application->make()
+#10 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(108): NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler->renderForConsole()
+#11 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(94): Illuminate\Foundation\Bootstrap\HandleExceptions->renderForConsole()
+#12 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#13 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
+PHP Fatal error:  Uncaught ErrorException: include(/var/www/admin-tail/vendor/composer/../symfony/error-handler/Error/FatalError.php): Failed to open stream: No such file or directory in /var/www/admin-tail/vendor/composer/ClassLoader.php:476
+Stack trace:
+#0 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 /var/www/admin-tail/vendor/composer/ClassLoader.php(476): include()
+#2 /var/www/admin-tail/vendor/composer/ClassLoader.php(344): Composer\Autoload\includeFile()
+#3 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(143): Composer\Autoload\ClassLoader->loadClass()
+#4 /var/www/admin-tail/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(130): Illuminate\Foundation\Bootstrap\HandleExceptions->fatalErrorFromPhpError()
+#5 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#6 {main}
+  thrown in /var/www/admin-tail/vendor/composer/ClassLoader.php on line 476
