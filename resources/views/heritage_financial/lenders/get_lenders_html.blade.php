@@ -3,7 +3,7 @@
 </div>
 
 <div class=" py-3">
-    <button type="button" class="button primary md" @click="email_modal = true;" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Lenders</button>
+    <button type="button" class="button primary md" @click="email_modal = true; show_lenders_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Lenders</button>
 </div>
 
 <div class="table-div">
@@ -23,7 +23,7 @@
                 <th scope="col">@sortablelink('company_name', 'Lender')</th>
                 <th scope="col">@sortablelink('account_exec_name', 'Account Exec')</th>
                 <th scope="col">@sortablelink('basis_points', 'Basis Points')</th>
-                <th scope="col">Range</th>
+                <th scope="col">@sortablelink('maximum', 'Range')</th>
                 <th scope="col">Documents</th>
                 <th scope="col">@sortablelink('notes', 'Notes')</th>
             </tr>
@@ -34,7 +34,7 @@
                     <td>
                         <div class="flex justify-around items-center">
                             <input type="checkbox" class="form-element checkbox success md lender-checkbox"
-                            data-company-name="{{ $lender -> company_name }}"
+                            data-ae-company="{{ $lender -> company_name }}"
                             data-ae-name="{{ $lender -> account_exec_name }}"
                             data-ae-email="{{ $lender -> account_exec_email }}"
                             @click="show_email_button()">

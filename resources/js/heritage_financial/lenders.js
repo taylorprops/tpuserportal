@@ -28,6 +28,19 @@ if(document.URL.match(/lenders/)) {
                     this.show_email_option = false;
                 }
             },
+            show_lenders_added() {
+                let div = this.$refs.lenders_added;
+                div.innerHTML = '';
+                document.querySelectorAll('.lender-checkbox:checked').forEach(function(lender) {
+                    let ae_name = lender.getAttribute('data-ae-name');
+                    let ae_company = lender.getAttribute('data-ae-company');
+                    let html = '<div class="text-xs grid grid-cols-3 my-1 border-b"> \
+                        <div>'+ae_name+'</div> \
+                        <div>'+ae_company+'</div> \
+                    </div>';
+                    div.insertAdjacentHTML('beforeend',html);
+                });
+            },
             send_email(ele) {
 
                 let scope = this;
