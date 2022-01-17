@@ -15,9 +15,9 @@
 
             <div class="flex border-b">
 
-                <div class="w-128"></div>
+                <div class="w-128 flex-none"></div>
 
-                <div class="flex bg-gray-100">
+                <div class="flex flex-none bg-gray-100">
                     @foreach($table_headers as $header)
                         <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
                             <div class="transform rotate-270 translate-y-30 text-sm">
@@ -43,27 +43,27 @@
 
                     <div class="flex justify-start items-center p-2 border-b text-sm hover:bg-gray-50">
 
-                        <div class="w-20">
+                        <div class="w-20 flex-none">
                             <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                         </div>
 
-                        <div class="w-20 flex justify-around">
+                        <div class="w-20 flex-none flex justify-around">
                             {!! App\Helpers\Helper::avatar(null, $loan -> processor_id, 'mortgage') !!}
                         </div>
 
-                        <div class="w-52">
+                        <div class="w-52 flex-none">
                             <div class="font-semibold text-gray-700">{!! $borrower !!}</div>
                             <div class="text-xs">{!! $address !!}</div>
                         </div>
 
-                        <div class="w-32">
+                        <div class="w-32 flex-none">
                             ${{ number_format($loan -> loan_amount) }}
                             <div class="text-xs">
                                 CD - {{ $loan -> settlement_date }}
                             </div>
                         </div>
 
-                        <div class="flex">
+                        <div class="flex flex-none">
 
                             @foreach($table_headers as $header)
 
