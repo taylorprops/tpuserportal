@@ -172,32 +172,41 @@ class LoansController extends Controller
 
     public function save_details(Request $request) {
 
-        $validated = $request -> validate([
-            'loan_status' => 'required',
-            'loan_officer_1_id' => 'required',
-            'processor_id' => 'required',
-            'borrower_first' => 'required',
-            'borrower_last' => 'required',
-            'title_company_select' => 'required_if:loan_status,Closed',
-            'title_company' => 'required_if:loan_status,Closed',
-            'street' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'zip' => 'required',
-            'settlement_date' => 'required_if:loan_status,Closed',
-            'source' => 'required_if:loan_status,Closed',
-            'reverse' => 'required_if:loan_status,Closed',
-            'mortgage_type' => 'required_if:loan_status,Closed',
-            'loan_type' => 'required_if:loan_status,Closed',
-            'loan_purpose' => 'required_if:loan_status,Closed',
-            'lender_uuid' => 'required_if:loan_status,Closed',
-            'loan_amount' => 'required_if:loan_status,Closed',
-            'loan_number' => 'required_if:loan_status,Closed',
-        ],
-        [
-            'required' => 'Required',
-            'lender_uuid.required_if' => 'Lender is Required'
-        ]);
+        if($request -> lo_form) {
+            $validated = $request -> validate([
+                'points_charged' => 'required',
+            ],
+            [
+                'required' => 'Required',
+            ]);
+        } else {
+            $validated = $request -> validate([
+                'loan_status' => 'required',
+                'loan_officer_1_id' => 'required',
+                'processor_id' => 'required',
+                'borrower_first' => 'required',
+                'borrower_last' => 'required',
+                'title_company_select' => 'required_if:loan_status,Closed',
+                'title_company' => 'required_if:loan_status,Closed',
+                'street' => 'required',
+                'city' => 'required',
+                'state' => 'required',
+                'zip' => 'required',
+                'settlement_date' => 'required_if:loan_status,Closed',
+                'source' => 'required_if:loan_status,Closed',
+                'reverse' => 'required_if:loan_status,Closed',
+                'mortgage_type' => 'required_if:loan_status,Closed',
+                'loan_type' => 'required_if:loan_status,Closed',
+                'loan_purpose' => 'required_if:loan_status,Closed',
+                'lender_uuid' => 'required_if:loan_status,Closed',
+                'loan_amount' => 'required_if:loan_status,Closed',
+                'loan_number' => 'required_if:loan_status,Closed',
+            ],
+            [
+                'required' => 'Required',
+                'lender_uuid.required_if' => 'Lender is Required'
+            ]);
+        }
 
 
         $amounts = $request -> amount;
@@ -212,7 +221,7 @@ class LoansController extends Controller
             $loan -> uuid = (string) Str::uuid();
         }
 
-        $ignore = ['uuid', 'title_company_select'];
+        $ignore = ['uuid', 'title_company_select', 'lo_form'];
         foreach ($request -> all() as $key => $value) {
 
             if (!in_array($key, $ignore)) {

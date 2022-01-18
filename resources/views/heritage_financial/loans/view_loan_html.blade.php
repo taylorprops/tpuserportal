@@ -450,7 +450,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <hr class="bg-gray-300 my-6">
 
                             <div class="p-8 flex justify-around">
-                                <button type="button" class="button primary xl" @click="save_details($el)"><i class="fal fa-check mr-3"></i> Save Details</button>
+                                <button type="button" class="button primary xl" @click="save_details($el)">Save Details <i class="fal fa-check ml-2"></i></button>
                             </div>
 
                             <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
@@ -461,7 +461,31 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         <div class="font-medium text-2xl text-gray-600 mt-2">{{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip }}</div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                        <form id="details_form">
+                            <div class="flex justify-start items-center space-x-4 mt-12">
+                                <div>
+                                    Points Charged
+                                </div>
+                                <div class="w-24">
+                                    <input
+                                    type="text"
+                                    class="form-element input {{ $input_size }} text-center numbers-only required"
+                                    id="points_charged"
+                                    name="points_charged"
+                                    data-label=""
+                                    placeholder="Enter Points"
+                                    value="{{ $loan -> points_charged ?? '0.00' }}"
+                                    x-model="points_charged">
+                                </div>
+                                <div>
+                                    <button type="button" class="button primary md" @click="save_details($el)">Save <i class="fal fa-check ml-2"></i></button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+                            <input type="hidden" name="lo_form" value="yes">
+                        </form>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
                             <div class="col-span-1">
 
@@ -511,8 +535,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         <div class="text-right">
                                             Points Charged
                                         </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> points_charged }}
+                                        <div class="font-bold col-span-2" x-text="points_charged">
                                         </div>
                                     </div>
 
@@ -938,7 +961,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     </div>
 
                                     <div class="mt-8 flex justify-start">
-                                        <button type="button" class="button primary lg" @click="save_commission($el, 'lo')"><i class="fal fa-check mr-3"></i> Save Deductions</button>
+                                        <button type="button" class="button primary lg" @click="save_commission($el, 'lo')">Save Deductions <i class="fal fa-check ml-2"></i></button>
                                     </div>
 
                                     <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
@@ -1624,7 +1647,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         <hr class="bg-gray-300 my-6">
 
                                         <div class="p-8 flex justify-around">
-                                            <button type="button" class="button primary xl" @click="save_commission($el, '')"><i class="fal fa-check mr-3"></i> Save Commission</button>
+                                            <button type="button" class="button primary xl" @click="save_commission($el, '')">Save Commission <i class="fal fa-check ml-2"></i></button>
                                         </div>
 
                                         <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
@@ -1796,7 +1819,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                 <div class="flex justify-around mt-3">
                                                     <button type="button" class="button primary md"
                                                     @click.prevent="add_notes($el)">
-                                                        <i class="fal fa-check mr-2"></i> Save Note
+                                                        Save Note <i class="fal fa-check ml-2"></i>
                                                     </button>
                                                 </div>
                                             </form>
