@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\Email\EmailController;
 use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\FilepondUploadController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/employees/billing/set_default_credit_card', [EmployeesController::class, 'set_default_credit_card']) -> middleware(['all']);
 
     Route::get('/global/get_signature', [GlobalController::class, 'get_signature']) -> middleware(['all']);
+
+    /***** Email lists ******/
+    Route::post('/email/email_list', [EmailController::class, 'email_list']) -> middleware(['mortgage']);
 
 
 });

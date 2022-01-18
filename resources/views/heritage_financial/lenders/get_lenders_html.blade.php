@@ -1,9 +1,10 @@
-<div class="d-flex justify-content-center mb-2 pagination-div">
-    {{ $lenders -> onEachSide(1) -> links() }}
-</div>
-
-<div class=" py-3">
-    <button type="button" class="button primary md" @click="email_modal = true; show_lenders_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Lenders</button>
+<div class="flex justify-between flex-wrap mb-2 pagination-div">
+    <div>
+        <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Lenders</button>
+    </div>
+    <div>
+        {!! $lenders -> links() !!}
+    </div>
 </div>
 
 <div class="table-div">
@@ -12,7 +13,7 @@
 
         <thead>
             <tr id="sortable_tr">
-                <th>
+                <th class="w-14">
                     <div class="w-12 flex justify-around items-center">
                         <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
                     </div>
@@ -31,12 +32,12 @@
         <tbody>
             @foreach($lenders as $lender)
                 <tr>
-                    <td>
+                    <td class="w-14">
                         <div class="flex justify-around items-center">
-                            <input type="checkbox" class="form-element checkbox success md lender-checkbox"
-                            data-ae-company="{{ $lender -> company_name }}"
-                            data-ae-name="{{ $lender -> account_exec_name }}"
-                            data-ae-email="{{ $lender -> account_exec_email }}"
+                            <input type="checkbox" class="form-element checkbox success md recipient-checkbox"
+                            data-company="{{ $lender -> company_name }}"
+                            data-name="{{ $lender -> account_exec_name }}"
+                            data-email="{{ $lender -> account_exec_email }}"
                             @click="show_email_button()">
                         </div>
                     </td>
@@ -73,6 +74,6 @@
 
 </div>
 
-<div class="d-flex justify-content-center mt-2 pagination-div">
+<div class="flex justify-end mt-2 pagination-div">
     {{ $lenders -> onEachSide(1) -> links() }}
 </div>

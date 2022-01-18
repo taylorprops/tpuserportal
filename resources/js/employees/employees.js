@@ -21,6 +21,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
             active_tab: '1',
             show_add_card_error_div: false,
             show_confirm_delete_credit_card: false,
+
             init() {
 
                 if(emp_id) {

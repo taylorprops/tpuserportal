@@ -1,6 +1,13 @@
-<div class="d-flex justify-content-center mb-2 pagination-div">
-    {!! $employees -> links() !!}
+<div class="flex justify-between flex-wrap mb-2 pagination-div">
+    <div>
+        <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Staff</button>
+    </div>
+    <div>
+        {!! $employees -> links() !!}
+    </div>
 </div>
+
+
 
 <div class="table-div">
 
@@ -8,6 +15,11 @@
 
         <thead>
             <tr>
+                <th class="w-14">
+                    <div class="w-12 flex justify-around items-center">
+                        <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
+                    </div>
+                </th>
                 <th width="100" scope="col"></th>
                 <th scope="col">@sortablelink('active', 'Active')</th>
                 <th scope="col">@sortablelink('last_name', 'Name')</th>
@@ -19,6 +31,14 @@
         <tbody>
             @foreach($employees as $employee)
                 <tr>
+                    <td class="w-14">
+                        <div class="flex justify-around items-center">
+                            <input type="checkbox" class="form-element checkbox success md recipient-checkbox"
+                            data-name="{{ $employee -> fullname }}"
+                            data-email="{{ $employee -> email }}"
+                            @click="show_email_button()">
+                        </div>
+                    </td>
                     <td>
                         <a href="/employees/in_house/in_house_view/{{ $employee -> id }}" class="view-link button primary md">View</a>
                     </td>
@@ -35,6 +55,6 @@
 
 </div>
 
-<div class="d-flex justify-content-center mt-2 pagination-div">
+<div class="flex justify-end mt-2 pagination-div">
     {!! $employees -> links() !!}
 </div>

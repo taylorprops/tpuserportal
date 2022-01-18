@@ -13,7 +13,7 @@
     </x-slot>
 
     <div class="pb-12 pt-2"
-    x-data="employees()">
+    x-data="email_list();">
 
         <div class="max-w-full mx-auto sm:px-6 lg:px-12">
 
@@ -53,6 +53,8 @@
             </div>
 
         </div>
+
+        @include('components/modals/email_list_modal')
 
     </div>
 

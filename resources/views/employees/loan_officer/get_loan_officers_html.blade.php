@@ -1,5 +1,10 @@
-<div class="d-flex justify-content-center mb-2 pagination-div">
-    {!! $employees -> links() !!}
+<div class="flex justify-between flex-wrap mb-2 pagination-div">
+    <div>
+        <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Loan Officers</button>
+    </div>
+    <div>
+        {!! $employees -> links() !!}
+    </div>
 </div>
 
 <div class="table-div">
@@ -8,6 +13,11 @@
 
         <thead>
             <tr>
+                <th class="w-14">
+                    <div class="w-12 flex justify-around items-center">
+                        <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_email_button();">
+                    </div>
+                </th>
                 <th width="100" scope="col"></th>
                 <th scope="col">@sortablelink('last_name', 'Name')</th>
                 <th scope="col">@sortablelink('emp_position', 'Position')</th>
@@ -29,6 +39,14 @@
                 $licenses = implode(', ', $licenses);
                 @endphp
                 <tr>
+                    <td class="w-14">
+                        <div class="flex justify-around items-center">
+                            <input type="checkbox" class="form-element checkbox success md recipient-checkbox"
+                            data-name="{{ $employee -> fullname }}"
+                            data-email="{{ $employee -> email }}"
+                            @click="show_email_button()">
+                        </div>
+                    </td>
                     <td>
                         <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
@@ -37,7 +55,7 @@
                     <td>{{ $employee -> email }}</td>
                     <td>{{ $employee -> phone }}</td>
                     <td>{{ $licenses }}</td>
-                    <td class="text-center">
+                    <td>
                         @if($employee -> active == 'yes')
                             <div class="inline-block text-white py-2 px-4 rounded-lg bg-success">
                                 <i class="fal fa-check mr-2"></i> Yes
@@ -56,6 +74,6 @@
 
 </div>
 
-<div class="d-flex justify-content-center mt-2 pagination-div">
+<div class="flex justify-end mt-2 pagination-div">
     {!! $employees -> links() !!}
 </div>
