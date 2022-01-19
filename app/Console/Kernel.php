@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
 
         // Backups
-        $schedule -> command('backup:clean') -> everyMinute() -> environments(['production']);
+        $schedule -> command('backup:clean') -> twiceDaily(1, 13) -> environments(['production']);
         $schedule -> command('backup:run --only-db') -> everyMinute() -> environments(['production']);
 
         // prune failed jobs
