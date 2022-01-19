@@ -18,17 +18,20 @@ class Mortgage extends Model
 
 
     public function notes() {
-        return $this -> hasMany('App\Models\Employees\EmployeesNotes', ['emp_id', 'emp_type'], ['id', 'emp_type']);
+        return $this -> hasMany(\App\Models\Employees\EmployeesNotes::class, ['emp_id', 'emp_type'], ['id', 'emp_type']);
     }
     public function docs() {
-        return $this -> hasMany('App\Models\Employees\EmployeesDocs', ['emp_id', 'emp_type'], ['id', 'emp_type']);
+        return $this -> hasMany(\App\Models\Employees\EmployeesDocs::class, ['emp_id', 'emp_type'], ['id', 'emp_type']);
     }
     public function licenses() {
-        return $this -> hasMany('App\Models\Employees\EmployeesLicenses', ['emp_id', 'emp_type'], ['id', 'emp_type']);
+        return $this -> hasMany(\App\Models\Employees\EmployeesLicenses::class, ['emp_id', 'emp_type'], ['id', 'emp_type']);
+    }
+    public function loans() {
+        return $this -> hasMany(\App\Models\HeritageFinancial\Loans::class, 'loan_officer_1_id', 'id');
     }
 
     public function user() {
-        return $this -> hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+        return $this -> hasMany(\App\Models\User::class, ['user_id', 'group'], ['id', 'emp_type']);
     }
 
 }

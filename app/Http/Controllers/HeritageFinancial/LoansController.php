@@ -979,6 +979,37 @@ class LoansController extends Controller
 
     }
 
+    public function add_agent_details(Request $request) {
+
+
+        $loans_old = LoansOld::get();
+
+        foreach($loans_old as $loan_old) {
+
+            $loan_new = Loans::where('loan_number', $loan_old -> loan_number)
+            -> first();
+
+            if($loan_new) {
+
+                $agent_company = null;
+                if($loan_old -> our_agent_id > 0) {
+                    $agent_company = 'Taylor Properties';
+                } else if($loan_old -> other_re_company != '') {
+                    $agent_company = $loan_old -> other_re_company;
+                }
+                if(!$agent_company) {
+                    dump($loan_old -> our_agent_id);
+                }
+                $loan_new -> agent_company = $agent_company;
+                $loan_new -> save();
+
+            }
+
+        }
+
+
+    }
+
     public function add_missing_details(Request $request) {
 
 

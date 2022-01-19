@@ -135,6 +135,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/heritage_financial/loans/import_loans', [LoansController::class, 'import_loans']) -> middleware(['in_house']);
     Route::get('/heritage_financial/add_time_line', [LoansController::class, 'add_time_line']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/add_lock_details', [LoansController::class, 'add_lock_details']) -> middleware(['mortgage']);
+    Route::get('/heritage_financial/add_agent_details', [LoansController::class, 'add_agent_details']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/add_missing_details', [LoansController::class, 'add_missing_details']) -> middleware(['mortgage']);
 
     // %%%% Import Lenders

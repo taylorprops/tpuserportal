@@ -170,9 +170,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     type="text"
                                     class="form-element input {{ $input_size }}"
                                     id="agent_company"
-                                    company="agent_company"
+                                    name="agent_company"
                                     data-label="Agent Company"
-                                    value="{{ $loan -> agent_name ?? null }}">
+                                    value="{{ $loan -> agent_company?? null }}">
                                 </div>
 
                             </div>
