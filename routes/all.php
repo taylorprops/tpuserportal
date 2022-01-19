@@ -49,5 +49,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     Route::get('/reports/mortgage/loans_in_process', [ReportsController::class, 'loans_in_process']) -> middleware(['all']);
 
+    Route::get('/reports/print', [ReportsController::class, 'print']) -> middleware(['all']);
+
 
 });

@@ -172,7 +172,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     id="agent_company"
                                     name="agent_company"
                                     data-label="Agent Company"
-                                    value="{{ $loan -> agent_company?? null }}">
+                                    value="{{ $loan -> agent_company ?? null }}">
                                 </div>
 
                             </div>

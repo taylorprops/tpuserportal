@@ -59,57 +59,59 @@ $breadcrumbs = [
 
                         <div class="pt-12">
 
-                            <div class="text-xl font-semibold text-gray-700">Mortgage Reports</div>
+                            <div class="text-xl font-semibold text-gray-700 mb-6">Mortgage Reports</div>
 
                             <div class="flex flex-col">
 
                                 <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
-                                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                    <div class="py-2 align-middle inline-block sm:px-6 lg:px-8">
 
                                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 
-                                            <table class="min-w-full divide-y divide-gray-200">
-                                                <thead class="bg-gray-50">
-                                                    <tr>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Loan Officer
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Borrower
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Address
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Type
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Type
-                                                        </th>
-                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                            Type
-                                                        </th>
-                                                    </tr>
-                                                </thead>
+                                            <table class="divide-y divide-gray-200 min-w-600-px">
+
                                                 <tbody class="bg-white divide-y divide-gray-200">
                                                     <tr>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                            Jane Cooper
+                                                        <td class="p-2">
+                                                            <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_print_all_button()">
                                                         </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            Regional Paradigm Technician
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            jane.cooper@example.com
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            Admin
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                        <td colspan="2" class="p-2">
+                                                            <button type="button" class="button primary md"
+                                                            @click="print_report();" :disabled="!show_print_all_option">
+                                                                <i class="fad fa-envelope mr-2"></i> Print Checked
+                                                            </button>
                                                         </td>
                                                     </tr>
+                                                    @php
+                                                    $reports = [
+                                                        'loans_in_process',
+                                                        'closed_loans_by_month',
+                                                        'closed_loans_by_month_summary',
+                                                        'closed_loans_by_loan_officer',
+                                                        'closed_loans_by_loan_officer_summary'
+                                                    ];
+                                                    @endphp
+                                                    @foreach($reports as $report)
+                                                        <tr>
+                                                            <td class="p-2">
+                                                                <div class="flex justify-around items-center">
+                                                                    <input type="checkbox" class="form-element checkbox success md report-checkbox"
+                                                                    data-report="{{ $report }}"
+                                                                    @click="show_print_all_button()">
+                                                                </div>
+                                                            </td>
+                                                            <td class="p-2">
+                                                                {{ ucwords(str_replace('_', ' ', $report)) }}
+                                                            </td>
+                                                            <td class="p-2">
+                                                                <button type="button" class="button primary md"
+                                                                @click="print_report('{{ $report }}')">
+                                                                    Print <i class="fad fa-print ml-2"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
