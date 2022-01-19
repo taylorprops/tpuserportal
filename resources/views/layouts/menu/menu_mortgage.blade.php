@@ -52,6 +52,14 @@
     :title="'Manager Bonuses'"
     :link="'/heritage_financial/manager_bonuses'"
     :icon="'fad fa-money-bill-wave'"/>
+
+    {{-- Reports --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Reports'"
+    :link="'/reports'"
+    :icon="'fad fa-chart-bar'"/>
+    {{-- End Reports --}}
     @endif
 
     {{-- Profile --}}

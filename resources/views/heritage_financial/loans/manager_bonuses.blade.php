@@ -14,7 +14,7 @@ $breadcrumbs = [
     <div class="pb-12 pt-2"
     x-data="bonuses()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
 
             <div class="mt-16">
 
@@ -75,7 +75,7 @@ $breadcrumbs = [
                                                     <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                                                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
                                                         x-ref="table_{{ $c }}_{{ $month }}">
-                                                            <table class="data-table">
+                                                            <table class="data-table w-full">
                                                                 <thead class="bg-gray-50">
                                                                     <tr>
                                                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -126,9 +126,9 @@ $breadcrumbs = [
                                                                     @endforeach
 
                                                                     <tr>
-                                                                        <td colspan="5" class="text-right font-semibold text-xl p-4">
+                                                                        <th colspan="5" class="text-right font-semibold text-xl p-4">
                                                                             Total Bonus - ${{ number_format($bonus_total, 2) }}
-                                                                        </td>
+                                                                        </th>
                                                                     </tr>
 
                                                                 </tbody>

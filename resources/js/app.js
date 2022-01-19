@@ -30,6 +30,8 @@ require('./admin/monitor.js');
 
 require('./tables/tables.js');
 
+require('./reports/reports');
+
 require('./email/email_list');
 require('./doc_management/admin/forms/forms.js');
 require('./doc_management/admin/forms/form_fields.js');

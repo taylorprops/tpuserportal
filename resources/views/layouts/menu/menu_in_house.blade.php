@@ -187,6 +187,18 @@
     :icon="'fad fa-database'"/>
     {{-- End Marketing --}}
 
+    {{-- Reports --}}
+    <li>
+        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Reports</div>
+    </li>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Reports'"
+    :link="'/reports'"
+    :icon="'fad fa-chart-bar'"/>
+    {{-- End Reports --}}
+
     {{-- Archives --}}
     <li>
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Archives</div>

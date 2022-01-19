@@ -5,6 +5,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\Email\EmailController;
 use App\Http\Controllers\Search\SearchController;
 use App\Http\Controllers\FilepondUploadController;
+use App\Http\Controllers\Reports\ReportsController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
 
@@ -40,7 +41,13 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/global/get_signature', [GlobalController::class, 'get_signature']) -> middleware(['all']);
 
     /***** Email lists ******/
-    Route::post('/email/email_list', [EmailController::class, 'email_list']) -> middleware(['mortgage']);
+    Route::post('/email/email_list', [EmailController::class, 'email_list']) -> middleware(['all']);
+
+
+    /***** Reports ******/
+    Route::get('/reports', [ReportsController::class, 'reports']) -> middleware(['all']);
+
+    Route::get('/reports/mortgage/loans_in_process', [ReportsController::class, 'loans_in_process']) -> middleware(['all']);
 
 
 });

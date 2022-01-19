@@ -9,14 +9,37 @@ if(document.URL.match(/manager_bonuses/)) {
 
             print(ele) {
                 let print_page = window.open('');
-                ele.querySelector('table').setAttribute('border', '1');
-                ele.querySelector('table').setAttribute('cellpadding', '6');
-                ele.querySelector('table').style.fontSize = '10px';
-                ele.querySelector('table').style.fontFamily = 'Arial';
+                this.set_styles(ele);
                 print_page.document.write(ele.innerHTML);
                 print_page.stop();
                 print_page.print();
                 print_page.close();
+                this.clear_styles(ele);
+            },
+
+            set_styles(ele) {
+                ele.querySelectorAll('table th').forEach(function(th) {
+                    th.style.borderBottom = '2px solid #333333';
+                    th.style.padding = '5px';
+                    th.style.fontSize = '11px';
+                    th.style.color = '#333333';
+                    th.style.fontFamily = 'Arial';
+                });
+                ele.querySelectorAll('table td').forEach(function(td) {
+                    td.style.borderBottom = '1px solid #cccccc';
+                    td.style.padding = '5px';
+                    td.style.fontSize = '10px';
+                    td.style.fontFamily = 'Arial';
+                });
+            },
+
+            clear_styles(ele) {
+                ele.querySelectorAll('table th').forEach(function(th) {
+                    th.removeAttribute('style');
+                });
+                ele.querySelectorAll('table td').forEach(function(td) {
+                    td.removeAttribute('style');
+                });
             },
 
             send_email(button) {
@@ -26,10 +49,7 @@ if(document.URL.match(/manager_bonuses/)) {
 
                 let scope = this;
                 ele = scope.email_ele;
-                ele.querySelector('table').setAttribute('border', '1');
-                ele.querySelector('table').setAttribute('cellpadding', '6');
-                ele.querySelector('table').style.fontSize = '12px';
-                ele.querySelector('table').style.fontFamily = 'Arial';
+                scope.set_styles(ele);
                 let html = ele.innerHTML;
                 let to_email = scope.$refs.to_email.value;
 
@@ -42,6 +62,7 @@ if(document.URL.match(/manager_bonuses/)) {
                     toastr.success('Email successfully sent');
                     scope.show_email_bonuses = false;
                     button.innerHTML = button_html;
+                    scope.clear_styles(ele);
                 })
                 .catch(function (error) {
                 });
