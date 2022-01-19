@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('11:00');
 
         // update bright agents and offices
-        $schedule -> command('bright_mls:update_agents_and_offices') -> everyThirtyMinutes() -> environments('production');
+        $schedule -> command('bright_mls:update_agents_and_offices') -> everyThirtyMinutes() -> environments('production') -> withoutOverlapping();
 
         // %%% TEMP %%% //
 
@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
         // add skyslope data to old db
         // ends - when no more transactions added to skyslope
-        $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production');
+        $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production') -> withoutOverlapping();
 
         // merge agent home addresses with bright agents
         //$schedule -> command('agent_addresses:merge') -> everyMinute();

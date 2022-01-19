@@ -45,7 +45,7 @@ class AddDocumentsJob implements ShouldQueue
 
     public function add_documents() {
 
-        $transactions = Transactions::whereIn('docs_added', ['no']) -> where('data_source', 'skyslope') -> inRandomOrder() -> limit(8) -> get();
+        $transactions = Transactions::whereIn('docs_added', ['no']) -> where('data_source', 'skyslope') -> inRandomOrder() -> limit(100) -> get();
 
         if(count($transactions) > 0) {
 
