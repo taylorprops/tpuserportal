@@ -66,7 +66,7 @@ class ReportsController extends Controller
 
         }
 
-        dump($reports);
+        dump($pdfs);
 
 
     }
