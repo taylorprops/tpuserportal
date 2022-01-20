@@ -50,6 +50,9 @@
                 color: rgb(90, 90, 90);
                 white-space: nowrap;
             }
+            .bold td {
+                font-weight: bold
+            }
 
         </style>
     </head>
@@ -62,9 +65,9 @@
 
         @foreach($years as $year)
 
-        <div class="section page-break">
+        <div class="section">
 
-            <div class="section-header">
+            <div class="section-header page-break">
                 {{ $year }}
             </div>
 
@@ -82,27 +85,30 @@
                     </thead>
                     <tbody>
 
+                        @php
+                        $total_loans_count = 0;
+                        $total_loan_amount = 0;
+                        $total_checks_in = 0;
+                        $total_loan_officer_1_commission_amount = 0;
+                        $total_loan_officer_2_commission_amount = 0;
+                        $total_company_commission = 0;
+                        $total_average_loan_amount = 0;
+                        $total_manager_bonus = 0;
+                        @endphp
+
                         @foreach($months as $month)
 
                             @php
-                            $total_loans = 0;
-                            $total_loan_amount = 0;
+                            $loans_count = 0;
+                            $loan_amount = 0;
                             $checks_in = 0;
-                            $total_loan_officer_1_commission_amount = 0;
-                            $total_loan_officer_2_commission_amount = 0;
-                            $total_company_commission = 0;
+                            $loan_officer_1_commission_amount = 0;
+                            $loan_officer_2_commission_amount = 0;
+                            $company_commission = 0;
                             $average_loan_amount = 0;
-                            $total_manager_bonus = 0;
+                            $manager_bonus = 0;
 
                             foreach($loans -> where('year', $year) -> where('month', $month) as $loan) {
-
-                                $total_loans += 1;
-                                $total_loan_amount += $loan -> loan_amount;
-                                $total_loan_officer_1_commission_amount += $loan -> loan_officer_1_commission_amount;
-                                $total_loan_officer_2_commission_amount += $loan -> loan_officer_2_commission_amount;
-                                $total_company_commission += $loan -> company_commission;
-                                $average_loan_amount += $loan -> loan_amount;
-                                $total_manager_bonus += $loan -> manager_bonus;
 
                                 $money_in = 0;
                                 $deductions = 0;
@@ -113,25 +119,53 @@
                                     $deductions += $deduction -> amount;
                                 }
                                 $money_in = $money_in - $deductions;
+
+                                $loans_count += 1;
+                                $loan_amount += $loan -> loan_amount;
                                 $checks_in += $money_in;
+                                $loan_officer_1_commission_amount += $loan -> loan_officer_1_commission_amount;
+                                $loan_officer_2_commission_amount += $loan -> loan_officer_2_commission_amount;
+                                $company_commission += $loan -> company_commission;
+                                $average_loan_amount += $loan -> loan_amount;
+                                $manager_bonus += $loan -> manager_bonus;
+
+                                $total_loans_count += 1;
+                                $total_loan_amount += $loan -> loan_amount;
+                                $total_checks_in += $money_in;
+                                $total_loan_officer_1_commission_amount += $loan -> loan_officer_1_commission_amount;
+                                $total_loan_officer_2_commission_amount += $loan -> loan_officer_2_commission_amount;
+                                $total_company_commission += $loan -> company_commission;
+                                $total_average_loan_amount += $loan -> loan_amount;
+                                $total_manager_bonus += $loan -> manager_bonus;
 
                             }
                             @endphp
 
-                            @if($total_loans > 0)
+                            @if($loans_count > 0)
                                 <tr>
                                     <td>{{ date('F', strtotime('2000-'.$month.'-01')) }}</td>
-                                    <td>{{ $total_loans }}</td>
-                                    <td>${{ number_format($total_loan_amount) }}</td>
+                                    <td>{{ $loans_count }}</td>
+                                    <td>${{ number_format($loan_amount) }}</td>
                                     <td>${{ number_format($checks_in) }}</td>
-                                    <td>${{ number_format($total_loan_officer_1_commission_amount) }}/${{ number_format($total_loan_officer_2_commission_amount) }}</td>
-                                    <td>${{ number_format($total_manager_bonus) }}</td>
-                                    <td>${{ number_format($total_company_commission) }}</td>
-                                    <td>${{ number_format($average_loan_amount / $total_loans) }}</td>
+                                    <td>${{ number_format($loan_officer_1_commission_amount) }}/${{ number_format($loan_officer_2_commission_amount) }}</td>
+                                    <td>${{ number_format($manager_bonus) }}</td>
+                                    <td>${{ number_format($company_commission) }}</td>
+                                    <td>${{ number_format($average_loan_amount / $loans_count) }}</td>
                                 </tr>
                             @endif
 
                         @endforeach
+
+                        <tr class="bold">
+                            <td>Totals</td>
+                            <td>{{ $total_loans_count }}</td>
+                            <td>${{ number_format($total_loan_amount) }}</td>
+                            <td>${{ number_format($total_checks_in) }}</td>
+                            <td>${{ number_format($total_loan_officer_1_commission_amount) }} / ${{ number_format($total_loan_officer_2_commission_amount) }}</td>
+                            <td>${{ number_format($total_manager_bonus) }}</td>
+                            <td>${{ number_format($total_company_commission) }}</td>
+                            <td>${{ number_format($total_average_loan_amount / $total_loans_count) }}</td>
+                        </tr>
 
                     </tbody>
                 </table>

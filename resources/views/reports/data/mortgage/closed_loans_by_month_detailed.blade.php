@@ -88,6 +88,7 @@
                                     $total_loans = 0;
                                     $total_loan_amount = 0;
                                     $checks_in = 0;
+                                    $commission_out = 0;
                                     $total_loan_officer_1_commission_amount = 0;
                                     $total_loan_officer_2_commission_amount = 0;
                                     $total_company_commission = 0;
@@ -95,15 +96,6 @@
                                     $total_manager_bonus = 0;
 
                                     foreach($loans -> where('loan_officer_1_id', $loan_officer -> id) -> where('year', $year) -> where('month', $month) as $loan) {
-
-                                        $total_loans += 1;
-                                        $months_loans += 1;
-                                        $total_loan_amount += $loan -> loan_amount;
-                                        $total_loan_officer_1_commission_amount += $loan -> loan_officer_1_commission_amount;
-                                        $total_loan_officer_2_commission_amount += $loan -> loan_officer_2_commission_amount;
-                                        $total_company_commission += $loan -> company_commission;
-                                        $average_loan_amount += $loan -> loan_amount;
-                                        $total_manager_bonus += $loan -> manager_bonus;
 
                                         $money_in = 0;
                                         $deductions = 0;
@@ -114,10 +106,20 @@
                                             $deductions += $deduction -> amount;
                                         }
                                         $money_in = $money_in - $deductions;
+
+                                        $total_loans += 1;
+                                        $months_loans += 1;
+                                        $total_loan_amount += $loan -> loan_amount;
                                         $checks_in += $money_in;
+                                        $commission_out += $loan -> loan_officer_1_commission_amount + $loan -> loan_officer_2_commission_amount + $loan -> manager_bonus;
+                                        $total_loan_officer_1_commission_amount += $loan -> loan_officer_1_commission_amount;
+                                        $total_loan_officer_2_commission_amount += $loan -> loan_officer_2_commission_amount;
+                                        $total_company_commission += $loan -> company_commission;
+                                        $average_loan_amount += $loan -> loan_amount;
+                                        $total_manager_bonus += $loan -> manager_bonus;
 
                                     }
-                                    $commission_out = $checks_in - $total_manager_bonus;
+
                                     @endphp
 
                                     @if($total_loans > 0)
