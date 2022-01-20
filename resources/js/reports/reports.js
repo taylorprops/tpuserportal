@@ -24,7 +24,10 @@ if(document.URL.match(/reports/)) {
                 }
             },
 
-            print_report(reports = null) {
+            print_report(button, reports = null) {
+
+                let button_html = button.innerHTML;
+                show_loading_button(button, 'Creating Report ... ');
 
                 if(!reports) {
                     reports = [];
@@ -41,7 +44,8 @@ if(document.URL.match(/reports/)) {
                     },
                 })
                 .then(function (response) {
-                    console.log(response);
+                    button.innerHTML = button_html;
+                    window.open('/storage/'+response.data);
                 })
                 .catch(function (error) {
                     console.log(error);

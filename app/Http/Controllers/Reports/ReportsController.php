@@ -140,9 +140,40 @@ class ReportsController extends Controller
 
     }
 
-    public function closed_loans_by_month_summary() {
+    public function closed_loans_by_month_detailed() {
 
+        $report = 'closed_loans_by_month_detailed';
+        $start = date('Y-m-01', strtotime('-1 year'));
 
+        $loans = Loans::select(DB::raw('*, YEAR(settlement_date) as year, MONTH(settlement_date) as month, MONTHNAME(settlement_date) as month_name'))
+        -> where('settlement_date', '>=', $start)
+        -> where('loan_status', 'closed')
+        -> with(['checks_in', 'deductions', 'loan_officer_1'])
+        -> orderBy('settlement_date', 'desc')
+        -> get();
+
+        $years = [date('Y'), date('Y', strtotime('-1 year'))];
+        $months = [];
+        for($i = 12; $i >= 1; $i--) {
+            $months[] = $i;
+        }
+
+        $loan_officers = Mortgage::where('active', 'yes')
+        -> where('emp_position', 'loan_officer')
+        -> orderBy('last_name')
+        -> get();
+
+        $report_name = 'Closed Loans By Month Detailed';
+        $file_name = $report.time().'.pdf';
+
+        $table_headers = ['Month', 'Loan Officer', 'Loan Count', 'Loans Amount', 'Commission In', 'Commission Out', 'Company Commission', 'Avg. Loan Amount'];
+
+        $pdf = App::make('dompdf.wrapper')
+        -> setPaper('legal', 'landscape')
+        -> loadView('/reports/data/mortgage/'.$report, compact('report_name', 'table_headers', 'loans', 'years', 'months', 'loan_officers'))
+        -> save(Storage::path('tmp/'.$file_name));
+
+        return 'tmp/'.$file_name;
 
     }
 
@@ -168,12 +199,16 @@ class ReportsController extends Controller
 
             $pdf = $this -> $report_data();
 
-            $pdfs[] = $pdf;
+            $pdfs[] = Storage::path($pdf);
 
         }
 
-        dump($pdfs);
+        $file_name = 'HeritageReport_'.date('Y-m-d').'_'.time();
+        $report = Storage::path('tmp/'.$file_name);
 
+        exec('pdftk '.implode(' ', $pdfs).' cat output '.$report);
+
+        return'tmp/'.$file_name;
 
     }
 

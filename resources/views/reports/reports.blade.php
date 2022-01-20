@@ -78,8 +78,8 @@ $breadcrumbs = [
                                                         </td>
                                                         <td colspan="2" class="p-2">
                                                             <button type="button" class="button primary md"
-                                                            @click="print_report();" :disabled="!show_print_all_option">
-                                                                <i class="fad fa-envelope mr-2"></i> Print Checked
+                                                            @click="print_report($el, null);" :disabled="!show_print_all_option">
+                                                                <i class="fad fa-print mr-2"></i> Print Checked
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -87,9 +87,9 @@ $breadcrumbs = [
                                                     $reports = [
                                                         'loans_in_process',
                                                         'closed_loans_by_month',
-                                                        'closed_loans_by_month_summary',
-                                                        'closed_loans_by_loan_officer',
-                                                        'closed_loans_by_loan_officer_summary'
+                                                        'closed_loans_by_month_detailed',
+                                                        /* 'closed_loans_by_loan_officer',
+                                                        'closed_loans_by_loan_officer_summary' */
                                                     ];
                                                     @endphp
                                                     @foreach($reports as $report)
@@ -106,8 +106,8 @@ $breadcrumbs = [
                                                             </td>
                                                             <td class="p-2">
                                                                 <button type="button" class="button primary md"
-                                                                @click="print_report('{{ $report }}')">
-                                                                    Print <i class="fad fa-print ml-2"></i>
+                                                                @click="print_report($el, '{{ $report }}')">
+                                                                <i class="fad fa-print mr-2"></i> Print
                                                                 </button>
                                                             </td>
                                                         </tr>
