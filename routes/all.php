@@ -48,6 +48,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/reports', [ReportsController::class, 'reports']) -> middleware(['all']);
 
     Route::get('/reports/mortgage/loans_in_process', [ReportsController::class, 'loans_in_process']) -> middleware(['all']);
+    Route::get('/reports/mortgage/closed_loans_by_month', [ReportsController::class, 'closed_loans_by_month']) -> middleware(['all']);
+    Route::get('/reports/mortgage/closed_loans_by_month_summary', [ReportsController::class, 'closed_loans_by_month_summary']) -> middleware(['all']);
+    Route::get('/reports/mortgage/closed_loans_by_loan_officer', [ReportsController::class, 'closed_loans_by_loan_officer']) -> middleware(['all']);
+    Route::get('/reports/mortgage/closed_loans_by_loan_officer_summary', [ReportsController::class, 'closed_loans_by_loan_officer_summary']) -> middleware(['all']);
 
     Route::get('/reports/print', [ReportsController::class, 'print']) -> middleware(['all']);
 

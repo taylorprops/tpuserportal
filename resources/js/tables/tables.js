@@ -127,7 +127,7 @@ window.table = function(options) {
             if(scope.dates) {
 
                         options_html += ' \
-                        <div class="p-2 ml-6 w-36"> \
+                        <div class="p-2 ml-6"> \
                             <div class="flex items-end justify-start space-x-4"> \
                                 <div> \
                                     <input \
@@ -351,7 +351,7 @@ window.table = function(options) {
                 url += '&'+field.db_field+'='+field.value;
             });
 
-            let param = new RegExp('[&]*'+key+'=[a-zA-Z0-9_]*');
+            let param = new RegExp('[&]*'+key+'=[a-zA-Z0-9_-]*');
             url = url.replace(param, '');
             url += '&'+key+'='+val;
 

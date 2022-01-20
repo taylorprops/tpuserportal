@@ -42,6 +42,9 @@ class LoansController extends Controller
         $direction = $request -> direction ? $request -> direction : 'desc';
         $sort = $request -> sort ? $request -> sort : 'settlement_date';
         $length = $request -> length ? $request -> length : 10;
+        $start_date = $request -> start_date ?? null;
+        $end_date = $request -> end_date ?? null;
+        $date_col = $request -> date_col ?? null;
 
         $processor_id = $request -> processor_id ?? null;
         if(!$processor_id) {
@@ -93,6 +96,16 @@ class LoansController extends Controller
         -> where(function($query) use ($loan_status) {
             if($loan_status && $loan_status != 'all' && $loan_status != null) {
                 $query -> where('loan_status', $loan_status);
+            }
+        })
+        -> where(function($query) use ($date_col, $start_date, $end_date) {
+            if($date_col) {
+                if ($start_date != '') {
+                    $query -> where($date_col, '>=', $start_date);
+                }
+                if ($end_date != '') {
+                    $query -> where($date_col, '<=', $end_date);
+                }
             }
         })
         -> leftJoin('emp_mortgage', 'loan_officer_1_id', '=', 'emp_mortgage.id')

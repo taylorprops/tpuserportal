@@ -51,7 +51,7 @@
                             {!! App\Helpers\Helper::avatar(null, $loan -> processor_id, 'mortgage') !!}
                         </div>
 
-                        <div class="w-52 flex-none">
+                        <div class="w-52">
                             <div class="font-semibold text-gray-700">{!! $borrower !!}</div>
                             <div class="text-xs">{!! $address !!}</div>
                         </div>

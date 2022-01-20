@@ -29,6 +29,10 @@ $breadcrumbs = [
                 'data_url': '/heritage_financial/loans/get_loans',
                 'length': '10',
                 'sort_by': 'settlement_date',
+                'dates': {
+                    'col': 'settlement_date',
+                    'text': 'Settlement Date'
+                },
                 'fields': {
                     '1': {
                         type: 'select',
