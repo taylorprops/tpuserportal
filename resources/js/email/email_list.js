@@ -7,8 +7,13 @@ window.email_list = function() {
         signature: '',
 
         init() {
-            this.get_signature();
-            this.message_editor('#message');
+
+            let scope = this;
+            scope.message_editor('#message');
+            setTimeout(function() {
+                scope.get_signature();
+            }, 500);
+
         },
 
         check_all(checked) {
