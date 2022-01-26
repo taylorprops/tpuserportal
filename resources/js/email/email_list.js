@@ -7,13 +7,11 @@ window.email_list = function() {
         signature: '',
 
         init() {
-
             let scope = this;
-            scope.message_editor('#message');
+            scope.get_signature();
             setTimeout(function() {
-                scope.get_signature();
+                scope.message_editor('#message');
             }, 500);
-
         },
 
         check_all(checked) {
