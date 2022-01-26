@@ -53,7 +53,10 @@
 
         </div>
 
-        @include('components/modals/email_list_modal')
+        @include('components/modals/email_list_modal', [
+            'company' => 'Taylor Properties',
+            'title' => 'Email Employees'
+        ])
 
     </div>
 

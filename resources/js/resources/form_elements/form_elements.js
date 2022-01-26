@@ -21,15 +21,42 @@ function setBubble(range, bubble) {
 }
 
 
-window.show_file_names = function (event) {
-    let files = event.target.files;
+window.show_file_names = function (target) {
+    let files = target.files;
+    let id = target.id;
     document.querySelector('.file-names').innerHTML = '';
     for (var i = 0; i < files.length; i++) {
-        document.querySelector('.file-names').insertAdjacentHTML('beforeend', files[i].name);
-        if(i < files.length - 1) {
-            document.querySelector('.file-names').insertAdjacentHTML('beforeend', ', ');
+        let file_name = truncate_string(files[i].name, 70);
+        let html = ' \
+        <div class="flex justify-start"> \
+            <div> \
+                <a href="javascript:void(0)" @click="remove_file(\''+id+'\', '+i+')"><i class="fal fa-times text-red-600"></i></a> \
+            </div> \
+            <div class="ml-3 w-full">'+file_name+'</div> \
+        </div>';
+        document.querySelector('.file-names').insertAdjacentHTML('beforeend', html);
+    }
+}
+
+window.remove_file = function(id, index) {
+
+    let dt = new DataTransfer();
+    let input = document.querySelector('#'+id);
+    let files = input.files;
+    console.log(files);
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (index !== i) {
+            dt.items.add(file);
         }
     }
+
+    input.files = dt.files;
+
+    setTimeout(function() {
+        this.show_file_names(input);
+    }, 300);
+
 }
 
 

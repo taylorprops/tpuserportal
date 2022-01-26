@@ -30,11 +30,22 @@ class EmailGeneral extends Mailable
      */
     public function build()
     {
-        return $this -> markdown('mail.general')
+        $mail = $this -> markdown('mail.general')
         -> from($this -> message['from']['email'], $this -> message['from']['name'])
         -> subject($this -> message['subject'])
         -> with([
             'message' => $this -> message,
         ]);
+
+        if($this -> message['attachments']) {
+            foreach ($this -> message['attachments'] as $attachment) {
+                $mail -> attach($attachment -> getRealPath(),
+                [
+                    'as' => $attachment -> getClientOriginalName(),
+                    'mime' => $attachment -> getClientMimeType(),
+                ]);
+            }
+        }
+        return $mail;
     }
 }

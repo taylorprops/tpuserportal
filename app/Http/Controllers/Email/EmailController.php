@@ -24,6 +24,14 @@ class EmailController extends Controller
             'from' => ['email' => auth() -> user() -> email, 'name' => auth() -> user() -> name],
         ];
 
+        $attachments = $request -> file('attachments') ?? null;
+
+        /* if($request -> hasFile('attachments')) {
+            foreach ($attachments as $attachment) {
+                dump($attachment);
+            }
+        } */
+
         $recipients = json_decode($request -> recipients);
 
         foreach($recipients as $recipient) {
@@ -33,6 +41,7 @@ class EmailController extends Controller
             if(config('app.env') != 'production') {
                 $to = ['email' => 'miketaylor0101@gmail.com', 'name' => $recipient -> name];
             }
+            $message['attachments'] = $attachments ? $attachments : null;
 
             Mail::to([$to])
                 -> send(new EmailGeneral($message));

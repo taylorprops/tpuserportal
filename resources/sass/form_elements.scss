@@ -2,7 +2,13 @@
 .form-element {
 
     &.input {
-        @apply text-gray-600 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        @apply text-gray-600 px-4 w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-sm placeholder-gray-600;
+        &:not([type=file]) {
+            @apply block;
+        }
+        &[type=file] {
+            @apply hidden;
+        }
         &.sm {
             @apply py-1.5 text-xs;
         }
@@ -18,6 +24,7 @@
         &.xl {
             @apply py-4 text-lg;
         }
+
     }
 
     &.checkbox, &.radio {
@@ -50,7 +57,7 @@
     }
 
     &.select {
-        @apply text-gray-600 pl-3 pr-8 block w-full shadow-sm focus:ring-blue-500 focus:ring-2 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        @apply text-gray-600 pl-3 pr-8 block w-full shadow-sm focus:ring-blue-500 focus:ring-2 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-sm placeholder-gray-600;
         &.sm {
             @apply py-1.5 text-xs;
         }
@@ -69,7 +76,7 @@
     }
 
     &.textarea {
-        @apply text-gray-600 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-md placeholder-gray-600;
+        @apply text-gray-600 px-4 block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 focus:bg-blue-50 sm:text-sm border border-gray-300 rounded-sm placeholder-gray-600;
         &.sm {
             @apply py-1.5 text-xs;
         }
@@ -86,10 +93,14 @@
             @apply py-4 text-lg;
         }
     }
+    &:disabled {
+        @apply opacity-40 shadow-none;
+    }
 
 }
 
-.form-element-label {
+
+.form-element-label:not(.file) {
 
     @apply text-gray-500 cursor-pointer;
 
@@ -131,6 +142,11 @@
             @apply text-lg;
         }
     }
+
+}
+
+.form-element-label.file {
+    @apply mt-0  block w-full shadow-sm sm:text-sm border border-gray-300 rounded-sm;
 }
 
 .button {

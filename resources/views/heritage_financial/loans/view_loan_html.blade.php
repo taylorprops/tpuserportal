@@ -104,516 +104,357 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                 <div x-show="active_tab === '1'" x-transition class="pt-4 sm:pt-12 max-w-1000-px">
 
-                    @if(auth() -> user() -> level != 'loan_officer')
+                    <form id="details_form">
 
-                        <form id="details_form">
+                        <div class="font-medium text-gray-700 border-b mb-2"><i class="fad fa-users mr-2"></i> People</div>
 
-                            <div class="font-medium text-gray-700 border-b mb-2"><i class="fad fa-users mr-2"></i> People</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="loan_officer_1_id"
-                                    name="loan_officer_1_id"
-                                    data-label="Loan Officer">
-                                        <option value=""></option>
-                                        @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
-                                        <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_1_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }}"
-                                    id="loan_officer_2_id"
-                                    name="loan_officer_2_id"
-                                    data-label="Loan Officer 2">
-                                        <option value=""></option>
-                                        @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
-                                        <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_2_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="processor_id"
-                                    name="processor_id"
-                                    data-label="Processor">
-                                        <option value=""></option>
-                                        @foreach($loan_officers -> whereIn('emp_position', ['processor', 'manager']) as $lo)
-                                        <option value="{{ $lo -> id }}" @if($loan && $loan -> processor_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="loan_officer_1_id"
+                                name="loan_officer_1_id"
+                                data-label="Loan Officer"
+                                @if(auth() -> user() -> level == 'loan_officer') disabled @endif>
+                                    <option value=""></option>
+                                    @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
+                                    <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_1_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }}"
-                                    id="agent_name"
-                                    name="agent_name"
-                                    data-label="Agent Name"
-                                    value="{{ $loan -> agent_name ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }}"
-                                    id="agent_company"
-                                    name="agent_company"
-                                    data-label="Agent Company"
-                                    value="{{ $loan -> agent_company ?? null }}">
-                                </div>
-
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }}"
+                                id="loan_officer_2_id"
+                                name="loan_officer_2_id"
+                                data-label="Loan Officer 2">
+                                    <option value=""></option>
+                                    @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
+                                    <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_2_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="borrower_first"
-                                    name="borrower_first"
-                                    data-label="Borrower First"
-                                    value="{{ $loan -> borrower_first ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="borrower_last"
-                                    name="borrower_last"
-                                    data-label="Borrower Last"
-                                    value="{{ $loan -> borrower_last ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }}"
-                                    id="co_borrower_first"
-                                    name="co_borrower_first"
-                                    data-label="Co-Borrower First"
-                                    value="{{ $loan -> co_borrower_first ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }}"
-                                    id="co_borrower_last"
-                                    name="co_borrower_last"
-                                    data-label="Co-Borrower Last"
-                                    value="{{ $loan -> co_borrower_last ?? null }}">
-                                </div>
-
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
-                                    name="title_company_select"
-                                    id="title_company_select"
-                                    x-ref="title_company_select"
-                                    data-label="Title Company"
-                                    @change="if($el.value != 'other') { $refs.title_company.value = $el.value } else { $refs.title_company.value = '' }">
-                                        <option value=""></option>
-                                        <option value="Heritage Title" @if($loan && $loan -> title_company == 'Heritage Title') selected @endif>Heritage Title</option>
-                                        <option value="Title Nation" @if($loan && $loan -> title_company == 'Title Nation') selected @endif>Title Nation</option>
-                                        <option value="other" @if($loan && $loan -> title_company != 'Heritage Title' && $loan -> title_company != 'Title Nation') selected @endif>Other</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
-                                    id="title_company"
-                                    name="title_company"
-                                    data-label="Title Company Name"
-                                    value="{{ $loan -> title_company ?? null }}"
-                                    x-ref="title_company">
-                                </div>
-
-                            </div>
-
-                            <div class="font-medium text-gray-700 border-b mb-2 mt-8"><i class="fad fa-home-alt mr-2"></i> Property Address</div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8">
-
-                                <div class="m-2 sm:m-3 sm:col-span-2 lg:col-span-4">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="street"
-                                    name="street"
-                                    data-label="Street"
-                                    value="{{ $loan -> street ?? null }}">
-                                </div>
-
-                                <div class="m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="zip"
-                                    name="zip"
-                                    data-label="Zip"
-                                    value="{{ $loan -> zip ?? null }}"
-                                    x-on:keyup="get_location_details('#details_form', '', '#zip', '#city', '#state');">
-                                </div>
-
-                                <div class="m-2 sm:m-3 col-span-1 lg:col-span-2">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="city"
-                                    name="city"
-                                    data-label="City"
-                                    value="{{ $loan -> city ?? null }}">
-                                </div>
-
-                                <div class="m-2 sm:m-3 col-span-1">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="state"
-                                    name="state"
-                                    data-label="State">
-                                        <option value=""></option>
-                                        @foreach($states as $state)
-                                            <option value="{{ $state -> state }}" @if($loan && $loan -> state == $state -> state) selected @endif>{{ $state -> state }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="font-medium text-gray-700 border-b mb-2 mt-8"><i class="fad fa-calendar-day mr-2"></i> Loan Details</div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="loan_status"
-                                    name="loan_status"
-                                    data-label="Loan Status"
-                                    @change="require_title($el.value);
-                                    require_close_date($el.value);
-                                    let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
-                                    $refs.settlement_date.previousElementSibling.innerText = label_text;">
-                                        <option value=""></option>
-                                        <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
-                                        <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
-                                        <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="date"
-                                    class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status != 'Open') required @endif"
-                                    id="settlement_date"
-                                    name="settlement_date"
-                                    x-ref="settlement_date"
-                                    data-label=" @if($loan && $loan -> loan_status == 'Cancelled') Cancelled Date @else Settlement Date @endif"
-                                    value="{{ $loan -> settlement_date ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} required"
-                                    id="loan_number"
-                                    name="loan_number"
-                                    data-label="Loan Number"
-                                    value="{{ $loan -> loan_number ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="lender_uuid"
-                                    name="lender_uuid"
-                                    data-label="Lender">
-                                        <option value=""></option>
-                                        @foreach($lenders as $lender)
-                                            <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} numbers-only money-decimal required"
-                                    id="loan_amount"
-                                    name="loan_amount"
-                                    data-label="Loan Amount"
-                                    value="{{ $loan -> loan_amount ?? null }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} text-center numbers-only required"
-                                    id="points_charged"
-                                    name="points_charged"
-                                    data-label="Points Charged"
-                                    value="{{ $loan -> points_charged ?? '0.00' }}">
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="source"
-                                    name="source"
-                                    data-label="Loan Source">
-                                        <option value=""></option>
-                                        <option value="Office" @if($loan && $loan -> source == 'Office') selected @endif>Office</option>
-                                        <option value="Loan Officer" @if($loan && $loan -> source == 'Loan Officer') selected @endif>Loan Officer</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="reverse"
-                                    name="reverse"
-                                    data-label="Reverse Mortgage">
-                                        <option value=""></option>
-                                        <option value="yes" @if($loan && $loan -> reverse == 'yes') selected @endif>Yes</option>
-                                        <option value="no" @if($loan && $loan -> reverse == 'no') selected @endif>No</option>
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="mortgage_type"
-                                    name="mortgage_type"
-                                    data-label="Mortgage Type">
-                                        <option value=""></option>
-                                        <option value="first" @if($loan && $loan -> mortgage_type == 'first') selected @endif>First</option>
-                                        <option value="second" @if($loan && $loan -> mortgage_type == 'second') selected @endif>Second</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="loan_type"
-                                    name="loan_type"
-                                    data-label="Loan Type">
-                                        <option value=""></option>
-                                        <option value="conventional" @if($loan && $loan -> loan_type == 'conventional') selected @endif>Conventional</option>
-                                        <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
-                                        <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
-                                        <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-span-1 m-2 sm:m-3">
-                                    <select
-                                    class="form-element select {{ $input_size }} required"
-                                    id="loan_purpose"
-                                    name="loan_purpose"
-                                    data-label="Loan Purpose">
-                                        <option value=""></option>
-                                        <option value="purchase" @if($loan && $loan -> loan_purpose == 'purchase') selected @endif>Purchase</option>
-                                        <option value="refi" @if($loan && $loan -> loan_purpose == 'refi') selected @endif>Refinance</option>
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <hr class="bg-gray-300 my-6">
-
-                            <div class="p-8 flex justify-around">
-                                <button type="button" class="button primary xl" @click="save_details($el)">Save Details <i class="fal fa-check ml-2"></i></button>
-                            </div>
-
-                            <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
-
-                        </form>
-
-                    @else
-
-                        <div class="font-medium text-2xl text-gray-600 mt-2">{{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip }}</div>
-
-                        <form id="details_form">
-                            <div class="flex justify-start items-center space-x-4 mt-12">
-                                <div>
-                                    Points Charged
-                                </div>
-                                <div class="w-24">
-                                    <input
-                                    type="text"
-                                    class="form-element input {{ $input_size }} text-center numbers-only required"
-                                    id="points_charged"
-                                    name="points_charged"
-                                    data-label=""
-                                    placeholder="Enter Points"
-                                    value="{{ $loan -> points_charged ?? '0.00' }}"
-                                    x-model="points_charged">
-                                </div>
-                                <div>
-                                    <button type="button" class="button primary md" @click="save_details($el)">Save <i class="fal fa-check ml-2"></i></button>
-                                </div>
-                            </div>
-                            <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
-                            <input type="hidden" name="lo_form" value="yes">
-                        </form>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-                            <div class="col-span-1">
-
-                                <div class="border-4 rounded-lg">
-
-                                    <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-calendar-day mr-2"></i> Loan Details</div>
-
-
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Status
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> loan_status }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Settlement Date
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> settlement_date }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Loan Number
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> loan_number }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Loan Amount
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            ${{ number_format($loan -> loan_amount) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Points Charged
-                                        </div>
-                                        <div class="font-bold col-span-2" x-text="points_charged">
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Source
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> source }}
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="col-span-1">
-
-                                <div class="border-4 rounded-lg">
-
-                                    <div class="p-4 font-medium text-gray-700 border-b"><i class="fad fa-users mr-2"></i> People</div>
-
-                                    @if($loan_officer_2)
-                                        <div class="grid grid-cols-3 gap-4 p-4">
-                                            <div class="text-right">
-                                                Loan Officer 2
-                                            </div>
-                                            <div class="font-bold col-span-2">
-                                                {{ $loan_officer_2 -> fullname }}
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Processor
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $processor -> fullname }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Borrower 1
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> borrower_fullname }}
-                                        </div>
-                                    </div>
-
-                                    @if($loan -> co_borrower_fullname != '')
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Borrower 2
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> co_borrower_fullname }}
-                                        </div>
-                                    </div>
-                                    @endif
-
-                                    <div class="grid grid-cols-3 gap-4 p-4">
-                                        <div class="text-right">
-                                            Title Company
-                                        </div>
-                                        <div class="font-bold col-span-2">
-                                            {{ $loan -> title_company }}
-                                        </div>
-                                    </div>
-
-                                </div>
-
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="processor_id"
+                                name="processor_id"
+                                data-label="Processor">
+                                    <option value=""></option>
+                                    @foreach($loan_officers -> whereIn('emp_position', ['processor', 'manager']) as $lo)
+                                    <option value="{{ $lo -> id }}" @if($loan && $loan -> processor_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                         </div>
 
-                    @endif
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="agent_name"
+                                name="agent_name"
+                                data-label="Agent Name"
+                                value="{{ $loan -> agent_name ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="agent_company"
+                                name="agent_company"
+                                data-label="Agent Company"
+                                value="{{ $loan -> agent_company ?? null }}">
+                            </div>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="borrower_first"
+                                name="borrower_first"
+                                data-label="Borrower First"
+                                value="{{ $loan -> borrower_first ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="borrower_last"
+                                name="borrower_last"
+                                data-label="Borrower Last"
+                                value="{{ $loan -> borrower_last ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="co_borrower_first"
+                                name="co_borrower_first"
+                                data-label="Co-Borrower First"
+                                value="{{ $loan -> co_borrower_first ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="co_borrower_last"
+                                name="co_borrower_last"
+                                data-label="Co-Borrower Last"
+                                value="{{ $loan -> co_borrower_last ?? null }}">
+                            </div>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
+                                name="title_company_select"
+                                id="title_company_select"
+                                x-ref="title_company_select"
+                                data-label="Title Company"
+                                @change="if($el.value != 'other') { $refs.title_company.value = $el.value } else { $refs.title_company.value = '' }">
+                                    <option value=""></option>
+                                    <option value="Heritage Title" @if($loan && $loan -> title_company == 'Heritage Title') selected @endif>Heritage Title</option>
+                                    <option value="Title Nation" @if($loan && $loan -> title_company == 'Title Nation') selected @endif>Title Nation</option>
+                                    <option value="other" @if($loan && $loan -> title_company != 'Heritage Title' && $loan -> title_company != 'Title Nation') selected @endif>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status == 'Closed') required @endif"
+                                id="title_company"
+                                name="title_company"
+                                data-label="Title Company Name"
+                                value="{{ $loan -> title_company ?? null }}"
+                                x-ref="title_company">
+                            </div>
+
+                        </div>
+
+                        <div class="font-medium text-gray-700 border-b mb-2 mt-8"><i class="fad fa-home-alt mr-2"></i> Property Address</div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8">
+
+                            <div class="m-2 sm:m-3 sm:col-span-2 lg:col-span-4">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="street"
+                                name="street"
+                                data-label="Street"
+                                value="{{ $loan -> street ?? null }}">
+                            </div>
+
+                            <div class="m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="zip"
+                                name="zip"
+                                data-label="Zip"
+                                value="{{ $loan -> zip ?? null }}"
+                                x-on:keyup="get_location_details('#details_form', '', '#zip', '#city', '#state');">
+                            </div>
+
+                            <div class="m-2 sm:m-3 col-span-1 lg:col-span-2">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="city"
+                                name="city"
+                                data-label="City"
+                                value="{{ $loan -> city ?? null }}">
+                            </div>
+
+                            <div class="m-2 sm:m-3 col-span-1">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="state"
+                                name="state"
+                                data-label="State">
+                                    <option value=""></option>
+                                    @foreach($states as $state)
+                                        <option value="{{ $state -> state }}" @if($loan && $loan -> state == $state -> state) selected @endif>{{ $state -> state }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="font-medium text-gray-700 border-b mb-2 mt-8"><i class="fad fa-calendar-day mr-2"></i> Loan Details</div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="loan_status"
+                                name="loan_status"
+                                data-label="Loan Status"
+                                @change="require_title($el.value);
+                                require_close_date($el.value);
+                                let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
+                                $refs.settlement_date.previousElementSibling.innerText = label_text;">
+                                    <option value=""></option>
+                                    <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
+                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
+                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="date"
+                                class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status != 'Open') required @endif"
+                                id="settlement_date"
+                                name="settlement_date"
+                                x-ref="settlement_date"
+                                data-label=" @if($loan && $loan -> loan_status == 'Cancelled') Cancelled Date @else Settlement Date @endif"
+                                value="{{ $loan -> settlement_date ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} required"
+                                id="loan_number"
+                                name="loan_number"
+                                data-label="Loan Number"
+                                value="{{ $loan -> loan_number ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="lender_uuid"
+                                name="lender_uuid"
+                                data-label="Lender">
+                                    <option value=""></option>
+                                    @foreach($lenders as $lender)
+                                        <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} numbers-only money-decimal required"
+                                id="loan_amount"
+                                name="loan_amount"
+                                data-label="Loan Amount"
+                                value="{{ $loan -> loan_amount ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }} text-center numbers-only required"
+                                id="points_charged"
+                                name="points_charged"
+                                data-label="Points Charged"
+                                value="{{ $loan -> points_charged ?? '0.00' }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="source"
+                                name="source"
+                                data-label="Loan Source">
+                                    <option value=""></option>
+                                    <option value="Office" @if($loan && $loan -> source == 'Office') selected @endif>Office</option>
+                                    <option value="Loan Officer" @if($loan && $loan -> source == 'Loan Officer') selected @endif>Loan Officer</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="reverse"
+                                name="reverse"
+                                data-label="Reverse Mortgage">
+                                    <option value=""></option>
+                                    <option value="yes" @if($loan && $loan -> reverse == 'yes') selected @endif>Yes</option>
+                                    <option value="no" @if($loan && $loan -> reverse == 'no') selected @endif>No</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="mortgage_type"
+                                name="mortgage_type"
+                                data-label="Mortgage Type">
+                                    <option value=""></option>
+                                    <option value="first" @if($loan && $loan -> mortgage_type == 'first') selected @endif>First</option>
+                                    <option value="second" @if($loan && $loan -> mortgage_type == 'second') selected @endif>Second</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="loan_type"
+                                name="loan_type"
+                                data-label="Loan Type">
+                                    <option value=""></option>
+                                    <option value="conventional" @if($loan && $loan -> loan_type == 'conventional') selected @endif>Conventional</option>
+                                    <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
+                                    <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
+                                    <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="loan_purpose"
+                                name="loan_purpose"
+                                data-label="Loan Purpose">
+                                    <option value=""></option>
+                                    <option value="purchase" @if($loan && $loan -> loan_purpose == 'purchase') selected @endif>Purchase</option>
+                                    <option value="refi" @if($loan && $loan -> loan_purpose == 'refi') selected @endif>Refinance</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <hr class="bg-gray-300 my-6">
+
+                        <div class="p-8 flex justify-around">
+                            <button type="button" class="button primary xl" @click="save_details($el)">Save Details <i class="fal fa-check ml-2"></i></button>
+                        </div>
+
+                        <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
+
+                    </form>
 
                 </div>
 

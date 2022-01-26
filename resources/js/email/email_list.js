@@ -38,7 +38,7 @@ window.email_list = function() {
                 div.insertAdjacentHTML('beforeend',html);
             });
         },
-        send_email(ele) {
+        send_email(ele, company) {
 
             let scope = this;
             let recipients = [];
@@ -51,18 +51,17 @@ window.email_list = function() {
             });
             recipients = JSON.stringify(recipients);
 
-            let subject = scope.$refs.subject.value;
             let message = tinymce.activeEditor.getContent();
 
             let button_html = ele.innerHTML;
             show_loading_button(ele, 'Sending Emails ... ');
             remove_form_errors();
 
-            let formData = new FormData();
-            formData.append('subject', subject);
-            formData.append('message', message);
+            let form = document.querySelector('#email_list_form');
+            let formData = new FormData(form);
             formData.append('recipients', recipients);
-            formData.append('company', 'Heritage Financial');
+            formData.append('message', message);
+            formData.append('company', company);
 
             axios.post('/email/email_list', formData)
             .then(function (response) {
@@ -108,7 +107,8 @@ window.email_list = function() {
             .catch(function (error) {
                 console.log(error);
             });
-        }
+        },
+
     }
 
 }

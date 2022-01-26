@@ -54,7 +54,10 @@
 
         </div>
 
-        @include('components/modals/email_list_modal')
+        @include('components/modals/email_list_modal', [
+            'company' => 'Heritage Financial',
+            'title' => 'Email Loan Officers'
+        ])
 
     </div>
 

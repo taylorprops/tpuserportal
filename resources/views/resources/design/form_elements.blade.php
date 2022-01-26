@@ -73,7 +73,7 @@ $breadcrumbs = [
                         @foreach(['sm', 'md', 'lg', 'xl'] as $size)
 
                             <div class="my-2">
-                                <input type="file" class="form-element input {{ $size }}" placeholder="{{ $size }}" data-label="File Input">
+                                <input type="file" class="form-element input {{ $size }}" placeholder="{{ $size }}" multiple data-label="File Input">
                             </div>
 
                         @endforeach

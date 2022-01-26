@@ -88,10 +88,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 
 
-    // Billing
-    Route::get('/authnet/AddCreditCard', [AuthNetController::class, 'AddCreditCard']) -> middleware(['in_house']);
-
-
     // temp
     Route::get('/add_missing_fields', [ArchivedTransactionsController::class, 'add_missing_fields']) -> middleware(['in_house']);
     Route::get('/get_transactions', [ArchivedTransactionsController::class, 'get_transactions']) -> middleware(['in_house']);

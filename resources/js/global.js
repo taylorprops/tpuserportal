@@ -54,12 +54,15 @@ window.form_elements = function() {
         if(!classes.contains('label-added') && !classes.contains('range')) {
 
             let type = classes.contains('checkbox') || classes.contains('radio') ? 'checkbox' : 'text';
+            if(element.getAttribute('type') == 'file') {
+                type = 'file';
+            }
 
             let label = '';
             let label_text = element.getAttribute('data-label');
             let parent = element.parentNode;
 
-            if(element.parentNode.tagName !== 'LABEL') {
+            if(element.parentNode.tagName !== 'LABEL' && element.getAttribute('type') != 'file') {
                 label = document.createElement('LABEL');
                 //parent.replaceChild(label, element);
                 if(type == 'checkbox') {
@@ -88,6 +91,23 @@ window.form_elements = function() {
                 } else {
                     label.innerHTML = label_text;
                 }
+            }
+
+            if(element.getAttribute('type') == 'file') {
+                label = document.createElement('LABEL');
+                let html = ' \
+                <div class="flex justify-start w-full"> \
+                    <div class="flex items-center bg-primary text-white text-sm p-2 whitespace-nowrap"> \
+                        <i class="fad fa-upload mr-2"></i> Select Files \
+                    </div> \
+                    <div class="flex-1"> \
+                        <div class="file-names text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
+                    </div> \
+                </div>';
+                label.innerHTML = html;
+                label.classList.add('form-element-label', 'file');
+                label.setAttribute('for', element_id);
+                parent.append(label);
             }
 
             classes.add('label-added');
@@ -243,11 +263,14 @@ window.text_editor = function (options) {
 
     // select upload option on add image
     setTimeout(function() {
-        document.querySelector('[aria-label="Insert/edit image"]').addEventListener('click', function () {
-            setTimeout(function() {
-                document.querySelector('.tox-dialog__body-nav').lastChild.click();
-            }, 500);
-        });
+        let insert_button = document.querySelector('[aria-label="Insert/edit image"]');
+        if(insert_button) {
+            document.querySelector('[aria-label="Insert/edit image"]').addEventListener('click', function () {
+                setTimeout(function() {
+                    document.querySelector('.tox-dialog__body-nav').lastChild.click();
+                }, 500);
+            });
+        }
     }, 1000);
 
 }
@@ -322,6 +345,14 @@ window.decode_HTML = function (html) {
 
 window.randomHSL = function () {
     return `hsla(${~~(360 * Math.random())},70%,70%,0.8)`
+}
+
+window.truncate_string = function(str, num) {
+    if (str.length > num) {
+        return str.slice(0, num) + "...";
+    } else {
+        return str;
+    }
 }
 
 
