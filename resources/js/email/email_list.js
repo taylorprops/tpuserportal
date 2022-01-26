@@ -7,8 +7,8 @@ window.email_list = function() {
         signature: '',
 
         init() {
-            this.message_editor('#message');
             this.get_signature();
+            this.message_editor('#message');
         },
 
         check_all(checked) {
