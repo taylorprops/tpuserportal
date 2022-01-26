@@ -115,12 +115,15 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 class="form-element select {{ $input_size }} required"
                                 id="loan_officer_1_id"
                                 name="loan_officer_1_id"
-                                data-label="Loan Officer"
-                                @if(auth() -> user() -> level == 'loan_officer') disabled @endif>
+                                data-label="Loan Officer">
+                                @if(auth() -> user() -> level == 'loan_officer')
+                                    <option value="{{ $loan -> loan_officer_1_id }}">{{ $loan -> loan_officer_1 -> fullname }}</option>
+                                @else
                                     <option value=""></option>
                                     @foreach($loan_officers -> where('emp_position', 'loan_officer') as $lo)
                                     <option value="{{ $lo -> id }}" @if($loan && $loan -> loan_officer_1_id == $lo -> id) selected @endif>{{ $lo -> last_name }}, {{ $lo -> first_name }}</option>
                                     @endforeach
+                                @endif
                                 </select>
                             </div>
 

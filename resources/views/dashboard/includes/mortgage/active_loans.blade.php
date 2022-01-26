@@ -1,10 +1,18 @@
 
 
 <div class="flex justify-between items-center rounded-t-lg border-b">
-    <div class="p-3 text-lg font-semibold">Active Loans</div>
+
+    <div class="flex items-center space-x-4">
+        <div class="p-3 text-lg font-semibold">Active Loans</div>
+        <div class="flex items-center justify-around h-10 w-10 p-1 font-semibold rounded-full overflow-hidden bg-yellow-600 text-white">
+            {{ count($active_loans) }}
+        </div>
+    </div>
+
     <div class="mr-4">
         <a href="/heritage_financial/loans" class="button primary sm">View All</a>
     </div>
+
 </div>
 
 <div class="flex flex-col">

@@ -5,10 +5,7 @@ namespace App\Http\Controllers\HeritageFinancial;
 use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Mail\General\SendEmail;
-use App\Mail\General\EmailGeneral;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Models\HeritageFinancial\Lenders;
 use App\Models\HeritageFinancial\LendersDocuments;
@@ -221,20 +218,6 @@ class LendersController extends Controller {
 
     }
 
-    public function test(Request $request) {
 
-        $message = [
-            'company' => 'Heritage Financial',
-            'subject' => 'test subject',
-            'from' => 'mike@taylorprops.com',
-            'body' => '<strong>Hello Dude!</strong><br>How are you?',
-        ];
-
-        //return (new EmailGeneral($message)) -> render();
-
-        Mail::to([['email' => 'miketaylor0101@gmail.com', 'name' => 'Mike Taylor']])
-            -> send(new EmailGeneral($message));
-
-    }
 
 }

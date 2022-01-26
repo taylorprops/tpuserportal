@@ -45,7 +45,7 @@
                     <td class="p-2 text-sm text-gray-500 uppercase @if($employee -> active == 'yes') text-green-600 @else text-red-600 @endif">{{ $employee -> active }}</td>
                     <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
                     <td>{{ $employee -> job_title }}</td>
-                    <td>{{ $employee -> email }}</td>
+                    <td><a href="mailto:{{ $employee -> email }}" target="_blank">{{ $employee -> email }}</a></td>
                     <td>{{ $employee -> phone }}</td>
                 </tr>
             @endforeach

@@ -19,18 +19,12 @@ class EmailController extends Controller
         ]);
 
         $message = [
-            'company' => $request -> company,
+            'company' => $request -> company ?? 'Taylor Properties',
             'subject' => $request -> subject,
             'from' => ['email' => auth() -> user() -> email, 'name' => auth() -> user() -> name],
         ];
 
         $attachments = $request -> file('attachments') ?? null;
-
-        /* if($request -> hasFile('attachments')) {
-            foreach ($attachments as $attachment) {
-                dump($attachment);
-            }
-        } */
 
         $recipients = json_decode($request -> recipients);
 

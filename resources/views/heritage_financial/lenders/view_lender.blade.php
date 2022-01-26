@@ -24,7 +24,7 @@ $breadcrumbs = [
 
                 <form id="details_form">
 
-                    <div class="w-1000-px mx-auto mt-12">
+                    <div class="w-1300-px mx-auto mt-12">
 
                         <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
 
@@ -48,27 +48,27 @@ $breadcrumbs = [
 
                                 <div class="my-4 grid grid-cols-5 gap-4">
                                     <div class="col-span-3">
-                                        <input type="text" class="form-element input md" name="company_street" data-label="Company Street" value="{{ $lender -> company_street ?? null }}">
+                                        <input type="text" class="form-element input md" name="company_street" data-label="Street" value="{{ $lender -> company_street ?? null }}">
                                     </div>
                                     <div class="col-span-2">
-                                        <input type="text" class="form-element input md" name="company_unit" data-label="Company Unit" value="{{ $lender -> company_unit ?? null }}">
+                                        <input type="text" class="form-element input md" name="company_unit" data-label="Unit" value="{{ $lender -> company_unit ?? null }}">
                                     </div>
                                 </div>
 
                                 <div class="my-4 grid grid-cols-4 gap-4">
                                     <div class="col-span-1">
-                                        <input type="text" class="form-element input md" id="company_zip" name="company_zip" data-label="Company Zip" value="{{ $lender -> company_zip ?? null }}"
+                                        <input type="text" class="form-element input md" id="company_zip" name="company_zip" data-label="Zip" value="{{ $lender -> company_zip ?? null }}"
                                         x-on:keyup="get_location_details('#details_form', '', '#company_zip', '#company_city', '#company_state');">
                                     </div>
                                     <div class="col-span-2">
-                                        <input type="text" class="form-element input md" id="company_city" name="company_city" data-label="Company City" value="{{ $lender -> company_city ?? null }}">
+                                        <input type="text" class="form-element input md" id="company_city" name="company_city" data-label="City" value="{{ $lender -> company_city ?? null }}">
                                     </div>
                                     <div class="col-span-1">
                                         <select
                                         class="form-element select md"
                                         id="company_state"
                                         name="company_state"
-                                        data-label="Company State">
+                                        data-label="State">
                                             <option value=""></option>
                                             @foreach($states as $state)
                                                 <option value="{{ $state -> state }}" @if($lender && $lender -> company_state == $state -> state) selected @endif>{{ $state -> state }}</option>
@@ -128,7 +128,7 @@ $breadcrumbs = [
                                     </div>
 
                                     <div class="mt-12 mb-3">Uploaded Documents</div>
-                                    <div class="border rounded-md p-4">
+                                    <div class="border rounded-sm p-4">
                                         <div class="docs-div"></div>
                                     </div>
 

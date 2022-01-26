@@ -52,7 +52,7 @@
                     </td>
                     <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
                     <td>{{ $emp_position }}</td>
-                    <td>{{ $employee -> email }}</td>
+                    <td><a href="mailto:{{ $employee -> email }}" target="_blank">{{ $employee -> email }}</a></td>
                     <td>{{ $employee -> phone }}</td>
                     <td>{{ $licenses }}</td>
                     <td>
