@@ -16,6 +16,7 @@ window.table = function(options) {
     let search = options.search == false ? false : true;
     let fields = options.fields || null;
     let additional_html = options.additional_html || null;
+    let form_id = options.form_id || null;
 
     return {
 
@@ -38,6 +39,7 @@ window.table = function(options) {
         direction: 'asc',
         length: length,
         page: '1',
+        form_id: form_id,
 
         init() {
             show_loading();
@@ -60,6 +62,20 @@ window.table = function(options) {
             if(!url) {
                 url = scope.page_url+'?length='+scope.length;
             }
+
+            if(scope.form_id) {
+
+                let form = document.getElementById(scope.form_id);
+
+                [...form.elements].forEach((item) => {
+                    url += '&'+item.getAttribute('name')+'='+item.value;
+                });
+
+                console.log(url);
+
+
+            }
+
             scope.active_url = url;
 
             axios.get(url, {
@@ -356,8 +372,6 @@ window.table = function(options) {
             url += '&'+key+'='+val;
 
             scope.active_url = url;
-
-
 
             return url;
 

@@ -17,7 +17,7 @@ window.addEventListener('load', (event) => {
 
     form_elements();
 
-    setInterval(form_elements, 200);
+    setInterval(form_elements, 1000);
 
     numbers_only();
 
@@ -40,6 +40,7 @@ window.form_elements = function() {
     document.querySelectorAll('.form-element').forEach(function(element) {
 
         let classes = element.classList;
+
         let size = '';
         if(classes.contains('sm')) {
             size = 'sm';
@@ -73,7 +74,9 @@ window.form_elements = function() {
             } else {
                 label = element.parentNode;
             }
-
+            if(!size) {
+                size = 'md';
+            }
             label.classList.add(type, size);
 
             let element_id = element.id ? element.id : Date.now() * Math.random() * 1000;

@@ -13,7 +13,7 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2" x-data="commission_reports()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
 
             <div class="text-xl text-gray-700 my-4">
                 Select the dates and then click the "To Excel" button to generate a report

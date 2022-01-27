@@ -27,10 +27,14 @@
                     <td>{{ $user -> email }}</td>
                     <td>{{ ucwords($user -> active) }}</td>
                     <td>
-                        <button type="button" class="button primary sm" @click="confirm_send_welcome_email('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-envelope mr-2"></i> Send Welcome Email</button>
+                        <button type="button" class="button primary sm"
+                        @if($user -> active == 'no') disabled @endif
+                        @click="confirm_send_welcome_email('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-envelope mr-2"></i> Send Welcome Email</button>
                     </td>
                     <td>
-                        <button type="button" class="button primary sm" @click="confirm_reset_password('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-key mr-2"></i> Reset Password</button>
+                        <button type="button" class="button primary sm"
+                        @if($user -> active == 'no') disabled @endif
+                        @click="confirm_reset_password('{{ $user -> id }}', '{{ $user -> name }}')"><i class="fa fa-key mr-2"></i> Reset Password</button>
                     </td>
                     <td>
                         <a href="{{ route('login_as_user', $user -> id) }}" class="button primary sm"><i class="fa fa-user mr-2"></i> Login As User</a>

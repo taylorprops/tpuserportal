@@ -7,16 +7,19 @@ return [
     */
     'columns'                       => [
         'alpha'   => [
-            'rows'  => ['description', 'email', 'name', 'slug', 'status', 'address', 'agent_name', 'data_source'],
-            'class' => 'fad fa-sort-alpha',
+            'rows'  => ['description', 'email', 'name', 'slug', 'status', 'address', 'agent_name', 'data_source', 'level', 'active', 'group'],
+            //'class' => 'fad fa-sort-alpha',
+            'class' => 'fad fad fa-sort text-gray-400',
         ],
         'amount'  => [
             'rows'  => ['amount', 'price'],
-            'class' => 'fad fa-sort-amount',
+            // 'class' => 'fad fa-sort-amount',
+            'class' => 'fad fad fa-sort text-gray-400',
         ],
         'numeric' => [
             'rows'  => ['created_at', 'updated_at', 'level', 'id', 'phone_number', 'listingDate', 'actualClosingDate', 'doc_count'],
-            'class' => 'fad fa-sort-numeric',
+            // 'class' => 'fad fa-sort-numeric',
+            'class' => 'fad fad fa-sort text-gray-400',
         ],
     ],
 
@@ -28,12 +31,12 @@ return [
     /*
     defines icon set to use when sorted data is none above (alpha nor amount nor numeric)
      */
-    'default_icon_set'              => 'fa fa-sort',
+    'default_icon_set'              => 'fad fa-sort text-gray-400',
 
     /*
     icon that shows when generating sortable link while column is not sorted
      */
-    'sortable_icon'                 => 'fa fa-sort',
+    'sortable_icon'                 => 'fad fa-sort text-gray-400',
 
     /*
     generated icon is clickable non-clickable (default)

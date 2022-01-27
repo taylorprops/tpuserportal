@@ -12,7 +12,7 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2" x-data="reports()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="w-full mx-auto sm:px-6 lg:px-12">
 
             <div class="mt-16">
 
@@ -59,61 +59,195 @@ $breadcrumbs = [
 
                         <div class="pt-12">
 
-                            <div class="text-xl font-semibold text-gray-700 mb-6">Mortgage Reports</div>
 
-                            <div class="flex flex-col">
+                            <div class="grid grid-cols-2 gap-8">
 
-                                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div>
 
-                                    <div class="py-2 align-middle inline-block sm:px-6 lg:px-8">
+                                    <div class="text-lg text-gray-700 mb-4">Detailed Report</div>
 
-                                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                    <div class="flex flex-col">
 
-                                            <table class="divide-y divide-gray-200 min-w-600-px">
+                                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
-                                                <tbody class="bg-white divide-y divide-gray-200">
-                                                    <tr>
-                                                        <td class="p-2">
-                                                            <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_print_all_button()">
-                                                        </td>
-                                                        <td colspan="2" class="p-2">
-                                                            <button type="button" class="button primary md"
-                                                            @click="print_report($el, null);" :disabled="!show_print_all_option">
-                                                                <i class="fad fa-print mr-2"></i> Print Checked
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    @php
-                                                    $reports = [
-                                                        'loans_in_process',
-                                                        'closed_loans_by_month',
-                                                        'closed_loans_by_month_detailed',
-                                                        /* 'closed_loans_by_loan_officer',
-                                                        'closed_loans_by_loan_officer_summary' */
-                                                    ];
-                                                    @endphp
-                                                    @foreach($reports as $report)
-                                                        <tr>
-                                                            <td class="p-2">
-                                                                <div class="flex justify-around items-center">
-                                                                    <input type="checkbox" class="form-element checkbox success md report-checkbox"
-                                                                    data-report="{{ $report }}"
-                                                                    @click="show_print_all_button()">
+                                            <div class="py-2 align-middle inline-block sm:px-6 lg:px-8 w-full">
+
+                                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+
+                                                    <div class="w-full p-4">
+
+                                                        <form id="detailed_report_form">
+
+                                                            <div class="grid grid-cols-8 gap-4">
+
+                                                                <div class="col-span-4">
+                                                                    <div class="flex justify-start items-end space-x-2">
+                                                                        <div>
+                                                                            <input type="date" class="form-element input md" name="settlement_date_start" data-label="Settlement Date">
+                                                                        </div>
+                                                                        <div> to </div>
+                                                                        <div>
+                                                                            <input type="date" class="form-element input md" name="settlement_date_end">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </td>
-                                                            <td class="p-2">
-                                                                {{ ucwords(str_replace('_', ' ', $report)) }}
-                                                            </td>
-                                                            <td class="p-2">
-                                                                <button type="button" class="button primary md"
-                                                                @click="print_report($el, '{{ $report }}')">
-                                                                <i class="fad fa-print mr-2"></i> Print
+
+                                                                <div class="col-span-4">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="lender_uuid"
+                                                                    data-label="Lender">
+                                                                        <option value=""></option>
+                                                                        @foreach($lenders as $lender)
+                                                                            <option value="{{ $lender -> uuid }}">{{ $lender -> company_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+
+                                                                <div class="col-span-2">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="state"
+                                                                    data-label="State">
+                                                                        <option value=""></option>
+                                                                        @foreach($states as $state)
+                                                                            <option value="{{ $state -> state }}">{{ $state -> state }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-3">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="loan_type"
+                                                                    data-label="Loan Type">
+                                                                        <option value=""></option>
+                                                                        <option value="conventional">Conventional</option>
+                                                                        <option value="FHA">FHA</option>
+                                                                        <option value="VA">VA</option>
+                                                                        <option value="USDA">USDA</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-3">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="loan_purpose"
+                                                                    data-label="Loan Purpose">
+                                                                        <option value=""></option>
+                                                                        <option value="purchase">Purchase</option>
+                                                                        <option value="refi">Refinance</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-3">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="mortgage_type"
+                                                                    data-label="Mortgage Type">
+                                                                        <option value=""></option>
+                                                                        <option value="first">First</option>
+                                                                        <option value="second">Second</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-span-3">
+                                                                    <select
+                                                                    class="form-element select md"
+                                                                    name="reverse"
+                                                                    data-label="Reverse Mortgage">
+                                                                        <option value=""></option>
+                                                                        <option value="yes">Yes</option>
+                                                                        <option value="no">No</option>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="flex justify-around p-4">
+                                                                <button type="button" class="button primary lg"
+                                                                x-ref="search_button"
+                                                                @click="get_detailed_report($el)">
+                                                                    Search <i class="fal fa-search ml-2"></i>
                                                                 </button>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div>
+
+                                    <div class="text-lg text-gray-700 mb-4">Meeting Reports</div>
+
+                                    <div class="flex flex-col">
+
+                                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 w-full">
+
+                                            <div class="py-2 align-middle inline-block sm:px-6 lg:px-8 w-full">
+
+                                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg w-full">
+
+                                                    <table class="divide-y divide-gray-200  w-full">
+
+                                                        <tbody class="bg-white divide-y divide-gray-200">
+                                                            <tr>
+                                                                <td class="p-2 pl-4">
+                                                                    <input type="checkbox" class="form-element checkbox success lg" @click="check_all($el.checked); show_print_all_button()">
+                                                                </td>
+                                                                <td colspan="2" class="p-2">
+                                                                    <button type="button" class="button primary md"
+                                                                    @click="print_report($el, null);" :disabled="!show_print_all_option">
+                                                                        <i class="fad fa-print mr-2"></i> Print Checked
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            @php
+                                                            $reports = [
+                                                                'loans_in_process',
+                                                                'closed_loans_by_month',
+                                                                'closed_loans_by_month_detailed',
+                                                                /* 'closed_loans_by_loan_officer',
+                                                                'closed_loans_by_loan_officer_summary' */
+                                                            ];
+                                                            @endphp
+                                                            @foreach($reports as $report)
+                                                                <tr>
+                                                                    <td class="p-2">
+                                                                        <div class="flex justify-around items-center">
+                                                                            <input type="checkbox" class="form-element checkbox success md report-checkbox"
+                                                                            data-report="{{ $report }}"
+                                                                            @click="show_print_all_button()">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="p-2">
+                                                                        {{ ucwords(str_replace('_', ' ', $report)) }}
+                                                                    </td>
+                                                                    <td class="p-2 w-28">
+                                                                        <button type="button" class="button primary md"
+                                                                        @click="print_report($el, '{{ $report }}')">
+                                                                        <i class="fad fa-print mr-2"></i> Print
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -121,6 +255,11 @@ $breadcrumbs = [
                                 </div>
 
                             </div>
+
+
+                            {{-- Results --}}
+                            <div x-ref="results_div" class="max-w-1400-px"></div>
+
 
                         </div>
 

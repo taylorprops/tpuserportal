@@ -15,7 +15,7 @@ $breadcrumbs = [
     <div class="pb-12 pt-2"
     x-data="archives()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
 
             <div class="flex flex-col">
 

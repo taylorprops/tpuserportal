@@ -8,6 +8,26 @@ if(document.URL.match(/reports/)) {
             show_print_all_option: false,
 
             init() {
+                this.get_detailed_report(this.$refs.search_button);
+            },
+
+            get_detailed_report(ele) {
+
+                let scope = this;
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Searching ... ');
+
+                let form = document.getElementById('detailed_report_form');
+                let formData = new FormData(form);
+
+                axios.post('/reports/mortgage/get_detailed_report', formData)
+                .then(function (response) {
+                    scope.$refs.results_div.innerHTML = response.data;
+                    ele.innerHTML = button_html;
+
+                })
+                .catch(function (error) {
+                });
 
             },
 

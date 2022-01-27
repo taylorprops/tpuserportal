@@ -2,7 +2,7 @@
     <div>
         <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Staff</button>
     </div>
-    <div>
+    <div class="">
         {!! $employees -> links() !!}
     </div>
 </div>

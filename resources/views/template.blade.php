@@ -14,7 +14,7 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
 
             <div class="">
 

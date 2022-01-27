@@ -10,15 +10,126 @@ use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
 use Illuminate\Support\Facades\Storage;
+use App\Models\HeritageFinancial\Lenders;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\DocManagement\Resources\LocationData;
 
 class ReportsController extends Controller
 {
 
     public function reports(Request $request) {
 
-        return view('/reports/reports');
+        $states = LocationData::select('state') -> groupBy('state') -> orderBy('state') -> get();
+        $lenders = Lenders::where('active', 'yes') -> orderBy('company_name') -> get();
+
+        return view('/reports/reports', compact('states', 'lenders'));
+
+    }
+
+    public function get_detailed_report(Request $request) {
+
+        return view('/reports/data/mortgage/get_detailed_report_html');
+
+    }
+
+    public function get_detailed_report_data(Request $request) {
+
+        $direction = $request -> direction ? $request -> direction : 'desc';
+        $sort = $request -> sort ? $request -> sort : 'settlement_date';
+        $length = $request -> length ? $request -> length : 10;
+
+        $search = $request -> search ?? null;
+        $active = $request -> active ?? 'yes';
+
+        $settlement_date_start = $request -> settlement_date_start ?? null;
+        $settlement_date_end = $request -> settlement_date_end ?? null;
+        $lender_uuid = $request -> lender_uuid ?? null;
+        $state = $request -> state ?? null;
+        $loan_type = $request -> loan_type ?? null;
+        $loan_purpose = $request -> loan_purpose ?? null;
+        $mortgage_type = $request -> mortgage_type ?? null;
+        $reverse = $request -> reverse ?? null;
+
+        $loans = Loans::where('loan_status', 'closed')
+        -> where(function($query) use ($settlement_date_start, $settlement_date_end, $lender_uuid , $state, $loan_type, $loan_purpose, $mortgage_type, $reverse) {
+
+            if($settlement_date_start) {
+                $query -> where('settlement_date', '>=', $settlement_date_start);
+            }
+            if($settlement_date_end) {
+                $query -> where('settlement_date', '<=', $settlement_date_end);
+            }
+            if($lender_uuid) {
+                $query -> where('lender_uuid', $lender_uuid);
+            }
+            if($state) {
+                $query -> where('state', $state);
+            }
+            if($loan_type) {
+                $query -> where('loan_type', $loan_type);
+            }
+            if($loan_purpose) {
+                $query -> where('loan_purpose', $loan_purpose);
+            }
+            if($mortgage_type) {
+                $query -> where('mortgage_type', $mortgage_type);
+            }
+            if($reverse) {
+                $query -> where('reverse', $reverse);
+            }
+
+        })
+        -> with(['loan_officer_1', 'lender'])
+        -> orderBy($sort, $direction);
+
+        if ($request -> to_excel == 'false') {
+
+            $loans = $loans -> paginate($length);
+            return view('/reports/data/mortgage/get_detailed_report_data_html', compact('loans'));
+
+        } else {
+
+            $loans = $loans -> get()
+            -> toArray();
+
+            $data = [];
+            $select = ['Loan Officer', 'Borrowers', 'Address', 'Settlement Date', 'Loan Amount', 'Company Commission', 'Loan Type', 'Loan Purpose', 'Mortgage Type', 'Lender', 'State'];
+
+            foreach($loans as $loan) {
+
+                $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
+                if($loan -> co_borrower_first != '') {
+                    $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
+                }
+                $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
+                $lender = $loan -> lender -> company_name;
+
+                $data[] = [
+                    'loan_officer' => $loan -> loan_officer_1 -> fullname,
+                    'borrower' => $borrower,
+                    'address' => $address,
+                    'settlement_date' => $loan -> settlement_date,
+                    'loan_amount' => '$'.number_format($loan -> loan_amount),
+                    'loan_amount' => '$'.number_format($loan -> company_commission),
+                    'loan_type' => ucwords($loan -> loan_type),
+                    'loan_purpose' => ucwords($loan -> loan_purpose),
+                    'mortgage_type' => ucwords($loan -> mortgage_type),
+                    'lender' => $lender,
+                    'state' => $loan -> state,
+                ];
+
+            }
+
+            $filename = 'loans_'.time().'.xlsx';
+            $file = Helper::to_excel($data, $filename, $select);
+
+            return response() -> json(['file' => $file]);
+
+        }
+
+
+
 
     }
 

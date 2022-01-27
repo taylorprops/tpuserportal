@@ -53,6 +53,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/reports/mortgage/closed_loans_by_loan_officer', [ReportsController::class, 'closed_loans_by_loan_officer']) -> middleware(['all']);
     Route::get('/reports/mortgage/closed_loans_by_loan_officer_summary', [ReportsController::class, 'closed_loans_by_loan_officer_summary']) -> middleware(['all']);
 
+    Route::post('/reports/mortgage/get_detailed_report', [ReportsController::class, 'get_detailed_report']) -> middleware(['all']);
+    Route::get('/reports/mortgage/get_detailed_report_data', [ReportsController::class, 'get_detailed_report_data']) -> middleware(['all']);
+
     Route::get('/reports/print', [ReportsController::class, 'print']) -> middleware(['all']);
 
 

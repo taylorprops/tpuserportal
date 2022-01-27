@@ -3,6 +3,7 @@
     "less.validate": false,
     "scss.validate": false,
     "cSpell.ignoreWords": [
+        "Barryvdh",
         "aapi",
         "add",
         "addendums",

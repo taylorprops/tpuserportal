@@ -15,7 +15,7 @@ $breadcrumbs = [
     <div class="pb-12 pt-2"
     x-data="email_list()">
 
-        <div class="w-full mx-auto">
+        <div class="max-w-1400-px mx-auto">
 
             <div class="">
 

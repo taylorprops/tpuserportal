@@ -5,7 +5,7 @@ html {
 }
 
 
-a:not(.button):not(.light):not(.menu-link):not(.no-color) {
+a.default {
     @apply text-primary hover:text-primary-light;
 }
 [x-cloak] {
@@ -66,25 +66,32 @@ a:not(.button):not(.light):not(.menu-link):not(.no-color) {
 }
 
 .table-container {
-    @apply py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 overflow-auto;
+    @apply py-2 align-middle inline-block min-w-full;
     .table-div {
-        @apply shadow overflow-hidden border-b border-gray-200 sm:rounded-lg;
+        @apply shadow overflow-hidden border border-gray-200 sm:rounded-lg;
         table {
             @apply min-w-full divide-y divide-gray-200;
             thead {
                 @apply bg-gray-50;
                 th {
-                    @apply pl-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap;
+                    @apply px-2 py-3 text-left tracking-wider whitespace-nowrap;
+                    a {
+                        @apply text-sm font-medium text-gray-500;
+                    }
                 }
             }
             tbody {
                 @apply  bg-white divide-y divide-gray-200;
                 td {
-                    @apply p-2 text-gray-500 text-sm;
+                    @apply p-2 text-gray-500 text-xs;
                 }
             }
         }
     }
+}
+
+.pagination-div {
+    @apply w-full;
 }
 
 /* auth errors */

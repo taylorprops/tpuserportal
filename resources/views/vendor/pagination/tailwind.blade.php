@@ -1,6 +1,6 @@
 {{-- @if ($paginator -> hasPages()) --}}
 
-    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between">
+    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-between w-full">
 
         {{-- Hide paging and show just Next/Prev buttons --}}
         {{-- <div class="flex justify-start flex-1 md:hidden">

@@ -15,7 +15,7 @@ $breadcrumbs = [
     <div class="pb-12 pt-2"
     x-data="loans()">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
 
             @if(auth() -> user() -> level != 'loan_officer')
             <div class="mt-4 float-right">

@@ -475,9 +475,9 @@ class EmployeesController extends Controller
             'photo_location_url' => ''
         ]);
 
-        $user = User::where('email', $employee -> email) -> first() -> update([
-            'photo_location_url' => ''
-        ]);
+        $user = User::where('email', $employee -> email) -> first();
+        $user -> photo_location_url = '';
+        $user -> save();
 
     }
 
