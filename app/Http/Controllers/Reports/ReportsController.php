@@ -21,7 +21,7 @@ class ReportsController extends Controller
 
     public function reports(Request $request) {
 
-        $states = LocationData::select('state') -> groupBy('state') -> orderBy('state') -> get();
+        $states = Loans::groupBy('state') -> pluck('state');
         $lenders = Lenders::where('active', 'yes') -> orderBy('company_name') -> get();
 
         return view('/reports/reports', compact('states', 'lenders'));

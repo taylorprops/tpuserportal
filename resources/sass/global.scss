@@ -90,6 +90,16 @@ a.default {
     }
 }
 
+.table-default {
+    @apply divide-y divide-gray-200 w-full;
+    th {
+        @apply p-2 border-b
+    }
+    td {
+        @apply p-2 border-b;
+    }
+}
+
 .pagination-div {
     @apply w-full;
 }

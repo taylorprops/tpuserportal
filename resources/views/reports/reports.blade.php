@@ -106,7 +106,7 @@ $breadcrumbs = [
 
                                                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg w-full">
 
-                                                    <table class="divide-y divide-gray-200  w-full">
+                                                    <table class="w-full">
 
                                                         <tbody class="bg-white divide-y divide-gray-200">
                                                             <tr>
@@ -162,9 +162,9 @@ $breadcrumbs = [
 
                             <div x-show="active_mortgage_tab === 2" x-transition>
 
-                                <div class="grid grid-cols-2 gap-8">
+                                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
-                                    <div class="flex flex-col">
+                                    <div class="col-span-1 lg:col-span-2 flex flex-col">
 
                                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
@@ -178,9 +178,9 @@ $breadcrumbs = [
 
                                                         <form id="detailed_report_form" x-ref="detailed_report_form">
 
-                                                            <div class="grid grid-cols-8 gap-4">
+                                                            <div class="grid grid-cols-2 gap-4">
 
-                                                                <div class="col-span-4">
+                                                                <div class="col-span-2">
                                                                     <div class="flex justify-start items-end space-x-2">
                                                                         <div>
                                                                             <input type="date" class="form-element input md" name="settlement_date_start" data-label="Settlement Date">
@@ -192,7 +192,7 @@ $breadcrumbs = [
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-span-4">
+                                                                <div>
                                                                     <select class="form-element select md" name="lender_uuid" data-label="Lender">
                                                                         <option value=""></option>
                                                                         @foreach($lenders as $lender)
@@ -202,26 +202,26 @@ $breadcrumbs = [
                                                                 </div>
 
 
-                                                                <div class="col-span-2">
+                                                                <div>
                                                                     <select class="form-element select md" name="state" data-label="State">
                                                                         <option value=""></option>
                                                                         @foreach($states as $state)
-                                                                        <option value="{{ $state -> state }}">{{ $state -> state }}</option>
+                                                                        <option value="{{ $state }}">{{ $state }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-span-3">
+                                                                <div>
                                                                     <select class="form-element select md" name="loan_type" data-label="Loan Type">
                                                                         <option value=""></option>
-                                                                        <option value="conventional">Conventional</option>
+                                                                        <option value="Conventional">Conventional</option>
                                                                         <option value="FHA">FHA</option>
                                                                         <option value="VA">VA</option>
                                                                         <option value="USDA">USDA</option>
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-span-3">
+                                                                <div>
                                                                     <select class="form-element select md" name="loan_purpose" data-label="Loan Purpose">
                                                                         <option value=""></option>
                                                                         <option value="purchase">Purchase</option>
@@ -229,7 +229,7 @@ $breadcrumbs = [
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-span-3">
+                                                                <div>
                                                                     <select class="form-element select md" name="mortgage_type" data-label="Mortgage Type">
                                                                         <option value=""></option>
                                                                         <option value="first">First</option>
@@ -237,7 +237,7 @@ $breadcrumbs = [
                                                                     </select>
                                                                 </div>
 
-                                                                <div class="col-span-3">
+                                                                <div>
                                                                     <select class="form-element select md" name="reverse" data-label="Reverse Mortgage">
                                                                         <option value=""></option>
                                                                         <option value="yes">Yes</option>
@@ -267,15 +267,15 @@ $breadcrumbs = [
 
                                     </div>
 
-                                    <div class="flex flex-col">
+                                    <div class="col-span-1 lg:col-span-3 flex flex-col">
 
                                         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
-                                            <div class="py-2 align-middle inline-block sm:px-6 lg:px-8">
+                                            <div class="py-2 align-middle inline-block sm:px-6 lg:px-8 w-full">
 
                                                 <div class="mb-3"><i class="fa fa-info-square mr-2 text-gray-500"></i> <span class="text-lg text-gray-700">Results Details</span></div>
 
-                                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg w-full">
 
                                                     <div class="w-full p-4">
                                                         <div x-ref="results_div_details"></div>
