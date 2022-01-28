@@ -92,6 +92,17 @@ a.default {
 
 .table-default {
     @apply divide-y divide-gray-200 w-full;
+
+    &.th-text-center {
+        th {
+            @apply text-center
+        }
+    }
+    &.td-text-center {
+        td {
+            @apply text-center
+        }
+    }
     th {
         @apply p-2 border-b
     }

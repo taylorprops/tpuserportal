@@ -15,7 +15,9 @@ $percent_va_loans = 0;
 $count_usda_loans = 0;
 $amount_usda_loans = 0;
 $percent_usda_loans = 0;
+$count_total_gov_loans = 0;
 $amount_total_gov_loans = 0;
+$percent_total_gov_loans = 0;
 
 $count_conventional_loans = 0;
 $amount_conventional_loans = 0;
@@ -59,6 +61,7 @@ foreach($loans as $loan) {
     }
 
     if($loan_type == 'FHA' || $loan_type == 'VA' || $loan_type == 'USDA') {
+        $count_total_gov_loans += 1;
         $amount_total_gov_loans += $loan_amount;
     }
 
@@ -87,6 +90,7 @@ $percent_conventional_loans = round($count_conventional_loans / $count_total_loa
 $percent_reverse_loans = round($count_reverse_loans / $count_total_loans, 2);
 $percent_purchase_loans = round($count_purchase_loans / $count_total_loans, 2);
 $percent_refi_loans = round($count_refi_loans / $count_total_loans, 2);
+$percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2);
 
 
 @endphp
@@ -118,121 +122,127 @@ $percent_refi_loans = round($count_refi_loans / $count_total_loans, 2);
 
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg w-full">
 
-                    <table class="table-default text-xs">
+                    <table class="table-default text-xs th-text-center td-text-center">
 
                         <thead>
                             <tr>
-                                <th class="text-right"></th>
-                                <th class="text-right">Count</th>
-                                <th class="text-right">Total Amount</th>
-                                <th class="text-right">Percent</th>
+                                <th class="text-left"></th>
+                                <th class="text-left">Count</th>
+                                <th class="text-left">Total Amount</th>
+                                <th class="text-left">Percent</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">FHA</div>
+                                <td class="w-32">
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">FHA</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_fha_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_fha_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_fha_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">VA</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">VA</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_va_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_va_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_va_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">USDA</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">USDA</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_usda_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_usda_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_usda_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="font-semibold">
+                                <td class="font-semibold">
                                     Total Government Loans
                                 </td>
-                                <td colspan="2"  class="font-semibold text-right">
+                                <td>
+                                    {{ $count_total_gov_loans }}
+                                </td>
+                                <td>
                                     ${{ number_format($amount_total_gov_loans, 2) }}
+                                </td>
+                                <td >
+                                    {{ $percent_total_gov_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">Conventional</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">Conventional</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_conventional_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_conventional_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_conventional_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">Reverse</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">Reverse</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_reverse_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_reverse_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_reverse_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">Purchase</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">Purchase</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_purchase_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_purchase_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_purchase_loans }}%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">
-                                    <div class="bg-blue-50 text-center rounded-lg p-2">Refis</div>
+                                <td>
+                                    <div class="bg-blue-50 text-center font-semibold rounded-lg p-2">Refis</div>
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     {{ $count_refi_loans }}
                                 </td>
-                                <td class="text-right">
+                                <td>
                                     ${{ number_format($amount_refi_loans, 2) }}
                                 </td>
-                                <td class="text-right">
+                                <td >
                                     {{ $percent_refi_loans }}%
                                 </td>
                             </tr>
