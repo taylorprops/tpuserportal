@@ -68,11 +68,10 @@ window.table = function(options) {
                 let form = document.getElementById(scope.form_id);
 
                 [...form.elements].forEach((item) => {
-                    url += '&'+item.getAttribute('name')+'='+item.value;
+                    if(item.getAttribute('name')) {
+                        url += '&'+item.getAttribute('name')+'='+item.value;
+                    }
                 });
-
-                console.log(url);
-
 
             }
 
@@ -236,6 +235,7 @@ window.table = function(options) {
         table_links() {
 
             let scope = this;
+
             let table = scope.container.querySelector('table');
 
             table.querySelectorAll('th').forEach(function(th) {

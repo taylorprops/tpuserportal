@@ -428,7 +428,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 name="loan_type"
                                 data-label="Loan Type">
                                     <option value=""></option>
-                                    <option value="conventional" @if($loan && $loan -> loan_type == 'conventional') selected @endif>Conventional</option>
+                                    <option value="Conventional" @if($loan && $loan -> loan_type == 'Conventional') selected @endif>Conventional</option>
                                     <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
                                     <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
                                     <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>

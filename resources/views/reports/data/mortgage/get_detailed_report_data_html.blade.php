@@ -10,6 +10,7 @@
 
         <thead>
             <tr id="sortable_tr">
+                <th></th>
                 <th scope="col">@sortablelink('loan_officer_1_id', 'Loan Officer')</th>
                 <th scope="col">@sortablelink('borrower_last', 'Borrower(s)')</th>
                 <th scope="col">@sortablelink('street', 'Address')</th>
@@ -33,7 +34,8 @@
                 $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                 @endphp
                 <tr>
-                    <td>{{ $loan -> loan_officer_1 -> last_name.', '.$loan -> loan_officer_1 -> first_name }}</td>
+                    <td><a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" target="_blank" class="default">View</a></td>
+                    <td>@if($loan -> loan_officer_1) {{ $loan -> loan_officer_1 -> last_name.', '.$loan -> loan_officer_1 -> first_name }} @endif</td>
                     <td class="whitespace-nowrap">{!! $borrower !!}</td>
                     <td class="whitespace-nowrap">{!! $address !!}</td>
                     <td>{{ $loan -> settlement_date }}</td>

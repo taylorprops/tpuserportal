@@ -5,6 +5,7 @@ if(document.URL.match(/reports/)) {
         return {
 
             active_tab: 1,
+            active_mortgage_tab: 1,
             show_print_all_option: false,
 
             init() {
@@ -17,12 +18,21 @@ if(document.URL.match(/reports/)) {
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Searching ... ');
 
-                let form = document.getElementById('detailed_report_form');
+                let form = scope.$refs.detailed_report_form;
                 let formData = new FormData(form);
+                formData.set('report_type', 'data');
 
                 axios.post('/reports/mortgage/get_detailed_report', formData)
                 .then(function (response) {
-                    scope.$refs.results_div.innerHTML = response.data;
+                    scope.$refs.results_div_data.innerHTML = response.data;
+                })
+                .catch(function (error) {
+                });
+
+                formData.set('report_type', 'details');
+                axios.post('/reports/mortgage/get_detailed_report_details', formData)
+                .then(function (response) {
+                    scope.$refs.results_div_details.innerHTML = response.data;
                     ele.innerHTML = button_html;
 
                 })

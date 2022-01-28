@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Employees\Mortgage;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -29,7 +30,9 @@ class ReportsController extends Controller
 
     public function get_detailed_report(Request $request) {
 
-        return view('/reports/data/mortgage/get_detailed_report_html');
+        $report_type = $request -> report_type;
+
+        return view('/reports/data/mortgage/get_detailed_report_html', compact('report_type'));
 
     }
 
@@ -50,6 +53,8 @@ class ReportsController extends Controller
         $loan_purpose = $request -> loan_purpose ?? null;
         $mortgage_type = $request -> mortgage_type ?? null;
         $reverse = $request -> reverse ?? null;
+        $report_type = $request -> report_type ?? null;
+        $to_excel = $request -> to_excel ?? 'false';
 
         $loans = Loans::where('loan_status', 'closed')
         -> where(function($query) use ($settlement_date_start, $settlement_date_end, $lender_uuid , $state, $loan_type, $loan_purpose, $mortgage_type, $reverse) {
@@ -83,15 +88,22 @@ class ReportsController extends Controller
         -> with(['loan_officer_1', 'lender'])
         -> orderBy($sort, $direction);
 
-        if ($request -> to_excel == 'false') {
+        if ($to_excel == 'false') {
 
-            $loans = $loans -> paginate($length);
-            return view('/reports/data/mortgage/get_detailed_report_data_html', compact('loans'));
+            if(!$report_type) {
+                $loans = $loans -> paginate($length);
+                return view('/reports/data/mortgage/get_detailed_report_data_html', compact('loans'));
+            }
+
+            $loans = $loans -> get();
+
+            return view('/reports/data/mortgage/get_detailed_report_details_html', compact('loans'));
+
+
 
         } else {
 
-            $loans = $loans -> get()
-            -> toArray();
+            $loans = $loans -> get();
 
             $data = [];
             $select = ['Loan Officer', 'Borrowers', 'Address', 'Settlement Date', 'Loan Amount', 'Company Commission', 'Loan Type', 'Loan Purpose', 'Mortgage Type', 'Lender', 'State'];
@@ -103,19 +115,19 @@ class ReportsController extends Controller
                     $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
                 }
                 $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
-                $lender = $loan -> lender -> company_name;
+                $lender = $loan -> lender -> company_name ?? null;
 
                 $data[] = [
-                    'loan_officer' => $loan -> loan_officer_1 -> fullname,
-                    'borrower' => $borrower,
+                    'loan_officer' => $loan -> loan_officer_1 -> fullname ?? null,
+                    'borrower' => $borrower ?? null,
                     'address' => $address,
-                    'settlement_date' => $loan -> settlement_date,
+                    'settlement_date' => $loan -> settlement_date ?? null,
                     'loan_amount' => '$'.number_format($loan -> loan_amount),
-                    'loan_amount' => '$'.number_format($loan -> company_commission),
+                    'company_commission' => '$'.number_format($loan -> company_commission),
                     'loan_type' => ucwords($loan -> loan_type),
                     'loan_purpose' => ucwords($loan -> loan_purpose),
                     'mortgage_type' => ucwords($loan -> mortgage_type),
-                    'lender' => $lender,
+                    'lender' => $lender ?? null,
                     'state' => $loan -> state,
                 ];
 
