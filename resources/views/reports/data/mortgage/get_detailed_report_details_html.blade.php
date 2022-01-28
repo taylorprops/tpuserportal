@@ -93,22 +93,22 @@ $percent_refi_loans = round($count_refi_loans / $count_total_loans, 2);
 
 <div class="flex justify-around flex-wrap w-full space-x-3">
 
-    <div class="flex bg-blue-50 text-center rounded-lg border">
-        <div class="border-b p-2">Total Count</div>
+    <div class="flex bg-blue-50 rounded-lg border shadow">
+        <div class="p-2 border-r">Total Count</div>
         <div class="bg-white p-2 rounded-r-lg">{{ $count_total_loans }}</div>
     </div>
-    <div class="flex bg-blue-50 text-center rounded-lg border">
-        <div class="border-b p-2">Total Amount</div>
+    <div class="flex bg-blue-50 rounded-lg border shadow">
+        <div class="p-2 border-r">Total Amount</div>
         <div class="bg-white p-2 rounded-r-lg">${{ number_format($amount_total_loans, 2) }}</div>
     </div>
-    <div class="flex bg-blue-50 text-center rounded-lg border">
-        <div class="border-b p-2">Company Net</div>
+    <div class="flex bg-blue-50 rounded-lg border shadow">
+        <div class="p-2 border-r">Company Net</div>
         <div class="bg-white p-2 rounded-r-lg">${{ number_format($company_net, 2) }}</div>
     </div>
 
 </div>
 
-<div class="rounded-lg p-2 w-full mt-2">
+<div class="w-full mt-3">
 
     <div class="flex flex-col">
 
