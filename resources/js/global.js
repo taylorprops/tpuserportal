@@ -119,12 +119,33 @@ window.form_elements = function() {
                 element.parentNode.insertAdjacentHTML('beforeend', '<div class="relative"> <span class="text-red-500 text-xxs error-message h-4 inline-block absolute top-0"></span> </div>');
             }
 
+            if(classes.contains('select')) {
+                let cancel_div = document.createElement('div');
+                cancel_div.classList.add('absolute', 'right-8', 'top-8', 'cancel-div', 'hidden');
+                let html = ' \
+                <a href="javascript:void(0)" @click="clear_select($el)"><i class="fal fa-times text-gray-400"></i></a>';
+                cancel_div.innerHTML = html;
+                element.parentNode.classList.add('relative');
+                element.parentNode.append(cancel_div);
+
+                element.addEventListener('change', function() {
+                    cancel_div.classList.add('hidden');
+                    if(element.value != '') {
+                        cancel_div.classList.remove('hidden');
+                    }
+                });
+            }
+
         }
 
     });
 
 }
 
+window.clear_select = function(ele) {
+    ele.closest('.relative').querySelector('select').value = '';
+    ele.closest('.cancel-div').classList.add('hidden');
+}
 
 window.show_loading = function () {
     document.querySelector('.page-loading').classList.remove('hidden');
@@ -341,7 +362,7 @@ window.show_loading_button = function (button, text) {
 }
 
 window.decode_HTML = function (html) {
-    var txt = document.createElement('textarea');
+    let txt = document.createElement('textarea');
     txt.innerHTML = html;
     return txt.value;
 };
