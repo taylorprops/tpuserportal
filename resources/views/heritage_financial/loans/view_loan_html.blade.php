@@ -10,7 +10,7 @@ $input_size = 'md';
 
 $active_tab = '1';
 if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
-    $active_tab = '2';
+    $active_tab = '3';
 }
 @endphp
 <x-app-layout>
@@ -1477,7 +1477,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                             <div class="text-right bg-green-50 text-green-600 p-4 rounded-md">
                                                 <div class="text-xs">Company Commisison</div>
-                                                <span id="company_commission_amount">$0.00</span>
+                                                <span class="company-commission-amount">$0.00</span>
                                             </div>
                                             <input type="hidden" name="company_commission" id="company_commission">
 
@@ -1591,6 +1591,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                 <td><span class="checks-in-amount"></span></td>
                                             </tr>
                                         </table>
+
+                                        <hr>
+
                                         <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 10px">
                                             <tr>
                                                 <th colspan="3" align="left" style="padding-bottom: 20px; font-size: 18px">Checks Out</th>
@@ -1621,6 +1624,25 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                         </table>
 
                                         <div class="deductions-out-div-print"></div>
+
+                                        <hr>
+
+                                        <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px">
+                                            <tr>
+                                                <td>Processing Fee:</td>
+                                                <td>
+                                                    <span class="processing-fee"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Net Commission:</td>
+                                                <td>
+                                                    <span class="company-commission-amount"></span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <hr>
 
                                         <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px">
                                             <tr>

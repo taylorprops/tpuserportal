@@ -180,7 +180,9 @@ if(document.URL.match(/view_loan/)) {
                     let company_commission = net_commission_amount - (commissions_paid_total);
 
                     document.querySelector('#company_commission').value = company_commission;
-                    document.querySelector('#company_commission_amount').innerHTML = global_format_number_with_decimals(company_commission.toString());
+                    document.querySelectorAll('.company-commission-amount').forEach(function(span) {
+                        span.innerHTML = global_format_number_with_decimals(company_commission.toString());
+                    });
 
                 });
 
@@ -231,6 +233,8 @@ if(document.URL.match(/view_loan/)) {
                                 <td>'+description.value+'</td> \
                             </tr>';
 
+                        } else if(paid_to_value == 'Company' || description.value == 'Processing Fee') {
+                            document.querySelector('.processing-fee').innerHTML = amount.value;
                         }
 
                     });

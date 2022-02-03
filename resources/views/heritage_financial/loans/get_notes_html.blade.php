@@ -7,6 +7,8 @@
     $date = $note -> created_at;
     if(date('Ymd') == date('Ymd', strtotime($date))) {
         $date = 'Today '.date('H:iA', strtotime($date));
+    } else {
+        $date = date('n/j/y H:iA', strtotime($date));
     }
     @endphp
 
@@ -24,7 +26,7 @@
                         <div class="flex-1 space-y-1">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-sm font-medium">{{ $note -> user -> name }}</h3>
-                                <p class="text-sm text-gray-500">{{ $date }}</p>
+                                <p class="text-xs text-gray-500">{{ $date }}</p>
                             </div>
                             <p class="text-sm text-gray-500">{!! nl2br($note -> notes) !!}</p>
                         </div>
