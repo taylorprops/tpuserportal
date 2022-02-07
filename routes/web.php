@@ -11,6 +11,7 @@ Route::get('/', function () {
 
 
 
+require __DIR__.'/api.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/all.php';
 require __DIR__.'/in_house.php';

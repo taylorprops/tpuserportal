@@ -186,6 +186,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
 });
 
 
-Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']) -> middleware(['cors']);
+
 
 
