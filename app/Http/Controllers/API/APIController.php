@@ -12,7 +12,7 @@ class APIController extends Controller {
     public function update_loan(Request $request) {
 
         $data = json_decode($request -> data, true);
-        return response() -> json(['reply' => $data['address']]);
+        return is_array($data);
 
         $lending_pad_id = $request -> loan_id;
         $address = Helper::parse_address_google('777 7th St NW #310 Washington, D.C., DC 20001');
