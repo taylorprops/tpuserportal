@@ -1,7 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-
 namespace App\Http\Controllers\API;
 
 use App\Helpers\Helper;
