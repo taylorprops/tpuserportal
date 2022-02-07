@@ -10,7 +10,7 @@ use App\Models\HeritageFinancial\Loans;
 class APIController extends Controller {
     public function update_loan(Request $request) {
 
-        return 'working';
+
         return Helper::parse_address_google('777 7th St NW #310 Washington, D.C., DC 20001');
 
         $loan_id = $request -> loan_id[0];
