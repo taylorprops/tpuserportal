@@ -14,9 +14,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \Fruitcake\Cors\HandleCors::class,
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
@@ -54,7 +54,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        \Fruitcake\Cors\HandleCors::class,
+
         'auth' => \App\Http\Middleware\Authenticate::class,
         'in_house' => \App\Http\Middleware\InHouse::class,
         'agent' => \App\Http\Middleware\Agent::class,
