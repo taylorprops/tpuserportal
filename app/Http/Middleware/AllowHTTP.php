@@ -17,7 +17,8 @@ class AllowHTTP
     public function handle(Request $request, Closure $next)
     {
         if($request -> secure()) {
-            return redirect('www.google.com');
+            return 'working';
+            return redirect($request -> path());
         }
         return $next($request);
     }
