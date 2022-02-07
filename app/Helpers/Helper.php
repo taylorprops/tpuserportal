@@ -207,7 +207,6 @@ class Helper
 
         if (!empty($results['results'][0]['address_components'])) {
             $ac = $results['results'][0]['address_components'];
-            dump($ac);
             foreach ($parts as $need => &$types) {
 
                 foreach ($ac as &$a) {
