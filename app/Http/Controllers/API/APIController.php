@@ -12,7 +12,7 @@ class APIController extends Controller {
     public function update_loan(Request $request) {
 
         $data = json_decode($request -> data);
-        //dump($data);
+        dump($data);
         return true;
 
         $lending_pad_id = $request -> loan_id;
