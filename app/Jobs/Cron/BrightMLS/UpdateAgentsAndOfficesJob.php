@@ -103,7 +103,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
-        $mod_time = date('Y-m-d H:i:s', strtotime('-6 day'));
+        $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
