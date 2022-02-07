@@ -11,11 +11,8 @@ class APIController extends Controller {
 
     public function update_loan(Request $request) {
 
-        $address = $request -> address;
-        return $address;
-
         $lending_pad_id = $request -> loan_id;
-        $address = Helper::parse_address_google('777 7th St NW #310 Washington, D.C., DC 20001');
+        $address = Helper::parse_address_google($request -> address);
         $street_number = $address['street_number'];
         $street_address = $address['address'];
         $unit = $address['unit'];
@@ -26,6 +23,8 @@ class APIController extends Controller {
         $city = $address['city'];
         $state = $address['state'];
         $zip = $address['zip'];
+
+        return $street.' '.$city.' '.$state.' '.$zip;
 
         $loan = Loans::find($lending_pad_id);
 
