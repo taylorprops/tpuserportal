@@ -49,7 +49,7 @@ class GetTransactionsJob implements ShouldQueue
             'Session' => $session
         ];
 
-        $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-2 days')));
+        $createdAfter = str_replace(' ', 'T', date('Y-m-d H:i:s', strtotime('-6 days')));
 
         $query = [
             'createdAfter' => $createdAfter,
