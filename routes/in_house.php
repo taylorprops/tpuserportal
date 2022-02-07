@@ -185,7 +185,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
 });
 
-
+// Lending Pad Browser Extension
 Route::post('/api/lending_pad/update_loan', [APIController::class, 'update_loan']);
 
 
