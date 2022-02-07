@@ -11,6 +11,7 @@ class APIController extends Controller {
 
     public function update_loan(Request $request) {
 
+        return 'working';
         $data = json_decode($request -> data);
         dd($data);
 
