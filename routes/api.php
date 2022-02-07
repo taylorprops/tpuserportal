@@ -15,7 +15,7 @@ use App\Http\Controllers\API\APIController;
 |
 */
 
-Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']);
+
 
 // Route::middleware('auth:api') -> get('/user', function (Request $request) {
 //     return $request -> user();
