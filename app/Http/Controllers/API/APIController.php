@@ -12,7 +12,6 @@ class APIController extends Controller {
 
     public function update_loan(Request $request) {
 
-        return $request -> client_id;
         $client_id = $request -> client_id;
         if($client_id != 'd7acee3e89454909ae18d06e9a18c077') {
             abort(403);
@@ -48,6 +47,8 @@ class APIController extends Controller {
             $zip_lookup = LocationData::where('zip', $zip) -> first();
             $county = $zip_lookup -> county;
         }
+
+        return true;
 
         // Borrowers
         $borrower_fullname = $this -> parse_name($request -> borrower);
