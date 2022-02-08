@@ -52,7 +52,7 @@ class APIController extends Controller {
         // Borrowers
         $borrower_fullname = $request -> borrower;
         $borrower = $this -> parse_name($borrower_fullname);
-        return $borrower['suffix'];
+        return $borrower['suffix'] ?? 'not there';
         $borrower_first = $borrower['first'];
         $borrower_last = $borrower['last'];
         $co_borrower_fullname = $request -> co_borrower;
