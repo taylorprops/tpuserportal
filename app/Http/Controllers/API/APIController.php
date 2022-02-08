@@ -12,6 +12,11 @@ class APIController extends Controller {
 
     public function update_loan(Request $request) {
 
+        $client_id = $request -> client_id;
+        if($client_id != 'd7acee3e89454909ae18d06e9a18c077') {
+            abort(403);
+        }
+
         $lending_pad_id = $request -> loan_id;
         $street = '';
         $city = '';
@@ -26,7 +31,7 @@ class APIController extends Controller {
         $co_borrower_fullname = '';
 
 
-
+        // Address
         $address = Helper::parse_address_google($request -> address);
         $street_number = $address['street_number'] ?? null;
         $street_address = $address['address'] ?? null;
@@ -43,6 +48,15 @@ class APIController extends Controller {
             $county = $zip_lookup -> county;
         }
 
+        // Borrowers
+        $borrower_fullname = $this -> parse_name($request -> borrower);
+        $borrower_first = $borrower_fullname['first'];
+        $borrower_last = $borrower_fullname['last'];
+        $co_borrower_fullname = $this -> parse_name($request -> co_borrower);
+        $co_borrower_first = $co_borrower_fullname['first'];
+        $co_borrower_last = $co_borrower_fullname['last'];
+
+
         $loan = Loans::find($lending_pad_id);
 
         if ($loan) {
@@ -50,6 +64,28 @@ class APIController extends Controller {
         }
 
         return response() -> json(['found', 'no']);
+
+    }
+
+    public function parse_name($name) {
+
+        $parser = new TheIconic\NameParser\Parser();
+        $name = $parser -> parse($name);
+        $first =  $name -> getFirstname();
+        $middle =  $name -> getMiddlename();
+        $last =  $name -> getLastname();
+        $suffix =  $name -> getSuffix();
+
+        if($suffix) {
+            $last .= ', '.$suffix;
+        }
+
+        return [
+            'first' => $first,
+            'middle' => $middle,
+            'last' => $last,
+            'suffix' => $suffix,
+        ];
 
     }
 

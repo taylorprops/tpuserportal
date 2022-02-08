@@ -25,6 +25,7 @@
         "rennokki/laravel-eloquent-query-cache": "^3.0",
         "romanzipp/laravel-queue-monitor": "^2.1",
         "spatie/laravel-backup": "7.0.0",
+        "theiconic/name-parser": "^1.2",
         "thiagoalessio/tesseract_ocr": "^2.11",
         "troydavisson/phrets": "^2.6"
     },

@@ -4,6 +4,9 @@
     "scss.validate": false,
     "cSpell.ignoreWords": [
         "Barryvdh",
+        "Firstname",
+        "Lastname",
+        "Middlename",
         "aapi",
         "add",
         "addendums",
