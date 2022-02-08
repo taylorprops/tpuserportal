@@ -59,10 +59,10 @@ class APIController extends Controller {
         $co_borrower_first = $co_borrower['first'];
         $co_borrower_last = $co_borrower['last'];
 
-        // return [
-        //     'borrower_first' => $borrower_first,
-        //     'borrower_last' => $borrower_last,
-        // ];
+        return [
+            'borrower_first' => $borrower_first,
+            'borrower_last' => $borrower_last,
+        ];
         $loan = Loans::find($lending_pad_id);
 
         if ($loan) {
