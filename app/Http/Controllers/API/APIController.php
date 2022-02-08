@@ -12,8 +12,6 @@ class APIController extends Controller {
 
     public function update_loan(Request $request) {
 
-        return $_SERVER['HTTP_REFERER'];
-
         $lending_pad_id = $request -> loan_id;
         $street = '';
         $city = '';

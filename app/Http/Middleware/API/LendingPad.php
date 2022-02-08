@@ -16,6 +16,9 @@ class LendingPad
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if($_SERVER['HTTP_REFERER'] == 'https://prod.lendingpad.com/') {
+            return $next($request);
+        }
+        abort(403, 'Unauthorized');
     }
 }
