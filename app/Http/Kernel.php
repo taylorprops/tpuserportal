@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'mortgage' => \App\Http\Middleware\Mortgage::class,
         'transaction_coordinator' => \App\Http\Middleware\TransactionCoordinator::class,
         'all' => \App\Http\Middleware\All::class,
+        'lending_pad' => \App\Http\Middleware\API\LendingPad::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
