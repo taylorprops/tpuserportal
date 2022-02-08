@@ -51,14 +51,17 @@ class APIController extends Controller {
         // Borrowers
         $borrower_fullname = $request -> borrower;
         $borrower = $this -> parse_name($borrower_fullname);
-        $borrower_first = $borrower_fullname['first'];
-        $borrower_last = $borrower_fullname['last'];
+        $borrower_first = $borrower['first'];
+        $borrower_last = $borrower['last'];
         $co_borrower_fullname = $request -> co_borrower;
         $co_borrower = $this -> parse_name($co_borrower_fullname);
-        $co_borrower_first = $co_borrower_fullname['first'];
-        $co_borrower_last = $co_borrower_fullname['last'];
+        $co_borrower_first = $co_borrower['first'];
+        $co_borrower_last = $co_borrower['last'];
 
-
+        return [
+            'borrower_first' => $borrower_first,
+            'borrower_last' => $borrower_last,
+        ];
         $loan = Loans::find($lending_pad_id);
 
         if ($loan) {
