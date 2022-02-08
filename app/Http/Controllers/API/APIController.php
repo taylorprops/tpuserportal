@@ -48,13 +48,13 @@ class APIController extends Controller {
             $county = $zip_lookup -> county;
         }
 
-        return true;
-
         // Borrowers
-        $borrower_fullname = $this -> parse_name($request -> borrower);
+        $borrower_fullname = $request -> borrower;
+        $borrower = $this -> parse_name($borrower_fullname);
         $borrower_first = $borrower_fullname['first'];
         $borrower_last = $borrower_fullname['last'];
-        $co_borrower_fullname = $this -> parse_name($request -> co_borrower);
+        $co_borrower_fullname = $request -> co_borrower;
+        $co_borrower = $this -> parse_name($co_borrower_fullname);
         $co_borrower_first = $co_borrower_fullname['first'];
         $co_borrower_last = $co_borrower_fullname['last'];
 
