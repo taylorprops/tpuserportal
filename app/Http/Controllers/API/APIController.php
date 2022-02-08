@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use TheIconic\NameParser\Parser;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\DocManagement\Resources\LocationData;
@@ -51,7 +52,6 @@ class APIController extends Controller {
         // Borrowers
         $borrower_fullname = $request -> borrower;
         $borrower = $this -> parse_name($borrower_fullname);
-        return true;
         $borrower_first = $borrower['first'];
         $borrower_last = $borrower['last'];
         $co_borrower_fullname = $request -> co_borrower;
@@ -75,7 +75,7 @@ class APIController extends Controller {
 
     public function parse_name($name) {
 
-        $parser = new TheIconic\NameParser\Parser();
+        $parser = new Parser();
         $name = $parser -> parse($name);
         $first =  $name -> getFirstname();
         $middle =  $name -> getMiddlename();
