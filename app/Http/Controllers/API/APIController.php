@@ -19,6 +19,8 @@ class APIController extends Controller {
         }
 
         $lending_pad_id = $request -> loan_id;
+        $lender = '';
+        $loan_number = '';
         $street = '';
         $city = '';
         $state = '';
@@ -30,6 +32,15 @@ class APIController extends Controller {
         $co_borrower_first = '';
         $co_borrower_last = '';
         $co_borrower_fullname = '';
+        $loan_type = '';
+        $loan_amount = '';
+        $note_rate = '';
+        $locked = '';
+        $lock_date = '';
+        $lock_expiration = '';
+
+        $loan_officer = '';
+        $processor = '';
 
 
         // Address
@@ -52,13 +63,14 @@ class APIController extends Controller {
         // Borrowers
         $borrower_fullname = $request -> borrower;
         $borrower = $this -> parse_name($borrower_fullname);
-        return $borrower['first'] ?? 'not there';
         $borrower_first = $borrower['first'];
         $borrower_last = $borrower['last'];
         $co_borrower_fullname = $request -> co_borrower;
         $co_borrower = $this -> parse_name($co_borrower_fullname);
         $co_borrower_first = $co_borrower['first'];
         $co_borrower_last = $co_borrower['last'];
+
+        return $borrower_first.' '.$borrower_last;
 
         $loan = Loans::find($lending_pad_id);
 
