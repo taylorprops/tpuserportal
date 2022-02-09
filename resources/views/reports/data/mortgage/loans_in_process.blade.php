@@ -101,10 +101,25 @@
                                 if($loan -> co_borrower_fullname) {
                                     $borrower .= '<br>'.$loan -> co_borrower_fullname;
                                 }
-                                $agent_name = $loan -> agent_name;
-                                if($loan -> agent_company != '') {
-                                    $agent_name .= '<br>'.$loan -> agent_company;
+
+                                $agent_seller = null;
+                                $agent_buyer = null;
+
+                                $agent_name_seller = $loan -> agent_name_seller;
+                                if($loan -> agent_company_seller != '') {
+                                    $agent_seller = $agent_name_seller .= ' - '.$loan -> agent_company_seller;
                                 }
+
+                                $agent_name_buyer = $loan -> agent_name_buyer;
+                                if($loan -> agent_company_buyer != '') {
+                                    $agent_buyer = $agent_name_buyer .= ' - '.$loan -> agent_company_buyer;
+                                }
+
+                                $agents = $agent_seller;
+                                if($agent_buyer) {
+                                    $agents .= '<br>'.$agent_buyer;
+                                }
+
                                 $loan_amounts_total += $loan -> loan_amount;
                                 $commission_total += $loan -> company_commission;
                                 @endphp
@@ -114,7 +129,7 @@
                                     <td>{!! $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip !!}</td>
                                     <td>{{ $loan -> purpose == 'refi' ? 'Refi' : 'Purchase' }}</td>
                                     <td>{{ $loan -> processor -> fullname }}</td>
-                                    <td>{!! $agent_name !!}</td>
+                                    <td>{!! $agents !!}</td>
                                     <td>{{ $loan -> time_line_sent_to_processing }}</td>
                                     <td>{{ $loan -> time_line_conditions_received ?? null }}</td>
                                     <td>{{ $loan -> lock_expiration }}</td>

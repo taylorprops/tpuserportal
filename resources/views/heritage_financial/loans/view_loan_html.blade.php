@@ -161,20 +161,40 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 <input
                                 type="text"
                                 class="form-element input {{ $input_size }}"
-                                id="agent_name"
-                                name="agent_name"
+                                id="agent_name_seller"
+                                name="agent_name_seller"
                                 data-label="Agent Name"
-                                value="{{ $loan -> agent_name ?? null }}">
+                                value="{{ $loan -> agent_name_seller ?? null }}">
                             </div>
 
                             <div class="col-span-1 m-2 sm:m-3">
                                 <input
                                 type="text"
                                 class="form-element input {{ $input_size }}"
-                                id="agent_company"
-                                name="agent_company"
+                                id="agent_company_seller"
+                                name="agent_company_seller"
                                 data-label="Agent Company"
-                                value="{{ $loan -> agent_company ?? null }}">
+                                value="{{ $loan -> agent_company_seller ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="agent_name_buyer"
+                                name="agent_name_buyer"
+                                data-label="Agent Name"
+                                value="{{ $loan -> agent_name_buyer ?? null }}">
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="agent_company_buyer"
+                                name="agent_company_buyer"
+                                data-label="Agent Company"
+                                value="{{ $loan -> agent_company_buyer ?? null }}">
                             </div>
 
                         </div>
