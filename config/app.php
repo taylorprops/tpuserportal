@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        ShvetsGroup\LaravelEmailDatabaseLog\LaravelEmailDatabaseLogServiceProvider::class,
 
         /*
          * Application Service Providers...
