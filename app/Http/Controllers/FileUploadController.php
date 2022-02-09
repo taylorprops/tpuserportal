@@ -96,6 +96,7 @@ class FileUploadController extends Controller
 
             // Use a location key to specify the path to the saved image resource.
             // { location : '/your/uploaded/image/file'}
+
             return response() -> json(['location' => config('app.url').'/storage/file_upload/tinymce/'.$file_name]);
         } else {
             // Notify editor that the upload failed

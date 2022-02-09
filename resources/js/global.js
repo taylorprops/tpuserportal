@@ -322,7 +322,7 @@ window.image_upload_handler = function (blobInfo, success, failure, progress) {
             failure('HTTP Error: ' + xhr.status);
             return;
         }
-
+        console.log(xhr);
         json = JSON.parse(xhr.responseText);
 
         if (!json || typeof json.location != 'string') {

@@ -24,26 +24,38 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
             init() {
 
+                let scope = this;
+
                 if(emp_id) {
                     let show_licenses = ['agent', 'mortgage'];
                     if(show_licenses.includes(emp_type)) {
-                        this.get_licenses();
+                        if(document.querySelector('.licenses-div')) {
+                            scope.get_licenses();
+                        }
                     }
 
                     if(!profile) {
-                        this.docs();
-                        this.get_docs();
+                        scope.docs();
+                        scope.get_docs();
                     }
-                    this.photo();
+                    scope.photo();
 
-                    if(text_editor_ele != '') {
-                        this.init_text_editor(text_editor_ele);
+                    if(Array.isArray(text_editor_ele)) {
+                        if(text_editor_ele.length > 0) {
+                            text_editor_ele.forEach(function(editor) {
+                                scope.init_text_editor(editor);
+                            });
+                        }
+                    } else {
+                        scope.init_text_editor(text_editor_ele);
                     }
-                    this.show_profile_link();
-                    this.show_floify_link();
+                    scope.show_profile_link();
+                    scope.show_floify_link();
 
                     if(emp_type == 'mortgage') {
-                        this.get_credit_cards();
+                        if(document.getElementById('credit_cards_div')) {
+                            scope.get_credit_cards();
+                        }
                     }
 
                 }
