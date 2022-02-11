@@ -195,6 +195,7 @@ class Helper
 
         $url = 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' . urlencode($address).'&key='.config('global.google_api_key');
         $results = json_decode(file_get_contents($url), 1);
+        $address_out = [];
 
         $parts = array(
             'street_number' => array('street_number'),
@@ -207,6 +208,7 @@ class Helper
 
         if (!empty($results['results'][0]['address_components'])) {
             $ac = $results['results'][0]['address_components'];
+
             foreach ($parts as $need => &$types) {
 
                 foreach ($ac as &$a) {
@@ -220,6 +222,8 @@ class Helper
                 }
 
             }
+
+            $address_out['street_name'] = substr($address_out['address'], 0, strrpos($address_out['address'], ' '));
 
         } else {
             return 'error';

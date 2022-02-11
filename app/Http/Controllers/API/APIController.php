@@ -11,6 +11,22 @@ use App\Models\DocManagement\Resources\LocationData;
 
 class APIController extends Controller {
 
+    public function test(Request $request) {
+
+        $address = Helper::parse_address_google('8337 Elm Rd Millersville MD 21108');
+        $street_number = $address['street_number'] ?? null;
+        $street_name = $address['street_name'] ?? null;
+        $street_address = $address['address'] ?? null;
+        $unit = $address['unit'] ?? null;
+        $street = trim($street_number.' '.$street_address);
+        $state = $address['state'] ?? null;
+        $zip = $address['zip'] ?? null;
+
+        $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
+        dd($tax_records);
+
+    }
+
     public function update_loan(Request $request) {
 
         // verify request is coming from our lending pad account
@@ -49,20 +65,30 @@ class APIController extends Controller {
         if($address) {
             $address = Helper::parse_address_google($address);
             $street_number = $address['street_number'] ?? null;
+            $street_name = $address['street_name'] ?? null;
             $street_address = $address['address'] ?? null;
             $unit = $address['unit'] ?? null;
             $street = trim($street_number.' '.$street_address);
-            if($unit != '') {
-                $street += ' '.$unit;
+            if($unit) {
+                $street .= ' '.$unit;
             }
             $city = $address['city'] ?? null;
             $state = $address['state'] ?? null;
             $zip = $address['zip'] ?? null;
+
             if($zip) {
                 $zip_lookup = LocationData::where('zip', $zip) -> first();
                 $county = $zip_lookup -> county;
             }
+
         }
+
+        $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
+        $tax_record_link = null;
+        if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
+            $tax_record_link = $tax_records['details']['TaxRecordLink'];
+        }
+
 
         // Borrowers
         $borrower_fullname = $request -> borrower ?? null;
@@ -98,6 +124,16 @@ class APIController extends Controller {
 
     }
 
+    public function get_loan_data(Request $request) {
+
+        $loan_id = $request -> loan_id;
+
+        return response() -> json([
+            'loan_id' => $loan_id
+        ]);
+
+    }
+
     public function parse_name($name) {
 
         $parser = new Parser();
@@ -116,6 +152,150 @@ class APIController extends Controller {
             'middle' => $middle,
             'last' => $last,
             'suffix' => $suffix,
+        ];
+
+    }
+
+    public function tax_records($street_number, $street_name, $unit, $zip, $tax_id, $state) {
+
+        $details = [];
+
+        // only able to get tax records for MD at this point
+        if ($state == 'MD') {
+            if ($tax_id != '') {
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?account_id_mdp_field_acctid='.urlencode($tax_id);
+            } else {
+                $unit_number = '';
+                if ($unit != '') {
+                    $unit_number = '&mdp_street_address_units_mdp_field_strtunt='.urlencode($unit);
+                }
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27'.$street_number.'%20'.urlencode(strtoupper($street_name)).'%27%29&mdp_street_address_zip_code_mdp_field_zipcode='.$zip.$unit_number;
+            }
+
+
+            $headers = [
+                'Content-Type' => 'application/json',
+                'X-App-Token' => 'Ya0ATXETWXYaL8teBlGPUbYZ5',
+            ];
+
+            $client = new \GuzzleHttp\Client([
+                'headers' => $headers
+            ]);
+
+            $r = $client -> request('GET', $url);
+
+            $response = $r -> getBody() -> getContents();
+
+
+            // if tax record found
+            if (stristr($response, 'account_id_mdp_field_acctid')) {
+
+                $properties = preg_replace('/\\n/', '', $response);
+                $properties = json_decode($response, true);
+
+                if (count($properties) == 1) {
+
+                    $property = $properties[0];
+
+                    $tax_county = str_replace(' County', '', $property['county_name_mdp_field_cntyname']);
+                    $tax_county = str_replace('\'', '', $tax_county);
+
+                    $unit_number = '';
+                    if(isset($property['premise_address_condominium_unit_no_sdat_field_28'])) {
+                        $unit_number = $property['premise_address_condominium_unit_no_sdat_field_28'];
+                    } else if(isset($property['mdp_street_address_units_mdp_field_strtunt'])) {
+                        $unit_number = $property['mdp_street_address_units_mdp_field_strtunt'];
+                    }
+
+                    $details = [
+                        'County' => $tax_county ?? null,
+                        'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
+                        'StreetNumber' => $property['premise_address_number_mdp_field_premsnum_sdat_field_20'] ?? null,
+                        'StreetName' => $property['premise_address_name_mdp_field_premsnam_sdat_field_23'] ?? null,
+                        'StreetSuffix' => $property['premise_address_type_mdp_field_premstyp_sdat_field_24'] ?? null,
+                        'FullStreetAddress' => $property['mdp_street_address_mdp_field_address'] ?? null,
+                        'City' => $property['mdp_street_address_city_mdp_field_city'] ?? null,
+                        'PostalCode' => $property['mdp_street_address_zip_code_mdp_field_zipcode'] ?? null,
+                        'TaxPropertyType' => $property['land_use_code_mdp_field_lu_desclu_sdat_field_50'] ?? null,
+                        'YearBuilt' => $property['c_a_m_a_system_data_year_built_yyyy_mdp_field_yearblt_sdat_field_235'] ?? null,
+                        'StateOrProvince' => $state ?? null,
+                        'UnitNumber' => $unit_number ?? null,
+                        'District' => $property['record_key_district_ward_sdat_field_2'] ?? null,
+                        'LegalDescription1' => $property['legal_description_line_1_mdp_field_legal1_sdat_field_17'] ?? null,
+                        'TaxRecordLink' => str_replace('http:', 'https:', $property['real_property_search_link']['url']) ?? null,
+                        'LegalDescription2' => $property['legal_description_line_2_mdp_field_legal2_sdat_field_18'] ?? null,
+                        'LegalDescription3' => $property['legal_description_line_3_mdp_field_legal3_sdat_field_19'] ?? null,
+                        'DeedReference1' => $property['deed_reference_1_liber_mdp_field_dr1liber_sdat_field_30'] ?? null,
+                        'Deed Reference2' => $property['deed_reference_1_folio_mdp_field_dr1folio_sdat_field_31'] ?? null,
+                        'TownCode' => $property['town_code_mdp_field_towncode_desctown_sdat_field_36'] ?? null,
+                        'Subdivision Code' => $property['subdivision_code_mdp_field_subdivsn_sdat_field_37'] ?? null,
+                        'Map' => $property['map_mdp_field_map_sdat_field_42'] ?? null,
+                        'Grid' => $property['grid_mdp_field_grid_sdat_field_43'] ?? null,
+                        'Parcel' => $property['parcel_mdp_field_parcel_sdat_field_44'] ?? null,
+                        'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
+
+                    ];
+
+
+                    /* if (isset($property['real_property_search_link']['url'])) {
+
+                        // Owner name not available from response so we have to follow the link provided in the results and get the owner's name from that page
+
+                        $link = $property['real_property_search_link']['url'];
+                        $link = str_replace('http', 'https', $link);
+
+                        $headers = @get_headers($link);
+
+                        if($headers && strpos( $headers[0], '302')) {
+                            $link = str_replace('Location: ', '', $headers[1]);
+                            $headers = @get_headers($link);
+                        }
+
+                        if($headers && strpos( $headers[0], '200')) {
+
+                            $page = new \DOMDocument();
+                            libxml_use_internal_errors(true);
+                            $page -> loadHTMLFile($link);
+                            $xpath = new \DOMXpath($page);
+
+
+                            $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName_0"])');
+
+                            if ($owner1 == '') {
+                                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName_0"])');
+                            }
+
+                            $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName2_0"])');
+
+                            if ($owner2 == '') {
+                                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName2_0"])');
+                            }
+
+                            $details['Owner1'] = $owner1;
+                            $details['Owner2'] = $owner2;
+
+
+                            // $details['frederick_city'] = 'no';
+                            // if(stristr($property['town_code_mdp_field_towncode_desctown_sdat_field_36'], 'Frederick')) { //MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblSpecTaxTown_0
+                            //     $details['frederick_city'] = 'yes';
+                            // }
+                            // $details['condo'] = 'no';
+                            // if(stristr($property['land_use_code_mdp_field_lu_desclu_sdat_field_50'], 'condominium')) {
+                            //     $details['condo'] = 'yes';
+                            // }
+
+                        }
+
+
+                    } */
+
+
+                }
+            }
+        }
+
+        return [
+            'details' => $details
         ];
 
     }

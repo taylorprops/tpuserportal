@@ -16,7 +16,9 @@ class LendingPad
      */
     public function handle(Request $request, Closure $next)
     {
-        if($_SERVER['HTTP_REFERER'] == 'https://prod.lendingpad.com/') {
+        if(config('app.env') == 'production' && $_SERVER['HTTP_REFERER'] == 'https://prod.lendingpad.com/') {
+            return $next($request);
+        } else if(config('app.env') == 'local') {
             return $next($request);
         }
         abort(403, 'Unauthorized');
