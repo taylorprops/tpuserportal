@@ -163,7 +163,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 class="form-element input {{ $input_size }}"
                                 id="agent_name_seller"
                                 name="agent_name_seller"
-                                data-label="Agent Name"
+                                data-label="Seller Agent Name"
                                 value="{{ $loan -> agent_name_seller ?? null }}">
                             </div>
 
@@ -173,7 +173,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 class="form-element input {{ $input_size }}"
                                 id="agent_company_seller"
                                 name="agent_company_seller"
-                                data-label="Agent Company"
+                                data-label="Seller Agent Company"
                                 value="{{ $loan -> agent_company_seller ?? null }}">
                             </div>
 
@@ -183,7 +183,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 class="form-element input {{ $input_size }}"
                                 id="agent_name_buyer"
                                 name="agent_name_buyer"
-                                data-label="Agent Name"
+                                data-label="Buyer Agent Name"
                                 value="{{ $loan -> agent_name_buyer ?? null }}">
                             </div>
 
@@ -193,7 +193,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 class="form-element input {{ $input_size }}"
                                 id="agent_company_buyer"
                                 name="agent_company_buyer"
-                                data-label="Agent Company"
+                                data-label="Buyer Agent Company"
                                 value="{{ $loan -> agent_company_buyer ?? null }}">
                             </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use TheIconic\NameParser\Parser;
+use App\Models\Employees\Mortgage;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\DocManagement\Resources\LocationData;
@@ -56,8 +57,8 @@ class APIController extends Controller {
         $lock_date = null;
         $lock_expiration = null;
 
-        $loan_officer = null;
-        $processor = null;
+        $loan_officer_1_id = null;
+        $processor_id = null;
 
 
         // Address
@@ -104,6 +105,19 @@ class APIController extends Controller {
             $co_borrower_last = $co_borrower['last'];
         }
 
+        // People
+        $loan_officer = Mortgage::where(function($query) use ($request) {
+            $query -> where('email', $request -> loan_officer_email)
+            -> orWhere('fullname', $request -> loan_officer)
+            -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
+        })
+        -> first();
+        $loan_officer_1_id = $loan_officer -> id;
+
+        $processor = Mortgage::where('fullname', $request -> processor) -> first();
+        $processor_id = $processor -> id;
+
+
 
 
         $loan = Loans::where(function($query) use ($lending_pad_id) {
@@ -127,6 +141,9 @@ class APIController extends Controller {
     public function get_loan_data(Request $request) {
 
         $loan_id = $request -> loan_id;
+        $data = [
+            'loan_id' => $loan_id
+        ];
 
         return response() -> json([
             'loan_id' => $loan_id
