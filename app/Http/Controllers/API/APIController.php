@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Helpers\Helper;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use TheIconic\NameParser\Parser;
 use App\Models\Employees\Mortgage;
@@ -36,7 +37,7 @@ class APIController extends Controller {
             abort(403);
         }
 
-        $lending_pad_id = $request -> loan_id;
+        $lending_pad_id = $request -> lending_pad_id;
         $lender = null;
         $loan_number = null;
         $street = null;
@@ -50,13 +51,11 @@ class APIController extends Controller {
         $co_borrower_first = null;
         $co_borrower_last = null;
         $co_borrower_fullname = null;
-        $loan_type = null;
-        $loan_amount = null;
-        $note_rate = null;
-        $locked = null;
-        $lock_date = null;
-        $lock_expiration = null;
-
+        $loan_type = $request -> loan_type ?? null;
+        $loan_amount =  preg_replace('/[\$,]+/', '', $request -> loan_amount);
+        $locked = $request -> locked;
+        $lock_date = $request -> lock_date;
+        $lock_expiration = date('Y-m-d', strtotime($request -> lock_expiration));
         $loan_officer_1_id = null;
         $processor_id = null;
 
@@ -117,9 +116,9 @@ class APIController extends Controller {
         $processor = Mortgage::where('fullname', $request -> processor) -> first();
         $processor_id = $processor -> id;
 
+        $status = 'updated';
 
-
-
+        // get loan if it has the lending_pad_id or loan_number
         $loan = Loans::where(function($query) use ($lending_pad_id) {
             $query -> where('lending_pad_id', $lending_pad_id)
             -> whereNotNull('lending_pad_id');
@@ -130,24 +129,79 @@ class APIController extends Controller {
         })
         -> first();
 
-        if ($loan) {
-            return response() -> json(['found', 'yes']);
+
+        // if no loan search for matches by address
+        if(!$loan) {
+            if($street) {
+                $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
+                $loan = Loans::where('street', 'like', '%'.$street.'%') -> first();
+            }
+            if(!$loan) {
+                $loan = Loans::where('borrower_first', $borrower['first'])
+                -> where('borrower_last', $borrower_last)
+                -> first();
+            }
+
         }
 
-        return response() -> json(['found', 'no']);
+
+        if(!$loan) {
+            // add loan
+            $loan = new Loans();
+            $status = 'added';
+            $loan -> uuid = (string) Str::uuid();
+        }
+
+
+        $loan -> lending_pad_id = $lending_pad_id;
+
+        $loan -> borrower_first = $borrower_first;
+        $loan -> borrower_last = $borrower_last;
+        $loan -> borrower_fullname = $borrower_fullname;
+        $loan -> co_borrower_first = $co_borrower_first;
+        $loan -> co_borrower_last = $co_borrower_last;
+        $loan -> co_borrower_fullname = $co_borrower_fullname;
+
+        $loan -> street = $street;
+        $loan -> city = $city;
+        $loan -> state = $state;
+        $loan -> county = $county;
+        $loan -> zip = $zip;
+
+        $loan -> loan_type = $loan_type;
+        $loan -> loan_amount = $loan_amount;
+        $loan -> locked = $locked;
+        $loan -> lock_date = $lock_date;
+        $loan -> lock_expiration = $lock_expiration;
+        $loan -> loan_officer_1_id = $loan_officer_1_id;
+        $loan -> processor_id = $processor_id;
+
+        $loan -> save();
+
+        return response() -> json([
+            'status', $status,
+        ]);
 
     }
 
-    public function get_loan_data(Request $request) {
+    public function get_critical_dates(Request $request) {
 
-        $loan_id = $request -> loan_id;
-        $data = [
-            'loan_id' => $loan_id
-        ];
+        $lending_pad_id = $request -> loan_id;
 
-        return response() -> json([
-            'loan_id' => $loan_id
-        ]);
+        $select = ['time_line_package_to_borrower', 'time_line_sent_to_processing', 'time_line_conditions_received_status', 'time_line_conditions_received', 'time_line_title_ordered', 'time_line_title_received', 'time_line_submitted_to_uw', 'time_line_appraisal_ordered', 'time_line_appraisal_received', 'time_line_voe_ordered', 'time_line_voe_received', 'time_line_conditions_submitted', 'time_line_clear_to_close', 'time_line_scheduled_settlement', 'time_line_closed', 'time_line_scheduled_settlement'];
+
+        $loan = Loans::select($select)
+        // -> where('lending_pad_id', $lending_pad_id) -> first()
+        -> where('loan_status', 'Closed') -> first();
+
+        $data = new \stdClass();
+        foreach($select as $key) {
+            if($loan -> $key != '') {
+                $data -> $key = date('m/d/Y', strtotime($loan -> $key));
+            }
+        }
+
+        return response() -> json($data);
 
     }
 

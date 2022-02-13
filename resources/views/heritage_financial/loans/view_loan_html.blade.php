@@ -452,6 +452,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
                                     <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
                                     <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
+                                    <option value="HELOC" @if($loan && $loan -> loan_type == 'HELOC') selected @endif>HELOC</option>
+                                    <option value="HEL" @if($loan && $loan -> loan_type == 'HEL') selected @endif>HEL</option>
+                                    <option value="Other" @if($loan && $loan -> loan_type == 'Other') selected @endif>Other</option>
                                 </select>
                             </div>
 
@@ -533,9 +536,17 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                                 class="form-element select md"
                                                 name="{{ $db_field }}"
                                                 data-label="">
-                                                    <option value=""></option>
-                                                    <option value="yes" @if($loan && $loan -> $db_field == 'yes') selected @endif>Yes</option>
-                                                    <option value="no" @if($loan && $loan -> $db_field == 'no') selected @endif>No</option>
+                                                    <option value="None" @if($loan && $loan -> $db_field == 'None') selected @endif></option>
+                                                    <option value="Registered" @if($loan && $loan -> $db_field == 'Registered') selected @endif>Registered</option>
+                                                    <option value="Locked" @if($loan && $loan -> $db_field == 'Locked') selected @endif>Locked</option>
+                                                    <option value="Expired" @if($loan && $loan -> $db_field == 'Expired') selected @endif>Expired</option>
+                                                    <option value="Cancelled" @if($loan && $loan -> $db_field == 'Cancelled') selected @endif>Cancelled</option>
+                                                    <option value="Withdrawn" @if($loan && $loan -> $db_field == 'Withdrawn') selected @endif>Withdrawn</option>
+                                                    <option value="Float" @if($loan && $loan -> $db_field == 'Float') selected @endif>Float</option>
+                                                    <option value="LockPending" @if($loan && $loan -> $db_field == 'LockPending') selected @endif>LockPending</option>
+                                                    <option value="RegisteredManual" @if($loan && $loan -> $db_field == 'RegisteredManual') selected @endif>RegisteredManual</option>
+                                                    <option value="LockPendingManual" @if($loan && $loan -> $db_field == 'LockPendingManual') selected @endif>LockPendingManual</option>
+                                                    <option value="LockedManual" @if($loan && $loan -> $db_field == 'LockedManual') selected @endif>LockedManual</option>
                                                 </select>
                                             @endif
 

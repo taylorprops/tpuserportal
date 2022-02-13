@@ -188,6 +188,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
 // Lending Pad Browser Extension
 Route::get('/api/test', [APIController::class, 'test']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']) -> middleware(['lending_pad']);
-Route::get('/api/lending_pad/get_loan_data', [APIController::class, 'get_loan_data']) -> middleware(['lending_pad']);
+Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_critical_dates']) -> middleware(['lending_pad']);
 
 
