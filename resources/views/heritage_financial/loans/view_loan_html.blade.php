@@ -495,6 +495,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 @php
                                 $fields = [
                                     ['select', 'locked', 'Locked'],
+                                    ['date', 'lock_date', 'Lock Date'],
                                     ['date', 'lock_expiration', 'Lock Expiration'],
                                     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
                                     ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
