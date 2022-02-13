@@ -74,10 +74,7 @@ a.default {
             thead {
                 @apply bg-gray-50;
                 th {
-                    @apply px-2 py-3 text-left tracking-wider whitespace-nowrap;
-                    a {
-                        @apply text-sm font-medium text-gray-500;
-                    }
+                    @apply px-2 py-3 text-left tracking-wider whitespace-nowrap text-sm font-medium text-gray-500;
                 }
             }
             tbody {
