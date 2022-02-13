@@ -42,8 +42,13 @@ $breadcrumbs = [
                                     </select>
                                 </div>
 
-                                <div class="my-4 max-w-300-px">
-                                    <input type="text" class="form-element input md required" name="company_name" data-label="Company Name" value="{{ $lender -> company_name ?? null }}">
+                                <div class="grid grid-cols-1 lg:grid-cols-2">
+                                    <div class="my-4 max-w-300-px">
+                                        <input type="text" class="form-element input md required" name="company_name" data-label="Company Name" value="{{ $lender -> company_name ?? null }}">
+                                    </div>
+                                    <div class="my-4 max-w-300-px">
+                                        <input type="text" class="form-element input md required" name="company_name_short" data-label="Company Name Short" value="{{ $lender -> company_name_short ?? null }}">
+                                    </div>
                                 </div>
 
                                 <div class="my-4 grid grid-cols-5 gap-4">

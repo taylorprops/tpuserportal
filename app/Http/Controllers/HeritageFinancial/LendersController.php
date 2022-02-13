@@ -38,8 +38,9 @@ class LendersController extends Controller {
         })
             -> where(function ($query) use ($search) {
                 $query -> where('company_name', 'like', '%' . $search . '%')
-                      -> orWhere('account_exec_name', 'like', '%' . $search . '%')
-                      -> orWhere('notes', 'like', '%' . $search . '%');
+                -> orWhere('company_name_short', 'like', '%' . $search . '%')
+                -> orWhere('account_exec_name', 'like', '%' . $search . '%')
+                -> orWhere('notes', 'like', '%' . $search . '%');
             })
             -> with(['documents'])
             -> orderBy($sort, $direction)

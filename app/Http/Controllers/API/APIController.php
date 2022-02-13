@@ -38,26 +38,32 @@ class APIController extends Controller {
         }
 
         $lending_pad_id = $request -> lending_pad_id;
-        $lender = null;
-        $loan_number = null;
+        $loan_number = $request -> loan_number ?? null;
+
         $street = null;
         $city = null;
         $state = null;
         $zip = null;
         $county = null;
+
         $borrower_first = null;
         $borrower_last = null;
         $borrower_fullname = null;
         $co_borrower_first = null;
         $co_borrower_last = null;
         $co_borrower_fullname = null;
+
         $loan_type = $request -> loan_type ?? null;
-        $loan_amount =  preg_replace('/[\$,]+/', '', $request -> loan_amount);
-        $locked = $request -> locked;
-        $lock_date = $request -> lock_date;
-        $lock_expiration = date('Y-m-d', strtotime($request -> lock_expiration));
+        $loan_amount =  $request -> loan_amount ? preg_replace('/[\$,]+/', '', $request -> loan_amount) : null;
+
+        $locked = $request -> locked ?? 'None';
+        $lock_date = $request -> lock_date ? date('Y-m-d', strtotime($request -> lock_date)) : null;
+        $lock_expiration = $request -> lock_expiration ? date('Y-m-d', strtotime($request -> lock_expiration)) : null;
+
         $loan_officer_1_id = null;
         $processor_id = null;
+        $lender_uuid = null;
+
 
 
         // Address
@@ -113,8 +119,17 @@ class APIController extends Controller {
         -> first();
         $loan_officer_1_id = $loan_officer -> id;
 
-        $processor = Mortgage::where('fullname', $request -> processor) -> first();
-        $processor_id = $processor -> id;
+        if($request -> loan_processor) {
+            $processor = Mortgage::where('fullname', $request -> loan_processor) -> first();
+            $processor_id = $processor -> id;
+        }
+
+        // Lender
+        $lender = $request -> lender;
+        if($lender) {
+            $lender_name = substr($lender, 0, strpos($lender, '(') - 1);
+            $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
+        }
 
         $status = 'updated';
 
@@ -173,8 +188,12 @@ class APIController extends Controller {
         $loan -> locked = $locked;
         $loan -> lock_date = $lock_date;
         $loan -> lock_expiration = $lock_expiration;
-        $loan -> loan_officer_1_id = $loan_officer_1_id;
-        $loan -> processor_id = $processor_id;
+        if($loan_officer_1_id) {
+            $loan -> loan_officer_1_id = $loan_officer_1_id;
+        }
+        if($processor_id) {
+            $loan -> processor_id = $processor_id;
+        }
 
         $loan -> save();
 
