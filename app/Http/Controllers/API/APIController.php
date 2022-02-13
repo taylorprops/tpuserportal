@@ -9,6 +9,7 @@ use TheIconic\NameParser\Parser;
 use App\Models\Employees\Mortgage;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
+use App\Models\HeritageFinancial\Lenders;
 use App\Models\DocManagement\Resources\LocationData;
 
 class APIController extends Controller {
@@ -54,6 +55,7 @@ class APIController extends Controller {
         $co_borrower_fullname = null;
 
         $loan_type = $request -> loan_type ?? null;
+        $loan_purpose = $request -> loan_purpose ?? null;
         $loan_amount =  $request -> loan_amount ? preg_replace('/[\$,]+/', '', $request -> loan_amount) : null;
 
         $locked = $request -> locked ?? 'None';
@@ -64,7 +66,11 @@ class APIController extends Controller {
         $processor_id = null;
         $lender_uuid = null;
 
-
+        $title_company = preg_match('/(.*)\n/', $request -> title_company, $matches) ? $matches[1] : null;
+        $agent_company_seller = preg_match('/(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
+        $agent_name_seller = preg_match('/.*\n(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
+        $agent_company_buyer = preg_match('/(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
+        $agent_name_buyer = preg_match('/.*\n(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
 
         // Address
         $address = $request -> address ?? null;
@@ -127,8 +133,18 @@ class APIController extends Controller {
         // Lender
         $lender = $request -> lender;
         if($lender) {
+
             $lender_name = substr($lender, 0, strpos($lender, '(') - 1);
             $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
+
+            $lender_search = Lenders::where('company_name', $lender_name)
+            -> orWhere('company_name_short', $lender_short)
+            -> first();
+
+            if($lender_search) {
+                $lender_uuid = $lender_search -> uuid;
+            }
+
         }
 
         $status = 'updated';
@@ -169,6 +185,7 @@ class APIController extends Controller {
 
 
         $loan -> lending_pad_id = $lending_pad_id;
+        $loan -> loan_number = $loan_number;
 
         $loan -> borrower_first = $borrower_first;
         $loan -> borrower_last = $borrower_last;
@@ -184,6 +201,7 @@ class APIController extends Controller {
         $loan -> zip = $zip;
 
         $loan -> loan_type = $loan_type;
+        $loan -> loan_purpose = $loan_purpose;
         $loan -> loan_amount = $loan_amount;
         $loan -> locked = $locked;
         $loan -> lock_date = $lock_date;
@@ -194,6 +212,12 @@ class APIController extends Controller {
         if($processor_id) {
             $loan -> processor_id = $processor_id;
         }
+        $loan -> lender_uuid = $lender_uuid;
+        $loan -> title_company = $title_company;
+        $loan -> agent_company_seller = $agent_company_seller;
+        $loan -> agent_name_seller = $agent_name_seller;
+        $loan -> agent_company_buyer = $agent_company_buyer;
+        $loan -> agent_name_buyer = $agent_name_buyer;
 
         $loan -> save();
 

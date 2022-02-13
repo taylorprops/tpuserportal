@@ -465,8 +465,12 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 name="loan_purpose"
                                 data-label="Loan Purpose">
                                     <option value=""></option>
-                                    <option value="purchase" @if($loan && $loan -> loan_purpose == 'purchase') selected @endif>Purchase</option>
-                                    <option value="refi" @if($loan && $loan -> loan_purpose == 'refi') selected @endif>Refinance</option>
+                                    <option value="Purchase" @if($loan && $loan -> loan_purpose == 'Purchase') selected @endif>Purchase</option>
+                                    <option value="Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'Cash Out Refinance') selected @endif>Cash Out Refinance</option>
+                                    <option value="No Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'No Cash Out Refinance') selected @endif>No Cash Out Refinance</option>
+                                    <option value="Construction" @if($loan && $loan -> loan_purpose == 'Construction') selected @endif>Construction</option>
+                                    <option value="Construction Permanent" @if($loan && $loan -> loan_purpose == 'Construction Permanent') selected @endif>Construction Permanent</option>
+                                    <option value="Other" @if($loan && $loan -> loan_purpose == 'Other') selected @endif>Other</option>
                                 </select>
                             </div>
 
