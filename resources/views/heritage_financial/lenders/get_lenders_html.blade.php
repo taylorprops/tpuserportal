@@ -46,7 +46,7 @@
                         <a href="/heritage_financial/lenders/view_lender/{{ $lender -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     @endif
-                    <td class="w-64">{{ $lender -> company_name }}</td>
+                    <td class="w-64">{{ $lender -> company_name }}<br>({{ $lender -> company_name_short }})</td>
                     <td>
                         {{ $lender -> account_exec_name }}<br>
                         {{ $lender -> account_exec_phone }}<br>
