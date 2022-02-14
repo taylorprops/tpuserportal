@@ -100,7 +100,7 @@ window.form_elements = function() {
                 label = document.createElement('LABEL');
                 let html = ' \
                 <div class="flex justify-start w-full"> \
-                    <div class="flex items-center bg-primary text-white text-sm p-2 whitespace-nowrap"> \
+                    <div class="flex items-center bg-primary text-white text-sm p-2 whitespace-nowrap rounded-l"> \
                         <i class="fad fa-upload mr-2"></i> Select Files \
                     </div> \
                     <div class="flex-1"> \
@@ -121,7 +121,7 @@ window.form_elements = function() {
 
             if(classes.contains('select')) {
                 let cancel_div = document.createElement('div');
-                cancel_div.classList.add('absolute', 'right-8', 'top-8', 'cancel-div', 'hidden');
+                cancel_div.classList.add('absolute', 'right-10', 'top-10', 'cancel-div', 'hidden');
                 let html = ' \
                 <a href="javascript:void(0)" @click="clear_select($el)"><i class="fal fa-times text-gray-400"></i></a>';
                 cancel_div.innerHTML = html;

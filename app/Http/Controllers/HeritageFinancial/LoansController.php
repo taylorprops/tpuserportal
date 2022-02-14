@@ -77,7 +77,7 @@ class LoansController extends Controller
             'state',
             'zip',
             'heritage_financial_loans.created_at'
-            ])
+        ])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> whereHas('loan_officer_1', function($query) use ($search) {
@@ -99,11 +99,11 @@ class LoansController extends Controller
             }
         })
         -> where(function($query) use ($date_col, $start_date, $end_date) {
-            if($date_col) {
-                if ($start_date != '') {
+            if($date_col != null) {
+                if ($this -> validate_date($start_date)) {
                     $query -> where($date_col, '>=', $start_date);
                 }
-                if ($end_date != '') {
+                if ($this -> validate_date($end_date)) {
                     $query -> where($date_col, '<=', $end_date);
                 }
             }
@@ -116,6 +116,12 @@ class LoansController extends Controller
 
         return view('heritage_financial/loans/get_loans_html', compact('loans'));
 
+    }
+
+    public function validate_date($date, $format = 'Y-m-d')
+    {
+        $d = \DateTime::createFromFormat($format, $date);
+        return $d && $d -> format($format) == $date;
     }
 
     public function view_loan(Request $request) {

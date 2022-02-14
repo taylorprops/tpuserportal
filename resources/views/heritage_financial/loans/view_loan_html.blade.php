@@ -327,6 +327,12 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
                             <div class="col-span-1 m-2 sm:m-3">
+                                @php
+                                $loan_status_detailed_open = $loan && $loan -> loan_status == 'Open' ? ' / '.$loan -> loan_status_detailed : null;
+                                $loan_status_detailed_closed = $loan && $loan -> loan_status == 'Closed' ? ' / '.$loan -> loan_status_detailed : null;
+                                $loan_status_detailed_withdrawn = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
+
+                                @endphp
                                 <select
                                 class="form-element select {{ $input_size }} required"
                                 id="loan_status"
@@ -337,9 +343,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
                                 $refs.settlement_date.previousElementSibling.innerText = label_text;">
                                     <option value=""></option>
-                                    <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open</option>
-                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed</option>
-                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled</option>
+                                    <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open {{ $loan_status_detailed_open }}</option>
+                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed {{ $loan -> loan_status_detailed_closed }}</option>
+                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled {{ $loan -> loan_status_detailed_cancelled }}</option>
                                 </select>
                             </div>
 

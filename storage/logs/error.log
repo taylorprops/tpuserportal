@@ -3,3 +3,5 @@
 [Tue Jan 11 16:08:44.813960 2022] [php:error] [pid 398115] [client 127.0.0.1:58764] PHP Parse error:  Unclosed '{' on line 12 in /var/www/tpuserportal-dev/app/Helpers/Helper.php on line 276, referer: http://tpuserportal-dev/
 [Tue Jan 11 16:08:47.135648 2022] [php:error] [pid 398112] [client 127.0.0.1:58768] PHP Parse error:  Unclosed '{' on line 12 in /var/www/tpuserportal-dev/app/Helpers/Helper.php on line 276, referer: http://tpuserportal-dev/
 [Tue Jan 11 16:08:52.132899 2022] [php:error] [pid 379392] [client 127.0.0.1:58772] PHP Parse error:  Unclosed '{' on line 12 in /var/www/tpuserportal-dev/app/Helpers/Helper.php on line 276, referer: http://tpuserportal-dev/
+[Mon Feb 14 10:42:43.434720 2022] [php:error] [pid 378540] [client 127.0.0.1:50968] PHP Parse error:  Unclosed '{' on line 194 does not match ')' in /var/www/tpuserportal-dev/app/Helpers/Helper.php on line 196, referer: https://prod.lendingpad.com/
+[Mon Feb 14 10:42:48.463763 2022] [php:error] [pid 376947] [client 127.0.0.1:50970] PHP Parse error:  Unclosed '{' on line 194 does not match ')' in /var/www/tpuserportal-dev/app/Helpers/Helper.php on line 196, referer: https://prod.lendingpad.com/

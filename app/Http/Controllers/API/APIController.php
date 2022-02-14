@@ -38,192 +38,225 @@ class APIController extends Controller {
             abort(403);
         }
 
-        $lending_pad_id = $request -> lending_pad_id;
-        $loan_number = $request -> loan_number ?? null;
+        $loan_status_detailed = $request -> loan_status;
+        $ignore_statuses = ['Lead', 'Prospect', 'Pre Qualify', 'Pre Approval', 'Application Taken', 'Registered', 'Broker Initial Submission'];
 
-        $street = null;
-        $city = null;
-        $state = null;
-        $zip = null;
-        $county = null;
+        if(!in_array($loan_status_detailed, $ignore_statuses)) {
 
-        $borrower_first = null;
-        $borrower_last = null;
-        $borrower_fullname = null;
-        $co_borrower_first = null;
-        $co_borrower_last = null;
-        $co_borrower_fullname = null;
+            $lending_pad_id = $request -> lending_pad_id;
+            $loan_number = $request -> loan_number ?? null;
 
-        $loan_type = $request -> loan_type ?? null;
-        $loan_purpose = $request -> loan_purpose ?? null;
-        $loan_amount =  $request -> loan_amount ? preg_replace('/[\$,]+/', '', $request -> loan_amount) : null;
+            $statuses_open = ['Processing', 'Initial Submission', 'Approved', 'Suspended', 'Pre Deny', 'Broker Condition Submission', 'Condition Submission', 'Clear To Close'];
+            $statuses_cancelled = ['Denied', 'Withdrawn', 'Not Accepted', 'Incomplete', 'Rescinded'];
+            $statuses_closed = ['Closed', 'Funded', 'Post Closing', 'In Shipping', 'Purchased', 'Servicing'];
 
-        $locked = $request -> locked ?? 'None';
-        $lock_date = $request -> lock_date ? date('Y-m-d', strtotime($request -> lock_date)) : null;
-        $lock_expiration = $request -> lock_expiration ? date('Y-m-d', strtotime($request -> lock_expiration)) : null;
-
-        $loan_officer_1_id = null;
-        $processor_id = null;
-        $lender_uuid = null;
-
-        $title_company = preg_match('/(.*)\n/', $request -> title_company, $matches) ? $matches[1] : null;
-        $agent_company_seller = preg_match('/(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
-        $agent_name_seller = preg_match('/.*\n(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
-        $agent_company_buyer = preg_match('/(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
-        $agent_name_buyer = preg_match('/.*\n(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
-
-        // Address
-        $address = $request -> address ?? null;
-        if($address) {
-            $address = Helper::parse_address_google($address);
-            $street_number = $address['street_number'] ?? null;
-            $street_name = $address['street_name'] ?? null;
-            $street_address = $address['address'] ?? null;
-            $unit = $address['unit'] ?? null;
-            $street = trim($street_number.' '.$street_address);
-            if($unit) {
-                $street .= ' '.$unit;
-            }
-            $city = $address['city'] ?? null;
-            $state = $address['state'] ?? null;
-            $zip = $address['zip'] ?? null;
-
-            if($zip) {
-                $zip_lookup = LocationData::where('zip', $zip) -> first();
-                $county = $zip_lookup -> county;
+            $loan_status = '';
+            if(in_array($loan_status_detailed, $statuses_open)) {
+                $loan_status = 'Open';
+            } else if(in_array($loan_status_detailed, $statuses_cancelled)) {
+                $loan_status = 'Cancelled';
+            } else if(in_array($loan_status_detailed, $statuses_closed)) {
+                $loan_status = 'Closed';
             }
 
-        }
+            $street = null;
+            $city = null;
+            $state = null;
+            $zip = null;
+            $county = null;
 
-        $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
-        $tax_record_link = null;
-        if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
-            $tax_record_link = $tax_records['details']['TaxRecordLink'];
-        }
+            $borrower_first = null;
+            $borrower_last = null;
+            $borrower_fullname = null;
+            $co_borrower_first = null;
+            $co_borrower_last = null;
+            $co_borrower_fullname = null;
+
+            $loan_type = $request -> loan_type ?? null;
+            $loan_purpose = $request -> loan_purpose ?? null;
+            $loan_amount =  $request -> loan_amount ? preg_replace('/[\$,]+/', '', $request -> loan_amount) : null;
+
+            $locked = $request -> locked ?? 'None';
+            $lock_date = $request -> lock_date ? date('Y-m-d', strtotime($request -> lock_date)) : null;
+            $lock_expiration = $request -> lock_expiration ? date('Y-m-d', strtotime($request -> lock_expiration)) : null;
+
+            $loan_officer_1_id = null;
+            $processor_id = null;
+            $lender_uuid = null;
+
+            $title_company = preg_match('/(.*)\n/', $request -> title_company, $matches) ? $matches[1] : null;
+            $agent_company_seller = preg_match('/(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
+            $agent_name_seller = preg_match('/.*\n(.*)\n/', $request -> agent_company_seller, $matches) ? $matches[1] : null;
+            $agent_company_buyer = preg_match('/(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
+            $agent_name_buyer = preg_match('/.*\n(.*)\n/', $request -> agent_company_buyer, $matches) ? $matches[1] : null;
+
+            // Address
+            $address = $request -> address ?? null;
+            $update_address = $request -> update_address;
+            $tax_record_link = null;
+
+            if($update_address == 'yes') {
+
+                $address = Helper::parse_address_google($address);
+                $street_number = $address['street_number'] ?? null;
+                $street_name = $address['street_name'] ?? null;
+                $street_address = $address['address'] ?? null;
+                $unit = $address['unit'] ?? null;
+                $street = trim($street_number.' '.$street_address);
+                if($unit) {
+                    $street .= ' '.$unit;
+                }
+                $city = $address['city'] ?? null;
+                $state = $address['state'] ?? null;
+                $zip = $address['zip'] ?? null;
+
+                if($zip) {
+                    $zip_lookup = LocationData::where('zip', $zip) -> first();
+                    $county = $zip_lookup -> county;
+                }
+
+                $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
+
+                if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
+                    $tax_record_link = $tax_records['details']['TaxRecordLink'];
+                }
+
+            }
 
 
-        // Borrowers
-        $borrower_fullname = $request -> borrower ?? null;
-        if($borrower_fullname) {
-            $borrower = $this -> parse_name($borrower_fullname);
-            $borrower_first = $borrower['first'].' '.$borrower['middle'];
-            $borrower_last = $borrower['last'];
-        }
-        $co_borrower_fullname = $request -> co_borrower ?? null;
-        if($co_borrower_fullname) {
-            $co_borrower = $this -> parse_name($co_borrower_fullname);
-            $co_borrower_first = $co_borrower['first'].' '.$co_borrower['middle'];
-            $co_borrower_last = $co_borrower['last'];
-        }
+            // Borrowers
+            $borrower_fullname = $request -> borrower ?? null;
+            if($borrower_fullname) {
+                $borrower = $this -> parse_name($borrower_fullname);
+                $borrower_first = $borrower['first'].' '.$borrower['middle'];
+                $borrower_last = $borrower['last'];
+            }
+            $co_borrower_fullname = $request -> co_borrower ?? null;
+            if($co_borrower_fullname) {
+                $co_borrower = $this -> parse_name($co_borrower_fullname);
+                $co_borrower_first = $co_borrower['first'].' '.$co_borrower['middle'];
+                $co_borrower_last = $co_borrower['last'];
+            }
 
-        // People
-        $loan_officer = Mortgage::where(function($query) use ($request) {
-            $query -> where('email', $request -> loan_officer_email)
-            -> orWhere('fullname', $request -> loan_officer)
-            -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
-        })
-        -> first();
-        $loan_officer_1_id = $loan_officer -> id;
+            // People
+            $loan_officer = Mortgage::where(function($query) use ($request) {
+                $query -> where('email', $request -> loan_officer_email)
+                -> orWhere('fullname', $request -> loan_officer)
+                -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
+            })
+            -> first();
+            $loan_officer_1_id = $loan_officer -> id;
 
-        if($request -> loan_processor) {
-            $processor = Mortgage::where('fullname', $request -> loan_processor) -> first();
-            $processor_id = $processor -> id;
-        }
+            if($request -> loan_processor) {
+                $processor = Mortgage::where('fullname', $request -> loan_processor) -> first();
+                $processor_id = $processor -> id;
+            }
 
-        // Lender
-        $lender = $request -> lender;
-        if($lender) {
+            // Lender
+            $lender = $request -> lender;
+            if($lender) {
 
-            $lender_name = substr($lender, 0, strpos($lender, '(') - 1);
-            $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
+                $lender_name = substr($lender, 0, strpos($lender, '(') - 1);
+                $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
 
-            $lender_search = Lenders::where('company_name', $lender_name)
-            -> orWhere('company_name_short', $lender_short)
+                $lender_search = Lenders::where('company_name', $lender_name)
+                -> orWhere('company_name_short', $lender_short)
+                -> first();
+
+                if($lender_search) {
+                    $lender_uuid = $lender_search -> uuid;
+                }
+
+            }
+
+            $status = 'updated';
+
+            // get loan if it has the lending_pad_id or loan_number
+            $loan = Loans::where(function($query) use ($lending_pad_id) {
+                $query -> where('lending_pad_id', $lending_pad_id)
+                -> whereNotNull('lending_pad_id');
+            })
+            -> orWhere(function($query) use ($loan_number) {
+                $query -> where('loan_number', $loan_number)
+                -> whereNotNull('loan_number');
+            })
             -> first();
 
-            if($lender_search) {
-                $lender_uuid = $lender_search -> uuid;
-            }
 
-        }
-
-        $status = 'updated';
-
-        // get loan if it has the lending_pad_id or loan_number
-        $loan = Loans::where(function($query) use ($lending_pad_id) {
-            $query -> where('lending_pad_id', $lending_pad_id)
-            -> whereNotNull('lending_pad_id');
-        })
-        -> orWhere(function($query) use ($loan_number) {
-            $query -> where('loan_number', $loan_number)
-            -> whereNotNull('loan_number');
-        })
-        -> first();
-
-
-        // if no loan search for matches by address
-        if(!$loan) {
-            if($street) {
-                $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
-                $loan = Loans::where('street', 'like', '%'.$street.'%') -> first();
-            }
+            // if no loan search for matches by address
             if(!$loan) {
-                $loan = Loans::where('borrower_first', $borrower['first'])
-                -> where('borrower_last', $borrower_last)
-                -> first();
+                if($street) {
+                    $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
+                    $loan = Loans::where('street', 'like', '%'.$street.'%') -> first();
+                }
+                if(!$loan) {
+                    $loan = Loans::where('borrower_first', $borrower['first'])
+                    -> where('borrower_last', $borrower_last)
+                    -> first();
+                }
+
             }
 
+
+            if(!$loan) {
+                // add loan
+                $loan = new Loans();
+                $status = 'added';
+                $loan -> uuid = (string) Str::uuid();
+            }
+
+
+            $loan -> lending_pad_id = $lending_pad_id;
+            $loan -> loan_number = $loan_number;
+
+            $loan -> loan_status = $loan_status;
+            $loan -> loan_status_detailed = $loan_status_detailed;
+
+            $loan -> borrower_first = $borrower_first;
+            $loan -> borrower_last = $borrower_last;
+            $loan -> borrower_fullname = $borrower_fullname;
+            $loan -> co_borrower_first = $co_borrower_first;
+            $loan -> co_borrower_last = $co_borrower_last;
+            $loan -> co_borrower_fullname = $co_borrower_fullname;
+
+            if($update_address == 'yes') {
+                $loan -> street = $street;
+                $loan -> city = $city;
+                $loan -> state = $state;
+                $loan -> county = $county;
+                $loan -> zip = $zip;
+                $loan -> tax_record_link = $tax_record_link;
+            }
+
+
+            $loan -> loan_type = $loan_type;
+            $loan -> loan_purpose = $loan_purpose;
+            $loan -> loan_amount = $loan_amount;
+            $loan -> locked = $locked;
+            $loan -> lock_date = $lock_date;
+            $loan -> lock_expiration = $lock_expiration;
+            if($loan_officer_1_id) {
+                $loan -> loan_officer_1_id = $loan_officer_1_id;
+            }
+            if($processor_id) {
+                $loan -> processor_id = $processor_id;
+            }
+            $loan -> lender_uuid = $lender_uuid;
+            $loan -> title_company = $title_company;
+            $loan -> agent_company_seller = $agent_company_seller;
+            $loan -> agent_name_seller = $agent_name_seller;
+            $loan -> agent_company_buyer = $agent_company_buyer;
+            $loan -> agent_name_buyer = $agent_name_buyer;
+
+            $loan -> save();
+
+            return response() -> json([
+                'status', $status,
+            ]);
+
         }
 
-
-        if(!$loan) {
-            // add loan
-            $loan = new Loans();
-            $status = 'added';
-            $loan -> uuid = (string) Str::uuid();
-        }
-
-
-        $loan -> lending_pad_id = $lending_pad_id;
-        $loan -> loan_number = $loan_number;
-
-        $loan -> borrower_first = $borrower_first;
-        $loan -> borrower_last = $borrower_last;
-        $loan -> borrower_fullname = $borrower_fullname;
-        $loan -> co_borrower_first = $co_borrower_first;
-        $loan -> co_borrower_last = $co_borrower_last;
-        $loan -> co_borrower_fullname = $co_borrower_fullname;
-
-        $loan -> street = $street;
-        $loan -> city = $city;
-        $loan -> state = $state;
-        $loan -> county = $county;
-        $loan -> zip = $zip;
-
-        $loan -> loan_type = $loan_type;
-        $loan -> loan_purpose = $loan_purpose;
-        $loan -> loan_amount = $loan_amount;
-        $loan -> locked = $locked;
-        $loan -> lock_date = $lock_date;
-        $loan -> lock_expiration = $lock_expiration;
-        if($loan_officer_1_id) {
-            $loan -> loan_officer_1_id = $loan_officer_1_id;
-        }
-        if($processor_id) {
-            $loan -> processor_id = $processor_id;
-        }
-        $loan -> lender_uuid = $lender_uuid;
-        $loan -> title_company = $title_company;
-        $loan -> agent_company_seller = $agent_company_seller;
-        $loan -> agent_name_seller = $agent_name_seller;
-        $loan -> agent_company_buyer = $agent_company_buyer;
-        $loan -> agent_name_buyer = $agent_name_buyer;
-
-        $loan -> save();
-
-        return response() -> json([
-            'status', $status,
-        ]);
+        return response() -> json(['status' => 'Not Added - Status']);
 
     }
 
