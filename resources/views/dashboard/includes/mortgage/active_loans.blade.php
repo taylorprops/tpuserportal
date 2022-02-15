@@ -67,7 +67,7 @@
                         <div class="w-32 flex-none">
                             ${{ number_format($loan -> loan_amount) }}
                             <div class="text-xs">
-                                CD - {{ $loan -> settlement_date }}
+                                CD - {{ date('n/j/Y', strtotime($loan -> settlement_date)) }}
                             </div>
                         </div>
 
@@ -93,7 +93,7 @@
                                             $incomplete = true;
                                         }
 
-                                        $text_complete = 'Yes<br>Expires: '.$loan -> lock_expiration;
+                                        $text_complete = 'Yes<br>Expires: '.date('n/j/Y', strtotime($loan -> lock_expiration));
                                         $text_incomplete = $loan -> locked ?? 'No';
 
                                     } elseif($field == 'time_line_conditions_received_status') {
@@ -118,8 +118,13 @@
                                             $incomplete = true;
                                         }
 
-                                        $text_complete = 'Completed<br>'.$loan -> $field;
+                                        $text_complete = 'Completed<br>'.date('n/j/Y', strtotime($loan -> $field));
                                         $text_incomplete = 'Not Completed';
+
+                                        if($field == 'time_line_scheduled_settlement') {
+                                            $text_complete = 'Scheduled<br>'.date('n/j/Y', strtotime($loan -> $field));
+                                            $text_incomplete = 'Not Scheduled';
+                                        }
 
                                     }
 

@@ -374,11 +374,11 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 <input
                                 type="text"
                                 class="form-element input {{ $input_size }}"
-                                id="loan_number"
-                                name="loan_number"
-                                data-label="Loan Number"
+                                id="lending_pad_loan_number"
+                                name="lending_pad_loan_number"
+                                data-label="Lending Pad Loan Number"
                                 readonly
-                                value="{{ $loan -> lending_pad_id ?? null }}">
+                                value="{{ $loan -> lending_pad_loan_number ?? null }}">
                             </div>
 
                         </div>

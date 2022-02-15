@@ -45,7 +45,7 @@ class APIController extends Controller {
 
             $add_new_loan = null;
 
-            $lending_pad_id = $request -> lending_pad_id;
+            $lending_pad_loan_number = $request -> lending_pad_loan_number;
             $loan_number = $request -> loan_number ?? null;
 
             $statuses_open = ['Processing', 'Initial Submission', 'Approved', 'Suspended', 'Pre Deny', 'Broker Condition Submission', 'Condition Submission', 'Clear To Close'];
@@ -173,10 +173,10 @@ class APIController extends Controller {
 
             $status = 'updated';
 
-            // get loan if it has the lending_pad_id or loan_number
-            $loan = Loans::where(function($query) use ($lending_pad_id) {
-                $query -> where('lending_pad_id', $lending_pad_id)
-                -> whereNotNull('lending_pad_id');
+            // get loan if it has the lending_pad_loan_number or loan_number
+            $loan = Loans::where(function($query) use ($lending_pad_loan_number) {
+                $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
+                -> whereNotNull('lending_pad_loan_number');
             })
             -> first();
 
@@ -196,7 +196,7 @@ class APIController extends Controller {
                     $street = preg_match('/(.*)\n/', $request -> address, $matches) ? $matches[1] : null;
                     $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
                     $loans = Loans::where('street', 'like', '%'.$street.'%')
-                    -> whereNull('lending_pad_id')
+                    -> whereNull('lending_pad_loan_number')
                     -> get();
                 }
 
@@ -204,7 +204,7 @@ class APIController extends Controller {
                 if(!$loans) {
                     $loans = Loans::where('borrower_first', $borrower['first'])
                     -> where('borrower_last', $borrower_last)
-                    -> whereNull('lending_pad_id')
+                    -> whereNull('lending_pad_loan_number')
                     -> get();
                 }
 
@@ -235,7 +235,7 @@ class APIController extends Controller {
             }
 
 
-            $loan -> lending_pad_id = $lending_pad_id;
+            $loan -> lending_pad_loan_number = $lending_pad_loan_number;
             $loan -> loan_number = $loan_number;
 
             $loan -> loan_status = $loan_status;
@@ -291,12 +291,12 @@ class APIController extends Controller {
 
     // public function get_critical_dates(Request $request) {
 
-    //     $lending_pad_id = $request -> loan_id;
+    //     $lending_pad_loan_number = $request -> loan_id;
 
     //     $select = ['time_line_package_to_borrower', 'time_line_sent_to_processing', 'time_line_conditions_received_status', 'time_line_conditions_received', 'time_line_title_ordered', 'time_line_title_received', 'time_line_submitted_to_uw', 'time_line_appraisal_ordered', 'time_line_appraisal_received', 'time_line_voe_ordered', 'time_line_voe_received', 'time_line_conditions_submitted', 'time_line_clear_to_close', 'time_line_scheduled_settlement', 'time_line_closed', 'time_line_scheduled_settlement'];
 
     //     $loan = Loans::select($select)
-    //     -> where('lending_pad_id', $lending_pad_id) -> first();
+    //     -> where('lending_pad_loan_number', $lending_pad_loan_number) -> first();
 
     //     $data = new \stdClass();
     //     foreach($select as $key) {
