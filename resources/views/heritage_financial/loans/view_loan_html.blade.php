@@ -371,16 +371,14 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             </div>
 
                             <div class="col-span-1 m-2 sm:m-3">
-                                <select
-                                class="form-element select {{ $input_size }} required"
-                                id="lender_uuid"
-                                name="lender_uuid"
-                                data-label="Lender">
-                                    <option value=""></option>
-                                    @foreach($lenders as $lender)
-                                        <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
-                                    @endforeach
-                                </select>
+                                <input
+                                type="text"
+                                class="form-element input {{ $input_size }}"
+                                id="loan_number"
+                                name="loan_number"
+                                data-label="Loan Number"
+                                readonly
+                                value="{{ $loan -> lending_pad_id ?? null }}">
                             </div>
 
                         </div>
@@ -422,12 +420,13 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <div class="col-span-1 m-2 sm:m-3">
                                 <select
                                 class="form-element select {{ $input_size }} required"
-                                id="reverse"
-                                name="reverse"
-                                data-label="Reverse Mortgage">
+                                id="lender_uuid"
+                                name="lender_uuid"
+                                data-label="Lender">
                                     <option value=""></option>
-                                    <option value="yes" @if($loan && $loan -> reverse == 'yes') selected @endif>Yes</option>
-                                    <option value="no" @if($loan && $loan -> reverse == 'no') selected @endif>No</option>
+                                    @foreach($lenders as $lender)
+                                        <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -477,6 +476,18 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                     <option value="Construction" @if($loan && $loan -> loan_purpose == 'Construction') selected @endif>Construction</option>
                                     <option value="Construction Permanent" @if($loan && $loan -> loan_purpose == 'Construction Permanent') selected @endif>Construction Permanent</option>
                                     <option value="Other" @if($loan && $loan -> loan_purpose == 'Other') selected @endif>Other</option>
+                                </select>
+                            </div>
+
+                            <div class="col-span-1 m-2 sm:m-3">
+                                <select
+                                class="form-element select {{ $input_size }} required"
+                                id="reverse"
+                                name="reverse"
+                                data-label="Reverse Mortgage">
+                                    <option value=""></option>
+                                    <option value="yes" @if($loan && $loan -> reverse == 'yes') selected @endif>Yes</option>
+                                    <option value="no" @if($loan && $loan -> reverse == 'no') selected @endif>No</option>
                                 </select>
                             </div>
 

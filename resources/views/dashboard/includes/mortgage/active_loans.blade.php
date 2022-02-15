@@ -87,14 +87,14 @@
 
                                     if($field == 'locked') {
 
-                                        if($loan -> locked == 'yes') {
+                                        if($loan -> locked == 'Locked') {
                                             $complete = true;
                                         } else {
                                             $incomplete = true;
                                         }
 
                                         $text_complete = 'Yes<br>Expires: '.$loan -> lock_expiration;
-                                        $text_incomplete = 'No';
+                                        $text_incomplete = $loan -> locked ?? 'No';
 
                                     } elseif($field == 'time_line_conditions_received_status') {
 
