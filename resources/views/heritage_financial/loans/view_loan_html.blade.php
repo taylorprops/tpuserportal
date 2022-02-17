@@ -330,7 +330,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 @php
                                 $loan_status_detailed_open = $loan && $loan -> loan_status == 'Open' ? ' / '.$loan -> loan_status_detailed : null;
                                 $loan_status_detailed_closed = $loan && $loan -> loan_status == 'Closed' ? ' / '.$loan -> loan_status_detailed : null;
-                                $loan_status_detailed_withdrawn = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
+                                $loan_status_detailed_cancelled = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
 
                                 @endphp
                                 <select
@@ -344,8 +344,8 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 $refs.settlement_date.previousElementSibling.innerText = label_text;">
                                     <option value=""></option>
                                     <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open {{ $loan_status_detailed_open }}</option>
-                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed {{ $loan -> loan_status_detailed_closed }}</option>
-                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled {{ $loan -> loan_status_detailed_cancelled }}</option>
+                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed {{ $loan_status_detailed_closed }}</option>
+                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled {{ $loan_status_detailed_cancelled }}</option>
                                 </select>
                             </div>
 

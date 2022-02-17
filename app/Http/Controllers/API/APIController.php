@@ -43,8 +43,10 @@ class APIController extends Controller {
 
         if(!in_array($loan_status_detailed, $ignore_statuses)) {
 
-            $add_new_loan = null;
+            $action = $request -> action ?? null;
+            $loan_id =  $request -> loan_id ?? null;
 
+            $lending_pad_uuid = $request -> lending_pad_uuid;
             $lending_pad_loan_number = $request -> lending_pad_loan_number;
             $loan_number = $request -> loan_number ?? null;
 
@@ -97,6 +99,14 @@ class APIController extends Controller {
             $update_address = $request -> update_address;
             $tax_record_link = null;
 
+            $tax_records = $this -> tax_records('535', 'bull run', '', '21787', null, 'md');
+            return response() -> json(['link' => $tax_records['details']]);
+
+            if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
+                $tax_record_link = $tax_records['details']['TaxRecordLink'];
+            }
+            return $tax_record_link;
+
             if($update_address == 'yes') {
 
                 $address = Helper::parse_address_google($address);
@@ -130,13 +140,19 @@ class APIController extends Controller {
             $borrower_fullname = $request -> borrower ?? null;
             if($borrower_fullname) {
                 $borrower = $this -> parse_name($borrower_fullname);
-                $borrower_first = $borrower['first'].' '.$borrower['middle'];
+                $borrower_first = $borrower['first'];
+                if($borrower['middle'] != '') {
+                    $borrower_first .= ' '.$borrower['middle'];
+                }
                 $borrower_last = $borrower['last'];
             }
             $co_borrower_fullname = $request -> co_borrower ?? null;
             if($co_borrower_fullname) {
                 $co_borrower = $this -> parse_name($co_borrower_fullname);
-                $co_borrower_first = $co_borrower['first'].' '.$co_borrower['middle'];
+                $co_borrower_first = $co_borrower['first'];
+                if($co_borrower['middle'] != '') {
+                    $co_borrower_first .= ' '.$co_borrower['middle'];
+                }
                 $co_borrower_last = $co_borrower['last'];
             }
 
@@ -172,62 +188,77 @@ class APIController extends Controller {
             }
 
             $status = 'updated';
+            $loan = null;
 
-            // get loan if it has the lending_pad_loan_number or loan_number
-            $loan = Loans::where(function($query) use ($lending_pad_loan_number) {
-                $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
-                -> whereNotNull('lending_pad_loan_number');
-            })
-            -> first();
+            if($action && $action == 'match') {
+                $loan = Loans::with(['loan_officer_1']) -> find($loan_id);
+                $status = 'matched';
+            }
 
+            if(!$loan) {
 
-            /*
-            -> orWhere(function($query) use ($loan_number) {
-                $query -> where('loan_number', $loan_number)
-                -> whereNotNull('loan_number');
-            }) */
+                // get loan if it has the lending_pad_loan_number
+                $loan = Loans::where(function($query) use ($lending_pad_loan_number) {
+                    $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
+                    -> whereNotNull('lending_pad_loan_number')
+                    -> where('lending_pad_loan_number', '!=', '');
+                })
+                -> with(['loan_officer_1'])
+                -> first();
 
-            // if no loan search for matches by address
+            }
+
+            // if no loan search for matches by address and borrower
             if(!$loan) {
 
                 $loans = null;
 
-                if($request -> address) {
+                $address = $request -> address;
+                $street = null;
+                if($address) {
                     $street = preg_match('/(.*)\n/', $request -> address, $matches) ? $matches[1] : null;
                     $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
-                    $loans = Loans::where('street', 'like', '%'.$street.'%')
-                    -> whereNull('lending_pad_loan_number')
-                    -> get();
                 }
+                $borrower_first = $borrower['first'];
+
+                $loans = Loans::where(function($query) use ($street, $borrower_first, $borrower_last) {
+                    $query -> where(function ($query) use ($borrower_first, $borrower_last) {
+                        $query -> where('borrower_first', $borrower_first)
+                        -> where('borrower_last', $borrower_last);
+                    })
+                    -> orWhere(function($query) use ($street) {
+                        if($street) {
+                            $query -> where('street', 'like', '%'.$street.'%');
+                        }
+                    });
+                })
+                -> where(function($query) {
+                    $query -> whereNull('lending_pad_loan_number')
+                    -> orWhere('lending_pad_loan_number', '');
+                })
+                -> with(['loan_officer_1'])
+                -> get();
 
 
-                if(!$loans) {
-                    $loans = Loans::where('borrower_first', $borrower['first'])
-                    -> where('borrower_last', $borrower_last)
-                    -> whereNull('lending_pad_loan_number')
-                    -> get();
-                }
+                if(count($loans) > 0) {
 
-                if($loans) {
-                    if(count($loans) > 1) {
-                        return response() -> json([
-                            'error' => 'multiple',
-                            'loans' => $loans
-                        ]);
-                    }
-                    $loan = $loans -> first();
+                    return response() -> json([
+                        'status' => 'found',
+                        'loans' => $loans
+                    ]);
+
                 }
 
             }
 
-            if(!$loan && !$add_new_loan) {
+            if(!$loan && (!$action || $action == 'retry')) {
                 return response() -> json([
-                    'error' => 'not found'
+                    'status' => 'not_found'
                 ]);
             }
 
 
-            if($add_new_loan) {
+            if($action && $action == 'add') {
                 // add loan
                 $loan = new Loans();
                 $status = 'added';
@@ -235,6 +266,7 @@ class APIController extends Controller {
             }
 
 
+            $loan -> lending_pad_uuid = $lending_pad_uuid;
             $loan -> lending_pad_loan_number = $lending_pad_loan_number;
             $loan -> loan_number = $loan_number;
 
@@ -279,13 +311,18 @@ class APIController extends Controller {
 
             $loan -> save();
 
+            $tax_record_link = $loan -> tax_record_link;
+
+
             return response() -> json([
-                'status', $status,
+                'status' => $status,
+                'action' => $action,
+                'tax_record_link' => $tax_record_link
             ]);
 
         }
 
-        return response() -> json(['status' => 'Not Added - Status']);
+        return response() -> json(['status' => 'not_added']);
 
     }
 
