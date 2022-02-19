@@ -29,19 +29,6 @@ class Loans extends Model
         });
     }
 
-    // public function setLoanOfficer1NameAttribute() {
-    //     $this -> attributes['loan_officer_1_name'] = $this -> loan_officer_1 -> fullname;
-    // }
-    // public function setLoanOfficer2NameAttribute() {
-    //     $this -> attributes['loan_officer_2_name'] = $this -> loan_officer_2 -> fullname;
-    // }
-    // public function setProcessorNameAttribute() {
-    //     $this -> attributes['processor_name'] = $this -> processor -> fullname;
-    // }
-    // public function setLenderNameAttribute() {
-    //     $this -> attributes['lender_name'] = $this -> lender -> company_name;
-    // }
-
 
     public function loan_officer_1() {
         return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'loan_officer_1_id');
@@ -74,5 +61,31 @@ class Loans extends Model
     public function documents() {
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansDocuments::class, 'loan_uuid', 'uuid');
     }
+
+    public function getLoanOfficerOneNameAttribute() {
+        return $this -> loan_officer_1 -> fullname;
+    }
+    public function getLoanOfficerTwoNameAttribute() {
+        return $this -> loan_officer_2 -> fullname;
+    }
+    public function getProcessorNameAttribute() {
+        return $this -> processor -> fullname;
+    }
+    public function getLenderNameAttribute() {
+        return $this -> lender -> company_name;
+    }
+
+    // public function setLoanOfficerOneNameAttribute() {
+    //     $this -> attributes['loan_officer_one_name'] = $this -> loan_officer_1 -> fullname;
+    // }
+    // public function setLoanOfficerTwoNameAttribute() {
+    //     $this -> attributes['loan_officer_two_name'] = $this -> loan_officer_2 -> fullname;
+    // }
+    // public function setProcessorNameAttribute() {
+    //     $this -> attributes['processor_name'] = $this -> processor -> fullname;
+    // }
+    // public function setLenderNameAttribute() {
+    //     $this -> attributes['lender_name'] = $this -> lender -> company_name;
+    // }
 
 }

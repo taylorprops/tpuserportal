@@ -62,21 +62,21 @@ class DatabaseChangeLog
 
             if(!is_array($value_before)) {
 
-            //if(!preg_match('/(_id|_uuid)/', $key)) {
+                if(!preg_match('/(_id|_uuid)/', $key)) {
 
-                $value_after = $data_after[$key];
+                    $value_after = $data_after[$key];
 
-                if($value_before != $value_after) {
+                    if($value_before != $value_after) {
 
-                    $changes[] = [
-                        'field_name' => $key,
-                        'value_before' => $value_before,
-                        'value_after' => $value_after
-                    ];
+                        $changes[] = [
+                            'field_name' => $key,
+                            'value_before' => $value_before,
+                            'value_after' => $value_after
+                        ];
+
+                    }
 
                 }
-
-            //}
 
             }
 

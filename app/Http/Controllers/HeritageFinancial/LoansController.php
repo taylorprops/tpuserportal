@@ -230,17 +230,17 @@ class LoansController extends Controller
         }
 
 
-        $amounts = $request -> amount;
+        //$amounts = $request -> amount;
 
         $original_loan_officer_1_id = null;
         if ($request -> uuid != '') {
             $loan = Loans::where('uuid', $request -> uuid) -> first();
-           // dd($loan -> loan_officer_1_name);
             $db_log_data_before = $loan -> replicate();
-            $db_log_data_before -> loan_officer_1_name = $loan -> loan_officer_1_name;
-            $db_log_data_before -> loan_officer_2_name = $loan -> loan_officer_2_name;
+            $db_log_data_before -> loan_officer_1_name = $loan -> loan_officer_one_name;
+            $db_log_data_before -> loan_officer_2_name = $loan -> loan_officer_two_name;
             $db_log_data_before -> processor_name = $loan -> processor_name;
             $db_log_data_before -> lender_name = $loan -> lender_name;
+
             $original_loan_officer_1_id = $loan -> loan_officer_1_id;
             $loan -> uuid = $request -> uuid;
         } else {
@@ -285,8 +285,9 @@ class LoansController extends Controller
         $loan -> save();
 
 
-        $loan -> loan_officer_1_name = $loan -> loan_officer_1_name;
-        $loan -> loan_officer_2_name = $loan -> loan_officer_2_name;
+        $loan = Loans::find($loan -> id);
+        $loan -> loan_officer_1_name = $loan -> loan_officer_one_name;
+        $loan -> loan_officer_2_name = $loan -> loan_officer_two_name;
         $loan -> processor_name = $loan -> processor_name;
         $loan -> lender_name = $loan -> lender_name;
         $db_log_data_after = $loan;
@@ -295,8 +296,8 @@ class LoansController extends Controller
         $model_id = $loan -> id;
         $model_uuid = $loan -> uuid;
 
-        // $db_log = new DatabaseChangeLog();
-        // $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
+        $db_log = new DatabaseChangeLog();
+        $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
 
 
         return response() -> json([
