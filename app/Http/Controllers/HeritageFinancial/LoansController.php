@@ -296,8 +296,8 @@ class LoansController extends Controller
         $model_id = $loan -> id;
         $model_uuid = $loan -> uuid;
 
-        // $db_log = new DatabaseChangeLog();
-        // $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
+        $db_log = new DatabaseChangeLog();
+        $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
 
 
         return response() -> json([
