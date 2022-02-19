@@ -62,18 +62,18 @@ class Loans extends Model
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansDocuments::class, 'loan_uuid', 'uuid');
     }
 
-    public function getLoanOfficerOneNameAttribute() {
-        return $this -> loan_officer_1 -> fullname;
-    }
-    public function getLoanOfficerTwoNameAttribute() {
-        return $this -> loan_officer_2 -> fullname;
-    }
-    public function getProcessorNameAttribute() {
-        return $this -> processor -> fullname;
-    }
-    public function getLenderNameAttribute() {
-        return $this -> lender -> company_name;
-    }
+    // public function getLoanOfficerOneNameAttribute() {
+    //     return $this -> loan_officer_1 -> fullname;
+    // }
+    // public function getLoanOfficerTwoNameAttribute() {
+    //     return $this -> loan_officer_2 -> fullname;
+    // }
+    // public function getProcessorNameAttribute() {
+    //     return $this -> processor -> fullname;
+    // }
+    // public function getLenderNameAttribute() {
+    //     return $this -> lender -> company_name;
+    // }
 
     // public function setLoanOfficerOneNameAttribute() {
     //     $this -> attributes['loan_officer_one_name'] = $this -> loan_officer_1 -> fullname;
