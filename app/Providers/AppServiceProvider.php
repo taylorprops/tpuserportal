@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Config\Config;
 use Illuminate\Support\Facades\Schema;
+use App\Models\HeritageFinancial\Loans;
 use Illuminate\Support\ServiceProvider;
 use App\Models\BrightMLS\CompanyBrightOffices;
+use App\Observers\HeritageFinancial\LoansObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -65,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
             })
             -> toArray()
         ]);
+
 
     }
 

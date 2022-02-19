@@ -121,7 +121,7 @@ window.form_elements = function() {
 
             if(classes.contains('select')) {
                 let cancel_div = document.createElement('div');
-                cancel_div.classList.add('absolute', 'right-10', 'top-10', 'cancel-div', 'hidden');
+                cancel_div.classList.add('absolute', 'right-8', 'top-8', 'cancel-div', 'hidden');
                 let html = ' \
                 <a href="javascript:void(0)" @click="clear_select($el)"><i class="fal fa-times text-gray-400"></i></a>';
                 cancel_div.innerHTML = html;

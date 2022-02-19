@@ -29,6 +29,20 @@ class Loans extends Model
         });
     }
 
+    public function setLoanOfficer1NameAttribute() {
+        $this -> attributes['loan_officer_1_name'] = $this -> loan_officer_1 -> fullname;
+    }
+    public function setLoanOfficer2NameAttribute() {
+        $this -> attributes['loan_officer_2_name'] = $this -> loan_officer_2 -> fullname;
+    }
+    public function setProcessorNameAttribute() {
+        $this -> attributes['processor_name'] = $this -> processor -> fullname;
+    }
+    public function setLenderNameAttribute() {
+        $this -> attributes['lender_name'] = $this -> lender -> company_name;
+    }
+
+
     public function loan_officer_1() {
         return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'loan_officer_1_id');
     }

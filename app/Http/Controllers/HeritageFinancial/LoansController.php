@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Classes\DatabaseChangeLog;
 use App\Models\Employees\Mortgage;
 use App\Models\OldDB\LoanOfficers;
 use Illuminate\Support\Facades\DB;
@@ -191,6 +192,7 @@ class LoansController extends Controller
 
     public function save_details(Request $request) {
 
+
         if($request -> lo_form) {
             $validated = $request -> validate([
                 'points_charged' => 'required',
@@ -233,12 +235,19 @@ class LoansController extends Controller
         $original_loan_officer_1_id = null;
         if ($request -> uuid != '') {
             $loan = Loans::where('uuid', $request -> uuid) -> first();
+            $db_log_data_before = $loan -> replicate();
+            $db_log_data_before -> loan_officer_1_name = $loan -> loan_officer_1_name;
+            $db_log_data_before -> loan_officer_2_name = $loan -> loan_officer_2_name;
+            $db_log_data_before -> processor_name = $loan -> processor_name;
+            $db_log_data_before -> lender_name = $loan -> lender_name;
             $original_loan_officer_1_id = $loan -> loan_officer_1_id;
             $loan -> uuid = $request -> uuid;
         } else {
             $loan = new Loans();
+            $db_log_data_before = null;
             $loan -> uuid = (string) Str::uuid();
         }
+
 
         $ignore = ['uuid', 'title_company_select', 'lo_form'];
         foreach ($request -> all() as $key => $value) {
@@ -259,7 +268,6 @@ class LoansController extends Controller
         $loan -> co_borrower_fullname = $loan -> co_borrower_first.' '.$loan -> co_borrower_last;
 
         if (!$original_loan_officer_1_id || $original_loan_officer_1_id != $loan -> loan_officer_1_id) {
-
             $loan_officer_1 = Mortgage::find($request -> loan_officer_1_id);
             $loan_officer_2 = Mortgage::find($request -> loan_officer_2_id);
 
@@ -274,6 +282,21 @@ class LoansController extends Controller
         }
 
         $loan -> save();
+
+
+        $loan -> loan_officer_1_name = $loan -> loan_officer_1_name;
+        $loan -> loan_officer_2_name = $loan -> loan_officer_2_name;
+        $loan -> processor_name = $loan -> processor_name;
+        $loan -> lender_name = $loan -> lender_name;
+        $db_log_data_after = $loan;
+        $changed_by = auth() -> user() -> id ?? 'system';
+        $model = 'Loans';
+        $model_id = $loan -> id;
+        $model_uuid = $loan -> uuid;
+
+        $db_log = new DatabaseChangeLog();
+        $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
+
 
         return response() -> json([
             'success' => true,

@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use TheIconic\NameParser\Parser;
+use App\Classes\DatabaseChangeLog;
 use App\Models\Employees\Mortgage;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
@@ -16,17 +17,17 @@ class APIController extends Controller {
 
     public function test(Request $request) {
 
-        $address = Helper::parse_address_google('8337 Elm Rd Millersville MD 21108');
-        $street_number = $address['street_number'] ?? null;
-        $street_name = $address['street_name'] ?? null;
-        $street_address = $address['address'] ?? null;
-        $unit = $address['unit'] ?? null;
-        $street = trim($street_number.' '.$street_address);
-        $state = $address['state'] ?? null;
-        $zip = $address['zip'] ?? null;
+        // $address = Helper::parse_address_google('8337 Elm Rd Millersville MD 21108');
+        // $street_number = $address['street_number'] ?? null;
+        // $street_name = $address['street_name'] ?? null;
+        // $street_address = $address['address'] ?? null;
+        // $unit = $address['unit'] ?? null;
+        // $street = trim($street_number.' '.$street_address);
+        // $state = $address['state'] ?? null;
+        // $zip = $address['zip'] ?? null;
 
-        $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
-        dd($tax_records);
+        $tax_records = $this -> tax_records('9601', 'santa fe', '', '20774', null, 'MD', true);
+        dd($tax_records['details']['FullDetails']);
 
     }
 
@@ -98,16 +99,9 @@ class APIController extends Controller {
             $address = $request -> address ?? null;
             $update_address = $request -> update_address;
             $tax_record_link = null;
+            $property_full_details = null;
 
-            $tax_records = $this -> tax_records('535', 'bull run', '', '21787', null, 'md');
-            return response() -> json(['link' => $tax_records['details']]);
-
-            if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
-                $tax_record_link = $tax_records['details']['TaxRecordLink'];
-            }
-            return $tax_record_link;
-
-            if($update_address == 'yes') {
+            if($update_address == 'yes' || $action == 'add' || $action == 'match') {
 
                 $address = Helper::parse_address_google($address);
                 $street_number = $address['street_number'] ?? null;
@@ -127,8 +121,8 @@ class APIController extends Controller {
                     $county = $zip_lookup -> county;
                 }
 
-                $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state);
-
+                $tax_records = $this -> tax_records($street_number, $street_name, $unit, $zip, null, $state, true);
+                $property_full_details = $tax_records['details']['FullDetails'];
                 if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
                     $tax_record_link = $tax_records['details']['TaxRecordLink'];
                 }
@@ -257,12 +251,13 @@ class APIController extends Controller {
                 ]);
             }
 
-
+            $db_log_data_before = $loan -> getOriginal();
             if($action && $action == 'add') {
                 // add loan
                 $loan = new Loans();
                 $status = 'added';
                 $loan -> uuid = (string) Str::uuid();
+                $db_log_data_before = null;
             }
 
 
@@ -280,7 +275,7 @@ class APIController extends Controller {
             $loan -> co_borrower_last = $co_borrower_last;
             $loan -> co_borrower_fullname = $co_borrower_fullname;
 
-            if($update_address == 'yes') {
+            if($update_address == 'yes' || $action == 'add' || $action == 'match') {
                 $loan -> street = $street;
                 $loan -> city = $city;
                 $loan -> state = $state;
@@ -313,11 +308,21 @@ class APIController extends Controller {
 
             $tax_record_link = $loan -> tax_record_link;
 
+            $db_log_data_after = $loan;
+            $changed_by = auth() -> user() -> id ?? 'system';
+            $model = 'Loans';
+            $model_id = $loan -> id;
+            $model_uuid = $loan -> uuid;
+
+            $db_log = new DatabaseChangeLog();
+            $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
+
 
             return response() -> json([
                 'status' => $status,
                 'action' => $action,
-                'tax_record_link' => $tax_record_link
+                'tax_record_link' => $tax_record_link,
+                'property_full_details' => $property_full_details,
             ]);
 
         }
@@ -368,7 +373,7 @@ class APIController extends Controller {
 
     }
 
-    public function tax_records($street_number, $street_name, $unit, $zip, $tax_id, $state) {
+    public function tax_records($street_number, $street_name, $unit, $zip, $tax_id, $state, $full_details = false) {
 
         $details = [];
 
@@ -419,6 +424,7 @@ class APIController extends Controller {
                         $unit_number = $property['mdp_street_address_units_mdp_field_strtunt'];
                     }
 
+
                     $details = [
                         'County' => $tax_county ?? null,
                         'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
@@ -444,9 +450,11 @@ class APIController extends Controller {
                         'Map' => $property['map_mdp_field_map_sdat_field_42'] ?? null,
                         'Grid' => $property['grid_mdp_field_grid_sdat_field_43'] ?? null,
                         'Parcel' => $property['parcel_mdp_field_parcel_sdat_field_44'] ?? null,
-                        'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
-
+                        'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null
                     ];
+                    if($full_details == true) {
+                        $details['FullDetails'] = $property;
+                    }
 
 
                     /* if (isset($property['real_property_search_link']['url'])) {
