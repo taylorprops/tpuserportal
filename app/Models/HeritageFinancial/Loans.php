@@ -43,7 +43,7 @@ class Loans extends Model
     }
 
 
-    public function loan_officer_1() {
+    /* public function loan_officer_1() {
         return $this -> hasOne(\App\Models\Employees\Mortgage::class, 'id', 'loan_officer_1_id');
     }
 
@@ -57,7 +57,7 @@ class Loans extends Model
 
     public function lender() {
         return $this -> hasOne(\App\Models\HeritageFinancial\Lenders::class, 'uuid', 'lender_uuid');
-    }
+    } */
 
     public function deductions() {
         return $this -> hasMany(\App\Models\HeritageFinancial\LoansDeductions::class, 'loan_uuid', 'uuid');
