@@ -214,7 +214,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                     $query,
                     [
                         'Count' => 0,
-                        'Limit' => 5000
+                        'Limit' => 1000
                     ]
                 );
 
