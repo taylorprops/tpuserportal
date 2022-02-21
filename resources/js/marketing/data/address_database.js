@@ -184,6 +184,12 @@ if(document.URL.match('address_database')) {
                 }
             },
 
+            get_purged() {
+
+                let start = this.$refs.purged_emails_start.value;
+                let end = this.$refs.purged_emails_end.value;
+            }
+
 
         }
 

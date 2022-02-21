@@ -236,6 +236,31 @@ $breadcrumbs = [
 
                     </div>
 
+                    <div class="border-4 border-red-200 mt-12 p-4 rounded-lg relative">
+
+                        <div class="mb-4 text-xl font-semibold">
+                            Purged Emails
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                            <div>
+                                <input type="date" class="form-element input" x-ref="purged_emails_start">
+                            </div>
+
+                            <div>
+                                <input type="date" class="form-element input" x-ref="purged_emails_end">
+                            </div>
+
+                        </div>
+
+                        <div class="mt-6 flex justify-around">
+                            <button type="button" class="button primary lg" @click="get_purged()"><i class="fa fa-download mr-2"></i> Download Purged</button>
+                        </div>
+
+
+                    </div>
+
                 </div>
 
             </div>

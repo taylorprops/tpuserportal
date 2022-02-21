@@ -191,6 +191,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
                 -> update([
                     'active' => 'no',
+                    'date_purged' => date('Y-m-d')
                 ]);
 
             }
