@@ -88,30 +88,75 @@ class TestsController extends Controller
         $agents_in_db_count = count($agents_in_db);
 
         $deactivate_agents = [];
-        foreach($agents_in_bright_array as $agent) {
-            if(!in_array($agent, $agents_in_db)) {
+        foreach($agents_in_db as $agent) {
+            if(!in_array($agent, $agents_in_bright_array)) {
                 $deactivate_agents[] = $agent;
             }
         }
 
+        if(count($deactivate_agents) > 0) {
+
+            BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
+            -> update([
+                'active' => 'no',
+            ]);
+
+        }
+
         $missing_agents = [];
-        foreach($agents_in_db as $agent) {
-            if(!in_array($agent, $agents_in_bright_array)) {
+        foreach($agents_in_bright_array as $agent) {
+            if(!in_array($agent, $agents_in_db)) {
                 $missing_agents[] = $agent;
             }
         }
+
+        if(count($missing_agents) > 0) {
+
+            $agents_in_db_string = implode(', ', $missing_agents);
+
+            $query = '(MemberKey='.$agents_in_db_string.')';
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Count' => 0,
+                    'Limit' => 5000
+                ]
+            );
+
+            $agents = $results -> toArray();
+
+            if(count($agents) > 0) {
+
+                foreach ($agents as $agent) {
+
+                    $agent_details = array_filter($agent);
+                    $agent['active'] = 'yes';
+                    $MemberKey = $agent['MemberKey'];
+                    unset($agent_details['MemberKey']);
+
+                    $add_agent = BrightAgentRoster::create(
+                        ['MemberKey' => $MemberKey],
+                        $agent_details
+                    );
+
+                    $add_agent -> save();
+
+                }
+
+            }
+
+        }
+
+        return false;
 
         dd('deactivate = '.count($deactivate_agents).' missing = '.count($missing_agents));
 
         //dd($agents_in_bright_array, $agents_in_db);
 
-        if($agents_in_bright_count != $agents_in_db_count) {
 
-            // $not_found = array_diff($agents_in_db, $agents_in_bright_array);
-
-            // dd($not_found);
-
-        }
 
         return false;
 
