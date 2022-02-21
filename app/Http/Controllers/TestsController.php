@@ -58,6 +58,8 @@ class TestsController extends Controller
 
     public function bright_remove_agents() {
 
+        ini_set('memory_limit','-1');
+
         $rets = Helper::rets_login();
 
         $resource = 'ActiveAgent';
