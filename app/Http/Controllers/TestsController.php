@@ -87,6 +87,8 @@ class TestsController extends Controller
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
         $agents_in_db_count = count($agents_in_db);
 
+        dd($agents_in_bright_count, $agents_in_db_count);
+
         $deactivate_agents = [];
         foreach($agents_in_db as $agent) {
             if(!in_array($agent, $agents_in_bright_array)) {
