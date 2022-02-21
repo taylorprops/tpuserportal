@@ -46,6 +46,9 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     @endif
                     <option value="3">Commission</option>
                     <option value="4">Documents</option>
+                    @if(auth() -> user() -> level != 'loan_officer')
+                    <option value="5">Audit</option>
+                    @endif
                 </select>
                 @endif
             </div>
@@ -92,6 +95,18 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 :class="{ 'text-primary': active_tab === '4', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4' }"></i>
                                 <span>Documents</span>
                             </a>
+
+                            @if(auth() -> user() -> level != 'loan_officer')
+
+                                <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                                :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '5', 'border-primary text-primary-dark': active_tab === '5' }"
+                                @click="active_tab = '5'">
+                                    <i class="fad fa-copy mr-3"
+                                    :class="{ 'text-primary': active_tab === '5', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '5' }"></i>
+                                    <span>Audit</span>
+                                </a>
+
+                            @endif
 
                         @endif
                     </nav>
@@ -1822,6 +1837,16 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                     </div>
 
                 </div>
+
+                @if(auth() -> user() -> level != 'loan_officer')
+
+                    <div x-show="active_tab === '5'" x-transition class="pt-4 sm:pt-12 max-w-1000-px">
+
+                        <div x-ref="changes_div"></div>
+
+                    </div>
+
+                @endif
 
             </div>
 

@@ -75,17 +75,5 @@ class Loans extends Model
         return $this -> lender -> company_name ?? null;
     }
 
-    // public function setLoanOfficerOneNameAttribute() {
-    //     $this -> attributes['loan_officer_one_name'] = $this -> loan_officer_1 -> fullname;
-    // }
-    // public function setLoanOfficerTwoNameAttribute() {
-    //     $this -> attributes['loan_officer_two_name'] = $this -> loan_officer_2 -> fullname;
-    // }
-    // public function setProcessorNameAttribute() {
-    //     $this -> attributes['processor_name'] = $this -> processor -> fullname;
-    // }
-    // public function setLenderNameAttribute() {
-    //     $this -> attributes['lender_name'] = $this -> lender -> company_name;
-    // }
 
 }

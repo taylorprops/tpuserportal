@@ -236,7 +236,10 @@ class AddSkySlopeListingsJob implements ShouldQueue
 
     function agent($id) {
         $agent = Agents::find($id);
-        return ['first' => $agent -> first, 'last' => $agent -> last, 'email' => $agent -> email1, 'phone' => $agent -> cell_phone];
+        if($agent) {
+            return ['first' => $agent -> first, 'last' => $agent -> last, 'email' => $agent -> email1, 'phone' => $agent -> cell_phone];
+        }
+        return null;
     }
 
     function county($zip) {

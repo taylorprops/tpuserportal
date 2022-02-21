@@ -7,6 +7,7 @@ use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Classes\DatabaseChangeLog;
+use App\Models\Database\ChangeLog;
 use App\Models\Employees\Mortgage;
 use App\Models\OldDB\LoanOfficers;
 use Illuminate\Support\Facades\DB;
@@ -141,6 +142,7 @@ class LoansController extends Controller
         $manager = null;
         $manager_bonus = null;
         $manager_bonus_details = null;
+        $history = null;
 
         if ($request -> uuid) {
 
@@ -187,6 +189,19 @@ class LoansController extends Controller
         $loan_officers = Mortgage::where('active', 'yes') -> orderBy('last_name') -> get();
 
         return view('heritage_financial/loans/view_loan_html', compact('loan', 'deductions', 'checks_in', 'loan_officer_1', 'loan_officer_2', 'processor', 'loan_officer_1_commission_type', 'loan_officer_1_active_commission_tab', 'loan_officer_2_commission_type', 'loan_officer_2_active_commission_tab', 'loan_officer_deductions', 'states', 'lenders', 'loan_officers', 'manager', 'manager_bonus', 'manager_bonus_details'));
+
+    }
+
+    public function get_changes(Request $request) {
+
+        $loan = Loans::where('uuid', $request -> uuid) -> first();
+        $changes = ChangeLog::where('model', 'Loans')
+        -> where('model_id', $loan -> id)
+        -> orderBy('created_at', 'desc')
+        -> with(['changes', 'user'])
+        -> get();
+
+        return view('database_changes/get_changes_html', compact('changes'));
 
     }
 
@@ -294,10 +309,9 @@ class LoansController extends Controller
         $changed_by = auth() -> user() -> id ?? 'system';
         $model = 'Loans';
         $model_id = $loan -> id;
-        $model_uuid = $loan -> uuid;
 
         $db_log = new DatabaseChangeLog();
-        $db_log -> log_changes($changed_by, $model, $model_id, $model_uuid, $db_log_data_before, $db_log_data_after);
+        $db_log -> log_changes($changed_by, $model, $model_id, $db_log_data_before, $db_log_data_after);
 
 
         return response() -> json([
@@ -329,14 +343,18 @@ class LoansController extends Controller
 
             $checks_in_amounts = $request -> check_in_amount;
 
-            $request -> validate([
-                'check_in_amount' => 'required|array',
-                'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'], // cannot be 0.00
-            ],
-            [
-                'required' => 'Required',
-                'regex' => 'Must be greater than 0'
-            ]);
+            if($checks_in_amounts) {
+
+                $request -> validate([
+                    'check_in_amount' => 'required|array',
+                    'check_in_amount.*'  => ['required' => 'regex:/^\$([1-9]+|0\.0[1-9]+|0\.[1-9]+)/'], // cannot be 0.00
+                ],
+                [
+                    'required' => 'Required',
+                    'regex' => 'Must be greater than 0'
+                ]);
+
+            }
 
         }
 
@@ -376,6 +394,8 @@ class LoansController extends Controller
 
         }
 
+        $db_log = new DatabaseChangeLog();
+
         if(!$request -> form_type) {
 
             $loan_officer_deduction_amounts = $request -> loan_officer_deduction_amount;
@@ -403,7 +423,7 @@ class LoansController extends Controller
 
         $loan_uuid = $request -> uuid;
         $checks_in = $request -> check_in_amount;
-        $amounts = $request -> amount;
+        $deduction_amounts = $request -> amount;
         $descriptions = $request -> description;
         $paid_tos = $request -> paid_to;
         $paid_to_others = $request -> paid_to_other;
@@ -413,6 +433,8 @@ class LoansController extends Controller
 
 
         $loan = Loans::where('uuid', $request -> uuid) -> first();
+
+        $db_log_data_before = $loan -> replicate();
 
         if(!$request -> form_type) {
 
@@ -428,15 +450,36 @@ class LoansController extends Controller
             $loan -> company_commission = preg_replace('/[\$,]+/', '', $request -> company_commission);
             $loan -> save();
 
+            $db_log_data_after = $loan;
+            $changed_by = auth() -> user() -> id ?? 'system';
+            $model = 'Loans';
+            $model_id = $loan -> id;
+
+            $db_log -> log_changes($changed_by, $model, $model_id, $db_log_data_before, $db_log_data_after);
+
+
+            $items_in_before_sum = LoansChecksIn::where('loan_uuid', $loan_uuid) -> sum('amount');
+            $items_data_before = [
+                'checks_in_total' => $items_in_before_sum
+            ];
 
             LoansChecksIn::where('loan_uuid', $loan_uuid) -> delete();
 
+            $items_after_sum = 0;
             foreach ($checks_in as $check_in) {
+                $amount = preg_replace('/[\$,]+/', '', $check_in);
+                $items_after_sum += $amount;
                 $check = new LoansChecksIn();
                 $check -> loan_uuid  = $loan_uuid;
-                $check -> amount = preg_replace('/[\$,]+/', '', $check_in);
+                $check -> amount = $amount;
                 $check -> save();
             }
+
+            $items_data_after = [
+                'checks_in_total' => $items_after_sum
+            ];
+            $db_log -> log_changes($changed_by, $model, $model_id, $items_data_before, $items_data_after);
+
 
             LoansLoanOfficerDeductions::where('loan_uuid', $loan_uuid) -> delete();
 
@@ -460,16 +503,23 @@ class LoansController extends Controller
 
         }
 
+        $items_in_before_sum = LoansDeductions::where('loan_uuid', $loan_uuid) -> sum('amount');
+        $items_data_before = [
+            'deductions_total' => $items_in_before_sum
+        ];
+
         LoansDeductions::where('loan_uuid', $loan_uuid) -> delete();
 
-        if($amounts) {
+        $items_after_sum = 0;
 
-            foreach ($amounts as $index => $amount) {
+        if($deduction_amounts) {
+
+            foreach ($deduction_amounts as $index => $amount) {
 
                 if (preg_match('/^\$/', $amount)) {
                     $amount = preg_replace('/[\$,]+/', '', $amount);
                 }
-
+                $items_after_sum += $amount;
                 $deduction = new LoansDeductions();
                 $deduction -> loan_uuid = $loan_uuid;
                 $deduction -> amount = $amount;
@@ -483,7 +533,10 @@ class LoansController extends Controller
 
         }
 
-
+        $items_data_after = [
+            'deductions_total' => $items_after_sum
+        ];
+        $db_log -> log_changes($changed_by, $model, $model_id, $items_data_before, $items_data_after);
 
     }
 

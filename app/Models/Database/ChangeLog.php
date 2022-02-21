@@ -15,7 +15,11 @@ class ChangeLog extends Model
 
 
     public function changes() {
-        return $this -> hasMany(\App\Models\Database\DatabaseChangeLogChanges::class, 'change_id', 'id');
+        return $this -> hasMany(\App\Models\Database\ChangeLogChanges::class, 'change_id', 'id');
+    }
+
+    public function user() {
+        return $this -> hasOne(\App\Models\User::class, 'id', 'changed_by');
     }
 
 }

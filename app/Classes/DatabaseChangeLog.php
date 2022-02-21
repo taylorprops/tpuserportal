@@ -11,9 +11,9 @@ class DatabaseChangeLog
     public $changed_by;
     public $model;
     public $model_id;
-    public $model_uuid;
     public $data_before;
     public $data_after;
+    public $data_manual;
     public $ignore_fields = [
         'created_at',
         'updated_at',
@@ -21,19 +21,10 @@ class DatabaseChangeLog
         'lender_uuid',
     ];
 
-    // public function __construct($changed_by, $model, $model_id, $model_uuid, $data_before, $data_after, $ignore_fields) {
-    //     $this -> changed_by = $changed_by;
-    //     $this -> model = $model;
-    //     $this -> model_id = $model_id;
-    //     $this -> model_uuid = $model_uuid;
-    //     $this -> data_before = $data_before;
-    //     $this -> data_after = $data_after;
-    //     $this -> ignore_fields = $ignore_fields;
 
-    // }
-
-    public function log_changes($changed_by, $model, $model_id, $model_uuid, $data_before, $data_after)
+    public function log_changes($changed_by, $model, $model_id, $data_before, $data_after, $data_manual = null)
     {
+
 
         $data_before = collect($data_before);
         $data_after = collect($data_after);
@@ -43,7 +34,6 @@ class DatabaseChangeLog
             $add_changes = new ChangeLog();
             $add_changes -> model = $model;
             $add_changes -> model_id = $model_id;
-            $add_changes -> model_uuid = $model_uuid;
             $add_changes -> changed_by = $changed_by;
             $add_changes -> change_type = 'add';
             $add_changes -> save();
@@ -65,6 +55,12 @@ class DatabaseChangeLog
                 if(!preg_match('/(_id|_uuid)/', $key)) {
 
                     $value_after = $data_after[$key];
+                    if(is_numeric($data_after[$key])) {
+                        $value_after = number_format($data_after[$key], 2, '.', '');
+                    }
+                    if(is_numeric($value_before)) {
+                        $value_before = number_format($value_before, 2, '.', '');
+                    }
 
                     if($value_before != $value_after) {
 
@@ -87,7 +83,6 @@ class DatabaseChangeLog
             $add_changes = new ChangeLog();
             $add_changes -> model = $model;
             $add_changes -> model_id = $model_id;
-            $add_changes -> model_uuid = $model_uuid;
             $add_changes -> changed_by = $changed_by;
             $add_changes -> change_type = 'edit';
             $add_changes -> save();

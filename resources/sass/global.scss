@@ -68,13 +68,12 @@ a.default {
 .table-container {
     @apply py-2 align-middle inline-block min-w-full;
     .table-div {
-        @apply shadow overflow-hidden border border-gray-200 sm:rounded-lg;
+        @apply shadow border border-gray-200 sm:rounded-lg;
         table {
             @apply min-w-full divide-y divide-gray-200;
             thead {
-                @apply bg-gray-50;
                 th {
-                    @apply px-2 py-3 text-left tracking-wider whitespace-nowrap text-sm font-medium text-gray-500;
+                    @apply bg-gray-50 px-2 py-3 text-left tracking-wider whitespace-nowrap text-sm font-medium text-gray-500;
                 }
             }
             tbody {

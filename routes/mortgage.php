@@ -17,6 +17,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/heritage_financial/loans/restore_docs', [LoansController::class, 'restore_docs']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/loans/commission_reports', [LoansController::class, 'commission_reports']) -> middleware(['mortgage']);
     Route::get('/heritage_financial/loans/get_commission_reports', [LoansController::class, 'get_commission_reports']) -> middleware(['mortgage']);
+    Route::get('/heritage_financial/loans/get_changes', [LoansController::class, 'get_changes']) -> middleware(['mortgage']);
 
     Route::post('/heritage_financial/save_details', [LoansController::class, 'save_details']) -> middleware(['mortgage']);
     Route::post('/heritage_financial/save_time_line', [LoansController::class, 'save_time_line']) -> middleware(['mortgage']);

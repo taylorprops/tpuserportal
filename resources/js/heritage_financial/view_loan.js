@@ -33,6 +33,7 @@ if(document.URL.match(/view_loan/)) {
                 this.get_docs();
 
                 this.get_notes();
+                this.get_changes();
 
             },
             trigger_total() {
@@ -283,6 +284,7 @@ if(document.URL.match(/view_loan/)) {
             },
             save_commission(ele, user) {
 
+                let scope = this;
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
@@ -299,6 +301,7 @@ if(document.URL.match(/view_loan/)) {
                 .then(function (response) {
                     ele.innerHTML = button_html;
                     toastr.success('Loan Commission successfully saved');
+                    scope.get_changes();
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);
@@ -307,6 +310,7 @@ if(document.URL.match(/view_loan/)) {
             },
             save_time_line(ele) {
 
+                let scope = this;
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
@@ -318,6 +322,7 @@ if(document.URL.match(/view_loan/)) {
                 .then(function (response) {
                     ele.innerHTML = button_html;
                     toastr.success('Timeline Successfully Saved');
+                    scope.get_changes();
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);
@@ -693,6 +698,28 @@ if(document.URL.match(/view_loan/)) {
                 print_page.stop();
                 print_page.print();
                 print_page.close();
+            },
+
+            get_changes() {
+
+                let scope = this;
+
+                if(scope.$refs.changes_div) {
+
+                    axios.get('/heritage_financial/loans/get_changes', {
+                        params: {
+                            uuid: uuid
+                        },
+                    })
+                    .then(function (response) {
+                        scope.$refs.changes_div.innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                }
+
             }
 
         }
