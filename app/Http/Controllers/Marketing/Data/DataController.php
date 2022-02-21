@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\DocManagement\Resources\LocationData;
 
@@ -106,6 +107,36 @@ class DataController extends Controller
         return view('/marketing/data/get_results_html', compact('results_count', 'list_type', 'file_location'));
 
 
+
+    }
+
+    public function get_purged(Request $request) {
+
+        $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'date_purged'];
+
+        $start = $request -> start;
+        $end = $request -> end ?? date('Y-m-d');
+
+        $purged = BrightAgentRoster::select($select)
+        -> where('active', 'no')
+        -> whereBetween('date_purged', [$start, $end])
+        -> get();
+
+
+        $file_name = 'purged_list_'.time().'.csv';
+        $file = Storage::path('/tmp/'.$file_name);
+        $handle = fopen($file, 'w');
+        fputcsv($handle, $select, ',');
+
+        $results_count = 0;
+        foreach ($purged as $agent) {
+            fputcsv($handle, $agent -> toArray(), ',');
+            $results_count += 1;
+        }
+
+        $file_location = '/storage/tmp/'.$file_name;
+
+        return response() -> json(['url' => $file_location]);
 
     }
 

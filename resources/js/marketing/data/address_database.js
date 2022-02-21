@@ -188,6 +188,20 @@ if(document.URL.match('address_database')) {
 
                 let start = this.$refs.purged_emails_start.value;
                 let end = this.$refs.purged_emails_end.value;
+
+
+                let formData = new FormData();
+                formData.append('start', start);
+                formData.append('end', end);
+
+                axios.post('/marketing/data/get_purged', formData)
+                .then(function (response) {
+                    window.location = response.data.url;
+
+                })
+                .catch(function (error) {
+                });
+
             }
 
 

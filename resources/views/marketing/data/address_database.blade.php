@@ -14,10 +14,10 @@ $breadcrumbs = [
 
     <div class="pb-64 pt-2">
 
-        <div class="max-w-full mx-auto sm:px-6 lg:px-12"
+        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12"
         x-data="address_database()">
 
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-12">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mt-12">
 
                 <div class="border-4 p-4 rounded-lg col-span-2">
 
@@ -106,7 +106,7 @@ $breadcrumbs = [
 
                             <div class="text-lg font-medium text-gray-900 mb-2">Location</div>
 
-                            <div class="flex justify-around">
+                            <div class="flex flex-wrap justify-around">
 
                                 <div class="">
 
@@ -245,11 +245,11 @@ $breadcrumbs = [
                         <div class="grid grid-cols-2 gap-4">
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="purged_emails_start">
+                                <input type="date" class="form-element input" x-ref="purged_emails_start" data-label="Start Date">
                             </div>
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="purged_emails_end">
+                                <input type="date" class="form-element input" x-ref="purged_emails_end" data-label="End Date">
                             </div>
 
                         </div>
