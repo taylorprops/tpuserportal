@@ -87,7 +87,7 @@ class TestsController extends Controller
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
         $agents_in_db_count = count($agents_in_db);
 
-        dd($agents_in_bright_count, $agents_in_db_count);
+        // dd($agents_in_bright_count, $agents_in_db_count);
 
         $deactivate_agents = [];
         foreach($agents_in_db as $agent) {
@@ -111,7 +111,7 @@ class TestsController extends Controller
                 $missing_agents[] = $agent;
             }
         }
-
+dd(count($missing_agents));
         if(count($missing_agents) > 0) {
 
             $agents_in_db_string = implode(', ', $missing_agents);
