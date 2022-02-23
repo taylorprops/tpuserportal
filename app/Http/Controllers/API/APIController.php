@@ -332,6 +332,12 @@ class APIController extends Controller {
             if($request -> Condition_Submission) {
                 $loan -> time_line_conditions_submitted = date('Y-m-d', strtotime($request -> Condition_Submission));
             }
+            if($request -> Approved) {
+                $loan -> time_line_conditions_received_status = 'approved';
+            }
+            if($request -> Suspended) {
+                $loan -> time_line_conditions_received_status = 'suspended';
+            }
             if($request -> Appraisal_Delivered) {
                 $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
             }

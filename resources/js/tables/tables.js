@@ -131,7 +131,7 @@ window.table = function(options) {
             if(scope.search == true) {
 
                         options_html += ' \
-                        <div class="p-2 ml-6 w-36"> \
+                        <div class="w-36"> \
                             <input \
                             type="text" \
                             class="form-element input md" \
@@ -145,7 +145,7 @@ window.table = function(options) {
             if(scope.dates) {
 
                         options_html += ' \
-                        <div class="p-2 ml-6"> \
+                        <div class="ml-6"> \
                             <div class="flex items-end justify-start space-x-4"> \
                                 <div> \
                                     <input \
@@ -184,7 +184,7 @@ window.table = function(options) {
 
                     if(field_type === 'select') {
                         options_html += ' \
-                        <div class="p-2 ml-6 w-auto"> \
+                        <div class="ml-6 w-auto"> \
                             <select \
                             class="form-element select md" \
                             data-label="'+label+'" \

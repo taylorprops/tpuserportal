@@ -55,7 +55,7 @@ $breadcrumbs = [
 
                 <div class="flex flex-col w-full">
 
-                    <div class="sm:-mx-6 lg:-mx-8"
+                    <div class=""
                     x-data="table({
                         'container': $refs.container,
                         'data_url': '/heritage_financial/agent_database/get_agent_database',

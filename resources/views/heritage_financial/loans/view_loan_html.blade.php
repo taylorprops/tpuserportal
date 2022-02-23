@@ -530,27 +530,27 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                 @php
                                 $fields = [
-                                    ['select', 'locked', 'Locked'],
-                                    ['date', 'lock_date', 'Lock Date'],
-                                    ['date', 'lock_expiration', 'Lock Expiration'],
-                                    ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower'],
-                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing'],
-                                    ['date', 'time_line_clear_to_close', 'Clear To Close'],
-                                    ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date'],
-                                    ['date', 'time_line_closed', 'Closed'],
-                                    ['date', 'time_line_funded', 'Funded']
+                                    ['select', 'locked', 'Locked', 'disabled'],
+                                    ['date', 'lock_date', 'Lock Date', 'disabled'],
+                                    ['date', 'lock_expiration', 'Lock Expiration', 'disabled'],
+                                    ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
+                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing', 'disabled'],
+                                    ['date', 'time_line_clear_to_close', 'Clear To Close', 'disabled'],
+                                    ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
+                                    ['date', 'time_line_closed', 'Closed', 'disabled'],
+                                    ['date', 'time_line_funded', 'Funded', 'disabled']
                                 ];
                                 $processing_fields = [
-                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status'],
-                                    ['date', 'time_line_conditions_received', 'Conditions Received'],
-                                    ['date', 'time_line_title_ordered', 'Title Ordered'],
-                                    ['date', 'time_line_title_received', 'Title Received'],
-                                    ['date', 'time_line_submitted_to_uw', 'Submitted To UW'],
-                                    ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered'],
-                                    ['date', 'time_line_appraisal_received', 'Appraisal Received'],
-                                    ['date', 'time_line_voe_ordered', 'VOE Ordered'],
-                                    ['date', 'time_line_voe_received', 'VOE Received'],
-                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted'],
+                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status', 'disabled'],
+                                    ['date', 'time_line_conditions_received', 'Conditions Received', ''],
+                                    ['date', 'time_line_title_ordered', 'Title Ordered', ''],
+                                    ['date', 'time_line_title_received', 'Title Received', ''],
+                                    ['date', 'time_line_submitted_to_uw', 'Submitted To UW', ''],
+                                    ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered', ''],
+                                    ['date', 'time_line_appraisal_received', 'Appraisal Received', 'disabled'],
+                                    ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
+                                    ['date', 'time_line_voe_received', 'VOE Received', ''],
+                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted', 'disabled'],
                                 ];
                                 @endphp
 
@@ -566,12 +566,13 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                         <div class="col-span-2">
 
-                                            @if($field[0] == 'date')
-                                                <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}">
+                                            @if($field[0] != 'select')
+                                                <input type="{{ $field[0] }}" class="form-element input md" name="{{ $db_field }}" value="{{ $loan -> $db_field ?? null }}" {{ $field[3] }}>
                                             @else
                                                 <select
                                                 class="form-element select md"
                                                 name="{{ $db_field }}"
+                                                {{ $field[3] }}
                                                 data-label="">
                                                     <option value="None" @if($loan && $loan -> $db_field == 'None') selected @endif></option>
                                                     <option value="Registered" @if($loan && $loan -> $db_field == 'Registered') selected @endif>Registered</option>
@@ -607,22 +608,19 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                                                         <div class="col-span-2">
 
-
-
-                                                            @if($processing_field[0] == 'date')
-                                                                <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field ?? null }}">
+                                                            @if($processing_field[0] != 'select')
+                                                                <input type="{{ $processing_field[0] }}" class="form-element input md" name="{{ $db_processing_field }}" value="{{ $loan -> $db_processing_field ?? null }}" {{ $processing_field[3] }}>
                                                             @else
                                                                 <select
                                                                 class="form-element select md"
                                                                 name="{{ $db_processing_field }}"
+                                                                {{ $processing_field[3] }}
                                                                 data-label="">
                                                                     <option value=""></option>
                                                                     <option value="approved" @if($loan && $loan -> $db_processing_field == 'approved') selected @endif>Approved</option>
                                                                     <option value="suspended" @if($loan && $loan -> $db_processing_field == 'suspended') selected @endif>Suspended</option>
                                                                 </select>
                                                             @endif
-
-
 
                                                         </div>
 
