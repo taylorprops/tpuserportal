@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('backup:run --only-db') -> twiceDaily(2, 14) -> environments(['production']);
 
         // prune failed jobs
-        $schedule -> command('php artisan queue:prune-failed --hours=24') -> dailyAt('11:00');
+        $schedule -> command('php artisan queue:prune-failed --hours=3') -> everyTwoHours();
 
         // update bright agents and offices
         $schedule -> command('bright_mls:update_agents_and_offices') -> everyThirtyMinutes() -> environments('production') -> withoutOverlapping();
