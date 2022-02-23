@@ -1,4 +1,5 @@
 
+
 window.table = function(options) {
 
     let container = options.container;
@@ -17,6 +18,8 @@ window.table = function(options) {
     let fields = options.fields || null;
     let additional_html = options.additional_html || null;
     let form_id = options.form_id || null;
+
+    // XXXXXXXX Create refresh function
 
     return {
 

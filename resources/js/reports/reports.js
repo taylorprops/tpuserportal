@@ -1,5 +1,9 @@
 if(document.URL.match(/reports/)) {
 
+    setTimeout(function() {
+        table();
+    }, 4000);
+
     window.reports = function() {
 
         return {

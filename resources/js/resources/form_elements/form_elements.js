@@ -21,18 +21,20 @@ function setBubble(range, bubble) {
 }
 
 
-window.show_file_names = function (target) {
+window.show_file_names = function (target, remove = true) {
     let files = target.files;
     let id = target.id;
     document.querySelector('.file-names').innerHTML = '';
     for (var i = 0; i < files.length; i++) {
         let file_name = truncate_string(files[i].name, 70);
         let html = ' \
-        <div class="flex justify-start"> \
-            <div> \
-                <a href="javascript:void(0)" @click="remove_file(\''+id+'\', '+i+')"><i class="fal fa-times text-red-600"></i></a> \
-            </div> \
-            <div class="ml-3 w-full">'+file_name+'</div> \
+        <div class="flex justify-start mt-1">';
+            if(remove == true) {
+                html += '<div> \
+                    <a href="javascript:void(0)" @click="remove_file(\''+id+'\', '+i+')"><i class="fal fa-times text-red-600"></i></a> \
+                </div>';
+            }
+            html += '<div class="ml-3 w-full">'+file_name+'</div> \
         </div>';
         document.querySelector('.file-names').insertAdjacentHTML('beforeend', html);
     }

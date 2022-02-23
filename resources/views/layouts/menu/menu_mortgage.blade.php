@@ -36,6 +36,13 @@
     :link="'/heritage_financial/lenders'"
     :icon="'fad fa-sack-dollar'"/>
 
+    {{-- Agent Database --}}
+    <x-nav.menu
+    :level="'1'"
+    :title="'Agent Database'"
+    :link="'/heritage_financial/agent_database'"
+    :icon="'fad fa-database'"/>
+
     @if(in_array(auth() -> user() -> level, ['manager', 'processor']))
     {{-- Loans --}}
     <x-nav.menu

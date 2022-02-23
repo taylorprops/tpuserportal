@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HeritageFinancial\LoansController;
 use App\Http\Controllers\HeritageFinancial\LendersController;
 use App\Http\Controllers\HeritageFinancial\LoanOfficerController;
+use App\Http\Controllers\HeritageFinancial\AgentDatabaseController;
 
 
 Route::middleware(['auth', 'web']) -> group(function () {
@@ -45,6 +46,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/heritage_financial/loan_software', function() {
         return view('/heritage_financial/loan_software/loan_software');
     });
+
+    Route::get('/heritage_financial/agent_database', [AgentDatabaseController::class, 'agent_database']) -> middleware(['mortgage']);
+    Route::get('/heritage_financial/agent_database/get_agent_database', [AgentDatabaseController::class, 'get_agent_database']) -> middleware(['mortgage']);
+    Route::post('/heritage_financial/agent_database/add_new_list', [AgentDatabaseController::class, 'add_new_list']) -> middleware(['mortgage']);
 
 
 });

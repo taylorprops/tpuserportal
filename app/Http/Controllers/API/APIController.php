@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use TheIconic\NameParser\Parser;
 use App\Classes\DatabaseChangeLog;
 use App\Models\Employees\Mortgage;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\Lenders;
@@ -219,7 +220,8 @@ class APIController extends Controller {
                 }
                 $borrower_first = $borrower['first'];
 
-                $loans = Loans::where(function($query) use ($street, $borrower_first, $borrower_last) {
+                $loans = Loans::select('*', DB::raw('DATE_FORMAT(settlement_date,"%m/%d/%Y") as settle_date'))
+                -> where(function($query) use ($street, $borrower_first, $borrower_last) {
                     $query -> where(function ($query) use ($borrower_first, $borrower_last) {
                         $query -> where('borrower_first', $borrower_first)
                         -> where('borrower_last', $borrower_last);
