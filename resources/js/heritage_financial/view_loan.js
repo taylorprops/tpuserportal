@@ -152,7 +152,7 @@ if(document.URL.match(/view_loan/)) {
                         scope.loan_officer_1_commission_amount = loan_officer_commission;
                     }
 
-                    loan_officer_commission = loan_officer_commission - loan_officer_deductions_total;
+                    loan_officer_commission = (loan_officer_commission - loan_officer_deductions_total).toFixed(2);
 
                     document.querySelectorAll('.loan-officer-'+index+'-commission-amount-ele').forEach(function(ele) {
                         ele.innerText = global_format_number_with_decimals(loan_officer_commission.toString());
@@ -163,7 +163,7 @@ if(document.URL.match(/view_loan/)) {
 
                     let manager_bonus_amount = (parseFloat(scope.manager_bonus) / 100)  * net_commission_amount;
 
-                    document.querySelector('#manager_bonus').value = manager_bonus_amount;
+                    document.querySelector('#manager_bonus').value = manager_bonus_amount.toFixed(2);
                     document.querySelectorAll('.manager-commission-amount-ele').forEach(function(ele) {
                         ele.innerHTML = global_format_number_with_decimals(manager_bonus_amount.toString());
                     });
@@ -178,7 +178,7 @@ if(document.URL.match(/view_loan/)) {
                         }
                     });
 
-                    let company_commission = net_commission_amount - (commissions_paid_total);
+                    let company_commission = (net_commission_amount - (commissions_paid_total)).toFixed(2);
 
                     document.querySelector('#company_commission').value = company_commission;
                     document.querySelectorAll('.company-commission-amount').forEach(function(span) {

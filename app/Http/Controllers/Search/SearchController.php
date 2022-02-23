@@ -26,7 +26,13 @@ class SearchController extends Controller
 
         }
 
-        return view('search/search_results_'.$group.'_html', compact('loans'));
+        if(count($loans) > 0) {
+
+            return view('search/search_results_'.$group.'_html', compact('loans'));
+
+        }
+
+        return null;
 
     }
 }

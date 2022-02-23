@@ -55,10 +55,10 @@ class DatabaseChangeLog
                 if(!preg_match('/(_id|_uuid)/', $key)) {
 
                     $value_after = $data_after[$key];
-                    if(is_numeric($data_after[$key])) {
+                    if(is_numeric($data_after[$key]) && preg_match('/\./', $data_after[$key])) {
                         $value_after = number_format($data_after[$key], 2, '.', '');
                     }
-                    if(is_numeric($value_before)) {
+                    if(is_numeric($value_before) && preg_match('/\./', $value_before)) {
                         $value_before = number_format($value_before, 2, '.', '');
                     }
 

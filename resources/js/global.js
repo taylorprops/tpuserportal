@@ -169,10 +169,13 @@ window.main_search = function() {
 
     return {
 
+        show_search_results_div: false,
+
         search(search_input) {
 
+            let scope = this;
             let value = search_input.value;
-            let search_results_div = this.$refs.search_results_div;
+            let search_results_div = scope.$refs.search_results_div;
 
             if(value.length > 0) {
 
@@ -182,13 +185,18 @@ window.main_search = function() {
                     },
                 })
                 .then(function (response) {
-                    search_results_div.innerHTML = response.data;
+                    if(response){
+                        search_results_div.innerHTML = response.data;
+                        scope.show_search_results_div = true;
+                    } else {
+                        scope.show_search_results_div = false;
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
             } else {
-
+                scope.show_search_results_div = false;
             }
 
         }

@@ -140,8 +140,11 @@ class APIController extends Controller {
                 }
                 $borrower_last = $borrower['last'];
             }
+
+
+
             $co_borrower_fullname = $request -> co_borrower ?? null;
-            if($co_borrower_fullname) {
+            if($co_borrower_fullname != null) {
                 $co_borrower = $this -> parse_name($co_borrower_fullname);
                 $co_borrower_first = $co_borrower['first'];
                 if($co_borrower['middle'] != '') {
@@ -309,6 +312,28 @@ class APIController extends Controller {
             $loan -> agent_company_buyer = $agent_company_buyer;
             $loan -> agent_name_buyer = $agent_name_buyer;
 
+            if($request -> Funded) {
+                $loan -> time_line_funded = date('Y-m-d', strtotime($request -> Funded));
+            }
+            if($request -> Estimate_Closing) {
+                $loan -> time_line_scheduled_settlement = date('Y-m-d', strtotime($request -> Estimate_Closing));
+            }
+            if($request -> Schedule_Closing) {
+                $loan -> time_line_closed = date('Y-m-d', strtotime($request -> Schedule_Closing));
+            }
+            if($request -> Processing) {
+                $loan -> time_line_sent_to_processing = date('Y-m-d', strtotime($request -> Processing));
+            }
+            if($request -> Clear_To_Close) {
+                $loan -> time_line_clear_to_close = date('Y-m-d', strtotime($request -> Clear_To_Close));
+            }
+            if($request -> Condition_Submission) {
+                $loan -> time_line_conditions_submitted = date('Y-m-d', strtotime($request -> Condition_Submission));
+            }
+            if($request -> Appraisal_Delivered) {
+                $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
+            }
+
             $loan -> save();
 
             $tax_record_link = $loan -> tax_record_link;
@@ -392,8 +417,6 @@ class APIController extends Controller {
                 }
                 $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27'.$street_number.'%20'.urlencode(strtoupper($street_name)).'%27%29&mdp_street_address_zip_code_mdp_field_zipcode='.$zip.$unit_number;
             }
-
-
             $headers = [
                 'Content-Type' => 'application/json',
                 'X-App-Token' => 'Ya0ATXETWXYaL8teBlGPUbYZ5',
@@ -430,6 +453,10 @@ class APIController extends Controller {
 
 
                     $details = [
+                        'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
+                        'TransferDate' => str_replace('.', '-', $property['sales_segment_1_transfer_date_yyyy_mm_dd_mdp_field_tradate_sdat_field_89']) ?? null,
+                        'OriginalCost' => '$'.number_format($property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'], 2) ?? null,
+                        'NumberOfUnits' => $property['c_a_m_a_system_data_number_of_dwelling_units_mdp_field_bldg_units_sdat_field_239'] ?? null,
                         'County' => $tax_county ?? null,
                         'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
                         'StreetNumber' => $property['premise_address_number_mdp_field_premsnum_sdat_field_20'] ?? null,
@@ -442,10 +469,6 @@ class APIController extends Controller {
                         'YearBuilt' => $property['c_a_m_a_system_data_year_built_yyyy_mdp_field_yearblt_sdat_field_235'] ?? null,
                         'StateOrProvince' => $state ?? null,
                         'UnitNumber' => $unit_number ?? null,
-                        'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
-                        'TransferDate' => $property['sales_segment_1_transfer_date_yyyy_mm_dd_mdp_field_tradate_sdat_field_89'] ?? null,
-                        'OriginalCost' => $property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'] ?? null,
-                        'NumberOfUnits' => $property['c_a_m_a_system_data_number_of_dwelling_units_mdp_field_bldg_units_sdat_field_239'] ?? null,
                         'District' => $property['record_key_district_ward_sdat_field_2'] ?? null,
                         'TaxRecordLink' => str_replace('http:', 'https:', $property['real_property_search_link']['url']) ?? null,
                         'LegalDescription1' => $property['legal_description_line_1_mdp_field_legal1_sdat_field_17'] ?? null,

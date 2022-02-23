@@ -42,7 +42,7 @@
         <div class="flex relative"
         x-data="main_search()">
 
-            <div class="absolute top-24 left-0 z-100">
+            <div class="absolute top-12 left-0 z-100">
                 {{-- <div class="flex justify-end w-full items-center">
                     <div>
                         <button type="button" class="button danger md no-text"
@@ -51,8 +51,10 @@
                         </button>
                     </div>
                 </div> --}}
-                <div class="absolute top-12 left-0 w-screen lg:w-screen-60 xl:w-screen-50 bg-gray-100 z-100 shadow max-h-500-px overflow-y-auto" x-ref="search_results_div"
+                <div class="absolute top-12 left-0 w-screen lg:w-screen-60 xl:w-screen-50 bg-gray-200 z-100 shadow max-h-500-px overflow-y-auto p-2 sm:p-6" x-ref="search_results_div"
+                x-show="show_search_results_div"
                 @click.outside="$el.innerHTML = '';
+                show_search_results_div = false;
                 document.querySelectorAll('.main-search-input').forEach(function(input) {
                     input.value = '';
                 });"></div>

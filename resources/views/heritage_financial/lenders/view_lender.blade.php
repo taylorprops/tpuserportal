@@ -42,6 +42,9 @@ $breadcrumbs = [
                                     </select>
                                 </div>
 
+                                @if(!$lender)
+                                <div class="text-red-500 text-sm">"Company Name" and "Company Name Short" must match "Contact Name" and  "Short Name" in Lending Pad</div>
+                                @endif
                                 <div class="grid grid-cols-1 lg:grid-cols-2">
                                     <div class="my-4 max-w-300-px">
                                         <input type="text" class="form-element input md required" name="company_name" data-label="Company Name" value="{{ $lender -> company_name ?? null }}">

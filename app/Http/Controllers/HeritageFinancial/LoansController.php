@@ -460,7 +460,7 @@ class LoansController extends Controller
 
             $items_in_before_sum = LoansChecksIn::where('loan_uuid', $loan_uuid) -> sum('amount');
             $items_data_before = [
-                'checks_in_total' => $items_in_before_sum
+                'checks_in_total' => number_format($items_in_before_sum, 2)
             ];
 
             LoansChecksIn::where('loan_uuid', $loan_uuid) -> delete();
@@ -476,7 +476,7 @@ class LoansController extends Controller
             }
 
             $items_data_after = [
-                'checks_in_total' => $items_after_sum
+                'checks_in_total' => number_format($items_after_sum, 2)
             ];
             $db_log -> log_changes($changed_by, $model, $model_id, $items_data_before, $items_data_after);
 
@@ -505,7 +505,7 @@ class LoansController extends Controller
 
         $items_in_before_sum = LoansDeductions::where('loan_uuid', $loan_uuid) -> sum('amount');
         $items_data_before = [
-            'deductions_total' => $items_in_before_sum
+            'deductions_total' => number_format($items_in_before_sum, 2)
         ];
 
         LoansDeductions::where('loan_uuid', $loan_uuid) -> delete();
@@ -534,7 +534,7 @@ class LoansController extends Controller
         }
 
         $items_data_after = [
-            'deductions_total' => $items_after_sum
+            'deductions_total' => number_format($items_after_sum, 2)
         ];
         $db_log -> log_changes($changed_by, $model, $model_id, $items_data_before, $items_data_after);
 
