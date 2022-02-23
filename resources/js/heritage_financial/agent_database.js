@@ -14,20 +14,25 @@ window.agent_database = function() {
 
         add_list(ele) {
 
-            let button_html = ele.innerHTML;
-            show_loading_button(ele, 'Adding List ... ');
-            remove_form_errors();
+            if(this.$refs.agent_list.value != '') {
 
-            let form = document.getElementById('add_list_form');
-            let formData = new FormData(form);
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Adding List ... ');
+                remove_form_errors();
 
-            axios.post('/heritage_financial/agent_database/add_new_list', formData)
-            .then(function (response) {
-                window.location = document.URL.replace(/\?.*/, '')+'?status=success';
-            })
-            .catch(function (error) {
-                display_errors(error, ele, button_html);
-            });
+                let form = document.getElementById('add_list_form');
+                let formData = new FormData(form);
+
+                axios.post('/heritage_financial/agent_database/add_new_list', formData)
+                .then(function (response) {
+                    window.location = document.URL.replace(/\?.*/, '')+'?status=success';
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
+
+            }
+
         }
 
 

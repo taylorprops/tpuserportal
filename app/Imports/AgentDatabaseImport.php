@@ -21,10 +21,10 @@ class AgentDatabaseImport implements ToModel
             'cell_phone'     => $row[3],
             'street'     => $row[4],
             'city'     => $row[5],
-            'state'     => $row[6],
+            'state'     => $row[6] == 'Maryland' ? 'MD' : $row[6],
             'zip'     => $row[7],
             'company'     => $row[8],
-            'start_date'     => $row[9],
+            'start_date'     => date('Y-m-d', strtotime($row[9])),
             'fullname' => $row[0].' '.$row[1]
         ]);
     }
