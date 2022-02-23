@@ -121,6 +121,12 @@
     :link="'/heritage_financial/lenders'"
     :icon="'fad fa-sack-dollar'"/>
 
+    <x-nav.menu
+    :level="'1'"
+    :title="'Agent Database'"
+    :link="'/heritage_financial/agent_database'"
+    :icon="'fad fa-database'"/>
+
     @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']) && auth() -> user() ->  email != 'gary@taylorprops.com')
     {{-- Manager Bonus --}}
     <x-nav.menu
@@ -184,12 +190,6 @@
     :level="'1'"
     :title="'Address Database'"
     :link="'/marketing/data/address_database'"
-    :icon="'fad fa-database'"/>
-
-    <x-nav.menu
-    :level="'1'"
-    :title="'Agent Database'"
-    :link="'/heritage_financial/agent_database'"
     :icon="'fad fa-database'"/>
 
     {{-- End Marketing --}}
