@@ -31,7 +31,8 @@
         "spatie/laravel-backup": "7.0.0",
         "theiconic/name-parser": "^1.2",
         "thiagoalessio/tesseract_ocr": "^2.11",
-        "troydavisson/phrets": "^2.6"
+        "troydavisson/phrets": "^2.6",
+        "league/flysystem-aws-s3-v3": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
