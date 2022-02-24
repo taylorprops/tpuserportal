@@ -41,6 +41,7 @@ return [
             'retry_after' => 100,
             'after_commit' => true,
         ],
+
         'failed' => [
             'driver' => 'database-uuids',
             'database' => env('DB_CONNECTION', 'mysql'),

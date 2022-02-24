@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Storage;
-
 return [
 
     /*
@@ -48,10 +46,12 @@ return [
             'url' => '/storage',
             'visibility' => 'public',
         ],
+
         'backupLocal' => [
             'driver' => 'local',
             'root' => storage_path('app/public/backups'),
         ],
+
         'staging' => [
             'driver' => 'local',
             'root' => '/var/www/taylor-properties.net/storage/app/public',
@@ -82,7 +82,7 @@ return [
                     'private' => 0700,
                 ],
             ],
-            'url' => '/storage',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
@@ -101,27 +101,16 @@ return [
             ],
         ],
 
-        // 'local' => [
-        //     'driver' => 'local',
-        //     'root' => storage_path('app'),
-        // ],
-
-        // 'public' => [
-        //     'driver' => 'local',
-        //     'root' => storage_path('app/public'),
-        //     'url' => env('APP_URL').'/storage',
-        //     'visibility' => 'public',
-        // ],
-
-        // 's3' => [
-        //     'driver' => 's3',
-        //     'key' => env('AWS_ACCESS_KEY_ID'),
-        //     'secret' => env('AWS_SECRET_ACCESS_KEY'),
-        //     'region' => env('AWS_DEFAULT_REGION'),
-        //     'bucket' => env('AWS_BUCKET'),
-        //     'url' => env('AWS_URL'),
-        //     'endpoint' => env('AWS_ENDPOINT'),
-        // ],
+        's3' => [
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+        ],
 
     ],
 
