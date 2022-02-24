@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddMoreMailColumnsEmailLog extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,4 +33,4 @@ class AddMoreMailColumnsEmailLog extends Migration
             $table->dropColumn(['id', 'from', 'cc', 'headers', 'attachments']);
         });
     }
-}
+};

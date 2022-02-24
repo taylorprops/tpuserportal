@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddBccColumnEmailLog extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -31,4 +31,4 @@ class AddBccColumnEmailLog extends Migration
             $table->dropColumn('bcc');
         });
     }
-}
+};
