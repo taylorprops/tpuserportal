@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\BrightMLS;
 
-use Illuminate\Console\Command;
 use App\Jobs\Cron\BrightMLS\UpdateAgentsAndOfficesJob;
+use Illuminate\Console\Command;
 
 class UpdateAgentsAndOffices extends Command
 {

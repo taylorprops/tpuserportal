@@ -6,13 +6,18 @@ use Illuminate\View\Component;
 
 class Dropdown extends Component
 {
-
     public $buttonText;
+
     public $buttonClass;
+
     public $buttonSize;
+
     public $dropdownClasses;
+
     public $align;
+
     public $dropdownWidth;
+
     /**
      * Create a new component instance.
      *
@@ -20,12 +25,12 @@ class Dropdown extends Component
      */
     public function __construct($buttonText, $buttonClass, $buttonSize, $dropdownClasses, $align, $dropdownWidth)
     {
-        $this -> buttonText = $buttonText;
-        $this -> buttonClass = $buttonClass;
-        $this -> buttonSize = $buttonSize;
-        $this -> dropdownClasses = $dropdownClasses;
-        $this -> align = $align;
-        $this -> dropdownWidth = $dropdownWidth;
+        $this->buttonText = $buttonText;
+        $this->buttonClass = $buttonClass;
+        $this->buttonSize = $buttonSize;
+        $this->dropdownClasses = $dropdownClasses;
+        $this->align = $align;
+        $this->dropdownWidth = $dropdownWidth;
     }
 
     /**

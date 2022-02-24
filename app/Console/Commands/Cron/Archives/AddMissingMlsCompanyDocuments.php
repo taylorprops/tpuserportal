@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\Archives;
 
-use Illuminate\Console\Command;
 use App\Jobs\Cron\Archives\AddMissingMlsCompanyDocumentsJob;
+use Illuminate\Console\Command;
 
 class AddMissingMlsCompanyDocuments extends Command
 {

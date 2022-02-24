@@ -15,6 +15,6 @@ class CRMContactsSeeder extends Seeder
     public function run()
     {
         $count = 100;
-        CRMContacts::factory() -> count($count) -> create();
+        CRMContacts::factory()->count($count)->create();
     }
 }

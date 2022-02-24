@@ -10,7 +10,8 @@ class EsignDocuments extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'esign_documents';
-    protected $guarded = [];
 
+    protected $table = 'esign_documents';
+
+    protected $guarded = [];
 }

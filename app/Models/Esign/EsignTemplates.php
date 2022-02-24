@@ -10,7 +10,8 @@ class EsignTemplates extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'esign_templates';
-    protected $guarded = [];
 
+    protected $table = 'esign_templates';
+
+    protected $guarded = [];
 }

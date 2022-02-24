@@ -10,7 +10,8 @@ class ListingStatuses extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_listing_statuses';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_listing_statuses';
+
+    protected $guarded = [];
 }

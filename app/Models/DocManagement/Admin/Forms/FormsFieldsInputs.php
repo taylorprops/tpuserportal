@@ -10,7 +10,8 @@ class FormsFieldsInputs extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_forms_fields_inputs';
-    protected $guarded = [];
 
+    protected $table = 'docs_forms_fields_inputs';
+
+    protected $guarded = [];
 }

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\Archives;
 
-use Illuminate\Console\Command;
 use App\Jobs\Cron\Archives\AddMissingFieldsJob;
+use Illuminate\Console\Command;
 
 class AddMissingFields extends Command
 {

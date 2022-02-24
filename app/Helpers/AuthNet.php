@@ -2,17 +2,16 @@
 
 namespace App\Helpers;
 
-use App\Models\User;
 use App\Models\Billing\CreditCards;
+use App\Models\User;
 use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 
-class AuthNet {
-
-
-    public static function authenticate() {
-
-        if(config('app.env') == 'production') {
+class AuthNet
+{
+    public static function authenticate()
+    {
+        if (config('app.env') == 'production') {
             $login = config('global.authnet_login');
             $key = config('global.authnet_transkey');
         } else {
@@ -21,18 +20,14 @@ class AuthNet {
         }
 
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
-        $merchantAuthentication -> setName($login);
-        $merchantAuthentication -> setTransactionKey($key);
+        $merchantAuthentication->setName($login);
+        $merchantAuthentication->setTransactionKey($key);
 
         return $merchantAuthentication;
-
-
-
     }
 
-    public static function AddCreditCard($user_id, $profile_id, $email, $number, $expire_month, $expire_year, $street, $city, $state, $zip, $first, $last, $code) {
-
-
+    public static function AddCreditCard($user_id, $profile_id, $email, $number, $expire_month, $expire_year, $street, $city, $state, $zip, $first, $last, $code)
+    {
         $user_id = $user_id > 0 ? $user_id : 'na_'.time();
 
         $issuers = [
@@ -68,192 +63,181 @@ class AuthNet {
             'issuer' => $issuer,
         ];
 
-
-        if($profile_id) {
-
+        if ($profile_id) {
             CreditCards::where('profile_id', $profile_id)
-            -> update([
-                'default' => 'no'
+            ->update([
+                'default' => 'no',
             ]);
 
             return self::createCustomerPaymentProfile($card);
         } else {
             return self::createCustomerProfile($card);
         }
-
     }
 
-    public static function createCustomerProfile($card) {
-
+    public static function createCustomerProfile($card)
+    {
         $merchantAuthentication = self::authenticate();
 
         // Set the transaction's refId
-        $refId = 'ref' . time();
+        $refId = 'ref'.time();
 
         // Set credit card information for payment profile
         $creditCard = new AnetAPI\CreditCardType();
-        $creditCard -> setCardNumber($card['number']);
-        $creditCard -> setExpirationDate($card['expire']);
-        $creditCard -> setCardCode($card['code']);
+        $creditCard->setCardNumber($card['number']);
+        $creditCard->setExpirationDate($card['expire']);
+        $creditCard->setCardCode($card['code']);
         $paymentCreditCard = new AnetAPI\PaymentType();
-        $paymentCreditCard -> setCreditCard($creditCard);
+        $paymentCreditCard->setCreditCard($creditCard);
 
         // Create the Bill To info for new payment type
         $billTo = new AnetAPI\CustomerAddressType();
-        $billTo -> setFirstName($card['first']);
-        $billTo -> setLastName($card['last']);
-        $billTo -> setAddress($card['street']);
-        $billTo -> setCity($card['city']);
-        $billTo -> setState($card['state']);
-        $billTo -> setZip($card['zip']);
-        $billTo -> setCountry('USA');
+        $billTo->setFirstName($card['first']);
+        $billTo->setLastName($card['last']);
+        $billTo->setAddress($card['street']);
+        $billTo->setCity($card['city']);
+        $billTo->setState($card['state']);
+        $billTo->setZip($card['zip']);
+        $billTo->setCountry('USA');
 
         // Create a new CustomerPaymentProfile object
         $paymentProfile = new AnetAPI\CustomerPaymentProfileType();
-        $paymentProfile -> setCustomerType('individual');
-        $paymentProfile -> setBillTo($billTo);
-        $paymentProfile -> setPayment($paymentCreditCard);
+        $paymentProfile->setCustomerType('individual');
+        $paymentProfile->setBillTo($billTo);
+        $paymentProfile->setPayment($paymentCreditCard);
         $paymentProfiles[] = $paymentProfile;
 
         // Create a new CustomerProfileType and add the payment profile object
         $customerProfile = new AnetAPI\CustomerProfileType();
-        $customerProfile -> setDescription($card['first'].' '.$card['last']);
-        $customerProfile -> setMerchantCustomerId($card['user_id']);
-        $customerProfile -> setEmail($card['email']);
+        $customerProfile->setDescription($card['first'].' '.$card['last']);
+        $customerProfile->setMerchantCustomerId($card['user_id']);
+        $customerProfile->setEmail($card['email']);
 
-        $customerProfile -> setPaymentProfiles($paymentProfiles);
+        $customerProfile->setPaymentProfiles($paymentProfiles);
 
         // Assemble the complete transaction request
         $request = new AnetAPI\CreateCustomerProfileRequest();
-        $request -> setMerchantAuthentication($merchantAuthentication);
-        $request -> setRefId($refId);
-        $request -> setProfile($customerProfile);
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setRefId($refId);
+        $request->setProfile($customerProfile);
 
         // Create the controller and get the response
         $controller = new AnetController\CreateCustomerProfileController($request);
-        $response = $controller -> executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
-        if (($response != null) && ($response -> getMessages() -> getResultCode() == "Ok")) {
-
-            $paymentProfiles = $response -> getCustomerPaymentProfileIdList();
-
+        if (($response != null) && ($response->getMessages()->getResultCode() == 'Ok')) {
+            $paymentProfiles = $response->getCustomerPaymentProfileIdList();
         } else {
+            $errorMessages = $response->getMessages()->getMessage();
+            $error_text = $errorMessages[0]->getText();
 
-            $errorMessages = $response -> getMessages() -> getMessage();
-            $error_text = $errorMessages[0] -> getText();
+            $result = self::error_text($error_text);
 
-            $result = AuthNet::error_text($error_text);
             return $result;
-
         }
 
         $add_card = new CreditCards();
-        $add_card -> user_id = $card['user_id'];
-        $add_card -> first = $card['first'];
-        $add_card -> last = $card['last'];
-        $add_card -> email = $card['email'];
-        $add_card -> street = $card['street'];
-        $add_card -> city = $card['city'];
-        $add_card -> state = $card['state'];
-        $add_card -> zip = $card['zip'];
-        $add_card -> last_four = substr($card['number'], -4);
-        $add_card -> expire = $card['expire'];
-        $add_card -> code = $card['code'];
-        $add_card -> issuer = $card['issuer'];
-        $add_card -> profile_id = $response -> getCustomerProfileId();
-        $add_card -> payment_profile_id = $paymentProfiles[0];
-        $add_card -> save();
+        $add_card->user_id = $card['user_id'];
+        $add_card->first = $card['first'];
+        $add_card->last = $card['last'];
+        $add_card->email = $card['email'];
+        $add_card->street = $card['street'];
+        $add_card->city = $card['city'];
+        $add_card->state = $card['state'];
+        $add_card->zip = $card['zip'];
+        $add_card->last_four = substr($card['number'], -4);
+        $add_card->expire = $card['expire'];
+        $add_card->code = $card['code'];
+        $add_card->issuer = $card['issuer'];
+        $add_card->profile_id = $response->getCustomerProfileId();
+        $add_card->payment_profile_id = $paymentProfiles[0];
+        $add_card->save();
 
-
-        User::find($card['user_id']) -> update([
-            'profile_id' => $response -> getCustomerProfileId()
+        User::find($card['user_id'])->update([
+            'profile_id' => $response->getCustomerProfileId(),
         ]);
 
         //return true;
     }
 
-    public static function createCustomerPaymentProfile($card) {
-
+    public static function createCustomerPaymentProfile($card)
+    {
         $merchantAuthentication = self::authenticate();
 
         // Set the transaction's refId
-        $refId = 'ref' . time();
+        $refId = 'ref'.time();
 
         // Set credit card information for payment profile
         $creditCard = new AnetAPI\CreditCardType();
-        $creditCard -> setCardNumber($card['number']);
-        $creditCard -> setExpirationDate($card['expire']);
-        $creditCard -> setCardCode($card['code']);
+        $creditCard->setCardNumber($card['number']);
+        $creditCard->setExpirationDate($card['expire']);
+        $creditCard->setCardCode($card['code']);
         $paymentCreditCard = new AnetAPI\PaymentType();
-        $paymentCreditCard -> setCreditCard($creditCard);
+        $paymentCreditCard->setCreditCard($creditCard);
 
         // Create the Bill To info for new payment type
         $billTo = new AnetAPI\CustomerAddressType();
-        $billTo -> setFirstName($card['first']);
-        $billTo -> setLastName($card['last']);
-        $billTo -> setAddress($card['street']);
-        $billTo -> setCity($card['city']);
-        $billTo -> setState($card['state']);
-        $billTo -> setZip($card['zip']);
-        $billTo -> setCountry('USA');
+        $billTo->setFirstName($card['first']);
+        $billTo->setLastName($card['last']);
+        $billTo->setAddress($card['street']);
+        $billTo->setCity($card['city']);
+        $billTo->setState($card['state']);
+        $billTo->setZip($card['zip']);
+        $billTo->setCountry('USA');
 
         // Create a new Customer Payment Profile object
         $paymentProfile = new AnetAPI\CustomerPaymentProfileType();
-        $paymentProfile -> setCustomerType('individual');
-        $paymentProfile -> setBillTo($billTo);
-        $paymentProfile -> setPayment($paymentCreditCard);
-        $paymentProfile -> setDefaultPaymentProfile(true);
+        $paymentProfile->setCustomerType('individual');
+        $paymentProfile->setBillTo($billTo);
+        $paymentProfile->setPayment($paymentCreditCard);
+        $paymentProfile->setDefaultPaymentProfile(true);
 
         // Assemble the complete transaction request
         $paymentProfileRequest = new AnetAPI\CreateCustomerPaymentProfileRequest();
-        $paymentProfileRequest -> setMerchantAuthentication($merchantAuthentication);
+        $paymentProfileRequest->setMerchantAuthentication($merchantAuthentication);
 
         // Add an existing profile id to the request
-        $paymentProfileRequest -> setCustomerProfileId($card['profile_id']);
-        $paymentProfileRequest -> setPaymentProfile($paymentProfile);
-        $paymentProfileRequest -> setValidationMode('liveMode');
+        $paymentProfileRequest->setCustomerProfileId($card['profile_id']);
+        $paymentProfileRequest->setPaymentProfile($paymentProfile);
+        $paymentProfileRequest->setValidationMode('liveMode');
 
         // Create the controller and get the response
         $controller = new AnetController\CreateCustomerPaymentProfileController($paymentProfileRequest);
-        $response = $controller -> executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 
-        if (($response != null) && ($response -> getMessages() -> getResultCode() == 'Ok') ) {
-
-            $paymentProfileID = $response -> getCustomerPaymentProfileId();
-
+        if (($response != null) && ($response->getMessages()->getResultCode() == 'Ok')) {
+            $paymentProfileID = $response->getCustomerPaymentProfileId();
         } else {
+            $errorMessages = $response->getMessages()->getMessage();
+            $error_text = $errorMessages[0]->getText();
 
-            $errorMessages = $response -> getMessages() -> getMessage();
-            $error_text = $errorMessages[0] -> getText();
+            $result = self::error_text($error_text);
 
-            $result = AuthNet::error_text($error_text);
             return $result;
-
         }
 
         $add_card = new CreditCards();
-        $add_card -> user_id = $card['user_id'];
-        $add_card -> first = $card['first'];
-        $add_card -> last = $card['last'];
-        $add_card -> email = $card['email'];
-        $add_card -> street = $card['street'];
-        $add_card -> city = $card['city'];
-        $add_card -> state = $card['state'];
-        $add_card -> zip = $card['zip'];
-        $add_card -> last_four = substr($card['number'], -4);
-        $add_card -> expire = $card['expire'];
-        $add_card -> code = $card['code'];
-        $add_card -> issuer = $card['issuer'];
-        $add_card -> profile_id = $card['profile_id'];
-        $add_card -> payment_profile_id = $paymentProfileID;
-        $add_card -> save();
+        $add_card->user_id = $card['user_id'];
+        $add_card->first = $card['first'];
+        $add_card->last = $card['last'];
+        $add_card->email = $card['email'];
+        $add_card->street = $card['street'];
+        $add_card->city = $card['city'];
+        $add_card->state = $card['state'];
+        $add_card->zip = $card['zip'];
+        $add_card->last_four = substr($card['number'], -4);
+        $add_card->expire = $card['expire'];
+        $add_card->code = $card['code'];
+        $add_card->issuer = $card['issuer'];
+        $add_card->profile_id = $card['profile_id'];
+        $add_card->payment_profile_id = $paymentProfileID;
+        $add_card->save();
 
         //return true;
-
     }
 
-    public static function error_text($error_text) {
-
+    public static function error_text($error_text)
+    {
         $dash = strrpos($error_text, '-');
         if ($dash) {
             if (preg_match('/cardCode/', $error_text)) {
@@ -272,37 +256,30 @@ class AuthNet {
         }
 
         return $error_text;
-
     }
 
-
-    public static function deleteCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId) {
-
+    public static function deleteCustomerPaymentProfile($customerProfileId, $customerPaymentProfileId)
+    {
         $merchantAuthentication = self::authenticate();
 
-        $refId = 'ref' . time();
+        $refId = 'ref'.time();
 
-	    // Use an existing payment profile ID for this Merchant name and Transaction key
+        // Use an existing payment profile ID for this Merchant name and Transaction key
 
         $request = new AnetAPI\DeleteCustomerPaymentProfileRequest();
-        $request -> setMerchantAuthentication($merchantAuthentication);
-        $request -> setCustomerProfileId($customerProfileId);
-        $request -> setCustomerPaymentProfileId($customerPaymentProfileId);
+        $request->setMerchantAuthentication($merchantAuthentication);
+        $request->setCustomerProfileId($customerProfileId);
+        $request->setCustomerPaymentProfileId($customerPaymentProfileId);
         $controller = new AnetController\DeleteCustomerPaymentProfileController($request);
-        $response = $controller -> executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
-        if (($response != null) && ($response -> getMessages() -> getResultCode() == "Ok") ) {
+        $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+        if (($response != null) && ($response->getMessages()->getResultCode() == 'Ok')) {
+            CreditCards::where('profile_id', $customerProfileId)->where('payment_profile_id', $customerPaymentProfileId)->delete();
 
-            CreditCards::where('profile_id', $customerProfileId) -> where('payment_profile_id', $customerPaymentProfileId) -> delete();
-
-            return response() -> json(['success' => true]);
-
+            return response()->json(['success' => true]);
         } else {
+            $errorMessages = $response->getMessages()->getMessage();
 
-            $errorMessages = $response -> getMessages() -> getMessage();
-            return response() -> json(['error' => $errorMessages[0]-> getText()]);
-
+            return response()->json(['error' => $errorMessages[0]->getText()]);
         }
-
     }
-
 }

@@ -10,7 +10,8 @@ class EsignEnvelopes extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'esign_envelopes';
-    protected $guarded = [];
 
+    protected $table = 'esign_envelopes';
+
+    protected $guarded = [];
 }

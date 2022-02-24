@@ -10,11 +10,13 @@ class ChecklistPropertyTypes extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
+
     protected $table = 'docs_resources_checklist_property_types';
+
     protected $guarded = [];
 
-    public function checklists() {
-        return $this -> hasMany(\App\Models\DocManagement\Admin\Checklists\AdminChecklists::class, 'checklist_property_type_id') -> orderBy('checklist_order');
+    public function checklists()
+    {
+        return $this->hasMany(\App\Models\DocManagement\Admin\Checklists\AdminChecklists::class, 'checklist_property_type_id')->orderBy('checklist_order');
     }
-
 }

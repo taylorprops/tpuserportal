@@ -10,7 +10,8 @@ class TaskOptions extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_task_options';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_task_options';
+
+    protected $guarded = [];
 }

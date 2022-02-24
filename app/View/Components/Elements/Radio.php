@@ -6,9 +6,10 @@ use Illuminate\View\Component;
 
 class Radio extends Component
 {
-
     public $size;
+
     public $color;
+
     public $label;
 
     /**
@@ -18,9 +19,9 @@ class Radio extends Component
      */
     public function __construct($size, $color, $label)
     {
-        $this -> size = $size;
-        $this -> color = $color;
-        $this -> label = $label;
+        $this->size = $size;
+        $this->color = $color;
+        $this->label = $label;
     }
 
     /**

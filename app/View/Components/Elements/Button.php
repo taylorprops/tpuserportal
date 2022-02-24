@@ -6,8 +6,8 @@ use Illuminate\View\Component;
 
 class Button extends Component
 {
-
     public $buttonClass; // primary, secondary, danger, success
+
     public $buttonSize; // sm, md, lg
 
     /**
@@ -15,11 +15,10 @@ class Button extends Component
      *
      * @return void
      */
-
     public function __construct($buttonClass, $buttonSize)
     {
-        $this -> buttonClass = $buttonClass;
-        $this -> buttonSize = $buttonSize;
+        $this->buttonClass = $buttonClass;
+        $this->buttonSize = $buttonSize;
     }
 
     /**
@@ -27,7 +26,6 @@ class Button extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-
     public function render()
     {
         return view('components.elements.button');

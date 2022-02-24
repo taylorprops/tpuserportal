@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Agents extends Model
 {
     use HasFactory;
+
     protected $connection = 'archives';
+
     protected $table = 'agents';
+
     protected $primaryKey = 'id';
 }

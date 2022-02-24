@@ -10,8 +10,10 @@ class ChecklistLocations extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_checklist_locations';
-    public $timestamps = false;
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_checklist_locations';
+
+    public $timestamps = false;
+
+    protected $guarded = [];
 }

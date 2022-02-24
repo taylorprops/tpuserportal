@@ -14,7 +14,8 @@ class EmployeesDocs extends Model
     use Compoships;
 
     protected $connection = 'mysql';
-    protected $table = 'emp_docs';
-    protected $guarded = [];
 
+    protected $table = 'emp_docs';
+
+    protected $guarded = [];
 }

@@ -10,8 +10,10 @@ class FormTags extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_form_tags';
-    public $timestamps = false;
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_form_tags';
+
+    public $timestamps = false;
+
+    protected $guarded = [];
 }

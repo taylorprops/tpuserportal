@@ -10,7 +10,8 @@ class CompanyListings extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'company_listings';
-    protected $guarded = [];
 
+    protected $table = 'company_listings';
+
+    protected $guarded = [];
 }

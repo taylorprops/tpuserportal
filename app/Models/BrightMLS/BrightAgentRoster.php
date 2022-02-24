@@ -10,14 +10,18 @@ class BrightAgentRoster extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
+
     protected $table = 'bright_agent_roster';
+
     protected $primaryKey = 'MemberKey';
+
     protected $guarded = [];
+
     public $incrementing = false;
 
-
-    public function office() {
-        return $this -> hasOne(\App\Models\BrightMLS\BrightOffices::class, 'OfficeKey', 'OfficeKey');
+    public function office()
+    {
+        return $this->hasOne(\App\Models\BrightMLS\BrightOffices::class, 'OfficeKey', 'OfficeKey');
     }
 
     /* public static function boot() {
@@ -50,5 +54,4 @@ class BrightAgentRoster extends Model
                 -> where('bright_agent_roster.MemberSubType', 'like', '%salesperson%');
         });
     } */
-
 }

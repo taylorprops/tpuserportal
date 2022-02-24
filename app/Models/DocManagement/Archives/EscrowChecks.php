@@ -10,13 +10,15 @@ class EscrowChecks extends Model
     use HasFactory;
 
     protected $connection = 'archives';
+
     protected $table = 'escrow_checks';
+
     protected $primaryKey = 'id';
+
     public $timestamps = false;
 
-    public function escrow() {
-        return $this -> belongsTo(\App\Models\DocManagement\Archives\Escrow::class, 'escrow_id');
+    public function escrow()
+    {
+        return $this->belongsTo(\App\Models\DocManagement\Archives\Escrow::class, 'escrow_id');
     }
-
-
 }

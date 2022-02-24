@@ -10,8 +10,10 @@ class Loans extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
-    protected $table = 'tbl_loans';
-    protected $primaryKey = 'loan_id';
-    public $timestamps = false;
 
+    protected $table = 'tbl_loans';
+
+    protected $primaryKey = 'loan_id';
+
+    public $timestamps = false;
 }

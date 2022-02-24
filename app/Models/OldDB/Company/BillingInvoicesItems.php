@@ -10,12 +10,15 @@ class BillingInvoicesItems extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
+
     protected $table = 'billing_invoices_items';
+
     protected $primaryKey = 'in_item_id';
+
     public $timestamps = false;
 
-    public function invoice() {
-        return $this -> belongsTo(\App\Models\OldDB\Company\BillingInvoices::class, 'in_invoice_id', 'in_id');
+    public function invoice()
+    {
+        return $this->belongsTo(\App\Models\OldDB\Company\BillingInvoices::class, 'in_invoice_id', 'in_id');
     }
-
 }

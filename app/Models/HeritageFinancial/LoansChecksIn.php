@@ -10,7 +10,8 @@ class LoansChecksIn extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'heritage_financial_loans_checks_in';
-    protected $guarded = [];
 
+    protected $table = 'heritage_financial_loans_checks_in';
+
+    protected $guarded = [];
 }

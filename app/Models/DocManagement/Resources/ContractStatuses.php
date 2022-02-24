@@ -10,7 +10,8 @@ class ContractStatuses extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_contract_statuses';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_contract_statuses';
+
+    protected $guarded = [];
 }

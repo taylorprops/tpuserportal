@@ -10,9 +10,8 @@ class CCS extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
+
     protected $table = 'cc';
+
     protected $primaryKey = 'id';
-
-
-
 }

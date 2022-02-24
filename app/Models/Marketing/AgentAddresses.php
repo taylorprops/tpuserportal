@@ -10,7 +10,8 @@ class AgentAddresses extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'marketing_agent_addresses';
-    protected $guarded = [];
 
+    protected $table = 'marketing_agent_addresses';
+
+    protected $guarded = [];
 }

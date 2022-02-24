@@ -10,7 +10,8 @@ class FormsPages extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_forms_pages';
-    protected $guarded = [];
 
+    protected $table = 'docs_forms_pages';
+
+    protected $guarded = [];
 }

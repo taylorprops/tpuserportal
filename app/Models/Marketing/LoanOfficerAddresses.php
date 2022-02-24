@@ -10,7 +10,8 @@ class LoanOfficerAddresses extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'marketing_loan_officer_addresses';
-    protected $guarded = [];
 
+    protected $table = 'marketing_loan_officer_addresses';
+
+    protected $guarded = [];
 }

@@ -10,8 +10,10 @@ class Escrow extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
-    protected $table = 'escrow';
-    protected $primaryKey = 'id';
-    public $timestamps = false;
 
+    protected $table = 'escrow';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
 }

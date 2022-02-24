@@ -10,7 +10,8 @@ class EarnestAccounts extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_earnest_accounts';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_earnest_accounts';
+
+    protected $guarded = [];
 }

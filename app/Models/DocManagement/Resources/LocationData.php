@@ -10,16 +10,18 @@ class LocationData extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
+
     protected $table = 'docs_resources_location_data';
 
     public $guarded = [];
 
-    public function scopeGetStates() {
-        return $this -> select('state') -> distinct() -> orderBy('state') -> get();
+    public function scopeGetStates()
+    {
+        return $this->select('state')->distinct()->orderBy('state')->get();
     }
 
-    public function scopeActiveStates() {
+    public function scopeActiveStates()
+    {
         return config('global.company_active_states');
     }
-
 }

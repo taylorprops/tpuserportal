@@ -3,14 +3,14 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use App\Models\BrightMLS\BrightOffices;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\BrightMLS\BrightOffices;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class UpdateAgentsAndOfficesJob implements ShouldQueue
@@ -24,7 +24,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this -> onQueue('bright_update_agents_and_offices');
+        $this->onQueue('bright_update_agents_and_offices');
     }
 
     /**
@@ -32,35 +32,33 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle() {
-
-        ini_set('memory_limit','-1');
+    public function handle()
+    {
+        ini_set('memory_limit', '-1');
 
         $rets = Helper::rets_login();
 
-        $this -> queueData(['uuid' => $this -> job -> uuid()], true);
+        $this->queueData(['uuid' => $this->job->uuid()], true);
 
         $progress = 0;
-        $this -> queueProgress($progress);
+        $this->queueProgress($progress);
 
-        $this -> update_offices($rets);
-        $this -> queueProgress(20);
+        $this->update_offices($rets);
+        $this->queueProgress(20);
 
-        $this -> update_agents($rets);
-        $this -> queueProgress(50);
+        $this->update_agents($rets);
+        $this->queueProgress(50);
 
-        $this -> remove_agents($rets);
-        $this -> queueProgress(100);
+        $this->remove_agents($rets);
+        $this->queueProgress(100);
 
-        $rets -> Disconnect();
+        $rets->Disconnect();
 
         return true;
-
     }
 
-
-    public function update_offices($rets) {
-
+    public function update_offices($rets)
+    {
         $resource = 'Office';
         $class = 'Office';
 
@@ -68,16 +66,16 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        $results = $rets -> Search(
+        $results = $rets->Search(
             $resource,
             $class,
             $query
         );
 
-        $offices = $results -> toArray();
+        $offices = $results->toArray();
         $total_found = count($offices);
 
-        $count_before = BrightOffices::get() -> count();
+        $count_before = BrightOffices::get()->count();
 
         if ($total_found > 0) {
             foreach ($offices as $office) {
@@ -90,18 +88,16 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                     $office_details
                 );
 
-                $add_office -> save();
+                $add_office->save();
             }
         }
 
-        $count_after = BrightOffices::get() -> count();
-        $this -> queueData(['Offices', 'count before' => $count_before, 'count after' => $count_after], true);
-
+        $count_after = BrightOffices::get()->count();
+        $this->queueData(['Offices', 'count before' => $count_before, 'count after' => $count_after], true);
     }
 
-
-    public function update_agents($rets) {
-
+    public function update_agents($rets)
+    {
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
@@ -109,25 +105,23 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
-        $results = $rets -> Search(
+        $results = $rets->Search(
             $resource,
             $class,
             $query
         );
 
-        $agents = $results -> toArray();
+        $agents = $results->toArray();
         $total_found = count($agents);
 
-        $count_before = BrightAgentRoster::get() -> count();
+        $count_before = BrightAgentRoster::get()->count();
 
-        if($total_found > 0) {
-
+        if ($total_found > 0) {
             $progress = 20;
             $increment = 30 / count($agents);
             foreach ($agents as $agent) {
-
                 $progress += $increment;
-                $this -> queueProgress($progress);
+                $this->queueProgress($progress);
 
                 $agent_details = array_filter($agent);
                 $agent['active'] = 'yes';
@@ -139,92 +133,83 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                     $agent_details
                 );
 
-                $add_agent -> save();
-
+                $add_agent->save();
             }
-
         }
 
-        $count_after = BrightAgentRoster::get() -> count();
-        $this -> queueData(['Agents', 'count before' => $count_before, 'count after' => $count_after], true);
-
+        $count_after = BrightAgentRoster::get()->count();
+        $this->queueData(['Agents', 'count before' => $count_before, 'count after' => $count_after], true);
     }
 
-    public function remove_agents($rets) {
-
+    public function remove_agents($rets)
+    {
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
         $query = '(MemberStatus=|Active)';
 
-        $results = $rets -> Search(
+        $results = $rets->Search(
             $resource,
             $class,
             $query,
             [
                 'Count' => '0',
-                'Select' => 'MemberKey'
+                'Select' => 'MemberKey',
             ]
         );
 
-        $agents_in_bright = $results -> toArray();
+        $agents_in_bright = $results->toArray();
         $agents_in_bright_count = count($agents_in_bright);
         $agents_in_bright_array = [];
-        foreach($agents_in_bright as $agent_in_bright) {
-            $agents_in_bright_array[] = (int)$agent_in_bright['MemberKey'];
+        foreach ($agents_in_bright as $agent_in_bright) {
+            $agents_in_bright_array[] = (int) $agent_in_bright['MemberKey'];
         }
 
-        $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
+        $agents_in_db = BrightAgentRoster::where('active', 'yes')->get()->pluck('MemberKey')->toArray();
         $agents_in_db_count = count($agents_in_db);
 
-        if($agents_in_bright_count != $agents_in_db_count) {
-
+        if ($agents_in_bright_count != $agents_in_db_count) {
             $deactivate_agents = [];
-            foreach($agents_in_db as $agent) {
-                if(!in_array($agent, $agents_in_bright_array)) {
+            foreach ($agents_in_db as $agent) {
+                if (! in_array($agent, $agents_in_bright_array)) {
                     $deactivate_agents[] = $agent;
                 }
             }
 
-            if(count($deactivate_agents) > 0) {
-
+            if (count($deactivate_agents) > 0) {
                 BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
-                -> update([
+                ->update([
                     'active' => 'no',
-                    'date_purged' => date('Y-m-d')
+                    'date_purged' => date('Y-m-d'),
                 ]);
-
             }
 
             $missing_agents = [];
-            foreach($agents_in_bright_array as $agent) {
-                if(!in_array($agent, $agents_in_db)) {
+            foreach ($agents_in_bright_array as $agent) {
+                if (! in_array($agent, $agents_in_db)) {
                     $missing_agents[] = $agent;
                 }
             }
 
-            if(count($missing_agents) > 0) {
-
+            if (count($missing_agents) > 0) {
                 $agents_in_db_string = implode(', ', $missing_agents);
 
                 $query = '(MemberKey='.$agents_in_db_string.')';
 
-                $results = $rets -> Search(
+                $results = $rets->Search(
                     $resource,
                     $class,
                     $query,
                     [
                         'Count' => 0,
-                        'Limit' => 1000
+                        'Limit' => 1000,
                     ]
                 );
 
-                $agents = $results -> toArray();
+                $agents = $results->toArray();
 
-                if(count($agents) > 0) {
-
+                if (count($agents) > 0) {
                     foreach ($agents as $agent) {
-
                         $agent_details = array_filter($agent);
                         $agent['active'] = 'yes';
                         $MemberKey = $agent['MemberKey'];
@@ -235,16 +220,11 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                             $agent_details
                         );
 
-                        $add_agent -> save();
-
+                        $add_agent->save();
                     }
-
                 }
-
             }
-
         }
-
     }
 
     // public function remove_agents($rets) {

@@ -10,11 +10,13 @@ class TransactionCoordinators extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
+
     protected $table = 'emp_transaction_coordinators';
+
     protected $guarded = [];
 
-    public function user() {
-        return $this -> hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+    public function user()
+    {
+        return $this->hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
     }
-
 }

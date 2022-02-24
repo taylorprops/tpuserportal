@@ -8,10 +8,10 @@ use Maatwebsite\Excel\Concerns\ToModel;
 class AgentDatabaseImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         return new AgentDatabase([
@@ -25,7 +25,7 @@ class AgentDatabaseImport implements ToModel
             'zip'     => $row[7],
             'company'     => $row[8],
             'start_date'     => date('Y-m-d', strtotime($row[9])),
-            'fullname' => $row[0].' '.$row[1]
+            'fullname' => $row[0].' '.$row[1],
         ]);
     }
 }

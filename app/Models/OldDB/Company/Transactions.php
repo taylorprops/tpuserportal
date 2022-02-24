@@ -10,13 +10,17 @@ class Transactions extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
+
     protected $table = 'mls_company';
+
     protected $primaryKey = 'ListingSourceRecordKey';
+
     protected $fillable = ['ListingSourceRecordKey', 'ListingSourceRecordId', 'downloaded'];
+
     public $timestamps = false;
 
-    public function docs() {
-        return $this -> hasMany(\App\Models\OldDB\Company\Documents::class, 'upload_mls', 'ListingSourceRecordId');
+    public function docs()
+    {
+        return $this->hasMany(\App\Models\OldDB\Company\Documents::class, 'upload_mls', 'ListingSourceRecordId');
     }
-
 }

@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\HeritageFinancial\Loans;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function dashboard(Request $request) {
-
-        $group = auth() -> user() -> group;
+    public function dashboard(Request $request)
+    {
+        $group = auth()->user()->group;
 
         // Mortgage
         if ($group == 'mortgage' || $group == 'in_house') {
-
             $active_loans = Loans::where('loan_status', 'Open')
-            -> orderBy('settlement_date', 'desc')
-            -> get();
+            ->orderBy('settlement_date', 'desc')
+            ->get();
 
             $recent_commissions = Loans::where('loan_status', 'Closed')
-            -> where('settlement_date', '>', date('Y-m-d', strtotime('-3 month')))
-            -> orderBy('settlement_date', 'desc')
-            -> get();
+            ->where('settlement_date', '>', date('Y-m-d', strtotime('-3 month')))
+            ->orderBy('settlement_date', 'desc')
+            ->get();
 
             $table_headers = [
                 ['title' => 'Locked', 'db_field' => 'locked'],
@@ -44,14 +43,8 @@ class DashboardController extends Controller
             ];
 
             return view('/dashboard/dashboard_'.$group, compact('group', 'active_loans', 'recent_commissions', 'table_headers'));
-
-        } else if ($group == 'in_house') {
-
+        } elseif ($group == 'in_house') {
             return view('/dashboard/dashboard_'.$group, compact('group'));
-
         }
-
-
-
     }
 }

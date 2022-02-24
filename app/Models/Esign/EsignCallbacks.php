@@ -10,7 +10,8 @@ class EsignCallbacks extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'esign_callbacks';
-    protected $guarded = [];
 
+    protected $table = 'esign_callbacks';
+
+    protected $guarded = [];
 }

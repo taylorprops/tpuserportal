@@ -10,7 +10,8 @@ class CompanyBrightOffices extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'company_bright_offices';
-    protected $guarded = [];
 
+    protected $table = 'company_bright_offices';
+
+    protected $guarded = [];
 }

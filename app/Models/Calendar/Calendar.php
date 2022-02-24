@@ -10,7 +10,8 @@ class Calendar extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'calendar';
-    protected $guarded = [];
 
+    protected $table = 'calendar';
+
+    protected $guarded = [];
 }

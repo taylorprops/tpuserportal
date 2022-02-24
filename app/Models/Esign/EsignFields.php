@@ -10,7 +10,8 @@ class EsignFields extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'esign_fields';
-    protected $guarded = [];
 
+    protected $table = 'esign_fields';
+
+    protected $guarded = [];
 }
