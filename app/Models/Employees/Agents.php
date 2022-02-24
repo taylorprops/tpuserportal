@@ -27,6 +27,6 @@ class Agents extends Model
 
     public function user()
     {
-        return $this->hasMany('App\Models\User', ['user_id', 'group'], ['id', 'emp_type']);
+        return $this->hasMany(\App\Models\User::class, ['user_id', 'group'], ['id', 'emp_type']);
     }
 }
