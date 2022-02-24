@@ -21,7 +21,7 @@
             @foreach($agents as $agent)
                 <tr>
                     <td>{{ $agent -> last_name.', '.$agent -> first_name }}</td>
-                    <td>{{ $agent -> city.', '.$agent -> state.' '.$agent -> zip }}</td>
+                    <td>{{ $agent -> street.' '.$agent -> city.', '.$agent -> state.' '.$agent -> zip }}</td>
                     <td><a href="mailto:{{ $agent -> email }}" class="text-primary-light hover:text-primary" target="_blank">{{ $agent -> email }}</a></td>
                     <td><a href="tel:{{ $agent -> cell_phone }}" class="text-primary-light hover:text-primary" target="_blank">{{ $agent -> cell_phone }}</a></td>
                     <td>{{ date('m/d/Y', strtotime($agent -> start_date)) }}</td>
