@@ -292,6 +292,7 @@ class APIController extends Controller {
                 $loan -> county = $county;
                 $loan -> zip = $zip;
                 $loan -> tax_record_link = $tax_record_link;
+                $loan -> property_details = $property_full_details;
             }
 
 
@@ -345,6 +346,7 @@ class APIController extends Controller {
             $loan -> save();
 
             $tax_record_link = $loan -> tax_record_link;
+            $property_full_details = $loan -> property_details;
 
             $db_log_data_after = Loans::find($loan -> id);
             $changed_by = auth() -> user() -> id ?? 'system';
@@ -359,7 +361,7 @@ class APIController extends Controller {
                 'status' => $status,
                 'action' => $action,
                 'tax_record_link' => $tax_record_link,
-                'property_full_details' => $property_full_details,
+                'property_full_details' => json_decode($property_full_details),
             ]);
 
         }
