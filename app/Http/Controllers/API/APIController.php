@@ -47,6 +47,7 @@ class APIController extends Controller {
 
             $action = $request -> action ?? null;
             $loan_id =  $request -> loan_id ?? null;
+            return $action;
 
             $lending_pad_uuid = $request -> lending_pad_uuid;
             $lending_pad_loan_number = $request -> lending_pad_loan_number;
@@ -342,7 +343,7 @@ class APIController extends Controller {
             if($request -> Appraisal_Delivered) {
                 $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
             }
-            return $loan;
+
             $loan -> save();
 
             $tax_record_link = $loan -> tax_record_link;
