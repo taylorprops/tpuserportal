@@ -192,6 +192,12 @@ class APIController extends Controller {
             if($action && $action == 'match') {
                 $loan = Loans::with(['loan_officer_1']) -> find($loan_id);
                 $status = 'matched';
+            } else if($action && $action == 'add') {
+                // add loan
+                $loan = new Loans();
+                $status = 'added';
+                $loan -> uuid = (string) Str::uuid();
+                $db_log_data_before = null;
             }
 
             if(!$loan) {
@@ -260,17 +266,7 @@ class APIController extends Controller {
             if($loan) {
                 $db_log_data_before = $loan -> replicate();
             }
-            if($action) {
-                return $action;
-            }
 
-            if($action && $action == 'add') {
-                // add loan
-                $loan = new Loans();
-                $status = 'added';
-                $loan -> uuid = (string) Str::uuid();
-                $db_log_data_before = null;
-            }
 
 
             $loan -> lending_pad_uuid = $lending_pad_uuid;
