@@ -47,7 +47,9 @@ class APIController extends Controller {
 
             $action = $request -> action ?? null;
             $loan_id =  $request -> loan_id ?? null;
-            return $action;
+            if($action) {
+                return $action;
+            }
 
             $lending_pad_uuid = $request -> lending_pad_uuid;
             $lending_pad_loan_number = $request -> lending_pad_loan_number;
