@@ -37,7 +37,7 @@ class APIController extends Controller {
         // verify request is coming from our lending pad account
         $client_id = $request -> client_id;
         if($client_id != 'd7acee3e89454909ae18d06e9a18c077') {
-            abort(403);
+            return response() -> json(['status' => 'success']);
         }
 
         $loan_status_detailed = $request -> loan_status;
