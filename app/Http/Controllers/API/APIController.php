@@ -342,7 +342,7 @@ class APIController extends Controller {
             if($request -> Appraisal_Delivered) {
                 $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
             }
-
+            return $loan;
             $loan -> save();
 
             $tax_record_link = $loan -> tax_record_link;
