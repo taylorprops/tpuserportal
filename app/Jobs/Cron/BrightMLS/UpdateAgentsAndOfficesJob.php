@@ -245,83 +245,19 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         }
 
+        // remove unwanted emails
+        $reject_emails = ['yopmail.com', 'brightmls.com', 'mris.net'];
+        $agents = BrightAgentRoster::where(function($query) use ($reject_emails) {
+            foreach($reject_emails as $reject) {
+                $query -> orWhere('MemberEmail', 'like', '%'.$reject.'%');
+            }
+        })
+        -> update([
+            'active' => 'no',
+            'date_purged' => date('Y-m-d')
+        ]);
+
     }
 
-    // public function remove_agents($rets) {
 
-    //     $resource = 'ActiveAgent';
-    //     $class = 'ActiveMember';
-    //     $search_for = 10000;
-
-    //     $select = ['MemberKey'];
-    //     $agents_in_db_array = BrightAgentRoster::select($select)
-    //     -> where(function($query) {
-    //         $query -> where('removal_date_checked', '!=', date('Y-m-d'))
-    //         -> orWhereNull('removal_date_checked');
-    //     })
-    //     // -> where('active', 'yes')
-    //     -> limit($search_for)
-    //     -> get()
-    //     -> pluck('MemberKey')
-    //     -> toArray();
-
-    //     if (count($agents_in_db_array) < $search_for) {
-    //         $search_for = count($agents_in_db_array);
-    //     }
-
-    //     $data[] = 'search_for = '.$search_for.', agents_in_db_array = '.count($agents_in_db_array);
-
-    //     if ($search_for > 0) {
-
-    //         $agents_in_db_string = implode(', ', $agents_in_db_array);
-
-    //         $query = '(MemberKey='.$agents_in_db_string.')';
-
-    //         $results = $rets -> Search(
-    //             $resource,
-    //             $class,
-    //             $query,
-    //             [
-    //                 'Count' => 0
-    //             ]
-    //         );
-
-    //         $agents = $results -> toArray();
-    //         $total_found = count($agents);
-    //         $data[] = 'total_found = '.$total_found;
-
-    //         // if not all agents in db are found in bright
-    //         if ($total_found != $search_for) {
-
-    //             $data[] = 'Found Missing';
-    //             $MemberKeys = [];
-
-    //             $increment = 50 / count($agents);
-    //             $progress = 50;
-    //             foreach ($agents as $agent) {
-    //                 $MemberKeys[] = $agent['MemberKey'];
-    //                 $progress += $increment;
-    //                 $this -> queueProgress($progress);
-    //             }
-
-    //             $not_found = array_diff($agents_in_db_array, $MemberKeys);
-
-    //             $deactivate_agents = BrightAgentRoster::whereIn('MemberKey', $not_found)
-    //             -> update([
-    //                 'active' => 'no',
-    //                 'removal_date_checked' => date('Y-m-d')
-    //             ]);
-
-    //         }
-
-    //         $update_removal_date_checked = BrightAgentRoster::whereIn('MemberKey', $agents_in_db_array)
-    //         -> update([
-    //             'removal_date_checked' => date('Y-m-d')
-    //         ]);
-
-    //     }
-
-    //     $this -> queueData([$data], true);
-
-    // }
 }

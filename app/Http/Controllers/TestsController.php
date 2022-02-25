@@ -29,6 +29,21 @@ use App\Models\DocManagement\Resources\CommonFieldsGroups;
 class TestsController extends Controller
 {
 
+    public function test(Request $request) {
+
+        $reject_emails = ['yopmail.com', 'brightmls.com', 'mris.net'];
+        $agents = BrightAgentRoster::where(function($query) use ($reject_emails) {
+            foreach($reject_emails as $reject) {
+                $query -> orWhere('MemberEmail', 'like', '%'.$reject.'%');
+            }
+        }) -> get();
+
+        foreach($agents as $agent) {
+            echo $agent -> MemberEmail.'<br>';
+        }
+
+    }
+
     public function edit_los(Request $request) {
 
         //dump(count(LoanOfficerAddresses::whereNull('full_name') -> get()));
@@ -111,7 +126,7 @@ class TestsController extends Controller
                 $missing_agents[] = $agent;
             }
         }
-dd(count($missing_agents));
+
         if(count($missing_agents) > 0) {
 
             $agents_in_db_string = implode(', ', $missing_agents);
@@ -450,16 +465,4 @@ dd(count($missing_agents));
 
     }
 
-    public function test(Request $request) {
-
-        $form = Forms::with(['fields', 'pages']) -> find(185);
-        $pages = $form -> pages;
-
-        $common_fields_people = CommonFieldsGroups::with(['sub_groups', 'sub_groups.common_fields'])
-        -> where('group_name', 'People')
-        -> first();
-
-        return view('/tests/test', compact('form', 'pages', 'common_fields_people'));
-
-    }
 }
