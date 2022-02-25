@@ -128,10 +128,6 @@ class APIController extends Controller {
                     $tax_record_link = $tax_records['details']['TaxRecordLink'];
                 }
 
-                if($action) {
-                    return $action;
-                }
-
             }
 
 
@@ -211,6 +207,9 @@ class APIController extends Controller {
 
             }
 
+            if($action) {
+                return $action;
+            }
             // if no loan search for matches by address and borrower
             if(!$loan) {
 
