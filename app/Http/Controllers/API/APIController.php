@@ -47,9 +47,6 @@ class APIController extends Controller {
 
             $action = $request -> action ?? null;
             $loan_id =  $request -> loan_id ?? null;
-            if($action) {
-                return $action;
-            }
 
             $lending_pad_uuid = $request -> lending_pad_uuid;
             $lending_pad_loan_number = $request -> lending_pad_loan_number;
@@ -129,6 +126,10 @@ class APIController extends Controller {
                 $property_full_details = $tax_records['details'];
                 if(isset($tax_records['details']['TaxRecordLink']) && $tax_records['details']['TaxRecordLink'] != '' ){
                     $tax_record_link = $tax_records['details']['TaxRecordLink'];
+                }
+
+                if($action) {
+                    return $action;
                 }
 
             }
