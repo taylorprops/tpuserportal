@@ -207,9 +207,6 @@ class APIController extends Controller {
 
             }
 
-            if($action) {
-                return $action;
-            }
             // if no loan search for matches by address and borrower
             if(!$loan) {
 
@@ -263,7 +260,9 @@ class APIController extends Controller {
             if($loan) {
                 $db_log_data_before = $loan -> replicate();
             }
-
+            if($action) {
+                return $action;
+            }
 
             if($action && $action == 'add') {
                 // add loan
