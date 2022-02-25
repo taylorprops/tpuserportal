@@ -45,7 +45,7 @@ class APIController extends Controller {
 
         if(!in_array($loan_status_detailed, $ignore_statuses)) {
 
-            $loan_action = $request -> loan_action ?? null;
+            $action = $request -> action ?? null;
             $loan_id =  $request -> loan_id ?? null;
 
             $lending_pad_uuid = $request -> lending_pad_uuid;
@@ -102,7 +102,7 @@ class APIController extends Controller {
             $tax_record_link = null;
             $property_full_details = null;
 
-            if($update_address == 'yes' || $loan_action == 'add' || $loan_action == 'match') {
+            if($update_address == 'yes' || $action == 'add' || $action == 'match') {
 
                 $address = Helper::parse_address_google($address);
                 $street_number = $address['street_number'] ?? null;
@@ -189,7 +189,7 @@ class APIController extends Controller {
             $loan = null;
 
 
-            if($loan_action && $loan_action == 'match') {
+            if($action && $action == 'match') {
                 $loan = Loans::with(['loan_officer_1']) -> find($loan_id);
                 $status = 'matched';
             }
@@ -251,7 +251,7 @@ class APIController extends Controller {
 
             }
 
-            if(!$loan && (!$loan_action || $loan_action == 'retry')) {
+            if(!$loan && (!$action || $action == 'retry')) {
                 return response() -> json([
                     'status' => 'not_found'
                 ]);
@@ -262,7 +262,7 @@ class APIController extends Controller {
             }
 
 
-            if($loan_action && $loan_action == 'add') {
+            if($action && $action == 'add') {
                 // add loan
                 $loan = new Loans();
                 $status = 'added';
@@ -285,7 +285,7 @@ class APIController extends Controller {
             $loan -> co_borrower_last = $co_borrower_last;
             $loan -> co_borrower_fullname = $co_borrower_fullname;
 
-            if($update_address == 'yes' || $loan_action == 'add' || $loan_action == 'match') {
+            if($update_address == 'yes' || $action == 'add' || $action == 'match') {
                 $loan -> street = $street;
                 $loan -> city = $city;
                 $loan -> state = $state;
@@ -359,7 +359,7 @@ class APIController extends Controller {
 
             return response() -> json([
                 'status' => $status,
-                'loan_action' => $loan_action,
+                'action' => $action,
                 'tax_record_link' => $tax_record_link,
                 'property_full_details' => json_decode($property_full_details),
             ]);
