@@ -12,6 +12,9 @@ $active_tab = '1';
 if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
     $active_tab = '3';
 }
+
+$disabled = '';
+
 @endphp
 <x-app-layout>
     @section('title') {{ $title }} @endsection
@@ -341,85 +344,18 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
 
-                            <div class="col-span-1 m-2 sm:m-3">
-                                @php
-                                $loan_status_detailed_open = $loan && $loan -> loan_status == 'Open' ? ' / '.$loan -> loan_status_detailed : null;
-                                $loan_status_detailed_closed = $loan && $loan -> loan_status == 'Closed' ? ' / '.$loan -> loan_status_detailed : null;
-                                $loan_status_detailed_cancelled = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
-
-                                @endphp
-                                <select
-                                class="form-element select {{ $input_size }} required"
-                                id="loan_status"
-                                name="loan_status"
-                                data-label="Loan Status"
-                                @change="require_title($el.value);
-                                require_close_date($el.value);
-                                let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
-                                $refs.settlement_date.previousElementSibling.innerText = label_text;">
-                                    <option value=""></option>
-                                    <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open {{ $loan_status_detailed_open }}</option>
-                                    <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed {{ $loan_status_detailed_closed }}</option>
-                                    <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled {{ $loan_status_detailed_cancelled }}</option>
-                                </select>
-                            </div>
-
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <input
-                                type="date"
-                                class="form-element input {{ $input_size }} @if($loan && $loan -> loan_status != 'Open') required @endif"
-                                id="settlement_date"
-                                name="settlement_date"
-                                x-ref="settlement_date"
-                                data-label=" @if($loan && $loan -> loan_status == 'Cancelled') Cancelled Date @else Settlement Date @endif"
-                                value="{{ $loan -> settlement_date ?? null }}">
-                            </div>
-
+                            {{-- Points Charged --}}
                             <div class="col-span-1 m-2 sm:m-3">
                                 <input
                                 type="text"
-                                class="form-element input {{ $input_size }} required"
-                                id="loan_number"
-                                name="loan_number"
-                                data-label="Loan Number"
-                                value="{{ $loan -> loan_number ?? null }}">
-                            </div>
-
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <input
-                                type="text"
-                                class="form-element input {{ $input_size }}"
-                                id="lending_pad_loan_number"
-                                name="lending_pad_loan_number"
-                                data-label="Lending Pad Loan Number"
-                                readonly
-                                value="{{ $loan -> lending_pad_loan_number ?? null }}">
-                            </div>
-
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <input
-                                type="text"
-                                class="form-element input {{ $input_size }} numbers-only money-decimal required"
-                                id="loan_amount"
-                                name="loan_amount"
-                                data-label="Loan Amount"
-                                value="{{ $loan -> loan_amount ?? null }}">
-                            </div>
-
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <input
-                                type="text"
-                                class="form-element input {{ $input_size }} text-center numbers-only required"
+                                class="form-element input {{ $input_size }} numbers-only required"
                                 id="points_charged"
                                 name="points_charged"
                                 data-label="Points Charged"
                                 value="{{ $loan -> points_charged ?? '0.00' }}">
                             </div>
 
+                            {{-- Loan Source --}}
                             <div class="col-span-1 m-2 sm:m-3">
                                 <select
                                 class="form-element select {{ $input_size }} required"
@@ -432,23 +368,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 </select>
                             </div>
 
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <select
-                                class="form-element select {{ $input_size }} required"
-                                id="lender_uuid"
-                                name="lender_uuid"
-                                data-label="Lender">
-                                    <option value=""></option>
-                                    @foreach($lenders as $lender)
-                                        <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-
+                            {{-- Mortgage Type --}}
                             <div class="col-span-1 m-2 sm:m-3">
                                 <select
                                 class="form-element select {{ $input_size }} required"
@@ -461,39 +381,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                                 </select>
                             </div>
 
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <select
-                                class="form-element select {{ $input_size }} required"
-                                id="loan_type"
-                                name="loan_type"
-                                data-label="Loan Type">
-                                    <option value=""></option>
-                                    <option value="Conventional" @if($loan && $loan -> loan_type == 'Conventional') selected @endif>Conventional</option>
-                                    <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
-                                    <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
-                                    <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
-                                    <option value="HELOC" @if($loan && $loan -> loan_type == 'HELOC') selected @endif>HELOC</option>
-                                    <option value="HEL" @if($loan && $loan -> loan_type == 'HEL') selected @endif>HEL</option>
-                                    <option value="Other" @if($loan && $loan -> loan_type == 'Other') selected @endif>Other</option>
-                                </select>
-                            </div>
-
-                            <div class="col-span-1 m-2 sm:m-3">
-                                <select
-                                class="form-element select {{ $input_size }} required"
-                                id="loan_purpose"
-                                name="loan_purpose"
-                                data-label="Loan Purpose">
-                                    <option value=""></option>
-                                    <option value="Purchase" @if($loan && $loan -> loan_purpose == 'Purchase') selected @endif>Purchase</option>
-                                    <option value="Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'Cash Out Refinance') selected @endif>Cash Out Refinance</option>
-                                    <option value="No Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'No Cash Out Refinance') selected @endif>No Cash Out Refinance</option>
-                                    <option value="Construction" @if($loan && $loan -> loan_purpose == 'Construction') selected @endif>Construction</option>
-                                    <option value="Construction Permanent" @if($loan && $loan -> loan_purpose == 'Construction Permanent') selected @endif>Construction Permanent</option>
-                                    <option value="Other" @if($loan && $loan -> loan_purpose == 'Other') selected @endif>Other</option>
-                                </select>
-                            </div>
-
+                            {{-- Reverse Mortgage --}}
                             <div class="col-span-1 m-2 sm:m-3">
                                 <select
                                 class="form-element select {{ $input_size }} required"
@@ -507,6 +395,148 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             </div>
 
                         </div>
+
+                        @if($loan)
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                                {{-- Loan Status --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    @php
+                                    $loan_status_detailed_open = $loan && $loan -> loan_status == 'Open' ? ' / '.$loan -> loan_status_detailed : null;
+                                    $loan_status_detailed_closed = $loan && $loan -> loan_status == 'Closed' ? ' / '.$loan -> loan_status_detailed : null;
+                                    $loan_status_detailed_cancelled = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
+
+                                    @endphp
+                                    <select
+                                    class="form-element select {{ $input_size }}"
+                                    id="loan_status"
+                                    name="loan_status"
+                                    data-label="Loan Status"
+                                    {{ $disabled }}
+                                    @change="require_title($el.value);
+                                    require_close_date($el.value);
+                                    let label_text = $el.value == 'Cancelled' ? 'Cancel Date' : 'Settlement Date';
+                                    $refs.settlement_date.previousElementSibling.innerText = label_text;">
+                                        <option value=""></option>
+                                        <option value="Open" @if($loan && $loan -> loan_status == 'Open') selected @endif>Open {{ $loan_status_detailed_open }}</option>
+                                        <option value="Closed" @if($loan && $loan -> loan_status == 'Closed') selected @endif>Closed {{ $loan_status_detailed_closed }}</option>
+                                        <option value="Cancelled" @if($loan && $loan -> loan_status == 'Cancelled') selected @endif>Cancelled {{ $loan_status_detailed_cancelled }}</option>
+                                    </select>
+                                </div>
+
+                                {{-- Settlement Date --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <input
+                                    type="date"
+                                    class="form-element input {{ $input_size }}"
+                                    id="settlement_date"
+                                    name="settlement_date"
+                                    x-ref="settlement_date"
+                                    data-label=" @if($loan && $loan -> loan_status == 'Cancelled') Cancelled Date @else Settlement Date @endif"
+                                    {{ $disabled }}
+                                    value="{{ $loan -> settlement_date ?? null }}">
+                                </div>
+
+                                {{-- Loan Amount --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <input
+                                    type="text"
+                                    class="form-element input {{ $input_size }} numbers-only money-decimal"
+                                    id="loan_amount"
+                                    name="loan_amount"
+                                    data-label="Loan Amount"
+                                    {{ $disabled }}
+                                    value="{{ $loan -> loan_amount ?? null }}">
+                                </div>
+
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                                {{-- Lender --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }}"
+                                    id="lender_uuid"
+                                    name="lender_uuid"
+                                    data-label="Lender"
+                                    {{ $disabled }}>
+                                        <option value=""></option>
+                                        @foreach($lenders as $lender)
+                                            <option value="{{ $lender -> uuid }}" @if($loan && $loan -> lender_uuid == $lender -> uuid) selected @endif>{{ $lender -> company_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                {{-- Loan Type --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }}"
+                                    id="loan_type"
+                                    name="loan_type"
+                                    data-label="Loan Type"
+                                    {{ $disabled }}>
+                                        <option value=""></option>
+                                        <option value="Conventional" @if($loan && $loan -> loan_type == 'Conventional') selected @endif>Conventional</option>
+                                        <option value="FHA" @if($loan && $loan -> loan_type == 'FHA') selected @endif>FHA</option>
+                                        <option value="VA" @if($loan && $loan -> loan_type == 'VA') selected @endif>VA</option>
+                                        <option value="USDA" @if($loan && $loan -> loan_type == 'USDA') selected @endif>USDA</option>
+                                        <option value="HELOC" @if($loan && $loan -> loan_type == 'HELOC') selected @endif>HELOC</option>
+                                        <option value="HEL" @if($loan && $loan -> loan_type == 'HEL') selected @endif>HEL</option>
+                                        <option value="Other" @if($loan && $loan -> loan_type == 'Other') selected @endif>Other</option>
+                                    </select>
+                                </div>
+
+                                {{-- Loan Purpose --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <select
+                                    class="form-element select {{ $input_size }}"
+                                    id="loan_purpose"
+                                    name="loan_purpose"
+                                    data-label="Loan Purpose"
+                                    {{ $disabled }}>
+                                        <option value=""></option>
+                                        <option value="Purchase" @if($loan && $loan -> loan_purpose == 'Purchase') selected @endif>Purchase</option>
+                                        <option value="Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'Cash Out Refinance') selected @endif>Cash Out Refinance</option>
+                                        <option value="No Cash Out Refinance" @if($loan && $loan -> loan_purpose == 'No Cash Out Refinance') selected @endif>No Cash Out Refinance</option>
+                                        <option value="Construction" @if($loan && $loan -> loan_purpose == 'Construction') selected @endif>Construction</option>
+                                        <option value="Construction Permanent" @if($loan && $loan -> loan_purpose == 'Construction Permanent') selected @endif>Construction Permanent</option>
+                                        <option value="Other" @if($loan && $loan -> loan_purpose == 'Other') selected @endif>Other</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+
+                                {{-- Loan Number --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <input
+                                    type="text"
+                                    class="form-element input {{ $input_size }}"
+                                    id="loan_number"
+                                    name="loan_number"
+                                    data-label="Loan Number"
+                                    {{ $disabled }}
+                                    value="{{ $loan -> loan_number ?? null }}">
+                                </div>
+
+                                {{-- Lending Pad Loan Number --}}
+                                <div class="col-span-1 m-2 sm:m-3">
+                                    <input
+                                    type="text"
+                                    class="form-element input {{ $input_size }}"
+                                    id="lending_pad_loan_number"
+                                    name="lending_pad_loan_number"
+                                    data-label="Lending Pad Loan Number"
+                                    {{ $disabled }}
+                                    value="{{ $loan -> lending_pad_loan_number ?? null }}">
+                                </div>
+
+                            </div>
+
+                        @endif
 
                         <hr class="bg-gray-300 my-6">
 
@@ -529,51 +559,28 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <div class="mt-12 border-2 rounded-lg p-4 divide-y">
 
                                 @php
-                                // $fields = [
-                                //     ['select', 'locked', 'Locked', 'disabled'],
-                                //     ['date', 'lock_date', 'Lock Date', 'disabled'],
-                                //     ['date', 'lock_expiration', 'Lock Expiration', 'disabled'],
-                                //     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
-                                //     ['date', 'time_line_sent_to_processing', 'Sent To Processing', 'disabled'],
-                                //     ['date', 'time_line_clear_to_close', 'Clear To Close', 'disabled'],
-                                //     ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
-                                //     ['date', 'time_line_closed', 'Closed', 'disabled'],
-                                //     ['date', 'time_line_funded', 'Funded', 'disabled']
-                                // ];
-                                // $processing_fields = [
-                                //     ['select', 'time_line_conditions_received_status', 'Conditions Received Status', 'disabled'],
-                                //     ['date', 'time_line_conditions_received', 'Conditions Received', ''],
-                                //     ['date', 'time_line_title_ordered', 'Title Ordered', ''],
-                                //     ['date', 'time_line_title_received', 'Title Received', ''],
-                                //     ['date', 'time_line_submitted_to_uw', 'Submitted To UW', ''],
-                                //     ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered', ''],
-                                //     ['date', 'time_line_appraisal_received', 'Appraisal Received', 'disabled'],
-                                //     ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
-                                //     ['date', 'time_line_voe_received', 'VOE Received', ''],
-                                //     ['date', 'time_line_conditions_submitted', 'Conditions Submitted', 'disabled'],
-                                // ];
                                 $fields = [
-                                    ['select', 'locked', 'Locked', ''],
-                                    ['date', 'lock_date', 'Lock Date', ''],
-                                    ['date', 'lock_expiration', 'Lock Expiration', ''],
+                                    ['select', 'locked', 'Locked', $disabled],
+                                    ['date', 'lock_date', 'Lock Date', $disabled],
+                                    ['date', 'lock_expiration', 'Lock Expiration', $disabled],
                                     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
-                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing', ''],
-                                    ['date', 'time_line_clear_to_close', 'Clear To Close', ''],
+                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing', $disabled],
+                                    ['date', 'time_line_clear_to_close', 'Clear To Close', $disabled],
                                     ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
-                                    ['date', 'time_line_closed', 'Closed', ''],
-                                    ['date', 'time_line_funded', 'Funded', '']
+                                    ['date', 'time_line_closed', 'Closed', $disabled],
+                                    ['date', 'time_line_funded', 'Funded', $disabled]
                                 ];
                                 $processing_fields = [
-                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status', ''],
+                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status', $disabled],
                                     ['date', 'time_line_conditions_received', 'Conditions Received', ''],
                                     ['date', 'time_line_title_ordered', 'Title Ordered', ''],
                                     ['date', 'time_line_title_received', 'Title Received', ''],
                                     ['date', 'time_line_submitted_to_uw', 'Submitted To UW', ''],
                                     ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered', ''],
-                                    ['date', 'time_line_appraisal_received', 'Appraisal Received', ''],
+                                    ['date', 'time_line_appraisal_received', 'Appraisal Received', $disabled],
                                     ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
                                     ['date', 'time_line_voe_received', 'VOE Received', ''],
-                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted', ''],
+                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted', $disabled],
                                 ];
                                 @endphp
 

@@ -192,83 +192,86 @@ class APIController extends Controller {
             if($action && $action == 'match') {
                 $loan = Loans::with(['loan_officer_1']) -> find($loan_id);
                 $status = 'matched';
-            }
-
-            if(!$loan) {
-
-                // get loan if it has the lending_pad_loan_number
-                $loan = Loans::where(function($query) use ($lending_pad_loan_number) {
-                    $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
-                    -> whereNotNull('lending_pad_loan_number')
-                    -> where('lending_pad_loan_number', '!=', '');
-                })
-                -> with(['loan_officer_1'])
-                -> first();
-
-            }
-
-            // if no loan search for matches by address and borrower
-            if(!$loan) {
-
-                $loans = null;
-
-                $address = $request -> address;
-                $street = null;
-                if($address) {
-                    $street = preg_match('/(.*)\n/', $request -> address, $matches) ? $matches[1] : null;
-                    $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
-                }
-                $borrower_first = $borrower['first'];
-
-                $loans = Loans::select('*', DB::raw('DATE_FORMAT(settlement_date,"%m/%d/%Y") as settle_date'))
-                -> where(function($query) use ($street, $borrower_first, $borrower_last) {
-                    $query -> where(function ($query) use ($borrower_first, $borrower_last) {
-                        $query -> where('borrower_first', $borrower_first)
-                        -> where('borrower_last', $borrower_last);
-                    })
-                    -> orWhere(function($query) use ($street) {
-                        if($street) {
-                            $query -> where('street', 'like', '%'.$street.'%');
-                        }
-                    });
-                })
-                -> where(function($query) {
-                    $query -> whereNull('lending_pad_loan_number')
-                    -> orWhere('lending_pad_loan_number', '');
-                })
-                -> with(['loan_officer_1'])
-                -> get();
-
-
-                if(count($loans) > 0) {
-
-                    return response() -> json([
-                        'status' => 'found',
-                        'loans' => $loans
-                    ]);
-
-                }
-
-            }
-
-            if(!$loan && (!$action || $action == 'retry')) {
-                return response() -> json([
-                    'status' => 'not_found'
-                ]);
-            }
-
-            if($loan) {
-                $db_log_data_before = $loan -> replicate();
-            }
-
-
-            if($action && $action == 'add') {
+            } else if($action && $action == 'add') {
                 // add loan
                 $loan = new Loans();
                 $status = 'added';
                 $loan -> uuid = (string) Str::uuid();
                 $db_log_data_before = null;
+            } else {
+
+                if(!$loan) {
+
+                    // get loan if it has the lending_pad_loan_number
+                    $loan = Loans::where(function($query) use ($lending_pad_loan_number) {
+                        $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
+                        -> whereNotNull('lending_pad_loan_number')
+                        -> where('lending_pad_loan_number', '!=', '');
+                    })
+                    -> with(['loan_officer_1'])
+                    -> first();
+
+                }
+
+                // if no loan search for matches by address and borrower
+                if(!$loan) {
+
+                    $loans = null;
+
+                    $address = $request -> address;
+                    $street = null;
+                    if($address) {
+                        $street = preg_match('/(.*)\n/', $request -> address, $matches) ? $matches[1] : null;
+                        $street = substr($street, 0, strpos($street, ' ', strpos($street, ' ') + strlen(' ')));
+                    }
+                    $borrower_first = $borrower['first'];
+
+                    $loans = Loans::select('*', DB::raw('DATE_FORMAT(settlement_date,"%m/%d/%Y") as settle_date'))
+                    -> where(function($query) use ($street, $borrower_first, $borrower_last) {
+                        $query -> where(function ($query) use ($borrower_first, $borrower_last) {
+                            $query -> where('borrower_first', $borrower_first)
+                            -> where('borrower_last', $borrower_last);
+                        })
+                        -> orWhere(function($query) use ($street) {
+                            if($street) {
+                                $query -> where('street', 'like', '%'.$street.'%');
+                            }
+                        });
+                    })
+                    -> where(function($query) {
+                        $query -> whereNull('lending_pad_loan_number')
+                        -> orWhere('lending_pad_loan_number', '');
+                    })
+                    -> with(['loan_officer_1'])
+                    -> get();
+
+
+                    if(count($loans) > 0) {
+
+                        return response() -> json([
+                            'status' => 'found',
+                            'loans' => $loans
+                        ]);
+
+                    }
+
+                }
+
+                if(!$loan && (!$action || $action == 'retry')) {
+                    return response() -> json([
+                        'status' => 'not_found'
+                    ]);
+                }
+
+                if($loan) {
+                    $db_log_data_before = $loan -> replicate();
+                }
+
             }
+
+
+
+
 
 
             $loan -> lending_pad_uuid = $lending_pad_uuid;

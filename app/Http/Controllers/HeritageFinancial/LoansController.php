@@ -227,7 +227,6 @@ class LoansController extends Controller
             ]);
         } else {
             $validated = $request -> validate([
-                'loan_status' => 'required',
                 'loan_officer_1_id' => 'required',
                 'processor_id' => 'required',
                 'borrower_first' => 'required',
@@ -238,15 +237,10 @@ class LoansController extends Controller
                 'city' => 'required',
                 'state' => 'required',
                 'zip' => 'required',
-                'settlement_date' => 'required_if:loan_status,Closed',
+                'points_charged' => 'required',
                 'source' => 'required_if:loan_status,Closed',
-                'reverse' => 'required_if:loan_status,Closed',
                 'mortgage_type' => 'required_if:loan_status,Closed',
-                'loan_type' => 'required_if:loan_status,Closed',
-                'loan_purpose' => 'required_if:loan_status,Closed',
-                'lender_uuid' => 'required_if:loan_status,Closed',
-                'loan_amount' => 'required_if:loan_status,Closed',
-                'loan_number' => 'required_if:loan_status,Closed',
+                'reverse' => 'required_if:loan_status,Closed',
             ],
             [
                 'required' => 'Required',
