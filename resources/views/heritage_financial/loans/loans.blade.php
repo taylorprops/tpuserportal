@@ -50,6 +50,17 @@ $breadcrumbs = [
                     },
                     '2': {
                         type: 'select',
+                        db_field: 'loan_officer_id',
+                        label: 'Loan Officer',
+                        options: [
+                            ['', 'All'],
+                            @foreach($loan_officers as $loan_officer)
+                                ['{{ $loan_officer -> id }}', '{{ $loan_officer -> fullname }}'],
+                            @endforeach
+                        ]
+                    },
+                    '3': {
+                        type: 'select',
                         db_field: 'loan_status',
                         label: 'Status',
                         value: 'Open',

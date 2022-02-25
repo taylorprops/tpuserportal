@@ -34,8 +34,11 @@ class LoansController extends Controller
         $processors = Mortgage::whereIn('emp_position', ['processor', 'manager'])
         -> where('active', 'yes')
         -> get();
+        $loan_officers = Mortgage::where('emp_position', 'loan_officer')
+        -> where('active', 'yes')
+        -> get();
 
-        return view('heritage_financial/loans/loans', compact('processors'));
+        return view('heritage_financial/loans/loans', compact('processors', 'loan_officers'));
 
     }
 
@@ -54,6 +57,7 @@ class LoansController extends Controller
                 $processor_id = auth() -> user() -> user_id;
             }
         }
+        $loan_officer_id = $request -> loan_officer_id ?? null;
         $loan_status = $request -> loan_status ?? 'Open';
 
         $search = $request -> search ?? null;
@@ -64,6 +68,7 @@ class LoansController extends Controller
             'first_name as loan_officer_first',
             'last_name as loan_officer_last',
             'processor_id',
+            'loan_officer_1_id',
             'loan_amount',
             'borrower_first',
             'borrower_last',
@@ -93,6 +98,11 @@ class LoansController extends Controller
         -> where(function($query) use ($processor_id) {
             if($processor_id) {
                 $query -> where('processor_id', $processor_id);
+            }
+        })
+        -> where(function($query) use ($loan_officer_id) {
+            if($loan_officer_id) {
+                $query -> where('loan_officer_1_id', $loan_officer_id);
             }
         })
         -> where(function($query) use ($loan_status) {

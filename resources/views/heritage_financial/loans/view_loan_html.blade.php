@@ -529,28 +529,51 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
                             <div class="mt-12 border-2 rounded-lg p-4 divide-y">
 
                                 @php
+                                // $fields = [
+                                //     ['select', 'locked', 'Locked', 'disabled'],
+                                //     ['date', 'lock_date', 'Lock Date', 'disabled'],
+                                //     ['date', 'lock_expiration', 'Lock Expiration', 'disabled'],
+                                //     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
+                                //     ['date', 'time_line_sent_to_processing', 'Sent To Processing', 'disabled'],
+                                //     ['date', 'time_line_clear_to_close', 'Clear To Close', 'disabled'],
+                                //     ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
+                                //     ['date', 'time_line_closed', 'Closed', 'disabled'],
+                                //     ['date', 'time_line_funded', 'Funded', 'disabled']
+                                // ];
+                                // $processing_fields = [
+                                //     ['select', 'time_line_conditions_received_status', 'Conditions Received Status', 'disabled'],
+                                //     ['date', 'time_line_conditions_received', 'Conditions Received', ''],
+                                //     ['date', 'time_line_title_ordered', 'Title Ordered', ''],
+                                //     ['date', 'time_line_title_received', 'Title Received', ''],
+                                //     ['date', 'time_line_submitted_to_uw', 'Submitted To UW', ''],
+                                //     ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered', ''],
+                                //     ['date', 'time_line_appraisal_received', 'Appraisal Received', 'disabled'],
+                                //     ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
+                                //     ['date', 'time_line_voe_received', 'VOE Received', ''],
+                                //     ['date', 'time_line_conditions_submitted', 'Conditions Submitted', 'disabled'],
+                                // ];
                                 $fields = [
-                                    ['select', 'locked', 'Locked', 'disabled'],
-                                    ['date', 'lock_date', 'Lock Date', 'disabled'],
-                                    ['date', 'lock_expiration', 'Lock Expiration', 'disabled'],
+                                    ['select', 'locked', 'Locked', ''],
+                                    ['date', 'lock_date', 'Lock Date', ''],
+                                    ['date', 'lock_expiration', 'Lock Expiration', ''],
                                     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
-                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing', 'disabled'],
-                                    ['date', 'time_line_clear_to_close', 'Clear To Close', 'disabled'],
+                                    ['date', 'time_line_sent_to_processing', 'Sent To Processing', ''],
+                                    ['date', 'time_line_clear_to_close', 'Clear To Close', ''],
                                     ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
-                                    ['date', 'time_line_closed', 'Closed', 'disabled'],
-                                    ['date', 'time_line_funded', 'Funded', 'disabled']
+                                    ['date', 'time_line_closed', 'Closed', ''],
+                                    ['date', 'time_line_funded', 'Funded', '']
                                 ];
                                 $processing_fields = [
-                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status', 'disabled'],
+                                    ['select', 'time_line_conditions_received_status', 'Conditions Received Status', ''],
                                     ['date', 'time_line_conditions_received', 'Conditions Received', ''],
                                     ['date', 'time_line_title_ordered', 'Title Ordered', ''],
                                     ['date', 'time_line_title_received', 'Title Received', ''],
                                     ['date', 'time_line_submitted_to_uw', 'Submitted To UW', ''],
                                     ['date', 'time_line_appraisal_ordered', 'Appraisal Ordered', ''],
-                                    ['date', 'time_line_appraisal_received', 'Appraisal Received', 'disabled'],
+                                    ['date', 'time_line_appraisal_received', 'Appraisal Received', ''],
                                     ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
                                     ['date', 'time_line_voe_received', 'VOE Received', ''],
-                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted', 'disabled'],
+                                    ['date', 'time_line_conditions_submitted', 'Conditions Submitted', ''],
                                 ];
                                 @endphp
 
