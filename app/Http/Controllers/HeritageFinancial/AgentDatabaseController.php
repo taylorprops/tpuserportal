@@ -31,7 +31,7 @@ class AgentDatabaseController extends Controller
         $date_col = $request -> date_col ?? null;
         $search = $request -> search ?? null;
 
-        $agents = AgentDatabase::select(['first_name', 'last_name', 'city', 'state', 'zip', 'email', 'cell_phone', 'start_date', 'company'])
+        $agents = AgentDatabase::select(['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'start_date', 'company'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('fullname', 'like', '%'.$search.'%');
@@ -56,7 +56,7 @@ class AgentDatabaseController extends Controller
 
         } else {
 
-            $select = ['First Name', 'Last Name', 'City', 'State', 'Zip', 'Email', 'Cell Phone', 'Start Date', 'Company'];
+            $select = ['First Name', 'Last Name', 'Street', 'City', 'State', 'Zip', 'Email', 'Cell Phone', 'Start Date', 'Company'];
             $agents = $agents -> get()
             -> toArray();
 
