@@ -218,6 +218,8 @@ class APIController extends Controller {
 
                 $loans = null;
 
+                $cut_off_date = '2021-08-01';
+
                 $address = $request -> address;
                 $street = null;
                 if($address) {
@@ -241,6 +243,10 @@ class APIController extends Controller {
                 -> where(function($query) {
                     $query -> whereNull('lending_pad_loan_number')
                     -> orWhere('lending_pad_loan_number', '');
+                })
+                -> where(function($query) use ($cut_off_date) {
+                    $query -> whereNull('settlement_date')
+                    -> orWhere('settlement_date', '>', $cut_off_date);
                 })
                 -> with(['loan_officer_1'])
                 -> get();
