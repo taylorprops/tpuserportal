@@ -100,7 +100,7 @@ $breadcrumbs = [
                     @if(auth() -> user() -> level != 'loan_officer')
                         <div class="mt-4 p-2 bg-blue-50 rounded text-center">
                             Install the Chrome Extension
-                            <a href="https://chrome.google.com/webstore/detail/lending-pad-add-on/afocimphagojdkhkhhgokfhdhnlialkf?hl=en&authuser=0" target="_blank" class="button primary sm">Get Extension <i class="fal fa-arrow-right ml-2"></i></a>
+                            <a href="https://chrome.google.com/webstore/detail/lending-pad-add-on/afocimphagojdkhkhhgokfhdhnlialkf?hl=en&authuser=0" target="_blank" class="button primary sm ml-8">Get Extension <i class="fal fa-arrow-right ml-2"></i></a>
                         </div>
                     @endif
 
