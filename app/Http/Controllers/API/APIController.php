@@ -322,14 +322,18 @@ class APIController extends Controller {
             if($request -> Funded) {
                 $loan -> time_line_funded = date('Y-m-d', strtotime($request -> Funded));
             }
-            if($request -> Estimate_Closing) {
-                $loan -> time_line_scheduled_settlement = date('Y-m-d', strtotime($request -> Estimate_Closing));
-                $loan -> settlement_date = date('Y-m-d', strtotime($request -> Estimate_Closing));
+            $settlement_date = null;
+            $loan -> time_line_scheduled_settlement = null;
+            if($request -> Schedule_Closing != null) {
+                $loan -> time_line_scheduled_settlement = date('Y-m-d', strtotime($request -> Schedule_Closing));
+                $settlement_date = date('Y-m-d', strtotime($request -> Schedule_Closing));
             }
-            if($request -> Schedule_Closing) {
-                $loan -> time_line_closed = date('Y-m-d', strtotime($request -> Schedule_Closing));
-                $loan -> settlement_date = date('Y-m-d', strtotime($request -> Schedule_Closing));
+            if($request -> Closed) {
+                $loan -> time_line_closed = date('Y-m-d', strtotime($request -> Closed));
+                $settlement_date = date('Y-m-d', strtotime($request -> Closed));
             }
+            $loan -> settlement_date = $settlement_date;
+
             if($request -> Processing) {
                 $loan -> time_line_sent_to_processing = date('Y-m-d', strtotime($request -> Processing));
             }
@@ -348,6 +352,7 @@ class APIController extends Controller {
             if($request -> Appraisal_Delivered) {
                 $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
             }
+
 
             $loan -> save();
 
