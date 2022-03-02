@@ -13,7 +13,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
     $active_tab = '3';
 }
 
-$disabled = '';
+$disabled = 'disabled';
 
 @endphp
 <x-app-layout>
