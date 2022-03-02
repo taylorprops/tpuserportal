@@ -58,7 +58,7 @@ $disabled = 'disabled';
 
             <div class="hidden sm:block">
 
-                <div class="border-b border-gray-200">
+                <div class="border-b border-gray-200 flex justify-start">
 
                     <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
@@ -113,6 +113,10 @@ $disabled = 'disabled';
 
                         @endif
                     </nav>
+
+                    <div class="ml-12 mt-2">
+                        <a href="https://prod.lendingpad.com/web/#/company/loans/{{ $loan -> lending_pad_uuid }}" target="_blank" class="inline-block button primary md">View on Lending Pad <i class="fal fa-arrow-right ml-2"></i></a>
+                    </div>
 
                 </div>
 
