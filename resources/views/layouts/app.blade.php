@@ -36,7 +36,7 @@
 
     <body class="font-sans antialiased overflow-x-hidden"
     x-data="nav();"
-    x-on:resize.window="main_nav_open = (window.outerWidth >= 1280) ? true : false;"
+    x-on:resize.window="main_nav_open = (window.innerWidth >= 1280) ? true : false;"
     @keydown.window.escape="main_nav_open = false">
 
         <div class="flex relative"
@@ -78,10 +78,10 @@
                 <header>
                     <div class="hidden sm:inline-block relative w-full border-gray-200 border-b bg-white pt-2"
                     :class="{
-                        'pl-72 ml-0': main_nav_open && (window.outerWidth >= 1280),
-                        'pl-12 ml-0': !(window.outerWidth >= 1280) || !main_nav_open,
-                        /* 'relative': (window.outerWidth >= 1280),
-                        'fixed': (window.outerWidth < 1280) */
+                        'pl-72 ml-0': main_nav_open && (window.innerWidth >= 1280),
+                        'pl-12 ml-0': !(window.innerWidth >= 1280) || !main_nav_open,
+                        /* 'relative': (window.innerWidth >= 1280),
+                        'fixed': (window.innerWidth < 1280) */
                     }">
                         <h2 class="text-gray-600 tracking-wider"
                         :class="{
@@ -96,10 +96,10 @@
 
                 <!-- Page Content -->
                 <main class="overflow-x-auto" :class="{
-                    'ml-72' : main_nav_open && (window.outerWidth >= 1280),
-                    '' : !(window.outerWidth >= 1280) || !main_nav_open,
-                    'pt-8' : (window.outerWidth <= 640),
-                    'pt-12' : (window.outerWidth > 640) && (window.outerWidth < 1280),
+                    'ml-72' : main_nav_open && (window.innerWidth >= 1280),
+                    '' : !(window.innerWidth >= 1280) || !main_nav_open,
+                    'pt-8' : (window.innerWidth <= 640),
+                    'pt-12' : (window.innerWidth > 640) && (window.innerWidth < 1280),
                 }">
                     {{ $slot }}
                 </main>
