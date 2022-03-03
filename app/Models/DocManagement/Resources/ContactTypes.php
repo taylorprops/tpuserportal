@@ -10,7 +10,8 @@ class ContactTypes extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_contact_types';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_contact_types';
+
+    protected $guarded = [];
 }

@@ -3,94 +3,84 @@
 namespace App\Http\Controllers\DocManagement\Transactions;
 
 use App\Helpers\Helper;
-use Illuminate\Http\Request;
-use App\Models\CRM\CRMContacts;
-use Illuminate\Validation\Rule;
-use App\Models\Employees\Agents;
 use App\Http\Controllers\Controller;
-use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightAgentRoster;
-
+use App\Models\BrightMLS\BrightListings;
+use App\Models\CRM\CRMContacts;
+use App\Models\DocManagement\Resources\ChecklistLocations;
+use App\Models\DocManagement\Resources\ChecklistPropertySubTypes;
+use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
 use App\Models\DocManagement\Resources\FormGroups;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\DocManagement\Transactions\Transactions;
-use App\Models\DocManagement\Resources\ChecklistLocations;
-use App\Models\DocManagement\Resources\ChecklistPropertyTypes;
-use App\Models\DocManagement\Resources\ChecklistPropertySubTypes;
-
+use App\Models\Employees\Agents;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TransactionsController extends Controller
 {
-
-    public function transactions(Request $request) {
-
+    public function transactions(Request $request)
+    {
         return view('/doc_management/transactions/transactions');
-
     }
 
-    public function create(Request $request) {
-
-        $transaction_type = $request -> transaction_type;
+    public function create(Request $request)
+    {
+        $transaction_type = $request->transaction_type;
 
         $details = [
             'listing' => [
                 'header' => 'Listing',
-                'icon' => 'fad fa-sign'
+                'icon' => 'fad fa-sign',
             ],
             'contract' => [
                 'header' => 'Sales Contract',
-                'icon' => 'fad fa-file-contract'
+                'icon' => 'fad fa-file-contract',
             ],
             'referral' => [
                 'header' => 'Referral Agreement',
-                'icon' => 'fad fa-handshake'
+                'icon' => 'fad fa-handshake',
             ],
         ][$transaction_type];
 
-        $states = LocationData::select('state') -> groupBy('state') -> orderBy('state') -> get();
-        $agents = Agents::select(['id', 'first_name', 'last_name']) -> where('active', 'yes') -> orderBy('last_name') -> get();
-
+        $states = LocationData::select('state')->groupBy('state')->orderBy('state')->get();
+        $agents = Agents::select(['id', 'first_name', 'last_name'])->where('active', 'yes')->orderBy('last_name')->get();
 
         return view('/doc_management/transactions/create', compact('transaction_type', 'details', 'states', 'agents'));
-
     }
 
-    public function save_transaction(Request $request) {
-
-        $transaction_type = $request -> transaction_type;
-        $for_sale = $request -> for_sale;
-        $checklist_details = json_decode($request -> checklist_details, true);
-        $property_details = json_decode($request -> property_details, true);
-        $required_details = json_decode($request -> required_details, true);
-        $sellers = json_decode($request -> sellers, true);
-        $buyers = json_decode($request -> buyers, true) ?? null;
+    public function save_transaction(Request $request)
+    {
+        $transaction_type = $request->transaction_type;
+        $for_sale = $request->for_sale;
+        $checklist_details = json_decode($request->checklist_details, true);
+        $property_details = json_decode($request->property_details, true);
+        $required_details = json_decode($request->required_details, true);
+        $sellers = json_decode($request->sellers, true);
+        $buyers = json_decode($request->buyers, true) ?? null;
 
         $transaction = new Transactions();
-        $transaction -> transaction_type = $transaction_type;
+        $transaction->transaction_type = $transaction_type;
 
-        if($transaction_type == 'listing') {
-
-            $validator = $request -> validate([
+        if ($transaction_type == 'listing') {
+            $validator = $request->validate([
                 'ListPrice' => 'required',
                 'MLSListDate' => 'required',
-                'ExpirationDate' => 'required'
+                'ExpirationDate' => 'required',
             ],
             [
                 'required' => 'Required Field',
             ]);
 
             $Listing_ID = 1;
-            if(Transactions::max('Listing_ID')) {
+            if (Transactions::max('Listing_ID')) {
                 $Listing_ID = Transactions::max('Listing_ID') + 1;
             }
-            $transaction -> Listing_ID = $Listing_ID;
-
-
+            $transaction->Listing_ID = $Listing_ID;
         }
 
-        if($transaction_type == 'contract') {
-
-            $validator = $request -> validate([
+        if ($transaction_type == 'contract') {
+            $validator = $request->validate([
                 'ContractPrice' => 'required_if:for_sale,==,yes',
                 'LeaseAmount' => 'required_if:for_sale,==,no',
                 'ListAgentFirstName' => 'required',
@@ -108,16 +98,14 @@ class TransactionsController extends Controller
             ]);
 
             $Contract_ID = 1;
-            if(Transactions::max('Contract_ID')) {
+            if (Transactions::max('Contract_ID')) {
                 $Contract_ID = Transactions::max('Contract_ID') + 1;
             }
-            $transaction -> Contract_ID = $Contract_ID;
-
+            $transaction->Contract_ID = $Contract_ID;
         }
 
-        if($transaction_type == 'referral') {
-
-            $validator = $request -> validate([
+        if ($transaction_type == 'referral') {
+            $validator = $request->validate([
                 'ReferralClientFirstName' => 'required',
                 'ReferralClientLastName' => 'required',
                 'ReferralClientPhone' => 'required',
@@ -141,42 +129,39 @@ class TransactionsController extends Controller
             ]);
 
             $Referral_ID = 1;
-            if(Transactions::max('Referral_ID')) {
+            if (Transactions::max('Referral_ID')) {
                 $Referral_ID = Transactions::max('Referral_ID') + 1;
             }
-            $transaction -> Referral_ID = $Referral_ID;
-
+            $transaction->Referral_ID = $Referral_ID;
         }
 
-
-        foreach($property_details as $key => $val) {
+        foreach ($property_details as $key => $val) {
             // convert dates
-            if(preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
+            if (preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
                 $val = date('Y-m-d', strtotime($val));
-            } else if(preg_match('/\$[0-9]/', $val)) {
+            } elseif (preg_match('/\$[0-9]/', $val)) {
                 // convert money
                 $val = preg_replace('/[\$,]+/', '', $val);
             }
-            $transaction -> $key = $val;
+            $transaction->$key = $val;
         }
-        foreach($required_details as $key => $val) {
-            if(preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
+        foreach ($required_details as $key => $val) {
+            if (preg_match('/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}/', $val)) {
                 $val = date('Y-m-d', strtotime($val));
-            } else if(preg_match('/\$[0-9]/', $val)) {
+            } elseif (preg_match('/\$[0-9]/', $val)) {
                 $val = preg_replace('/[\$,]+/', '', $val);
             }
-            if($key == 'ListPrice' || $key == 'ContractPrice' || $key == 'LeaseAmount') {
+            if ($key == 'ListPrice' || $key == 'ContractPrice' || $key == 'LeaseAmount') {
                 $val = $val == '' ? '0' : $val;
             }
-            $transaction -> $key = $val;
+            $transaction->$key = $val;
         }
 
-        foreach($checklist_details as $key => $val) {
-            $transaction -> $key = $val;
+        foreach ($checklist_details as $key => $val) {
+            $transaction->$key = $val;
         }
 
-        $transaction -> save();
-
+        $transaction->save();
 
         // add members
 
@@ -199,40 +184,38 @@ class TransactionsController extends Controller
         // create property email
 
         // set Status
-
     }
 
-    public function get_contacts(Request $request) {
+    public function get_contacts(Request $request)
+    {
+        $contacts = CRMContacts::where('user_id', auth()->user()->id)->orderBy('contact_last')->get();
 
-        $contacts = CRMContacts::where('user_id', auth() -> user() -> id) -> orderBy('contact_last') -> get();
-
-        return datatables() -> of($contacts)
-        -> addColumn('import', function ($contacts) {
+        return datatables()->of($contacts)
+        ->addColumn('import', function ($contacts) {
             return '<button class="button primary sm"
-                data-id="'.$contacts -> id.'"
-                data-first="'.$contacts -> contact_first.'"
-                data-last="'.$contacts -> contact_last.'"
-                data-company="'.$contacts -> contact_company.'"
-                data-phone_cell="'.$contacts -> contact_phone_cell.'"
-                data-email="'.$contacts -> contact_email.'"
-                data-street="'.$contacts -> contact_street.'"
-                data-city="'.$contacts -> contact_city.'"
-                data-state="'.$contacts -> contact_state.'"
-                data-zip="'.$contacts -> contact_zip.'"
+                data-id="'.$contacts->id.'"
+                data-first="'.$contacts->contact_first.'"
+                data-last="'.$contacts->contact_last.'"
+                data-company="'.$contacts->contact_company.'"
+                data-phone_cell="'.$contacts->contact_phone_cell.'"
+                data-email="'.$contacts->contact_email.'"
+                data-street="'.$contacts->contact_street.'"
+                data-city="'.$contacts->contact_city.'"
+                data-state="'.$contacts->contact_state.'"
+                data-zip="'.$contacts->contact_zip.'"
                 x-on:click="import_contact($el)"
                 ><i class="fal fa-check fa-sm mr-2"></i> Import</button>';
         })
-        -> editColumn('contact_first', function($contacts) {
-            return $contacts -> contact_last.', '.$contacts -> contact_first;
+        ->editColumn('contact_first', function ($contacts) {
+            return $contacts->contact_last.', '.$contacts->contact_first;
         })
-        -> escapeColumns([])
-        -> make(true);
-
+        ->escapeColumns([])
+        ->make(true);
     }
 
-    public function validate_form_manual_entry(Request $request) {
-
-        $validator = $request -> validate([
+    public function validate_form_manual_entry(Request $request)
+    {
+        $validator = $request->validate([
             'street_number' => 'required',
             'street_name' => 'required',
             'zip' => 'required',
@@ -243,12 +226,11 @@ class TransactionsController extends Controller
         [
             'required' => 'Required Field',
         ]);
-
     }
 
-    public function validate_form_checklist_details(Request $request) {
-
-        $validator = $request -> validate([
+    public function validate_form_checklist_details(Request $request)
+    {
+        $validator = $request->validate([
             'Agent_ID' => 'required',
             'SaleRent' => 'required',
             'PropertyType' => 'required',
@@ -260,25 +242,20 @@ class TransactionsController extends Controller
             'required' => 'Required Field',
             'required_if' => 'Required Field',
         ]);
-
     }
 
-
-    public function get_property_info(Request $request) {
-
-        $transaction_type = $request -> transaction_type;
-        $search_type = $request -> search_type;
+    public function get_property_info(Request $request)
+    {
+        $transaction_type = $request->transaction_type;
+        $search_type = $request->search_type;
         $street_number = $street_name = $unit = $zip = $tax_id = $state = '';
-        $ListingId = $request -> ListingId;
+        $ListingId = $request->ListingId;
 
         if ($search_type == 'mls') {
-
             $state = substr($ListingId, 0, 2);
-
         } else {
-
-            $street_number = $request -> street_number;
-            $street_name = $request -> street_name;
+            $street_number = $request->street_number;
+            $street_name = $request->street_name;
             $street_suffix = '';
             $street_dir_suffix = '';
             $street_dir_suffix_alt = '';
@@ -337,20 +314,17 @@ class TransactionsController extends Controller
                 $street_dir_suffix_bright_dmql = ',(((StreetDirSuffix=|'.$street_dir_suffix.')|(StreetDirSuffix=|'.$street_dir_suffix_alt.'))|((StreetDirPrefix=|'.$street_dir_suffix.')|(StreetDirPrefix=|'.$street_dir_suffix_alt.')))';
             }
 
-            $unit = $request -> unit;
+            $unit = $request->unit;
             $unit_bright_dmql = '';
             if ($unit != '') {
                 $unit_bright_dmql = ',(UnitNumber=*'.$unit.'*)';
             }
 
-            $city = $request -> city;
-            $state = $request -> state;
-            $zip = $request -> zip;
-            $county = $request -> county;
-
-
+            $city = $request->city;
+            $state = $request->state;
+            $zip = $request->zip;
+            $county = $request->county;
         }
-
 
         $select_columns_bright = config('global.select_columns_bright');
 
@@ -360,71 +334,60 @@ class TransactionsController extends Controller
 
         ///// DATABASE SEARCH FOR PROPERTY /////
         if ($search_type == 'mls') {
+            $bright_db_search = BrightListings::select($select_columns_bright)->where('ListingId', $ListingId)->first();
 
-            $bright_db_search = BrightListings::select($select_columns_bright) -> where('ListingId', $ListingId) -> first();
-
-            if(!$bright_db_search) {
-                return response() -> json(['error' => 'not found']);
+            if (! $bright_db_search) {
+                return response()->json(['error' => 'not found']);
             }
 
             // address for tax record search
-            $street_number = $bright_db_search -> StreetNumber;
-            $street_name = $bright_db_search -> StreetName;
-            $unit = $bright_db_search -> UnitNumber;
-            $zip = $bright_db_search -> PostalCode;
-
+            $street_number = $bright_db_search->StreetNumber;
+            $street_name = $bright_db_search->StreetName;
+            $unit = $bright_db_search->UnitNumber;
+            $zip = $bright_db_search->PostalCode;
         } else {
-
             $bright_db_search = BrightListings::select($select_columns_bright)
-            -> where('StateOrProvince', $state) -> where('PostalCode', $zip)
-            -> where('StreetNumber', $street_number)
-            -> where('StreetName',  $street_name)
-            -> where(function($query) use ($unit) {
-                if($unit != '') {
-                    $query -> where('UnitNumber', $unit);
+            ->where('StateOrProvince', $state)->where('PostalCode', $zip)
+            ->where('StreetNumber', $street_number)
+            ->where('StreetName', $street_name)
+            ->where(function ($query) use ($unit) {
+                if ($unit != '') {
+                    $query->where('UnitNumber', $unit);
                 }
             })
-            -> whereRaw('((StreetDirSuffix = \''.$street_dir_suffix.'\' or StreetDirSuffix = \''.$street_dir_suffix_alt.'\') or (StreetDirPrefix = \''.$street_dir_suffix.'\' or StreetDirPrefix = \''.$street_dir_suffix_alt.'\'))')
-            -> orderBy('MLSListDate', 'DESC')
-            -> get();
+            ->whereRaw('((StreetDirSuffix = \''.$street_dir_suffix.'\' or StreetDirSuffix = \''.$street_dir_suffix_alt.'\') or (StreetDirPrefix = \''.$street_dir_suffix.'\' or StreetDirPrefix = \''.$street_dir_suffix_alt.'\'))')
+            ->orderBy('MLSListDate', 'DESC')
+            ->get();
 
-            if(count($bright_db_search) != 1) {
+            if (count($bright_db_search) != 1) {
                 $bright_db_search = null;
             } else {
-                $bright_db_search = $bright_db_search -> first();
+                $bright_db_search = $bright_db_search->first();
             }
-
         }
 
         // check to see if exists
         if ($bright_db_search) {
-
-            $bright_db_search -> MLSListDate = Helper::date_mdy($bright_db_search -> MLSListDate);
-            $bright_db_search -> CloseDate = Helper::date_mdy($bright_db_search -> CloseDate);
-            $results['results_bright_id'] = $bright_db_search -> ListingId;
-
+            $bright_db_search->MLSListDate = Helper::date_mdy($bright_db_search->MLSListDate);
+            $bright_db_search->CloseDate = Helper::date_mdy($bright_db_search->CloseDate);
+            $results['results_bright_id'] = $bright_db_search->ListingId;
         }
 
         $tax_record_search = null;
-        if($state == 'MD') {
+        if ($state == 'MD') {
+            $tax_record_search = $this->tax_records($street_number, $street_name, $unit, $zip, '', $state);
 
-            $tax_record_search = $this -> tax_records($street_number, $street_name, $unit, $zip, '', $state);
-
-            if(isset($tax_record_search['error'])) {
-
+            if (isset($tax_record_search['error'])) {
                 $tax_record_search = null;
-
             }
-
         }
 
-
         /* %%%%%%%%%% Final results %%%%%%%%%% */
-        if($tax_record_search) {
+        if ($tax_record_search) {
             $tax_record_search = $tax_record_search['details'];
         }
         // if found in mls and tax records
-        if($bright_db_search && $tax_record_search) {
+        if ($bright_db_search && $tax_record_search) {
 
             // keep bright results, add owners from tax records
             $property_details = $bright_db_search;
@@ -437,29 +400,24 @@ class TransactionsController extends Controller
             }
 
             $property_details['ResidenceType'] = $tax_record_search['ResidenceType'] ?? null;
-            if(isset($tax_record_search['TaxRecordLink']) && $tax_record_search['TaxRecordLink'] != '' ){
+            if (isset($tax_record_search['TaxRecordLink']) && $tax_record_search['TaxRecordLink'] != '') {
                 $property_details['TaxRecordLink'] = $tax_record_search['TaxRecordLink'];
             }
 
-        // if only found in mls
-        } else if($bright_db_search && !$tax_record_search) {
-
+            // if only found in mls
+        } elseif ($bright_db_search && ! $tax_record_search) {
             $property_details = $bright_db_search;
 
         // if only found in tax records
-        } else if(!$bright_db_search && $tax_record_search) {
-
+        } elseif (! $bright_db_search && $tax_record_search) {
             $property_details = $tax_record_search;
-
         }
 
-
         return compact('results', 'property_details');
-
     }
 
-    public function tax_records($street_number, $street_name, $unit, $zip, $tax_id, $state) {
-
+    public function tax_records($street_number, $street_name, $unit, $zip, $tax_id, $state)
+    {
         $details = [];
 
         // only able to get tax records for MD at this point
@@ -474,37 +432,34 @@ class TransactionsController extends Controller
                 $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27'.$street_number.'%20'.urlencode(strtoupper($street_name)).'%27%29&mdp_street_address_zip_code_mdp_field_zipcode='.$zip.$unit_number;
             }
 
-
             $headers = [
                 'Content-Type' => 'application/json',
                 'X-App-Token' => 'Ya0ATXETWXYaL8teBlGPUbYZ5',
             ];
 
             $client = new \GuzzleHttp\Client([
-                'headers' => $headers
+                'headers' => $headers,
             ]);
 
-            $r = $client -> request('GET', $url);
+            $r = $client->request('GET', $url);
 
-            $response = $r -> getBody() -> getContents();
+            $response = $r->getBody()->getContents();
 
             // if tax record found
             if (stristr($response, 'account_id_mdp_field_acctid')) {
-
                 $properties = preg_replace('/\\n/', '', $response);
                 $properties = json_decode($response, true);
 
                 if (count($properties) == 1) {
-
                     $property = $properties[0];
 
                     $tax_county = str_replace(' County', '', $property['county_name_mdp_field_cntyname']);
                     $tax_county = str_replace('\'', '', $tax_county);
 
                     $unit_number = '';
-                    if(isset($property['premise_address_condominium_unit_no_sdat_field_28'])) {
+                    if (isset($property['premise_address_condominium_unit_no_sdat_field_28'])) {
                         $unit_number = $property['premise_address_condominium_unit_no_sdat_field_28'];
-                    } else if(isset($property['mdp_street_address_units_mdp_field_strtunt'])) {
+                    } elseif (isset($property['mdp_street_address_units_mdp_field_strtunt'])) {
                         $unit_number = $property['mdp_street_address_units_mdp_field_strtunt'];
                     }
 
@@ -536,7 +491,6 @@ class TransactionsController extends Controller
                         'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
 
                     ];
-
 
                     /* if (isset($property['real_property_search_link']['url'])) {
 
@@ -589,95 +543,84 @@ class TransactionsController extends Controller
 
 
                     } */
-
-
                 }
             }
         }
 
         return [
-            'details' => $details
+            'details' => $details,
         ];
-
     }
 
-    public function get_counties(Request $request) {
-
+    public function get_counties(Request $request)
+    {
         $counties = LocationData::select('county')
-        -> where('state', $request -> state)
-        -> groupBy('county')
-        -> orderBy('county')
-        -> get()
-        -> map(function($field) {
+        ->where('state', $request->state)
+        ->groupBy('county')
+        ->orderBy('county')
+        ->get()
+        ->map(function ($field) {
             $field['county'] = ucwords(strtolower($field['county']));
+
             return $field;
         })
-        -> pluck('county')
-        ;
+        ->pluck('county');
 
         return $counties;
-
     }
 
-    public function get_location_details(Request $request) {
-
-        $location = LocationData::where('zip', $request -> zip) -> get()
-        -> map(function($field) {
+    public function get_location_details(Request $request)
+    {
+        $location = LocationData::where('zip', $request->zip)->get()
+        ->map(function ($field) {
             $field['city'] = ucwords(strtolower($field['city']));
             $field['county'] = ucwords(strtolower($field['county']));
+
             return $field;
         });
-        return $location -> first();
 
+        return $location->first();
     }
 
-    public function get_property_types(Request $request) {
-
+    public function get_property_types(Request $request)
+    {
         return ChecklistPropertyTypes::select(['id', 'property_type'])
-        -> orderBy('display_order')
-        -> get();
-
+        ->orderBy('display_order')
+        ->get();
     }
 
-    public function get_property_sub_types(Request $request) {
-
+    public function get_property_sub_types(Request $request)
+    {
         return ChecklistPropertySubTypes::select(['id', 'property_sub_type'])
-        -> orderBy('display_order')
-        -> get();
-
+        ->orderBy('display_order')
+        ->get();
     }
 
-    public function get_locations(Request $request) {
-
+    public function get_locations(Request $request)
+    {
         return ChecklistLocations::select(['id', 'location', 'state'])
-        -> orderBy('display_order')
-        -> get();
-
+        ->orderBy('display_order')
+        ->get();
     }
 
-    public function get_form_groups(Request $request) {
-
+    public function get_form_groups(Request $request)
+    {
         return FormGroups::select(['id', 'group_name'])
-        -> get();
-
+        ->get();
     }
 
-    public function agent_search(Request $request) {
-
-        $val = $request -> val;
+    public function agent_search(Request $request)
+    {
+        $val = $request->val;
 
         return BrightAgentRoster::select(['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberPreferredPhone', 'OfficePhone', 'MemberEmail', 'MemberMlsId', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode', 'MemberType', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
-        -> where('MemberLastName', 'like', '%'.$val.'%')
-            -> orWhere('MemberEmail', 'like', '%'.$val.'%')
-            -> orWhere('MemberMlsId', 'like', '%'.$val.'%')
-            -> orWhereRaw('CONCAT(MemberFirstName, " ", MemberLastName) like \'%'.$val.'%\'')
-            -> orWhereRaw('CONCAT(MemberNickname, " ", MemberLastName) like \'%'.$val.'%\'')
-            -> orderBy('MemberLastName')
-            -> limit(50)
-            -> get();
-
+        ->where('MemberLastName', 'like', '%'.$val.'%')
+            ->orWhere('MemberEmail', 'like', '%'.$val.'%')
+            ->orWhere('MemberMlsId', 'like', '%'.$val.'%')
+            ->orWhereRaw('CONCAT(MemberFirstName, " ", MemberLastName) like \'%'.$val.'%\'')
+            ->orWhereRaw('CONCAT(MemberNickname, " ", MemberLastName) like \'%'.$val.'%\'')
+            ->orderBy('MemberLastName')
+            ->limit(50)
+            ->get();
     }
-
-
-
 }

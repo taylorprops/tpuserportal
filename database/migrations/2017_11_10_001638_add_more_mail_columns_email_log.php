@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddMoreMailColumnsEmailLog extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -12,7 +11,7 @@ class AddMoreMailColumnsEmailLog extends Migration
     public function up()
     {
         Schema::table('email_log', function ($table) {
-            if (!Schema::hasColumn('email_log', 'id')) {
+            if (! Schema::hasColumn('email_log', 'id')) {
                 $table->increments('id')->first();
                 $table->string('from')->after('date')->nullable();
                 $table->string('cc')->after('to')->nullable();
@@ -33,4 +32,4 @@ class AddMoreMailColumnsEmailLog extends Migration
             $table->dropColumn(['id', 'from', 'cc', 'headers', 'attachments']);
         });
     }
-}
+};

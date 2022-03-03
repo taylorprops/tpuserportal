@@ -10,7 +10,8 @@ class BrightListings extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'bright_listings';
-    protected $guarded = [];
 
+    protected $table = 'bright_listings';
+
+    protected $guarded = [];
 }

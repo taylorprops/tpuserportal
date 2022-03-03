@@ -12,7 +12,8 @@ class EmployeesLicenses extends Model
     use Compoships;
 
     protected $connection = 'mysql';
-    protected $table = 'emp_licenses';
-    protected $guarded = [];
 
+    protected $table = 'emp_licenses';
+
+    protected $guarded = [];
 }

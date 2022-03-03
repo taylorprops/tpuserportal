@@ -10,7 +10,8 @@ class AgentsTeams extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'emp_agents_teams';
-    protected $guarded = [];
 
+    protected $table = 'emp_agents_teams';
+
+    protected $guarded = [];
 }

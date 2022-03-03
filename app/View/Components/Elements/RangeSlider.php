@@ -6,8 +6,6 @@ use Illuminate\View\Component;
 
 class RangeSlider extends Component
 {
-
-
     /**
      * Create a new component instance.
      *
@@ -15,7 +13,6 @@ class RangeSlider extends Component
      */
     public function __construct()
     {
-
     }
 
     /**

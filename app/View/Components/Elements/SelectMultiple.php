@@ -6,7 +6,6 @@ use Illuminate\View\Component;
 
 class SelectMultiple extends Component
 {
-
     public $size;
 
     /**
@@ -16,7 +15,7 @@ class SelectMultiple extends Component
      */
     public function __construct($size)
     {
-        $this -> size = $size;
+        $this->size = $size;
     }
 
     /**

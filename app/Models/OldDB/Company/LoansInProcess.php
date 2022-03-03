@@ -10,8 +10,10 @@ class LoansInProcess extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
-    protected $table = 'tbl_loans_in_process';
-    protected $primaryKey = 'id';
-    public $timestamps = false;
 
+    protected $table = 'tbl_loans_in_process';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = false;
 }

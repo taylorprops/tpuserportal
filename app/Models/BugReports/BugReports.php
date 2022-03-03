@@ -10,7 +10,8 @@ class BugReports extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'bug_reports';
-    protected $guarded = [];
 
+    protected $table = 'bug_reports';
+
+    protected $guarded = [];
 }

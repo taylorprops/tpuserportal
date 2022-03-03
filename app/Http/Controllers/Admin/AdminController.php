@@ -7,12 +7,8 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-
-    public function monitor(Request $request) {
-
+    public function monitor(Request $request)
+    {
         return view('/admin/monitor');
-
     }
-
-
 }

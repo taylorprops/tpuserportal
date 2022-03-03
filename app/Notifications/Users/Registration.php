@@ -20,7 +20,7 @@ class Registration extends Notification
      */
     public function __construct($user)
     {
-        $this -> user = $user;
+        $this->user = $user;
     }
 
     /**
@@ -43,11 +43,11 @@ class Registration extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-        -> subject('Registration Notification')
-        -> markdown(
-            '/vendor/mail/auth/register', ['user' => $this -> user]
+        ->subject('Registration Notification')
+        ->markdown(
+            '/vendor/mail/auth/register', ['user' => $this->user]
         );
-                    // -> subject('Registration Notification')
+        // -> subject('Registration Notification')
                     // -> line('<div style="font-size: 14px; font-weight: bold; margin-bottom: 12px;">Hello '.$this -> user -> first_name.',</div>')
                     // -> line('You are receiving this email because an account was set up for you by '.$this -> user -> company.'. Please click the link below to set up your account')
                     // -> action('Register Account', url($this -> user -> registration_link));

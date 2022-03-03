@@ -6,8 +6,8 @@ use Illuminate\View\Component;
 
 class BreadCrumbs extends Component
 {
-
     public $breadcrumbs;
+
     /**
      * Create a new component instance.
      *
@@ -15,7 +15,7 @@ class BreadCrumbs extends Component
      */
     public function __construct($breadcrumbs)
     {
-        $this -> breadcrumbs = $breadcrumbs;
+        $this->breadcrumbs = $breadcrumbs;
     }
 
     /**

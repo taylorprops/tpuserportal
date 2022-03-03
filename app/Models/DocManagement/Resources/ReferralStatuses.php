@@ -10,7 +10,8 @@ class ReferralStatuses extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'docs_resources_referral_statuses';
-    protected $guarded = [];
 
+    protected $table = 'docs_resources_referral_statuses';
+
+    protected $guarded = [];
 }

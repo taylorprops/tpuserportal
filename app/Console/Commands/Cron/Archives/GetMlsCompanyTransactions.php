@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\Archives;
 
-use Illuminate\Console\Command;
 use App\Jobs\Cron\Archives\GetMlsCompanyTransactionsJob;
+use Illuminate\Console\Command;
 
 class GetMlsCompanyTransactions extends Command
 {

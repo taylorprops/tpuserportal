@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\Cron\Temp;
 
-use Illuminate\Console\Command;
 use App\Models\Marketing\AgentAddresses;
 use App\Models\OldDB\Marketing\BrightAgents;
+use Illuminate\Console\Command;
 
 class MergeAgentAddressesWithBright extends Command
 {
@@ -68,39 +68,35 @@ class MergeAgentAddressesWithBright extends Command
 
         } */
 
-
-        $multiple_agents = AgentAddresses::where('found_status', 'multiple') -> where('checked', 'no') -> limit(10) -> get();
+        $multiple_agents = AgentAddresses::where('found_status', 'multiple')->where('checked', 'no')->limit(10)->get();
 
         foreach ($multiple_agents as $agent) {
-
-            $first = $agent -> first_name;
-            $last = $agent -> last_name;
-            $middle = $agent -> middle_name;
+            $first = $agent->first_name;
+            $last = $agent->last_name;
+            $middle = $agent->middle_name;
 
             $bright_agents = BrightAgents::where('MemberFirstName', $first)
-            -> where('MemberLastName', $last)
-            -> where('MemberMiddleInitial', $middle)
-            -> get();
+            ->where('MemberLastName', $last)
+            ->where('MemberMiddleInitial', $middle)
+            ->get();
 
             dump($bright_agents);
 
             if (count($bright_agents) == 0) {
-                $agent -> found_status = 'not_found';
-            } else if (count($bright_agents) == 1) {
-                $agent -> found_status = 'found';
-                $member_key = $bright_agents -> first() -> MemberKey;
-                $agent -> bright_MemberKey = $member_key;
-                $agent -> active = 'yes';
-            } else if (count($bright_agents) > 1) {
-                $agent -> found_status = 'multiple';
+                $agent->found_status = 'not_found';
+            } elseif (count($bright_agents) == 1) {
+                $agent->found_status = 'found';
+                $member_key = $bright_agents->first()->MemberKey;
+                $agent->bright_MemberKey = $member_key;
+                $agent->active = 'yes';
+            } elseif (count($bright_agents) > 1) {
+                $agent->found_status = 'multiple';
             }
 
-            $agent -> checked = 'yes';
+            $agent->checked = 'yes';
             //$agent -> save();
-
         }
 
         return true;
     }
-
 }

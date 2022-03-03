@@ -6,11 +6,12 @@ use Illuminate\View\Component;
 
 class Modal extends Component
 {
-
-
     public $modalWidth;
+
     public $modalTitle;
+
     public $modalId;
+
     public $clickOutside;
 
     /**
@@ -20,10 +21,10 @@ class Modal extends Component
      */
     public function __construct($modalWidth, $modalTitle, $modalId, $clickOutside = '')
     {
-        $this -> modalWidth = $modalWidth;
-        $this -> modalTitle = $modalTitle;
-        $this -> modalId = $modalId;
-        $this -> clickOutside = $clickOutside;
+        $this->modalWidth = $modalWidth;
+        $this->modalTitle = $modalTitle;
+        $this->modalId = $modalId;
+        $this->clickOutside = $clickOutside;
     }
 
     /**

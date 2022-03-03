@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Monolog\Logger;
-use App\Models\User;
 use App\Helpers\Helper;
-use Illuminate\Http\Request;
-use App\Models\Employees\Agents;
-use Illuminate\Support\Facades\DB;
-use Monolog\Handler\StreamHandler;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Crypt;
-use App\Models\BrightMLS\BrightOffices;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Employees\EmployeesNotes;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\Employees\EmployeesLicenses;
-use App\Models\OldDB\Company\BillingInvoices;
-use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\BrightMLS\BrightOffices;
 use App\Models\DocManagement\Admin\Forms\Forms;
-use App\Models\OldDB\Company\BillingInvoicesItems;
-use App\Models\Employees\Mortgage as LoanOfficersNew;
-use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
 use App\Models\DocManagement\Resources\CommonFieldsGroups;
+use App\Models\Employees\Agents;
+use App\Models\Employees\EmployeesLicenses;
+use App\Models\Employees\EmployeesNotes;
+use App\Models\Employees\Mortgage as LoanOfficersNew;
+use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\OldDB\Company\BillingInvoices;
+use App\Models\OldDB\Company\BillingInvoicesItems;
+use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class TestsController extends Controller
 {
@@ -62,18 +62,17 @@ class TestsController extends Controller
             $state = 'MD';
             if (stristr($loan_officer -> state, 'dc')) {
                 $state = 'DC';
-            } else if (stristr($loan_officer -> state, 'va')) {
+            } elseif (stristr($loan_officer -> state, 'va')) {
                 $state = 'VA';
             }
             $loan_officer -> state = $state;
             $loan_officer -> save();
         }
-
     }
 
-    public function bright_remove_agents() {
-
-        ini_set('memory_limit','-1');
+    public function bright_remove_agents()
+    {
+        ini_set('memory_limit', '-1');
 
         $rets = Helper::rets_login();
 
@@ -88,15 +87,15 @@ class TestsController extends Controller
             $query,
             [
                 'Count' => '0',
-                'Select' => 'MemberKey'
+                'Select' => 'MemberKey',
             ]
         );
 
         $agents_in_bright = $results -> toArray();
         $agents_in_bright_count = count($agents_in_bright);
         $agents_in_bright_array = [];
-        foreach($agents_in_bright as $agent_in_bright) {
-            $agents_in_bright_array[] = (int)$agent_in_bright['MemberKey'];
+        foreach ($agents_in_bright as $agent_in_bright) {
+            $agents_in_bright_array[] = (int) $agent_in_bright['MemberKey'];
         }
 
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
@@ -105,24 +104,22 @@ class TestsController extends Controller
         // dd($agents_in_bright_count, $agents_in_db_count);
 
         $deactivate_agents = [];
-        foreach($agents_in_db as $agent) {
-            if(!in_array($agent, $agents_in_bright_array)) {
+        foreach ($agents_in_db as $agent) {
+            if (! in_array($agent, $agents_in_bright_array)) {
                 $deactivate_agents[] = $agent;
             }
         }
 
-        if(count($deactivate_agents) > 0) {
-
+        if (count($deactivate_agents) > 0) {
             BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
             -> update([
                 'active' => 'no',
             ]);
-
         }
 
         $missing_agents = [];
-        foreach($agents_in_bright_array as $agent) {
-            if(!in_array($agent, $agents_in_db)) {
+        foreach ($agents_in_bright_array as $agent) {
+            if (! in_array($agent, $agents_in_db)) {
                 $missing_agents[] = $agent;
             }
         }
@@ -139,16 +136,14 @@ class TestsController extends Controller
                 $query,
                 [
                     'Count' => 0,
-                    'Limit' => 5000
+                    'Limit' => 5000,
                 ]
             );
 
             $agents = $results -> toArray();
 
-            if(count($agents) > 0) {
-
+            if (count($agents) > 0) {
                 foreach ($agents as $agent) {
-
                     $agent_details = array_filter($agent);
                     $agent['active'] = 'yes';
                     $MemberKey = $agent['MemberKey'];
@@ -160,11 +155,8 @@ class TestsController extends Controller
                     );
 
                     $add_agent -> save();
-
                 }
-
             }
-
         }
 
         return false;
@@ -172,8 +164,6 @@ class TestsController extends Controller
         dd('deactivate = '.count($deactivate_agents).' missing = '.count($missing_agents));
 
         //dd($agents_in_bright_array, $agents_in_db);
-
-
 
         return false;
 
@@ -246,19 +236,18 @@ class TestsController extends Controller
         // }
 
         //$this -> queueData([$data], true);
-
     }
 
-    public function bright_update_agents(Request $request) {
-
+    public function bright_update_agents(Request $request)
+    {
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.7.2')
-		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest') // or 'basic' if required
-		-> setOption('use_post_method', true)
+        -> setUserAgent('Bright RETS Application/1.0')
+        -> setHttpAuthenticationMethod('digest') // or 'basic' if required
+        -> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
@@ -282,17 +271,15 @@ class TestsController extends Controller
             $class,
             $query,
             [
-                'Count' => 0
+                'Count' => 0,
             ]
         );
 
         $agents = $results -> toArray();
         $total_found = count($agents);
 
-        if($total_found > 0) {
-
+        if ($total_found > 0) {
             foreach ($agents as $agent) {
-
                 $agent_details = array_filter($agent);
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
@@ -303,25 +290,22 @@ class TestsController extends Controller
                 );
 
                 $add_agent -> save();
-
             }
-
         }
 
         //$rets -> Disconnect();
-
     }
 
-    public function bright_update_offices(Request $request) {
-
+    public function bright_update_offices(Request $request)
+    {
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
         -> setUsername(config('global.rets_username'))
         -> setPassword(config('global.rets_password'))
         -> setRetsVersion('RETS/1.7.2')
-		-> setUserAgent('Bright RETS Application/1.0')
-		-> setHttpAuthenticationMethod('digest')
-		-> setOption('use_post_method', true)
+        -> setUserAgent('Bright RETS Application/1.0')
+        -> setHttpAuthenticationMethod('digest')
+        -> setOption('use_post_method', true)
         -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
@@ -351,10 +335,9 @@ class TestsController extends Controller
             $class,
             $query,
             [
-                'Count' => 0
+                'Count' => 0,
             ]
         );
-
 
         $offices = $results -> toArray();
         $total_found = count($offices);
@@ -363,10 +346,8 @@ class TestsController extends Controller
 
         $count_before = BrightOffices::get() -> count();
 
-        if($total_found > 0) {
-
+        if ($total_found > 0) {
             foreach ($offices as $office) {
-
                 $office_details = array_filter($office);
                 $OfficeKey = $office['OfficeKey'];
                 unset($office_details['OfficeKey']);
@@ -377,35 +358,29 @@ class TestsController extends Controller
                 );
 
                 $add_office -> save();
-
             }
-
         }
 
-
         $rets -> Disconnect();
-
     }
 
-    public function add_addresses_to_bright(Request $request) {
-
+    public function add_addresses_to_bright(Request $request)
+    {
         $addresses = AgentsAddresses::where('found_status', 'found') -> get();
-
     }
 
-
-    public function update_encrypted_fields() {
-
+    public function update_encrypted_fields()
+    {
         $loan_officers = LoanOfficersNew::get();
 
         foreach ($loan_officers as $loan_officer) {
             $loan_officer -> soc_sec = Crypt::encrypt($loan_officer -> soc_sec);
             $loan_officer -> save();
         }
-
     }
 
-    public function signs_and_posts(Request $request) {
+    public function signs_and_posts(Request $request)
+    {
 
         // $invoices = BillingInvoices::select(['in_id', 'in_date_sent', 'in_amount', 'in_agent_fullname'])
         // -> where('in_date_sent', '>', '2021-07-31')
@@ -421,7 +396,7 @@ class TestsController extends Controller
         // -> get();
 
         $items = BillingInvoicesItems::select(['in_invoice_id', 'in_item_quantity', 'in_item_desc', 'in_item_total'])
-        -> where(function($query) {
+        -> where(function ($query) {
             $query -> where('in_item_desc', 'like', '%sign%')
             -> orWhere('in_item_desc', 'like', '%post%');
         })
@@ -429,7 +404,7 @@ class TestsController extends Controller
             $query -> where('in_date_sent', '>', '2021-07-31')
             -> where('in_type', 'charge');
         })
-        -> with(['invoice' => function($query) {
+        -> with(['invoice' => function ($query) {
             $query -> where('in_date_sent', '>', '2021-07-31')
             -> where('in_type', 'charge')
             -> select(['in_id', 'in_type', 'in_agent_fullname', 'in_date_sent']);
@@ -437,19 +412,15 @@ class TestsController extends Controller
         -> get();
 
         dd($items);
-
     }
 
-
-
-    public function menu(Request $request) {
-
+    public function menu(Request $request)
+    {
         return view('/tests/menu');
-
     }
 
-    public function agent_data(Request $request) {
-
+    public function agent_data(Request $request)
+    {
         $agents = Agents::select(['id', 'first', 'last', 'email1'])
         -> where('active', 'yes')
         -> with(['docs', 'licenses'])
@@ -459,10 +430,9 @@ class TestsController extends Controller
         dd($agents);
     }
 
-    public function alpine(Request $request) {
-
+    public function alpine(Request $request)
+    {
         return view('/tests/alpine');
-
     }
 
 }

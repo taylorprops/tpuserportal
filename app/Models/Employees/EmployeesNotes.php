@@ -12,7 +12,8 @@ class EmployeesNotes extends Model
     use Compoships;
 
     protected $connection = 'mysql';
-    protected $table = 'emp_notes';
-    protected $guarded = [];
 
+    protected $table = 'emp_notes';
+
+    protected $guarded = [];
 }

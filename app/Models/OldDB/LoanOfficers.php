@@ -10,9 +10,8 @@ class LoanOfficers extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
+
     protected $table = 'tbl_los';
+
     protected $primaryKey = 'id';
-
-
-
 }

@@ -10,9 +10,12 @@ class Documents extends Model
     use HasFactory;
 
     protected $connection = 'mysql_old_company';
-    protected $table = 'mls_uploads';
-    protected $primaryKey = 'upload_id';
-    protected $fillable = ['upload_id'];
-    public $timestamps = false;
 
+    protected $table = 'mls_uploads';
+
+    protected $primaryKey = 'upload_id';
+
+    protected $fillable = ['upload_id'];
+
+    public $timestamps = false;
 }

@@ -10,7 +10,8 @@ class NotificationsSettings extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'notification_settings';
-    protected $guarded = [];
 
+    protected $table = 'notification_settings';
+
+    protected $guarded = [];
 }

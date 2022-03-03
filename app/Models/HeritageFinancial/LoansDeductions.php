@@ -10,7 +10,8 @@ class LoansDeductions extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'heritage_financial_loans_deductions';
-    protected $guarded = [];
 
+    protected $table = 'heritage_financial_loans_deductions';
+
+    protected $guarded = [];
 }

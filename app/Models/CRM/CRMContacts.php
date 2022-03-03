@@ -10,7 +10,8 @@ class CRMContacts extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'crm_contacts';
-    protected $guarded = [];
 
+    protected $table = 'crm_contacts';
+
+    protected $guarded = [];
 }

@@ -10,7 +10,8 @@ class CreditCards extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'billing_credit_cards';
-    protected $guarded = [];
 
+    protected $table = 'billing_credit_cards';
+
+    protected $guarded = [];
 }

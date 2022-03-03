@@ -6,8 +6,8 @@ use Illuminate\View\Component;
 
 class Toggle extends Component
 {
-
     public $label;
+
     public $size;
 
     /**
@@ -17,8 +17,8 @@ class Toggle extends Component
      */
     public function __construct($label, $size)
     {
-        $this -> label = $label;
-        $this -> size = $size;
+        $this->label = $label;
+        $this->size = $size;
     }
 
     /**
@@ -31,4 +31,3 @@ class Toggle extends Component
         return view('components.elements.toggle');
     }
 }
-

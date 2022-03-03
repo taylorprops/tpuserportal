@@ -10,7 +10,8 @@ class LendersDocuments extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-    protected $table = 'heritage_financial_lenders_documents';
-    protected $guarded = [];
 
+    protected $table = 'heritage_financial_lenders_documents';
+
+    protected $guarded = [];
 }

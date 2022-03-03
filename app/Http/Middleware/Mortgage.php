@@ -16,8 +16,7 @@ class Mortgage
      */
     public function handle(Request $request, Closure $next)
     {
-
-        if (!in_array(auth() -> user() -> group, ['mortgage', 'in_house'])) {
+        if (! in_array(auth()->user()->group, ['mortgage', 'in_house'])) {
             return redirect('/dashboard');
         }
 

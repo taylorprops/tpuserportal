@@ -2,16 +2,16 @@
 
 namespace App\Jobs\Cron\Archives;
 
-use Throwable;
+use App\Models\DocManagement\Archives\EscrowChecks;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
-use App\Models\DocManagement\Archives\EscrowChecks;
+use Throwable;
 
 class GetEscrowChecksJob implements ShouldQueue
 {
@@ -24,7 +24,7 @@ class GetEscrowChecksJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this -> onQueue('get_escrow_checks');
+        $this->onQueue('get_escrow_checks');
     }
 
     /**
@@ -34,114 +34,100 @@ class GetEscrowChecksJob implements ShouldQueue
      */
     public function handle()
     {
-        $this -> get_checks();
+        $this->get_checks();
     }
 
-    public function get_checks() {
-
+    public function get_checks()
+    {
         $progress = 0;
-        $this -> queueProgress($progress);
+        $this->queueProgress($progress);
 
         $checks = EscrowChecks::where('downloaded', 'no')
-        -> with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
-        -> inRandomOrder()
-        -> limit(100)
-        -> get();
+        ->with(['escrow', 'escrow.transaction_skyslope:transactionId,mlsNumber,listingGuid,saleGuid', 'escrow.transaction_company:transactionId,mlsNumber,listingGuid,saleGuid'])
+        ->inRandomOrder()
+        ->limit(100)
+        ->get();
 
-        $this -> queueData([count($checks)], true);
+        $this->queueData([count($checks)], true);
 
-        if(count($checks) > 0) {
-
+        if (count($checks) > 0) {
             $progress_increment = 1;
 
             foreach ($checks as $check) {
-
                 $cont = 'yes';
 
                 $transaction = null;
-                if($check -> escrow -> transaction_skyslope) {
-                    $transaction = $check -> escrow -> transaction_skyslope;
+                if ($check->escrow->transaction_skyslope) {
+                    $transaction = $check->escrow->transaction_skyslope;
                 } else {
-                    $transaction = $check -> escrow -> transaction_company;
+                    $transaction = $check->escrow->transaction_company;
                 }
 
-                if($transaction) {
-
+                if ($transaction) {
                     $listingGuid = '';
                     $saleGuid = '';
-                    if($transaction -> listingGuid != 0) {
-                        $listingGuid = $transaction -> listingGuid;
+                    if ($transaction->listingGuid != 0) {
+                        $listingGuid = $transaction->listingGuid;
                     }
-                    if($transaction -> saleGuid != 0) {
-                        $saleGuid = $transaction -> saleGuid;
+                    if ($transaction->saleGuid != 0) {
+                        $saleGuid = $transaction->saleGuid;
                     }
 
-                    $url = $check -> url;
+                    $url = $check->url;
 
-                    if($url != '') {
-
+                    if ($url != '') {
                         $file_name = basename($url);
                         try {
                             $file_contents = file_get_contents($url);
                         } catch (Throwable $e) {
-                            $check -> downloaded = 'file_missing';
-                            $check -> save();
+                            $check->downloaded = 'file_missing';
+                            $check->save();
                             //$this -> queueData(['file_missing' => 'true'], true);
                             $cont = 'no';
                         }
 
-                        if($cont == 'yes') {
-
-                            $dir = 'doc_management/archives/'.$listingGuid . '_' . $saleGuid;
-                            if(!Storage::exists($dir)) {
+                        if ($cont == 'yes') {
+                            $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
+                            if (! Storage::exists($dir)) {
                                 Storage::makeDirectory($dir);
                             }
                             $dir = $dir.'/escrow';
-                            if(!Storage::exists($dir)) {
+                            if (! Storage::exists($dir)) {
                                 Storage::makeDirectory($dir);
                             }
                             Storage::put($dir.'/'.$file_name, $file_contents);
 
-                            $check -> file_location = $dir.'/'.$file_name;
+                            $check->file_location = $dir.'/'.$file_name;
 
-                            if(!file_exists(Storage::path($dir.'/'.$file_name))) {
-                                $check -> downloaded = 'download_failed';
-                                $check -> save();
+                            if (! file_exists(Storage::path($dir.'/'.$file_name))) {
+                                $check->downloaded = 'download_failed';
+                                $check->save();
                                 //$this -> queueData(['download_failed' => 'true'], true);
                                 $cont = 'no';
                             }
-
                         }
-
                     } else {
-                        $check -> downloaded = 'no_url';
-                        $check -> save();
+                        $check->downloaded = 'no_url';
+                        $check->save();
                         //$this -> queueData(['no_url' => 'true'], true);
                         $cont = 'no';
                     }
 
-                    if($cont == 'yes') {
-
-                        $check -> downloaded = 'yes';
-                        $check -> save();
-
+                    if ($cont == 'yes') {
+                        $check->downloaded = 'yes';
+                        $check->save();
                     }
-
                 } else {
-                    $check -> downloaded = 'no_transaction';
-                    $check -> save();
+                    $check->downloaded = 'no_transaction';
+                    $check->save();
                     //$this -> queueData(['no_transaction' => $check -> id], true);
                 }
 
                 $progress += $progress_increment;
-                $this -> queueProgress($progress);
-
+                $this->queueProgress($progress);
             }
-
         }
 
-        $this -> queueProgress(100);
-
+        $this->queueProgress(100);
     }
-
 }

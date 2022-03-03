@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\Archives;
 
-use Illuminate\Console\Command;
 use App\Jobs\Cron\Archives\AddDocumentsJob;
+use Illuminate\Console\Command;
 
 class AddDocuments extends Command
 {
@@ -40,7 +40,4 @@ class AddDocuments extends Command
     {
         AddDocumentsJob::dispatch();
     }
-
-
-
 }

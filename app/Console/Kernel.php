@@ -2,21 +2,12 @@
 
 namespace App\Console;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\App;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
     /**
      * Define the application's command schedule.
      *
@@ -27,33 +18,32 @@ class Kernel extends ConsoleKernel
     {
 
         // Backups
-        $schedule -> command('backup:clean') -> twiceDaily(1, 13) -> environments(['production']);
-        $schedule -> command('backup:run --only-db') -> twiceDaily(2, 14) -> environments(['production']);
+        $schedule->command('backup:clean')->twiceDaily(1, 13)->environments(['production']);
+        $schedule->command('backup:run --only-db')->twiceDaily(2, 14)->environments(['production']);
 
         // prune failed jobs
-        $schedule -> command('php artisan queue:prune-failed') -> everyTwoHours();
+        $schedule->command('php artisan queue:prune-failed')->everyTwoHours();
 
         // update bright agents and offices
-        $schedule -> command('bright_mls:update_agents_and_offices') -> everyThirtyMinutes() -> environments('production') -> withoutOverlapping();
+        $schedule->command('bright_mls:update_agents_and_offices')->everyThirtyMinutes()->environments('production')->withoutOverlapping();
 
         // %%% TEMP %%% //
 
         // add transactions from skyslope to db
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:get_transactions') -> everySixHours() -> environments('production');
+        $schedule->command('archives:get_transactions')->everySixHours()->environments('production');
         // add documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_documents') -> everyFourHours() -> environments('production');
+        $schedule->command('archives:add_documents')->everyFourHours()->environments('production');
         // add missing documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
+        $schedule->command('archives:add_missing_documents')->hourly()->environments('production');
         // add skyslope data to old db
         // ends - when no more transactions added to skyslope
-        $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production') -> withoutOverlapping();
+        $schedule->command('old_db:add_skyslope_listings')->everyFiveMinutes()->environments('production')->withoutOverlapping();
 
         // merge agent home addresses with bright agents
         //$schedule -> command('agent_addresses:merge') -> everyMinute();
-
 
         // add mls_company to skyslope
         // ends - when all data added
@@ -77,7 +67,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this -> load(__DIR__.'/Commands');
+        $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
     }

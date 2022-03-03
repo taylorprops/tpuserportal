@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class EmailLog extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -35,4 +34,4 @@ class EmailLog extends Migration
     {
         Schema::drop('email_log');
     }
-}
+};
