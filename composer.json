@@ -12,7 +12,6 @@
         "authorizenet/authorizenet": "^2.0",
         "awobaz/compoships": "^2.1",
         "barryvdh/laravel-dompdf": "^1.0",
-        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "kyslik/column-sortable": "^6.4",
