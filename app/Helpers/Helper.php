@@ -188,9 +188,13 @@ class Helper
 
         $rets = new \PHRETS\Session($rets_config);
 
-        $connect = $rets -> Login();
+        Helper::rets_connect($rets);
 
         return $rets;
+    }
+
+    public static function rets_connect($rets) {
+        $connect = $rets -> Login();
     }
 
     public static function parse_address_google($address)
