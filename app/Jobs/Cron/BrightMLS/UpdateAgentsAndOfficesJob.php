@@ -36,17 +36,17 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
     {
         ini_set('memory_limit', '-1');
 
-        $this -> queueData(['Status:' => 'Attempting Login'], true);
+        $this -> queueData(['Status 1:' => 'Attempting Login'], true);
 
         $rets = Helper::rets_login();
 
         if(!$rets) {
             sleep(5);
-            $this -> queueData(['Status:' => 'Attempting Login Again'], true);
+            $this -> queueData(['Status 2:' => 'Attempting Login Again'], true);
             $rets = Helper::rets_login();
         }
 
-        $this -> queueData(['Status:' => 'Login Successful'], true);
+        $this -> queueData(['Status 3:' => 'Login Successful'], true);
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
