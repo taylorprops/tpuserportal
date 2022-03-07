@@ -190,7 +190,7 @@ class Helper
 
         $connect = $rets -> Login();
 
-        if($connect) {
+        if($connect -> getRetsSessionId()) {
 
             return $rets;
 

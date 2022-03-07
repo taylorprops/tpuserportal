@@ -34,14 +34,9 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $documents = Documents::where(function ($query) {
-            $query -> whereNull('file_exists')
-            -> orWhere('file_exists', '');
-        })
-        -> whereNull('doc_type')
-        -> limit(100) -> get();
+        $connect = Helper::rets_login();
 
-        dd($documents);
+        dd($connect -> getRetsSessionId());
 
     }
 
