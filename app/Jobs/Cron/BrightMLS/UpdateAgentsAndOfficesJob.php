@@ -176,8 +176,12 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             $agents_in_bright_array[] = (int) $agent_in_bright['MemberKey'];
         }
 
+        $this -> queueProgress(60);
+
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
         $agents_in_db_count = count($agents_in_db);
+
+        $this -> queueProgress(70);
 
         $this -> queueData(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
 
@@ -221,6 +225,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                 $agents = $results -> toArray();
 
+                $this -> queueProgress(80);
+
                 if (count($agents) > 0) {
                     foreach ($agents as $agent) {
                         $agent_details = array_filter($agent);
@@ -238,6 +244,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 }
             }
         }
+
+        $this -> queueProgress(90);
 
         // remove unwanted emails
         $reject_emails = ['yopmail.com', 'brightmls.com', 'mris.net'];
