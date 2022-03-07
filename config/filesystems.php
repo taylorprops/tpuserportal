@@ -82,7 +82,7 @@ return [
                     'private' => 0700,
                 ],
             ],
-            'url' => env('APP_URL').'/storage',
+            'url' => /* env('APP_URL'). */'/storage',
             'visibility' => 'public',
         ],
 
