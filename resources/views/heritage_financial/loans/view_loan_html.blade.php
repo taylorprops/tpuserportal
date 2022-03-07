@@ -114,7 +114,7 @@ $disabled = 'disabled';
                         @endif
                     </nav>
 
-                    @if($loan -> lending_pad_uuid)
+                    @if($loan && $loan -> lending_pad_uuid)
                     <div class="ml-12 mt-2">
                         <a href="https://prod.lendingpad.com/web/#/company/loans/{{ $loan -> lending_pad_uuid }}" target="_blank" class="inline-block button primary md">View on Lending Pad <i class="fal fa-arrow-right ml-2"></i></a>
                     </div>

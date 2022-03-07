@@ -24,7 +24,7 @@ class AddMissingDocumentsJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('add_missing_documents');
+        $this -> onQueue('add_missing_documents');
     }
 
     /**
@@ -34,31 +34,31 @@ class AddMissingDocumentsJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->add_missing_documents();
+        $this -> add_missing_documents();
     }
 
     public function add_missing_documents()
     {
         $progress = 0;
-        $this->queueProgress($progress);
+        $this -> queueProgress($progress);
 
         $documents = Documents::where(function ($query) {
-            $query->whereNull('file_exists')
-            ->orWhere('file_exists', '');
+            $query -> whereNull('file_exists')
+            -> orWhere('file_exists', '');
         })
-        ->whereNull('doc_type')
-        ->limit(100)->get();
+        -> whereNull('doc_type')
+        -> limit(100) -> get();
 
         foreach ($documents as $document) {
             $exists = 'no';
             $missing = [];
 
-            if (Storage::exists($document->file_location)) {
+            if (Storage::exists($document -> file_location)) {
                 $exists = 'yes';
             } else {
-                $missing[] = $document->id;
+                $missing[] = $document -> id;
 
-                $auth = $this->skyslope_auth();
+                $auth = $this -> skyslope_auth();
                 $session = $auth['Session'];
                 $headers = [
                     'Content-Type' => 'application/json',
@@ -69,23 +69,23 @@ class AddMissingDocumentsJob implements ShouldQueue
                     'headers' => $headers,
                 ]);
 
-                if ($document->saleGuid && $document->saleGuid != '0') {
-                    $transaction = Transactions::where('saleGuid', $document->saleGuid)->where('objectType', 'sale')->first();
+                if ($document -> saleGuid && $document -> saleGuid != '0') {
+                    $transaction = Transactions::where('saleGuid', $document -> saleGuid) -> where('objectType', 'sale') -> first();
                 } else {
-                    $transaction = Transactions::where('listingGuid', $document->listingGuid)->where('objectType', 'listing')->first();
+                    $transaction = Transactions::where('listingGuid', $document -> listingGuid) -> where('objectType', 'listing') -> first();
                 }
 
-                $type = $transaction->objectType;
-                $saleGuid = $transaction->saleGuid;
-                $listingGuid = $transaction->listingGuid;
+                $type = $transaction -> objectType;
+                $saleGuid = $transaction -> saleGuid;
+                $listingGuid = $transaction -> listingGuid;
 
                 if ($type == 'listing') {
-                    $response = $client->request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents/'.$document->id);
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents/'.$document -> id);
                 } elseif ($type == 'sale') {
-                    $response = $client->request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents/'.$document->id);
+                    $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents/'.$document -> id);
                 }
 
-                $contents = $response->getBody()->getContents();
+                $contents = $response -> getBody() -> getContents();
                 $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
                 $contents = json_decode($contents, true);
 
@@ -100,31 +100,31 @@ class AddMissingDocumentsJob implements ShouldQueue
 
                 foreach ($new_document as $col => $value) {
                     if (! in_array($col, ['fileSize', 'pages'])) {
-                        $document->$col = $value;
+                        $document -> $col = $value;
                     }
                 }
 
-                $document->file_location = $file_location;
-                $document->listingGuid = $listingGuid;
-                $document->saleGuid = $saleGuid;
+                $document -> file_location = $file_location;
+                $document -> listingGuid = $listingGuid;
+                $document -> saleGuid = $saleGuid;
 
-                $document->save();
+                $document -> save();
 
                 if (Storage::exists($file_location)) {
                     $exists = 'yes';
                 }
             }
 
-            $document->file_exists = $exists;
-            $document->save();
+            $document -> file_exists = $exists;
+            $document -> save();
 
             $progress += .1;
-            $this->queueProgress($progress);
+            $this -> queueProgress($progress);
 
-            $this->queueData(['missing' => $missing], true);
+            $this -> queueData(['missing' => $missing], true);
         }
 
-        $this->queueProgress(100);
+        $this -> queueProgress(100);
     }
 
     public function skyslope_auth()
@@ -156,8 +156,8 @@ class AddMissingDocumentsJob implements ShouldQueue
             'json' => $json,
         ]);
 
-        $r = $client->request('POST', 'https://api.skyslope.com/auth/login');
-        $response = $r->getBody()->getContents();
+        $r = $client -> request('POST', 'https://api.skyslope.com/auth/login');
+        $response = $r -> getBody() -> getContents();
 
         return json_decode($response, true);
     }

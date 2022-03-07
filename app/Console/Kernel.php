@@ -34,11 +34,13 @@ class Kernel extends ConsoleKernel
         $schedule -> command('archives:get_transactions') -> everySixHours() -> environments('production');
         // add documents to skyslope transactions
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_documents') -> everyFourHours() -> environments('production');
+        // $schedule -> command('archives:add_documents') -> everyFourHours() -> environments('production');
         // add missing documents to skyslope transactions
+        // ** no longer available
         // ends - when no more transactions added to skyslope
-        $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
+        // $schedule -> command('archives:add_missing_documents') -> hourly() -> environments('production');
         // add skyslope data to old db
+        // ** no longer available
         // ends - when no more transactions added to skyslope
         $schedule -> command('old_db:add_skyslope_listings') -> everyFiveMinutes() -> environments('production') -> withoutOverlapping();
 

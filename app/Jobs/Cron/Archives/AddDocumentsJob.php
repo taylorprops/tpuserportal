@@ -28,7 +28,7 @@ class AddDocumentsJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('add_documents');
+        $this -> onQueue('add_documents');
     }
 
     /**
@@ -38,12 +38,12 @@ class AddDocumentsJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->add_documents();
+        $this -> add_documents();
     }
 
     public function add_documents()
     {
-        $transactions = Transactions::whereIn('docs_added', ['no'])->where('data_source', 'skyslope')->inRandomOrder()->limit(100)->get();
+        $transactions = Transactions::whereIn('docs_added', ['no']) -> where('data_source', 'skyslope') -> inRandomOrder() -> limit(100) -> get();
 
         if (count($transactions) > 0) {
             $stats = DB::select(
@@ -59,27 +59,27 @@ class AddDocumentsJob implements ShouldQueue
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'error' ) as error,
                 ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'no' ) as not_added"
             );
-            $this->queueData([$stats], true);
+            $this -> queueData([$stats], true);
 
             $data = '';
             foreach ($transactions as $transaction) {
-                $data .= "(listingGuid = '".$transaction->listingGuid."' and saleGuid = '".$transaction->saleGuid."') or ";
+                $data .= "(listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."') or ";
             }
-            $this->queueData([$data], true);
+            $this -> queueData([$data], true);
 
-            $auth = $this->skyslope_auth();
+            $auth = $this -> skyslope_auth();
             $session = $auth['Session'];
 
             $progress = 1;
-            $this->queueProgress($progress);
+            $this -> queueProgress($progress);
 
             $downloads = [];
 
             foreach ($transactions as $transaction) {
-                $type = $transaction->objectType;
-                $id = $transaction->saleGuid;
+                $type = $transaction -> objectType;
+                $id = $transaction -> saleGuid;
                 if ($type == 'listing') {
-                    $id = $transaction->listingGuid;
+                    $id = $transaction -> listingGuid;
                 }
 
                 $listingGuid = $type == 'listing' ? $id : 0;
@@ -91,8 +91,8 @@ class AddDocumentsJob implements ShouldQueue
                 }
                 File::cleanDirectory(Storage::path($dir));
 
-                $transaction->docs_added_run = 'yes';
-                $transaction->save();
+                $transaction -> docs_added_run = 'yes';
+                $transaction -> save();
 
                 $headers = [
                     'Content-Type' => 'application/json',
@@ -107,17 +107,17 @@ class AddDocumentsJob implements ShouldQueue
 
                 try {
                     if ($type == 'listing') {
-                        $response = $client->request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/listings/'.$listingGuid.'/documents');
                     } elseif ($type == 'sale') {
-                        $response = $client->request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
+                        $response = $client -> request('GET', 'https://api.skyslope.com/api/files/sales/'.$saleGuid.'/documents');
                     }
 
                     if ($response) {
-                        $headers = $response->getHeaders();
+                        $headers = $response -> getHeaders();
                         $remaining = $headers['x-ratelimit-remaining'][0];
 
                         if ($remaining > 0) {
-                            $contents = $response->getBody()->getContents();
+                            $contents = $response -> getBody() -> getContents();
                             $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
                             $contents = json_decode($contents, true);
 
@@ -135,38 +135,38 @@ class AddDocumentsJob implements ShouldQueue
 
                                     foreach ($document as $col => $value) {
                                         if (! in_array($col, ['fileSize', 'pages'])) {
-                                            $add_document->$col = $value;
+                                            $add_document -> $col = $value;
                                         }
                                     }
 
-                                    $add_document->file_location = $file_location;
-                                    $add_document->listingGuid = $listingGuid;
-                                    $add_document->saleGuid = $saleGuid;
+                                    $add_document -> file_location = $file_location;
+                                    $add_document -> listingGuid = $listingGuid;
+                                    $add_document -> saleGuid = $saleGuid;
 
-                                    $add_document->save();
+                                    $add_document -> save();
                                 }
 
-                                $transaction->docs_added = 'yes';
-                                $transaction->save();
+                                $transaction -> docs_added = 'yes';
+                                $transaction -> save();
                             } else {
-                                $transaction->docs_added = 'docs not found';
-                                $transaction->save();
+                                $transaction -> docs_added = 'docs not found';
+                                $transaction -> save();
                             }
                         } else {
-                            $transaction->docs_added = 'none remaining';
-                            $transaction->save();
+                            $transaction -> docs_added = 'none remaining';
+                            $transaction -> save();
                         }
                     } else {
-                        $transaction->docs_added = 'no response';
-                        $transaction->save();
+                        $transaction -> docs_added = 'no response';
+                        $transaction -> save();
                     }
                 } catch (Throwable $e) {
-                    $transaction->docs_added = 'transaction not found';
-                    $transaction->save();
+                    $transaction -> docs_added = 'transaction not found';
+                    $transaction -> save();
                 }
 
                 $progress += 1;
-                $this->queueProgress($progress);
+                $this -> queueProgress($progress);
             }
 
             if (count($downloads) > 0) {
@@ -174,14 +174,14 @@ class AddDocumentsJob implements ShouldQueue
 
                 foreach ($downloads as $download) {
                     $progress += $progress_increment;
-                    $this->queueProgress($progress);
+                    $this -> queueProgress($progress);
 
                     try {
                         $file_contents = gzdecode(file_get_contents($download['from']));
                         Storage::put($download['to'], $file_contents);
                     } catch (Throwable $e) {
-                        $transaction->docs_added = 'download failed';
-                        $transaction->save();
+                        $transaction -> docs_added = 'download failed';
+                        $transaction -> save();
                     }
                 }
             } else {
@@ -190,10 +190,10 @@ class AddDocumentsJob implements ShouldQueue
                 // $transaction -> save();
             }
 
-            $this->queueProgress(100);
+            $this -> queueProgress(100);
         }
 
-        $this->queueProgress(100);
+        $this -> queueProgress(100);
     }
 
     /* public function get_documents($type, $id, $session, $progress) {
@@ -316,8 +316,8 @@ class AddDocumentsJob implements ShouldQueue
             'json' => $json,
         ]);
 
-        $r = $client->request('POST', 'https://api.skyslope.com/auth/login');
-        $response = $r->getBody()->getContents();
+        $r = $client -> request('POST', 'https://api.skyslope.com/auth/login');
+        $response = $r -> getBody() -> getContents();
 
         return json_decode($response, true);
     }
