@@ -112,7 +112,7 @@ class DataController extends Controller
         -> get();
 
         $file_name = 'purged_list_'.time().'.csv';
-        $file = Storage::path('tmp/'.$file_name);
+        $file = Storage::path('/tmp/'.$file_name);
         $handle = fopen($file, 'w');
         fputcsv($handle, $select, ',');
 
