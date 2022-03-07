@@ -195,7 +195,7 @@ class Helper
             return $rets;
 
         }
-        return false;
+        return null;
     }
 
     public static function parse_address_google($address)
