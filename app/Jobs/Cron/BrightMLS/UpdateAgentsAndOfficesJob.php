@@ -40,6 +40,11 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $rets = Helper::rets_login();
 
+        if(!$rets) {
+            sleep(5);
+            $rets = Helper::rets_login();
+        }
+
         $this -> queueData(['Status:' => 'Login Successful'], true);
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
@@ -52,14 +57,14 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $rets -> Disconnect();
         sleep(5);
-        $connect = $rets -> Login();
+        $rets -> Login();
 
         $this -> update_agents($rets);
         $this -> queueProgress(50);
 
         $rets -> Disconnect();
         sleep(5);
-        $connect = $rets -> Login();
+        $rets -> Login();
 
         $this -> remove_agents($rets);
         $this -> queueProgress(100);

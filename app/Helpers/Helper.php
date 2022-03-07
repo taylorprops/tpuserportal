@@ -190,7 +190,12 @@ class Helper
 
         $connect = $rets -> Login();
 
-        return $rets;
+        if($connect) {
+
+            return $rets;
+
+        }
+        return false;
     }
 
     public static function parse_address_google($address)
