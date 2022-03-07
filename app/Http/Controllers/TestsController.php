@@ -435,4 +435,32 @@ class TestsController extends Controller
         return view('/tests/alpine');
     }
 
+    public function test_connection() {
+
+        try {
+
+            $rets = Helper::rets_login();
+
+            $resource = 'Office';
+            $class = 'Office';
+
+            $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
+            $mod_time = str_replace(' ', 'T', $mod_time);
+            $query = '(ModificationTimestamp='.$mod_time.'+)';
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query
+            );
+
+        } catch(RETSException $e) {
+            return $e -> getMessage();
+        } catch(Throwable $e) {
+            return $e -> getMessage();
+        }
+
+        dd($results);
+    }
+
 }

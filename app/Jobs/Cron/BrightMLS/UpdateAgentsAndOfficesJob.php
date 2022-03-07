@@ -38,50 +38,28 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $this -> queueData(['Status:' => 'Attempting Login'], true);
 
-        // $rets = Helper::rets_login();
-
-        date_default_timezone_set('America/New_York');
-        $rets_config = new \PHRETS\Configuration;
-        $rets_config -> setLoginUrl(config('global.rets_url'))
-        -> setUsername(config('global.rets_username'))
-        -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.7.2')
-        -> setUserAgent('Bright RETS Application/1.0')
-        -> setHttpAuthenticationMethod('digest')
-        -> setOption('use_post_method', true)
-        -> setOption('disable_follow_location', false);
-
-        $rets = new \PHRETS\Session($rets_config);
-
-        $connect = $rets -> Login();
+        $rets = Helper::rets_login();
 
         $this -> queueData(['Status:' => 'Login Successful'], true);
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
-        try {
+        $progress = 0;
+        $this -> queueProgress($progress);
 
-            $progress = 0;
-            $this -> queueProgress($progress);
+        $this -> update_offices($rets);
+        $this -> queueProgress(20);
 
-            $this -> update_offices($rets);
-            $this -> queueProgress(20);
+        $this -> update_agents($rets);
+        $this -> queueProgress(50);
 
-            $this -> update_agents($rets);
-            $this -> queueProgress(50);
+        $this -> remove_agents($rets);
+        $this -> queueProgress(100);
 
-            $this -> remove_agents($rets);
-            $this -> queueProgress(100);
+        $rets -> Disconnect();
 
-            $rets -> Disconnect();
+        return true;
 
-            return true;
-
-        } catch(Throwable $e) {
-
-            $rets -> Disconnect();
-
-        }
     }
 
     public function update_offices($rets)
