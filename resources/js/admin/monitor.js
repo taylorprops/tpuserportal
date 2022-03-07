@@ -23,7 +23,7 @@ if (document.URL.match(/monitor/)) {
             let h1 = monitor.getElementsByTagName('h1')[0];
             h1.remove();
             document.querySelectorAll('.monitor textarea').forEach(function (textarea) {
-                textarea.setAttribute('rows', '12');
+                textarea.setAttribute('rows', '16');
             });
             // document.querySelector('.monitor').innerHTML = '';
             // document.querySelector('.monitor').insertAdjacentHTML('beforeend', response.data);
