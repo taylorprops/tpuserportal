@@ -28,8 +28,8 @@ class APIController extends Controller
         // $state = $address['state'] ?? null;
         // $zip = $address['zip'] ?? null;
 
-        $tax_records = $this -> tax_records('9601', 'santa fe', '', '20774', null, 'MD');
-        dd($tax_records['details']['FullDetails']);
+        // $tax_records = $this -> tax_records('9601', 'santa fe', '', '20774', null, 'MD');
+        // dd($tax_records['details']['FullDetails']);
     }
 
     public function update_loan(Request $request)

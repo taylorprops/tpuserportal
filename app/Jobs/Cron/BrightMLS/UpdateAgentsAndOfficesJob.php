@@ -36,25 +36,52 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
     {
         ini_set('memory_limit', '-1');
 
-        $rets = Helper::rets_login();
+        $this -> queueData(['Status:' => 'Attempting Login'], true);
+
+        // $rets = Helper::rets_login();
+
+        date_default_timezone_set('America/New_York');
+        $rets_config = new \PHRETS\Configuration;
+        $rets_config -> setLoginUrl(config('global.rets_url'))
+        -> setUsername(config('global.rets_username'))
+        -> setPassword(config('global.rets_password'))
+        -> setRetsVersion('RETS/1.7.2')
+        -> setUserAgent('Bright RETS Application/1.0')
+        -> setHttpAuthenticationMethod('digest')
+        -> setOption('use_post_method', true)
+        -> setOption('disable_follow_location', false);
+
+        $rets = new \PHRETS\Session($rets_config);
+
+        $connect = $rets -> Login();
+
+        $this -> queueData(['Status:' => 'Login Successful'], true);
 
         $this -> queueData(['uuid' => $this -> job -> uuid()], true);
 
-        $progress = 0;
-        $this -> queueProgress($progress);
+        try {
 
-        $this -> update_offices($rets);
-        $this -> queueProgress(20);
+            $progress = 0;
+            $this -> queueProgress($progress);
 
-        $this -> update_agents($rets);
-        $this -> queueProgress(50);
+            $this -> update_offices($rets);
+            $this -> queueProgress(20);
 
-        $this -> remove_agents($rets);
-        $this -> queueProgress(100);
+            $this -> update_agents($rets);
+            $this -> queueProgress(50);
 
-        $rets -> Disconnect();
+            $this -> remove_agents($rets);
+            $this -> queueProgress(100);
 
-        return true;
+            $rets -> Disconnect();
+
+            return true;
+
+        } catch(Throwable $e) {
+
+            $rets -> Disconnect();
+
+        }
     }
 
     public function update_offices($rets)
@@ -101,7 +128,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
-        $mod_time = date('Y-m-d H:i:s', strtotime('-12 hour'));
+        $mod_time = date('Y-m-d H:i:s', strtotime('-24 hour'));
         $mod_time = str_replace(' ', 'T', $mod_time);
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
@@ -114,7 +141,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $agents = $results -> toArray();
         $total_found = count($agents);
 
-        $count_before = BrightAgentRoster::get() -> count();
+        $agents_count_before = BrightAgentRoster::get() -> count();
 
         if ($total_found > 0) {
             $progress = 20;
@@ -137,8 +164,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             }
         }
 
-        $count_after = BrightAgentRoster::get() -> count();
-        $this -> queueData(['Agents', 'count before' => $count_before, 'count after' => $count_after], true);
+        $agents_count_after = BrightAgentRoster::get() -> count();
+        $this -> queueData(['Agents', 'agents count before' => $agents_count_before, 'agents count after' => $agents_count_after], true);
     }
 
     public function remove_agents($rets)
@@ -167,6 +194,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
         $agents_in_db_count = count($agents_in_db);
+
+        $this -> queueData(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
 
         if ($agents_in_bright_count != $agents_in_db_count) {
             $deactivate_agents = [];
