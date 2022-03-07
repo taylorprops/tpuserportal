@@ -181,7 +181,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
         $agents_in_db_count = count($agents_in_db);
 
-        $this -> queueProgress(70);
+        $this -> queueProgress(65);
 
         $this -> queueData(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
 
@@ -193,6 +193,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 }
             }
 
+            $this -> queueProgress(70);
+
             if (count($deactivate_agents) > 0) {
                 BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
                 -> update([
@@ -201,12 +203,16 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 ]);
             }
 
+            $this -> queueProgress(75);
+
             $missing_agents = [];
             foreach ($agents_in_bright_array as $agent) {
                 if (! in_array($agent, $agents_in_db)) {
                     $missing_agents[] = $agent;
                 }
             }
+
+            $this -> queueProgress(80);
 
             if (count($missing_agents) > 0) {
                 $agents_in_db_string = implode(', ', $missing_agents);
@@ -225,7 +231,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                 $agents = $results -> toArray();
 
-                $this -> queueProgress(80);
+                $this -> queueProgress(85);
 
                 if (count($agents) > 0) {
                     foreach ($agents as $agent) {
@@ -258,6 +264,8 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             'active' => 'no',
             'date_purged' => date('Y-m-d')
         ]);
+
+        $this -> queueProgress(95);
 
     }
 
