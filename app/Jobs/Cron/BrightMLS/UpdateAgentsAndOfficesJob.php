@@ -42,6 +42,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         if(!$rets) {
             sleep(5);
+            $this -> queueData(['Status:' => 'Attempting Login Again'], true);
             $rets = Helper::rets_login();
         }
 
