@@ -52,14 +52,14 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         $rets -> Disconnect();
         sleep(5);
-        Helper::rets_connect($rets);
+        $connect = $rets -> Login();
 
         $this -> update_agents($rets);
         $this -> queueProgress(50);
 
         $rets -> Disconnect();
         sleep(5);
-        Helper::rets_connect($rets);
+        $connect = $rets -> Login();
 
         $this -> remove_agents($rets);
         $this -> queueProgress(100);
