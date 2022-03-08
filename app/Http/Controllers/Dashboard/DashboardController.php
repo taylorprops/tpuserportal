@@ -37,7 +37,6 @@ class DashboardController extends Controller
                 ['title' => 'VOE Received', 'db_field' => 'time_line_voe_received'],
                 ['title' => 'Conditions Sent', 'db_field' => 'time_line_conditions_submitted'],
                 ['title' => 'Clear To Close', 'db_field' => 'time_line_clear_to_close'],
-                ['title' => 'Estimated Settlement', 'db_field' => 'time_line_estimated_settlement'],
                 ['title' => 'Scheduled Settlement', 'db_field' => 'time_line_scheduled_settlement'],
                 ['title' => 'Closed', 'db_field' => 'time_line_closed'],
                 ['title' => 'Funded', 'db_field' => 'time_line_funded'],

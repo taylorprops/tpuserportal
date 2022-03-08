@@ -47,6 +47,14 @@
                         $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
                     }
                     $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
+
+                    $close_date_type = 'Estimated';
+                    $close_date_details = 'ECD ';
+                    $close_date_details .= $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement )) : '---';
+                    if($loan -> time_line_scheduled_settlement != '') {
+                        $close_date_type = 'Scheduled';
+                        $close_date_details = 'SCD  '.date('n/j/Y', strtotime($loan -> time_line_scheduled_settlement));
+                    }
                     @endphp
 
                     <div class="flex justify-start items-center p-2 border-b text-sm hover:bg-gray-50">
@@ -66,8 +74,8 @@
 
                         <div class="w-32 flex-none">
                             ${{ number_format($loan -> loan_amount) }}
-                            <div class="text-xs" title="Estimated Close Date">
-                                ECD  {{ $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement )) : '---' }}
+                            <div class="text-xs" title="{{ $close_date_type }} Close Date">
+                                {{ $close_date_details }}
                             </div>
                         </div>
 
