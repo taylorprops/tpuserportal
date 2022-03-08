@@ -572,7 +572,8 @@ $disabled = 'disabled';
                                     ['date', 'time_line_package_to_borrower', 'Package Sent To Borrower', ''],
                                     ['date', 'time_line_sent_to_processing', 'Sent To Processing', $disabled],
                                     ['date', 'time_line_clear_to_close', 'Clear To Close', $disabled],
-                                    ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', ''],
+                                    ['date', 'time_line_estimated_settlement', 'Estimated Settlement Date', $disabled],
+                                    ['date', 'time_line_scheduled_settlement', 'Scheduled Settlement Date', $disabled],
                                     ['date', 'time_line_closed', 'Closed', $disabled],
                                     ['date', 'time_line_funded', 'Funded', $disabled]
                                 ];

@@ -34,19 +34,7 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        date_default_timezone_set('America/New_York');
-        $rets_config = new \PHRETS\Configuration;
-        $rets_config -> setLoginUrl(config('global.rets_url'))
-        -> setUsername(config('global.rets_username'))
-        -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.7.2')
-        -> setUserAgent('Bright RETS Application/1.0')
-        -> setHttpAuthenticationMethod('digest')
-        -> setOption('use_post_method', true)
-        -> setOption('disable_follow_location', false);
-
-        $rets = new \PHRETS\Session($rets_config);
-        $connect = $rets -> Login();
+        $connect = Helper::rets_login();
 
         dd($connect -> getRetsSessionId());
 

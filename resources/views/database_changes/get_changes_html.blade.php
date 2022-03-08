@@ -20,7 +20,7 @@
                         <td valign="top" class="whitespace-nowrap">{{ date('n/j/Y g:i A', strtotime($change -> created_at)) }}</td>
                         <td valign="top" class="whitespace-nowrap">{{ $change -> user -> name ?? 'System' }}</td>
                         <td class="p-0">
-                            @foreach($change -> changes as $change_detail)
+                            @foreach($change -> changes -> where('field_name', '!=', 'property_details') as $change_detail)
 
                                 @php
                                 $value_before = $change_detail -> value_before;

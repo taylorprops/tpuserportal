@@ -309,6 +309,10 @@ class APIController extends Controller
             }
             $settlement_date = null;
             $loan -> time_line_scheduled_settlement = null;
+            $loan -> time_line_estimated_settlement = null;
+            if($request -> Estimate_Closing != null) {
+                $loan -> time_line_estimated_settlement = date('Y-m-d', strtotime($request -> Estimate_Closing));
+            }
             if($request -> Schedule_Closing != null) {
                 $loan -> time_line_scheduled_settlement = date('Y-m-d', strtotime($request -> Schedule_Closing));
                 $settlement_date = date('Y-m-d', strtotime($request -> Schedule_Closing));

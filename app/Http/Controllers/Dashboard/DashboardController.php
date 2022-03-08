@@ -10,18 +10,18 @@ class DashboardController extends Controller
 {
     public function dashboard(Request $request)
     {
-        $group = auth()->user()->group;
+        $group = auth() -> user() -> group;
 
         // Mortgage
         if ($group == 'mortgage' || $group == 'in_house') {
             $active_loans = Loans::where('loan_status', 'Open')
-            ->orderBy('settlement_date', 'desc')
-            ->get();
+            -> orderBy('settlement_date', 'desc')
+            -> get();
 
             $recent_commissions = Loans::where('loan_status', 'Closed')
-            ->where('settlement_date', '>', date('Y-m-d', strtotime('-3 month')))
-            ->orderBy('settlement_date', 'desc')
-            ->get();
+            -> where('settlement_date', '>', date('Y-m-d', strtotime('-3 month')))
+            -> orderBy('settlement_date', 'desc')
+            -> get();
 
             $table_headers = [
                 ['title' => 'Locked', 'db_field' => 'locked'],
@@ -37,7 +37,8 @@ class DashboardController extends Controller
                 ['title' => 'VOE Received', 'db_field' => 'time_line_voe_received'],
                 ['title' => 'Conditions Sent', 'db_field' => 'time_line_conditions_submitted'],
                 ['title' => 'Clear To Close', 'db_field' => 'time_line_clear_to_close'],
-                ['title' => 'Settlement Scheduled', 'db_field' => 'time_line_scheduled_settlement'],
+                ['title' => 'Estimated Settlement', 'db_field' => 'time_line_estimated_settlement'],
+                ['title' => 'Scheduled Settlement', 'db_field' => 'time_line_scheduled_settlement'],
                 ['title' => 'Closed', 'db_field' => 'time_line_closed'],
                 ['title' => 'Funded', 'db_field' => 'time_line_funded'],
             ];

@@ -66,8 +66,8 @@
 
                         <div class="w-32 flex-none">
                             ${{ number_format($loan -> loan_amount) }}
-                            <div class="text-xs">
-                                CD - {{ date('n/j/Y', strtotime($loan -> settlement_date)) }}
+                            <div class="text-xs" title="Estimated Close Date">
+                                ECD  {{ $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement )) : '---' }}
                             </div>
                         </div>
 
