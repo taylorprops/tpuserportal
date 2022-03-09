@@ -57,7 +57,7 @@
                     }
                     @endphp
 
-                    <div class="flex justify-start items-center p-2 border-b text-sm hover:bg-gray-50">
+                    <div class="flex justify-start items-center p-2 border-b hover:bg-gray-50">
 
                         <div class="w-20 flex-none">
                             <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
@@ -67,15 +67,20 @@
                             {!! App\Helpers\Helper::avatar(null, $loan -> processor_id, 'mortgage') !!}
                         </div>
 
-                        <div class="w-52">
+                        <div class="w-52 text-sm">
                             <div class="font-semibold text-gray-700">{!! $borrower !!}</div>
                             <div class="text-xs">{!! $address !!}</div>
                         </div>
 
                         <div class="w-32 flex-none">
-                            ${{ number_format($loan -> loan_amount) }}
-                            <div class="text-xs" title="{{ $close_date_type }} Close Date">
+                            <div class="text-sm">
+                                ${{ number_format($loan -> loan_amount) }}
+                            </div>
+                            <div class="text-sm" title="{{ $close_date_type }} Close Date">
                                 {{ $close_date_details }}
+                            </div>
+                            <div class="text-xs">
+                                {{ $loan -> loan_officer_1 -> fullname }}
                             </div>
                         </div>
 
