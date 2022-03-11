@@ -145,7 +145,7 @@
                                     if($complete == true) {
                                         echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
                                     } else if($incomplete == true && $suspended == false) {
-                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times fa-2x text-red-600"></i></span>';
+                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times text-red-600"></i></span>';
                                     } else if($incomplete == true && $suspended == true) {
                                         echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle fa-2x text-red-600"></i></span>';
                                     } else if($not_available == true) {
