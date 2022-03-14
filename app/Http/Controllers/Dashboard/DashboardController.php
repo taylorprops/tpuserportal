@@ -15,8 +15,8 @@ class DashboardController extends Controller
         // Mortgage
         if ($group == 'mortgage' || $group == 'in_house') {
             $active_loans = Loans::where('loan_status', 'Open')
-            -> orderBy('time_line_scheduled_settlement', 'desc')
-            -> orderBy('time_line_estimated_settlement', 'desc')
+            -> orderBy('time_line_scheduled_settlement', 'asc')
+            -> orderBy('time_line_estimated_settlement', 'asc')
             -> get();
 
             $recent_commissions = Loans::where('loan_status', 'Closed')
