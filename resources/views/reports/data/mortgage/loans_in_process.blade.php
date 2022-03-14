@@ -122,12 +122,20 @@
 
                                 $loan_amounts_total += $loan -> loan_amount;
                                 $commission_total += $loan -> company_commission;
+
+                                $loan_purpose = '';
+                                if($loan -> loan_purpose != '') {
+                                    $loan_purpose = 'Purchase';
+                                    if(stristr($loan -> loan_purpose, 'refi')) {
+                                        $loan_purpose = 'Refi';
+                                    }
+                                }
                                 @endphp
 
                                 <tr>
                                     <td>{!! $borrower !!}</td>
                                     <td>{!! $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip !!}</td>
-                                    <td>{{ stristr($loan -> purpose, 'refi') ? 'Refi' : 'Purchase' }}</td>
+                                    <td>{{ $loan_purpose }}</td>
                                     <td>{{ $loan -> processor -> fullname }}</td>
                                     <td>{!! $agents !!}</td>
                                     <td>{{ $loan -> time_line_sent_to_processing }}</td>
