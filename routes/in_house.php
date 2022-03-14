@@ -170,4 +170,4 @@ Route::get('/api/test', [APIController::class, 'test']) -> middleware(['lending_
 Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_critical_dates']) -> middleware(['lending_pad']);
 
-Route::post('/api/tpuserportal/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['tp_user_portal']);
+Route::post('/api/tpagentportal/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['tp_agent_portal']);
