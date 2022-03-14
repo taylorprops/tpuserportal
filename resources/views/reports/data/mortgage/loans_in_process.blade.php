@@ -127,7 +127,7 @@
                                 <tr>
                                     <td>{!! $borrower !!}</td>
                                     <td>{!! $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip !!}</td>
-                                    <td>{{ $loan -> purpose == 'refi' ? 'Refi' : 'Purchase' }}</td>
+                                    <td>{{ stristr($loan -> purpose, 'refi') ? 'Refi' : 'Purchase' }}</td>
                                     <td>{{ $loan -> processor -> fullname }}</td>
                                     <td>{!! $agents !!}</td>
                                     <td>{{ $loan -> time_line_sent_to_processing }}</td>
