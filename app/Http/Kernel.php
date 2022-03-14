@@ -63,7 +63,7 @@ class Kernel extends HttpKernel
         'transaction_coordinator' => \App\Http\Middleware\TransactionCoordinator::class,
         'all' => \App\Http\Middleware\All::class,
         'lending_pad' => \App\Http\Middleware\API\LendingPad::class,
-        'taylorprops' => \App\Http\Middleware\API\TaylorProps::class,
+        'taylor_props' => \App\Http\Middleware\API\TaylorProps::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
