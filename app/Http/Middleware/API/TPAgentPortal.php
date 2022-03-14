@@ -16,7 +16,7 @@ class TPAgentPortal
      */
     public function handle(Request $request, Closure $next)
     {
-        if (config('app.env') == 'production' && $_SERVER['HTTP_REFERER'] == 'https://tpagentportal.com/') {
+        if (config('app.env') == 'production' && ($_SERVER['HTTP_REFERER'] == 'https://tpagentportal.com/' || stristr($_SERVER['HTTP_REFERER'], 'taylorprops'))) {
             return $next($request);
         } elseif (config('app.env') == 'local') {
             return $next($request);

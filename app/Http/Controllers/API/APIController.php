@@ -353,26 +353,6 @@ class APIController extends Controller
         return response() -> json(['status' => 'not_added']);
     }
 
-    // public function get_critical_dates(Request $request) {
-
-    //     $lending_pad_loan_number = $request -> loan_id;
-
-    //     $select = ['time_line_package_to_borrower', 'time_line_sent_to_processing', 'time_line_conditions_received_status', 'time_line_conditions_received', 'time_line_title_ordered', 'time_line_title_received', 'time_line_submitted_to_uw', 'time_line_appraisal_ordered', 'time_line_appraisal_received', 'time_line_voe_ordered', 'time_line_voe_received', 'time_line_conditions_submitted', 'time_line_clear_to_close', 'time_line_scheduled_settlement', 'time_line_closed', 'time_line_scheduled_settlement'];
-
-    //     $loan = Loans::select($select)
-    //     -> where('lending_pad_loan_number', $lending_pad_loan_number) -> first();
-
-    //     $data = new \stdClass();
-    //     foreach($select as $key) {
-    //         if($loan -> $key != '') {
-    //             $data -> $key = date('m/d/Y', strtotime($loan -> $key));
-    //         }
-    //     }
-
-    //     return response() -> json($data);
-
-    // }
-
     public function parse_name($name)
     {
         $parser = new Parser();
