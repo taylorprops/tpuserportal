@@ -51,9 +51,11 @@
                     $close_date_type = 'Estimated';
                     $close_date_details = 'ECD ';
                     $close_date_details .= $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement )) : '---';
+                    $class = 'text-blue-500';
                     if($loan -> time_line_scheduled_settlement != '') {
                         $close_date_type = 'Scheduled';
                         $close_date_details = 'SCD  '.date('n/j/Y', strtotime($loan -> time_line_scheduled_settlement));
+                        $class = 'text-green-500';
                     }
                     @endphp
 
@@ -76,7 +78,7 @@
                             <div class="text-sm">
                                 ${{ number_format($loan -> loan_amount) }}
                             </div>
-                            <div class="text-sm" title="{{ $close_date_type }} Close Date">
+                            <div class="text-sm {{ $class }}" title="{{ $close_date_type }} Close Date">
                                 {{ $close_date_details }}
                             </div>
                             <div class="text-xs">
