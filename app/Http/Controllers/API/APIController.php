@@ -511,6 +511,7 @@ class APIController extends Controller
         ];
     }
 
+    /* from taylorprops.com */
     public function submit_recruiting_form(Request $request) {
 
         return 'working';

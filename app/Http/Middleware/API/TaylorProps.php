@@ -5,7 +5,7 @@ namespace App\Http\Middleware\API;
 use Closure;
 use Illuminate\Http\Request;
 
-class TPAgentPortal
+class TaylorProps
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class TPAgentPortal
      */
     public function handle(Request $request, Closure $next)
     {
-        if (config('app.env') == 'production' && ($_SERVER['HTTP_REFERER'] == 'https://tpagentportal.com/' || stristr($_SERVER['HTTP_REFERER'], 'taylorprops'))) {
+        if (config('app.env') == 'production' && stristr($_SERVER['HTTP_REFERER'], 'taylorprop')) {
             return $next($request);
         } elseif (config('app.env') == 'local') {
             return $next($request);
