@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Marketing\Data;
 
-use App\Http\Controllers\Controller;
-use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\BrightMLS\BrightOffices;
-use App\Models\DocManagement\Resources\LocationData;
-use App\Models\Marketing\LoanOfficerAddresses;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
 {
@@ -26,7 +27,14 @@ class DataController extends Controller
         -> pluck('state')
         -> toArray();
 
-        return view('/marketing/data/address_database', compact('states', 'states_loan_officers'));
+        $purged_emails = BrightAgentRoster::select(DB::raw('count(*) as purged, date_purged'))
+        -> whereNotNull('date_purged')
+        -> where('date_purged' , '>', date('Y-m-d', strtotime('-6 month')))
+        -> groupBy('date_purged')
+        -> orderBy('date_purged', 'desc')
+        -> get();
+
+        return view('/marketing/data/address_database', compact('states', 'states_loan_officers', 'purged_emails'));
     }
 
     public function get_results(Request $request)
