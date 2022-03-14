@@ -260,12 +260,14 @@ $breadcrumbs = [
 
                         <div class="mt-6">
                             <div class="mb-3 text-xl font-semibold">Recent Purges</div>
-                            @foreach($purged_emails as $email)
-                                <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
-                                    <div>{{ $email -> date_purged }}</div>
-                                    <div>{{ $email -> purged }}</div>
-                                </div>
-                            @endforeach
+                            <div class="max-h-400-px overflow-y-auto">
+                                @foreach($purged_emails as $email)
+                                    <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
+                                        <div>{{ $email -> date_purged }}</div>
+                                        <div>{{ $email -> purged }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
 
 
