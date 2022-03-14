@@ -16,21 +16,7 @@ use TheIconic\NameParser\Parser;
 
 class APIController extends Controller
 {
-    public function test(Request $request)
-    {
 
-        // $address = Helper::parse_address_google('8337 Elm Rd Millersville MD 21108');
-        // $street_number = $address['street_number'] ?? null;
-        // $street_name = $address['street_name'] ?? null;
-        // $street_address = $address['address'] ?? null;
-        // $unit = $address['unit'] ?? null;
-        // $street = trim($street_number.' '.$street_address);
-        // $state = $address['state'] ?? null;
-        // $zip = $address['zip'] ?? null;
-
-        // $tax_records = $this -> tax_records('9601', 'santa fe', '', '20774', null, 'MD');
-        // dd($tax_records['details']['FullDetails']);
-    }
 
     public function update_loan(Request $request)
     {
@@ -543,5 +529,11 @@ class APIController extends Controller
         return [
             'details' => $details,
         ];
+    }
+
+    public function submit_recruiting_form(Request $request) {
+
+        return 'working';
+
     }
 }
