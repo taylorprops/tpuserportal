@@ -620,7 +620,7 @@ class APIController extends Controller
 
         Mail::html($body, function ($message) use ($to) {
             $message
-            -> to($to);
+            -> to([$to]);
         });
 
         return response() -> json(['status' => 'success']);
