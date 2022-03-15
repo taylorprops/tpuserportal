@@ -596,8 +596,8 @@ class APIController extends Controller
 
         $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
         $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
-        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
