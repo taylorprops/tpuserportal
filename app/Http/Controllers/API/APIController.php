@@ -531,7 +531,7 @@ class APIController extends Controller
         $full_name = $request -> first_name.' '.$request -> last_name;
         $phone = $request -> phone;
         $email = $request -> email;
-        $message = $request -> message ?? null;
+        $message_from_agent = $request -> message ?? null;
 
         $description = 'Recruitment From Submitted';
 
@@ -586,9 +586,9 @@ class APIController extends Controller
         $id = $result['data'][0]['details']['id'];
 
         // add message
-        if($message) {
+        if($message_from_agent) {
 
-            $this -> add_notes($id, $message);
+            $this -> add_notes($id, $message_from_agent);
 
         }
 
@@ -604,7 +604,7 @@ class APIController extends Controller
         Name: '.$full_name.'<br>
         Phone: '.$phone.'<br>
         Email: '.$email.'<br>
-        Message: '.$message;
+        Message: '.$message_from_agent;
 
 
         $message = [
