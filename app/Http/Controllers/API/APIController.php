@@ -594,10 +594,6 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = 'nikki@taylorprops.com';
-        $cc = 'kyle@taylorprops.com';
-        $to = 'miketaylor0101@gmail.com';
-        $to = 'mike@taylorprops.com';
         $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
         $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
         $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
@@ -608,12 +604,12 @@ class APIController extends Controller
         Name: '.$full_name.'<br>
         Phone: '.$phone.'<br>
         Email: '.$email.'<br>
-        Message: '.$message_from_agent;
+        Message: '.$message_from_agent.'<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$id.'" target="_blank">View Lead on Zoho</a>';
 
 
         $message = [
             'company' => $request -> company ?? 'Taylor Properties',
-            'cc' => $cc,
             'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'body' => $body,
@@ -624,35 +620,6 @@ class APIController extends Controller
         -> cc([$cc])
         -> send(new EmailGeneral($message));
 
-
-        /* $to = 'nikki@taylorprops.com';
-        $cc = 'kyle@taylorprops.com';
-        $to = 'miketaylor0101@gmail.com';
-        $cc = 'mike@taylorprops.com';
-
-        $body = '
-        An agent just submitted a contact form on taylorprops.com.<br><br>
-        Name: '.$full_name.'<br>
-        Phone: '.$phone.'<br>
-        Email: '.$email.'<br>
-        Message: '.$message.'<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$id.'" target="_blank">View Lead on Zoho</a>';
-
-
-        $message = [
-            'company' => $request -> company ?? 'Taylor Properties',
-            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-            'attachments' => null
-        ];
-
-
-        Mail::html($body, function ($message) use ($to, $cc, $description) {
-            $message
-            -> to([$to])
-            -> cc([$cc])
-            -> from(['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'])
-            -> subject($description);
-        }); */
 
         return response() -> json(['status' => 'success']);
 
