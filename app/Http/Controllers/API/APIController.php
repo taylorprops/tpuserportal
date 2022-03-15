@@ -610,7 +610,6 @@ class APIController extends Controller
         $message = [
             'company' => $request -> company ?? 'Taylor Properties',
             'cc' => $cc,
-            'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'attachments' => null
         ];
@@ -618,8 +617,9 @@ class APIController extends Controller
         // Mail::to([$to])
         // -> send(new EmailGeneral($message));
 
-        Mail::html($body, function ($message) use ($to) {
+        Mail::html($body, function ($message) use ($to, $description) {
             $message
+            -> subject($description)
             -> to([$to]);
         });
 
