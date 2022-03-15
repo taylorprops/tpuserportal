@@ -594,7 +594,33 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = 'nikki@taylorprops.com';
+        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
+        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+
+        $body = '
+        An agent just submitted a contact form on taylorprops.com.<br><br>
+        Name: '.$full_name.'<br>
+        Phone: '.$phone.'<br>
+        Email: '.$email.'<br>
+        Message: '.$message;
+
+
+        $message = [
+            'company' => $request -> company ?? 'Taylor Properties',
+            'cc' => $cc,
+            'subject' => $description,
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body,
+            'attachments' => null
+        ];
+
+        Mail::to([$to])
+        -> send(new EmailGeneral($message));
+
+
+        /* $to = 'nikki@taylorprops.com';
         $cc = 'kyle@taylorprops.com';
         $to = 'miketaylor0101@gmail.com';
         $cc = 'mike@taylorprops.com';
@@ -614,15 +640,14 @@ class APIController extends Controller
             'attachments' => null
         ];
 
-        // Mail::to([$to])
-        // -> send(new EmailGeneral($message));
 
         Mail::html($body, function ($message) use ($to, $cc, $description) {
             $message
             -> to([$to])
             -> cc([$cc])
+            -> from(['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'])
             -> subject($description);
-        });
+        }); */
 
         return response() -> json(['status' => 'success']);
 
