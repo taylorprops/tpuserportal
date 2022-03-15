@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Zoho\ZohoOAuth;
 use TheIconic\NameParser\Parser;
 use App\Classes\DatabaseChangeLog;
+use App\Mail\General\EmailGeneral;
 use App\Models\Employees\Mortgage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -591,6 +592,30 @@ class APIController extends Controller
         }
 
         // Send email notification to Nikki and Kyle
+
+        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
+        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+
+        $body = '
+        An agent just submitted a contact form on taylorprops.com.<br><br>
+        Name: '.$full_name.'<br>
+        Phone: '.$phone.'<br>
+        Email: '.$email.'<br>
+        Message: '.$message;
+
+
+        $message = [
+            'company' => $request -> company ?? 'Taylor Properties',
+            'to' => $to,
+            'cc' => $cc,
+            'subject' => $description,
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body
+        ];
+
+        Mail::send(new EmailGeneral($message));
 
 
     }
