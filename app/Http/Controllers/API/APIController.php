@@ -594,10 +594,10 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
-        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        $to = ['name' => 'nikki@taylorprops.com', 'email' => 'Nikki Quesenberry'];
+        $cc = ['name' => 'kyle@taylorprops.com', 'email ' => 'Kyle Abrams'];
+        $to = ['name' => 'mike@taylorprops.com', 'email' => 'Nikki Quesenberry'];
+        $cc = ['name' => 'miketaylor0101@gmail.com', 'email ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
