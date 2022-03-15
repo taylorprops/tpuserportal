@@ -594,10 +594,10 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['name' => 'nikki@taylorprops.com', 'email' => 'Nikki Quesenberry'];
-        $cc = ['name' => 'kyle@taylorprops.com', 'email ' => 'Kyle Abrams'];
-        $to = ['name' => 'mike@taylorprops.com', 'email' => 'Nikki Quesenberry'];
-        $cc = ['name' => 'miketaylor0101@gmail.com', 'email ' => 'Kyle Abrams'];
+        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
+        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
@@ -616,7 +616,7 @@ class APIController extends Controller
             'attachments' => null
         ];
 
-        Mail::to($to)
+        Mail::to([$to])
         -> send(new EmailGeneral($message));
 
 
