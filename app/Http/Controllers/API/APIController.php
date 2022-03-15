@@ -581,8 +581,61 @@ class APIController extends Controller
         $result = json_decode($result, true);
         curl_close($curl);
 
+        $id = $result['data'][0]['details']['id'];
+
+        // add message
+        if($message) {
+
+            $this -> add_notes($id, $message);
+
+        }
+
         // Send email notification to Nikki and Kyle
 
+
+    }
+
+    public function add_notes($id, $message) {
+
+        $access_token = $this -> get_access_token('modules');
+
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/'.$id.'/Notes';
+
+            $message_data = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'Note_Title' => 'Message From Lead',
+                            'Note_Content' => $message,
+                            'Parent_Id' => $id,
+                            'se_module' => 'Leads'
+                        ]
+                    )
+                )
+            );
+
+            $headers = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($message_data),
+                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            );
+
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $api_url);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $message_data);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+            $response = curl_exec($curl);
+            $response = json_decode($response, true);
+
+            curl_close($curl);
+
+            return $response['data'][0]['status'];
 
     }
 
@@ -644,6 +697,8 @@ class APIController extends Controller
         return $response -> access_token;
 
     }
+
+
 
 
     /* Resources */
