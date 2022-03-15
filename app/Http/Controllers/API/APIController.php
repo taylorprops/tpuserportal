@@ -615,9 +615,13 @@ class APIController extends Controller
             'attachments' => null
         ];
 
-        Mail::to([$to])
-        -> setBody($body, 'text/html')
-        -> send(new EmailGeneral($message));
+        // Mail::to([$to])
+        // -> send(new EmailGeneral($message));
+
+        Mail::html($body, function ($message) use ($to) {
+            $message
+            -> to($to);
+        });
 
         return response() -> json(['status' => 'success']);
 
