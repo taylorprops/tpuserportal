@@ -597,7 +597,7 @@ class APIController extends Controller
         $to = 'nikki@taylorprops.com';
         $cc = 'kyle@taylorprops.com';
         $to = 'miketaylor0101@gmail.com';
-        $to = 'mike@taylorprops.com';
+        $cc = 'mike@taylorprops.com';
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
