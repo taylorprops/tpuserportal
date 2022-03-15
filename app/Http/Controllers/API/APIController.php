@@ -612,13 +612,14 @@ class APIController extends Controller
             'cc' => $cc,
             'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-            'body' => $body,
             'attachments' => null
         ];
 
         Mail::to([$to])
+        -> setBody($body, 'text/html')
         -> send(new EmailGeneral($message));
 
+        return response() -> json(['status' => 'success']);
 
     }
 
