@@ -12,6 +12,7 @@ use App\Mail\General\EmailGeneral;
 use App\Models\Employees\Mortgage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\Lenders;
 use App\Models\DocManagement\Resources\LocationData;
