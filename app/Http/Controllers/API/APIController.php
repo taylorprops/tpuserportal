@@ -616,7 +616,7 @@ class APIController extends Controller
             'cc' => $cc,
             'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-            'body' => $body,
+            'html' => $body,
             'attachments' => null
         ];
 

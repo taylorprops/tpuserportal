@@ -30,8 +30,7 @@ class EmailGeneral extends Mailable
      */
     public function build()
     {
-        $mail = $this -> html('mail.general')
-        -> cc($this -> cc)
+        $mail = $this -> markdown('mail.general')
         -> from($this -> message['from']['email'], $this -> message['from']['name'])
         -> subject($this -> message['subject'])
         -> with([
