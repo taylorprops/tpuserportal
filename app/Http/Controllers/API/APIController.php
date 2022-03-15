@@ -619,7 +619,7 @@ class APIController extends Controller
         Mail::html($body, function ($message) use ($to, $cc, $description) {
             $message
             -> to([$to])
-            -> cc([$cc])
+            -> cc($cc)
             -> subject($description);
         });
 
