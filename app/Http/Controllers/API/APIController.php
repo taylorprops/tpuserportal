@@ -594,8 +594,8 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
+        $to = 'nikki@taylorprops.com';
+        $cc = 'kyle@taylorprops.com';
         $to = 'miketaylor0101@gmail.com';
         $cc = 'mike@taylorprops.com';
 
@@ -604,7 +604,8 @@ class APIController extends Controller
         Name: '.$full_name.'<br>
         Phone: '.$phone.'<br>
         Email: '.$email.'<br>
-        Message: '.$message;
+        Message: '.$message.'<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$id.'" target="_blank">View Lead on Zoho</a>';
 
 
         $message = [
