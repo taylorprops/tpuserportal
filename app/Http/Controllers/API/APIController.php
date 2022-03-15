@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Classes\DatabaseChangeLog;
 use App\Helpers\Helper;
-use App\Http\Controllers\Controller;
-use App\Models\DocManagement\Resources\LocationData;
-use App\Models\Employees\Mortgage;
-use App\Models\HeritageFinancial\Lenders;
-use App\Models\HeritageFinancial\Loans;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\Zoho\ZohoOAuth;
 use TheIconic\NameParser\Parser;
+use App\Classes\DatabaseChangeLog;
+use App\Models\Employees\Mortgage;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\HeritageFinancial\Loans;
+use App\Models\HeritageFinancial\Lenders;
+use App\Models\DocManagement\Resources\LocationData;
 
 class APIController extends Controller
 {
@@ -514,7 +515,212 @@ class APIController extends Controller
     /* from taylorprops.com */
     public function submit_recruiting_form(Request $request) {
 
-        return 'working';
+        $access_token = $this -> get_access_token('leads');
+
+        // zoho fields
+        $category = 'Real Estate';
+        $lead_status = 'New';
+        $owner = '5119653000000348001'; // Nikki
+        $lead_source = 'Website - taylorprops.com';
+
+
+        $first_name = $request -> first_name;
+        $last_name = $request -> last_name;
+        $full_name = $request -> first_name.' '.$request -> last_name;
+        $phone = $request -> phone;
+        $email = $request -> email;
+        $message = $request -> message ?? null;
+
+        $description = 'Recruitment From Submitted';
+
+
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
+
+        $fields = json_encode(
+            array(
+                'data' => array(
+                    [
+                        'First_Name' => $first_name,
+                        'Last_Name' => $last_name,
+                        'Full_Name' => $full_name,
+                        'Email' => $email,
+                        'Phone' => $phone,
+                        'Category' => $category,
+                        'Lead_Status' => $lead_status,
+                        'Owner' => $owner,
+                        'Lead_Source' => $lead_source,
+                        'Description' => $description,
+
+                    ]
+                    ),
+                    'duplicate_check_fields' => array(
+                        'Email',
+                        // 'Mobile',
+                        'Phone'
+                    )
+            )
+        );
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+        $result = curl_exec($curl);
+        $result = json_decode($result, true);
+        curl_close($curl);
+
+        // Send email notification to Nikki and Kyle
+
 
     }
+
+
+    public function get_access_token($scope) {
+
+        $oauth = ZohoOAuth::where('scope', $scope) -> first();
+        $expires = $oauth -> expires;
+        $access_token = $oauth -> access_token;
+        $refresh_token = $oauth -> refresh_token;
+        $time_now = time();
+
+        if($time_now > $expires) {
+            $new_expires = time() + 3600;
+            $access_token = $this -> refresh_access_token($scope);
+            $oauth -> access_token = $access_token;
+            $oauth -> expires = $new_expires;
+            $oauth -> save();
+        }
+
+        return $access_token;
+
+
+        // access valid 1 hour
+        // 10 access tokens from a refresh token in a span of 10 minutes
+        // 20 refresh tokens in a span of 10 minutes
+
+    }
+
+
+    public function refresh_access_token($scope) {
+
+        $oauth = ZohoOAuth::where('scope', $scope) -> first();
+        $refresh_token = $oauth -> refresh_token;
+        $client_id = config('global.zoho_client_id');
+        $client_secret = config('global.zoho_client_secret');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token?refresh_token='.$refresh_token.'&client_id='.$client_id.'&client_secret='.$client_secret.'&grant_type=refresh_token',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_HTTPHEADER => array(
+                'Cookie: JSESSIONID=167F5DF690F65550CDB9BF12D705AA8E; _zcsr_tmp=794c5bad-b490-432a-9275-2dae4cf90857; b266a5bf57=a711b6da0e6cbadb5e254290f114a026; iamcsr=794c5bad-b490-432a-9275-2dae4cf90857',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $response = json_decode($response);
+
+        curl_close($curl);
+
+        return $response -> access_token;
+
+    }
+
+
+    /* Resources */
+
+
+    public function get_users() {
+
+        $access_token = $this -> get_access_token('users');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://www.zohoapis.com/crm/v2/users?type=AllUsers',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $users = json_decode($response) -> users;
+
+        foreach($users as $user) {
+            echo '
+            ID: '.$user -> id.'<br>
+            Name: '.$user -> first_name.' '.$user -> last_name.'<br>
+            Email: '.$user -> email.'<br>
+            Status: '.$user -> status.'<br><br>';
+
+        }
+
+
+    }
+
+    public function get_fields() {
+
+        $access_token = $this -> get_access_token('fields');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://www.zohoapis.com/crm/v2/settings/fields?module=Leads',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Content-Type: application/json',
+                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $fields = json_decode($response);
+
+        foreach($fields -> fields as $field) {
+            echo $field -> id.' - '.$field -> api_name.'<br>';
+        }
+
+    }
+
+
 }

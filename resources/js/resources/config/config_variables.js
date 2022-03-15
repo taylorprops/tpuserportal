@@ -20,7 +20,8 @@ if(document.URL.match(/config_variables/)) {
                 let formData = new FormData(form);
                 axios.post('/resources/config/config_add', formData)
                 .then(function (response) {
-                    get_config();
+                    //get_config();
+                    location.reload();
                 })
                 .catch(function (error) {
                     if(error) {

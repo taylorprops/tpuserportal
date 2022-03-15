@@ -170,4 +170,8 @@ Route::get('/api/test', [APIController::class, 'test']) -> middleware(['lending_
 Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_critical_dates']) -> middleware(['lending_pad']);
 
-Route::post('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);
+
+Route::get('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);
+/* Resources */
+Route::get('/zoho/get_users', [APIController::class, 'get_users']);
+Route::get('/zoho/get_fields', [APIController::class, 'get_fields']);
