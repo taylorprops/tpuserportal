@@ -139,13 +139,16 @@ class APIController extends Controller
             }
 
             // People
-            $loan_officer = Mortgage::where(function ($query) use ($request) {
-                $query -> where('email', $request -> loan_officer_email)
-                -> orWhere('fullname', $request -> loan_officer)
-                -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
-            })
-            -> first();
-            $loan_officer_1_id = $loan_officer -> id;
+
+            if($request -> loan_officer) {
+                $loan_officer = Mortgage::where(function ($query) use ($request) {
+                    $query -> where('email', $request -> loan_officer_email)
+                    -> orWhere('fullname', $request -> loan_officer)
+                    -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
+                })
+                -> first();
+                $loan_officer_1_id = $loan_officer -> id;
+            }
 
             if ($request -> loan_processor) {
                 $processor = Mortgage::where('fullname', $request -> loan_processor) -> first();
