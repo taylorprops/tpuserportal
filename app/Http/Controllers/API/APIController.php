@@ -318,6 +318,9 @@ class APIController extends Controller
             if ($request -> Clear_To_Close) {
                 $loan -> time_line_clear_to_close = date('Y-m-d', strtotime($request -> Clear_To_Close));
             }
+            if ($request -> CD_Issued) {
+                $loan -> time_line_cd_issued = date('Y-m-d', strtotime($request -> CD_Issued));
+            }
             if ($request -> Condition_Submission) {
                 $loan -> time_line_conditions_submitted = date('Y-m-d', strtotime($request -> Condition_Submission));
             }
@@ -594,8 +597,8 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => 'nikki@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'kyle@taylorprops.com', 'name ' => 'Kyle Abrams'];
+        $to = ['email' => config('global.recruiting_email_to_email'), 'name' => config('global.recruiting_email_to_name')];
+        $cc = ['email' => config('global.recruiting_email_cc_email'), 'name' => config('global.recruiting_email_cc_name')];
         // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
         // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 

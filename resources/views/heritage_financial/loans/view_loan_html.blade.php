@@ -588,6 +588,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                     ['date', 'time_line_voe_ordered', 'VOE Ordered', ''],
                                     ['date', 'time_line_voe_received', 'VOE Received', ''],
                                     ['date', 'time_line_conditions_submitted', 'Conditions Submitted', $disabled],
+                                    ['date', 'time_line_cd_issued', 'CD Issued', $disabled],
                                 ];
                                 @endphp
 
