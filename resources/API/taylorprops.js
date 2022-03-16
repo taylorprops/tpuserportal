@@ -47,26 +47,6 @@ window.capture_form = function(form, submit_button) {
 
             });
 
-            // fetch(url, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //         first_name: first_name,
-            //         last_name: last_name,
-            //         email: email,
-            //         phone: phone,
-            //         message: message,
-            //     }),
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log(data);
-            // })
-            // .catch((error) => {
-            // });
-
         }
 
 
