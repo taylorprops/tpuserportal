@@ -17,6 +17,8 @@ class SearchController extends Controller
             $loans = Loans::where(function ($query) use ($value) {
                 $query -> where('borrower_fullname', 'like', '%'.$value.'%')
                 -> orWhere('co_borrower_fullname', 'like', '%'.$value.'%')
+                -> orWhere('lending_pad_loan_number', 'like', '%'.$value.'%')
+                -> orWhere('loan_number', 'like', '%'.$value.'%')
                 -> orWhere('street', 'like', '%'.$value.'%');
             })
             -> with(['loan_officer_1:id,fullname'])
