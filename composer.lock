@@ -161,16 +161,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.213.0",
+            "version": "3.214.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "61875282d6ec1c441ca0af94fc00a5f516db12ef"
+                "reference": "a2eacf8c1b55de4733f4cfc315da38f1d4c66501"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/61875282d6ec1c441ca0af94fc00a5f516db12ef",
-                "reference": "61875282d6ec1c441ca0af94fc00a5f516db12ef",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a2eacf8c1b55de4733f4cfc315da38f1d4c66501",
+                "reference": "a2eacf8c1b55de4733f4cfc315da38f1d4c66501",
                 "shasum": ""
             },
             "require": {
@@ -246,9 +246,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.213.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.214.0"
             },
-            "time": "2022-03-14T18:26:52+00:00"
+            "time": "2022-03-16T19:00:00+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -5021,16 +5021,16 @@
         },
         {
             "name": "spatie/laravel-package-tools",
-            "version": "1.11.2",
+            "version": "1.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-package-tools.git",
-                "reference": "16a8de828e7f1f32d580c667e1de5bf2943abd6b"
+                "reference": "baeb3df0ebb3a541394fdaf8cbe6115bf4034a59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/16a8de828e7f1f32d580c667e1de5bf2943abd6b",
-                "reference": "16a8de828e7f1f32d580c667e1de5bf2943abd6b",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/baeb3df0ebb3a541394fdaf8cbe6115bf4034a59",
+                "reference": "baeb3df0ebb3a541394fdaf8cbe6115bf4034a59",
                 "shasum": ""
             },
             "require": {
@@ -5068,7 +5068,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-package-tools/issues",
-                "source": "https://github.com/spatie/laravel-package-tools/tree/1.11.2"
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.11.3"
             },
             "funding": [
                 {
@@ -5076,7 +5076,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-22T08:55:13+00:00"
+            "time": "2022-03-15T20:01:36+00:00"
         },
         {
             "name": "spatie/laravel-signal-aware-command",
@@ -8253,16 +8253,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "f79c90ad4e9b41ac4dfc5d77bf398cf61fbd718b"
+                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/f79c90ad4e9b41ac4dfc5d77bf398cf61fbd718b",
-                "reference": "f79c90ad4e9b41ac4dfc5d77bf398cf61fbd718b",
+                "url": "https://api.github.com/repos/composer/semver/zipball/5d8e574bb0e69188786b8ef77d43341222a41a71",
+                "reference": "5d8e574bb0e69188786b8ef77d43341222a41a71",
                 "shasum": ""
             },
             "require": {
@@ -8314,7 +8314,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.3.0"
+                "source": "https://github.com/composer/semver/tree/3.3.1"
             },
             "funding": [
                 {
@@ -8330,7 +8330,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-15T08:35:57+00:00"
+            "time": "2022-03-16T11:22:07+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -8646,16 +8646,16 @@
         },
         {
             "name": "imanghafoori/laravel-microscope",
-            "version": "v1.0.216",
+            "version": "v1.0.217",
             "source": {
                 "type": "git",
                 "url": "https://github.com/imanghafoori1/laravel-microscope.git",
-                "reference": "1aa44a13b012163a1729e9bf1938777163d5f231"
+                "reference": "3dc08cb69538f9224869f4b42d8dcee80a384177"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/imanghafoori1/laravel-microscope/zipball/1aa44a13b012163a1729e9bf1938777163d5f231",
-                "reference": "1aa44a13b012163a1729e9bf1938777163d5f231",
+                "url": "https://api.github.com/repos/imanghafoori1/laravel-microscope/zipball/3dc08cb69538f9224869f4b42d8dcee80a384177",
+                "reference": "3dc08cb69538f9224869f4b42d8dcee80a384177",
                 "shasum": ""
             },
             "require": {
@@ -8705,9 +8705,9 @@
             ],
             "support": {
                 "issues": "https://github.com/imanghafoori1/laravel-microscope/issues",
-                "source": "https://github.com/imanghafoori1/laravel-microscope/tree/v1.0.216"
+                "source": "https://github.com/imanghafoori1/laravel-microscope/tree/v1.0.217"
             },
-            "time": "2022-03-14T15:52:39+00:00"
+            "time": "2022-03-18T05:20:35+00:00"
         },
         {
             "name": "imanghafoori/php-abstract-filesystem",
@@ -8809,16 +8809,16 @@
         },
         {
             "name": "imanghafoori/php-token-analyzer",
-            "version": "v0.1.6",
+            "version": "v0.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/imanghafoori1/php_token_analyzer.git",
-                "reference": "b2549df612f625bdc1bc984a115d4b31da861a12"
+                "reference": "419f9821f13834ebcd5bdc414001e99865b106ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/imanghafoori1/php_token_analyzer/zipball/b2549df612f625bdc1bc984a115d4b31da861a12",
-                "reference": "b2549df612f625bdc1bc984a115d4b31da861a12",
+                "url": "https://api.github.com/repos/imanghafoori1/php_token_analyzer/zipball/419f9821f13834ebcd5bdc414001e99865b106ea",
+                "reference": "419f9821f13834ebcd5bdc414001e99865b106ea",
                 "shasum": ""
             },
             "require": {
@@ -8852,9 +8852,9 @@
             ],
             "support": {
                 "issues": "https://github.com/imanghafoori1/php_token_analyzer/issues",
-                "source": "https://github.com/imanghafoori1/php_token_analyzer/tree/v0.1.6"
+                "source": "https://github.com/imanghafoori1/php_token_analyzer/tree/v0.1.7"
             },
-            "time": "2022-01-15T11:41:13+00:00"
+            "time": "2022-03-18T04:47:23+00:00"
         },
         {
             "name": "imanghafoori/smart-realtime-facades",
@@ -11317,16 +11317,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "1.0.9",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa"
+                "reference": "71df77cad94aae4db904aaef1cc2f06950daed76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/d7b223300d511145eea87fdabae1663c7c0088aa",
-                "reference": "d7b223300d511145eea87fdabae1663c7c0088aa",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/71df77cad94aae4db904aaef1cc2f06950daed76",
+                "reference": "71df77cad94aae4db904aaef1cc2f06950daed76",
                 "shasum": ""
             },
             "require": {
@@ -11400,7 +11400,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-11T14:19:27+00:00"
+            "time": "2022-03-17T11:01:36+00:00"
         },
         {
             "name": "symfony/debug",

@@ -367,7 +367,10 @@ class APIController extends Controller
         $parser = new Parser();
         $name = $parser -> parse($name);
         $first = $name -> getFirstname();
-        $middle = $name -> getMiddlename();
+        $middle = $name -> getInitials();
+        if(!$middle) {
+            $middle = $name -> getMiddleName();
+        }
         $last = $name -> getLastname();
         $suffix = $name -> getSuffix();
 
