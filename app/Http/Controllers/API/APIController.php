@@ -558,7 +558,6 @@ class APIController extends Controller
                         'Owner' => $owner,
                         'Lead_Source' => $lead_source,
                         'Description' => $description,
-
                     ]
                     ),
                     'duplicate_check_fields' => array(

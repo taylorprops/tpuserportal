@@ -15,7 +15,4 @@ _notes
 .editorconfig
 /storage/app/public/*
 /storage/logs/*
-tailwind.config.js
-webpack.mix.js
-postcss.config.js
 
