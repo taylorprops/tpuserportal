@@ -3,10 +3,11 @@
 namespace App\Helpers;
 
 use App\Models\User;
+use ReflectionClass;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use ReflectionClass;
+use App\Models\DocManagement\Resources\LocationData;
 
 class Helper
 {
@@ -227,6 +228,10 @@ class Helper
             }
 
             $address_out['street_name'] = substr($address_out['address'], 0, strrpos($address_out['address'], ' '));
+            if($address_out['city'] == '') {
+                $data = LocationData::where('zip', $address_out['zip']) -> first();
+                $address_out['city'] = $data -> city;
+            }
         } else {
             return 'error';
         }
