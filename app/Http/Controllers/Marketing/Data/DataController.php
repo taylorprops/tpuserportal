@@ -118,8 +118,9 @@ class DataController extends Controller
         $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'OfficeKey', 'OfficeName', 'created_at'];
         $export_cols = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'OfficeKey', 'OfficeName', 'created_at', 'office_street', 'office_street2', 'office_city', 'office_state', 'office_zip'];
 
-        $start = $request -> start;
+        $start = $request -> start.' 00:00:00';
         $end = $request -> end ?? date('Y-m-d');
+        $end .= ' 23:59:59';
 
         $recently_added = BrightAgentRoster::select($select)
         -> whereBetween('created_at', [$start, $end])
