@@ -27,6 +27,12 @@ class DataController extends Controller
         -> pluck('state')
         -> toArray();
 
+        $recently_added_emails = BrightAgentRoster::select(DB::raw('count(*) as added, date_format(created_at, "%Y-%m-%d") as date_added'))
+        -> where('created_at' , '>', date('Y-m-d', strtotime('-6 month')))
+        -> groupBy('date_added')
+        -> orderBy('date_added', 'desc')
+        -> get();
+
         $purged_emails = BrightAgentRoster::select(DB::raw('count(*) as purged, date_purged'))
         -> whereNotNull('date_purged')
         -> where('date_purged' , '>', date('Y-m-d', strtotime('-6 month')))
@@ -34,7 +40,7 @@ class DataController extends Controller
         -> orderBy('date_purged', 'desc')
         -> get();
 
-        return view('/marketing/data/address_database', compact('states', 'states_loan_officers', 'purged_emails'));
+        return view('/marketing/data/address_database', compact('states', 'states_loan_officers', 'recently_added_emails', 'purged_emails'));
     }
 
     public function get_results(Request $request)
@@ -105,6 +111,33 @@ class DataController extends Controller
         }
 
         return view('/marketing/data/get_results_html', compact('results_count', 'list_type', 'file_location'));
+    }
+
+    public function get_recently_added(Request $request)
+    {
+        $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'created_at'];
+
+        $start = $request -> start;
+        $end = $request -> end ?? date('Y-m-d');
+
+        $recently_added = BrightAgentRoster::select($select)
+        -> whereBetween('created_at', [$start, $end])
+        -> get();
+
+        $file_name = 'recently_added_list_'.time().'.csv';
+        $file = Storage::path('/tmp/'.$file_name);
+        $handle = fopen($file, 'w');
+        fputcsv($handle, $select, ',');
+
+        $results_count = 0;
+        foreach ($recently_added as $agent) {
+            fputcsv($handle, $agent -> toArray(), ',');
+            $results_count += 1;
+        }
+
+        $file_location = '/storage/tmp/'.$file_name;
+
+        return response() -> json(['url' => $file_location]);
     }
 
     public function get_purged(Request $request)

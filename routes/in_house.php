@@ -112,6 +112,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/data/location_data', [DataController::class, 'location_data']) -> middleware(['in_house']);
     Route::post('/marketing/data/search_offices', [DataController::class, 'search_offices']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_results', [DataController::class, 'get_results']) -> middleware(['in_house']);
+    Route::post('/marketing/data/get_recently_added', [DataController::class, 'get_recently_added']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_purged', [DataController::class, 'get_purged']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers

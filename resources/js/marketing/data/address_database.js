@@ -184,6 +184,26 @@ if(document.URL.match('address_database')) {
                 }
             },
 
+            get_recently_added() {
+
+                let start = this.$refs.recently_added_emails_start.value;
+                let end = this.$refs.recently_added_emails_end.value;
+
+
+                let formData = new FormData();
+                formData.append('start', start);
+                formData.append('end', end);
+
+                axios.post('/marketing/data/get_recently_added', formData)
+                .then(function (response) {
+                    window.location = response.data.url;
+
+                })
+                .catch(function (error) {
+                });
+
+            },
+
             get_purged() {
 
                 let start = this.$refs.purged_emails_start.value;

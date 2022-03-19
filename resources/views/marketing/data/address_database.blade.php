@@ -236,6 +236,43 @@ $breadcrumbs = [
 
                     </div>
 
+                    <div class="border-4 border-blue-200 mt-12 p-4 rounded-lg relative">
+
+                        <div class="mb-4 text-xl font-semibold">
+                            Recently Added Emails
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                            <div>
+                                <input type="date" class="form-element input" x-ref="recently_added_emails_start" data-label="Start Date">
+                            </div>
+
+                            <div>
+                                <input type="date" class="form-element input" x-ref="recently_added_emails_end" data-label="End Date">
+                            </div>
+
+                        </div>
+
+                        <div class="mt-6 flex justify-around">
+                            <button type="button" class="button primary lg" @click="get_recently_added()"><i class="fa fa-download mr-2"></i> Download Recently Added</button>
+                        </div>
+
+                        <div class="mt-6">
+                            <div class="mb-3 text-xl font-semibold">Recent Purges</div>
+                            <div class="max-h-200-px overflow-y-auto">
+                                @foreach($recently_added_emails as $email)
+                                    <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
+                                        <div>{{ $email -> date_added }}</div>
+                                        <div>{{ $email -> added }}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+
+                    </div>
+
                     <div class="border-4 border-red-200 mt-12 p-4 rounded-lg relative">
 
                         <div class="mb-4 text-xl font-semibold">
@@ -260,7 +297,7 @@ $breadcrumbs = [
 
                         <div class="mt-6">
                             <div class="mb-3 text-xl font-semibold">Recent Purges</div>
-                            <div class="max-h-400-px overflow-y-auto">
+                            <div class="max-h-200-px overflow-y-auto">
                                 @foreach($purged_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_purged }}</div>
