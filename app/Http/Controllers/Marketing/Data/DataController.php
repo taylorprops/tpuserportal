@@ -125,7 +125,6 @@ class DataController extends Controller
         -> whereBetween('created_at', [$start, $end])
         -> whereHas('office')
         -> with(['office:OfficeKey,OfficeAddress1,OfficeAddress2,OfficeCity,OfficeStateOrProvince,OfficePostalCode,OfficeCounty'])
-        -> limit(10)
         -> get();
 
         $file_name = 'recently_added_list_'.time().'.csv';
