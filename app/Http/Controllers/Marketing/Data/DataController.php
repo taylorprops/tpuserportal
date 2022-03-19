@@ -115,22 +115,34 @@ class DataController extends Controller
 
     public function get_recently_added(Request $request)
     {
-        $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'created_at'];
+        $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'OfficeKey', 'OfficeName', 'created_at'];
+        $export_cols = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'OfficeKey', 'OfficeName', 'created_at', 'office_street', 'office_street2', 'office_city', 'office_state', 'office_zip'];
 
         $start = $request -> start;
         $end = $request -> end ?? date('Y-m-d');
 
         $recently_added = BrightAgentRoster::select($select)
         -> whereBetween('created_at', [$start, $end])
+        -> whereHas('office')
+        -> with(['office:OfficeKey,OfficeAddress1,OfficeAddress2,OfficeCity,OfficeStateOrProvince,OfficePostalCode,OfficeCounty'])
+        -> limit(10)
         -> get();
 
         $file_name = 'recently_added_list_'.time().'.csv';
         $file = Storage::path('/tmp/'.$file_name);
         $handle = fopen($file, 'w');
-        fputcsv($handle, $select, ',');
+        fputcsv($handle, $export_cols, ',');
 
         $results_count = 0;
         foreach ($recently_added as $agent) {
+            $office = $agent -> office;
+            $agent -> office_street = $office -> OfficeAddress1;
+            $agent -> office_street2 = $office -> OfficeAddress2;
+            $agent -> office_city = $office -> OfficeCity;
+            $agent -> office_state = $office -> OfficeStateOrProvince;
+            $agent -> office_zip = $office -> OfficePostalCode;
+            $agent = collect($agent);
+            $agent -> forget(['office']);
             fputcsv($handle, $agent -> toArray(), ',');
             $results_count += 1;
         }

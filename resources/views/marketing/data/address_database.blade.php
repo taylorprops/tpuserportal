@@ -239,7 +239,7 @@ $breadcrumbs = [
                     <div class="border-4 border-blue-200 mt-12 p-4 rounded-lg relative">
 
                         <div class="mb-4 text-xl font-semibold">
-                            Recently Added Emails
+                            Recently Added Agent Emails
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
@@ -276,7 +276,7 @@ $breadcrumbs = [
                     <div class="border-4 border-red-200 mt-12 p-4 rounded-lg relative">
 
                         <div class="mb-4 text-xl font-semibold">
-                            Purged Emails
+                            Purged Agent Emails
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
