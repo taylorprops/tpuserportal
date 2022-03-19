@@ -156,8 +156,9 @@ class DataController extends Controller
     {
         $select = ['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'date_purged'];
 
-        $start = $request -> start;
+        $start = $request -> start.' 00:00:00';
         $end = $request -> end ?? date('Y-m-d');
+        $end .= ' 23:59:59';
 
         $purged = BrightAgentRoster::select($select)
         -> where('active', 'no')
