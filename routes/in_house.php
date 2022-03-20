@@ -85,6 +85,16 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/get_transactions', [ArchivedTransactionsController::class, 'get_transactions']) -> middleware(['in_house']);
 
     /////////////// %%%%%%%%%%%%%%%%%% SUPER ADMIN %%%%%%%%%%%%%%%%%% ///////////////
+
+    // %%%% System Monitor
+    Route::get('/admin/system_monitor', [AdminController::class, 'system_monitor']) -> middleware(['in_house']);
+
+    // %%%% Queue Monitor
+    Route::get('/admin/queue_monitor', [AdminController::class, 'queue_monitor']) -> middleware(['in_house']);
+    Route::prefix('jobs') -> group(function () {
+        Route::queueMonitor();
+    });
+
     // %%%% Form Elements
     Route::get('/resources/design/form_elements', [ResourcesController::class, 'form_elements']) -> middleware(['in_house']);
     Route::get('/resources/config/config_variables', [ResourcesController::class, 'config_variables']) -> middleware(['in_house']);
@@ -139,10 +149,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% get ccs
     Route::get('/old_db/company/agents', [OldTransactionsController::class, 'agents']) -> middleware(['in_house']);
 
-    Route::get('/admin/monitor', [AdminController::class, 'monitor']) -> middleware(['in_house']);
-    Route::prefix('jobs') -> group(function () {
-        Route::queueMonitor();
-    });
+
 
     // Agent Addresses TEMP
     Route::get('/marketing/import_agent_addresses', [AgentAddressesController::class, 'import_agent_addresses']) -> middleware(['in_house']);
@@ -173,6 +180,9 @@ Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_cr
 
 
 Route::get('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);
+Route::post('/api/heritage_financial/add_email_clicker', [APIController::class, 'add_email_clicker']) -> middleware(['taylor_props']);
 /* Resources */
 Route::get('/zoho/get_users', [APIController::class, 'get_users']);
 Route::get('/zoho/get_fields', [APIController::class, 'get_fields']);
+/* tests */
+Route::get('/zoho/check_if_user_exists', [APIController::class, 'check_if_user_exists']);

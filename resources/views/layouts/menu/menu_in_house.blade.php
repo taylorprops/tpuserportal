@@ -245,8 +245,13 @@
         @php
         $level2 = [
             [
+                'title' => 'System Monitor',
+                'link' => '/admin/system_monitor',
+                'icon' => 'fad fa-dashboard mr-2'
+            ],
+            [
                 'title' => 'Queue Monitor',
-                'link' => '/admin/monitor',
+                'link' => '/admin/queue_monitor',
                 'icon' => 'fad fa-analytics mr-2'
             ],
             [

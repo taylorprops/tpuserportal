@@ -26,7 +26,7 @@ require('./resources/config/config_variables.js');
 
 require('./nav/nav.js');
 require('./dashboard/dashboard.js');
-require('./admin/monitor.js');
+require('./admin/queue_monitor.js');
 
 require('./tables/tables.js');
 

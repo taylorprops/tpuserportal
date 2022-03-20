@@ -69,6 +69,40 @@ return [
             'visibility' => 'public',
         ],
 
+        'staging_backups' => [
+            'driver' => 'ftp',
+            'host' => env('STAGING_IP'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'port' => 22,
+            'root' => '/mnt/sdb/storage',
+            // 'passive' => true,
+            'ssl' => true,
+            'timeout' => 30,
+        ],
+
+        'staging_backups' => [
+            'driver' => 'sftp',
+            'host' => env('STAGING_HOST'),
+
+            // Settings for basic authentication...
+            'username' => env('STAGING_USERNAME'),
+            'password' => env('STAGING_PASSWORD'),
+
+            // Settings for SSH key based authentication with encryption password...
+            'privateKey' => env('STAGING_PRIVATE_KEY'),
+            'password' => env('STAGING_PASSWORD'),
+
+            // Optional SFTP Settings...
+            // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
+            // 'maxTries' => 4,
+            // 'passphrase' => env('SFTP_PASSPHRASE'),
+            'port' => 22,
+            'root' => '/mnt/sdb/storage',
+            'timeout' => 30,
+            // 'useAgent' => true,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => '/mnt/vol2',
