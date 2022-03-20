@@ -24,7 +24,37 @@ $breadcrumbs = [
                         Database Backups
                     </div>
 
-                    <div class="p-4">
+                    <div class="grid grid-cols-2 gap-4 p-4">
+
+                        <div>
+                            <div class="flex justify-between font-semibold mb-3">
+                                <div>TP User Portal</div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $class_tp }}"> {{ count($mysql_backups_tp) }} </span>
+                            </div>
+                            <div class="max-h-200-px overflow-auto">
+                                @foreach($mysql_backups_tp as $backup)
+                                    <div class="flex border-b p-2 text-xs">
+                                        <div class="w-3/4">{{ $backup['file_name'] }}</div>
+                                        <div>{{ $backup['size'] }}MB</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between font-semibold mb-3">
+                                <div>Heritage Financial</div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $class_hf }}"> {{ count($mysql_backups_hf) }} </span>
+                            </div>
+                            <div class="max-h-200-px overflow-auto">
+                                @foreach($mysql_backups_hf as $backup)
+                                    <div class="flex border-b p-2 text-xs">
+                                        <div class="w-3/4">{{ $backup['file_name'] }}</div>
+                                        <div>{{ $backup['size'] }}MB</div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
 
                     </div>
 
