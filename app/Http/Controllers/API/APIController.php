@@ -637,14 +637,6 @@ class APIController extends Controller
 
     public function add_email_clicker_real_estate(Request $request) {
 
-        /* round robin
-            title
-                Gabby, Kristen, Kyle
-            Real estate
-                Gabby, Nikki
-            mortgage
-                Kyle
-        */
 
         // http://heritagefinancial-dev/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
@@ -658,12 +650,11 @@ class APIController extends Controller
             $existing_lead = true;
         }
 
-        $assign_to = $this -> get_set_assigned('real_estate');
 
         // zoho fields
         $category = 'Real Estate';
         $lead_status = 'New';
-        $owner = '5119653000000396016'; // Kyle
+        // $owner = '5119653000000396016'; // Kyle
         // $lead_source = 'Email Clickers';
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
@@ -708,7 +699,7 @@ class APIController extends Controller
                                 'Phone' => $loan_officer -> phone,
                                 'Category' => $category,
                                 'Lead_Status' => $lead_status,
-                                'Owner' => $owner,
+                                // 'Owner' => $owner,
                                 'Lead_Source' => $lead_source,
                                 'Lead_Medium' => $lead_medium,
                                 'Lead_Campaign' => $lead_campaign,
@@ -824,7 +815,7 @@ Lead Campaign - '.$lead_campaign;
         // zoho fields
         $category = 'Mortgage';
         $lead_status = 'New';
-        $owner = '5119653000000396016'; // Kyle
+        // $owner = '5119653000000396016'; // Kyle
         // $lead_source = 'Email Clickers';
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
@@ -869,7 +860,7 @@ Lead Campaign - '.$lead_campaign;
                                 'Phone' => $loan_officer -> phone,
                                 'Category' => $category,
                                 'Lead_Status' => $lead_status,
-                                'Owner' => $owner,
+                                // 'Owner' => $owner,
                                 'Lead_Source' => $lead_source,
                                 'Lead_Medium' => $lead_medium,
                                 'Lead_Campaign' => $lead_campaign,
@@ -1096,18 +1087,6 @@ Lead Campaign - '.$lead_campaign;
         curl_close($curl);
 
         return $response -> access_token;
-
-    }
-
-    public function get_set_assigned($office) {
-
-
-        $last_assigned = config('global.last_assigned_to_'.$office);
-        dd($last_assigned);
-        $new_assigned = '';
-
-        Config::where('config_key', 'last_assigned_to_'.$office) -> first()
-        -> update(['config_value' => $new_assigned]);
 
     }
 
