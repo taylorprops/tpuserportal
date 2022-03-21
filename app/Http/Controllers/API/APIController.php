@@ -1026,9 +1026,9 @@ Lead Campaign - '.$lead_campaign;
         $result = json_decode($result, true);
         curl_close($curl);
 
-        if($result['status'] && $result['status'] == 'error') {
-            return false;
-        }
+        // if($result['status'] && $result['status'] == 'error') {
+        //     return false;
+        // }
 
         if($result) {
             $lead_id = $result['data'][0]['id'];
