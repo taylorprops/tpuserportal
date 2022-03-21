@@ -183,9 +183,9 @@ Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_cr
 
 Route::get('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);
 //Route::post('/api/marketing/add_email_clicker_mortgage', [APIController::class, 'add_email_clicker_mortgage']) -> middleware(['taylor_props']);
-Route::get('/api/marketing/add_email_clicker_mortgage', [APIController::class, 'add_email_clicker_mortgage']) -> middleware(['heritage_financial']);
+Route::post('/api/marketing/add_email_clicker_mortgage', [APIController::class, 'add_email_clicker_mortgage']) -> middleware(['heritage_financial']);
 Route::post('/api/marketing/add_email_clicker_title', [APIController::class, 'add_email_clicker_title']) -> middleware(['heritage_title']);
-Route::get('/api/marketing/add_email_clicker_real_estate', [APIController::class, 'add_email_clicker_real_estate']) -> middleware(['taylor_props']);
+Route::post('/api/marketing/add_email_clicker_real_estate', [APIController::class, 'add_email_clicker_real_estate']) -> middleware(['taylor_props']);
 /* Resources */
 Route::get('/zoho/get_users', [APIController::class, 'get_users']);
 Route::get('/zoho/get_fields', [APIController::class, 'get_fields']);
