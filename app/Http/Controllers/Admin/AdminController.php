@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use App\Models\Admin\QueueMonitor;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,23 +14,48 @@ class AdminController extends Controller
     public function system_monitor(Request $request)
     {
 
-        $mysql_backups_tp = Storage::disk('staging_backups') -> files('mysql/TPUserPortal');
-        $mysql_backups_hf = Storage::disk('staging_backups') -> files('mysql/HeritageFinancial');
+        // mysql backups
 
-        $mysql_backups_tp = $this -> sort_files($mysql_backups_tp);
-        $mysql_backups_hf = $this -> sort_files($mysql_backups_hf);
+        if(config('app.env') == 'local') {
+            $mysql_backups_tp = [];
+            $mysql_backups_hf = [];
+            $class_tp = 'bg-green-100 text-green-800';
+            $class_hf = 'bg-green-100 text-green-800';
+        } else {
 
-        $class_tp = 'bg-green-100 text-green-800';
-        if(substr($mysql_backups_tp[0]['file_name'], 0, 10) != date('Y-m-d')) {
-            $class_tp = 'bg-red-100 text-red-800';
+            $mysql_backups_tp = Storage::disk('staging_backups') -> files('mysql/TPUserPortal');
+            $mysql_backups_hf = Storage::disk('staging_backups') -> files('mysql/HeritageFinancial');
+
+            $mysql_backups_tp = $this -> sort_files($mysql_backups_tp);
+            $mysql_backups_hf = $this -> sort_files($mysql_backups_hf);
+
+            // if no backup for today show bg-red
+            $class_tp = 'bg-green-100 text-green-800';
+            if(substr($mysql_backups_tp[0]['file_name'], 0, 10) != date('Y-m-d')) {
+                $class_tp = 'bg-red-100 text-red-800';
+            }
+
+            $class_hf = 'bg-green-100 text-green-800';
+            if(substr($mysql_backups_hf[0]['file_name'], 0, 10) != date('Y-m-d')) {
+                $class_hf = 'bg-red-100 text-red-800';
+            }
+
         }
 
-        $class_hf = 'bg-green-100 text-green-800';
-        if(substr($mysql_backups_hf[0]['file_name'], 0, 10) != date('Y-m-d')) {
-            $class_hf = 'bg-red-100 text-red-800';
-        }
+        // file backups
+        $file_backups_tp = [];
+        $file_backups_hf = [];
 
-        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'class_tp', 'class_hf'));
+        // queue monitor
+        $queue_failed_jobs = QueueMonitor::where('failed', '1')
+        -> orderBy('id', 'DESC')
+        -> limit(100)
+        -> get();
+
+
+
+        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'file_backups_tp', 'file_backups_hf', 'class_tp', 'class_hf', 'queue_failed_jobs'));
+
     }
 
     public function queue_monitor(Request $request)

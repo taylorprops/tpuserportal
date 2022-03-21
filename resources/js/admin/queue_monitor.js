@@ -1,4 +1,4 @@
-if (document.URL.match(/monitor/)) {
+if (document.URL.match(/queue_monitor/)) {
 
     jobs();
 

@@ -10,8 +10,6 @@ class AdminResources extends Model
     use HasFactory;
 
     protected $connection = 'mysql';
-
     protected $table = 'admin_resource_items';
-
     protected $guarded = [];
 }
