@@ -64,6 +64,8 @@ class Kernel extends HttpKernel
         'all' => \App\Http\Middleware\All::class,
         'lending_pad' => \App\Http\Middleware\API\LendingPad::class,
         'taylor_props' => \App\Http\Middleware\API\TaylorProps::class,
+        'heritage_financial' => \App\Http\Middleware\API\HeritageFinancial::class,
+        'heritage_title' => \App\Http\Middleware\API\HeritageTitle::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

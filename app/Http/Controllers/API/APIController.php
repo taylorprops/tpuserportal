@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\Helper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Config\Config;
 use App\Models\Zoho\ZohoOAuth;
 use TheIconic\NameParser\Parser;
 use App\Classes\DatabaseChangeLog;
@@ -634,9 +635,170 @@ class APIController extends Controller
 
     }
 
+    public function add_email_clicker_real_estate(Request $request) {
+
+        /* round robin
+            title
+                Gabby, Kristen, Kyle
+            Real estate
+                Gabby, Nikki
+            mortgage
+                Kyle
+        */
+
+        // http://heritagefinancial-dev/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
+
+        $access_token = $this -> get_access_token('leads');
+
+        $email = $request -> email;
+
+        $lead_id = $this -> check_if_user_exists($email);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
+        $assign_to = $this -> get_set_assigned('real_estate');
+
+        // zoho fields
+        $category = 'Real Estate';
+        $lead_status = 'New';
+        $owner = '5119653000000396016'; // Kyle
+        // $lead_source = 'Email Clickers';
+        $lead_source = $request -> utm_source;
+        $lead_medium = $request -> utm_medium;
+        $lead_campaign = $request -> utm_campaign;
+
+        $loan_officer = LoanOfficerAddresses::where('email', $email) -> first();
+
+        if($loan_officer) {
+
+
+            $description = 'Loan Officer clicked on a link in an email for more information';
+
+            $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
+
+
+            $fields = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'Email' => $loan_officer -> email,
+                            'Phone' => $loan_officer -> phone,
+                            'Follow_Up_Date' => date('Y-m-d')
+                        ]
+                        ),
+                        'duplicate_check_fields' => array(
+                            'Email',
+                            'Phone'
+                        )
+                )
+            );
+
+            if($existing_lead == false) {
+
+                $fields = json_encode(
+                    array(
+                        'data' => array(
+                            [
+                                'First_Name' => $loan_officer -> first_name,
+                                'Last_Name' => $loan_officer -> last_name,
+                                'Full_Name' => $loan_officer -> full_name,
+                                'Email' => $loan_officer -> email,
+                                'Phone' => $loan_officer -> phone,
+                                'Category' => $category,
+                                'Lead_Status' => $lead_status,
+                                'Owner' => $owner,
+                                'Lead_Source' => $lead_source,
+                                'Lead_Medium' => $lead_medium,
+                                'Lead_Campaign' => $lead_campaign,
+                                'Description' => $description,
+                            ]
+                            ),
+                            'duplicate_check_fields' => array(
+                                'Email',
+                                'Phone'
+                            )
+                    )
+                );
+
+            }
+
+            $headers = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($fields),
+                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            );
+
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $api_url);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+            $result = curl_exec($curl);
+            $result = json_decode($result, true);
+            curl_close($curl);
+
+            $lead_id = $result['data'][0]['details']['id'];
+
+            if($existing_lead == false) {
+
+                $this -> add_notes($lead_id, 'Lead added from Email Click');
+
+                return response() -> json(['status' => 'success']);
+
+            }
+
+            $notes =
+$loan_officer -> full_name.' clicked on a link in an email
+Lead Source - '.$lead_source.'
+Lead Medium - '.$lead_medium.'
+Lead Campaign - '.$lead_campaign;
+
+            $this -> add_notes($lead_id, $notes);
+
+
+            // Send email notification to Kyle
+
+            // $to = ['email' => config('global.recruiting_email_mortgage_to_email'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+
+            $body = '
+            A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
+            Name: '.$loan_officer -> full_name.'<br>
+            Phone: '.$loan_officer -> phone.'<br>
+            Email: '.$loan_officer -> email.'<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+
+
+            $message = [
+                'company' => 'Heritage Financial',
+                'subject' => 'Recruiting Alert! Second Contact from a Loan Officer',
+                'from' => ['email' => 'info@heritagefinancial.com', 'name' => 'Heritage Financial'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to([$to])
+            -> send(new EmailGeneral($message));
+
+
+            return response() -> json(['status' => 'success']);
+
+        }
+
+        return response() -> json(['status' => 'Loan Officer Not Found']);
+
+    }
+
 
     /* from heritagefinancial.com */
-    public function add_email_clicker(Request $request) {
+    public function add_email_clicker_mortgage(Request $request) {
 
         /* round robin
             title
@@ -864,6 +1026,10 @@ Lead Campaign - '.$lead_campaign;
         $result = json_decode($result, true);
         curl_close($curl);
 
+        if($result['status'] && $result['status'] == 'error') {
+            return false;
+        }
+
         if($result) {
             $lead_id = $result['data'][0]['id'];
         }
@@ -933,7 +1099,17 @@ Lead Campaign - '.$lead_campaign;
 
     }
 
+    public function get_set_assigned($office) {
 
+
+        $last_assigned = config('global.last_assigned_to_'.$office);
+        dd($last_assigned);
+        $new_assigned = '';
+
+        Config::where('config_key', 'last_assigned_to_'.$office) -> first()
+        -> update(['config_value' => $new_assigned]);
+
+    }
 
 
     /* Resources */

@@ -7,10 +7,11 @@ if(document.URL.match(/config_variables/)) {
 
         return {
             init() {
+                let scope = this;
                 setTimeout(function() {
                     document.querySelectorAll('.config-input').forEach(function(input) {
                         input.addEventListener('change', (event) => {
-                            config_edit(event.target.getAttribute('data-id'), event.target.getAttribute('data-field'), event.target.value);
+                            scope.config_edit(event.target.getAttribute('data-id'), event.target.getAttribute('data-field'), event.target.value);
                         });
                     });
                 }, 500);
@@ -32,26 +33,26 @@ if(document.URL.match(/config_variables/)) {
                     }
                 });
             },
+            config_edit(id, field, value) {
+
+                let formData = new FormData();
+                formData.append('id', id);
+                formData.append('field', field);
+                formData.append('value', value);
+                axios.post('/resources/config/config_edit', formData)
+                .then(function (response) {
+                    toastr.success('Config updated');
+                })
+                .catch(function (error) {
+
+                });
+
+            }
 
         }
 
     }
 
-    window.config_edit = function(id, field, value) {
-
-        let formData = new FormData();
-        formData.append('id', id);
-        formData.append('field', field);
-        formData.append('value', value);
-        axios.post('/resources/config/config_edit', formData)
-        .then(function (response) {
-            toastr.success('Config updated');
-        })
-        .catch(function (error) {
-
-        });
-
-    }
 
     /* window.get_config = function() {
 
