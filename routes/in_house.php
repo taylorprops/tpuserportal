@@ -88,6 +88,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% System Monitor
     Route::get('/admin/system_monitor', [AdminController::class, 'system_monitor']) -> middleware(['in_house']);
+    Route::get('/admin/system_monitor/get_failed_jobs', [AdminController::class, 'get_failed_jobs']) -> middleware(['in_house']);
+    Route::post('/admin/system_monitor/delete_failed_jobs', [AdminController::class, 'delete_failed_jobs']) -> middleware(['in_house']);
 
     // %%%% Queue Monitor
     Route::get('/admin/queue_monitor', [AdminController::class, 'queue_monitor']) -> middleware(['in_house']);

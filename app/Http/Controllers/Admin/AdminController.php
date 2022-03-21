@@ -17,10 +17,12 @@ class AdminController extends Controller
         // mysql backups
 
         if(config('app.env') == 'local') {
+
             $mysql_backups_tp = [];
             $mysql_backups_hf = [];
             $class_tp = 'bg-green-100 text-green-800';
             $class_hf = 'bg-green-100 text-green-800';
+
         } else {
 
             $mysql_backups_tp = Storage::disk('staging_backups') -> files('mysql/TPUserPortal');
@@ -46,15 +48,32 @@ class AdminController extends Controller
         $file_backups_tp = [];
         $file_backups_hf = [];
 
+
+
+
+
+        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'file_backups_tp', 'file_backups_hf', 'class_tp', 'class_hf'));
+
+    }
+
+    public function get_failed_jobs(Request $request) {
+
         // queue monitor
         $queue_failed_jobs = QueueMonitor::where('failed', '1')
         -> orderBy('id', 'DESC')
         -> limit(100)
         -> get();
 
+        return view('/admin/data/get_failed_jobs_html', compact('queue_failed_jobs'));
 
+    }
 
-        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'file_backups_tp', 'file_backups_hf', 'class_tp', 'class_hf', 'queue_failed_jobs'));
+    public function delete_failed_jobs(Request $request) {
+
+        $ids = explode(',', $request -> checked);
+        QueueMonitor::whereIn('id', $ids) -> delete();
+
+        return response() -> json(['status' => 'success']);
 
     }
 

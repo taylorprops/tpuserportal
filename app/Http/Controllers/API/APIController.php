@@ -638,6 +638,15 @@ class APIController extends Controller
     /* from heritagefinancial.com */
     public function add_email_clicker(Request $request) {
 
+        /* round robin
+            title
+                Gabby, Kristin, Kyle
+            Real estate
+                Gabby, Nikki
+            mortgage
+                Kyle
+        */
+
         // http://heritagefinancial-dev/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');

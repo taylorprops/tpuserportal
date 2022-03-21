@@ -12,7 +12,8 @@ $breadcrumbs = [
         :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
-    <div class="pb-12 pt-2">
+    <div class="pb-12 pt-2"
+    x-data="monitor()">
 
         <div class="w-full sm:px-6 lg:px-12">
 
@@ -116,59 +117,22 @@ $breadcrumbs = [
                         <div class="font-semibold mb-3">
                             Failed Queued Jobs
                         </div>
-                        <div class="max-h-600-px overflow-auto">
-
-                            @foreach($queue_failed_jobs as $job)
-
-                                @php
-                                $job_name = substr($job -> name, (strrpos($job -> name, '\\') + 1));
-                                @endphp
-
-                                <div class="border-b p-2 text-xs" x-data="{ show_details: false }">
-
-                                    <div class="grid grid-cols-7 gap-4">
-                                        <div>
-                                            <a href="javascript:void(0)" @click="show_details = true" x-show="show_details === false">View Details <i class="fal fa-arrow-right ml-2"></i></a>
-                                            <a href="javascript:void(0)" @click="show_details = false" x-show="show_details === true">Hide Details <i class="fal fa-arrow-down ml-2"></i></a>
-                                        </div>
-                                        <div>
-                                            <div class="font-semibold">{{ $job_name }}</div>
-                                            <div>{{ $job -> queue }}</div>
-                                        </div>
-                                        <div>
-                                            Attempts:<br>
-                                            {{ $job -> attempt }}
-                                        </div>
-                                        <div>
-                                            Start:<br>
-                                            {{ $job -> started_at }}
-                                        </div>
-                                        <div>
-                                            End:<br>
-                                            {{ $job -> finished_at }}
-                                        </div>
-                                        <div class="col-span-2">
-                                            Exception:<br>
-                                            {{ $job -> exception_class }}
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-6 rounded bg-gray-50 p-2" x-show="show_details === true" x-transition>
-                                        <div class="mb-4">Excpetion Class</div>
-                                        <div class="col-span-5 max-h-100-px overflow-auto mb-4">{{ $job -> exception_class }}</div>
-                                        <div class="mb-4">Excpetion Message</div>
-                                        <div class="col-span-5 max-h-100-px overflow-auto mb-4">{{ $job -> exception_message }}</div>
-                                        <div class="mb-4">Excpetion</div>
-                                        <div class="col-span-5 max-h-100-px overflow-auto mb-4">{!! preg_replace('/(#[0-9]+)/', '<br>$1', $job -> exception) !!}</div>
-                                        <div class="">Data</div>
-                                        <div class="col-span-5 max-h-100-px overflow-auto mb-4">{{ $job -> data }}</div>
-                                    </div>
-
-                                </div>
-
-                            @endforeach
-
+                        <div class="flex items-center ml-2 mb-3 pb-2 border-b">
+                            <div>
+                                <input type="checkbox" class="form-element checkbox lg" data-label="Check All"
+                                @change="
+                                check_all = ! check_all;
+                                checkboxes = document.querySelectorAll('.job-checkbox');
+                                [...checkboxes].map((el) => {
+                                    el.checked = check_all;
+                                });
+                                show_buttons();">
+                            </div>
+                            <div class="ml-4" x-show="show_buttons_div" x-transition>
+                                <button class="button primary md" @click="delete_checked($el)">Delete Checked</button>
+                            </div>
                         </div>
+                        <div class="max-h-600-px overflow-auto" x-ref="failed_jobs_div"></div>
                     </div>
 
                 </div>
