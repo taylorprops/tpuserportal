@@ -44,15 +44,11 @@ class AdminController extends Controller
 
         }
 
-        // file backups
-        $file_backups_tp = [];
-        $file_backups_hf = [];
 
 
 
 
-
-        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'file_backups_tp', 'file_backups_hf', 'class_tp', 'class_hf'));
+        return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'class_tp', 'class_hf'));
 
     }
 

@@ -63,41 +63,7 @@ $breadcrumbs = [
 
                 <div class="border rounded-md shadow">
 
-                    <div class="bg-gray-50 p-2 border-b text-lg rounded-t-md">
-                        File Backups
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-8 p-4">
-
-                        <div>
-                            <div class="flex justify-between font-semibold mb-3">
-                                <div>TP User Portal</div>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $class_tp }}"> {{ count($file_backups_tp) }} </span>
-                            </div>
-                            <div class="max-h-200-px overflow-auto">
-                                @foreach($file_backups_tp as $backup)
-                                    <div class="flex border-b p-2 text-xs">
-
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between font-semibold mb-3">
-                                <div>Heritage Financial</div>
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $class_hf }}"> {{ count($file_backups_hf) }} </span>
-                            </div>
-                            <div class="max-h-200-px overflow-auto">
-                                @foreach($file_backups_hf as $backup)
-                                    <div class="flex border-b p-2 text-xs">
-
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                    </div>
 
                 </div>
 
