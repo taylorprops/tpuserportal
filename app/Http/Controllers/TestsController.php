@@ -36,7 +36,8 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
-        exec("rsync -chavzP -e 'ssh -l user'  --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude 'scripts' root@162.244.66.22:/mnt/sdb/storage/mysql 2>&1", $output);
+        //exec("rsync -chavzP -e 'ssh -o StrictHostKeyChecking=no'  --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude 'scripts' mike@162.244.66.22:/mnt/sdb/storage/mysql 2>&1", $output);
+        exec("cd / ls 2>&1", $output);
         dump($output);
         $rsync = new Rsync;
         $rsync -> site = 'All';
