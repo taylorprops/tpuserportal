@@ -3,16 +3,25 @@ load_axios();
 
 window.addEventListener('load', function() {
 
-    let get_form_interval = setInterval(() => {
+    let careers_pages = ['careers', '100-commission', '85-commission', 'real-estate-referral'];
 
-        let form = document.getElementById('iq_lead_form');
-        let submit_button = document.getElementById('iq_lead_form-submit');
+    let matched = careers_pages.filter(item => {
+        return document.URL.match(item);
+    });
+    if(matched.length > 0) {
 
-        if(submit_button) {
-            capture_form(form, submit_button);
-            clearInterval(get_form_interval);
-        }
-    }, 2000);
+        let get_form_interval = setInterval(() => {
+
+            let form = document.getElementById('iq_lead_form');
+            let submit_button = document.getElementById('iq_lead_form-submit');
+
+            if(submit_button) {
+                capture_form(form, submit_button);
+                clearInterval(get_form_interval);
+            }
+        }, 2000);
+
+    }
 
 });
 

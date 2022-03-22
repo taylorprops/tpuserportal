@@ -38,7 +38,7 @@ class TransferToOffsiteJob implements ShouldQueue
         $rsync = new Rsync;
         $rsync -> site = 'All';
         $rsync -> backup_type = 'database';
-        $rsync -> response = $output;
+        $rsync -> response = json_encode($output);
         $rsync -> save();
     }
 }

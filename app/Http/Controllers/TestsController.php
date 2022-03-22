@@ -6,6 +6,7 @@ use Monolog\Logger;
 use App\Models\User;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use App\Models\Backups\Rsync;
 use App\Models\Employees\Agents;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
@@ -34,9 +35,14 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $connect = Helper::rets_login();
 
-        dd($connect -> getRetsSessionId());
+        exec("rsync -chavzP -e 'ssh -l user -i /home/mike/.ssh/id_rsa'  --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude 'scripts' root@162.244.66.22:/mnt/sdb/storage/mysql 2>&1", $output);
+        dump($output);
+        $rsync = new Rsync;
+        $rsync -> site = 'All';
+        $rsync -> backup_type = 'database';
+        $rsync -> response = json_encode($output);
+        $rsync -> save();
 
     }
 
