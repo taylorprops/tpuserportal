@@ -33,7 +33,7 @@ class TransferToOffsiteJob implements ShouldQueue
     public function handle()
     {
         // transfer database
-        exec('rsync -chavzP -e "ssh -o StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null -i \$HOME/.ssh/id-rsa" --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude "scripts" mike@162.244.66.22:/mnt/sdb/storage/mysql', $output);
+        exec('rsync -chavzP -e "ssh -o StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null -i /home/ds47655/.ssh/id-rsa" --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude "scripts" mike@162.244.66.22:/mnt/sdb/storage/mysql', $output);
 
         $rsync = new Rsync;
         $rsync -> site = 'All';
