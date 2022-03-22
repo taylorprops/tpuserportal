@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\Lenders;
+use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\DocManagement\Resources\LocationData;
 
@@ -638,7 +639,7 @@ class APIController extends Controller
     public function add_email_clicker_real_estate(Request $request) {
 
 
-        // http://heritagefinancial-dev/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
+        // https://taylorprops.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');
 
@@ -660,12 +661,12 @@ class APIController extends Controller
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
 
-        $loan_officer = LoanOfficerAddresses::where('email', $email) -> first();
+        $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
 
-        if($loan_officer) {
+        if($agent) {
 
 
-            $description = 'Loan Officer clicked on a link in an email for more information';
+            $description = 'An agent clicked on a link in an email for more information';
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
@@ -674,8 +675,8 @@ class APIController extends Controller
                 array(
                     'data' => array(
                         [
-                            'Email' => $loan_officer -> email,
-                            'Phone' => $loan_officer -> phone,
+                            'Email' => $agent -> MemberEmail,
+                            'Phone' => $agent -> MemberPreferredPhone,
                             'Follow_Up_Date' => date('Y-m-d')
                         ]
                         ),
@@ -692,11 +693,11 @@ class APIController extends Controller
                     array(
                         'data' => array(
                             [
-                                'First_Name' => $loan_officer -> first_name,
-                                'Last_Name' => $loan_officer -> last_name,
-                                'Full_Name' => $loan_officer -> full_name,
-                                'Email' => $loan_officer -> email,
-                                'Phone' => $loan_officer -> phone,
+                                'First_Name' => $agent -> MemberFirstName,
+                                'Last_Name' => $agent -> MemberLastName,
+                                'Full_Name' => $agent -> MemberFullName,
+                                'Email' => $agent -> MemberEmail,
+                                'Phone' => $agent -> MemberPreferredPhone,
                                 'Category' => $category,
                                 'Lead_Status' => $lead_status,
                                 // 'Owner' => $owner,
@@ -706,6 +707,7 @@ class APIController extends Controller
                                 'Description' => $description,
                             ]
                             ),
+                            'lar_id' => '5119653000001162013',
                             'duplicate_check_fields' => array(
                                 'Email',
                                 'Phone'
@@ -746,31 +748,31 @@ class APIController extends Controller
             }
 
             $notes =
-$loan_officer -> full_name.' clicked on a link in an email
-Lead Source - '.$lead_source.'
-Lead Medium - '.$lead_medium.'
-Lead Campaign - '.$lead_campaign;
+            $agent -> MemberFullname.' clicked on a link in an email
+            Lead Source - '.$lead_source.'
+            Lead Medium - '.$lead_medium.'
+            Lead Campaign - '.$lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
 
 
             // Send email notification to Kyle
 
-            // $to = ['email' => config('global.recruiting_email_mortgage_to_email'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+            // $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
-            A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
-            Name: '.$loan_officer -> full_name.'<br>
-            Phone: '.$loan_officer -> phone.'<br>
-            Email: '.$loan_officer -> email.'<br><br>
+            An agent just clicked on a link in an email for more information. This is the second contact from the agent.<br><br>
+            Name: '.$agent -> MemberFullName.'<br>
+            Phone: '.$agent -> MemberPreferredPhone.'<br>
+            Email: '.$agent -> MemberEmail.'<br><br>
             <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
 
             $message = [
-                'company' => 'Heritage Financial',
-                'subject' => 'Recruiting Alert! Second Contact from a Loan Officer',
-                'from' => ['email' => 'info@heritagefinancial.com', 'name' => 'Heritage Financial'],
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert! Second Contact from an Agent',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
                 'attachments' => null
             ];
@@ -783,7 +785,7 @@ Lead Campaign - '.$lead_campaign;
 
         }
 
-        return response() -> json(['status' => 'Loan Officer Not Found']);
+        return response() -> json(['status' => 'Agent Not Found']);
 
     }
 
@@ -907,10 +909,10 @@ Lead Campaign - '.$lead_campaign;
             }
 
             $notes =
-$loan_officer -> full_name.' clicked on a link in an email
-Lead Source - '.$lead_source.'
-Lead Medium - '.$lead_medium.'
-Lead Campaign - '.$lead_campaign;
+            $loan_officer -> full_name.' clicked on a link in an email
+            Lead Source - '.$lead_source.'
+            Lead Medium - '.$lead_medium.'
+            Lead Campaign - '.$lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
 
@@ -945,6 +947,157 @@ Lead Campaign - '.$lead_campaign;
         }
 
         return response() -> json(['status' => 'Loan Officer Not Found']);
+
+    }
+
+    /* from heritagetitlemd.com */
+    public function add_email_clicker_title(Request $request) {
+
+
+        // http://heritagetitlemd.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
+
+        $access_token = $this -> get_access_token('leads');
+
+        $email = $request -> email;
+
+        $lead_id = $this -> check_if_user_exists($email);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
+        // zoho fields
+        $category = 'Title';
+        $lead_status = 'New';
+        // $owner = '5119653000000396016'; // Kyle
+        // $lead_source = 'Email Clickers';
+        $lead_source = $request -> utm_source;
+        $lead_medium = $request -> utm_medium;
+        $lead_campaign = $request -> utm_campaign;
+
+        $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
+
+        if($agent) {
+
+            $description = 'An agent clicked on a link in an email for more information';
+
+            $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
+
+            $fields = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'Email' => $agent -> MemberEmail,
+                            'Phone' => $agent -> MemberPreferredPhone,
+                            'Follow_Up_Date' => date('Y-m-d')
+                        ]
+                        ),
+                        'duplicate_check_fields' => array(
+                            'Email',
+                            'Phone'
+                        )
+                )
+            );
+
+            if($existing_lead == false) {
+
+                $fields = json_encode(
+                    array(
+                        'data' => array(
+                            [
+                                'First_Name' => $agent -> MemberFirstName,
+                                'Last_Name' => $agent -> MemberLastName,
+                                'Full_Name' => $agent -> MemberFullName,
+                                'Email' => $agent -> MemberEmail,
+                                'Phone' => $agent -> MemberPreferredPhone,
+                                'Category' => $category,
+                                'Lead_Status' => $lead_status,
+                                // 'Owner' => $owner,
+                                'Lead_Source' => $lead_source,
+                                'Lead_Medium' => $lead_medium,
+                                'Lead_Campaign' => $lead_campaign,
+                                'Description' => $description,
+                            ]
+                            ),
+                            'lar_id' => '5119653000001162013',
+                            'duplicate_check_fields' => array(
+                                'Email',
+                                'Phone'
+                            )
+                    )
+                );
+
+            }
+
+            $headers = array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($fields),
+                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            );
+
+            $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $api_url);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+            $result = curl_exec($curl);
+            $result = json_decode($result, true);
+            curl_close($curl);
+
+            $lead_id = $result['data'][0]['details']['id'];
+
+            if($existing_lead == false) {
+
+                $this -> add_notes($lead_id, 'Lead added from Email Click');
+
+                return response() -> json(['status' => 'success']);
+
+            }
+
+            $notes =
+            $agent -> MemberFullname.' clicked on a link in an email
+            Lead Source - '.$lead_source.'
+            Lead Medium - '.$lead_medium.'
+            Lead Campaign - '.$lead_campaign;
+
+            $this -> add_notes($lead_id, $notes);
+
+
+            // Send email notification to Kyle
+
+            // $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
+            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+
+            $body = '
+            An Agent just clicked on a link in an email for more information. This is the second contact from the Agent.<br><br>
+            Name: '.$agent -> MemberFullName.'<br>
+            Phone: '.$agent -> MemberPreferredPhone.'<br>
+            Email: '.$agent -> MemberEmail.'<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert! Second Contact from an Agent',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to([$to])
+            -> send(new EmailGeneral($message));
+
+
+            return response() -> json(['status' => 'success']);
+
+        }
+
+        return response() -> json(['status' => 'Agent Not Found']);
 
     }
 
@@ -1090,6 +1243,43 @@ Lead Campaign - '.$lead_campaign;
 
     }
 
+    public function create_access_token() {
+
+        $code = '1000.501e25d6e546959a4288ca8c1313e0ac.88ecaa44b43e3294f3ae1fa75886202d';
+        $client_id = config('global.zoho_client_id');
+        $client_secret = config('global.zoho_client_secret');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('code' => $code, 'grant_type' => 'authorization_code', 'client_id' => $client_id, 'client_secret' => $client_secret, 'redirect_uri' => 'google.com'),
+            CURLOPT_HTTPHEADER => array(
+                'Cookie: _zcsr_tmp=794c5bad-b490-432a-9275-2dae4cf90857; b266a5bf57=a711b6da0e6cbadb5e254290f114a026; iamcsr=794c5bad-b490-432a-9275-2dae4cf90857',
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $data = json_decode($response, true);
+
+        dd($data);
+
+        /* ZohoOAuth::where('scope', $scope) -> update([
+            'refresh_token' => $data['refresh_token']
+        ]); */
+
+
+    }
+
 
     /* Resources */
 
@@ -1163,6 +1353,40 @@ Lead Campaign - '.$lead_campaign;
 
         foreach($fields -> fields as $field) {
             echo $field -> id.' - '.$field -> api_name.'<br>';
+        }
+
+    }
+
+    public function get_assignment_rules() {
+
+        $access_token = $this -> get_access_token('assignment_rules');
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://www.zohoapis.com/crm/v2.1/settings/automation/assignment_rules',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Content-Type: application/json',
+                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        $fields = json_decode($response);
+
+        foreach($fields -> assignment_rules as $field) {
+            echo $field -> id.' - '.$field -> name.'<br>';
         }
 
     }
