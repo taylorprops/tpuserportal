@@ -64,6 +64,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     Route::post('/employees/save_details', [EmployeesController::class, 'save_details']) -> middleware(['mortgage']);
 
+    Route::get('/employees/get_notes', [EmployeesController::class, 'get_notes']) -> middleware(['mortgage']);
+    Route::post('/employees/add_notes', [EmployeesController::class, 'add_notes']) -> middleware(['mortgage']);
+    Route::post('/employees/delete_note', [EmployeesController::class, 'delete_note']) -> middleware(['mortgage']);
+
     // %%%% Users
     Route::get('/users', [EmployeesController::class, 'users']) -> middleware(['in_house']);
     Route::get('/users/get_users', [EmployeesController::class, 'get_users']) -> middleware(['in_house']);

@@ -675,7 +675,7 @@ if(document.URL.match(/view_loan/)) {
             delete_note(ele, id) {
                 let scope = this;
                 let button_html = ele.innerHTML;
-                show_loading_button(ele, 'Deleting ... ');
+                show_loading_button(ele, '');
                 remove_form_errors();
 
                 let formData = new FormData();

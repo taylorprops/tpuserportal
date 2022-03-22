@@ -27,6 +27,7 @@ $breadcrumbs = [
                         <option selected value="1">Details</option>
                         <option value="2">Documents</option>
                         <option value="3">Photo</option>
+                        <option value="4">Notes</option>
                     </select>
                     @endif
                 </div>
@@ -60,6 +61,14 @@ $breadcrumbs = [
                                 <i class="fad fa-portrait mr-3"
                                 :class="{ 'text-primary': active_tab === '3', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '3' }"></i>
                                 <span>Photo</span>
+                            </a>
+
+                            <a href="javascript:void(0)" class="group inline-flex items-center py-4 px-3 border-b-2 font-medium"
+                            :class="{ 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4', 'border-primary text-primary-dark': active_tab === '4' }"
+                            @click="active_tab = '4'">
+                                <i class="fad fa-notes mr-3"
+                                :class="{ 'text-primary': active_tab === '4', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '4' }"></i>
+                                <span>Notes</span>
                             </a>
 
                             @endif
@@ -383,6 +392,52 @@ $breadcrumbs = [
                                 </x-modals.modal>
 
                             </div>
+
+                        </div>
+
+                    </div>
+
+                    <div x-show="active_tab === '4'" class="pt-12">
+
+                        <div class="">
+
+                            <div class="max-w-600-px mt-20">
+
+                                <div class="flex justify-between">
+                                    <div class="font-medium text-xl">Notes</div>
+                                    <div>
+                                        <button type="button" class="button primary md"
+                                        @click="show_add_notes = ! show_add_notes"
+                                        x-show="show_add_notes === false">
+                                            <i class="fal fa-plus mr-2"></i> Add Note
+                                        </button>
+                                        <button type="button" class="button danger md no-text"
+                                        @click="show_add_notes = ! show_add_notes"
+                                        x-show="show_add_notes === true">
+                                            <i class="fal fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="border rounded-md p-4 my-3"
+                                x-show="show_add_notes" x-transition>
+                                    <form id="add_notes_form">
+                                        <div>
+                                            <textarea class="form-element textarea md" name="notes" id="notes"
+                                            x-ref="notes"></textarea>
+                                        </div>
+                                        <div class="flex justify-around mt-3">
+                                            <button type="button" class="button primary md"
+                                            @click.prevent="add_notes($el)">
+                                                Save Note <i class="fal fa-check ml-2"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                            <div class="border-t-2 mt-4 max-w-600-px"
+                            x-ref="notes_div"></div>
 
                         </div>
 

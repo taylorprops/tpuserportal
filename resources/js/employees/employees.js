@@ -21,6 +21,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
             active_tab: '1',
             show_add_card_error_div: false,
             show_confirm_delete_credit_card: false,
+            show_add_notes: false,
 
             init() {
 
@@ -57,6 +58,8 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                             scope.get_credit_cards();
                         }
                     }
+
+                    this.get_notes();
 
                 }
             },
@@ -208,6 +211,67 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     .catch(function (error) {
                     });
                 }
+            },
+
+            get_notes() {
+                let scope = this;
+                axios.get('/employees/get_notes', {
+                    params: {
+                        emp_id: emp_id,
+                        emp_type: emp_type,
+                    },
+                })
+                .then(function (response) {
+                    scope.$refs.notes_div.innerHTML = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            },
+
+            add_notes(ele) {
+
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
+
+                let scope = this;
+                let form = document.querySelector('#add_notes_form');
+                let formData = new FormData(form);
+                formData.append('emp_id', emp_id);
+                formData.append('emp_type', emp_type);
+
+                axios.post('/employees/add_notes', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    scope.get_notes();
+                    scope.show_add_notes = false;
+                    toastr.success('Note Saved');
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
+            },
+
+            delete_note(ele, id) {
+                let scope = this;
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, '');
+                remove_form_errors();
+
+                let formData = new FormData();
+                formData.append('id', id);
+
+                axios.post('/employees/delete_note', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    scope.get_notes();
+                    toastr.success('Note Deleted');
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
             },
 
             photo() {

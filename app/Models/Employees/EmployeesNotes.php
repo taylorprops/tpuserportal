@@ -16,4 +16,10 @@ class EmployeesNotes extends Model
     protected $table = 'emp_notes';
 
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this -> hasOne(\App\Models\User::class, 'id', 'user_id');
+    }
+
 }
