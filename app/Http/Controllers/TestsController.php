@@ -36,8 +36,8 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
-        exec('rsync -chavzPO  --delete --ignore-existing --stats ds4655:/mnt/vol2/backups/ --exclude "scripts" mike@162.244.66.22:/mnt/sdb/storage/mysql 2>&1', $output);
-        //exec("cd /mnt && ls 2>&1", $output);
+        //exec('rsync -chavzPO  --delete --ignore-existing --stats /mnt/vol2/backups/ --exclude "scripts" mike@162.244.66.22:/mnt/sdb/storage/mysql 2>&1', $output);
+        exec("cd /mnt && ls 2>&1", $output);
         dump($output);
         $rsync = new Rsync;
         $rsync -> site = 'All';
