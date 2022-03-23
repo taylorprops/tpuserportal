@@ -6,9 +6,9 @@
     @php
     $date = $note -> created_at;
     if(date('Ymd') == date('Ymd', strtotime($date))) {
-        $date = 'Today '.date('H:iA', strtotime($date));
+        $date = 'Today '.date('g:iA', strtotime($date));
     } else {
-        $date = date('n/j/y H:iA', strtotime($date));
+        $date = date('n/j/y g:iA', strtotime($date));
     }
     @endphp
 
