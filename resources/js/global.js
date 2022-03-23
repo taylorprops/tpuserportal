@@ -687,7 +687,7 @@ window.numbers_only = function() {
         input.addEventListener('keydown', (event) => {
 
             // set attr  max with input type = text
-            let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v'];
+            let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v', 'c'];
 
             if (!input.classList.contains('no-decimals')) {
                 allowed_keys.push('.');
