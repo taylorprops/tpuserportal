@@ -55,7 +55,7 @@ class AddListingsJob implements ShouldQueue
             -> send(new EmailGeneral($message));
             return false;
         }
-        $end = date('Y-m-d', strtotime($start.' +5 day'));
+        $end = date('Y-m-d', strtotime($start.' +3 day'));
 
         $this -> queueData([
             'Start:' => $start,
