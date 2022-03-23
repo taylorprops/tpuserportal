@@ -25,6 +25,8 @@ window.addEventListener('load', (event) => {
         div.style.display = 'none';
     });
 
+
+
 });
 
 
@@ -33,6 +35,7 @@ window._token = document.querySelector('meta[name="csrf-token"]').getAttribute('
 window.axios_options = {
     headers: { 'X-CSRF-TOKEN': _token }
 };
+
 
 
 window.form_elements = function() {
@@ -686,7 +689,6 @@ window.numbers_only = function() {
 
         input.addEventListener('keydown', (event) => {
 
-            // set attr  max with input type = text
             let allowed_keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',', 'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'Control', 'v', 'c'];
 
             if (!input.classList.contains('no-decimals')) {

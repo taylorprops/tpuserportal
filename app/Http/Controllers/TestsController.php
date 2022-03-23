@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BrightMLS\BrightListings;
 use App\Models\Employees\EmployeesNotes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
@@ -71,6 +72,53 @@ class TestsController extends Controller
             $loan_officer -> state = $state;
             $loan_officer -> save();
         }
+    }
+
+
+    public function bright_add_listings(Request $request) {
+
+        ini_set('memory_limit', '-1');
+
+        $start = BrightListings::max('MLSListDate');
+        if(!$start) {
+            $start = '2018-01-01';
+        }
+        $end = date('Y-m-d', strtotime($start.' +3 day'));
+
+        $rets = Helper::rets_login();
+
+        $resource = "Property";
+        $class = "ALL";
+
+        $query = 'MLSListDate='.$start.'-'.$end;
+
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query,
+            [
+                'Select' => 'Appliances, AssociationFee, AssociationFeeFrequency, AssociationYN, AttachedGarageYN, BasementFinishedPercent, BasementYN, BathroomsTotalInteger, BedroomsTotal, BuyerAgentEmail, BuyerAgentFirstName, BuyerAgentFullName, BuyerAgentLastName, BuyerAgentMlsId, BuyerAgentPreferredPhone, BuyerAgentTeamLeadAgentName, BuyerOfficeMlsId, BuyerOfficeName, BuyerTeamName, City, CloseDate, ClosePrice, CondoYN, Cooling, County, ElementarySchool, FireplaceYN, FullStreetAddress, GarageYN, Heating, HighSchool, Latitude, LeaseAmount, ListAgentEmail, ListAgentFirstName, ListAgentLastName, ListAgentMlsId, ListAgentPreferredPhone, ListAgentTeamLeadAgentName, ListingId, ListingKey, ListingSourceRecordKey, ListingTaxID, ListOfficeMlsId, ListOfficeName, ListPictureURL, ListPrice, ListTeamName, LivingArea, Longitude, LotSizeAcres, LotSizeSquareFeet, MajorChangeTimestamp, MiddleOrJuniorSchool, MLSListDate, MlsStatus, NewConstructionYN, Pool, PostalCode, PropertySubType, PropertyType, PublicRemarks, PurchaseContractDate, RealEstateOwnedYN, SaleType, ShortSale, StateOrProvince, StreetDirPrefix, StreetDirSuffix, StreetName, StreetNumber, StreetSuffix, StreetSuffixModifier, StructureDesignType, SubdivisionName, TotalPhotos, UnitBuildingType, UnitNumber, YearBuilt'
+            ]
+        );
+
+        $listings = $results -> toArray();
+        // echo count($listings);
+        foreach($listings as $listing) {
+
+            $data = [];
+            foreach($listing as $key => $value) {
+                if($value != '') {
+                    $data[$key] = $value;
+                }
+            }
+
+            BrightListings::firstOrCreate(
+                ['ListingKey' => $listing['ListingKey']],
+                $data
+            );
+
+        }
+
     }
 
     public function bright_remove_agents()
