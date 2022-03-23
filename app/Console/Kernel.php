@@ -40,6 +40,13 @@ class Kernel extends ConsoleKernel
         -> environments('production')
         -> withoutOverlapping();
 
+        // add bright listings
+        $schedule -> command('bright_mls:add_listings')
+        -> timezone('America/New_York')
+        -> everyMinute()
+        -> environments('production')
+        -> withoutOverlapping();
+
         // %%% TEMP %%% //
 
         // add transactions from skyslope to db
