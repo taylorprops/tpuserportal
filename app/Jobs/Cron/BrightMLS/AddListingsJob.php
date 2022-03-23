@@ -42,6 +42,7 @@ class AddListingsJob implements ShouldQueue
         if(!$start) {
             $start = '2018-01-01';
         }
+
         if($start > date('Y-m-d')) {
             $message = [
                 'company' => 'Taylor Properties',
@@ -55,6 +56,11 @@ class AddListingsJob implements ShouldQueue
             return false;
         }
         $end = date('Y-m-d', strtotime($start.' +5 day'));
+
+        $this -> queueData([
+            'Start:' => $start,
+            'End:' => $end
+        ], true);
 
         $rets = Helper::rets_login();
 
