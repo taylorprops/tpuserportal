@@ -42,6 +42,18 @@ class AddListingsJob implements ShouldQueue
         if(!$start) {
             $start = '2018-01-01';
         }
+        if($start > date('Y-m-d')) {
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Add listings job has completed',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => 'Add listings job has completed',
+                'attachments' => null
+            ];
+            Mail::to(['miketaylor0101@gmail.com'])
+            -> send(new EmailGeneral($message));
+            return false;
+        }
         $end = date('Y-m-d', strtotime($start.' +5 day'));
 
         $rets = Helper::rets_login();
