@@ -57,7 +57,6 @@ class AdminController extends Controller
         // queue monitor
         $queue_failed_jobs = QueueMonitor::where('failed', '1')
         -> orderBy('id', 'DESC')
-        -> limit(100)
         -> get();
 
         return view('/admin/data/get_failed_jobs_html', compact('queue_failed_jobs'));
