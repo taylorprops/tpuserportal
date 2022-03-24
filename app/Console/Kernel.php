@@ -40,11 +40,10 @@ class Kernel extends ConsoleKernel
         -> environments('production');
 
         // add bright listings
-        // $schedule -> command('bright_mls:add_listings')
-        // -> timezone('America/New_York')
-        // -> everyMinute()
-        // -> environments('production')
-        // -> withoutOverlapping();
+        $schedule -> command('bright_mls:add_listings')
+        -> timezone('America/New_York')
+        -> everyMinute()
+        -> environments('production');
 
         // %%% TEMP %%% //
 
