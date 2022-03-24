@@ -42,7 +42,7 @@ class Kernel extends ConsoleKernel
         // add bright listings
         $schedule -> command('bright_mls:add_listings')
         -> timezone('America/New_York')
-        -> everyMinute()
+        -> everyTwoMinutes()
         -> environments('production');
 
         // %%% TEMP %%% //
