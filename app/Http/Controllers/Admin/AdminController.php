@@ -45,9 +45,6 @@ class AdminController extends Controller
         }
 
 
-
-
-
         return view('/admin/system_monitor', compact('mysql_backups_tp', 'mysql_backups_hf', 'class_tp', 'class_hf'));
 
     }

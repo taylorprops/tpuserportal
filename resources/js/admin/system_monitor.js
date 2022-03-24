@@ -18,6 +18,10 @@ if(document.URL.match(/system_monitor/)) {
                 axios.get('/admin/system_monitor/get_failed_jobs')
                 .then(function (response) {
                     scope.$refs.failed_jobs_div.innerHTML = response.data;
+                    setTimeout(function() {
+                        let count = scope.$refs.failed_count.value;
+                        scope.$refs.failed_count_view.innerHTML = count;
+                    }, 500);
                 })
                 .catch(function (error) {
                     console.log(error);

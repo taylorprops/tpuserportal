@@ -1,3 +1,5 @@
+<input type="hidden" x-ref="failed_count" value="{{ count($queue_failed_jobs) }}">
+
 @foreach($queue_failed_jobs as $job)
 
     @php
