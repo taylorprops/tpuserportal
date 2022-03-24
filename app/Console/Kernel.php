@@ -37,8 +37,7 @@ class Kernel extends ConsoleKernel
         $schedule -> command('bright_mls:update_agents_and_offices')
         -> timezone('America/New_York')
         -> everyTwoHours()
-        -> environments('production')
-        -> withoutOverlapping();
+        -> environments('production');
 
         // add bright listings
         // $schedule -> command('bright_mls:add_listings')

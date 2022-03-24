@@ -83,6 +83,8 @@ class AddListingsJob implements ShouldQueue
         // echo count($listings);
         $this -> queueData(['Found:' => count($listings)], true);
 
+        $rets -> Disconnect();
+
         $increment = 100 / count($listings);
         $progress = 0;
         foreach($listings as $listing) {
@@ -105,8 +107,6 @@ class AddListingsJob implements ShouldQueue
         }
 
         $this -> queueProgress(100);
-
-        $rets -> Disconnect();
 
     }
 
