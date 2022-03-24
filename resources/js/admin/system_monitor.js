@@ -22,6 +22,7 @@ if(document.URL.match(/system_monitor/)) {
                         let count = scope.$refs.failed_count.value;
                         scope.$refs.failed_count_view.innerHTML = count;
                     }, 500);
+                    scope.$refs.check_all.setAttribute('checked', false);
                 })
                 .catch(function (error) {
                     console.log(error);
