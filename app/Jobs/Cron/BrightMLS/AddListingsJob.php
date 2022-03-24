@@ -64,49 +64,57 @@ class AddListingsJob implements ShouldQueue
 
         $rets = Helper::rets_login();
 
-        $resource = "Property";
-        $class = "ALL";
+        if($rets) {
 
-        $query = 'MLSListDate='.$start.'-'.$end;
+            $resource = "Property";
+            $class = "ALL";
 
-        $results = $rets -> Search(
-            $resource,
-            $class,
-            $query,
-            [
-                'Select' => 'Appliances, AssociationFee, AssociationFeeFrequency, AssociationYN, AttachedGarageYN, BasementFinishedPercent, BasementYN, BathroomsTotalInteger, BedroomsTotal, BuyerAgentEmail, BuyerAgentFirstName, BuyerAgentFullName, BuyerAgentLastName, BuyerAgentMlsId, BuyerAgentPreferredPhone, BuyerAgentTeamLeadAgentName, BuyerOfficeMlsId, BuyerOfficeName, BuyerTeamName, City, CloseDate, ClosePrice, CondoYN, Cooling, County, ElementarySchool, FireplaceYN, FullStreetAddress, GarageYN, Heating, HighSchool, Latitude, LeaseAmount, ListAgentEmail, ListAgentFirstName, ListAgentLastName, ListAgentMlsId, ListAgentPreferredPhone, ListAgentTeamLeadAgentName, ListingId, ListingKey, ListingSourceRecordKey, ListingTaxID, ListOfficeMlsId, ListOfficeName, ListPictureURL, ListPrice, ListTeamName, LivingArea, Longitude, LotSizeAcres, LotSizeSquareFeet, MajorChangeTimestamp, MiddleOrJuniorSchool, MLSListDate, MlsStatus, NewConstructionYN, Pool, PostalCode, PropertySubType, PropertyType, PublicRemarks, PurchaseContractDate, RealEstateOwnedYN, SaleType, ShortSale, StateOrProvince, StreetDirPrefix, StreetDirSuffix, StreetName, StreetNumber, StreetSuffix, StreetSuffixModifier, StructureDesignType, SubdivisionName, TotalPhotos, UnitBuildingType, UnitNumber, YearBuilt'
-            ]
-        );
+            $query = 'MLSListDate='.$start.'-'.$end;
 
-
-        $listings = $results -> toArray();
-        // echo count($listings);
-        $this -> queueData(['Found:' => count($listings)], true);
-
-        $rets -> Disconnect();
-
-        $increment = 100 / count($listings);
-        $progress = 0;
-        foreach($listings as $listing) {
-
-            $data = [];
-            foreach($listing as $key => $value) {
-                if($value != '') {
-                    $data[$key] = $value;
-                }
-            }
-
-            BrightListings::firstOrCreate(
-                ['ListingKey' => $listing['ListingKey']],
-                $data
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => 'Appliances, AssociationFee, AssociationFeeFrequency, AssociationYN, AttachedGarageYN, BasementFinishedPercent, BasementYN, BathroomsTotalInteger, BedroomsTotal, BuyerAgentEmail, BuyerAgentFirstName, BuyerAgentFullName, BuyerAgentLastName, BuyerAgentMlsId, BuyerAgentPreferredPhone, BuyerAgentTeamLeadAgentName, BuyerOfficeMlsId, BuyerOfficeName, BuyerTeamName, City, CloseDate, ClosePrice, CondoYN, Cooling, County, ElementarySchool, FireplaceYN, FullStreetAddress, GarageYN, Heating, HighSchool, Latitude, LeaseAmount, ListAgentEmail, ListAgentFirstName, ListAgentLastName, ListAgentMlsId, ListAgentPreferredPhone, ListAgentTeamLeadAgentName, ListingId, ListingKey, ListingSourceRecordKey, ListingTaxID, ListOfficeMlsId, ListOfficeName, ListPictureURL, ListPrice, ListTeamName, LivingArea, Longitude, LotSizeAcres, LotSizeSquareFeet, MajorChangeTimestamp, MiddleOrJuniorSchool, MLSListDate, MlsStatus, NewConstructionYN, Pool, PostalCode, PropertySubType, PropertyType, PublicRemarks, PurchaseContractDate, RealEstateOwnedYN, SaleType, ShortSale, StateOrProvince, StreetDirPrefix, StreetDirSuffix, StreetName, StreetNumber, StreetSuffix, StreetSuffixModifier, StructureDesignType, SubdivisionName, TotalPhotos, UnitBuildingType, UnitNumber, YearBuilt'
+                ]
             );
 
-            $progress += $increment;
-            $this -> queueProgress($progress);
+
+            $listings = $results -> toArray();
+            // echo count($listings);
+            $this -> queueData(['Found:' => count($listings)], true);
+
+            $increment = 100 / count($listings);
+            $progress = 0;
+            foreach($listings as $listing) {
+
+                $data = [];
+                foreach($listing as $key => $value) {
+                    if($value != '') {
+                        $data[$key] = $value;
+                    }
+                }
+
+                BrightListings::firstOrCreate(
+                    ['ListingKey' => $listing['ListingKey']],
+                    $data
+                );
+
+                $progress += $increment;
+                $this -> queueProgress($progress);
+
+            }
+
+            $this -> queueProgress(100);
+
+            $rets -> Disconnect();
+
+            return true;
 
         }
 
-        $this -> queueProgress(100);
+        return response() -> json(['failed' => 'login failed']);
 
     }
 
