@@ -6,7 +6,6 @@ use App\Helpers\Helper;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,7 +14,7 @@ use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class UpdateAgentsAndOfficesJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored, ShouldBeUnique;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
     /**
      * Create a new job instance.
