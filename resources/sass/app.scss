@@ -1,6 +1,6 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @import 'animate.css/animate.min.css';
 @import 'toastr2/dist/toastr.min.css';
@@ -13,4 +13,4 @@
 @import './nav.scss';
 @import './form_elements.scss';
 //@import './datatables.scss';
-/* @import 'tippy.js/dist/tippy.css'; */
+@import 'tippy.js/dist/tippy.css';

@@ -17,8 +17,6 @@ window.Cropper = Cropper;
 require('./bootstrap');
 
 
-
-//import tippy from 'tippy.js';
 require('./global.js');
 
 require('./resources/form_elements/form_elements.js');
