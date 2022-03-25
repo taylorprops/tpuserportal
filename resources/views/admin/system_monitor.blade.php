@@ -83,6 +83,9 @@ $breadcrumbs = [
                         <div class="flex font-semibold mb-3">
                             <div>Failed Queued Jobs </div>
                             <span class="inline-flex items-center ml-4 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800" x-ref="failed_count_view"></span>
+                            <div class="ml-4">
+                                <button type="button" class="button success sm" @click="get_failed_jobs()">Reload <i class="fal fa-refresh ml-2"></i></button>
+                            </div>
                         </div>
                         <div class="flex items-center ml-2 mb-3 pb-2 border-b">
                             <div>
