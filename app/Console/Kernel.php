@@ -17,6 +17,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
+        // clear failed jobs -
+        $schedule -> command('queue:flush')
+        -> dailyAt('2:00')
+        -> timezone('America/New_York')
+        -> environments(['production']);
+
         // Backups
         $schedule -> command('backup:clean')
         -> dailyAt('15:00')
