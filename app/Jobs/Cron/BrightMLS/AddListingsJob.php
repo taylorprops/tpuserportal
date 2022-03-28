@@ -4,6 +4,7 @@ namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
+use App\Models\Temp\AddListings;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,10 +39,9 @@ class AddListingsJob implements ShouldQueue
 
         ini_set('memory_limit', '-1');
 
-        $start = BrightListings::max('MLSListDate');
-        if(!$start) {
-            $start = '2018-01-01';
-        }
+        $dates = AddListings::where('job', 'add_listings') -> first();
+        $start = $dates -> start_date;
+
 
         if($start > date('Y-m-d')) {
             $message = [
@@ -109,6 +109,10 @@ class AddListingsJob implements ShouldQueue
             $this -> queueProgress(100);
 
             $rets -> Disconnect();
+
+
+            $dates -> start_date = $end;
+            $dates -> save();
 
             return true;
 
