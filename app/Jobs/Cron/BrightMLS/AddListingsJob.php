@@ -5,6 +5,7 @@ namespace App\Jobs\Cron\BrightMLS;
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use App\Models\Temp\AddListings;
+use App\Mail\General\EmailGeneral;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
