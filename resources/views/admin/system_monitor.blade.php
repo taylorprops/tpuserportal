@@ -91,7 +91,7 @@ $breadcrumbs = [
                             <div>
                                 <input type="checkbox" class="form-element checkbox lg" x-ref="check_all" data-label="Check All"
                                 @change="
-                                check_all = ! check_all;
+                                check_all = $el.checked;
                                 checkboxes = document.querySelectorAll('.job-checkbox');
                                 [...checkboxes].map((el) => {
                                     el.checked = check_all;
