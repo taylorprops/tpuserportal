@@ -5,7 +5,7 @@ if(document.URL.match(/system_monitor/)) {
         return {
 
             check_all: false,
-            show_buttons_div: false,
+            show_buttons_div: true,
 
             init() {
                 this.get_failed_jobs();
