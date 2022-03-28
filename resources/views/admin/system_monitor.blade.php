@@ -90,7 +90,6 @@ $breadcrumbs = [
                         <div class="flex items-center ml-2 mb-3 pb-2 border-b">
                             <div>
                                 <input type="checkbox" class="form-element checkbox lg" x-ref="check_all" data-label="Check All"
-                                checked="false"
                                 @change="
                                 check_all = $el.checked;
                                 checkboxes = document.querySelectorAll('.job-checkbox');

@@ -11,7 +11,7 @@
         <div class="grid grid-cols-8 gap-4">
             <div class="flex">
                 <div class="mr-4">
-                    <input type="checkbox" class="form-element checkbox md job-checkbox" data-id="{{ $job -> id }}" @change="show_buttons()">
+                    <input type="checkbox" class="form-element checkbox md job-checkbox" data-id="{{ $job -> id }}" @change="show_buttons()" checked>
                 </div>
                 <a href="javascript:void(0)" @click="show_details = true" x-show="show_details === false">View Details <i class="fal fa-arrow-right ml-2"></i></a>
                 <a href="javascript:void(0)" @click="show_details = false" x-show="show_details === true">Hide Details <i class="fal fa-arrow-down ml-2"></i></a>
