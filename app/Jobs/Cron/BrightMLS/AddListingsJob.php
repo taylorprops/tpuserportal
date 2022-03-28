@@ -5,6 +5,7 @@ namespace App\Jobs\Cron\BrightMLS;
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use App\Models\Temp\AddListings;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
 use Illuminate\Queue\InteractsWithQueue;
@@ -60,7 +61,7 @@ class AddListingsJob implements ShouldQueue
         if($start < '2021-01-01') {
             $days = '6';
         }
-        $end = date('Y-m-d', strtotime($start.' +'.$days.' day'));
+        $end = date('Y-m-d', strtotime($start.' -'.$days.' day'));
 
         $this -> queueData([
             'Start:' => $start,
