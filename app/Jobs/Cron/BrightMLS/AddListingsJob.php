@@ -42,10 +42,10 @@ class AddListingsJob implements ShouldQueue
         ini_set('memory_limit', '-1');
 
         $dates = AddListings::where('job', 'add_listings') -> first();
-        $start = $dates -> start_date;
+        // $start = $dates -> start_date;
 
 
-        if($start > date('Y-m-d')) {
+        /* if($start > date('Y-m-d')) {
             $message = [
                 'company' => 'Taylor Properties',
                 'subject' => 'Add listings job has completed',
@@ -56,13 +56,17 @@ class AddListingsJob implements ShouldQueue
             Mail::to(['miketaylor0101@gmail.com'])
             -> send(new EmailGeneral($message));
             return false;
-        }
+        } */
 
-        $days = 3;
-        if($start < '2021-01-01') {
-            $days = '6';
-        }
-        $end = date('Y-m-d', strtotime($start.' +'.$days.' day'));
+        // $days = 3;
+        // if($start < '2021-01-01') {
+        //     $days = '6';
+        // }
+        // $end = date('Y-m-d', strtotime($start.' +'.$days.' day'));
+
+
+        $end = $dates -> start_date;
+        $start = date('Y-m-d', strtotime($end.' -6 day'));
 
         $this -> queueData([
             'Start:' => $start,
