@@ -42,14 +42,14 @@ class CancelListingsJob implements ShouldQueue
 
         if($rets) {
             $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
-            $listings = BrightListings::select('ListingKey')
+            $db_listings = BrightListings::select('ListingKey')
             -> whereIn('MlsStatus', $statuses)
             -> where('updated_at', '<', date('Y-m-d'))
             -> limit(5000)
             -> pluck('ListingKey')
             -> toArray();
 
-            BrightListings::whereIn('ListingKey', $listings)
+            BrightListings::whereIn('ListingKey', $db_listings)
             -> update([
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
@@ -59,7 +59,7 @@ class CancelListingsJob implements ShouldQueue
             $resource = "Property";
             $class = "ALL";
 
-            $query = 'ListingKey='.implode(',', $listings);
+            $query = 'ListingKey='.implode(',', $db_listings);
 
             $results = $rets -> Search(
                 $resource,
@@ -70,24 +70,26 @@ class CancelListingsJob implements ShouldQueue
                 ]
             );
 
-            $listings = $results -> toArray();
+            $bright_listings = $results -> toArray();
 
             $this -> queueProgress(30);
 
-            $increment = 70 / count($listings);
-            $progress = 30;
 
-            foreach($listings as $listing) {
 
-                BrightListings::find($listing['ListingKey'])
-                -> update([
-                    'MlsStatus' => 'CANCELED'
-                ]);
+            // $increment = 70 / count($listings);
+            // $progress = 30;
 
-                $progress += $increment;
-                $this -> queueProgress($progress);
+            // foreach($listings as $listing) {
 
-            }
+            //     BrightListings::find($listing['ListingKey'])
+            //     -> update([
+            //         'MlsStatus' => 'CANCELED'
+            //     ]);
+
+            //     $progress += $increment;
+            //     $this -> queueProgress($progress);
+
+            // }
 
             $this -> queueProgress(100);
 
