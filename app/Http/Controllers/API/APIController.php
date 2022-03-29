@@ -167,7 +167,6 @@ class APIController extends Controller
                 $lender_search = Lenders::where('company_name', $lender_name)
                 -> orWhere('company_name_short', $lender_short)
                 -> get();
-                return $lender_search;
 
                 if (count($lender_search) == 1) {
                     $lender_uuid = $lender_search -> first() -> uuid;
