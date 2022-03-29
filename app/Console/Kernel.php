@@ -53,6 +53,12 @@ class Kernel extends ConsoleKernel
 
         // %%% TEMP %%% //
 
+        // add bright fields
+        $schedule -> command('bright_mls:add_fields')
+        -> timezone('America/New_York')
+        -> everyMinute()
+        -> environments('production');
+
         // add transactions from skyslope to db
         // ends - when no more transactions added to skyslope
         $schedule -> command('archives:get_transactions') -> everySixHours() -> environments('production');
