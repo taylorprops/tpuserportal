@@ -43,7 +43,7 @@
 
             </div>
 
-            <div class="flex-1 xl:overflow-y-auto">
+            <div class="flex-1 xl:overflow-y-auto pb-24">
 
                 <div class="">
 
