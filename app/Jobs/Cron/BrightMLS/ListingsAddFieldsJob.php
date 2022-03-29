@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Cron\BrightMLS;
 
+use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
