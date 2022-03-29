@@ -1681,11 +1681,18 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                     <div class="printable-checks-out hidden">
 
+                                        @if($loan)
                                         <span style="font-size: 20px; font-weight: bold; font-family:Arial, Helvetica, sans-serif">
-                                            @if($loan)
                                             {{ $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip}}
+                                        </span>
+                                        <br>
+                                        <span style="font-size: 16px; font-weight: bold; font-family:Arial, Helvetica, sans-serif">
+                                            {{ $loan -> borrower_fullname }}
+                                            @if($loan -> co_borrower_first)
+                                                <br>{{ $loan -> co_borrower_fullname }}
                                             @endif
                                         </span>
+                                        @endif
                                         <br><br>
                                         <table style="font-family:Arial, Helvetica, sans-serif">
                                             <tr>
