@@ -163,11 +163,11 @@ class APIController extends Controller
             if ($lender) {
                 $lender_name = substr($lender, 0, strpos($lender, '(') - 1);
                 $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
-                return $lender_name.' '.$lender_short;
 
                 $lender_search = Lenders::where('company_name', $lender_name)
                 -> orWhere('company_name_short', $lender_short)
                 -> get();
+                return $lender_search;
 
                 if (count($lender_search) == 1) {
                     $lender_uuid = $lender_search -> first() -> uuid;
