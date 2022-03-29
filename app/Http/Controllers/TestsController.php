@@ -112,11 +112,12 @@ class TestsController extends Controller
 
             $bright_listings = $results -> toArray();
 
+            $MemberKeys = [];
             foreach($bright_listings as $listing) {
                 $MemberKeys[] = $listing['MemberKey'];
             }
 
-            $missing = array_diff($db_listings, $bright_listings);
+            $missing = array_diff($db_listings, $MemberKeys);
 
             dd($missing);
 
