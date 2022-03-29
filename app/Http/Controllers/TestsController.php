@@ -81,52 +81,44 @@ class TestsController extends Controller
 
         if($rets) {
 
-            $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
-            $db_listings = BrightListings::select('ListingKey')
-            -> whereIn('MlsStatus', $statuses)
-            -> where('updated_at', '<', date('Y-m-d'))
-            -> limit(5000)
-            -> pluck('ListingKey')
-            -> toArray();
+            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('100') -> pluck('ListingKey') -> toArray();
 
-            if(count($db_listings) > 0) {
+            $resource = "Property";
+            $class = "ALL";
 
-                BrightListings::whereIn('ListingKey', $db_listings)
-                -> update([
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
+            $query = 'ListingKey='.implode(',', $listings);
 
-                //$this -> queueProgress(10);
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => 'ListingKey, ModificationTimestamp'
+                ]
+            );
 
-                $resource = "Property";
-                $class = "ALL";
 
-                $query = 'ListingKey='.implode(',', $db_listings);
+            $listings = $results -> toArray();
+            //dd(count($listings));
+            //$this -> queueData(['Found:' => count($listings)], true);
 
-                $results = $rets -> Search(
-                    $resource,
-                    $class,
-                    $query,
-                    [
-                        'Select' => 'ListingKey'
-                    ]
-                );
+            $increment = 100 / count($listings);
+            $progress = 0;
+            foreach($listings as $listing) {
+                dump($listing['ModificationTimestamp']);
 
-                $bright_listings = $results -> toArray();
+                // BrightListings::find($listing['ListingKey'])
+                // -> update([
+                //     'ModificationTimestamp' => $listing['ModificationTimestamp']
+                // ]);
 
-                $ListingKeys = [];
-                foreach($bright_listings as $listing) {
-                    $ListingKeys[] = $listing['ListingKey'];
-                }
-
-                $missing = array_diff($db_listings, $ListingKeys);
-
-                BrightListings::whereIn('ListingKey', $missing)
-                -> update([
-                    'MlsStatus' => 'CANCELED'
-                ]);
+                $progress += $increment;
+                //$this -> queueProgress($progress);
 
             }
+
+            $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
+            //$this -> queueData(['Still Missing:' => $still_missing], true);
 
             //$this -> queueProgress(100);
 

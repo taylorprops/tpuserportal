@@ -67,10 +67,12 @@ class ListingsAddFieldsJob implements ShouldQueue
             $progress = 0;
             foreach($listings as $listing) {
 
-                BrightListings::find($listing['ListingKey'])
-                -> update([
-                    'ModificationTimestamp' => $listing['ModificationTimestamp']
-                ]);
+                if($listing['ModificationTimestamp'] != '') {
+                    BrightListings::find($listing['ListingKey'])
+                    -> update([
+                        'ModificationTimestamp' => $listing['ModificationTimestamp']
+                    ]);
+                }
 
                 $progress += $increment;
                 $this -> queueProgress($progress);
