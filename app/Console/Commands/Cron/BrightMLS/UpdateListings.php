@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Cron\BrightMLS;
 
 use Illuminate\Console\Command;
+use App\Jobs\Cron\BrightMLS\UpdateListingsJob;
 
 class UpdateListings extends Command
 {
