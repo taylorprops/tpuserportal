@@ -77,45 +77,50 @@ class TestsController extends Controller
 
     public function bright_add_listings(Request $request) {
 
-        ini_set('memory_limit', '-1');
-
-        $start = BrightListings::max('MLSListDate');
-        if(!$start) {
-            $start = '2018-01-01';
-        }
-        $end = date('Y-m-d', strtotime($start.' +3 day'));
-
         $rets = Helper::rets_login();
 
-        $resource = "Property";
-        $class = "ALL";
+        if($rets) {
 
-        $query = 'MLSListDate='.$start.'-'.$end;
+            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('1000') -> pluck('ListingKey') -> toArray();
 
-        $results = $rets -> Search(
-            $resource,
-            $class,
-            $query,
-            [
-                'Select' => 'Appliances, AssociationFee, AssociationFeeFrequency, AssociationYN, AttachedGarageYN, BasementFinishedPercent, BasementYN, BathroomsTotalInteger, BedroomsTotal, BuyerAgentEmail, BuyerAgentFirstName, BuyerAgentFullName, BuyerAgentLastName, BuyerAgentMlsId, BuyerAgentPreferredPhone, BuyerAgentTeamLeadAgentName, BuyerOfficeMlsId, BuyerOfficeName, BuyerTeamName, City, CloseDate, ClosePrice, CondoYN, Cooling, County, ElementarySchool, FireplaceYN, FullStreetAddress, GarageYN, Heating, HighSchool, Latitude, LeaseAmount, ListAgentEmail, ListAgentFirstName, ListAgentLastName, ListAgentMlsId, ListAgentPreferredPhone, ListAgentTeamLeadAgentName, ListingId, ListingKey, ListingSourceRecordKey, ListingTaxID, ListOfficeMlsId, ListOfficeName, ListPictureURL, ListPrice, ListTeamName, LivingArea, Longitude, LotSizeAcres, LotSizeSquareFeet, MajorChangeTimestamp, MiddleOrJuniorSchool, MLSListDate, MlsStatus, NewConstructionYN, Pool, PostalCode, PropertySubType, PropertyType, PublicRemarks, PurchaseContractDate, RealEstateOwnedYN, SaleType, ShortSale, StateOrProvince, StreetDirPrefix, StreetDirSuffix, StreetName, StreetNumber, StreetSuffix, StreetSuffixModifier, StructureDesignType, SubdivisionName, TotalPhotos, UnitBuildingType, UnitNumber, YearBuilt'
-            ]
-        );
+            $resource = "Property";
+            $class = "ALL";
 
-        $listings = $results -> toArray();
-        // echo count($listings);
-        foreach($listings as $listing) {
+            $query = 'ListingKey='.implode(',', $listings);
 
-            $data = [];
-            foreach($listing as $key => $value) {
-                if($value != '') {
-                    $data[$key] = $value;
-                }
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => 'ListingKey, ModificationTimestamp'
+                ]
+            );
+
+
+            $listings = $results -> toArray();
+            //dd(count($listings));
+           // $this -> queueData(['Found:' => count($listings)], true);
+
+            $increment = 100 / count($listings);
+            $progress = 0;
+            foreach($listings as $listing) {
+
+                BrightListings::find($listing['ListingKey'])
+                -> update([
+                    'ModificationTimestamp' => $listing['ModificationTimestamp']
+                ]);
+
+               // $progress += $increment;
+                //$this -> queueProgress($progress);
+
             }
 
-            BrightListings::firstOrCreate(
-                ['ListingKey' => $listing['ListingKey']],
-                $data
-            );
+            //$this -> queueProgress(100);
+
+            $rets -> Disconnect();
+
+            return BrightListings::whereNotNull('ModificationTimestamp') -> count();
 
         }
 
