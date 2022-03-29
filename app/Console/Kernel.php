@@ -51,6 +51,18 @@ class Kernel extends ConsoleKernel
         -> everyMinute()
         -> environments('production');
 
+        // update bright listings
+        $schedule -> command('bright_mls:update_listings')
+        -> timezone('America/New_York')
+        -> everyHour()
+        -> environments('production');
+
+        // cancel bright listings
+        $schedule -> command('bright_mls:cancel_listings')
+        -> timezone('America/New_York')
+        -> everyHour()
+        -> environments('production');
+
         // %%% TEMP %%% //
 
         // add bright fields

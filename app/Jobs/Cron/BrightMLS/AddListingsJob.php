@@ -66,7 +66,7 @@ class AddListingsJob implements ShouldQueue
 
 
         $end = $dates -> start_date;
-        $start = date('Y-m-d', strtotime($end.' -10 day'));
+        $start = date('Y-m-d', strtotime($end.' -7 day'));
 
         $this -> queueData([
             'Start:' => $start,
