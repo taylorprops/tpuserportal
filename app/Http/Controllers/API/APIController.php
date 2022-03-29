@@ -168,9 +168,7 @@ class APIController extends Controller
                 -> orWhere('company_name_short', $lender_short)
                 -> get();
 
-                if (count($lender_search) == 1) {
-                    $lender_uuid = $lender_search -> first() -> uuid;
-                }
+                $lender_uuid = $lender_search -> last() -> uuid;
             }
 
             $status = 'updated';
