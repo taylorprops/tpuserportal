@@ -42,7 +42,7 @@ class ListingsAddFieldsJob implements ShouldQueue
 
         if($rets) {
 
-            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('10000') -> pluck('ListingKey') -> toArray();
+            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('5000') -> pluck('ListingKey') -> toArray();
 
             $resource = "Property";
             $class = "ALL";
