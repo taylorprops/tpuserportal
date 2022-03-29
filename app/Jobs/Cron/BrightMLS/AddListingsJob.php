@@ -122,7 +122,7 @@ class AddListingsJob implements ShouldQueue
             $rets -> Disconnect();
 
 
-            $dates -> start_date = $end;
+            $dates -> start_date = $start;
             $dates -> save();
 
             return true;
