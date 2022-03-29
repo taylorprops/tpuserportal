@@ -12,7 +12,7 @@ class ListingsAddFields extends Command
      *
      * @var string
      */
-    protected $signature = 'bright_mls:add_missing_fields';
+    protected $signature = 'bright_mls:add_fields';
 
     /**
      * The console command description.
