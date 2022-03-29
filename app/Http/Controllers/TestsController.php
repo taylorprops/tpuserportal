@@ -81,37 +81,46 @@ class TestsController extends Controller
 
         if($rets) {
 
-            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('1000') -> pluck('ListingKey') -> toArray();
-
             $resource = "Property";
             $class = "ALL";
 
-            $query = 'ListingKey='.implode(',', $listings);
+            $start = date('Y-m-d H:i:s', strtotime('-1 hour'));
+            $start = str_replace(' ', 'T', $start);
+
+            $query = 'ModificationTimestamp='.$start.'+';
 
             $results = $rets -> Search(
                 $resource,
                 $class,
                 $query,
                 [
-                    'Select' => 'ListingKey, ModificationTimestamp'
+                    'Select' => config('global.bright_listings_columns')
                 ]
             );
 
 
             $listings = $results -> toArray();
             //dd(count($listings));
-           // $this -> queueData(['Found:' => count($listings)], true);
+            //$this -> queueData(['Found:' => count($listings)], true);
 
             $increment = 100 / count($listings);
             $progress = 0;
             foreach($listings as $listing) {
 
-                BrightListings::find($listing['ListingKey'])
-                -> update([
-                    'ModificationTimestamp' => $listing['ModificationTimestamp']
-                ]);
+                $data = [];
+                foreach($listing as $key => $value) {
+                    if($value != '') {
+                        $data[$key] = $value;
+                    }
+                }
 
-               // $progress += $increment;
+                BrightListings::firstOrCreate(
+                    ['ListingKey' => $listing['ListingKey']],
+                    $data
+                );
+                dump($data);
+
+                $progress += $increment;
                 //$this -> queueProgress($progress);
 
             }
@@ -120,7 +129,7 @@ class TestsController extends Controller
 
             $rets -> Disconnect();
 
-            return BrightListings::whereNotNull('ModificationTimestamp') -> count();
+            return true;
 
         }
 

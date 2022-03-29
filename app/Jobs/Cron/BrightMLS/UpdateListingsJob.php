@@ -43,7 +43,10 @@ class UpdateListingsJob implements ShouldQueue
             $resource = "Property";
             $class = "ALL";
 
-            $query = 'MLSListDate='.$start.'-'.$end;
+            $start = date('Y-m-d H:i:s', strtotime('-1 hour'));
+            $start = str_replace(' ', 'T', $start);
+
+            $query = 'ModificationTimestamp='.$start.'+';
 
             $results = $rets -> Search(
                 $resource,
@@ -84,9 +87,6 @@ class UpdateListingsJob implements ShouldQueue
 
             $rets -> Disconnect();
 
-
-            $dates -> start_date = $start;
-            $dates -> save();
 
             return true;
 
