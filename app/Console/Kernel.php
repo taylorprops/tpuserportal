@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         -> environments(['production']);
 
         // prune failed jobs
-        $schedule -> command('php artisan queue:prune-failed')
+        $schedule -> command('queue:prune-failed')
         -> timezone('America/New_York')
         -> everyTwoHours();
 
@@ -54,7 +54,7 @@ class Kernel extends ConsoleKernel
         // update bright listings
         $schedule -> command('bright_mls:update_listings')
         -> timezone('America/New_York')
-        -> everyHour()
+        -> hourly()
         -> environments('production');
 
         // cancel bright listings
