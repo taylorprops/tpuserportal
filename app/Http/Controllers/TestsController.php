@@ -89,42 +89,44 @@ class TestsController extends Controller
             -> pluck('ListingKey')
             -> toArray();
 
-            BrightListings::whereIn('ListingKey', $db_listings)
-            -> update([
-                'updated_at' => date('Y-m-d H:i:s')
-            ]);
+            if(count($db_listings) > 0) {
 
-            //$this -> queueProgress(10);
+                BrightListings::whereIn('ListingKey', $db_listings)
+                -> update([
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
 
-            $resource = "Property";
-            $class = "ALL";
+                //$this -> queueProgress(10);
 
-            $query = 'ListingKey='.implode(',', $db_listings);
+                $resource = "Property";
+                $class = "ALL";
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Select' => 'ListingKey'
-                ]
-            );
+                $query = 'ListingKey='.implode(',', $db_listings);
 
-            $bright_listings = $results -> toArray();
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => 'ListingKey'
+                    ]
+                );
 
-            $MemberKeys = [];
-            foreach($bright_listings as $listing) {
-                $MemberKeys[] = $listing['MemberKey'];
+                $bright_listings = $results -> toArray();
+
+                $ListingKeys = [];
+                foreach($bright_listings as $listing) {
+                    $ListingKeys[] = $listing['ListingKey'];
+                }
+
+                $missing = array_diff($db_listings, $ListingKeys);
+
+                BrightListings::whereIn('ListingKey', $missing)
+                -> update([
+                    'MlsStatus' => 'CANCELED'
+                ]);
+
             }
-
-            $missing = array_diff($db_listings, $MemberKeys);
-
-            dd($missing);
-
-            BrightListings::whereIn('ListingKey', $missing)
-            -> update([
-                'MlsStatus' => 'CANCELED'
-            ]);
 
             //$this -> queueProgress(100);
 
