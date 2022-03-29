@@ -80,48 +80,41 @@ class TestsController extends Controller
         $rets = Helper::rets_login();
 
         if($rets) {
+            $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
+            $listings = BrightListings::select('ListingKey')
+            -> whereIn('MlsStatus', $statuses)
+            -> where('updated_at', '<', date('Y-m-d'))
+            -> limit(5000)
+            -> pluck('ListingKey')
+            -> toArray();
+
+            BrightListings::whereIn('ListingKey', $listings)
+            -> update([
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
             $resource = "Property";
             $class = "ALL";
 
-            $start = date('Y-m-d H:i:s', strtotime('-1 hour'));
-            $start = str_replace(' ', 'T', $start);
-
-            $query = 'ModificationTimestamp='.$start.'+';
+            $query = 'ListingKey='.implode(',', $listings);
 
             $results = $rets -> Search(
                 $resource,
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns')
+                    'Select' => 'ListingKey'
                 ]
             );
 
-
             $listings = $results -> toArray();
-            //dd(count($listings));
-            //$this -> queueData(['Found:' => count($listings)], true);
 
-            $increment = 100 / count($listings);
-            $progress = 0;
             foreach($listings as $listing) {
 
-                $data = [];
-                foreach($listing as $key => $value) {
-                    if($value != '') {
-                        $data[$key] = $value;
-                    }
-                }
-
-                BrightListings::firstOrCreate(
-                    ['ListingKey' => $listing['ListingKey']],
-                    $data
-                );
-                dump($data);
-
-                $progress += $increment;
-                //$this -> queueProgress($progress);
+                BrightListings::find($listing['ListingKey'])
+                -> update([
+                    'MlsStatus' => 'CANCELED'
+                ]);
 
             }
 

@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
         // cancel bright listings
         $schedule -> command('bright_mls:cancel_listings')
         -> timezone('America/New_York')
-        -> everyHour()
+        -> everyFiveMinutes()
         -> environments('production');
 
         // %%% TEMP %%% //
