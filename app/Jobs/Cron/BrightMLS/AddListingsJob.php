@@ -68,68 +68,72 @@ class AddListingsJob implements ShouldQueue
         $end = $dates -> start_date;
         $start = date('Y-m-d', strtotime($end.' -1 day'));
 
-        $this -> queueData([
-            'Start:' => $start,
-            'End:' => $end
-        ], true);
+        if($start > '2008-01-01') {
 
-        $rets = Helper::rets_login();
+            $this -> queueData([
+                'Start:' => $start,
+                'End:' => $end
+            ], true);
 
-        if($rets) {
+            $rets = Helper::rets_login();
 
-            $resource = "Property";
-            $class = "ALL";
+            if($rets) {
 
-            $query = 'MLSListDate='.$start.'-'.$end;
+                $resource = "Property";
+                $class = "ALL";
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Select' => config('global.bright_listings_columns')
-                ]
-            );
+                $query = 'MLSListDate='.$start.'-'.$end;
 
-
-            $listings = $results -> toArray();
-            // echo count($listings);
-            $this -> queueData(['Found:' => count($listings)], true);
-
-            $increment = 100 / count($listings);
-            $progress = 0;
-            foreach($listings as $listing) {
-
-                $data = [];
-                foreach($listing as $key => $value) {
-                    if($value != '') {
-                        $data[$key] = $value;
-                    }
-                }
-
-                BrightListings::firstOrCreate(
-                    ['ListingKey' => $listing['ListingKey']],
-                    $data
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => config('global.bright_listings_columns')
+                    ]
                 );
 
-                $progress += $increment;
-                $this -> queueProgress($progress);
+
+                $listings = $results -> toArray();
+                // echo count($listings);
+                $this -> queueData(['Found:' => count($listings)], true);
+
+                $increment = 100 / count($listings);
+                $progress = 0;
+                foreach($listings as $listing) {
+
+                    $data = [];
+                    foreach($listing as $key => $value) {
+                        if($value != '') {
+                            $data[$key] = $value;
+                        }
+                    }
+
+                    BrightListings::firstOrCreate(
+                        ['ListingKey' => $listing['ListingKey']],
+                        $data
+                    );
+
+                    $progress += $increment;
+                    $this -> queueProgress($progress);
+
+                }
+
+                $this -> queueProgress(100);
+
+                $rets -> Disconnect();
+
+                $dates -> start_date = $start;
+                $dates -> save();
+
+                return true;
 
             }
 
-            $this -> queueProgress(100);
+            if($rets) {
+                $rets -> Disconnect();
+            }
 
-            $rets -> Disconnect();
-
-            $dates -> start_date = $start;
-            $dates -> save();
-
-            return true;
-
-        }
-
-        if($rets) {
-            $rets -> Disconnect();
         }
 
         return response() -> json(['failed' => 'login failed']);
