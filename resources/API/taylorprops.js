@@ -32,8 +32,8 @@ window.addEventListener('load', function() {
 
 function send_lead_to_zoho() {
 
-    // let url = 'https://tpuserportal.com';
-    let url = 'https://46d2-71-121-147-194.ngrok.io';
+    let url = 'https://tpuserportal.com';
+    // let url = 'https://46d2-71-121-147-194.ngrok.io';
 
     let utm_source = get_url_parameters('utm_source');
     let utm_medium = get_url_parameters('utm_medium');

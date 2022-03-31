@@ -761,8 +761,8 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            // $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
-            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
+            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
             An agent just clicked on a link in an email for more information. This is the second contact from the agent.<br><br>
@@ -792,20 +792,11 @@ class APIController extends Controller
 
     }
 
-
     /* from heritagefinancial.com */
     public function add_email_clicker_mortgage(Request $request) {
 
-        /* round robin
-            title
-                Gabby, Kristin, Kyle
-            Real estate
-                Gabby, Nikki
-            mortgage
-                Kyle
-        */
 
-        // http://heritagefinancial-dev/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
+        // http://heritagefinancial.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');
 
@@ -820,8 +811,7 @@ class APIController extends Controller
         // zoho fields
         $category = 'Mortgage';
         $lead_status = 'New';
-        // $owner = '5119653000000396016'; // Kyle
-        // $lead_source = 'Email Clickers';
+        $owner = '5119653000000396016'; // Kyle
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
@@ -865,7 +855,7 @@ class APIController extends Controller
                                 'Phone' => $loan_officer -> phone,
                                 'Category' => $category,
                                 'Lead_Status' => $lead_status,
-                                // 'Owner' => $owner,
+                                'Owner' => $owner,
                                 'Lead_Source' => $lead_source,
                                 'Lead_Medium' => $lead_medium,
                                 'Lead_Campaign' => $lead_campaign,
@@ -922,8 +912,8 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            // $to = ['email' => config('global.recruiting_email_mortgage_to_email'), 'name' => config('global.recruiting_email_mortgage_to_name')];
-            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            $to = ['email' => config('global.recruiting_email_mortgage_to_email'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
             A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
@@ -972,8 +962,6 @@ class APIController extends Controller
         // zoho fields
         $category = 'Title';
         $lead_status = 'New';
-        // $owner = '5119653000000396016'; // Kyle
-        // $lead_source = 'Email Clickers';
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
@@ -1073,8 +1061,8 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            // $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
-            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
+            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
             An Agent just clicked on a link in an email for more information. This is the second contact from the Agent.<br><br>
@@ -1086,7 +1074,7 @@ class APIController extends Controller
 
             $message = [
                 'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert! Second Contact from an Agent',
+                'subject' => 'Marketing Alert! Second Contact from an Agent',
                 'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
                 'attachments' => null
