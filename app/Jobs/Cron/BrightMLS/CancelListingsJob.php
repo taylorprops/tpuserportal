@@ -90,7 +90,7 @@ class CancelListingsJob implements ShouldQueue
 
                 $missing = array_diff($db_listings, $ListingKeys);
 
-                $this -> queueData(['Found' => $missing], true);
+                $this -> queueData(['Found - '.count($missing) => $missing], true);
 
                 BrightListings::whereIn('ListingKey', $missing)
                 -> update([
