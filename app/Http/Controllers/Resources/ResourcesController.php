@@ -72,7 +72,7 @@ class ResourcesController extends Controller
         $dir2 = str_replace('/public', '', $_SERVER['DOCUMENT_ROOT']).'resources/views';
         exec('grep -rl "'.$find.'" '.$dir1, $results);
         exec('grep -rl "'.$find.'" '.$dir2, $results2);
-        if(count($results) > 0) {
+        if(count($results) > 0 || count($results2) > 0) {
             return response([
                 'status' => 'error',
                 'results' => $results,
