@@ -40,9 +40,9 @@ class CancelListingsJob implements ShouldQueue
 
         $rets = Helper::rets_login();
 
-        $this -> queueData(['working'], true);
-
         if($rets) {
+
+            $this -> queueData(['Logged into Rets'], true);
 
             $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
             $db_listings = BrightListings::select('ListingKey')
