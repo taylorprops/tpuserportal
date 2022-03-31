@@ -81,7 +81,7 @@ class TestsController extends Controller
 
         if($rets) {
 
-            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> limit('100') -> pluck('ListingKey') -> toArray();
+            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> orderBy('MlsListDate', 'DESC') -> limit('5000') -> pluck('ListingKey') -> toArray();
 
             $resource = "Property";
             $class = "ALL";
@@ -99,28 +99,29 @@ class TestsController extends Controller
 
 
             $listings = $results -> toArray();
-            //dd(count($listings));
-            //$this -> queueData(['Found:' => count($listings)], true);
+            dd(count($listings));
+            // $this -> queueData(['Found:' => count($listings)], true);
 
             $increment = 100 / count($listings);
             $progress = 0;
-            foreach($listings as $listing) {
-                dump($listing['ModificationTimestamp']);
+            /* foreach($listings as $listing) {
 
-                // BrightListings::find($listing['ListingKey'])
-                // -> update([
-                //     'ModificationTimestamp' => $listing['ModificationTimestamp']
-                // ]);
+                if($listing['ModificationTimestamp'] != '') {
+                    BrightListings::find($listing['ListingKey'])
+                    -> update([
+                        'ModificationTimestamp' => $listing['ModificationTimestamp']
+                    ]);
+                }
 
                 $progress += $increment;
-                //$this -> queueProgress($progress);
+                // $this -> queueProgress($progress);
 
-            }
+            } */
 
-            $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
-            //$this -> queueData(['Still Missing:' => $still_missing], true);
+            // $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
+            // $this -> queueData(['Still Missing:' => $still_missing], true);
 
-            //$this -> queueProgress(100);
+           //  $this -> queueProgress(100);
 
             $rets -> Disconnect();
 
