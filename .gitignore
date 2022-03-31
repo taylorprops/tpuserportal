@@ -15,4 +15,5 @@ _notes
 .editorconfig
 /storage/app/public/*
 /storage/logs
+_tests/*
 

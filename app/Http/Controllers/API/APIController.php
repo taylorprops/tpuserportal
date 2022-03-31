@@ -608,8 +608,8 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => config('global.recruiting_email_to_email'), 'name' => config('global.recruiting_email_to_name')];
-        $cc = ['email' => config('global.recruiting_email_cc_email'), 'name' => config('global.recruiting_email_cc_name')];
+        $to = ['email' => config('global.recruiting_email_to_email')];
+        $cc = ['email' => config('global.recruiting_email_cc_email')];
         // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
         // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
@@ -759,9 +759,9 @@ class APIController extends Controller
             $this -> add_notes($lead_id, $notes);
 
 
-            // Send email notification to Kyle
+            // Send email notification
 
-            $to = ['email' => config('global.recruiting_email_real_estate_to_email'), 'name' => config('global.recruiting_email_real_estate_to_name')];
+            $to = ['email' => config('global.recruiting_email_real_estate_to_email')];
             // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '

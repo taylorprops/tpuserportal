@@ -11,12 +11,19 @@
                 <th scope="col">@sortablelink('config_key', 'Key')</th>
                 <th scope="col">Value</th>
                 <th scope="col">@sortablelink('config_type', 'Type')</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach($configs as $config)
                 <tr>
-                    <td>{{ $config -> config_key }}</td>
+                    <td>
+                        <input class="form-element input md config-input config-value w-full"
+                        rows="3"
+                        data-id="{{ $config -> id }}"
+                        data-field="config_key"
+                        value="{{ $config -> config_key }}">
+                    </td>
                     <td>
                         <textarea class="form-element textarea md config-input config-value w-full"
                         rows="{{ (strlen($config -> config_value) / 110) }}"
@@ -41,7 +48,11 @@
                             <option value="string" {{ $string }}>String</option>
                             <option value="array" {{ $array }}>Array</option>
                         </select>
-                        {{ $config -> config_type }}</td>
+                        {{ $config -> config_type }}
+                    </td>
+                    <td>
+                        <button type="button" class="button danger md no-text" @click="config_delete({{ $config -> id }}, $el)"><i class="fa-light fa-times"></i></button>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

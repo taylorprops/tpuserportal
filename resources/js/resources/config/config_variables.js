@@ -47,7 +47,25 @@ if(document.URL.match(/config_variables/)) {
 
                 });
 
-            }
+            },
+
+            config_delete(id, ele) {
+                let formData = new FormData();
+                formData.append('id', id);
+                axios.post('/resources/config/config_delete', formData)
+                .then(function (response) {
+                    if(response.data.status === 'success') {
+                        toastr.success('Config deleted');
+                        ele.closest('tr').remove();
+                    } else {
+                        toastr.error('Not deleted!!');
+                        console.log(response.data.results);
+                    }
+                })
+                .catch(function (error) {
+
+                });
+            },
 
         }
 

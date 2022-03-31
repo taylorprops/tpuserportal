@@ -107,6 +107,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/resources/config/get_config_variables', [ResourcesController::class, 'get_config_variables']) -> middleware(['in_house']);
     Route::post('/resources/config/config_edit', [ResourcesController::class, 'config_edit']) -> middleware(['in_house']);
     Route::post('/resources/config/config_add', [ResourcesController::class, 'config_add']) -> middleware(['in_house']);
+    Route::post('/resources/config/config_delete', [ResourcesController::class, 'config_delete']) -> middleware(['in_house']);
 
     // %%%% archives - import data for records
     Route::get('/archives/get_transactions', [SkySlopeController::class, 'get_transactions']) -> middleware(['in_house']);

@@ -9927,6 +9927,19 @@ if (document.URL.match(/config_variables/)) {
         axios.post('/resources/config/config_edit', formData).then(function (response) {
           toastr.success('Config updated');
         })["catch"](function (error) {});
+      },
+      config_delete: function config_delete(id, ele) {
+        var formData = new FormData();
+        formData.append('id', id);
+        axios.post('/resources/config/config_delete', formData).then(function (response) {
+          if (response.data.status === 'success') {
+            toastr.success('Config deleted');
+            ele.closest('tr').remove();
+          } else {
+            toastr.error('Not deleted!!');
+            console.log(response.data.results);
+          }
+        })["catch"](function (error) {});
       }
     };
   };
