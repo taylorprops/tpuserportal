@@ -4,8 +4,8 @@ namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
 use Illuminate\Bus\Queueable;
-use App\Models\Temp\AddListings;
 use App\Mail\General\EmailGeneral;
+use App\Models\Temp\DatabaseDates;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
@@ -41,7 +41,7 @@ class AddListingsJob implements ShouldQueue
 
         ini_set('memory_limit', '-1');
 
-        $dates = AddListings::where('job', 'add_listings') -> first();
+        $dates = DatabaseDates::where('job', 'add_listings') -> first();
         // $start = $dates -> start_date;
 
 
@@ -66,7 +66,7 @@ class AddListingsJob implements ShouldQueue
 
 
         $end = $dates -> start_date;
-        $start = date('Y-m-d', strtotime($end.' -7 day'));
+        $start = date('Y-m-d', strtotime($end.' -1 day'));
 
         $this -> queueData([
             'Start:' => $start,
@@ -121,12 +121,15 @@ class AddListingsJob implements ShouldQueue
 
             $rets -> Disconnect();
 
-
             $dates -> start_date = $start;
             $dates -> save();
 
             return true;
 
+        }
+
+        if($rets) {
+            $rets -> Disconnect();
         }
 
         return response() -> json(['failed' => 'login failed']);
