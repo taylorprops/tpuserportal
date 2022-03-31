@@ -12,10 +12,10 @@ class AuthNet
     public static function authenticate()
     {
         if (config('app.env') == 'production') {
-            $login = config('global.authnet_login');
+            $login = config('global.authnet_loginxxx');
             $key = config('global.authnet_transkey');
         } else {
-            $login = config('global.authnet_login_sandbox');
+            $login = config('global.authnet_loginxxx_sandbox');
             $key = config('global.authnet_transkey_sandbox');
         }
 
