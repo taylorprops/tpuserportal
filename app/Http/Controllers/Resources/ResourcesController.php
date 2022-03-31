@@ -95,7 +95,7 @@ class ResourcesController extends Controller
         $dir2 = str_replace('/public', '', $_SERVER['DOCUMENT_ROOT']).'resources/views';
         exec('grep -rl "'.$find.'" '.$dir1.' | xargs sed -i s/'.$find.'/'.$replace.'/g');
         exec('grep -rl "'.$find.'" '.$dir2.' | xargs sed -i s/'.$find.'/'.$replace.'/g');
-        exec('cd '.str_replace('/public', '', $_SERVER['DOCUMENT_ROOT']).' && git add . && git commit -m "push from production - updated config variables"" && git push origin main');
+        // exec('cd '.str_replace('/public', '', $_SERVER['DOCUMENT_ROOT']).' && git add . && git commit -m "push from production - updated config variables"" && git push origin main');
 
     }
 }
