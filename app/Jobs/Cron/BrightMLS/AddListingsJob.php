@@ -98,41 +98,42 @@ class AddListingsJob implements ShouldQueue
                 // echo count($listings);
                 $this -> queueData(['Found:' => count($listings)], true);
 
-                $increment = 100 / count($listings);
-                $progress = 0;
-                foreach($listings as $listing) {
+                if(count($listings) > 0) {
 
-                    $data = [];
-                    foreach($listing as $key => $value) {
-                        if($value != '') {
-                            $data[$key] = $value;
+                    $increment = 100 / count($listings);
+                    $progress = 0;
+                    foreach($listings as $listing) {
+
+                        $data = [];
+                        foreach($listing as $key => $value) {
+                            if($value != '') {
+                                $data[$key] = $value;
+                            }
                         }
+
+                        BrightListings::firstOrCreate(
+                            ['ListingKey' => $listing['ListingKey']],
+                            $data
+                        );
+
+                        $progress += $increment;
+                        $this -> queueProgress($progress);
+
                     }
 
-                    BrightListings::firstOrCreate(
-                        ['ListingKey' => $listing['ListingKey']],
-                        $data
-                    );
+                    $this -> queueProgress(100);
 
-                    $progress += $increment;
-                    $this -> queueProgress($progress);
+                    $dates -> start_date = $start;
+                    $dates -> save();
 
                 }
 
-                $this -> queueProgress(100);
-
                 $rets -> Disconnect();
-
-                $dates -> start_date = $start;
-                $dates -> save();
 
                 return true;
 
             }
 
-            if($rets) {
-                $rets -> Disconnect();
-            }
 
         }
 

@@ -50,6 +50,8 @@ class CancelListingsJob implements ShouldQueue
             -> pluck('ListingKey')
             -> toArray();
 
+            $this -> queueData(['DB Listings' => count($db_listings)], true);
+
             if(count($db_listings) > 0) {
 
                 BrightListings::whereIn('ListingKey', $db_listings)
