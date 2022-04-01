@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\BrightMLS\CompanyBrightOffices;
 use App\Models\Config\Config;
-use App\Models\HeritageFinancial\Loans;
-use App\Observers\HeritageFinancial\LoansObserver;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
+use App\Models\BrightMLS\CompanyBrightOffices;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,15 +37,15 @@ class AppServiceProvider extends ServiceProvider
             'global' => Config::all([
                 'config_key', 'config_value', 'value_type',
             ])
-            ->keyBy('config_key')
-            ->transform(function ($setting) {
-                if ($setting->value_type == 'array') {
-                    return explode(',', $setting->config_value);
+            -> keyBy('config_key')
+            -> transform(function ($setting) {
+                if ($setting -> value_type == 'array') {
+                    return explode(',', $setting -> config_value);
                 }
 
-                return $setting->config_value;
+                return $setting -> config_value;
             })
-            ->toArray(),
+            -> toArray(),
         ]);
 
         // custom configs / from tables other than config
@@ -52,14 +53,19 @@ class AppServiceProvider extends ServiceProvider
             'bright_office_codes' => CompanyBrightOffices::all([
                 'bright_office_code',
             ])
-            ->transform(function ($setting) {
-                if (stristr($setting->bright_office_code, ',')) {
-                    return explode(',', $setting->bright_office_code);
+            -> transform(function ($setting) {
+                if (stristr($setting -> bright_office_code, ',')) {
+                    return explode(',', $setting -> bright_office_code);
                 }
 
-                return $setting->bright_office_code;
+                return $setting -> bright_office_code;
             })
-            ->toArray(),
+            -> toArray(),
         ]);
+
+        Queue::failing(function (JobFailed $event) {
+            Artisan::command('queue:restart');
+        });
+
     }
 }
