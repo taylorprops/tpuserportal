@@ -44,50 +44,54 @@ class ListingsAddFieldsJob implements ShouldQueue
 
             $listing_keys = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> orderBy('MlsListDate', 'DESC') -> limit('5000') -> pluck('ListingKey') -> toArray();
 
-            $resource = "Property";
-            $class = "ALL";
+            if(count($listing_keys) > 0) {
 
-            $query = 'ListingKey='.implode(',', $listing_keys);
+                $resource = "Property";
+                $class = "ALL";
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Select' => 'ListingKey, ModificationTimestamp'
-                ]
-            );
+                $query = 'ListingKey='.implode(',', $listing_keys);
+
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => 'ListingKey, ModificationTimestamp'
+                    ]
+                );
 
 
-            $listings = $results -> toArray();
-            //dd(count($listings));
-            $this -> queueData(['Found:' => count($listings)], true);
+                $listings = $results -> toArray();
+                //dd(count($listings));
+                $this -> queueData(['Found:' => count($listings)], true);
 
-            $increment = 100 / count($listings);
-            $progress = 0;
-            $listings_found = [];
-            foreach($listings as $listing) {
-                $listings_found[] = $listing['ListingKey'];
-                if($listing['ModificationTimestamp'] != '') {
-                    BrightListings::find($listing['ListingKey'])
-                    -> update([
-                        'ModificationTimestamp' => $listing['ModificationTimestamp']
-                    ]);
+                $increment = 100 / count($listings);
+                $progress = 0;
+                $listings_found = [];
+                foreach($listings as $listing) {
+                    $listings_found[] = $listing['ListingKey'];
+                    if($listing['ModificationTimestamp'] != '') {
+                        BrightListings::find($listing['ListingKey'])
+                        -> update([
+                            'ModificationTimestamp' => $listing['ModificationTimestamp']
+                        ]);
+                    }
+
+                    $progress += $increment;
+                    $this -> queueProgress($progress);
+
                 }
 
-                $progress += $increment;
-                $this -> queueProgress($progress);
+                $missing = array_diff($listing_keys, $listings_found);
+                $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
+                $this -> queueData(['Still Missing:' => $still_missing], true);
+                $this -> queueData(['Missing:' => $missing], true);
+
+                $this -> queueProgress(100);
+
+                $rets -> Disconnect();
 
             }
-
-            $missing = array_diff($listing_keys, $listings_found);
-            $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
-            $this -> queueData(['Still Missing:' => $still_missing], true);
-            $this -> queueData(['Missing:' => $missing], true);
-
-            $this -> queueProgress(100);
-
-            $rets -> Disconnect();
 
             return true;
 
