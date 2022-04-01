@@ -94,7 +94,8 @@ class CancelListingsJob implements ShouldQueue
 
                 BrightListings::whereIn('ListingKey', $missing)
                 -> update([
-                    'MlsStatus' => 'CANCELED'
+                    'MlsStatus' => 'CANCELED',
+                    'ModificationTimestamp' => date('Y-m-d H:i:s')
                 ]);
 
                 $this -> queueProgress(90);
