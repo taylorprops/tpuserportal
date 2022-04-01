@@ -235,7 +235,7 @@ if(document.URL.match(/view_loan/)) {
                             </tr>';
 
                         } else if(paid_to_value == 'Company' && description.value == 'Processing Fee') {
-                            document.querySelector('.processing-fee').innerHTML = amount.value;
+                            document.querySelector('.processing-fee').innerHTML = '$'+amount.value;
                         }
 
                     });
