@@ -234,7 +234,7 @@ if(document.URL.match(/view_loan/)) {
                                 <td>'+description.value+'</td> \
                             </tr>';
 
-                        } else if(paid_to_value == 'Company' || description.value == 'Processing Fee') {
+                        } else if(paid_to_value == 'Company' && description.value == 'Processing Fee') {
                             document.querySelector('.processing-fee').innerHTML = amount.value;
                         }
 
