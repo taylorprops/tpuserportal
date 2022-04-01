@@ -42,12 +42,12 @@ class ListingsAddFieldsJob implements ShouldQueue
 
         if($rets) {
 
-            $listings = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> orderBy('MlsListDate', 'DESC') -> limit('5000') -> pluck('ListingKey') -> toArray();
+            $listing_keys = BrightListings::select('ListingKey') -> whereNull('ModificationTimestamp') -> orderBy('MlsListDate', 'DESC') -> limit('5000') -> pluck('ListingKey') -> toArray();
 
             $resource = "Property";
             $class = "ALL";
 
-            $query = 'ListingKey='.implode(',', $listings);
+            $query = 'ListingKey='.implode(',', $listing_keys);
 
             $results = $rets -> Search(
                 $resource,
@@ -65,8 +65,9 @@ class ListingsAddFieldsJob implements ShouldQueue
 
             $increment = 100 / count($listings);
             $progress = 0;
+            $listings_found = [];
             foreach($listings as $listing) {
-
+                $listings_found[] = $listing['ListingKey'];
                 if($listing['ModificationTimestamp'] != '') {
                     BrightListings::find($listing['ListingKey'])
                     -> update([
@@ -79,8 +80,10 @@ class ListingsAddFieldsJob implements ShouldQueue
 
             }
 
+            $missing = array_diff($listing_keys, $listings_found);
             $still_missing = BrightListings::whereNull('ModificationTimestamp') -> count();
             $this -> queueData(['Still Missing:' => $still_missing], true);
+            $this -> queueData(['Missing:' => $missing], true);
 
             $this -> queueProgress(100);
 

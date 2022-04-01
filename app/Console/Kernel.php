@@ -63,11 +63,7 @@ class Kernel extends ConsoleKernel
         -> everyFiveMinutes()
         -> environments('production');
 
-        // restart queue
-        // $schedule -> command('sudo supervisorctl stop "laravel-worker:*" && sudo supervisorctl start "laravel-worker:*" && cd /var/www/tpuserportal.com && php artisan queue:restart')
-        // -> timezone('America/New_York')
-        // -> everyHour()
-        // -> environments('production');
+
 
         // %%% TEMP %%% //
 
