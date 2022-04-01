@@ -79,7 +79,7 @@ class TestsController extends Controller
 
         $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
 
-        $start = date('Y-m-d H:i:s', strtotime('$max_mod_timestamp -1 hour'));
+        $start = date("Y-m-d H:i:s", strtotime("$max_mod_timestamp -1 hour"));
         dump($start);
         $start = str_replace(' ', 'T', $start);
         dump($start);
