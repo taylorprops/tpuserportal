@@ -93,6 +93,9 @@ class ListingsAddFieldsJob implements ShouldQueue
 
             }
 
+            $rets -> Disconnect();
+            $this -> queueData(['Process Complete:' => 'No more to update'], true);
+
             return true;
 
         }
