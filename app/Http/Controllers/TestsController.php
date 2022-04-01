@@ -77,78 +77,13 @@ class TestsController extends Controller
 
     public function bright_add_listings(Request $request) {
 
-        $rets = Helper::rets_login();
+        $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
 
-        if($rets) {
-
-            //$this -> queueData(['Status' => 'Logged into Rets'], true);
-
-            $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
-            $db_listings = BrightListings::select('ListingKey')
-            -> whereIn('MlsStatus', $statuses)
-            -> where('updated_at', '<', date('Y-m-d 00:00:01'))
-            -> limit(5000)
-            -> pluck('ListingKey')
-            -> toArray();
-
-            dd(count($db_listings));
-
-            //$this -> queueData(['DB Listings' => count($db_listings)], true);
-
-            if(count($db_listings) > 0) {
-
-                BrightListings::whereIn('ListingKey', $db_listings)
-                -> update([
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
-
-                $this -> queueProgress(10);
-
-                $resource = "Property";
-                $class = "ALL";
-
-                $query = 'ListingKey='.implode(',', $db_listings);
-
-                $results = $rets -> Search(
-                    $resource,
-                    $class,
-                    $query,
-                    [
-                        'Select' => 'ListingKey'
-                    ]
-                );
-
-                $this -> queueProgress(50);
-
-                $bright_listings = $results -> toArray();
-
-                $ListingKeys = [];
-                foreach($bright_listings as $listing) {
-                    $ListingKeys[] = $listing['ListingKey'];
-                }
-
-                $this -> queueProgress(70);
-
-                $missing = array_diff($db_listings, $ListingKeys);
-
-                $this -> queueData(['Found' => count($missing)], true);
-
-                BrightListings::whereIn('ListingKey', $missing)
-                -> update([
-                    'MlsStatus' => 'CANCELED'
-                ]);
-
-                $this -> queueProgress(90);
-
-            }
-
-            $this -> queueProgress(100);
-
-            $rets -> Disconnect();
-
-            return true;
-
-        }
+            $max_mod_timestamp = str_replace(' ', 'T', $max_mod_timestamp);
+            $start = date('Y-m-d H:i:s', strtotime('$max_mod_timestamp -1 hour'));
+            dump($start);
+            $start = str_replace(' ', 'T', $start);
+            dump($start);
 
     }
 
