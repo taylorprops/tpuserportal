@@ -45,8 +45,12 @@ class UpdateListingsJob implements ShouldQueue
             $resource = "Property";
             $class = "ALL";
 
-            $start = date('Y-m-d H:i:s', strtotime('-24 hour'));
+            $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
+
+            $start = date('Y-m-d H:i:s', strtotime('$max_mod_timestamp -1 hour'));
+            $this -> queueData(['start:' => $start], true);
             $start = str_replace(' ', 'T', $start);
+            $this -> queueData(['start:' => $start], true);
 
             $query = 'ModificationTimestamp='.$start.'+';
 
