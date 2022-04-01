@@ -47,7 +47,7 @@ class UpdateListingsJob implements ShouldQueue
 
             $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
 
-            $start = date("Y-m-d H:i:s", strtotime("$max_mod_timestamp -8 hour"));
+            $start = date("Y-m-d H:i:s", strtotime("$max_mod_timestamp -4 hour"));
             $start = str_replace(' ', 'T', $start);
             $this -> queueData(['start:' => $start], true);
 
