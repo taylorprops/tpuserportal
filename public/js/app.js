@@ -802,6 +802,10 @@ function getContainingBlock(element) {
 
   var currentNode = (0,_getParentNode_js__WEBPACK_IMPORTED_MODULE_2__["default"])(element);
 
+  if ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isShadowRoot)(currentNode)) {
+    currentNode = currentNode.host;
+  }
+
   while ((0,_instanceOf_js__WEBPACK_IMPORTED_MODULE_0__.isHTMLElement)(currentNode) && ['html', 'body'].indexOf((0,_getNodeName_js__WEBPACK_IMPORTED_MODULE_3__["default"])(currentNode)) < 0) {
     var css = (0,_getComputedStyle_js__WEBPACK_IMPORTED_MODULE_1__["default"])(currentNode); // This is non-exhaustive but covers the most common CSS properties that
     // create a containing block.
@@ -1567,7 +1571,7 @@ function mapToStyles(_ref2) {
 
     if (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.top || (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.left || placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.right) && variation === _enums_js__WEBPACK_IMPORTED_MODULE_1__.end) {
       sideY = _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom;
-      var offsetY = isFixed && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
+      var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
       offsetParent[heightProp];
       y -= offsetY - popperRect.height;
       y *= gpuAcceleration ? 1 : -1;
@@ -1575,7 +1579,7 @@ function mapToStyles(_ref2) {
 
     if (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.left || (placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.top || placement === _enums_js__WEBPACK_IMPORTED_MODULE_1__.bottom) && variation === _enums_js__WEBPACK_IMPORTED_MODULE_1__.end) {
       sideX = _enums_js__WEBPACK_IMPORTED_MODULE_1__.right;
-      var offsetX = isFixed && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
+      var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
       offsetParent[widthProp];
       x -= offsetX - popperRect.width;
       x *= gpuAcceleration ? 1 : -1;
@@ -16050,7 +16054,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".tippy-box[data-animation=fade][data-state=hidden]{\n  opacity:0\n}\n\n[data-tippy-root]{\n  max-width:calc(100vw - 10px)\n}\n\n.tippy-box{\n  position:relative;\n  background-color:#333;\n  color:#fff;\n  border-radius:4px;\n  font-size:14px;\n  line-height:1.4;\n  white-space:normal;\n  outline:0;\n  transition-property:transform,visibility,opacity\n}\n\n.tippy-box[data-placement^=top]>.tippy-arrow{\n  bottom:0\n}\n\n.tippy-box[data-placement^=top]>.tippy-arrow:before{\n  bottom:-7px;\n  left:0;\n  border-width:8px 8px 0;\n  border-top-color:initial;\n  transform-origin:center top\n}\n\n.tippy-box[data-placement^=bottom]>.tippy-arrow{\n  top:0\n}\n\n.tippy-box[data-placement^=bottom]>.tippy-arrow:before{\n  top:-7px;\n  left:0;\n  border-width:0 8px 8px;\n  border-bottom-color:initial;\n  transform-origin:center bottom\n}\n\n.tippy-box[data-placement^=left]>.tippy-arrow{\n  right:0\n}\n\n.tippy-box[data-placement^=left]>.tippy-arrow:before{\n  border-width:8px 0 8px 8px;\n  border-left-color:initial;\n  right:-7px;\n  transform-origin:center left\n}\n\n.tippy-box[data-placement^=right]>.tippy-arrow{\n  left:0\n}\n\n.tippy-box[data-placement^=right]>.tippy-arrow:before{\n  left:-7px;\n  border-width:8px 8px 8px 0;\n  border-right-color:initial;\n  transform-origin:center right\n}\n\n.tippy-box[data-inertia][data-state=visible]{\n  transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)\n}\n\n.tippy-arrow{\n  width:16px;\n  height:16px;\n  color:#333\n}\n\n.tippy-arrow:before{\n  content:\"\";\n  position:absolute;\n  border-color:transparent;\n  border-style:solid\n}\n\n.tippy-content{\n  position:relative;\n  padding:5px 9px;\n  z-index:1\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".tippy-box[data-animation=fade][data-state=hidden]{opacity:0}[data-tippy-root]{max-width:calc(100vw - 10px)}.tippy-box{position:relative;background-color:#333;color:#fff;border-radius:4px;font-size:14px;line-height:1.4;white-space:normal;outline:0;transition-property:transform,visibility,opacity}.tippy-box[data-placement^=top]>.tippy-arrow{bottom:0}.tippy-box[data-placement^=top]>.tippy-arrow:before{bottom:-7px;left:0;border-width:8px 8px 0;border-top-color:initial;transform-origin:center top}.tippy-box[data-placement^=bottom]>.tippy-arrow{top:0}.tippy-box[data-placement^=bottom]>.tippy-arrow:before{top:-7px;left:0;border-width:0 8px 8px;border-bottom-color:initial;transform-origin:center bottom}.tippy-box[data-placement^=left]>.tippy-arrow{right:0}.tippy-box[data-placement^=left]>.tippy-arrow:before{border-width:8px 0 8px 8px;border-left-color:initial;right:-7px;transform-origin:center left}.tippy-box[data-placement^=right]>.tippy-arrow{left:0}.tippy-box[data-placement^=right]>.tippy-arrow:before{left:-7px;border-width:8px 8px 8px 0;border-right-color:initial;transform-origin:center right}.tippy-box[data-inertia][data-state=visible]{transition-timing-function:cubic-bezier(.54,1.5,.38,1.11)}.tippy-arrow{width:16px;height:16px;color:#333}.tippy-arrow:before{content:\"\";position:absolute;border-color:transparent;border-style:solid}.tippy-content{position:relative;padding:5px 9px;z-index:1}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
