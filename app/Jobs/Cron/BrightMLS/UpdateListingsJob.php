@@ -45,7 +45,7 @@ class UpdateListingsJob implements ShouldQueue
             $resource = "Property";
             $class = "ALL";
 
-            $start = date('Y-m-d H:i:s', strtotime('-3 hour'));
+            $start = date('Y-m-d H:i:s', strtotime('-24 hour'));
             $start = str_replace(' ', 'T', $start);
 
             $query = 'ModificationTimestamp='.$start.'+';
