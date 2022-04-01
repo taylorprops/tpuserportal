@@ -66,9 +66,9 @@ class AddListingsJob implements ShouldQueue
 
 
         $end = $dates -> start_date;
-        $start = date('Y-m-d', strtotime($end.' -1 day'));
+        $start = date('Y-m-d', strtotime($end.' -5 day'));
 
-        if($start > '2008-01-01') {
+        if($start > '2010-01-01') {
 
             $this -> queueData([
                 'Start:' => $start,
@@ -135,6 +135,9 @@ class AddListingsJob implements ShouldQueue
             }
 
 
+        } else {
+            $dates -> start_date = date('Y-m-d', strtotime('+1 day'));
+            $dates -> save();
         }
 
         return response() -> json(['failed' => 'login failed']);
