@@ -245,11 +245,11 @@ $breadcrumbs = [
                         <div class="grid grid-cols-2 gap-4">
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="recently_added_emails_start" data-label="Start Date">
+                                <input type="date" class="form-element input md" x-ref="recently_added_emails_start" data-label="Start Date">
                             </div>
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="recently_added_emails_end" data-label="End Date">
+                                <input type="date" class="form-element input md" x-ref="recently_added_emails_end" data-label="End Date">
                             </div>
 
                         </div>
@@ -282,11 +282,11 @@ $breadcrumbs = [
                         <div class="grid grid-cols-2 gap-4">
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="purged_emails_start" data-label="Start Date">
+                                <input type="date" class="form-element input md" x-ref="purged_emails_start" data-label="Start Date">
                             </div>
 
                             <div>
-                                <input type="date" class="form-element input" x-ref="purged_emails_end" data-label="End Date">
+                                <input type="date" class="form-element input md" x-ref="purged_emails_end" data-label="End Date">
                             </div>
 
                         </div>
