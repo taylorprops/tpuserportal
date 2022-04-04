@@ -2192,6 +2192,7 @@ textarea.required,
 .sm\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}
 .sm\:grid-cols-9{grid-template-columns:repeat(9, minmax(0, 1fr))}
 .sm\:grid-cols-7{grid-template-columns:repeat(7, minmax(0, 1fr))}
+.sm\:grid-cols-10{grid-template-columns:repeat(10, minmax(0, 1fr))}
 .sm\:items-center{align-items:center}
 .sm\:justify-start{justify-content:flex-start}
 .sm\:justify-center{justify-content:center}

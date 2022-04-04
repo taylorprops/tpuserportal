@@ -122,22 +122,22 @@ window.form_elements = function() {
                 element.parentNode.insertAdjacentHTML('beforeend', '<div class="relative"> <span class="text-red-500 text-xxs error-message h-4 inline-block absolute top-0"></span> </div>');
             }
 
-            if(classes.contains('select')) {
-                let cancel_div = document.createElement('div');
-                cancel_div.classList.add('absolute', 'right-8', 'top-8', 'cancel-div', 'hidden');
-                let html = ' \
-                <a href="javascript:void(0)" @click="clear_select($el)"><i class="fal fa-times text-gray-400"></i></a>';
-                cancel_div.innerHTML = html;
-                element.parentNode.classList.add('relative');
-                element.parentNode.append(cancel_div);
+            // if(classes.contains('select')) {
+            //     let cancel_div = document.createElement('div');
+            //     cancel_div.classList.add('absolute', 'right-8', 'top-8', 'cancel-div', 'hidden');
+            //     let html = ' \
+            //     <a href="javascript:void(0)" @click="clear_select($el)"><i class="fal fa-times text-gray-400"></i></a>';
+            //     cancel_div.innerHTML = html;
+            //     element.parentNode.classList.add('relative');
+            //     element.parentNode.append(cancel_div);
 
-                element.addEventListener('change', function() {
-                    cancel_div.classList.add('hidden');
-                    if(element.value != '') {
-                        cancel_div.classList.remove('hidden');
-                    }
-                });
-            }
+            //     element.addEventListener('change', function() {
+            //         cancel_div.classList.add('hidden');
+            //         if(element.value != '') {
+            //             cancel_div.classList.remove('hidden');
+            //         }
+            //     });
+            // }
 
         }
 
@@ -191,6 +191,7 @@ window.main_search = function() {
                     if(response){
                         search_results_div.innerHTML = response.data;
                         scope.show_search_results_div = true;
+
                     } else {
                         scope.show_search_results_div = false;
                     }

@@ -1,6 +1,6 @@
 @foreach ($loans as $loan)
 
-        <div class="grid grid-cols-5 sm:grid-cols-9 m-2 p-2 border rounded-md text-xs sm:text-sm">
+        <div class="grid grid-cols-5 sm:grid-cols-10 m-2 p-2 border rounded-md text-xs sm:text-sm">
             <div class="hidden sm:inline-block">
                 <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="button primary sm w-24 mb-2">View</a>
                 @if($loan -> lending_pad_uuid)
@@ -20,11 +20,14 @@
             <div class="col-span-2 mr-4">
                 {!! $loan -> street.'<br>'.$loan -> city.', '.$loan -> state.' '.$loan -> zip !!}
             </div>
-            <div class="text-right hidden sm:inline-block mr-4">
-                ${{ number_format($loan -> loan_amount) }}
-            </div>
             <div class="hidden sm:inline-block mr-4">
+                ${{ number_format($loan -> loan_amount) }}
+                <br>
                 {{ $loan -> loan_status }}
+            </div>
+            <div class="col-span-2 hidden sm:inline-block mr-4">
+                Loan #: {{ $loan -> loan_number }}<br>
+                LP ID: {{ $loan -> lending_pad_loan_number }}
             </div>
             <div class="hidden sm:inline-block mr-4">
                 Close Date<br>
