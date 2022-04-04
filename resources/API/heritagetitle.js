@@ -4,7 +4,6 @@ load_axios();
 window.addEventListener('load', function() {
 
     if(document.URL.match(/utm_source/)) {
-        alert('working');
         send_lead_to_zoho();
     }
 
