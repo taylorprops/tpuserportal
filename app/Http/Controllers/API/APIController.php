@@ -150,7 +150,9 @@ class APIController extends Controller
                     -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
                 })
                 -> first();
-                $loan_officer_1_id = $loan_officer -> id;
+                if($loan_officer) {
+                    $loan_officer_1_id = $loan_officer -> id;
+                }
             }
 
             if ($request -> loan_processor) {
@@ -550,6 +552,12 @@ class APIController extends Controller
 
         $description = 'Recruitment From Submitted';
 
+        $lead_id = $this -> check_if_user_exists($email);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
@@ -557,25 +565,45 @@ class APIController extends Controller
             array(
                 'data' => array(
                     [
-                        'First_Name' => $first_name,
-                        'Last_Name' => $last_name,
-                        'Full_Name' => $full_name,
                         'Email' => $email,
                         'Phone' => $phone,
-                        'Category' => $category,
-                        'Lead_Status' => $lead_status,
-                        'Owner' => $owner,
-                        'Lead_Source' => $lead_source,
-                        'Description' => $description,
+                        'Follow_Up_Date' => date('Y-m-d')
                     ]
                     ),
                     'duplicate_check_fields' => array(
                         'Email',
-                        // 'Mobile',
                         'Phone'
                     )
             )
         );
+
+        if($existing_lead == false) {
+
+            $fields = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'First_Name' => $first_name,
+                            'Last_Name' => $last_name,
+                            'Full_Name' => $full_name,
+                            'Email' => $email,
+                            'Phone' => $phone,
+                            'Category' => $category,
+                            'Lead_Status' => $lead_status,
+                            'Owner' => $owner,
+                            'Lead_Source' => $lead_source,
+                            'Description' => $description,
+                        ]
+                        ),
+                        'duplicate_check_fields' => array(
+                            'Email',
+                            // 'Mobile',
+                            'Phone'
+                        )
+                )
+            );
+
+        }
 
         $headers = array(
             'Content-Type: application/json',
@@ -597,12 +625,12 @@ class APIController extends Controller
         $result = json_decode($result, true);
         curl_close($curl);
 
-        $id = $result['data'][0]['details']['id'];
+        $lead_id = $result['data'][0]['details']['id'];
 
         // add message
         if($message_from_agent) {
 
-            $this -> add_notes($id, $message_from_agent);
+            $this -> add_notes($lead_id, $message_from_agent);
 
         }
 
@@ -619,7 +647,7 @@ class APIController extends Controller
         Phone: '.$phone.'<br>
         Email: '.$email.'<br>
         Message: '.$message_from_agent.'<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$id.'" target="_blank">View Lead on Zoho</a>';
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
 
         $message = [

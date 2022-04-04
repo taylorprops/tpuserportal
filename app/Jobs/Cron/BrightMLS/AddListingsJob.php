@@ -96,12 +96,14 @@ class AddListingsJob implements ShouldQueue
 
                 $listings = $results -> toArray();
                 // echo count($listings);
-                $this -> queueData(['Found:' => count($listings)], true);
+                $this -> queueData(['Total:' => count($listings)], true);
 
                 if(count($listings) > 0) {
 
                     $increment = 100 / count($listings);
                     $progress = 0;
+                    $found = 0;
+                    $not_found = 0;
                     foreach($listings as $listing) {
 
                         $data = [];
@@ -111,15 +113,27 @@ class AddListingsJob implements ShouldQueue
                             }
                         }
 
-                        BrightListings::firstOrCreate(
-                            ['ListingKey' => $listing['ListingKey']],
-                            $data
-                        );
+                        // BrightListings::firstOrCreate(
+                        //     ['ListingKey' => $listing['ListingKey']],
+                        //     $data
+                        // );
+
+                        $bright = BrightListings::find($listing['ListingKey']);
+
+                        if(!$bright) {
+                            $bright = BrightListings::insert($data);
+                            $not_found += 1;
+                        } else {
+                            $bright -> update($data);
+                            $found += 1;
+                        }
 
                         $progress += $increment;
                         $this -> queueProgress($progress);
 
                     }
+
+                    $this -> queueData(['Found:' => $found, 'NotFound:' => $not_found], true);
 
                     $this -> queueProgress(100);
 
