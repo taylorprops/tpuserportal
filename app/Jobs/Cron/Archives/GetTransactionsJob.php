@@ -24,7 +24,7 @@ class GetTransactionsJob implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('get_transactions');
+        $this -> onQueue('get_transactions');
     }
 
     /**
@@ -34,15 +34,15 @@ class GetTransactionsJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->get_transactions();
+        $this -> get_transactions();
     }
 
     public function get_transactions()
     {
         $progress = 0;
-        $this->queueProgress($progress);
+        $this -> queueProgress($progress);
 
-        $auth = $this->skyslope_auth();
+        $auth = $this -> skyslope_auth();
         $session = $auth['Session'];
         $headers = [
             'Content-Type' => 'application/json',
@@ -62,14 +62,16 @@ class GetTransactionsJob implements ShouldQueue
         ]);
 
         $progress = 1;
-        $this->queueProgress($progress);
+        $this -> queueProgress($progress);
 
-        $response = $client->request('GET', 'https://api.skyslope.com/api/files');
+        $response = $client -> request('GET', 'https://api.skyslope.com/api/files');
 
-        $contents = $response->getBody()->getContents();
+        $contents = $response -> getBody() -> getContents();
         $contents = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $contents);
         $contents = json_decode($contents, true);
         $data = $contents['value'];
+
+        $this -> queueData(['Found:' => count($data)], true);
 
         $progress_increment = (int) round((1 / 15) * 100);
 
@@ -105,7 +107,7 @@ class GetTransactionsJob implements ShouldQueue
                             $value = $value == 'true' ? 1 : 0;
                         }
 
-                        $add_transaction->$col = $value;
+                        $add_transaction -> $col = $value;
                     }
                 }
                 $property = $transaction['property'];
@@ -124,35 +126,35 @@ class GetTransactionsJob implements ShouldQueue
 
                 $agent_name = '';
                 if ($agentId && $agentId != '') {
-                    $agent_details = $this->agent($agentId);
+                    $agent_details = $this -> agent($agentId);
                     $agent_name = $agent_details['first'].' '.$agent_details['last'];
                 }
 
-                $add_transaction->agentId = $agentId ?? 0;
-                $add_transaction->agent_name = $agent_name;
-                $add_transaction->address = $address;
-                $add_transaction->city = $city;
-                $add_transaction->state = $state;
-                $add_transaction->zip = $zip;
-                $add_transaction->data_source = 'skyslope';
-                $add_transaction->save();
+                $add_transaction -> agentId = $agentId ?? 0;
+                $add_transaction -> agent_name = $agent_name;
+                $add_transaction -> address = $address;
+                $add_transaction -> city = $city;
+                $add_transaction -> state = $state;
+                $add_transaction -> zip = $zip;
+                $add_transaction -> data_source = 'skyslope';
+                $add_transaction -> save();
 
                 $progress += $progress_increment;
-                $this->queueProgress($progress);
+                $this -> queueProgress($progress);
             }
         }
 
-        $this->queueProgress(100);
+        $this -> queueProgress(100);
     }
 
     public function agent($id)
     {
         $agent = Agents::find($id);
         if ($agent) {
-            $first = $agent->first;
-            $last = $agent->last;
-            $email = $agent->email1;
-            $phone = $agent->cell_phone;
+            $first = $agent -> first;
+            $last = $agent -> last;
+            $email = $agent -> email1;
+            $phone = $agent -> cell_phone;
         } else {
             $first = '';
             $last = '';
@@ -192,8 +194,8 @@ class GetTransactionsJob implements ShouldQueue
             'json' => $json,
         ]);
 
-        $r = $client->request('POST', 'https://api.skyslope.com/auth/login');
-        $response = $r->getBody()->getContents();
+        $r = $client -> request('POST', 'https://api.skyslope.com/auth/login');
+        $response = $r -> getBody() -> getContents();
 
         return json_decode($response, true);
     }
