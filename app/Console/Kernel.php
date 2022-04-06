@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
 
         // Backups
         $schedule -> command('backup:clean')
-        -> dailyAt('15:00')
+        -> dailyAt('22:00')
         -> timezone('America/New_York')
         -> environments(['production']);
 
@@ -48,7 +48,7 @@ class Kernel extends ConsoleKernel
         // add bright listings
         $schedule -> command('bright_mls:add_listings')
         -> timezone('America/New_York')
-        -> everyMinute()
+        -> everyHour()
         -> environments('production');
 
         // update bright listings

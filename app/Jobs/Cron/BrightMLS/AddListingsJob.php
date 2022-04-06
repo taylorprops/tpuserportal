@@ -41,29 +41,87 @@ class AddListingsJob implements ShouldQueue
 
         ini_set('memory_limit', '-1');
 
+        $rets = Helper::rets_login();
+
+        if($rets) {
+
+            $resource = "Property";
+            $class = "ALL";
+
+            $query = 'MLSListDate='.date('Y-m-d');
+            $cols = config('global.bright_listings_columns');
+            if(!$cols) {
+                throw new Exception('config global.bright_listings_columns not working');
+                return false;
+            }
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => $cols
+                ]
+            );
+
+
+            $listings = $results -> toArray();
+
+            $this -> queueData(['Total:' => count($listings)], true);
+
+            if(count($listings) > 0) {
+
+                $increment = 100 / count($listings);
+                $progress = 0;
+                $found = 0;
+                $not_found = 0;
+
+                foreach($listings as $listing) {
+
+                    $data = [];
+                    foreach($listing as $key => $value) {
+                        if($value != '') {
+                            $data[$key] = $value;
+                        }
+                    }
+
+                    $bright = BrightListings::find($listing['ListingKey']);
+
+                    if(!$bright) {
+                        $bright = BrightListings::insert($data);
+                        $not_found += 1;
+                    } else {
+                        $bright -> update($data);
+                        $found += 1;
+                    }
+
+                    $progress += $increment;
+                    $this -> queueProgress($progress);
+
+                }
+
+                $this -> queueData(['Found:' => $found, 'NotFound:' => $not_found], true);
+
+                $this -> queueProgress(100);
+
+            }
+
+            $rets -> Disconnect();
+
+            return true;
+
+        }
+
+
+
+
+        return response() -> json(['failed' => 'login failed']);
+
+        /* $this -> queueProgress(0);
+
+        ini_set('memory_limit', '-1');
+
         $dates = DatabaseDates::where('job', 'add_listings') -> first();
-        // $start = $dates -> start_date;
-
-
-        /* if($start > date('Y-m-d')) {
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Add listings job has completed',
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => 'Add listings job has completed',
-                'attachments' => null
-            ];
-            Mail::to(['miketaylor0101@gmail.com'])
-            -> send(new EmailGeneral($message));
-            return false;
-        } */
-
-        // $days = 3;
-        // if($start < '2021-01-01') {
-        //     $days = '6';
-        // }
-        // $end = date('Y-m-d', strtotime($start.' +'.$days.' day'));
-
 
         $end = $dates -> start_date;
         $start = date('Y-m-d', strtotime($end.' -5 day'));
@@ -83,13 +141,18 @@ class AddListingsJob implements ShouldQueue
                 $class = "ALL";
 
                 $query = 'MLSListDate='.$start.'-'.$end;
+                $cols = config('global.bright_listings_columns');
+                if(!$cols) {
+                    throw new Exception('config global.bright_listings_columns not working');
+                    return false;
+                }
 
                 $results = $rets -> Search(
                     $resource,
                     $class,
                     $query,
                     [
-                        'Select' => config('global.bright_listings_columns')
+                        'Select' => $cols
                     ]
                 );
 
@@ -104,6 +167,7 @@ class AddListingsJob implements ShouldQueue
                     $progress = 0;
                     $found = 0;
                     $not_found = 0;
+
                     foreach($listings as $listing) {
 
                         $data = [];
@@ -154,7 +218,7 @@ class AddListingsJob implements ShouldQueue
             $dates -> save();
         }
 
-        return response() -> json(['failed' => 'login failed']);
+        return response() -> json(['failed' => 'login failed']); */
 
     }
 
