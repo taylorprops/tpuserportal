@@ -45,6 +45,13 @@ class CancelListingsJob implements ShouldQueue
             $this -> queueData(['Status' => 'Logged into Rets'], true);
 
             $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING'];
+
+            $count_db_listings = BrightListings::select('ListingKey')
+            -> whereIn('MlsStatus', $statuses)
+            -> count();
+
+            $this -> queueData(['All Active Count' => $count_db_listings], true);
+
             $db_listings = BrightListings::select('ListingKey')
             -> whereIn('MlsStatus', $statuses)
             -> where('updated_at', '<', date('Y-m-d 00:00:01'))
