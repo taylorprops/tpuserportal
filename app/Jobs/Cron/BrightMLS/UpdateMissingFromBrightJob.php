@@ -31,6 +31,9 @@ class UpdateMissingFromBrightJob implements ShouldQueue
      */
     public function handle()
     {
+
+        $this -> queueProgress(0);
+
         ini_set('memory_limit', '-1');
 
         $rets = Helper::rets_login();
@@ -66,6 +69,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             $missing_from_bright = array_diff($db_results, $bright_results);
             // dd($missing_from_bright);
+            $this -> queueData(['Missing:' => count($missing_from_bright)], true);
 
             BrightListings::whereIn('ListingKey', $missing_from_bright)
             -> update([
@@ -103,5 +107,8 @@ class UpdateMissingFromBrightJob implements ShouldQueue
             }
 
         }
+
+        $this -> queueProgress(100);
+
     }
 }

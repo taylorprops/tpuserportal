@@ -33,6 +33,9 @@ class UpdateMissingFromDBJob implements ShouldQueue
      */
     public function handle()
     {
+
+        $this -> queueProgress(0);
+
         ini_set('memory_limit', '-1');
 
         $rets = Helper::rets_login();
@@ -68,6 +71,8 @@ class UpdateMissingFromDBJob implements ShouldQueue
 
             $missing_from_db = array_diff($bright_results, $db_results);
 
+            $this -> queueData(['Missing:' => count($missing_from_db)], true);
+
             $query = 'ListingKey='.implode(',', $missing_from_db);
 
             $results = $rets -> Search(
@@ -98,5 +103,8 @@ class UpdateMissingFromDBJob implements ShouldQueue
             }
 
         }
+
+        $this -> queueProgress(100);
+
     }
 }
