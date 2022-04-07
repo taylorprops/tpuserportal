@@ -77,9 +77,7 @@ class TestsController extends Controller
 
     public function bright_missing_from_bright(Request $request) {
 
-        // $a = [1,2,3,4,5,6,7,8,9];
-        // $b = [3,4,5,6,7,8];
-        // dd(array_diff($a, $b));
+        // listings in our database that are not in bright - most likely canceled
 
         ini_set('memory_limit', '-1');
 
@@ -105,17 +103,17 @@ class TestsController extends Controller
 
             $bright_results = [];
             foreach($results as $result) {
-                $bright_results[] = $result['ListingKey'];
+                $bright_results[] = $result['ListingId'];
             }
 
-            $db_results = BrightListings::select('ListingKey')
+            $db_results = BrightListings::select('ListingId')
             -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
             -> get()
-            -> pluck('ListingKey')
+            -> pluck('ListingId')
             -> toArray();
 
             $missing_from_bright = array_diff($db_results, $bright_results);
-            dd($missing_from_bright);
+            // dd($missing_from_bright);
 
             BrightListings::whereIn('ListingKey', $missing_from_bright)
             -> update([
@@ -123,11 +121,42 @@ class TestsController extends Controller
                 'ModificationTimestamp' => date('Y-m-d H:i:s')
             ]);
 
+            $query = 'ListingKey='.implode(',', $missing_from_bright);
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => config('global.bright_listings_columns')
+                ]
+            );
+
+            $results = $results -> toArray();
+
+            foreach($results as $listing) {
+
+                $data = [];
+                foreach($listing as $key => $value) {
+                    if($value != '') {
+                        $data[$key] = $value;
+                    }
+                }
+
+                BrightListings::firstOrCreate(
+                    ['ListingKey' => $listing['ListingKey']],
+                    $data
+                );
+
+            }
+
         }
 
     }
 
     public function bright_missing_from_db(Request $request) {
+
+        // listings in bright that are not in our database - most likely reactivated
 
         ini_set('memory_limit', '-1');
 
@@ -153,35 +182,44 @@ class TestsController extends Controller
 
             $bright_results = [];
             foreach($results as $result) {
-                $bright_results[] = $result['ListingKey'];
+                $bright_results[] = $result['ListingId'];
             }
 
-            $db_results = BrightListings::select('ListingKey')
-            -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
+            $db_results = BrightListings::select('ListingId')
+            -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired', 'canceled'])
             -> get()
-            -> pluck('ListingKey')
+            -> pluck('ListingId')
             -> toArray();
 
             $missing_from_db = array_diff($bright_results, $db_results);
-            dd($missing_from_db);
+            //dd($missing_from_db);
+
+            $query = 'ListingKey='.implode(',', $missing_from_db);
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => config('global.bright_listings_columns')
+                ]
+            );
+
+            $results = $results -> toArray();
 
             foreach($results as $listing) {
 
-                if(in_array($listing['ListingKey'], $missing_from_db)) {
-
-                    $data = [];
-                    foreach($listing as $key => $value) {
-                        if($value != '') {
-                            $data[$key] = $value;
-                        }
+                $data = [];
+                foreach($listing as $key => $value) {
+                    if($value != '') {
+                        $data[$key] = $value;
                     }
-
-                    BrightListings::firstOrCreate(
-                        ['ListingKey' => $listing['ListingKey']],
-                        $data
-                    );
-
                 }
+
+                BrightListings::firstOrCreate(
+                    ['ListingKey' => $listing['ListingKey']],
+                    $data
+                );
 
             }
 

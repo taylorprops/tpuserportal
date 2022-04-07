@@ -63,6 +63,18 @@ class Kernel extends ConsoleKernel
         -> everyFiveMinutes()
         -> environments('production');
 
+        // update db with missing from bright
+        $schedule -> command('bright_mls:update_missing_from_bright')
+        -> timezone('America/New_York')
+        -> dailyAt('6:00')
+        -> environments('production');
+
+        // update db with missing from db
+        $schedule -> command('bright_mls:update_missing_from_db')
+        -> timezone('America/New_York')
+        -> dailyAt('5:00')
+        -> environments('production');
+
 
 
         // %%% TEMP %%% //
