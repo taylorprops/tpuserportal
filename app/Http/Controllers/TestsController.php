@@ -113,7 +113,7 @@ class TestsController extends Controller
             -> toArray();
 
             $missing_from_bright = array_diff($db_results, $bright_results);
-            dd($missing_from_bright);
+            // dd($missing_from_bright);
 
             BrightListings::whereIn('ListingKey', $missing_from_bright)
             -> update([
@@ -192,7 +192,7 @@ class TestsController extends Controller
             -> toArray();
 
             $missing_from_db = array_diff($bright_results, $db_results);
-            dd($missing_from_db);
+            //dd($missing_from_db);
 
             $query = 'ListingKey='.implode(',', $missing_from_db);
 
