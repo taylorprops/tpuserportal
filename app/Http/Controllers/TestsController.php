@@ -116,7 +116,7 @@ class TestsController extends Controller
             // dd($missing_from_bright);
 
             $listings_to_update = BrightListings::whereIn('ListingKey', $missing_from_bright) -> get();
-            dd($listings_to_update);
+
             BrightListings::whereIn('ListingKey', $missing_from_bright)
             -> update([
                 'MlsStatus' => 'CANCELED',
@@ -208,7 +208,7 @@ class TestsController extends Controller
             );
 
             $results = $results -> toArray();
-            dd($results);
+
             foreach($results as $listing) {
 
                 $data = [];
