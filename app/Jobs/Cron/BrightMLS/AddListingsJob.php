@@ -37,85 +37,92 @@ class AddListingsJob implements ShouldQueue
     public function handle()
     {
 
-        $this -> queueProgress(0);
+        try {
 
-        ini_set('memory_limit', '-1');
+            $this -> queueProgress(0);
 
-        $rets = Helper::rets_login();
+            ini_set('memory_limit', '-1');
 
-        if($rets) {
+            $rets = Helper::rets_login();
 
-            $resource = "Property";
-            $class = "ALL";
+            if($rets) {
 
-            $query = 'MLSListDate='.date('Y-m-d');
-            $cols = config('global.bright_listings_columns');
-            if(!$cols) {
-                throw new Exception('config global.bright_listings_columns not working');
-                return false;
-            }
+                $resource = "Property";
+                $class = "ALL";
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Select' => $cols
-                ]
-            );
+                $query = 'MLSListDate='.date('Y-m-d');
+                $cols = config('global.bright_listings_columns');
+                if(!$cols) {
+                    throw new Exception('config global.bright_listings_columns not working');
+                    return false;
+                }
+
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => $cols
+                    ]
+                );
 
 
-            $listings = $results -> toArray();
+                $listings = $results -> toArray();
 
-            $this -> queueData(['Total:' => count($listings)], true);
+                $this -> queueData(['Total:' => count($listings)], true);
 
-            if(count($listings) > 0) {
+                if(count($listings) > 0) {
 
-                $increment = 100 / count($listings);
-                $progress = 0;
-                $found = 0;
-                $not_found = 0;
+                    $increment = 100 / count($listings);
+                    $progress = 0;
+                    $found = 0;
+                    $not_found = 0;
 
-                foreach($listings as $listing) {
+                    foreach($listings as $listing) {
 
-                    $data = [];
-                    foreach($listing as $key => $value) {
-                        if($value != '') {
-                            $data[$key] = $value;
+                        $data = [];
+                        foreach($listing as $key => $value) {
+                            if($value != '') {
+                                $data[$key] = $value;
+                            }
                         }
+
+                        $bright = BrightListings::find($listing['ListingKey']);
+
+                        if(!$bright) {
+                            $bright = BrightListings::insert($data);
+                            $not_found += 1;
+                        } else {
+                            $bright -> update($data);
+                            $found += 1;
+                        }
+
+                        $progress += $increment;
+                        $this -> queueProgress($progress);
+
                     }
 
-                    $bright = BrightListings::find($listing['ListingKey']);
+                    $this -> queueData(['Found:' => $found, 'NotFound:' => $not_found], true);
 
-                    if(!$bright) {
-                        $bright = BrightListings::insert($data);
-                        $not_found += 1;
-                    } else {
-                        $bright -> update($data);
-                        $found += 1;
-                    }
-
-                    $progress += $increment;
-                    $this -> queueProgress($progress);
+                    $this -> queueProgress(100);
 
                 }
 
-                $this -> queueData(['Found:' => $found, 'NotFound:' => $not_found], true);
+                $rets -> Disconnect();
 
-                $this -> queueProgress(100);
+                return true;
 
             }
 
-            $rets -> Disconnect();
+            return response() -> json(['failed' => 'login failed']);
 
-            return true;
-
+        } catch (\Throwable $exception) {
+            $this -> release(30);
+            return;
         }
 
 
 
-
-        return response() -> json(['failed' => 'login failed']);
 
         /* $this -> queueProgress(0);
 

@@ -34,70 +34,77 @@ class UpdateListingsJob implements ShouldQueue
     public function handle()
     {
 
-        $this -> queueProgress(0);
+        try {
 
-        ini_set('memory_limit', '-1');
+            $this -> queueProgress(0);
 
-        $rets = Helper::rets_login();
+            ini_set('memory_limit', '-1');
 
-        if($rets) {
+            $rets = Helper::rets_login();
 
-            $resource = "Property";
-            $class = "ALL";
+            if($rets) {
 
-            $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
+                $resource = "Property";
+                $class = "ALL";
 
-            $start = date("Y-m-d H:i:s", strtotime("$max_mod_timestamp -4 hour"));
-            $start = str_replace(' ', 'T', $start);
-            $this -> queueData(['start:' => $start], true);
+                $max_mod_timestamp = BrightListings::max('ModificationTimestamp');
 
-            $query = 'ModificationTimestamp='.$start.'+';
+                $start = date("Y-m-d H:i:s", strtotime("$max_mod_timestamp -4 hour"));
+                $start = str_replace(' ', 'T', $start);
+                $this -> queueData(['start:' => $start], true);
 
-            $results = $rets -> Search(
-                $resource,
-                $class,
-                $query,
-                [
-                    'Select' => config('global.bright_listings_columns')
-                ]
-            );
+                $query = 'ModificationTimestamp='.$start.'+';
 
-
-            $listings = $results -> toArray();
-            // echo count($listings);
-            $this -> queueData(['Found:' => count($listings)], true);
-
-            $increment = 100 / count($listings);
-            $progress = 0;
-            foreach($listings as $listing) {
-
-                $data = [];
-                foreach($listing as $key => $value) {
-                    if($value != '') {
-                        $data[$key] = $value;
-                    }
-                }
-
-                BrightListings::firstOrCreate(
-                    ['ListingKey' => $listing['ListingKey']],
-                    $data
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => config('global.bright_listings_columns')
+                    ]
                 );
 
-                $progress += $increment;
-                $this -> queueProgress($progress);
+
+                $listings = $results -> toArray();
+                // echo count($listings);
+                $this -> queueData(['Found:' => count($listings)], true);
+
+                $increment = 100 / count($listings);
+                $progress = 0;
+                foreach($listings as $listing) {
+
+                    $data = [];
+                    foreach($listing as $key => $value) {
+                        if($value != '') {
+                            $data[$key] = $value;
+                        }
+                    }
+
+                    BrightListings::firstOrCreate(
+                        ['ListingKey' => $listing['ListingKey']],
+                        $data
+                    );
+
+                    $progress += $increment;
+                    $this -> queueProgress($progress);
+
+                }
+
+                $this -> queueProgress(100);
+
+                $rets -> Disconnect();
+
+
+                return true;
 
             }
 
-            $this -> queueProgress(100);
+            return response() -> json(['failed' => 'login failed']);
 
-            $rets -> Disconnect();
-
-
-            return true;
-
+        } catch (\Throwable $exception) {
+            $this -> release(30);
+            return;
         }
-
-        return response() -> json(['failed' => 'login failed']);
 
     }
 

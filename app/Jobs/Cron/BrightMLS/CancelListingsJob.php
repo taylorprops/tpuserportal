@@ -122,13 +122,6 @@ class CancelListingsJob implements ShouldQueue
             return response() -> json(['failed' => 'login failed']);
 
         } catch (\Throwable $exception) {
-            /* if ($this -> attempts() > 3) {
-                // hard fail after 3 attempts
-                throw $exception;
-            } */
-
-            // requeue this job to be executes
-            // in 3 minutes (180 seconds) from now
             $this -> release(30);
             return;
         }
