@@ -50,7 +50,9 @@ class AddListingsJob implements ShouldQueue
                 $resource = "Property";
                 $class = "ALL";
 
-                $query = 'MLSListDate='.date('Y-m-d');
+                $start = date('Y-m-d', strtotime('-1 day'));
+
+                $query = 'MLSListDate='.$start.'+';
                 $cols = config('global.bright_listings_columns');
                 if(!$cols) {
                     throw new Exception('config global.bright_listings_columns not working');
