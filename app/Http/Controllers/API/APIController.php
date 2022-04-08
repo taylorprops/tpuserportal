@@ -569,12 +569,7 @@ class APIController extends Controller
                         'Phone' => $phone,
                         'Follow_Up_Date' => date('Y-m-d')
                     ]
-                    ),
-                    'duplicate_check_fields' => array(
-                        'Email',
-                        'Phone',
-                        'Category'
-                    )
+                )
             )
         );
 
@@ -595,12 +590,7 @@ class APIController extends Controller
                             'Lead_Source' => $lead_source,
                             'Description' => $description,
                         ]
-                        ),
-                        'duplicate_check_fields' => array(
-                            'Email',
-                            'Phone',
-                            'Category'
-                        )
+                    )
                 )
             );
 
@@ -679,11 +669,19 @@ class APIController extends Controller
         $owner = '5119653000000396016'; // Kyle
         $lead_source = 'Website - heritagetitle.com';
 
+        $request -> name = 'Test McTester';
+        $request -> phone = '555-555-5555';
+        $request -> email = 'test@test.com';
+        $request -> message = 'test message';
+
 
         $name = $request -> name;
+        $last_name = substr($name, strrpos($name, ' '));
         $phone = $request -> phone;
         $email = $request -> email;
         $message = $request -> message ?? null;
+
+
 
         $description = 'Contact From Submitted on Website';
 
@@ -704,12 +702,7 @@ class APIController extends Controller
                         'Phone' => $phone,
                         'Follow_Up_Date' => date('Y-m-d')
                     ]
-                    ),
-                    'duplicate_check_fields' => array(
-                        'Email',
-                        'Phone',
-                        'Category'
-                    )
+                )
             )
         );
 
@@ -720,6 +713,7 @@ class APIController extends Controller
                     'data' => array(
                         [
                             'Name' => $name,
+                            'Last_Name' => $last_name,
                             'Email' => $email,
                             'Phone' => $phone,
                             'Category' => $category,
@@ -728,12 +722,7 @@ class APIController extends Controller
                             'Lead_Source' => $lead_source,
                             'Description' => $description,
                         ]
-                        ),
-                        'duplicate_check_fields' => array(
-                            'Email',
-                            'Phone',
-                            'Category'
-                        )
+                    )
                 )
             );
 
@@ -759,6 +748,7 @@ class APIController extends Controller
         $result = json_decode($result, true);
         curl_close($curl);
 
+
         $lead_id = $result['data'][0]['details']['id'];
 
         // add message
@@ -770,10 +760,10 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-        $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
-        // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        // $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+        // $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
@@ -840,12 +830,7 @@ class APIController extends Controller
                             'Phone' => $agent -> MemberPreferredPhone,
                             'Follow_Up_Date' => date('Y-m-d')
                         ]
-                        ),
-                        'duplicate_check_fields' => array(
-                            'Email',
-                            'Phone',
-                            'Category'
-                        )
+                    )
                 )
             );
 
@@ -868,13 +853,8 @@ class APIController extends Controller
                                 'Lead_Campaign' => $lead_campaign,
                                 'Description' => $description,
                             ]
-                            ),
-                            'lar_id' => '5119653000001162013',
-                            'duplicate_check_fields' => array(
-                                'Email',
-                                'Phone',
-                                'Category'
-                            )
+                        ),
+                        'lar_id' => '5119653000001162013'
                     )
                 );
 
@@ -995,12 +975,7 @@ class APIController extends Controller
                             'Phone' => $loan_officer -> phone,
                             'Follow_Up_Date' => date('Y-m-d')
                         ]
-                        ),
-                        'duplicate_check_fields' => array(
-                            'Email',
-                            'Phone',
-                            'Category'
-                        )
+                    )
                 )
             );
 
@@ -1023,12 +998,7 @@ class APIController extends Controller
                                 'Lead_Campaign' => $lead_campaign,
                                 'Description' => $description,
                             ]
-                            ),
-                            'duplicate_check_fields' => array(
-                                'Email',
-                                'Phone',
-                                'Category'
-                            )
+                        )
                     )
                 );
 
@@ -1146,12 +1116,7 @@ class APIController extends Controller
                             'Phone' => $agent -> MemberPreferredPhone,
                             'Follow_Up_Date' => date('Y-m-d')
                         ]
-                        ),
-                        'duplicate_check_fields' => array(
-                            'Email',
-                            'Phone',
-                            'Category'
-                        )
+                    )
                 )
             );
 
@@ -1174,13 +1139,8 @@ class APIController extends Controller
                                 'Lead_Campaign' => $lead_campaign,
                                 'Description' => $description,
                             ]
-                            ),
-                            'lar_id' => '5119653000001162013',
-                            'duplicate_check_fields' => array(
-                                'Email',
-                                'Phone',
-                                'Category'
-                            )
+                        ),
+                        'lar_id' => '5119653000001162013'
                     )
                 );
 

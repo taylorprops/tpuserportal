@@ -58,19 +58,19 @@ class Kernel extends ConsoleKernel
         -> environments('production');
 
         // cancel bright listings
-        $schedule -> command('bright_mls:cancel_listings')
+        $schedule -> command('bright_mls:cancel_listings null')
         -> timezone('America/New_York')
         -> everyFiveMinutes()
         -> environments('production');
 
         // update db with missing from bright
-        $schedule -> command('bright_mls:update_missing_from_bright')
+        $schedule -> command('bright_mls:update_missing_from_bright null')
         -> timezone('America/New_York')
         -> everyThreeHours()
         -> environments('production');
 
         // update db with missing from db
-        $schedule -> command('bright_mls:update_missing_from_db')
+        $schedule -> command('bright_mls:update_missing_from_db null')
         -> timezone('America/New_York')
         -> everyThreeHours()
         -> environments('production');

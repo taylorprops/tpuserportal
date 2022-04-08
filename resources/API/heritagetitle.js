@@ -19,8 +19,8 @@ window.addEventListener('load', function() {
 function capture_form(form) {
 
     console.log('form submitted');
-    let url = 'https://tpuserportal.com/api/heritage_title/submit_contact_form';
-    // let url = 'https://1103-71-121-147-194.ngrok.io/api/heritage_title/submit_contact_form';
+    // let url = 'https://tpuserportal.com/api/heritage_title/submit_contact_form';
+    let url = 'https://1103-71-121-147-194.ngrok.io/api/heritage_title/submit_contact_form';
 
     let name = form.querySelector('#form-field-name').value;
     let email = form.querySelector('#form-field-phone').value;
