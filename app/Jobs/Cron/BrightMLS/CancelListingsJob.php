@@ -122,6 +122,7 @@ class CancelListingsJob implements ShouldQueue
             return response() -> json(['failed' => 'login failed']);
 
         } catch (\Throwable $exception) {
+            $this -> queueData(['Failed' => 'Retrying'], true);
             $this -> release(30);
             return;
         }
