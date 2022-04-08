@@ -30,7 +30,7 @@ function capture_form(form) {
     //if(name != '' && email != '' && phone != '' && message != '') {
 
         let formData = new FormData();
-        formData.append('name', name);
+        formData.append('full_name', name);
         formData.append('email', email);
         formData.append('phone', phone);
         formData.append('message', message);

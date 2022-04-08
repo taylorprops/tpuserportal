@@ -542,7 +542,6 @@ class APIController extends Controller
         $owner = '5119653000001120291'; // Nikki
         $lead_source = 'Website - taylorprops.com';
 
-
         $first_name = $request -> first_name;
         $last_name = $request -> last_name;
         $full_name = $request -> first_name.' '.$request -> last_name;
@@ -552,7 +551,10 @@ class APIController extends Controller
 
         $description = 'Recruitment From Submitted';
 
-        $lead_id = $this -> check_if_user_exists($email, $category);
+        $check_exists = $this -> check_if_user_exists($email, $category);
+        $lead_id = $check_exists['lead_id'];
+        $new_category = $check_exists['new_category'];
+
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
@@ -561,62 +563,27 @@ class APIController extends Controller
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-        $fields = json_encode(
-            array(
-                'data' => array(
-                    [
-                        'Email' => $email,
-                        'Phone' => $phone,
-                        'Follow_Up_Date' => date('Y-m-d')
-                    ]
-                )
-            )
-        );
+        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, false);
 
-        if($existing_lead == false) {
+        $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
+
+        if($new_category == true) {
+
+            $data = [
+                'id' => $lead_id,
+                'Email' => $email,
+                'First_Name' => $first_name,
+                'Last_Name' => $last_name
+            ];
 
             $fields = json_encode(
                 array(
-                    'data' => array(
-                        [
-                            'First_Name' => $first_name,
-                            'Last_Name' => $last_name,
-                            'Full_Name' => $full_name,
-                            'Email' => $email,
-                            'Phone' => $phone,
-                            'Category' => $category,
-                            'Lead_Status' => $lead_status,
-                            'Owner' => $owner,
-                            'Lead_Source' => $lead_source,
-                            'Description' => $description,
-                        ]
-                    )
+                    'data' => array($data)
                 )
             );
+            $this -> add_email_to_lead($fields, $access_token, $api_url);
 
         }
-
-        $headers = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($fields),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-        );
-
-        $curl = curl_init();
-
-        curl_setopt($curl, CURLOPT_URL, $api_url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-
-        $result = curl_exec($curl);
-        $result = json_decode($result, true);
-        curl_close($curl);
-
-        $lead_id = $result['data'][0]['details']['id'];
 
         // add message
         if($message_from_agent) {
@@ -669,23 +636,19 @@ class APIController extends Controller
         $owner = '5119653000000396016'; // Kyle
         $lead_source = 'Website - heritagetitle.com';
 
-        $request -> name = 'Test McTester';
-        $request -> phone = '555-555-5555';
-        $request -> email = 'test@test.com';
-        $request -> message = 'test message';
-
-
-        $name = $request -> name;
-        $last_name = substr($name, strrpos($name, ' '));
+        $full_name = $request -> full_name;
+        $first_name = substr($full_name, 0, strrpos($full_name, ' '));
+        $last_name = substr($full_name, strrpos($full_name, ' '));
         $phone = $request -> phone;
         $email = $request -> email;
         $message = $request -> message ?? null;
 
-
-
         $description = 'Contact From Submitted on Website';
 
-        $lead_id = $this -> check_if_user_exists($email, $category);
+        $check_exists = $this -> check_if_user_exists($email, $category);
+        $lead_id = $check_exists['lead_id'];
+        $new_category = $check_exists['new_category'];
+
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
@@ -694,62 +657,27 @@ class APIController extends Controller
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-        $fields = json_encode(
-            array(
-                'data' => array(
-                    [
-                        'Email' => $email,
-                        'Phone' => $phone,
-                        'Follow_Up_Date' => date('Y-m-d')
-                    ]
-                )
-            )
-        );
+        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, null, $last_name, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, false);
 
-        if($existing_lead == false) {
+        $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
+
+        if($new_category == true) {
+
+            $data = [
+                'id' => $lead_id,
+                'Email' => $email,
+                'First_Name' => $first_name,
+                'Last_Name' => $last_name
+            ];
 
             $fields = json_encode(
                 array(
-                    'data' => array(
-                        [
-                            'Name' => $name,
-                            'Last_Name' => $last_name,
-                            'Email' => $email,
-                            'Phone' => $phone,
-                            'Category' => $category,
-                            'Lead_Status' => $lead_status,
-                            'Owner' => $owner,
-                            'Lead_Source' => $lead_source,
-                            'Description' => $description,
-                        ]
-                    )
+                    'data' => array($data)
                 )
             );
+            $this -> add_email_to_lead($fields, $access_token, $api_url);
 
         }
-
-        $headers = array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($fields),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-        );
-
-        $curl = curl_init();
-
-        curl_setopt($curl, CURLOPT_URL, $api_url);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-
-        $result = curl_exec($curl);
-        $result = json_decode($result, true);
-        curl_close($curl);
-
-
-        $lead_id = $result['data'][0]['details']['id'];
 
         // add message
         if($message) {
@@ -760,14 +688,14 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        // $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-        // $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
-        $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+        $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+        // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
-        Name: '.$name.'<br>
+        Name: '.$full_name.'<br>
         Phone: '.$phone.'<br>
         Email: '.$email.'<br>
         Message: '.$message.'<br><br>
@@ -806,13 +734,24 @@ class APIController extends Controller
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
 
-        $lead_id = $this -> check_if_user_exists($email, $category);
+
+        $check_exists = $this -> check_if_user_exists($email, $category);
+        $lead_id = $check_exists['lead_id'];
+        $new_category = $check_exists['new_category'];
+
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
         }
 
         $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
+
+        $full_name = $agent -> MemberFullName;
+        $first_name = $agent -> MemberFirstName;
+        $last_name = $agent -> MemberLastName;
+        $email = $agent -> MemberEmail;
+        $phone = $agent -> MemberPreferredPhone;
+        $company = $agent -> OfficeName;
 
         if($agent) {
 
@@ -821,66 +760,29 @@ class APIController extends Controller
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $company, $last_name, $email, $phone, $category, $lead_status, null, $lead_source, $description, true);
 
-            $fields = json_encode(
-                array(
-                    'data' => array(
-                        [
-                            'Email' => $agent -> MemberEmail,
-                            'Phone' => $agent -> MemberPreferredPhone,
-                            'Follow_Up_Date' => date('Y-m-d')
-                        ]
-                    )
-                )
-            );
+            $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-            if($existing_lead == false) {
+            if($new_category == true) {
+
+                $data = [
+                    'id' => $lead_id,
+                    'Email' => $email,
+                    'First_Name' => $first_name,
+                    'Last_Name' => $last_name
+                ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array(
-                            [
-                                'First_Name' => $agent -> MemberFirstName,
-                                'Last_Name' => $agent -> MemberLastName,
-                                'Full_Name' => $agent -> MemberFullName,
-                                'Email' => $agent -> MemberEmail,
-                                'Phone' => $agent -> MemberPreferredPhone,
-                                'Category' => $category,
-                                'Lead_Status' => $lead_status,
-                                // 'Owner' => $owner,
-                                'Lead_Source' => $lead_source,
-                                'Lead_Medium' => $lead_medium,
-                                'Lead_Campaign' => $lead_campaign,
-                                'Description' => $description,
-                            ]
-                        ),
-                        'lar_id' => '5119653000001162013'
+                        'data' => array($data)
                     )
                 );
+                $this -> add_email_to_lead($fields, $access_token, $api_url);
 
             }
 
-            $headers = array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($fields),
-                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-            );
 
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_URL, $api_url);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-
-            $result = curl_exec($curl);
-            $result = json_decode($result, true);
-            curl_close($curl);
-
-            $lead_id = $result['data'][0]['details']['id'];
 
             if($existing_lead == false) {
 
@@ -949,7 +851,10 @@ class APIController extends Controller
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
 
-        $lead_id = $this -> check_if_user_exists($email, $category);
+        $check_exists = $this -> check_if_user_exists($email, $category);
+        $lead_id = $check_exists['lead_id'];
+        $new_category = $check_exists['new_category'];
+
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
@@ -966,65 +871,35 @@ class APIController extends Controller
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
+            $full_name = $loan_officer -> full_name;
+            $first_name = $loan_officer -> first_name;
+            $last_name = $loan_officer -> last_name;
+            $email = $loan_officer -> email;
+            $phone = $loan_officer -> phone;
+            $company = '';
 
-            $fields = json_encode(
-                array(
-                    'data' => array(
-                        [
-                            'Email' => $loan_officer -> email,
-                            'Phone' => $loan_officer -> phone,
-                            'Follow_Up_Date' => date('Y-m-d')
-                        ]
-                    )
-                )
-            );
 
-            if($existing_lead == false) {
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $company, $last_name, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, true);
+
+            $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
+
+            if($new_category == true) {
+
+                $data = [
+                    'id' => $lead_id,
+                    'Email' => $email,
+                    'First_Name' => $first_name,
+                    'Last_Name' => $last_name
+                ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array(
-                            [
-                                'First_Name' => $loan_officer -> first_name,
-                                'Last_Name' => $loan_officer -> last_name,
-                                'Full_Name' => $loan_officer -> full_name,
-                                'Email' => $loan_officer -> email,
-                                'Phone' => $loan_officer -> phone,
-                                'Category' => $category,
-                                'Lead_Status' => $lead_status,
-                                'Owner' => $owner,
-                                'Lead_Source' => $lead_source,
-                                'Lead_Medium' => $lead_medium,
-                                'Lead_Campaign' => $lead_campaign,
-                                'Description' => $description,
-                            ]
-                        )
+                        'data' => array($data)
                     )
                 );
+                $this -> add_email_to_lead($fields, $access_token, $api_url);
 
             }
-
-            $headers = array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($fields),
-                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-            );
-
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_URL, $api_url);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-
-            $result = curl_exec($curl);
-            $result = json_decode($result, true);
-            curl_close($curl);
-
-            $lead_id = $result['data'][0]['details']['id'];
 
             if($existing_lead == false) {
 
@@ -1092,7 +967,10 @@ class APIController extends Controller
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
 
-        $lead_id = $this -> check_if_user_exists($email, $category);
+        $check_exists = $this -> check_if_user_exists($email, $category);
+        $lead_id = $check_exists['lead_id'];
+        $new_category = $check_exists['new_category'];
+
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
@@ -1218,6 +1096,191 @@ class APIController extends Controller
 
     }
 
+    public function add_lead_to_zoho($fields, $access_token, $api_url) {
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+        $result = curl_exec($curl);
+        $result = json_decode($result, true);
+        curl_close($curl);
+
+        return $result['data'][0]['details']['id'];
+
+    }
+
+    public function fields($existing_lead, $new_category = false, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, $round_robin) {
+
+        $data = [
+            'Phone' => $phone,
+            'Email' => $email,
+            'Last_Name' => $last_name,
+            'Follow_Up_Date' => date('Y-m-d')
+        ];
+
+        if($existing_lead == false || $new_category == true) {
+            $data = [
+                'Full_Name' => $full_name,
+                'First_Name' => $first_name,
+                'Last_Name' => $last_name,
+                'Company' => $company,
+                'Phone' => $phone,
+                'Email' => $email,
+                'Category' => $category,
+                'Lead_Status' => $lead_status,
+                'Owner' => $owner,
+                'Lead_Source' => $lead_source,
+                'Description' => $description
+            ];
+        }
+
+        $fields = json_encode(
+            array(
+                'data' => array($data),
+                'duplicate_check_fields' => array(
+                    'Email',
+                    'Phone'
+                )
+            )
+        );
+
+        if($new_category == true) {
+            unset($data['Email']);
+            $fields = json_encode(
+                array(
+                    'data' => array($data),
+                    'duplicate_check_fields' => array(
+                        'Email',
+                        'Phone'
+                    ),
+                )
+            );
+        }
+
+        if($round_robin == true) {
+            $fields = json_encode(
+                array(
+                    'data' => array($data),
+                    'duplicate_check_fields' => array(
+                        'Email',
+                        'Phone'
+                    ),
+                    'lar_id' => '5119653000001162013',
+                )
+            );
+        }
+
+        /*
+        'lar_id' => '5119653000001162013',
+        'duplicate_check_fields' => array(
+            'Email',
+            'Phone'
+        )
+            */
+
+
+
+
+        /* $fields = json_encode(
+            array(
+                'data' => array(
+                    [
+                        'Email' => $email,
+                        'Phone' => $phone,
+                        'Follow_Up_Date' => date('Y-m-d')
+                    ]
+                )
+            )
+        );
+
+        if($existing_lead == false) {
+
+            $fields = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'Full_Name' => $full_name,
+                            'First_Name' => $first_name,
+                            'Last_Name' => $last_name,
+                            'Email' => $email,
+                            'Phone' => $phone,
+                            'Category' => $category,
+                            'Lead_Status' => $lead_status,
+                            'Owner' => $owner,
+                            'Lead_Source' => $lead_source,
+                            'Description' => $description,
+                        ]
+                    )
+                )
+            );
+
+            if($new_category == true) {
+
+                $fields = json_encode(
+                    array(
+                        'data' => array(
+                            [
+                                'Full_Name' => $name,
+                                'First_Name' => $first_name,
+                                'Last_Name' => $last_name,
+                                'Phone' => $phone,
+                                'Category' => $category,
+                                'Lead_Status' => $lead_status,
+                                'Owner' => $owner,
+                                'Lead_Source' => $lead_source,
+                                'Description' => $description,
+                            ]
+                        )
+                    )
+                );
+
+            }
+
+        } */
+
+        return $fields;
+
+    }
+
+    public function add_email_to_lead($fields, $access_token, $api_url) {
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+        $result = curl_exec($curl);
+        $result = json_decode($result, true);
+        curl_close($curl);
+
+        return $result['data'][0]['details']['id'];
+
+    }
+
     public function add_notes($id, $message) {
 
         $access_token = $this -> get_access_token('modules');
@@ -1287,14 +1350,19 @@ class APIController extends Controller
         $result = json_decode($result, true);
         curl_close($curl);
 
+        $new_category = false;
 
         if($result) {
+            $lead_id = $result['data'][0]['id'];
             if($category != $result['data'][0]['Category']) {
-                $lead_id = $result['data'][0]['id'];
+                $new_category = true;
             }
         }
 
-        return $lead_id;
+        return [
+            'lead_id' => $lead_id,
+            'new_category' => $new_category
+        ];
 
 
     }
