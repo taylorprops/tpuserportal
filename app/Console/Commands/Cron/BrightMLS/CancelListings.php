@@ -12,7 +12,7 @@ class CancelListings extends Command
      *
      * @var string
      */
-    protected $signature = 'bright_mls:cancel_listings';
+    protected $signature = 'bright_mls:cancel_listings {temp?}';
 
     /**
      * The console command description.
