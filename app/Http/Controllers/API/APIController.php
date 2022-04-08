@@ -552,7 +552,7 @@ class APIController extends Controller
 
         $description = 'Recruitment From Submitted';
 
-        $lead_id = $this -> check_if_user_exists($email);
+        $lead_id = $this -> check_if_user_exists($email, $category);
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
@@ -572,7 +572,8 @@ class APIController extends Controller
                     ),
                     'duplicate_check_fields' => array(
                         'Email',
-                        'Phone'
+                        'Phone',
+                        'Category'
                     )
             )
         );
@@ -597,8 +598,8 @@ class APIController extends Controller
                         ),
                         'duplicate_check_fields' => array(
                             'Email',
-                            // 'Mobile',
-                            'Phone'
+                            'Phone',
+                            'Category'
                         )
                 )
             );
@@ -667,6 +668,139 @@ class APIController extends Controller
 
     }
 
+    /* from heritagetitlemd.com */
+    public function submit_contact_form_title(Request $request) {
+
+        $access_token = $this -> get_access_token('leads');
+
+        // zoho fields
+        $category = 'Title';
+        $lead_status = 'New';
+        $owner = '5119653000000396016'; // Kyle
+        $lead_source = 'Website - heritagetitle.com';
+
+
+        $name = $request -> name;
+        $phone = $request -> phone;
+        $email = $request -> email;
+        $message = $request -> message ?? null;
+
+        $description = 'Contact From Submitted on Website';
+
+        $lead_id = $this -> check_if_user_exists($email, $category);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
+
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
+
+        $fields = json_encode(
+            array(
+                'data' => array(
+                    [
+                        'Email' => $email,
+                        'Phone' => $phone,
+                        'Follow_Up_Date' => date('Y-m-d')
+                    ]
+                    ),
+                    'duplicate_check_fields' => array(
+                        'Email',
+                        'Phone',
+                        'Category'
+                    )
+            )
+        );
+
+        if($existing_lead == false) {
+
+            $fields = json_encode(
+                array(
+                    'data' => array(
+                        [
+                            'Name' => $name,
+                            'Email' => $email,
+                            'Phone' => $phone,
+                            'Category' => $category,
+                            'Lead_Status' => $lead_status,
+                            'Owner' => $owner,
+                            'Lead_Source' => $lead_source,
+                            'Description' => $description,
+                        ]
+                        ),
+                        'duplicate_check_fields' => array(
+                            'Email',
+                            'Phone',
+                            'Category'
+                        )
+                )
+            );
+
+        }
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+        $result = curl_exec($curl);
+        $result = json_decode($result, true);
+        curl_close($curl);
+
+        $lead_id = $result['data'][0]['details']['id'];
+
+        // add message
+        if($message) {
+
+            $this -> add_notes($lead_id, $message);
+
+        }
+
+        // Send email notification to Nikki and Kyle
+
+        $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+        $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+        // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+
+        $body = '
+        An agent just submitted a contact form on taylorprops.com.<br><br>
+        Name: '.$name.'<br>
+        Phone: '.$phone.'<br>
+        Email: '.$email.'<br>
+        Message: '.$message.'<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+
+
+        $message = [
+            'company' => $request -> company ?? 'Taylor Properties',
+            'subject' => $description,
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body,
+            'attachments' => null
+        ];
+
+        Mail::to([$to])
+        -> cc([$cc])
+        -> send(new EmailGeneral($message));
+
+
+        return response() -> json(['status' => 'success']);
+
+    }
+
     public function add_email_clicker_real_estate(Request $request) {
 
 
@@ -675,22 +809,18 @@ class APIController extends Controller
         $access_token = $this -> get_access_token('leads');
 
         $email = $request -> email;
+        // zoho fields
+        $category = 'Real Estate';
+        $lead_status = 'New';
+        $lead_source = $request -> utm_source;
+        $lead_medium = $request -> utm_medium;
+        $lead_campaign = $request -> utm_campaign;
 
-        $lead_id = $this -> check_if_user_exists($email);
+        $lead_id = $this -> check_if_user_exists($email, $category);
         $existing_lead = false;
         if($lead_id) {
             $existing_lead = true;
         }
-
-
-        // zoho fields
-        $category = 'Real Estate';
-        $lead_status = 'New';
-        // $owner = '5119653000000396016'; // Kyle
-        // $lead_source = 'Email Clickers';
-        $lead_source = $request -> utm_source;
-        $lead_medium = $request -> utm_medium;
-        $lead_campaign = $request -> utm_campaign;
 
         $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
 
@@ -713,7 +843,8 @@ class APIController extends Controller
                         ),
                         'duplicate_check_fields' => array(
                             'Email',
-                            'Phone'
+                            'Phone',
+                            'Category'
                         )
                 )
             );
@@ -741,7 +872,8 @@ class APIController extends Controller
                             'lar_id' => '5119653000001162013',
                             'duplicate_check_fields' => array(
                                 'Email',
-                                'Phone'
+                                'Phone',
+                                'Category'
                             )
                     )
                 );
@@ -829,13 +961,6 @@ class APIController extends Controller
         $access_token = $this -> get_access_token('leads');
 
         $email = $request -> email;
-
-        $lead_id = $this -> check_if_user_exists($email);
-        $existing_lead = false;
-        if($lead_id) {
-            $existing_lead = true;
-        }
-
         // zoho fields
         $category = 'Mortgage';
         $lead_status = 'New';
@@ -843,6 +968,14 @@ class APIController extends Controller
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
+
+        $lead_id = $this -> check_if_user_exists($email, $category);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
+
 
         $loan_officer = LoanOfficerAddresses::where('email', $email) -> first();
 
@@ -865,7 +998,8 @@ class APIController extends Controller
                         ),
                         'duplicate_check_fields' => array(
                             'Email',
-                            'Phone'
+                            'Phone',
+                            'Category'
                         )
                 )
             );
@@ -892,7 +1026,8 @@ class APIController extends Controller
                             ),
                             'duplicate_check_fields' => array(
                                 'Email',
-                                'Phone'
+                                'Phone',
+                                'Category'
                             )
                     )
                 );
@@ -980,19 +1115,20 @@ class APIController extends Controller
         $access_token = $this -> get_access_token('leads');
 
         $email = $request -> email;
-
-        $lead_id = $this -> check_if_user_exists($email);
-        $existing_lead = false;
-        if($lead_id) {
-            $existing_lead = true;
-        }
-
         // zoho fields
         $category = 'Title';
         $lead_status = 'New';
         $lead_source = $request -> utm_source;
         $lead_medium = $request -> utm_medium;
         $lead_campaign = $request -> utm_campaign;
+
+        $lead_id = $this -> check_if_user_exists($email, $category);
+        $existing_lead = false;
+        if($lead_id) {
+            $existing_lead = true;
+        }
+
+
 
         $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
 
@@ -1013,7 +1149,8 @@ class APIController extends Controller
                         ),
                         'duplicate_check_fields' => array(
                             'Email',
-                            'Phone'
+                            'Phone',
+                            'Category'
                         )
                 )
             );
@@ -1041,7 +1178,8 @@ class APIController extends Controller
                             'lar_id' => '5119653000001162013',
                             'duplicate_check_fields' => array(
                                 'Email',
-                                'Phone'
+                                'Phone',
+                                'Category'
                             )
                     )
                 );
@@ -1164,7 +1302,7 @@ class APIController extends Controller
 
     }
 
-    public function check_if_user_exists($email) {
+    public function check_if_user_exists($email, $category) {
 
         $access_token = $this -> get_access_token('leads');
 
@@ -1189,12 +1327,11 @@ class APIController extends Controller
         $result = json_decode($result, true);
         curl_close($curl);
 
-        // if($result['status'] && $result['status'] == 'error') {
-        //     return false;
-        // }
 
         if($result) {
-            $lead_id = $result['data'][0]['id'];
+            if($category != $result['data'][0]['Category']) {
+                $lead_id = $result['data'][0]['id'];
+            }
         }
 
         return $lead_id;

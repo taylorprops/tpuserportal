@@ -7,7 +7,45 @@ window.addEventListener('load', function() {
         send_lead_to_zoho();
     }
 
+    document.querySelector('#submit_form').addEventListener('mousedown', function(e) {
+        let form = document.querySelector('#contact_form');
+        e.preventDefault();
+        capture_form(form);
+        form.submit();
+    });
+
 });
+
+function capture_form(form) {
+
+    console.log('form submitted');
+    let url = 'https://tpuserportal.com/api/heritage_title/submit_contact_form';
+    // let url = 'https://1103-71-121-147-194.ngrok.io/api/heritage_title/submit_contact_form';
+
+    let name = form.querySelector('#form-field-name').value;
+    let email = form.querySelector('#form-field-phone').value;
+    let phone = form.querySelector('#form-field-email').value;
+    let message = form.querySelector('#form-field-message').value;
+
+    //if(name != '' && email != '' && phone != '' && message != '') {
+
+        let formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('message', message);
+
+        axios.post(url, formData)
+        .then(function (response) {
+        })
+        .catch(function (error) {
+        });
+
+
+    //}
+
+
+}
 
 
 function send_lead_to_zoho() {
