@@ -106,5 +106,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
 
         $this -> queueProgress(100);
 
+        return;
+
     }
 }

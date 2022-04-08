@@ -112,5 +112,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
         $this -> queueProgress(100);
 
+        return;
+
     }
 }

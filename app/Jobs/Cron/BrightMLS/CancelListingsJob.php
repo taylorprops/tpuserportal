@@ -115,7 +115,7 @@ class CancelListingsJob implements ShouldQueue
 
                 $rets -> Disconnect();
 
-                return true;
+                return;
 
             }
 
