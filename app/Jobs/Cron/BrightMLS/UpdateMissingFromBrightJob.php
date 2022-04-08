@@ -60,13 +60,13 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             $bright_results = [];
             foreach($results as $result) {
-                $bright_results[] = $result['ListingId'];
+                $bright_results[] = $result['ListingKey'];
             }
 
-            $db_results = BrightListings::select('ListingId')
+            $db_results = BrightListings::select('ListingKey')
             -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
             -> get()
-            -> pluck('ListingId')
+            -> pluck('ListingKey')
             -> toArray();
 
             $missing_from_bright = array_diff($db_results, $bright_results);
