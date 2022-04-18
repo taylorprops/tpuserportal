@@ -63,9 +63,9 @@ class AppServiceProvider extends ServiceProvider
             -> toArray(),
         ]);
 
-        Queue::failing(function (JobFailed $event) {
-            Artisan::command('queue:restart');
-        });
+        // Queue::failing(function (JobFailed $event) {
+        //     Artisan::command('queue:restart');
+        // });
 
     }
 }
