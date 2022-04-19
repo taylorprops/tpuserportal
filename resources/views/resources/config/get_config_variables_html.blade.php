@@ -26,7 +26,7 @@
                     </td>
                     <td>
                         <textarea class="form-element textarea md config-input config-value w-full"
-                        rows="{{ (strlen($config -> config_value) / 110) }}"
+                        rows="1{{-- {{ (strlen($config -> config_value) / 110) }} --}}"
                         data-id="{{ $config -> id }}"
                         data-field="config_value"
                         >{{ $config -> config_value }}</textarea>

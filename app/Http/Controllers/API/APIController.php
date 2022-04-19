@@ -692,10 +692,8 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-        $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+        $to = ['email' => config('global.Kyleabrams@heritagefinancial.com')];
         // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
@@ -715,7 +713,6 @@ class APIController extends Controller
         ];
 
         Mail::to([$to])
-        -> cc([$cc])
         -> send(new EmailGeneral($message));
 
 
@@ -920,7 +917,7 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            $to = ['email' => config('global.recruiting_email_mortgage_to_address'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+            $to = ['email' => config('global.Kyleabrams@heritagefinancial.com'), 'name' => config('global.recruiting_email_mortgage_to_name')];
             // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
@@ -1154,73 +1151,6 @@ class APIController extends Controller
             );
         }
 
-        /*
-        'lar_id' => '5119653000001162013',
-        'duplicate_check_fields' => array(
-            'Email',
-            'Phone'
-        )
-            */
-
-
-
-
-        /* $fields = json_encode(
-            array(
-                'data' => array(
-                    [
-                        'Email' => $email,
-                        'Phone' => $phone,
-                        'Follow_Up_Date' => date('Y-m-d')
-                    ]
-                )
-            )
-        );
-
-        if($existing_lead == false) {
-
-            $fields = json_encode(
-                array(
-                    'data' => array(
-                        [
-                            'Full_Name' => $full_name,
-                            'First_Name' => $first_name,
-                            'Last_Name' => $last_name,
-                            'Email' => $email,
-                            'Phone' => $phone,
-                            'Category' => $category,
-                            'Lead_Status' => $lead_status,
-                            'Owner' => $owner,
-                            'Lead_Source' => $lead_source,
-                            'Description' => $description,
-                        ]
-                    )
-                )
-            );
-
-            if($new_category == true) {
-
-                $fields = json_encode(
-                    array(
-                        'data' => array(
-                            [
-                                'Full_Name' => $name,
-                                'First_Name' => $first_name,
-                                'Last_Name' => $last_name,
-                                'Phone' => $phone,
-                                'Category' => $category,
-                                'Lead_Status' => $lead_status,
-                                'Owner' => $owner,
-                                'Lead_Source' => $lead_source,
-                                'Description' => $description,
-                            ]
-                        )
-                    )
-                );
-
-            }
-
-        } */
 
         return $fields;
 
