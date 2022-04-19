@@ -541,6 +541,8 @@ class APIController extends Controller
         $lead_status = 'New';
         $owner = '5119653000001120291'; // Nikki
         $lead_source = 'Website - taylorprops.com';
+        $lead_medium = null;
+        $lead_campaign = null;
 
         $first_name = $request -> first_name;
         $last_name = $request -> last_name;
@@ -563,7 +565,7 @@ class APIController extends Controller
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, false);
+        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
 
         $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
@@ -635,6 +637,8 @@ class APIController extends Controller
         $lead_status = 'New';
         $owner = '5119653000000396016'; // Kyle
         $lead_source = 'Website - heritagetitle.com';
+        $lead_medium = null;
+        $lead_campaign = null;
 
         $full_name = $request -> full_name;
         $first_name = substr($full_name, 0, strrpos($full_name, ' '));
@@ -657,7 +661,7 @@ class APIController extends Controller
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, null, $last_name, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, false);
+        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, null, $last_name, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
 
         $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
@@ -721,7 +725,6 @@ class APIController extends Controller
 
     public function add_email_clicker_real_estate(Request $request) {
 
-
         // https://taylorprops.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');
@@ -760,7 +763,7 @@ class APIController extends Controller
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, null, $lead_source, $description, true);
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, null, $lead_source, $lead_medium, $lead_campaign, $description, true);
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
@@ -781,8 +784,6 @@ class APIController extends Controller
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
 
             }
-
-
 
             if($existing_lead == false) {
 
@@ -838,7 +839,7 @@ class APIController extends Controller
     public function add_email_clicker_mortgage(Request $request) {
 
 
-        // http://heritagefinancial.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
+        // http://heritagefinancial.com/?utm_source=MortgageClick&utm_medium=Click&utm_campaign=CampaignName&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');
 
@@ -878,8 +879,7 @@ class APIController extends Controller
             $phone = $loan_officer -> phone;
             $company = '';
 
-
-            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $company, $last_name, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, true);
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, true);
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
@@ -980,71 +980,40 @@ class APIController extends Controller
 
         $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
 
+        $full_name = $agent -> MemberFullName;
+        $first_name = $agent -> MemberFirstName;
+        $last_name = $agent -> MemberLastName;
+        $email = $agent -> MemberEmail;
+        $phone = $agent -> MemberPreferredPhone;
+        $company = $agent -> OfficeName;
+
         if($agent) {
 
             $description = 'An agent clicked on a link in an email for more information';
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-            $fields = json_encode(
-                array(
-                    'data' => array(
-                        [
-                            'Email' => $agent -> MemberEmail,
-                            'Phone' => $agent -> MemberPreferredPhone,
-                            'Follow_Up_Date' => date('Y-m-d')
-                        ]
-                    )
-                )
-            );
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, null, $lead_source, $lead_medium, $lead_campaign, $description, true);
 
-            if($existing_lead == false) {
+            $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
+
+            if($new_category == true) {
+
+                $data = [
+                    'id' => $lead_id,
+                    'Email' => $email,
+                    'First_Name' => $first_name,
+                    'Last_Name' => $last_name
+                ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array(
-                            [
-                                'First_Name' => $agent -> MemberFirstName,
-                                'Last_Name' => $agent -> MemberLastName,
-                                'Full_Name' => $agent -> MemberFullName,
-                                'Email' => $agent -> MemberEmail,
-                                'Phone' => $agent -> MemberPreferredPhone,
-                                'Category' => $category,
-                                'Lead_Status' => $lead_status,
-                                // 'Owner' => $owner,
-                                'Lead_Source' => $lead_source,
-                                'Lead_Medium' => $lead_medium,
-                                'Lead_Campaign' => $lead_campaign,
-                                'Description' => $description,
-                            ]
-                        ),
-                        'lar_id' => '5119653000001162013'
+                        'data' => array($data)
                     )
                 );
+                $this -> add_email_to_lead($fields, $access_token, $api_url);
 
             }
-
-            $headers = array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($fields),
-                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-            );
-
-            $curl = curl_init();
-
-            curl_setopt($curl, CURLOPT_URL, $api_url);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
-
-            $result = curl_exec($curl);
-            $result = json_decode($result, true);
-            curl_close($curl);
-
-            $lead_id = $result['data'][0]['details']['id'];
 
             if($existing_lead == false) {
 
@@ -1065,7 +1034,7 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+            $to = ['email' => config('global.recruiting_email_title_to_address')];
             // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
@@ -1122,7 +1091,7 @@ class APIController extends Controller
 
     }
 
-    public function fields($existing_lead, $new_category = false, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $description, $round_robin) {
+    public function fields($existing_lead, $new_category = false, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, $round_robin) {
 
         $data = [
             'Phone' => $phone,
@@ -1143,6 +1112,8 @@ class APIController extends Controller
                 'Lead_Status' => $lead_status,
                 'Owner' => $owner,
                 'Lead_Source' => $lead_source,
+                'Lead_Medium' => $lead_medium,
+                'Lead_Campaign' => $lead_campaign,
                 'Description' => $description
             ];
         }

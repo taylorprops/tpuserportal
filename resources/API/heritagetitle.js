@@ -1,6 +1,9 @@
 
 load_axios();
 
+let url = 'https://tpuserportal.com';
+// let url = 'https://2ee8-71-121-147-194.ngrok.io';
+
 window.addEventListener('load', function() {
 
     if(document.URL.match(/utm_source/)) {
@@ -18,9 +21,7 @@ window.addEventListener('load', function() {
 
 function capture_form(form) {
 
-    console.log('form submitted');
-    // let url = 'https://tpuserportal.com/api/heritage_title/submit_contact_form';
-    let url = 'https://1103-71-121-147-194.ngrok.io/api/heritage_title/submit_contact_form';
+    let url = url+'/api/heritage_title/submit_contact_form';
 
     let name = form.querySelector('#form-field-name').value;
     let email = form.querySelector('#form-field-phone').value;
@@ -50,7 +51,7 @@ function capture_form(form) {
 
 function send_lead_to_zoho() {
 
-    let url = 'https://tpuserportal.com';
+
 
     let utm_source = get_url_parameters('utm_source');
     let utm_medium = get_url_parameters('utm_medium');
