@@ -760,7 +760,7 @@ class APIController extends Controller
 
             $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $company, $last_name, $email, $phone, $category, $lead_status, null, $lead_source, $description, true);
+            $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, null, $lead_source, $description, true);
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
