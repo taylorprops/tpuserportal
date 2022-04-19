@@ -56,7 +56,7 @@ class CancelListingsJob implements ShouldQueue
 
                 $db_listings = BrightListings::select('ListingKey')
                 -> whereIn('MlsStatus', $statuses)
-                -> where('updated_at', '<', date('Y-m-d 00:00:01'))
+                -> where('updated_at', '<', date('Y-m-d'))
                 -> limit(5000)
                 -> pluck('ListingKey')
                 -> toArray();
