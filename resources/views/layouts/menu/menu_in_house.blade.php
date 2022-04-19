@@ -186,7 +186,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
-    <x-nav.menu
+    {{-- <x-nav.menu
     :level="'1'"
     :title="'Schedule'"
     :link="'/marketing/schedule'"
@@ -196,7 +196,7 @@
     :level="'1'"
     :title="'Schedule Settings'"
     :link="'/marketing/schedule_settings'"
-    :icon="'fa-duotone fa-gears'"/>
+    :icon="'fa-duotone fa-gears'"/> --}}
 
     <x-nav.menu
     :level="'1'"
