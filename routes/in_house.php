@@ -1,25 +1,26 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestsController;
 use App\Http\Controllers\API\APIController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
-use App\Http\Controllers\DocManagement\Admin\FormsController;
-use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
-use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
-use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
-use App\Http\Controllers\DocManagement\Archives\EscrowController;
 use App\Http\Controllers\Employees\EmployeesController;
-use App\Http\Controllers\HeritageFinancial\LendersController;
+use App\Http\Controllers\Marketing\Data\DataController;
+use App\Http\Controllers\Resources\ResourcesController;
 use App\Http\Controllers\HeritageFinancial\LoansController;
 use App\Http\Controllers\Marketing\AgentAddressesController;
-use App\Http\Controllers\Marketing\Data\DataController;
-use App\Http\Controllers\OldDB\Company\OldTransactionsController;
+use App\Http\Controllers\DocManagement\Admin\FormsController;
+use App\Http\Controllers\HeritageFinancial\LendersController;
 use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
-use App\Http\Controllers\Resources\ResourcesController;
-use App\Http\Controllers\TestsController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Marketing\Schedule\ScheduleController;
+use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
+use App\Http\Controllers\DocManagement\Archives\EscrowController;
+use App\Http\Controllers\OldDB\Company\OldTransactionsController;
+use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
+use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
+use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
 
 Route::middleware(['auth', 'web']) -> group(function () {
 
@@ -131,6 +132,11 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/data/get_results', [DataController::class, 'get_results']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_recently_added', [DataController::class, 'get_recently_added']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_purged', [DataController::class, 'get_purged']) -> middleware(['in_house']);
+
+    Route::get('/marketing/schedule', [ScheduleController::class, 'schedule']) -> middleware(['in_house']);
+    Route::get('/marketing/get_schedule', [ScheduleController::class, 'get_schedule']) -> middleware(['in_house']);
+    Route::get('/marketing/schedule_settings', [ScheduleController::class, 'schedule_settings']) -> middleware(['in_house']);
+    Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);

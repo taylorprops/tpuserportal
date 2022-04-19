@@ -59,6 +59,8 @@ require('./heritage_financial/view_lender');
 require('./heritage_financial/agent_database');
 
 require('./marketing/data/address_database.js');
+require('./marketing/schedule/schedule.js');
+require('./marketing/schedule/schedule_settings.js');
 require('./admin/system_monitor.js');
 
 

@@ -188,6 +188,18 @@
 
     <x-nav.menu
     :level="'1'"
+    :title="'Schedule'"
+    :link="'/marketing/schedule'"
+    :icon="'fa-duotone fa-calendar'"/>
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Schedule Settings'"
+    :link="'/marketing/schedule_settings'"
+    :icon="'fa-duotone fa-gears'"/>
+
+    <x-nav.menu
+    :level="'1'"
     :title="'Address Database'"
     :link="'/marketing/data/address_database'"
     :icon="'fad fa-database'"/>
