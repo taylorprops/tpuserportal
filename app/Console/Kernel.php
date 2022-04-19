@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
 
         // Backups
         $schedule -> command('backup:clean')
-        -> dailyAt('22:00')
+        -> dailyAt('02:00')
         -> timezone('America/New_York')
         -> environments(['production']);
 
