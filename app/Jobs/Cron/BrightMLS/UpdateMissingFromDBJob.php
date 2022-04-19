@@ -112,7 +112,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
 
         } catch (\Throwable $exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(30);
+            $this -> release(90);
             return;
         }
 
