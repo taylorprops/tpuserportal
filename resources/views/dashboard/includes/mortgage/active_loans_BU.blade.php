@@ -15,9 +15,9 @@
 
 </div>
 
-<div class="flex flex-col h-screen-70 w-screen-90 xl:w-screen-70 overflow-hidden"">
+<div class="flex flex-col">
 
-    <div class="-my-2 sm:-mx-6 lg:-mx-8">
+    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 
@@ -27,8 +27,8 @@
 
                 <div class="flex flex-none bg-gray-100">
                     @foreach($table_headers as $header)
-                        <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
-                            <div class="transform rotate-270 translate-y-30 text-xs">
+                        <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
+                            <div class="transform rotate-270 translate-y-30 text-sm">
                                 {{ $header['title'] }}
                             </div>
                         </div>
@@ -37,7 +37,7 @@
 
             </div>
 
-            <div class="pl-2 max-h-600-px overflow-auto whitespace-nowrap{{--  @if(count($active_loans) > 7) pb-96 @endif --}}">
+            <div class="p-2 pt-0 h-auto max-h-600-px overflow-auto whitespace-nowrap{{--  @if(count($active_loans) > 7) pb-96 @endif --}}">
 
                 @forelse($active_loans as $loan)
 
@@ -75,10 +75,10 @@
                         </div>
 
                         <div class="w-32 flex-none">
-                            <div class="text-xs">
+                            <div class="text-sm">
                                 ${{ number_format($loan -> loan_amount) }}
                             </div>
-                            <div class="text-xs {{ $class }}" title="{{ $close_date_type }} Close Date">
+                            <div class="text-sm {{ $class }}" title="{{ $close_date_type }} Close Date">
                                 {{ $close_date_details }}
                             </div>
                             <div class="text-xs">
@@ -90,7 +90,7 @@
 
                             @foreach($table_headers as $header)
 
-                                <div class="flex items-center justify-around w-8 border-r border-gray-400">
+                                <div class="flex items-center justify-around w-12 border-r border-gray-400">
 
                                     @php
                                     $field = $header['db_field'];
@@ -145,13 +145,13 @@
 
 
                                     if($complete == true) {
-                                        echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check text-green-600"></i></span>';
+                                        echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
                                     } else if($incomplete == true && $suspended == false) {
                                         echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times text-red-600"></i></span>';
                                     } else if($incomplete == true && $suspended == true) {
-                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle text-red-600"></i></span>';
+                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle fa-2x text-red-600"></i></span>';
                                     } else if($not_available == true) {
-                                        echo '<span data-tippy-content="N/A"><i class="fal fa-minus text-gray-300"></i></span>';
+                                        echo '<span data-tippy-content="N/A"><i class="fal fa-minus fa-2x text-gray-300"></i></span>';
                                     }
                                     @endphp
 
@@ -168,33 +168,31 @@
 
                 @endforelse
 
-            </div>
+                @if(count($active_loans) > 7)
 
-            {{--  @if(count($active_loans) > 7)
+                    <div class="flex border-b">
 
-                <div class="flex border-b">
+                        <div class="w-128"></div>
 
-                    <div class="w-128 flex-none"></div>
-
-                    <div class="flex bg-gray-100">
-                        @foreach($table_headers as $header)
-                            <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
-                                <div class="transform rotate-90 translate-y-5 text-xs">
-                                    {{ $header['title'] }}
+                        <div class="flex bg-gray-100">
+                            @foreach($table_headers as $header)
+                                <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
+                                    <div class="transform rotate-90 translate-y-5 text-sm">
+                                        {{ $header['title'] }}
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
+
                     </div>
 
-                </div>
+                @endif
 
-            @endif --}}
-
+            </div>
 
         </div>
 
     </div>
 
 </div>
-
 
