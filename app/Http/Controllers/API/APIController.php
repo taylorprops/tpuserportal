@@ -372,7 +372,6 @@ class APIController extends Controller
 
     public function search(Request $request) {
         $search = $request -> search;
-        return $search;
         $loans = Loans::where(function ($query) use ($search) {
             if ($search) {
                 $query -> whereHas('loan_officer_1', function ($query) use ($search) {
