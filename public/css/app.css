@@ -1396,8 +1396,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-24{height:6rem}
 .h-10{height:2.5rem}
 .h-8{height:2rem}
+.h-screen-70{height:70vh}
 .h-40{height:10rem}
-.h-auto{height:auto}
 .h-4{height:1rem}
 .h-12{height:3rem}
 .h-1{height:0.25rem}
@@ -1405,14 +1405,13 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-7{height:1.75rem}
 .h-32{height:8rem}
 .h-screen-60{height:60vh}
+.h-auto{height:auto}
 .h-screen-85{height:85vh}
 .h-screen-55{height:55vh}
-.h-screen-70{height:70vh}
 .h-screen-8{height:8vh}
 .h-screen-92{height:92vh}
 .h-1\.5{height:0.375rem}
 .h-9{height:2.25rem}
-.h-screen-80{height:80vh}
 .max-h-400-px{max-height:400px}
 .max-h-96{max-height:24rem}
 .max-h-200-px{max-height:200px}
@@ -1451,6 +1450,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-8{width:2rem}
 .w-auto{width:auto}
 .w-10{width:2.5rem}
+.w-screen-90{width:90vw}
 .w-128{width:32rem}
 .w-52{width:13rem}
 .w-700-px{width:700px}
@@ -1468,8 +1468,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-56{width:14rem}
 .w-9\/12{width:75%}
 .w-screen-75{width:75vw}
-.w-screen-90{width:90vw}
+.w-500-px{width:500px}
 .min-w-full{min-width:100%}
+.min-w-500-px{min-width:500px}
+.min-w-600-px{min-width:600px}
+.min-w-800-px{min-width:800px}
+.min-w-900-px{min-width:900px}
 .max-w-full{max-width:100%}
 .max-w-1400-px{max-width:1400px}
 .max-w-900-px{max-width:900px}
@@ -2196,6 +2200,7 @@ textarea.required,
 .sm\:grid-cols-10{grid-template-columns:repeat(10, minmax(0, 1fr))}
 .sm\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}
 .sm\:grid-cols-7{grid-template-columns:repeat(7, minmax(0, 1fr))}
+.sm\:grid-cols-11{grid-template-columns:repeat(11, minmax(0, 1fr))}
 .sm\:items-center{align-items:center}
 .sm\:justify-start{justify-content:flex-start}
 .sm\:justify-center{justify-content:center}

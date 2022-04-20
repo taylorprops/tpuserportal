@@ -382,6 +382,7 @@ class APIController extends Controller
                 -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
             }
         })
+        -> whereNotNull('lending_pad_uuid')
         -> orderBy('created_at', 'desc')
         -> get();
 
