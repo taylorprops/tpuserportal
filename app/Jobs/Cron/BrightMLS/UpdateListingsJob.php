@@ -103,7 +103,7 @@ class UpdateListingsJob implements ShouldQueue
             return response() -> json(['failed' => 'login failed']);
 
         } catch (\Throwable $exception) {
-            $this -> release(30);
+            $this -> release(90);
             return;
         }
 
