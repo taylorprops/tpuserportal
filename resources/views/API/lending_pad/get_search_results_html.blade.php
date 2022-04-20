@@ -10,7 +10,7 @@
 
             <div class="grid sm:grid-cols-11 m-2 p-2 border rounded-md">
                 <div class="flex items-center justify-around">
-                    <a href="https://prod.lendingpad.com/web/#/company/loans/{{ $loan -> lending_pad_uuid }}" target="_blank" class="p-2 border rounded bg-blue-800 text-white">View</a>
+                    <a href="https://prod.lendingpad.com/web/#/company/loans/{{ $loan -> lending_pad_uuid }}" target="_blank" class="p-2 border rounded bg-blue-400 text-white">View</a>
                 </div>
                 <div class="col-span-2 mr-4">
                     {{ $loan -> borrower_fullname }}
