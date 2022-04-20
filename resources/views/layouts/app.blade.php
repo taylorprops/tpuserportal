@@ -15,7 +15,6 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-        {{-- <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU" crossorigin="anonymous"> --}}
         <script src="https://kit.fontawesome.com/ff68a2cde5.js" crossorigin="anonymous"></script>
 
 

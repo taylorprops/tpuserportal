@@ -183,6 +183,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 Route::get('/api/test', [APIController::class, 'test']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_critical_dates']) -> middleware(['lending_pad']);
+Route::get('/api/lending_pad/search', [APIController::class, 'search']) -> middleware(['lending_pad']);
 
 
 Route::get('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);

@@ -370,6 +370,28 @@ class APIController extends Controller
         return response() -> json(['status' => 'not_added']);
     }
 
+    public function search(Request $request) {
+        $search = $request -> search;
+        $loans = Loans::where(function ($query) use ($search) {
+            if ($search) {
+                $query -> whereHas('loan_officer_1', function ($query) use ($search) {
+                    $query -> where('fullname', 'like', '%'.$search.'%');
+                })
+                -> orWhere('street', 'like', '%'.$search.'%')
+                -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
+                -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+            }
+        })
+        -> orderBy('created_at', 'desc')
+        -> get();
+
+        if(count($loans) == 0) {
+            return response() -> json(['status' => 'not_found']);
+        }
+
+        return view('API/lending_pad/get_search_results_html', compact('loans'));
+    }
+
     public function parse_name($name)
     {
         $parser = new Parser();
