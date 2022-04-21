@@ -23,8 +23,8 @@ function capture_form(form) {
     url = domain+'/api/heritage_title/submit_contact_form_title';
 
     let name = form.querySelector('#form-field-name').value;
-    let email = form.querySelector('#form-field-phone').value;
-    let phone = form.querySelector('#form-field-email').value;
+    let email = form.querySelector('#form-field-email').value;
+    let phone = form.querySelector('#form-field-phone').value;
     let message = form.querySelector('#form-field-message').value;
 
     let formData = new FormData();
