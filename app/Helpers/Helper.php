@@ -296,4 +296,8 @@ class Helper
         );
         return isset($formulas[$to]) ? $formulas[$to] : 0;
     }
+
+    public static function br2nl($value) {
+        return preg_replace('/<br\s?\/?>/ius', "\n", str_replace("\n","",str_replace("\r","", htmlspecialchars_decode($value))));
+    }
 }

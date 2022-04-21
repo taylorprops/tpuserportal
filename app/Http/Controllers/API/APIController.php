@@ -839,7 +839,7 @@ class APIController extends Controller
                 $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
             }
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
-            $cc = ['email' => '4432237356@vtext.com', 'name' => 'Mike Taylor'];
+            $to_text = ['email' => '4432237356@vtext.com', 'name' => 'Mike Taylor'];
 
             $body = '
             An agent just clicked on a link in an email for more information.<br><br>
@@ -858,8 +858,9 @@ class APIController extends Controller
             ];
 
             Mail::to([$to])
-            -> cc([$cc])
             -> send(new EmailGeneral($message));
+            Mail::to([$to_text])
+            -> send(new EmailGeneral(Helper::br2nl($message)));
 
 
             return response() -> json(['status' => 'success']);
