@@ -64,7 +64,8 @@ class AdminController extends Controller
 
         $ids = explode(',', $request -> checked);
         QueueMonitor::whereIn('id', $ids) -> delete();
-
+        exec('cd /var/www/tpuserportal.com && php artisan queue:prune-failed');
+        dd('workd?');
         \Artisan::call('queue:prune-failed');
 
         return response() -> json(['status' => 'success']);
