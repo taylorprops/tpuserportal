@@ -715,7 +715,7 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => config('global.Kyleabrams@heritagefinancial.com')];
+        $to = ['email' => config('global.contact_email_title_to_address')];
         // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
 
         $body = '
