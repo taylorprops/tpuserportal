@@ -815,17 +815,17 @@ class APIController extends Controller
 
                 $this -> add_notes($lead_id, 'Lead added from Email Click');
 
-                return response() -> json(['status' => 'success']);
+            } else {
+
+                $notes =
+                $agent -> MemberFullname.' clicked on a link in an email again
+                Lead Source - '.$lead_source.'
+                Lead Medium - '.$lead_medium.'
+                Lead Campaign - '.$lead_campaign;
+
+                $this -> add_notes($lead_id, $notes);
 
             }
-
-            $notes =
-            $agent -> MemberFullname.' clicked on a link in an email
-            Lead Source - '.$lead_source.'
-            Lead Medium - '.$lead_medium.'
-            Lead Campaign - '.$lead_campaign;
-
-            $this -> add_notes($lead_id, $notes);
 
 
             // Send email notification
@@ -838,9 +838,10 @@ class APIController extends Controller
             } else {
                 $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
             }
+            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
-            An agent just clicked on a link in an email for more information. This is the second contact from the agent.<br><br>
+            An agent just clicked on a link in an email for more information.<br><br>
             Name: '.$agent -> MemberFullName.'<br>
             Phone: '.$agent -> MemberPreferredPhone.'<br>
             Email: '.$agent -> MemberEmail.'<br><br>
@@ -849,7 +850,7 @@ class APIController extends Controller
 
             $message = [
                 'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert! Second Contact from an Agent',
+                'subject' => 'Recruiting Alert! Contact from an Agent',
                 'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
                 'attachments' => null
