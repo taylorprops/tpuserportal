@@ -848,6 +848,7 @@ class APIController extends Controller
             Email: '.$agent -> MemberEmail.'<br><br>
             <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
+            $body_text = Helper::br2nl($body);
 
             $message = [
                 'company' => 'Taylor Properties',
@@ -859,8 +860,10 @@ class APIController extends Controller
 
             Mail::to([$to])
             -> send(new EmailGeneral($message));
+
+            $message['body'] = $body_text;
             Mail::to([$to_text])
-            -> send(new EmailGeneral(Helper::br2nl($message)));
+            -> send(new EmailGeneral($message));
 
 
             return response() -> json(['status' => 'success']);
