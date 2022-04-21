@@ -37,15 +37,7 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
-        $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING', 'EXPIRED'];
-
-        $db_listings = BrightListings::select('ListingKey')
-        -> whereIn('MlsStatus', $statuses)
-        -> where('updated_at', '<', date('Y-m-d'))
-        -> limit(5000)
-        -> pluck('ListingKey')
-        -> toArray();
-        dd(count($db_listings));
+        dd(config('global.contact_email_title_to_address'));
 
     }
 

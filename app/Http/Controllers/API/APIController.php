@@ -1057,7 +1057,7 @@ class APIController extends Controller
 
             // Send email notification to Kyle
 
-            $to = ['email' => config('global.recruiting_email_title_to_address')];
+            $to = ['email' => config('global.contact_email_title_to_address')];
             // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
 
             $body = '
