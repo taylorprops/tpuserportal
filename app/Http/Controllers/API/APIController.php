@@ -858,6 +858,7 @@ class APIController extends Controller
             ];
 
             Mail::to([$to])
+            -> cc($cc)
             -> send(new EmailGeneral($message));
 
 
