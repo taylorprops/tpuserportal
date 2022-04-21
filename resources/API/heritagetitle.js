@@ -1,8 +1,8 @@
 
 load_axios();
 
-let url = 'https://tpuserportal.com';
-// let url = 'https://2ee8-71-121-147-194.ngrok.io';
+let domain = 'https://tpuserportal.com';
+// let domain = 'https://2ee8-71-121-147-194.ngrok.io';
 
 window.addEventListener('load', function() {
 
@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
 
 function capture_form(form) {
 
-    url = url+'/api/heritage_title/submit_contact_form_title';
+    url = domain+'/api/heritage_title/submit_contact_form_title';
 
     let name = form.querySelector('#form-field-name').value;
     let email = form.querySelector('#form-field-phone').value;
@@ -59,7 +59,7 @@ function send_lead_to_zoho() {
     formData.append('utm_campaign', utm_campaign);
     formData.append('email', email);
 
-    axios.post(url+'/api/marketing/add_email_clicker_title', formData)
+    axios.post(domain+'/api/marketing/add_email_clicker_title', formData)
     .then(function (response) {
     })
     .catch(function (error) {
