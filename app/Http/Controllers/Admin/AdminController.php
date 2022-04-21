@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Admin\QueueMonitor;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -64,9 +65,8 @@ class AdminController extends Controller
 
         $ids = explode(',', $request -> checked);
         QueueMonitor::whereIn('id', $ids) -> delete();
-        exec('cd /var/www/tpuserportal.com && php artisan queue:prune-failed');
-        dd('workd?');
-        \Artisan::call('queue:prune-failed');
+
+        Artisan::call('queue:prune-failed');
 
         return response() -> json(['status' => 'success']);
 
