@@ -65,6 +65,8 @@ class AdminController extends Controller
         $ids = explode(',', $request -> checked);
         QueueMonitor::whereIn('id', $ids) -> delete();
 
+        \Artisan::call('queue:prune-failed');
+
         return response() -> json(['status' => 'success']);
 
     }
