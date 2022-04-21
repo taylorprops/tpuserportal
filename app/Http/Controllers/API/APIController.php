@@ -619,10 +619,13 @@ class APIController extends Controller
 
         // Send email notification to Nikki and Kyle
 
-        $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-        $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
-        // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-        // $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        if(config('app.env') == 'production') {
+            $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+            $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+        } else {
+            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
+            $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+        }
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
@@ -827,8 +830,11 @@ class APIController extends Controller
 
             // Send email notification
 
-            $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            if(config('app.env') == 'production') {
+                $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
+            } else {
+                $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            }
 
             $body = '
             An agent just clicked on a link in an email for more information. This is the second contact from the agent.<br><br>
@@ -942,9 +948,11 @@ class APIController extends Controller
 
 
             // Send email notification to Kyle
-
-            $to = ['email' => config('global.Kyleabrams@heritagefinancial.com'), 'name' => config('global.recruiting_email_mortgage_to_name')];
-            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            if(config('app.env') == 'production') {
+                $to = ['email' => config('global.Kyleabrams@heritagefinancial.com'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+            } else {
+                $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            }
 
             $body = '
             A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
@@ -1056,9 +1064,11 @@ class APIController extends Controller
 
 
             // Send email notification to Kyle
-
-            $to = ['email' => config('global.contact_email_title_to_address')];
-            // $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            if(config('app.env') == 'production') {
+                $to = ['email' => config('global.contact_email_title_to_address')];
+            } else {
+                $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            }
 
             $body = '
             An Agent just clicked on a link in an email for more information. This is the second contact from the Agent.<br><br>
