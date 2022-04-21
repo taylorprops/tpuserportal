@@ -832,13 +832,13 @@ class APIController extends Controller
 
             if(config('app.env') == 'production') {
                 $to = [
-                    // ['email' => config('global.recruiting_email_real_estate_to_address')],
+                    ['email' => config('global.recruiting_email_real_estate_to_address')],
                     ['email' => 'miketaylor0101@gmail.com'],
-                    // ['email' => 'delia@taylorprops.com']
+                    ['email' => 'delia@taylorprops.com']
                 ];
                 $text_to = [
                     ['email' => '4432237356@vtext.com'],
-                    // ['email' => '4105701014@vtext.com'],
+                    ['email' => '4105701014@vtext.com'],
                 ];
             } else {
                 $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
@@ -864,8 +864,7 @@ class APIController extends Controller
             Mail::to($to)
             -> send(new EmailGeneral($message));
 
-            $body = '
-            An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
+            $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
             $message = [
                 'company' => 'Taylor Properties',
