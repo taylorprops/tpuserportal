@@ -99,7 +99,7 @@ $breadcrumbs = [
                                 show_buttons();">
                             </div>
                             <div class="ml-4" x-show="show_buttons_div" x-transition>
-                                <button class="button primary md" @click="delete_checked($el)">Delete Checked</button>
+                                <button class="button danger sm" @click="delete_checked($el)">Delete Checked</button>
                             </div>
                         </div>
                         <div class="max-h-600-px overflow-auto" x-ref="failed_jobs_div"></div>
