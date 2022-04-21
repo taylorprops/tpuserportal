@@ -66,7 +66,7 @@ class AdminController extends Controller
         $ids = explode(',', $request -> checked);
         QueueMonitor::whereIn('id', $ids) -> delete();
 
-        Artisan::call('queue:prune-failed');
+        Artisan::call('queue:prune-failed --hours=1');
 
         return response() -> json(['status' => 'success']);
 
