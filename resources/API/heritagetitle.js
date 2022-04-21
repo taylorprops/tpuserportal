@@ -14,36 +14,31 @@ window.addEventListener('load', function() {
         let form = document.querySelector('#contact_form');
         e.preventDefault();
         capture_form(form);
-        form.submit();
     });
 
 });
 
 function capture_form(form) {
 
-    let url = url+'/api/heritage_title/submit_contact_form';
+    url = url+'/api/heritage_title/submit_contact_form_title';
 
     let name = form.querySelector('#form-field-name').value;
     let email = form.querySelector('#form-field-phone').value;
     let phone = form.querySelector('#form-field-email').value;
     let message = form.querySelector('#form-field-message').value;
 
-    //if(name != '' && email != '' && phone != '' && message != '') {
+    let formData = new FormData();
+    formData.append('full_name', name);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('message', message);
 
-        let formData = new FormData();
-        formData.append('full_name', name);
-        formData.append('email', email);
-        formData.append('phone', phone);
-        formData.append('message', message);
-
-        axios.post(url, formData)
-        .then(function (response) {
-        })
-        .catch(function (error) {
-        });
-
-
-    //}
+    axios.post(url, formData)
+    .then(function (response) {
+        form.submit();
+    })
+    .catch(function (error) {
+    });
 
 
 }
