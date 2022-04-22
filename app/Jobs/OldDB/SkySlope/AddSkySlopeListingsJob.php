@@ -18,7 +18,8 @@ class AddSkySlopeListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $timeout = 60;
+    public $tries = 10;
+    public $backoff = [90];
 
     /**
      * Create a new job instance.

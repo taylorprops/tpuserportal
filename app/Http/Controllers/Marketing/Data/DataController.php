@@ -16,6 +16,8 @@ class DataController extends Controller
 {
     private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
 
+    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState'];
+
     private $loan_officer_columns = ['id', 'first_name', 'last_name', 'full_name', 'email', 'phone', 'ext', 'city', 'state', 'county'];
 
     public function address_database(Request $request)
