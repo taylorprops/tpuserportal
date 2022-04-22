@@ -719,7 +719,11 @@ class APIController extends Controller
         // Send email notification
 
         if(config('app.env') == 'production') {
-            $to = ['email' => config('global.contact_email_title_to_address')];
+            $to = [
+                ['email' => config('global.contact_email_title_to_address')],
+                ['email' => 'Heather@heritagetitlemd.com'],
+                ['email' => 'k.hayghe@heritagetitlemd.com'],
+            ];
         } else {
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
         }

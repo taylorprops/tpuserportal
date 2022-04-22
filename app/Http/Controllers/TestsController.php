@@ -8,6 +8,7 @@ use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Backups\Rsync;
 use App\Models\Employees\Agents;
+use App\Models\Temp\DatabaseDates;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Log;
@@ -36,8 +37,31 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
+        $rets = Helper::rets_login();
 
-        dd(config('global.contact_email_title_to_address'));
+        $dates = DatabaseDates::where('job', 'find_missing_agents') -> first();
+        $start_date = $dates -> start_date;
+
+        $resource = 'ActiveAgent';
+        $class = 'ActiveMember';
+
+        $start = date('Y-m-d H:i:s', strtotime($start_date));
+        $start = str_replace(' ', 'T', $start);
+        $end = date("Y-m-d 23:59:59", strtotime("$start_date +30 day"));
+        $end = str_replace(' ', 'T', $end);
+
+        $query = '(ModificationTimestamp='.$start.'-'.$end.')';
+
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query
+        );
+
+        $agents = $results -> toArray();
+        $total_found = count($agents);
+        dd($total_found);
+
 
     }
 
