@@ -29,9 +29,28 @@ $breadcrumbs = [
                                 List Options
                             </div>
 
-                            <div>
-                                <button type="button" class="button primary xl"
-                                @click="get_results()">Get Results <i class="fa fa-share ml-2"></i></button>
+                            <div x-show="list_type === 'addresses'">
+                                <div>
+                                    <button type="button" class="button primary md"
+                                    @click="get_results()">Get Results <i class="fa fa-share ml-2"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end items-center space-x-3" x-show="list_type === 'emails'">
+                                <div>Get List For:</div>
+                                <div>
+                                    <button type="button" class="button primary md"
+                                    @click="get_results('mailchimp')">MailChimp <i class="fa fa-share ml-2"></i></button>
+                                </div>
+                                <div>
+                                    <button type="button" class="button primary md"
+                                    @click="get_results('sendinblue')">Send In Blue <i class="fa fa-share ml-2"></i></button>
+                                </div>
+                                <div>
+                                    <button type="button" class="button primary md"
+                                    @click="get_results('omnisend')">Omnisend <i class="fa fa-share ml-2"></i></button>
+                                </div>
+
                             </div>
 
                         </div>
@@ -82,7 +101,7 @@ $breadcrumbs = [
                                         value="email"
                                         data-label="Emails"
                                         checked
-                                        @change="search_offices(); agents_selected(); clear_results();"
+                                        @change="search_offices(); agents_selected(); clear_results(); list_type = 'emails'"
                                         x-ref="email_input">
                                     </div>
 
@@ -92,7 +111,7 @@ $breadcrumbs = [
                                         name="list_type"
                                         value="address"
                                         data-label="Home Addresses"
-                                        @change="search_offices(); clear_results();"
+                                        @change="search_offices(); clear_results(); list_type = 'addresses'"
                                         x-ref="address_input">
                                     </div>
 

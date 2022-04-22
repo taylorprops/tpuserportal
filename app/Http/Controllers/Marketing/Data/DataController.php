@@ -16,7 +16,9 @@ class DataController extends Controller
 {
     private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
 
-    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState'];
+    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_send_in_blue = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
 
     private $loan_officer_columns = ['id', 'first_name', 'last_name', 'full_name', 'email', 'phone', 'ext', 'city', 'state', 'county'];
 
@@ -47,6 +49,7 @@ class DataController extends Controller
 
     public function get_results(Request $request)
     {
+        $sender = $request -> sender;
         $list_group = $request -> list_group;
         $list_type = $request -> list_type;
         $states = $request -> states;
@@ -55,6 +58,16 @@ class DataController extends Controller
         $offices = null;
         $results_count = '0';
         $file_location = null;
+
+        if($list_type == 'email') {
+            if($sender == 'mailchimp') {
+                $this -> agent_columns = $this -> agent_columns_mail_chimp;
+            } else if($sender == 'sendinblue') {
+                $this -> agent_columns = $this -> agent_columns_send_in_blue;
+            } else if($sender == 'mailchimp') {
+                $this -> agent_columns = $this -> agent_columns_omni_send;
+            }
+        }
 
         if ($locations) {
             $counties = [];

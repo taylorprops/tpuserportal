@@ -9630,16 +9630,18 @@ if (document.URL.match('address_database')) {
       counties_checked: [],
       results_time: '',
       list_group: 'agents',
+      list_type: 'emails',
       init: function init() {
         this.location_data();
       },
-      get_results: function get_results() {
+      get_results: function get_results(sender) {
         var scope = this;
         ele_loading(document.querySelector('#results_div'));
         var time = Date.now();
         scope.results_time = time;
         var form = document.getElementById('options_form');
         var formData = new FormData(form);
+        formData.append('sender', sender);
 
         if (time == scope.results_time) {
           axios.post('/marketing/data/get_results', formData).then(function (response) {

@@ -8,12 +8,13 @@ if(document.URL.match('address_database')) {
             counties_checked: [],
             results_time: '',
             list_group: 'agents',
+            list_type: 'emails',
 
             init() {
                 this.location_data();
             },
 
-            get_results() {
+            get_results(sender) {
 
                 let scope = this;
                 ele_loading(document.querySelector('#results_div'));
@@ -22,6 +23,7 @@ if(document.URL.match('address_database')) {
 
                 let form = document.getElementById('options_form');
                 let formData = new FormData(form);
+                formData.append('sender', sender);
 
                 if(time == scope.results_time) {
 
