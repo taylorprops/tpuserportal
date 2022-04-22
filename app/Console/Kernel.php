@@ -45,6 +45,12 @@ class Kernel extends ConsoleKernel
         -> everyTwoHours()
         -> environments('production');
 
+        // add missing agents from bright
+        $schedule -> command('bright_mls:find_missing_agents')
+        -> timezone('America/New_York')
+        -> dailyAt('03:00')
+        -> environments('production');
+
         // add bright listings
         $schedule -> command('bright_mls:add_listings')
         -> timezone('America/New_York')
