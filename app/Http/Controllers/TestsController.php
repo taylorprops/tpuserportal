@@ -21,10 +21,7 @@ use App\Models\BrightMLS\BrightListings;
 use App\Models\Employees\EmployeesNotes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\Employees\EmployeesLicenses;
-use App\Models\OldDB\Company\BillingInvoices;
 use App\Models\Marketing\LoanOfficerAddresses;
-use App\Models\DocManagement\Admin\Forms\Forms;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\OldDB\Company\BillingInvoicesItems;
 use App\Models\DocManagement\Archives\Transactions;
@@ -36,6 +33,12 @@ class TestsController extends Controller
 {
 
     public function test(Request $request) {
+
+        // $a = [1,2,3,4,5,6,7,8,9,10];
+        // $b = [3,5,7,9,11,12,13];
+        // dd(array_diff($b,$a));
+
+        ini_set('memory_limit', '-1');
 
         $rets = Helper::rets_login();
 
@@ -50,18 +53,79 @@ class TestsController extends Controller
         $end = date("Y-m-d 23:59:59", strtotime("$start_date +30 day"));
         $end = str_replace(' ', 'T', $end);
 
-        $query = '(ModificationTimestamp='.$start.'-'.$end.')';
+        // $query = '(ModificationTimestamp='.$start.'-'.$end.')';
+
+        // $results = $rets -> Search(
+        //     $resource,
+        //     $class,
+        //     $query
+        // );
+
+        // $agents = $results -> toArray();
+        // $total_found = count($agents);
+        // dd($total_found);
+
+        $query = '((ModificationTimestamp='.$start.'+),~(MemberEmail=*mris.net),~(MemberEmail=*brightmls*))';
 
         $results = $rets -> Search(
             $resource,
             $class,
-            $query
+            $query,
+            [
+                'Select' => 'MemberKey',
+            ]
         );
 
         $agents = $results -> toArray();
-        $total_found = count($agents);
-        dd($total_found);
 
+        $found_in_bright = [];
+        foreach($agents as $agent) {
+            $found_in_bright[] = $agent['MemberKey'];
+        }
+
+        $db_agents = BrightAgentRoster::select('MemberKey') -> get() -> pluck('MemberKey') -> toArray();
+
+        $missing_from_db = array_diff($found_in_bright, $db_agents);
+
+        if(count($missing_from_db) > 0) {
+
+            $query = '(MemberKey='.implode(', ', $missing_from_db).')';
+
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query
+            );
+
+            $agents = $results -> toArray();
+
+            if (count($agents) > 0) {
+                foreach ($agents as $agent) {
+                    $agent_details = array_filter($agent);
+                    $agent['active'] = 'yes';
+                    $MemberKey = $agent['MemberKey'];
+                    unset($agent_details['MemberKey']);
+
+                    $add_agent = BrightAgentRoster::firstOrCreate(
+                        ['MemberKey' => $MemberKey],
+                        $agent_details
+                    );
+
+                    $add_agent -> save();
+                }
+            }
+
+        }
+
+        $missing_from_bright = array_diff($db_agents, $found_in_bright);
+
+        if(count($missing_from_bright) > 0) {
+
+            BrightAgentRoster::whereIn('MemberKey', $missing_from_bright) -> update([
+                'active' => 'no'
+            ]);
+
+        }
 
     }
 
