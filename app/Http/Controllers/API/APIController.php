@@ -621,10 +621,13 @@ class APIController extends Controller
 
         if(config('app.env') == 'production') {
             $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
-            $cc = ['email' => config('global.recruiting_email_real_estate_cc_address')];
+            $cc = [];
+            foreach(config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
+                $cc[] = ['email' => $cc_recip];
+            }
         } else {
-            $to = ['email' => 'mike@taylorprops.com', 'name' => 'Nikki Quesenberry'];
-            $cc = ['email' => 'miketaylor0101@gmail.com', 'name ' => 'Kyle Abrams'];
+            $to = ['email' => 'mike@taylorprops.com'];
+            $cc = [];
         }
 
         $body = '
@@ -839,9 +842,11 @@ class APIController extends Controller
             if(config('app.env') == 'production') {
                 $to = [
                     ['email' => config('global.recruiting_email_real_estate_to_address')],
-                    ['email' => 'miketaylor0101@gmail.com'],
-                    ['email' => 'delia@taylorprops.com']
                 ];
+                $cc = [];
+                foreach(config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
+                    $cc[] = ['email' => $cc_recip];
+                }
                 $text_to = [
                     ['email' => '4432237356@vtext.com'],
                     ['email' => '4105701014@vtext.com'],
@@ -868,6 +873,7 @@ class APIController extends Controller
             ];
 
             Mail::to($to)
+            -> cc($cc)
             -> send(new EmailGeneral($message));
 
             $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
@@ -977,9 +983,14 @@ class APIController extends Controller
 
             // Send email notification to Kyle
             if(config('app.env') == 'production') {
-                $to = ['email' => config('global.Kyleabrams@heritagefinancial.com'), 'name' => config('global.recruiting_email_mortgage_to_name')];
+                $to = ['email' => config('global.recruiting_email_mortgage_to_address')];
+                $cc = [];
+                foreach(config('global.recruiting_email_mortgage_cc_addresses') as $cc_recip) {
+                    $cc[] = ['email' => $cc_recip];
+                }
             } else {
                 $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+                $cc = [];
             }
 
             $body = '
@@ -999,6 +1010,7 @@ class APIController extends Controller
             ];
 
             Mail::to([$to])
+            -> cc($cc)
             -> send(new EmailGeneral($message));
 
 
