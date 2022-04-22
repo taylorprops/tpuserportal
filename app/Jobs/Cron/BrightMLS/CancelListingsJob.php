@@ -99,6 +99,9 @@ class CancelListingsJob implements ShouldQueue
 
                     $this -> queueProgress(70);
 
+                    $this -> queueData(['DB Listings' => count($db_listings)], true);
+                    $this -> queueData(['ListingKeys' => count($ListingKeys)], true);
+
                     $missing = array_diff($db_listings, $ListingKeys);
 
                     $this -> queueData(['Found - '.count($missing) => $missing], true);
