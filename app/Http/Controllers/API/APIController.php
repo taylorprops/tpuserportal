@@ -720,6 +720,7 @@ class APIController extends Controller
 
         if(config('app.env') == 'production') {
             $to = ['email' => config('global.contact_email_title_to_address')];
+            $to = ['email' => 'miketaylor0101@gmail.com', 'name' => 'Mike Taylor'];
             $cc = [
                 // ['email' => 'Heather@heritagetitlemd.com'],
                 // ['email' => 'k.hayghe@heritagetitlemd.com'],
