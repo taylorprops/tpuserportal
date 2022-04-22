@@ -723,6 +723,7 @@ class APIController extends Controller
                 ['email' => config('global.contact_email_title_to_address')],
                 ['email' => 'Heather@heritagetitlemd.com'],
                 ['email' => 'k.hayghe@heritagetitlemd.com'],
+                ['email' => 'mike@taylorprops.com'],
             ];
         } else {
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
