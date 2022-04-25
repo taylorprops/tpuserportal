@@ -20,9 +20,31 @@ if(document.URL.match('marketing/schedule')) {
                 .catch(function (error) {
                     console.log(error);
                 });
-            }
+            },
+
+            save_add_item(ele) {
+                let scope = this;
+
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Saving ... ');
+                remove_form_errors();
+
+                let form = scope.$refs.schedule_form;
+                let formData = new FormData(form);
+
+                axios.post('/marketing/save_add_item', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
+            },
+
         }
 
     }
+
 
 }

@@ -18,19 +18,35 @@ $breadcrumbs = [
 
         <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12 pt-16">
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
                 @php
-                $fields = ['categories', 'mediums'];
+                $types = ['categories', 'companies', 'mediums'];
                 @endphp
 
-                @foreach($fields as $field)
+                @foreach($types as $type)
 
-                    <div class="border rounded-md p-0">
+                    <div class="border rounded-md p-0"
+                    x-data="{ show_add_item: false }">
                         <div class="bg-gray-50 text-lg p-4 rounded-t-md border-b-2">
-                            {{ ucwords($field) }}
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    {{ ucwords($type) }}
+                                </div>
+                                <div>
+                                    <button type="button" class="button primary md" @click="show_add_item = true; $refs.add_{{ $type }}_input.focus();">Add <i class="fa-light fa-plus ml-2"></i></button>
+                                </div>
+                            </div>
+                            <div class="flex justify-start p-4 mt-3" x-show="show_add_item" x-transition>
+                                <div>
+                                    <input type="text" class="form-element input md" x-ref="add_{{ $type }}_input">
+                                </div>
+                                <div class="ml-2">
+                                    <button type="button" class="button primary md" @click="settings_save_add_item($el, '{{ $type }}', $refs.add_{{ $type }}_input)">Save <i class="fa-light fa-check ml-2"></i></button>
+                                </div>
+                            </div>
                         </div>
-                        <div data-field="{{ $field }}"> </div>
+                        <div data-type="{{ $type }}"> </div>
                     </div>
 
                 @endforeach
@@ -39,6 +55,29 @@ $breadcrumbs = [
 
 
         </div>
+
+
+        <x-modals.modal
+            :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'"
+            :modalTitle="'Add Marketing Item'"
+            :modalId="'show_delete_modal'"
+            x-show="show_delete_modal">
+
+            <form x-ref="schedule_form">
+
+                <div class="p-2 sm:p-4 lg:p-8">
+
+
+
+                    <div class="flex justify-around items-center pb-6 pt-12">
+                        <button type="button" class="button primary xl" x-ref="save_delete_item">Reassign and Delete Item <i class="fa-light fa-check ml-2"></i></button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </x-modals.modal>
 
 
     </div>

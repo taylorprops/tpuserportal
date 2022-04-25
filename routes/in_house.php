@@ -136,7 +136,13 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/schedule', [ScheduleController::class, 'schedule']) -> middleware(['in_house']);
     Route::get('/marketing/get_schedule', [ScheduleController::class, 'get_schedule']) -> middleware(['in_house']);
     Route::get('/marketing/schedule_settings', [ScheduleController::class, 'schedule_settings']) -> middleware(['in_house']);
+    Route::post('/marketing/save_add_item', [ScheduleController::class, 'save_add_item']) -> middleware(['in_house']);
+
     Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
+    Route::post('/marketing/settings_save_add_item', [ScheduleController::class, 'settings_save_add_item']) -> middleware(['in_house']);
+    Route::post('/marketing/settings_save_edit_item', [ScheduleController::class, 'settings_save_edit_item']) -> middleware(['in_house']);
+    Route::post('/marketing/settings_save_delete_item', [ScheduleController::class, 'settings_save_delete_item']) -> middleware(['in_house']);
+    Route::get('/marketing/settings_get_reassign_options', [ScheduleController::class, 'settings_get_reassign_options']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
