@@ -12,5 +12,6 @@ class ScheduleCategories extends Model
     protected $connection = 'mysql';
     protected $table = 'marketing_schedule_categories';
     protected $guarded = [];
+    public $timestamps = false;
 
 }

@@ -12,5 +12,6 @@ class ScheduleMediumDescriptions extends Model
     protected $connection = 'mysql';
     protected $table = 'marketing_schedule_medium_descriptions';
     protected $guarded = [];
+    public $timestamps = false;
 
 }

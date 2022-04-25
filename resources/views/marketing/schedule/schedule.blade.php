@@ -54,28 +54,65 @@ $breadcrumbs = [
 
             <form x-ref="schedule_form">
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-2 sm:p-4 lg:p-8">
 
-                    <div>
-                        <input type="date" class="form-element input md required" name="deploy_date" data-label="Deploy Date">
+                    <div class="grid grid-cols-1 md:grid-cols-9 gap-8">
+
+                        <div class="col-span-2">
+                            <input type="date" class="form-element input md required" name="deploy_date" data-label="Deploy Date">
+                        </div>
+
+                        <div class="col-span-3">
+                            <select class="form-element select md required" name="category_id" data-label="Category">
+                                <option value=""></option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category -> id }}">{{ $category -> category }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-span-4">
+
+                            <div class="text-gray-500 text-sm">States</div>
+
+                            <div class="flex justify-between shadow rounded-md">
+
+                                @foreach($states as $state)
+
+                                    <label for="{{ $state }}"
+                                    class="@if($loop -> first) rounded-l-md border-r border-gray-200 @elseif ($loop -> last) rounded-r-md @else border-r border-gray-200 @endif
+                                    flex justify-around items-center py-2 w-full  cursor-pointer"
+                                    x-data="{ active: false }"
+                                    x-ref="{{ $state }}"
+                                    :class="active === true ? 'bg-primary text-white' : 'color-gray-700 hover:bg-gray-50'">
+                                        {{ $state }}
+                                        <input type="checkbox" class="hidden" name="state[]" id="{{ $state }}" value="{{ $state }}"
+                                        @change="active = $el.checked">
+                                    </label>
+
+                                @endforeach
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div>
-                        <select class="form-element select md required" name="category_id" data-label="Category">
-                            <option value=""></option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category -> id }}">{{ $category -> category }}</option>
-                            @endforeach
-                        </select>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
+
+                        <div class="">
+                            <select class="form-element select md required" name="company" data-label="Company">
+                                <option value=""></option>
+                                @foreach($companies as $company)
+                                    <option value="{{ $company -> id }}">{{ $company -> company }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                     </div>
 
-                    <div>
-                        <select class="form-element select md required" multiple name="states[]" data-label="States">
-                            <option value=""></option>
-                            @foreach($states as $state)
-                                <option value="{{ $state }}">{{ $state }}</option>
-                            @endforeach
-                        </select>
+                    <div class="flex justify-around items-center pb-6 pt-12">
+                        <button type="button" class="button primary xl" @click="save_add_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
                     </div>
 
                 </div>

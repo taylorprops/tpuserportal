@@ -16,7 +16,7 @@
 
                 <div class="text-xl">{!! $modalTitle !!}</div>
 
-                <a href="javascript:void(0)" @click="{{ $modalId }} = false"><i class="fal fa-times fa-2x text-danger"></i></a>
+                <a href="javascript:void(0)" @click="{{ $modalId }} = false"><i class="fa-duotone fa-times-circle fa-2x text-red-600 hover:text-red-500"></i></a>
 
             </div>
             @else
