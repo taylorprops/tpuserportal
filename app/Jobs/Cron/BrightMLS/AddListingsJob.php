@@ -18,7 +18,7 @@ class AddListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 10;
+    public $tries = 4;
 
     /**
      * Create a new job instance.
