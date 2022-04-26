@@ -8,6 +8,8 @@
     :icon="'fad fa-tachometer-alt'"/>
 
 
+    @if(auth() -> user() -> level == 'super_admin')
+
     {{-- Doc Management --}}
     <li>
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Doc Management</div>
@@ -92,6 +94,7 @@
 
     {{-- End Admin --}}
 
+    @endif
 
     {{-- End Doc Management --}}
 
@@ -127,7 +130,7 @@
     :link="'/heritage_financial/agent_database'"
     :icon="'fad fa-database'"/>
 
-    @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']) && auth() -> user() ->  email != 'gary@taylorprops.com')
+    @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']))
     {{-- Manager Bonus --}}
     <x-nav.menu
     :level="'1'"
@@ -165,11 +168,15 @@
 
         @endphp
 
+        @if(auth() -> user() -> level == 'super_admin')
+
         <x-nav.menu
         :level="'2'"
         :title="'Employees'"
         :icon="'fad fa-users'"
         :level2="$level2"/>
+
+        @endif
 
         <x-nav.menu
         :level="'1'"
