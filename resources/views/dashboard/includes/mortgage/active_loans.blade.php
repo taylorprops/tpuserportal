@@ -27,7 +27,7 @@
 
                 <div class="flex flex-none bg-gray-100">
                     @foreach($table_headers as $header)
-                        <div class="w-6 lg:w-8 h-40 whitespace-nowrap border-r border-gray-500">
+                        <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
                             <div class="transform rotate-270 translate-y-30 text-xs">
                                 {{ $header['title'] }}
                             </div>
@@ -90,7 +90,7 @@
 
                             @foreach($table_headers as $header)
 
-                                <div class="flex items-center justify-around w-6 lg:w-8 border-r border-gray-400">
+                                <div class="flex items-center justify-around w-8 border-r border-gray-400">
 
                                     @php
                                     $field = $header['db_field'];
@@ -178,7 +178,7 @@
 
                     <div class="flex bg-gray-100">
                         @foreach($table_headers as $header)
-                            <div class="w-6 lg:w-8 h-40 whitespace-nowrap border-r border-gray-500">
+                            <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
                                 <div class="transform rotate-90 translate-y-5 text-xs">
                                     {{ $header['title'] }}
                                 </div>
