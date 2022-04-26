@@ -4,6 +4,9 @@ html {
     @apply text-gray-700;
 }
 
+img {
+    border-style: none;
+}
 
 a.default {
     @apply text-primary hover:text-primary-light;

@@ -1344,6 +1344,39 @@ class APIController extends Controller
 
     }
 
+    public function reports_query(Request $request) {
+
+        $access_token = $this -> get_access_token('coql');
+        $api_url = 'https://www.zohoapis.com/crm/v2/coql';
+        $fields = json_encode([
+            "select_query" => "select Last_Name, First_Name from Leads where Last_Activity_Time between '2022-04-23T00:00:01+05:00' and '2022-04-23T23:59:59+05:00' and Owner = '5119653000001120291' and Modified_By = '5119653000001120291'"
+        ]);
+
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
+
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+
+        $result = curl_exec($curl);
+        $result = json_decode($result, true);
+
+        dd($result);
+
+        curl_close($curl);
+
+    }
+
 
     public function get_access_token($scope) {
 
@@ -1406,7 +1439,7 @@ class APIController extends Controller
 
     public function create_access_token() {
 
-        $code = '1000.501e25d6e546959a4288ca8c1313e0ac.88ecaa44b43e3294f3ae1fa75886202d';
+        $code = '1000.8256d377e11e23c986f22b8d027a4792.850854c727938e8ecb4ea74c27e0ed0e';
         $client_id = config('global.zoho_client_id');
         $client_secret = config('global.zoho_client_secret');
 
@@ -1446,6 +1479,36 @@ class APIController extends Controller
 
 
     public function get_users() {
+
+        /* ID: 5119653000000348001
+Name: Taylor Properties
+Email: taylorpropertiesdigital@gmail.com
+Status: active
+
+ID: 5119653000000396005
+Name: Heritage Title
+Email: kyle@heritagetitlemd.com
+Status: deleted
+
+ID: 5119653000000396016
+Name: Kyle Abrams
+Email: kyle@taylorprops.com
+Status: active
+
+ID: 5119653000000787044
+Name: Kristen Hayghe
+Email: k.hayghe@heritagetitlemd.com
+Status: active
+
+ID: 5119653000001120291
+Name: Nikki Quesenberry
+Email: nikki@taylorprops.com
+Status: active
+
+ID: 5119653000001163805
+Name: Gabby Krajewski
+Email: gabby@taylorprops.com
+Status: disabled */
 
         $access_token = $this -> get_access_token('users');
 

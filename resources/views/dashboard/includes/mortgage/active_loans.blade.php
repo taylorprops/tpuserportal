@@ -15,7 +15,7 @@
 
 </div>
 
-<div class="flex flex-col h-screen-70 w-screen-90 xl:w-screen-70 overflow-hidden"">
+<div class="flex flex-col h-screen-70 w-screen-90 xl:w-screen-70 overflow-auto">
 
     <div class="-my-2 sm:-mx-6 lg:-mx-8">
 
@@ -27,7 +27,7 @@
 
                 <div class="flex flex-none bg-gray-100">
                     @foreach($table_headers as $header)
-                        <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
+                        <div class="w-6 lg:w-8 h-40 whitespace-nowrap border-r border-gray-500">
                             <div class="transform rotate-270 translate-y-30 text-xs">
                                 {{ $header['title'] }}
                             </div>
@@ -90,7 +90,7 @@
 
                             @foreach($table_headers as $header)
 
-                                <div class="flex items-center justify-around w-8 border-r border-gray-400">
+                                <div class="flex items-center justify-around w-6 lg:w-8 border-r border-gray-400">
 
                                     @php
                                     $field = $header['db_field'];
@@ -170,7 +170,7 @@
 
             </div>
 
-            {{--  @if(count($active_loans) > 7)
+             @if(count($active_loans) > 7)
 
                 <div class="flex border-b">
 
@@ -178,7 +178,7 @@
 
                     <div class="flex bg-gray-100">
                         @foreach($table_headers as $header)
-                            <div class="w-8 h-40 whitespace-nowrap border-r border-gray-500">
+                            <div class="w-6 lg:w-8 h-40 whitespace-nowrap border-r border-gray-500">
                                 <div class="transform rotate-90 translate-y-5 text-xs">
                                     {{ $header['title'] }}
                                 </div>
@@ -188,7 +188,7 @@
 
                 </div>
 
-            @endif --}}
+            @endif
 
 
         </div>

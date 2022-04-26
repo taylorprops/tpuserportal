@@ -10,11 +10,19 @@ window.addEventListener('load', function() {
         send_lead_to_zoho();
     }
 
-    document.querySelector('#submit_form').addEventListener('mousedown', function(e) {
-        let form = document.querySelector('#contact_form');
-        e.preventDefault();
-        capture_form(form);
-    });
+    let contact_form = document.querySelector('#submit_form');
+    if(contact_form) {
+        document.querySelector('#submit_form').addEventListener('mousedown', function(e) {
+            let form = document.querySelector('#contact_form');
+            e.preventDefault();
+            capture_form(form);
+        });
+    }
+
+    // document.querySelectorAll('a', 'link').forEach(function(link) {
+    //     let href = link.getAttribute('href').replace('titlemd', 'title');
+    //     link.setAttribute('href', href);
+    // });
 
 });
 

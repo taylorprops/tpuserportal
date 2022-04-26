@@ -266,37 +266,37 @@
             <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Super Admin</div>
         </li>
 
-            @php
-            $level2 = [
-                [
-                    'title' => 'System Monitor',
-                    'link' => '/admin/system_monitor',
-                    'icon' => 'fad fa-dashboard mr-2'
-                ],
-                [
-                    'title' => 'Queue Monitor',
-                    'link' => '/admin/queue_monitor',
-                    'icon' => 'fad fa-analytics mr-2'
-                ],
-                [
-                    'title' => 'Form Elements',
-                    'link' => '/resources/design/form_elements',
-                    'icon' => 'fad fa-rectangle-wide mr-2'
-                ],
-                [
-                    'title' => 'Config Variables',
-                    'link' => '/resources/config/config_variables',
-                    'icon' => 'fad fa-cogs mr-2'
-                ]
-            ];
+        @php
+        $level2 = [
+            [
+                'title' => 'System Monitor',
+                'link' => '/admin/system_monitor',
+                'icon' => 'fad fa-dashboard mr-2'
+            ],
+            [
+                'title' => 'Queue Monitor',
+                'link' => '/admin/queue_monitor',
+                'icon' => 'fad fa-analytics mr-2'
+            ],
+            [
+                'title' => 'Form Elements',
+                'link' => '/resources/design/form_elements',
+                'icon' => 'fad fa-rectangle-wide mr-2'
+            ],
+            [
+                'title' => 'Config Variables',
+                'link' => '/resources/config/config_variables',
+                'icon' => 'fad fa-cogs mr-2'
+            ]
+        ];
 
-            @endphp
+        @endphp
 
-            <x-nav.menu
-            :level="'2'"
-            :title="'Super Admin'"
-            :icon="'fad fa-globe'"
-            :level2="$level2"/>
+        <x-nav.menu
+        :level="'2'"
+        :title="'Super Admin'"
+        :icon="'fad fa-globe'"
+        :level2="$level2"/>
 
         {{-- End Super Admin --}}
 

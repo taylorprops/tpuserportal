@@ -34,10 +34,10 @@ $breadcrumbs = [
                                     {{ ucwords($type) }}
                                 </div>
                                 <div>
-                                    <button type="button" class="button primary md" @click="show_add_item = true; $refs.add_{{ $type }}_input.focus();">Add <i class="fa-light fa-plus ml-2"></i></button>
+                                    <button type="button" class="button primary md" @click="show_add_item = true;">Add <i class="fa-light fa-plus ml-2"></i></button>
                                 </div>
                             </div>
-                            <div class="flex justify-start p-4 mt-3" x-show="show_add_item" x-transition>
+                            <div class="flex justify-start p-4 mt-3" x-show="show_add_item" x-transition x-trap="show_add_item">
                                 <div>
                                     <input type="text" class="form-element input md" x-ref="add_{{ $type }}_input">
                                 </div>
