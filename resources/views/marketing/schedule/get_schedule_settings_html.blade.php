@@ -13,7 +13,7 @@
     <div class="flex justify-between p-2 my-2 border-b w-full group">
         <div>
             <input type="text" class="editor-inline p-2" {{-- name="item_name" data-type="{{ $type }}" data-id="{{ $setting -> id }}" --}} value="{{ $value }}"
-            @blur="save_edit_item('{{ $type }}', {{ $setting -> id }}, $el.value)">
+            @blur="settings_save_edit_item('{{ $type }}', {{ $setting -> id }}, $el.value)">
         </div>
         <div class="mr-4">
             <button type="button" class="button danger md no-text" @click="settings_show_delete_item('{{ $type }}', '{{ $setting -> id }}')"><i class="fa-duotone fa-xmark fa-xl"></i></button>
