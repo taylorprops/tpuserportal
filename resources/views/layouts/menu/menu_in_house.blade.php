@@ -8,92 +8,95 @@
     :icon="'fad fa-tachometer-alt'"/>
 
 
-    {{-- Doc Management --}}
-    <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Doc Management</div>
-    </li>
+    @if(auth() -> user() -> level == 'super_admin')
 
-    {{-- Transactions --}}
-    @php
-    $level2 = [
-        [
-            'title' => 'View Transactions',
-            'link' => '/transactions',
-            'icon' => 'fad fa-bars mr-2'
-        ],
-        [
-            'title' => 'Add Listing',
-            'link' => '/transactions/create/listing',
-            'icon' => 'fad fa-plus mr-2'
-        ],
-        [
-            'title' => 'Add Contract',
-            'link' => '/transactions/create/contract',
-            'icon' => 'fad fa-plus mr-2'
-        ],
-        [
-            'title' => 'Add Referral',
-            'link' => '/transactions/create/referral',
-            'icon' => 'fad fa-plus mr-2'
-        ],
-    ];
+        {{-- Doc Management --}}
+        <li>
+            <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Doc Management</div>
+        </li>
 
-    @endphp
+        {{-- Transactions --}}
+        @php
+        $level2 = [
+            [
+                'title' => 'View Transactions',
+                'link' => '/transactions',
+                'icon' => 'fad fa-bars mr-2'
+            ],
+            [
+                'title' => 'Add Listing',
+                'link' => '/transactions/create/listing',
+                'icon' => 'fad fa-plus mr-2'
+            ],
+            [
+                'title' => 'Add Contract',
+                'link' => '/transactions/create/contract',
+                'icon' => 'fad fa-plus mr-2'
+            ],
+            [
+                'title' => 'Add Referral',
+                'link' => '/transactions/create/referral',
+                'icon' => 'fad fa-plus mr-2'
+            ],
+        ];
 
-    <x-nav.menu
-    :level="'2'"
-    :title="'Transactions'"
-    :icon="'fad fa-sign'"
-    :level2="$level2"/>
+        @endphp
 
-    {{-- End Transactions --}}
+        <x-nav.menu
+        :level="'2'"
+        :title="'Transactions'"
+        :icon="'fad fa-sign'"
+        :level2="$level2"/>
+
+        {{-- End Transactions --}}
 
 
 
-    {{-- Admin --}}
+        {{-- Admin --}}
 
-    @php
-    $level3 = [
-        [
-            'title' => 'Forms',
-            'link' => '/doc_management/admin/forms/forms',
-            'icon' => 'far fa-book mr-2'
-        ],
-        [
-            'title' => 'Checklists',
-            'link' => '/doc_management/admin/checklists/checklists',
-            'icon' => 'fad fa-tasks mr-2'
-        ],
-        [
-            'title' => 'Resources',
-            'icon' => 'fad fa-tools mr-2',
-            'sub_links' => [
-                [
-                    'title' => 'Site Resources',
-                    'link' => '/doc_management/site_resources',
-                    'icon' => 'fad fa-circle mr-2'
-                ],
-                [
-                    'title' => 'Common Fields',
-                    'link' => '/doc_management/common_fields',
-                    'icon' => 'fad fa-object-ungroup mr-2'
+        @php
+        $level3 = [
+            [
+                'title' => 'Forms',
+                'link' => '/doc_management/admin/forms/forms',
+                'icon' => 'far fa-book mr-2'
+            ],
+            [
+                'title' => 'Checklists',
+                'link' => '/doc_management/admin/checklists/checklists',
+                'icon' => 'fad fa-tasks mr-2'
+            ],
+            [
+                'title' => 'Resources',
+                'icon' => 'fad fa-tools mr-2',
+                'sub_links' => [
+                    [
+                        'title' => 'Site Resources',
+                        'link' => '/doc_management/site_resources',
+                        'icon' => 'fad fa-circle mr-2'
+                    ],
+                    [
+                        'title' => 'Common Fields',
+                        'link' => '/doc_management/common_fields',
+                        'icon' => 'fad fa-object-ungroup mr-2'
+                    ]
                 ]
             ]
-        ]
-    ];
+        ];
 
-    @endphp
+        @endphp
 
-    <x-nav.menu
-    :level="'3'"
-    :title="'Admin'"
-    :icon="'far fa-user-lock'"
-    :level3="$level3"/>
+        <x-nav.menu
+        :level="'3'"
+        :title="'Admin'"
+        :icon="'far fa-user-lock'"
+        :level3="$level3"/>
 
-    {{-- End Admin --}}
+        {{-- End Admin --}}
 
+        {{-- End Doc Management --}}
 
-    {{-- End Doc Management --}}
+    @endif
 
 
     {{-- Heritage Financial --}}
@@ -127,13 +130,13 @@
     :link="'/heritage_financial/agent_database'"
     :icon="'fad fa-database'"/>
 
-    @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']) && auth() -> user() ->  email != 'gary@taylorprops.com')
-    {{-- Manager Bonus --}}
-    <x-nav.menu
-    :level="'1'"
-    :title="'Manager Bonuses'"
-    :link="'/heritage_financial/manager_bonuses'"
-    :icon="'fad fa-money-bill-wave'"/>
+    @if(in_array(auth() -> user() -> level, ['manager', 'super_admin']))
+        {{-- Manager Bonus --}}
+        <x-nav.menu
+        :level="'1'"
+        :title="'Manager Bonuses'"
+        :link="'/heritage_financial/manager_bonuses'"
+        :icon="'fad fa-money-bill-wave'"/>
     @endif
 
     {{-- End Heritage Financial --}}
@@ -143,27 +146,29 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Employees/Users</div>
     </li>
 
-        @php
-        $level2 = [
-            [
-                'title' => 'In-House',
-                'link' => '/employees/in_house',
-                'icon' => 'fad fa-house-user mr-2'
-            ],
-            [
-                'title' => 'Agents',
-                'link' => '/employees/agent',
-                'icon' => 'fad fa-person-sign mr-2'
-            ],
-            [
-                'title' => 'Mortgage',
-                'link' => '/employees/loan_officer',
-                'icon' => 'fad fa-user-chart mr-2'
-            ],
+    @php
+    $level2 = [
+        [
+            'title' => 'In-House',
+            'link' => '/employees/in_house',
+            'icon' => 'fad fa-house-user mr-2'
+        ],
+        [
+            'title' => 'Agents',
+            'link' => '/employees/agent',
+            'icon' => 'fad fa-person-sign mr-2'
+        ],
+        [
+            'title' => 'Mortgage',
+            'link' => '/employees/loan_officer',
+            'icon' => 'fad fa-user-chart mr-2'
+        ],
 
-        ];
+    ];
 
-        @endphp
+    @endphp
+
+    @if(auth() -> user() -> level == 'super_admin')
 
         <x-nav.menu
         :level="'2'"
@@ -171,11 +176,13 @@
         :icon="'fad fa-users'"
         :level2="$level2"/>
 
-        <x-nav.menu
-        :level="'1'"
-        :title="'Website Users'"
-        :link="'/users'"
-        :icon="'fad fa-users-cog'"/>
+    @endif
+
+    <x-nav.menu
+    :level="'1'"
+    :title="'Website Users'"
+    :link="'/users'"
+    :icon="'fad fa-users-cog'"/>
 
 
     {{-- End Employees --}}
@@ -186,17 +193,21 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
-    {{-- <x-nav.menu
-    :level="'1'"
-    :title="'Schedule'"
-    :link="'/marketing/schedule'"
-    :icon="'fa-duotone fa-calendar'"/>
+    @if(auth() -> user() -> level == 'super_admin')
 
-    <x-nav.menu
-    :level="'1'"
-    :title="'Schedule Settings'"
-    :link="'/marketing/schedule_settings'"
-    :icon="'fa-duotone fa-gears'"/> --}}
+        <x-nav.menu
+        :level="'1'"
+        :title="'Schedule'"
+        :link="'/marketing/schedule'"
+        :icon="'fa-duotone fa-calendar'"/>
+
+        <x-nav.menu
+        :level="'1'"
+        :title="'Schedule Settings'"
+        :link="'/marketing/schedule_settings'"
+        :icon="'fa-duotone fa-gears'"/>
+
+    @endif
 
     <x-nav.menu
     :level="'1'"
@@ -249,44 +260,46 @@
 
 
     @if(auth() -> user() -> level == 'super_admin')
-    {{-- Super Admin --}}
-    <li>
-        <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Super Admin</div>
-    </li>
 
-        @php
-        $level2 = [
-            [
-                'title' => 'System Monitor',
-                'link' => '/admin/system_monitor',
-                'icon' => 'fad fa-dashboard mr-2'
-            ],
-            [
-                'title' => 'Queue Monitor',
-                'link' => '/admin/queue_monitor',
-                'icon' => 'fad fa-analytics mr-2'
-            ],
-            [
-                'title' => 'Form Elements',
-                'link' => '/resources/design/form_elements',
-                'icon' => 'fad fa-rectangle-wide mr-2'
-            ],
-            [
-                'title' => 'Config Variables',
-                'link' => '/resources/config/config_variables',
-                'icon' => 'fad fa-cogs mr-2'
-            ]
-        ];
+        {{-- Super Admin --}}
+        <li>
+            <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Super Admin</div>
+        </li>
 
-        @endphp
+            @php
+            $level2 = [
+                [
+                    'title' => 'System Monitor',
+                    'link' => '/admin/system_monitor',
+                    'icon' => 'fad fa-dashboard mr-2'
+                ],
+                [
+                    'title' => 'Queue Monitor',
+                    'link' => '/admin/queue_monitor',
+                    'icon' => 'fad fa-analytics mr-2'
+                ],
+                [
+                    'title' => 'Form Elements',
+                    'link' => '/resources/design/form_elements',
+                    'icon' => 'fad fa-rectangle-wide mr-2'
+                ],
+                [
+                    'title' => 'Config Variables',
+                    'link' => '/resources/config/config_variables',
+                    'icon' => 'fad fa-cogs mr-2'
+                ]
+            ];
 
-        <x-nav.menu
-        :level="'2'"
-        :title="'Super Admin'"
-        :icon="'fad fa-globe'"
-        :level2="$level2"/>
+            @endphp
 
-    {{-- End Super Admin --}}
+            <x-nav.menu
+            :level="'2'"
+            :title="'Super Admin'"
+            :icon="'fad fa-globe'"
+            :level2="$level2"/>
+
+        {{-- End Super Admin --}}
+
     @endif
 
 </ul>
