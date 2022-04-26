@@ -198,9 +198,12 @@ Route::post('/api/marketing/add_email_clicker_mortgage', [APIController::class, 
 Route::post('/api/marketing/add_email_clicker_title', [APIController::class, 'add_email_clicker_title']) -> middleware(['heritage_title']);
 Route::post('/api/marketing/add_email_clicker_real_estate', [APIController::class, 'add_email_clicker_real_estate']) -> middleware(['taylor_props']);
 /* Resources */
-Route::get('/zoho/create_access_token', [ZohoOauthController::class, 'create_access_token']);
+Route::get('/zoho/create_access_token', [APIController::class, 'create_access_token']);
 Route::get('/zoho/get_users', [APIController::class, 'get_users']);
 Route::get('/zoho/get_fields', [APIController::class, 'get_fields']);
 Route::get('/zoho/get_assignment_rules', [APIController::class, 'get_assignment_rules']);
+
+Route::get('/zoho/reports_query', [APIController::class, 'reports_query']);
+
 /* tests */
 Route::get('/zoho/check_if_user_exists', [APIController::class, 'check_if_user_exists']);

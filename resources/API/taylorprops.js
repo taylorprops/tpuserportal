@@ -21,8 +21,21 @@ window.addEventListener('load', function() {
             if(submit_button) {
                 capture_form(form, submit_button);
                 clearInterval(get_form_interval);
+
+                if(document.URL.match(/#form/)) {
+                    let anchor = document.createElement('a');
+                    anchor.id = 'form_anchor';
+                    let parentDiv = form.parentNode;
+                    parentDiv.insertBefore(anchor, form);
+                    // anchor.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+                    const y = anchor.getBoundingClientRect().top + window.scrollY;
+                    window.scroll({
+                        top: y - 500,
+                        behavior: 'smooth'
+                    });
+                }
             }
-        }, 2000);
+        }, 500);
 
     }
 
