@@ -170,8 +170,6 @@
 
     @if(auth() -> user() -> level == 'super_admin')
 
-        @if(auth() -> user() -> level == 'super_admin')
-
         <x-nav.menu
         :level="'2'"
         :title="'Employees'"
