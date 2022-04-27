@@ -16,7 +16,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 4;
+    public $tries = 3;;
 
     /**
      * Create a new job instance.
