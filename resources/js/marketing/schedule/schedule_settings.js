@@ -7,7 +7,7 @@ if(document.URL.match('marketing/schedule_settings')) {
             show_delete_modal: false,
 
             init() {
-                this.get_schedule_settings(['categories', 'companies', 'mediums']);
+                this.get_schedule_settings(['recipients', 'companies', 'mediums']);
                 this.text_editor();
             },
 

@@ -23,7 +23,7 @@ function setBubble(range, bubble) {
 
 window.show_file_names = function (target, remove = true) {
     let files = target.files;
-    let id = target.id;
+    let id = target.id || new Date().getTime() * 100;
     document.querySelector('.file-names').innerHTML = '';
     for (var i = 0; i < files.length; i++) {
         let file_name = truncate_string(files[i].name, 70);
@@ -45,7 +45,7 @@ window.remove_file = function(id, index) {
     let dt = new DataTransfer();
     let input = document.querySelector('#'+id);
     let files = input.files;
-    console.log(files);
+
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
         if (index !== i) {

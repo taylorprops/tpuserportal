@@ -21,7 +21,7 @@ $breadcrumbs = [
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
                 @php
-                $types = ['categories', 'companies', 'mediums'];
+                $types = ['recipients', 'companies', 'mediums'];
                 @endphp
 
                 @foreach($types as $type)

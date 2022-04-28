@@ -847,6 +847,7 @@ class APIController extends Controller
                 foreach(config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
                     $cc[] = ['email' => $cc_recip];
                 }
+
                 $text_to = [
                     ['email' => '4432237356@vtext.com'],
                     ['email' => '4105701014@vtext.com'],
@@ -876,18 +877,22 @@ class APIController extends Controller
             -> cc($cc)
             -> send(new EmailGeneral($message));
 
-            $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
+            if(date('G') > 7 && date('G') < 20) {
 
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert!',
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => $body,
-                'attachments' => null
-            ];
+                $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
-            Mail::to($text_to)
-            -> send(new EmailGeneral($message));
+                $message = [
+                    'company' => 'Taylor Properties',
+                    'subject' => 'Recruiting Alert!',
+                    'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                    'body' => $body,
+                    'attachments' => null
+                ];
+
+                Mail::to($text_to)
+                -> send(new EmailGeneral($message));
+
+            }
 
 
             return response() -> json(['status' => 'success']);

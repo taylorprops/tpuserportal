@@ -4,7 +4,9 @@ if(document.URL.match('marketing/schedule')) {
 
         return {
 
-            show_add_item_modal:false,
+            show_add_item_modal: false,
+            show_html: false,
+            show_file: false,
 
             init() {
                 this.get_schedule();
@@ -14,8 +16,7 @@ if(document.URL.match('marketing/schedule')) {
                 let scope = this;
                 axios.get('/marketing/get_schedule')
                 .then(function (response) {
-                    scope.$refs.schedule_list_div.innerHTML = response;
-                    console.log(response);
+                    scope.$refs.schedule_list_div.innerHTML = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -35,11 +36,32 @@ if(document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/save_add_item', formData)
                 .then(function (response) {
                     ele.innerHTML = button_html;
-
+                    toastr.success('Item Successfully Added');
+                    scope.get_schedule();
+                    scope.show_add_item_modal = false;
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);
                 });
+            },
+
+            show_view_div(type, file, html) {
+                let scope = this;
+                if(html) {
+                    scope.show_html = true;
+                } else {
+                    scope.show_file = true;
+                    scope.$refs.view_file.setAttribute('src', file);
+                    if(type == 'image') {
+                        scope.$refs.view_file.setAttribute('height', 'auto');
+                    } else if(type == 'pdf') {
+                        scope.$refs.view_file.setAttribute('height', '100vh');
+                    }
+                }
+            },
+
+            show_edit_div(id) {
+
             },
 
         }

@@ -14,9 +14,6 @@ class ScheduleMediums extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function descriptions()
-    {
-        return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleMediumDescriptions::class, 'medium_id', 'id');
-    }
+
 
 }

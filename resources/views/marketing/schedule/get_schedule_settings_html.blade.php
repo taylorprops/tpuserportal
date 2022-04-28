@@ -2,8 +2,8 @@
 @foreach($settings as $setting)
 
     @php
-    if($type == 'categories') {
-        $value = $setting -> category;
+    if($type == 'recipients') {
+        $value = $setting -> recipient;
     } else if($type == 'mediums') {
         $value = $setting -> medium;
     } else if($type == 'companies') {

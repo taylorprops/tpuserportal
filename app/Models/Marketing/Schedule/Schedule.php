@@ -12,6 +12,22 @@ class Schedule extends Model
     protected $connection = 'mysql';
     protected $table = 'marketing_schedule';
     protected $guarded = [];
-    public $timestamps = false;
+
+    public function medium()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleMediums::class, 'id', 'medium_id');
+    }
+
+    public function company()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleCompanies::class, 'id', 'company_id');
+    }
+
+    public function recipient()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleRecipients::class, 'id', 'recipient_id');
+    }
+
+
 
 }
