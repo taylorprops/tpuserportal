@@ -16,7 +16,7 @@ $breadcrumbs = [
         <div class="w-full mx-12 sm:px-6 lg:px-12">
 
             <div class="my-6">
-                <button type="button" class="button primary lg" @click="show_add_item_modal = true">
+                <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''">
                     Add Item <i class="fa-light fa-plus ml-3"></i>
                 </button>
             </div>
@@ -25,7 +25,7 @@ $breadcrumbs = [
 
                 <div class="">
 
-                    <div class="border rounded-lg p-4 h-screen-80 overflow-auto">
+                    <div class="border rounded-lg p-2 h-screen-80 overflow-auto">
 
                         <div x-ref="schedule_list_div"></div>
 
@@ -38,10 +38,16 @@ $breadcrumbs = [
 
                     <div class="relative mr-8 h-screen-80 overflow-auto">
 
-                        <div class="absolute top-0 bg-white rounded border p-4 z-100 w-full h-full" x-show="show_html" x-ref="view_html"></div>
+                        <div x-show="show_html || show_file">
 
-                        <div class="absolute top-0 bg-white rounded border p-4 z-100 w-full h-full" x-show="show_file">
-                            <embed src="" type="application/pdf" class="min-h-750-px" width="100%" height="100vh" x-ref="view_file" />
+                            <div class="absolute top-16 right-16 z-30"><a href="javascript:void(0)" @click="show_html = false; show_file = false"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a></div>
+
+                            <div class="absolute top-0 bg-white rounded border p-4 z-20 w-full h-full" x-show="show_html" x-ref="view_html"></div>
+
+                            <div class="absolute top-0 bg-white rounded border p-4 z-20 w-full h-full" x-show="show_file">
+                                <embed src="" type="application/pdf" class="min-h-750-px" width="100%" height="100vh" x-ref="view_file" />
+                            </div>
+
                         </div>
 
                         <div class="z-10">
@@ -57,7 +63,7 @@ $breadcrumbs = [
         </div>
 
 
-        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add Marketing Item'" :modalId="'show_add_item_modal'" x-show="show_add_item_modal">
+        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add Marketing Item'" :modalId="'show_item_modal'" x-show="show_item_modal">
 
             <form x-ref="schedule_form" enctype="multipart/form-data">
 
@@ -68,14 +74,14 @@ $breadcrumbs = [
                     <div class="grid grid-cols-1 md:grid-cols-9 gap-8">
 
                         <div class="col-span-2">
-                            <input type="date" class="form-element input md required" name="event_date" data-label="Event Date">
+                            <input type="date" class="form-element input md required" name="event_date" x-ref="event_date" data-label="Event Date">
                         </div>
 
                         <div class="col-span-3">
-                            <select class="form-element select md required" name="recipient_id" data-label="Recipient">
+                            <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient">
                                 <option value=""></option>
-                                @foreach($recipients as $recipient)
-                                <option value="{{ $recipient -> id }}">{{ $recipient -> recipient }}</option>
+                                @foreach($settings -> where('category', 'recipient') as $recipient)
+                                <option value="{{ $recipient -> id }}">{{ $recipient -> item }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -107,30 +113,30 @@ $breadcrumbs = [
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
 
                         <div class="">
-                            <select class="form-element select md required" name="company_id" data-label="Company">
+                            <select class="form-element select md required" name="company_id" x-ref="company_id" data-label="Company">
                                 <option value=""></option>
-                                @foreach($companies as $company)
-                                <option value="{{ $company -> id }}">{{ $company -> company }}</option>
+                                @foreach($settings -> where('category', 'company') as $company)
+                                <option value="{{ $company -> id }}">{{ $company -> item }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="">
-                            <select class="form-element select md required" name="medium_id" data-label="Medium">
+                            <select class="form-element select md required" name="medium_id" x-ref="medium_id" data-label="Medium">
                                 <option value=""></option>
-                                @foreach($mediums as $medium)
-                                <option value="{{ $medium -> id }}">{{ $medium -> medium }}</option>
+                                @foreach($settings -> where('category', 'medium') as $medium)
+                                <option value="{{ $medium -> id }}">{{ $medium -> item }}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="col-span-2">
-                            <input type="text" class="form-element input md required" name="description" data-label="Description">
+                            <input type="text" class="form-element input md required" name="description" x-ref="description" data-label="Description">
                         </div>
 
                     </div>
 
-                    <div>
+                    <div x-show="add_event">
 
                         <div class="text-lg font-semibold mt-12 mb-4">Upload</div>
 
@@ -184,13 +190,27 @@ $breadcrumbs = [
                     </div>
 
                     <div class="flex justify-around items-center pb-6 pt-12">
-                        <button type="button" class="button primary xl" @click="save_add_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
+                        <button type="button" class="button primary xl" @click="save_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
+                    </div>
+
+                    <div class="mt-4 flex justify-around" x-show="edit_event">
+                        <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" @click="">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
                     </div>
 
                 </div>
 
+                <input type="hidden" name="id" x-ref="id">
+
             </form>
 
+        </x-modals.modal>
+
+        <x-modals.modal :modalWidth="'w-screen-95 h-screen-95'" :modalTitle="''" :modalId="'show_versions_modal'" x-show="show_versions_modal" :clickOutside="'return false'">
+            <div x-ref="versions_div"></div>
+        </x-modals.modal>
+
+        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add New Version'" :modalId="'show_add_version_modal'" x-show="show_add_version_modal">
+            asd fas dfasdf
         </x-modals.modal>
 
     </div>

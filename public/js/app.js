@@ -9802,9 +9802,13 @@ if (document.URL.match('address_database')) {
 if (document.URL.match('marketing/schedule')) {
   window.schedule = function () {
     return {
-      show_add_item_modal: false,
+      show_item_modal: false,
       show_html: false,
       show_file: false,
+      add_event: false,
+      edit_event: false,
+      show_versions_modal: false,
+      show_add_version_modal: false,
       init: function init() {
         this.get_schedule();
       },
@@ -9816,18 +9820,24 @@ if (document.URL.match('marketing/schedule')) {
           console.log(error);
         });
       },
-      save_add_item: function save_add_item(ele) {
+      save_item: function save_item(ele) {
         var scope = this;
         var button_html = ele.innerHTML;
         show_loading_button(ele, 'Saving ... ');
         remove_form_errors();
         var form = scope.$refs.schedule_form;
         var formData = new FormData(form);
-        axios.post('/marketing/save_add_item', formData).then(function (response) {
+        var action = 'add';
+
+        if (scope.$refs.id.value != '') {
+          action = 'edit';
+        }
+
+        axios.post('/marketing/save_item', formData).then(function (response) {
           ele.innerHTML = button_html;
           toastr.success('Item Successfully Added');
           scope.get_schedule();
-          scope.show_add_item_modal = false;
+          scope.show_item_modal = false;
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });
@@ -9848,7 +9858,48 @@ if (document.URL.match('marketing/schedule')) {
           }
         }
       },
-      show_edit_div: function show_edit_div(id) {}
+      edit_item: function edit_item(ele) {
+        var scope = this;
+        scope.$refs.id.value = ele.getAttribute('data-id');
+        scope.$refs.event_date.value = ele.getAttribute('data-event-date');
+        var states = ele.getAttribute('data-state').split(',');
+        states.forEach(function (state) {
+          document.querySelector('#' + state).checked = false;
+          document.querySelector('#' + state).click();
+        });
+        scope.$refs.recipient_id.value = ele.getAttribute('data-recipient-id');
+        scope.$refs.company_id.value = ele.getAttribute('data-company-id');
+        console.log(scope.$refs.medium_id);
+        scope.$refs.medium_id.value = ele.getAttribute('data-medium-id');
+        scope.$refs.description.value = ele.getAttribute('data-description');
+      },
+      show_versions: function show_versions(id) {
+        var scope = this;
+        axios.get('/marketing/show_versions', {
+          params: {
+            id: id
+          }
+        }).then(function (response) {
+          scope.show_versions_modal = true;
+          scope.$refs.versions_div.innerHTML = response.data;
+          setTimeout(function () {
+            document.querySelectorAll('.version-iframe').forEach(function (iframe) {
+              var html = iframe.innerHTML;
+              iframe.innerHTML = '';
+              iframe = iframe.contentWindow || iframe.contentDocument.document || iframe.contentDocument;
+              iframe.document.open();
+              iframe.document.write(html);
+              iframe.document.close();
+            });
+          }, 1000);
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      },
+      add_version: function add_version(id) {
+        var scope = this;
+        scope.show_add_version_modal = true;
+      }
     };
   };
 }
@@ -9866,21 +9917,34 @@ if (document.URL.match('marketing/schedule_settings')) {
     return {
       show_delete_modal: false,
       init: function init() {
-        this.get_schedule_settings(['recipients', 'companies', 'mediums']);
+        this.get_schedule_settings();
         this.text_editor();
       },
-      get_schedule_settings: function get_schedule_settings(types) {
+      get_schedule_settings: function get_schedule_settings() {
         var scope = this;
-        types.forEach(function (type) {
-          axios.get('/marketing/get_schedule_settings', {
-            params: {
-              type: type
-            }
-          }).then(function (response) {
-            document.querySelector('[data-type="' + type + '"]').innerHTML = response.data;
-          })["catch"](function (error) {
-            console.log(error);
+        axios.get('/marketing/get_schedule_settings').then(function (response) {
+          var items = response.data;
+          items.forEach(function (item) {
+            var category = item.category;
+            var details = item.details;
+            var items_html = '';
+            details.forEach(function (detail) {
+              items_html += ' \
+                            <div class="flex justify-between p-2 my-2 border-b w-full group"> \
+                                <div> \
+                                    <input type="text" class="editor-inline p-2" value=" ' + detail.item + '" \
+                                    @blur="settings_save_edit_item(' + detail.id + ', $el.value)"> \
+                                </div> \
+                                <div class="mr-4"> \
+                                    <button type="button" class="button danger md no-text" @click="settings_show_delete_item(\'' + category + '\', ' + detail.id + ')"><i class="fa-duotone fa-xmark fa-xl"></i></button> \
+                                </div> \
+                            </div> \
+                            ';
+            });
+            document.querySelector('[data-type="' + category + '"]').innerHTML = items_html;
           });
+        })["catch"](function (error) {
+          console.log(error);
         });
       },
       settings_save_add_item: function settings_save_add_item(ele, type, input) {
@@ -9897,30 +9961,37 @@ if (document.URL.match('marketing/schedule_settings')) {
           scope.show_add_item = false;
         })["catch"](function (error) {});
       },
-      settings_save_edit_item: function settings_save_edit_item(type, id, value) {
+      settings_save_edit_item: function settings_save_edit_item(id, value) {
         var formData = new FormData();
-        formData.append('type', type);
         formData.append('id', id);
         formData.append('value', value);
         axios.post('/marketing/settings_save_edit_item', formData).then(function (response) {
           toastr.success('Item Successfully Changed');
         })["catch"](function (error) {});
       },
-      settings_show_delete_item: function settings_show_delete_item(type, id) {
+      settings_show_delete_item: function settings_show_delete_item(category, id) {
         var scope = this;
         axios.get('/marketing/settings_get_reassign_options', {
           params: {
-            type: type,
+            category: category,
             id: id
           }
         }).then(function (response) {
           if (response.data.deleted) {
             toastr.success('Item Successfully Deleted');
-            scope.get_schedule_settings([type]);
+            scope.get_schedule_settings([category]);
             return;
           }
 
           scope.show_delete_modal = true;
+          var items_html = '';
+          response.data.settings.forEach(function (setting) {
+            items_html += ' \
+                            <div class="p-2 border-b flex justify-between"> \
+                                <div>' + setting.item + '</div> \
+                        ';
+          });
+          scope.$refs.reassign_div.innerHTML = items;
           scope.$refs.save_delete_item.addEventListener('click', function () {});
         })["catch"](function (error) {
           console.log(error);

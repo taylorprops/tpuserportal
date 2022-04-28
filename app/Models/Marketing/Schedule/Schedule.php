@@ -15,17 +15,22 @@ class Schedule extends Model
 
     public function medium()
     {
-        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleMediums::class, 'id', 'medium_id');
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'medium_id');
     }
 
     public function company()
     {
-        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleCompanies::class, 'id', 'company_id');
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'company_id');
     }
 
     public function recipient()
     {
-        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleRecipients::class, 'id', 'recipient_id');
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'recipient_id');
+    }
+
+    public function uploads()
+    {
+        return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleUploads::class, 'event_id', 'id');
     }
 
 

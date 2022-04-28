@@ -7,28 +7,46 @@ if(document.URL.match('marketing/schedule_settings')) {
             show_delete_modal: false,
 
             init() {
-                this.get_schedule_settings(['recipients', 'companies', 'mediums']);
+                this.get_schedule_settings();
                 this.text_editor();
             },
 
-            get_schedule_settings(types) {
+            get_schedule_settings() {
 
                 let scope = this;
 
-                types.forEach(function(type) {
+                axios.get('/marketing/get_schedule_settings')
+                .then(function (response) {
+                    let items = response.data;
 
-                    axios.get('/marketing/get_schedule_settings', {
-                        params: {
-                            type: type
-                        },
-                    })
-                    .then(function (response) {
-                        document.querySelector('[data-type="'+type+'"]').innerHTML = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                    items.forEach(function(item) {
 
+                        let category = item.category;
+                        let details = item.details;
+
+                        let items_html = '';
+                        details.forEach(function(detail) {
+
+                            items_html += ' \
+                            <div class="flex justify-between p-2 my-2 border-b w-full group"> \
+                                <div> \
+                                    <input type="text" class="editor-inline p-2" value=" '+detail.item+'" \
+                                    @blur="settings_save_edit_item('+detail.id+', $el.value)"> \
+                                </div> \
+                                <div class="mr-4"> \
+                                    <button type="button" class="button danger md no-text" @click="settings_show_delete_item(\''+category+'\', '+detail.id+')"><i class="fa-duotone fa-xmark fa-xl"></i></button> \
+                                </div> \
+                            </div> \
+                            ';
+
+                        });
+
+                        document.querySelector('[data-type="'+category+'"]').innerHTML = items_html;
+
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
 
             },
@@ -54,10 +72,9 @@ if(document.URL.match('marketing/schedule_settings')) {
                 });
             },
 
-            settings_save_edit_item(type, id, value) {
+            settings_save_edit_item(id, value) {
 
                 let formData = new FormData();
-                formData.append('type', type);
                 formData.append('id', id);
                 formData.append('value', value);
 
@@ -70,23 +87,31 @@ if(document.URL.match('marketing/schedule_settings')) {
                 });
             },
 
-            settings_show_delete_item(type, id) {
+            settings_show_delete_item(category, id) {
 
                 let scope = this;
                 axios.get('/marketing/settings_get_reassign_options', {
                     params: {
-                        type: type,
+                        category: category,
                         id: id
                     },
                 })
                 .then(function (response) {
                     if(response.data.deleted) {
                         toastr.success('Item Successfully Deleted');
-                        scope.get_schedule_settings([type]);
+                        scope.get_schedule_settings([category]);
                         return;
                     }
 
                     scope.show_delete_modal = true;
+                    let items_html = '';
+                    response.data.settings.forEach(function(setting) {
+                        items_html += ' \
+                            <div class="p-2 border-b flex justify-between"> \
+                                <div>'+setting.item+'</div> \
+                        ';
+                    });
+                    scope.$refs.reassign_div.innerHTML = items;
                     scope.$refs.save_delete_item.addEventListener('click', function() {
 
                     });

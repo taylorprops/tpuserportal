@@ -1,38 +1,81 @@
-@foreach($items as $item)
+@foreach($events as $event)
 
-    <div class="border-b p-2 mb-2 text-sm">
+    <div class="p-2 mb-2 text-sm">
 
-        <div class="flex flex-col col-span-4">
+        <div class="flex flex-col">
 
-            <div class="flex justify-between font-semibold bg-gray-100 p-2 rounded-t mb-2">
+            <div class="flex justify-between font-semibold bg-gray-100 p-2 rounded-t">
                 <div>
-                    {{ $item -> event_date }}
+                    {{ $event -> event_date }}
                 </div>
                 <div>
-                    {{ $item -> company -> company }}
-                </div>
-            </div>
-            <div class="grid grid-cols-3 px-2 mb-2">
-                <div>
-                    {{ $item -> medium -> medium }}
-                </div>
-                <div>
-                    {{ str_replace(',', ', ', $item -> state) }}
-                </div>
-                <div class="text-right">
-                    {{ $item -> recipient -> recipient }}
+                    {{ $event -> company -> item }}
                 </div>
             </div>
 
-            <div class="flex justify-around">
+            <div class="border-r border-l py-2">
 
-                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_edit_div('{{ $item -> id }}')">Edit</a>
+                <div class="grid grid-cols-3 px-2">
+                    <div>
+                        {{ $event -> medium -> item }}
+                    </div>
+                    <div>
+                        {{ str_replace(',', ', ', $event -> state) }}
+                    </div>
+                    <div class="text-right">
+                        {{ $event -> recipient -> item }}
+                    </div>
+                </div>
+
+                <div class="p-2 text-xs italic">
+                    {{ $event -> description }}
+                </div>
+
+            </div>
+
+            <div class="flex justify-around bg-gray-100 p-2 rounded-b">
+
+                @php
+                $accepted = null;
+                $versions = [];
+                foreach($event -> uploads as $upload) {
+                    $details = [
+                        'file_id' => $upload -> id,
+                        'file_type' => $upload -> file_type,
+                        'file_url' => $upload -> file_url,
+                        'html' => $upload -> html,
+                    ];
+                    if($upload -> accepted_version == true) {
+                        $accepted = $details;
+                    }
+                    $versions[] = $details;
+                }
+                @endphp
+
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light"
+                data-id="{{ $event -> id}}"
+                data-event-date="{{ $event -> event_date}}"
+                data-state="{{ $event -> state}}"
+                data-recipient-id="{{ $event -> recipient_id}}"
+                data-company-id="{{ $event -> company_id}}"
+                data-medium-id="{{ $event -> medium_id}}"
+                data-description="{{ $event -> description}}"
+                @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;">
+                    Edit <i class="fa-thin fa-edit ml-2"></i>
+                </a>
+
+                @if($accepted)
+                    <div class="mx-2 w-1 border-r"></div>
+                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', '{{ $accepted['html'] }}')">View Accepted Version</a>
+                @endif
+
                 <div class="mx-2 w-1 border-r"></div>
-                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $item -> upload_file_type }}', '{{ $item -> upload_file_url }}', '{{ $item -> upload_html }}')">View Ad Final</a>
+
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
+
                 <div class="mx-2 w-1 border-r"></div>
-                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $item -> upload_file_type }}', '{{ $item -> upload_file_url }}', '{{ $item -> upload_html }}')">View Ad Versions</a>
-                <div class="mx-2 w-1 border-r"></div>
-                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $item -> upload_file_type }}', '{{ $item -> upload_file_url }}', '{{ $item -> upload_html }}')">Add Version</a>
+
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_versions({{ $event -> id }})">View Versions <span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 ml-2 rounded-full text-xs font-medium">{{ count($versions) }}</span></a>
 
             </div>
 
