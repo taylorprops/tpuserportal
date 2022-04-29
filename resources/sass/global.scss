@@ -139,6 +139,20 @@ a.default {
 }
 
 
+/* fullcalendar */
+
+.fc-event-title {
+    @apply text-xs;
+}
+.fc {
+    .fc-button-primary, .fc-today-button, .fc-button {
+        @apply  bg-primary hover:bg-primary-light inline-block cursor-pointer text-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+    }
+    .fc-button-primary:not(:disabled).fc-button-active, .fc-button-primary:not(:disabled):active {
+        @apply bg-gray-500;
+    }
+}
+
 
 .test{
 // default

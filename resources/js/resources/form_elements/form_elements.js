@@ -22,9 +22,10 @@ function setBubble(range, bubble) {
 
 
 window.show_file_names = function (target, remove = true) {
+
     let files = target.files;
     let id = target.id || new Date().getTime() * 100;
-    document.querySelector('.file-names').innerHTML = '';
+    document.querySelector('.file-names.'+id).innerHTML = '';
     for (var i = 0; i < files.length; i++) {
         let file_name = truncate_string(files[i].name, 70);
         let html = ' \
@@ -36,7 +37,7 @@ window.show_file_names = function (target, remove = true) {
             }
             html += '<div class="ml-3 w-full">'+file_name+'</div> \
         </div>';
-        document.querySelector('.file-names').insertAdjacentHTML('beforeend', html);
+        document.querySelector('.file-names.'+id).insertAdjacentHTML('beforeend', html);
     }
 }
 

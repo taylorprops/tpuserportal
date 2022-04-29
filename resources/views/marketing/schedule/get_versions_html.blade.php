@@ -9,12 +9,15 @@
         <div>
 
             <div class="flex justify-between pb-2">
-                @if($version -> accepted == false)
+                @if($version -> accepted_version == false)
                     <a href="javascript:void(0)" class="text-primary hover:text-primary-light">Mark as Accepted Version <i class="fa-light fa-check ml-2"></i></a>
+                    <a href="javascript:void(0)" class="text-red-600 hover:text-red-500">Delete <i class="fa-thin fa-times ml-2"></i></a>
                 @else
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light">Undo Mark Accepted Version <i class="fa-light fa-arrow-rotate-left ml-2"></i></a>
+                    <div>
+                        <span class="text-green-600">Accepted Version <i class="fa-light fa-check ml-2"></i></span>
+                    </div>
                 @endif
-                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500">Delete <i class="fa-thin fa-times ml-2"></i></a>
+
             </div>
 
             <div class="border rounded p-2 w-600-px h-800-px overflow-y-auto">

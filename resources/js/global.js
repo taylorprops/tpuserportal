@@ -2,6 +2,7 @@ import Toastr from 'toastr2';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 
+
 window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
 tippy('[data-tippy-content]', {
@@ -107,7 +108,7 @@ window.form_elements = function() {
                         <i class="fad fa-upload mr-2"></i> Select Files \
                     </div> \
                     <div class="flex-1"> \
-                        <div class="file-names text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
+                        <div class="file-names '+element_id+' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
                     </div> \
                 </div>';
                 label.innerHTML = html;

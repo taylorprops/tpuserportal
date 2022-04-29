@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Marketing\Schedule;
 
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Marketing\Schedule\Schedule;
@@ -71,6 +72,9 @@ class ScheduleController extends Controller
         $description = $request -> description;
         $upload_html = $request -> upload_html;
         $upload_file = $request -> file('upload_file');
+        $subject_line_a = $request -> file('subject_line_a');
+        $subject_line_b = $request -> file('subject_line_b');
+        $preview_text = $request -> file('preview_text');
 
         $company = ScheduleSettings::where('id', $company_id) -> first();
         $company = $company -> item;
@@ -78,7 +82,6 @@ class ScheduleController extends Controller
         $recipient = $recipient -> item;
 
         $uuid = date("Y", strtotime($event_date)).'-'.date("m", strtotime($event_date)).'-'.Helper::get_initials($company).'-'.$recipient;
-        dd($uuid);
 
 
         if($id) {
@@ -94,6 +97,9 @@ class ScheduleController extends Controller
         $event -> medium_id = $medium_id;
         $event -> description = $description;
         $event -> uuid = $uuid;
+        $event -> subject_line_a = $subject_line_a;
+        $event -> subject_line_b = $subject_line_b;
+        $event -> preview_text = $preview_text;
 
         $event -> save();
         $event_id = $event -> id;
@@ -142,6 +148,23 @@ class ScheduleController extends Controller
         $versions = ScheduleUploads::where('event_id', $event_id) -> get();
 
         return view('marketing/schedule/get_versions_html', compact('event_id', 'versions'));
+
+    }
+
+    public function save_add_version(Request $request) {
+
+        dd($request -> all());
+
+    }
+
+    public function calendar_get_events(Request $request) {
+
+        $events = Schedule::select([DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
+        -> orderBy('event_date', 'desc')
+        -> get()
+        -> toArray();
+
+        return response() -> json($events);
 
     }
 

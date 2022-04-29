@@ -9,6 +9,9 @@
                     {{ $event -> event_date }}
                 </div>
                 <div>
+                    {{ $event -> uuid }}
+                </div>
+                <div>
                     {{ $event -> company -> item }}
                 </div>
             </div>
@@ -64,10 +67,8 @@
                     Edit <i class="fa-thin fa-edit ml-2"></i>
                 </a>
 
-                @if($accepted)
-                    <div class="mx-2 w-1 border-r"></div>
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', '{{ $accepted['html'] }}')">View Accepted Version</a>
-                @endif
+                <div class="mx-2 w-1 border-r"></div>
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
 
                 <div class="mx-2 w-1 border-r"></div>
 

@@ -8120,7 +8120,7 @@ window.form_elements = function () {
                         <i class="fad fa-upload mr-2"></i> Select Files \
                     </div> \
                     <div class="flex-1"> \
-                        <div class="file-names text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
+                        <div class="file-names ' + element_id + ' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
                     </div> \
                 </div>';
         label.innerHTML = html;
@@ -9803,12 +9803,14 @@ if (document.URL.match('marketing/schedule')) {
   window.schedule = function () {
     return {
       show_item_modal: false,
+      show_calendar: true,
       show_html: false,
       show_file: false,
       add_event: false,
       edit_event: false,
       show_versions_modal: false,
       show_add_version_modal: false,
+      show_email_options: false,
       init: function init() {
         this.get_schedule();
       },
@@ -9816,9 +9818,13 @@ if (document.URL.match('marketing/schedule')) {
         var scope = this;
         axios.get('/marketing/get_schedule').then(function (response) {
           scope.$refs.schedule_list_div.innerHTML = response.data;
+          scope.calendar();
         })["catch"](function (error) {
           console.log(error);
         });
+      },
+      clear_form: function clear_form() {
+        this.$refs.schedule_form.reset();
       },
       save_item: function save_item(ele) {
         var scope = this;
@@ -9844,9 +9850,17 @@ if (document.URL.match('marketing/schedule')) {
       },
       show_view_div: function show_view_div(type, file, html) {
         var scope = this;
+        scope.show_calendar = false;
+        scope.show_file = false;
+        scope.show_html = false;
 
         if (html) {
           scope.show_html = true;
+          var iframe = document.querySelector('.view-accepted-iframe');
+          iframe = iframe.contentWindow || iframe.contentDocument.document || iframe.contentDocument;
+          iframe.document.open();
+          iframe.document.write(html);
+          iframe.document.close();
         } else {
           scope.show_file = true;
           scope.$refs.view_file.setAttribute('src', file);
@@ -9869,9 +9883,13 @@ if (document.URL.match('marketing/schedule')) {
         });
         scope.$refs.recipient_id.value = ele.getAttribute('data-recipient-id');
         scope.$refs.company_id.value = ele.getAttribute('data-company-id');
-        console.log(scope.$refs.medium_id);
         scope.$refs.medium_id.value = ele.getAttribute('data-medium-id');
         scope.$refs.description.value = ele.getAttribute('data-description');
+        scope.show_email_options = false;
+
+        if (scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
+          scope.show_email_options = true;
+        }
       },
       show_versions: function show_versions(id) {
         var scope = this;
@@ -9899,6 +9917,52 @@ if (document.URL.match('marketing/schedule')) {
       add_version: function add_version(id) {
         var scope = this;
         scope.show_add_version_modal = true;
+        document.querySelector('#add_version_id').value = id;
+      },
+      save_version_item: function save_version_item(ele) {
+        var scope = this;
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Saving ... ');
+        remove_form_errors();
+        var form = scope.$refs.add_version_form;
+        var formData = new FormData(form);
+        axios.post('/marketing/save_add_version', formData).then(function (response) {
+          ele.innerHTML = button_html;
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      },
+      calendar: function calendar() {
+        axios.get('/marketing/calendar_get_events').then(function (response) {
+          console.log(response.data[0]);
+          var calendarEl = document.querySelector('.calendar');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: response.data,
+            eventColor: 'rgb(63 98 156)',
+            eventTextColor: '#fff'
+          });
+          calendar.render();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      },
+      get_html_from_link: function get_html_from_link(ele, textarea) {
+        show_loading();
+        textarea.value = '';
+        axios.get(ele.value).then(function (response) {
+          textarea.value = response.data;
+          hide_loading();
+        })["catch"](function (error) {
+          console.log(error);
+          hide_loading();
+          toastr.error('URL Not Found');
+        });
       }
     };
   };
@@ -10231,7 +10295,7 @@ window.show_file_names = function (target) {
   var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   var files = target.files;
   var id = target.id || new Date().getTime() * 100;
-  document.querySelector('.file-names').innerHTML = '';
+  document.querySelector('.file-names.' + id).innerHTML = '';
 
   for (var i = 0; i < files.length; i++) {
     var file_name = truncate_string(files[i].name, 70);
@@ -10246,7 +10310,7 @@ window.show_file_names = function (target) {
 
     html += '<div class="ml-3 w-full">' + file_name + '</div> \
         </div>';
-    document.querySelector('.file-names').insertAdjacentHTML('beforeend', html);
+    document.querySelector('.file-names.' + id).insertAdjacentHTML('beforeend', html);
   }
 };
 

@@ -27,7 +27,6 @@ window.addEventListener('load', function() {
                     anchor.id = 'form_anchor';
                     let parentDiv = form.parentNode;
                     parentDiv.insertBefore(anchor, form);
-                    // anchor.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
                     const y = anchor.getBoundingClientRect().top + window.scrollY;
                     window.scroll({
                         top: y - 500,
@@ -36,6 +35,21 @@ window.addEventListener('load', function() {
                 }
             }
         }, 500);
+
+        if(document.URL.match(/#tech/)) {
+
+            let tech_interval = setInterval(function() {
+                let anchor = document.querySelector('#tech_anchor');
+                if(anchor) {
+                    clearInterval(tech_interval);
+                    const y = anchor.getBoundingClientRect().top + window.scrollY;
+                    window.scroll({
+                        top: y - 50,
+                        behavior: 'smooth'
+                    });
+                }
+            },100);
+        }
 
     }
 
