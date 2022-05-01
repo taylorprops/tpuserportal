@@ -17,33 +17,7 @@ if(document.URL.match('marketing/schedule_settings')) {
 
                 axios.get('/marketing/get_schedule_settings')
                 .then(function (response) {
-                    let items = response.data;
-
-                    items.forEach(function(item) {
-
-                        let category = item.category;
-                        let details = item.details;
-
-                        let items_html = '';
-                        details.forEach(function(detail) {
-
-                            items_html += ' \
-                            <div class="flex justify-between p-2 my-2 border-b w-full group"> \
-                                <div> \
-                                    <input type="text" class="editor-inline p-2" value=" '+detail.item+'" \
-                                    @blur="settings_save_edit_item('+detail.id+', $el.value)"> \
-                                </div> \
-                                <div class="mr-4"> \
-                                    <button type="button" class="button danger md no-text" @click="settings_show_delete_item(\''+category+'\', '+detail.id+')"><i class="fa-duotone fa-xmark fa-xl"></i></button> \
-                                </div> \
-                            </div> \
-                            ';
-
-                        });
-
-                        document.querySelector('[data-type="'+category+'"]').innerHTML = items_html;
-
-                    })
+                    scope.$refs.settings_div.innerHTML = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -72,11 +46,12 @@ if(document.URL.match('marketing/schedule_settings')) {
                 });
             },
 
-            settings_save_edit_item(id, value) {
+            settings_save_edit_item(id, value, field) {
 
                 let formData = new FormData();
                 formData.append('id', id);
                 formData.append('value', value);
+                formData.append('field', field);
 
                 axios.post('/marketing/settings_save_edit_item', formData)
                 .then(function (response) {

@@ -26,8 +26,25 @@ class ScheduleController extends Controller
 
     public function get_schedule(Request $request) {
 
+        $company_id = $request -> company_id;
+        $recipient_id = $request -> recipient_id;
+        $medium_id = $request -> medium_id;
+
         $events = Schedule::where('active', TRUE)
-        -> with(['company', 'medium', 'recipient', 'uploads'])
+        -> where(function($query) use ($company_id, $recipient_id, $medium_id) {
+            if($company_id) {
+                $query -> where('company_id', $company_id);
+            }
+            if($recipient_id) {
+                $query -> where('recipient_id', $recipient_id);
+            }
+            if($medium_id) {
+                $query -> where('medium_id', $medium_id);
+            }
+        })
+        -> with(['company', 'medium', 'recipient', 'uploads' => function($query) {
+            $query -> where('active', TRUE);
+        }])
         -> orderBy('event_date', 'desc')
         -> get();
 
@@ -72,9 +89,9 @@ class ScheduleController extends Controller
         $description = $request -> description;
         $upload_html = $request -> upload_html;
         $upload_file = $request -> file('upload_file');
-        $subject_line_a = $request -> file('subject_line_a');
-        $subject_line_b = $request -> file('subject_line_b');
-        $preview_text = $request -> file('preview_text');
+        $subject_line_a = $request -> subject_line_a;
+        $subject_line_b = $request -> subject_line_b;
+        $preview_text = $request -> preview_text;
 
         $company = ScheduleSettings::where('id', $company_id) -> first();
         $company = $company -> item;
@@ -145,7 +162,7 @@ class ScheduleController extends Controller
     public function show_versions(Request $request) {
 
         $event_id = $request -> id;
-        $versions = ScheduleUploads::where('event_id', $event_id) -> get();
+        $versions = ScheduleUploads::where('event_id', $event_id) -> where('active', TRUE) -> get();
 
         return view('marketing/schedule/get_versions_html', compact('event_id', 'versions'));
 
@@ -168,17 +185,49 @@ class ScheduleController extends Controller
 
     }
 
+    public function delete_event(Request $request) {
+
+        $delete = Schedule::find($request -> id) -> update([
+            'active' => 0
+        ]);
+
+        return response() -> json(['status' => 'success']);
+
+    }
+
+    public function clone_event(Request $request) {
+
+        $id = $request -> id;
+
+        $event = Schedule::find($id);
+        $clone = $event -> replicate();
+        $clone -> save();
+        $clone_id = $clone -> id;
+
+        $uploads = ScheduleUploads::where('event_id', $id) -> get();
+        foreach($uploads as $upload) {
+            $upload_clone = $upload -> replicate();
+            $upload_clone -> event_id = $clone_id;
+            $upload_clone -> save();
+        }
+
+        return response() -> json(['id' => $clone_id]);
+
+    }
+
 
     public function schedule_settings(Request $request) {
 
-        $settings = ScheduleSettings::orderBy('item') -> get();
-        $categories = [];
-        foreach($settings as $setting) {
-            $categories[] = $setting -> category;
-        }
-        $categories = array_unique($categories);
+        // $settings = ScheduleSettings::orderBy('item') -> get();
+        // $categories = [];
+        // foreach($settings as $setting) {
+        //     $categories[] = $setting -> category;
+        // }
+        // $categories = array_unique($categories);
 
-        return view('marketing/schedule/schedule_settings', compact('categories'));
+        // return view('marketing/schedule/schedule_settings', compact('categories'));
+
+        return view('marketing/schedule/schedule_settings');
 
     }
 
@@ -192,23 +241,26 @@ class ScheduleController extends Controller
         }
         $categories = array_unique($categories);
 
-        $items = [];
-        foreach($categories as $category) {
-            $data['category'] = $category;
-            $details = [];
-            foreach($settings -> where('category', $category) as $setting) {
-                $details[] = [
-                    'id' => $setting -> id,
-                    'item' => $setting -> item
-                ];
-            }
-            $data['details'] = $details;
-            array_push($items, $data);
-        }
+        // $items = [];
+        // foreach($categories as $category) {
+        //     $data['category'] = $category;
+        //     $details = [];
+        //     foreach($settings -> where('category', $category) as $setting) {
+        //         $details[] = [
+        //             'id' => $setting -> id,
+        //             'item' => $setting -> item,
+        //             'color' => $setting -> color,
+        //         ];
+        //     }
+        //     $data['details'] = $details;
+        //     array_push($items, $data);
+        // }
 
-        $items = json_encode($items);
+        // $items = json_encode($items);
 
-        return $items;
+        // return $items;
+
+        return view('marketing/schedule/get_schedule_settings_html', compact('categories', 'settings'));
 
     }
 
@@ -248,9 +300,10 @@ class ScheduleController extends Controller
 
         $id = $request -> id;
         $value = $request -> value;
+        $field = $request -> field;
 
         ScheduleSettings::find($id) -> update([
-            'item' => $value
+            $field => $value
         ]);
 
         return response() -> json(['status' => 'success']);

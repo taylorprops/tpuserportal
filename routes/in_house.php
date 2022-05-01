@@ -134,12 +134,14 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/data/get_purged', [DataController::class, 'get_purged']) -> middleware(['in_house']);
 
     Route::get('/marketing/schedule', [ScheduleController::class, 'schedule']) -> middleware(['in_house']);
-    Route::get('/marketing/get_schedule', [ScheduleController::class, 'get_schedule']) -> middleware(['in_house']);
+    Route::post('/marketing/get_schedule', [ScheduleController::class, 'get_schedule']) -> middleware(['in_house']);
     Route::get('/marketing/schedule_settings', [ScheduleController::class, 'schedule_settings']) -> middleware(['in_house']);
     Route::post('/marketing/save_item', [ScheduleController::class, 'save_item']) -> middleware(['in_house']);
     Route::get('/marketing/show_versions', [ScheduleController::class, 'show_versions']) -> middleware(['in_house']);
     Route::post('/marketing/save_add_version', [ScheduleController::class, 'save_add_version']) -> middleware(['in_house']);
     Route::get('/marketing/calendar_get_events', [ScheduleController::class, 'calendar_get_events']) -> middleware(['in_house']);
+    Route::post('/marketing/clone_event', [ScheduleController::class, 'clone_event']) -> middleware(['in_house']);
+    Route::post('/marketing/delete_event', [ScheduleController::class, 'delete_event']) -> middleware(['in_house']);
 
     Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
     Route::post('/marketing/settings_save_add_item', [ScheduleController::class, 'settings_save_add_item']) -> middleware(['in_house']);

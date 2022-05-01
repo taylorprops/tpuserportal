@@ -130,6 +130,10 @@ a.default {
     @apply bg-primary-lightest text-gray-700 border-dashed border-4 border-blue-500;
 }
 
+.cloned {
+    @apply transition-all duration-500  border-4 border-green-500;
+}
+
 
 .min-w-600 {
     min-width: 600px;

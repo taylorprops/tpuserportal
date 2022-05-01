@@ -13,22 +13,35 @@ if (document.URL.match('marketing/schedule')) {
             edit_event: false,
             show_versions_modal: false,
             show_add_version_modal: false,
+            show_delete_event_modal: false,
             show_email_options: false,
 
             init() {
                 this.get_schedule();
             },
 
-            get_schedule() {
+            get_schedule(id = null) {
+
                 let scope = this;
-                axios.get('/marketing/get_schedule')
-                    .then(function (response) {
-                        scope.$refs.schedule_list_div.innerHTML = response.data;
-                        scope.calendar();
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                let form = scope.$refs.filter_form;
+                let formData = new FormData(form);
+
+                axios.post('/marketing/get_schedule', formData)
+                .then(function (response) {
+                    scope.$refs.schedule_list_div.innerHTML = response.data;
+                    scope.calendar();
+                    if(id) {
+                        let event_div = document.querySelector('#event_'+id);
+                        event_div.classList.add('cloned');
+                        setTimeout(function() {
+                            event_div.querySelector('.edit-button').click();
+                        }, 500);
+                    }
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
+
             },
 
             clear_form() {
@@ -87,7 +100,8 @@ if (document.URL.match('marketing/schedule')) {
             edit_item(ele) {
 
                 let scope = this;
-                scope.$refs.id.value = ele.getAttribute('data-id');
+                let id = ele.getAttribute('data-id');
+                scope.$refs.id.value = id;
                 scope.$refs.event_date.value = ele.getAttribute('data-event-date');
                 let states = ele.getAttribute('data-state').split(',');
                 states.forEach(function (state) {
@@ -98,11 +112,44 @@ if (document.URL.match('marketing/schedule')) {
                 scope.$refs.company_id.value = ele.getAttribute('data-company-id');
                 scope.$refs.medium_id.value = ele.getAttribute('data-medium-id');
                 scope.$refs.description.value = ele.getAttribute('data-description');
+                scope.$refs.subject_line_a.value = ele.getAttribute('data-subject-line-a');
+                scope.$refs.subject_line_b.value = ele.getAttribute('data-subject-line-b');
+                scope.$refs.preview_text.value = ele.getAttribute('data-preview-text');
                 scope.show_email_options = false;
                 if(scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
                     scope.show_email_options = true;
                 }
+                scope.$refs.delete_event_button.addEventListener('click', function() {
+                    scope.show_delete_event(id, scope.$refs.delete_event_button);
+                });
 
+            },
+
+            show_delete_event(id, ele) {
+
+                let scope = this;
+                scope.show_delete_event_modal = true;
+
+                scope.$refs.delete_event.addEventListener('click', function() {
+
+                    let button_html = ele.innerHTML;
+                    show_loading_button(ele, 'Deleting ... ');
+
+                    let formData = new FormData();
+                    formData.append('id', id);
+
+                    axios.post('/marketing/delete_event', formData)
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_schedule();
+                        scope.show_delete_event_modal = false;
+                        toastr.error('Event Successfully Recycled');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
+
+                });
             },
 
             show_versions(id) {
@@ -157,6 +204,26 @@ if (document.URL.match('marketing/schedule')) {
                 .catch(function (error) {
                     display_errors(error, ele, button_html);
                 });
+            },
+
+            clone(id, ele) {
+
+                let scope = this;
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Cloning ... ');
+
+                let formData = new FormData();
+                formData.append('id', id);
+
+                axios.post('/marketing/clone_event', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    let id = response.data.id;
+                    scope.get_schedule(id);
+                })
+                .catch(function (error) {
+                });
+
             },
 
             calendar() {

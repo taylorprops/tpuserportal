@@ -13,6 +13,7 @@ class Schedule extends Model
     protected $table = 'marketing_schedule';
     protected $guarded = [];
 
+
     public function medium()
     {
         return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'medium_id');

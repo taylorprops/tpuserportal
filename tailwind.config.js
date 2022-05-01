@@ -4,7 +4,7 @@ module.exports = {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
-        './resources/**/*.{blade.php,.scss,js}',
+        './resources/**/*.{php,scss,js}',
         './app/Http/Controllers/**/*.php',
         './app/Helpers/*.php',
     ],
@@ -206,12 +206,6 @@ module.exports = {
                     dark: '#8d4746',
                 },
             },
-        },
-    },
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-            backgroundColor: ['group-focus'],
         },
     },
     plugins: [

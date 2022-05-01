@@ -11,15 +11,50 @@ $breadcrumbs = [
         <x-nav.bread-crumbs :breadcrumbs="$breadcrumbs" />
     </x-slot>
 
-    <div class="pb-12 pt-2 overflow-x-hidden" x-data="schedule()">
+    <div class="pb-12 pt-2 overflow-hidden" x-data="schedule()">
 
         <div class="w-full mx-4 sm:px-6">
 
-            <div class="my-6">
-                <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form()">
-                    Add Item <i class="fa-light fa-plus ml-3"></i>
-                </button>
-            </div>
+            <form x-ref="filter_form">
+
+                <div class="my-6 flex justify-start items-end space-x-4">
+
+                    <div>
+                        <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form()">
+                            Add Item <i class="fa-light fa-plus ml-3"></i>
+                        </button>
+                    </div>
+
+                    <div>
+                        <select class="form-element select md" data-label="Company" name="company_id" @change="get_schedule()">
+                            <option value="">All</option>
+                            @foreach($settings -> where('category', 'company') as $company)
+                            <option value="{{ $company -> id }}">{{ $company -> item }}
+                                @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <select class="form-element select md" data-label="Recipients" name="recipient_id" @change="get_schedule()">
+                            <option value="">All</option>
+                            @foreach($settings -> where('category', 'recipient') as $recipient)
+                            <option value="{{ $recipient -> id }}">{{ $recipient -> item }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <select class="form-element select md" data-label="Medium" name="medium_id" @change="get_schedule()">
+                            <option value="">All</option>
+                            @foreach($settings -> where('category', 'medium') as $medium)
+                            <option value="{{ $medium -> id }}">{{ $medium -> item }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+
+            </form>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
@@ -124,8 +159,7 @@ $breadcrumbs = [
                         </div>
 
                         <div class="">
-                            <select class="form-element select md required" name="medium_id" x-ref="medium_id" data-label="Medium"
-                                @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
+                            <select class="form-element select md required" name="medium_id" x-ref="medium_id" data-label="Medium" @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
                                 <option value=""></option>
                                 @foreach($settings -> where('category', 'medium') as $medium)
                                 <option value="{{ $medium -> id }}">{{ $medium -> item }}</option>
@@ -138,15 +172,15 @@ $breadcrumbs = [
                         </div>
 
                         <div class="col-span-2" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="subject_line_a" data-label="Subject Line A">
+                            <input type="text" class="form-element input md required" name="subject_line_a" x-ref="subject_line_a" data-label="Subject Line A">
                         </div>
 
                         <div class="col-span-2" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="subject_line_b" data-label="Subject Line B">
+                            <input type="text" class="form-element input md required" name="subject_line_b" x-ref="subject_line_b" data-label="Subject Line B">
                         </div>
 
                         <div class="col-span-4" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="preview_text" data-label="Preview Text">
+                            <input type="text" class="form-element input md required" name="preview_text" x-ref="preview_text" data-label="Preview Text">
                         </div>
 
                     </div>
@@ -159,8 +193,7 @@ $breadcrumbs = [
 
                             <div class="sm:hidden">
                                 <label for="tabs" class="sr-only">Select an Option</label>
-                                <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-                                @change="active_tab = $el.value;">
+                                <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value;">
                                     <option value="html">Paste HTML</option>
                                     <option value="file">Image/PDF</option>
                                 </select>
@@ -170,13 +203,9 @@ $breadcrumbs = [
                                 <div class="border-b border-gray-200">
                                     <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
-                                        <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                                        :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"
-                                        @click="active_tab = 'html'"> HTML </a>
+                                        <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';" @click="active_tab = 'html'"> HTML </a>
 
-                                        <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page"
-                                        @click="active_tab = 'file'"
-                                        :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
+                                        <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page" @click="active_tab = 'file'" :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
 
                                     </nav>
                                 </div>
@@ -186,24 +215,17 @@ $breadcrumbs = [
 
                                 <div x-show="active_tab === 'html'" x-transition>
                                     <div>
-                                        <input type="text" class="form-element input md" data-label="Paste URL"
-                                        x-ref="paste_link"
-                                        @change="get_html_from_link($el, $refs.upload_html);" @paste="get_html_from_link($el, $refs.upload_html);">
+                                        <input type="text" class="form-element input md" data-label="Paste URL" x-ref="paste_link" @change="get_html_from_link($el, $refs.upload_html);" @paste="get_html_from_link($el, $refs.upload_html);">
                                     </div>
                                     <div class="my-2">OR</div>
                                     <div>
-                                        <textarea class="form-element textarea md" rows="3" name="upload_html"
-                                        data-label="Paste HTML"
-                                        x-ref="upload_html"
-                                        @change="$refs.upload_file.value = ''; show_file_names($refs.upload_file)"></textarea>
+                                        <textarea class="form-element textarea md" rows="3" name="upload_html" data-label="Paste HTML" x-ref="upload_html" @change="$refs.upload_file.value = ''; show_file_names($refs.upload_file)"></textarea>
                                     </div>
                                 </div>
 
                                 <div x-show="active_tab === 'file'" x-transition>
                                     <div>
-                                        <input type="file" name="upload_file" class="form-element input md" @change="show_file_names($el);" accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                                        x-ref="upload_file"
-                                        @click="$refs.upload_html.value = ''">
+                                        <input type="file" name="upload_file" class="form-element input md" @change="show_file_names($el);" accept="image/x-png,image/gif,image/jpeg,application/pdf" x-ref="upload_file" @click="$refs.upload_html.value = ''">
                                     </div>
                                 </div>
 
@@ -218,7 +240,7 @@ $breadcrumbs = [
                     </div>
 
                     <div class="mt-4 flex justify-around" x-show="edit_event">
-                        <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" @click="">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
+                        <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" x-ref="delete_event_button">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
                     </div>
 
                 </div>
@@ -233,14 +255,29 @@ $breadcrumbs = [
             <div x-ref="versions_div"></div>
         </x-modals.modal>
 
+        <x-modals.modal :modalWidth="'w-full sm:w-3/4 md:w-1/3 lg:w-1/4'" :modalTitle="''" :modalId="'show_delete_event_modal'" x-show="show_delete_event_modal" :clickOutside="'show_delete_event_modal = true;'">
+            <div>
+                Are you sure you want to send this event to the recycle bin?
+            </div>
+            <div class="flex justify-around items-center py-6">
+                <button type="button" class="button danger sm"
+                @click="show_delete_event_modal = false">
+                    Cancel <i class="fa-light fa-xmark ml-2"></i>
+                </button>
+                <button type="button" class="button primary md"
+                x-ref="delete_event">
+                    Confirm <i class="fa-light fa-check ml-2"></i>
+                </button>
+            </div>
+        </x-modals.modal>
+
         <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add New Version'" :modalId="'show_add_version_modal'" x-show="show_add_version_modal">
 
             <div x-data="{ active_tab: 'html' }">
 
                 <div class="sm:hidden">
                     <label for="tabs" class="sr-only">Select an Option</label>
-                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
-                    @change="active_tab = $el.value;">
+                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value;">
                         <option value="html">Paste HTML</option>
                         <option value="file">Image/PDF</option>
                     </select>
@@ -250,13 +287,9 @@ $breadcrumbs = [
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                            :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"
-                            @click="active_tab = 'html'"> Paste HTML </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';" @click="active_tab = 'html'"> Paste HTML </a>
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page"
-                            @click="active_tab = 'file'"
-                            :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page" @click="active_tab = 'file'" :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
 
                         </nav>
                     </div>
@@ -267,16 +300,12 @@ $breadcrumbs = [
                     <div class="mt-8">
 
                         <div x-show="active_tab === 'html'" x-transition>
-                            <textarea class="form-element textarea md" rows="3" name="upload_version_html"
-                            x-ref="upload_version_html"
-                            @change="$refs.upload_version_file.value = ''; show_file_names($refs.upload_version_file)"></textarea>
+                            <textarea class="form-element textarea md" rows="3" name="upload_version_html" x-ref="upload_version_html" @change="$refs.upload_version_file.value = ''; show_file_names($refs.upload_version_file)"></textarea>
                         </div>
 
                         <div x-show="active_tab === 'file'" x-transition>
                             <div class="mt-12">
-                                <input type="file" name="upload_version_file" id="upload_version_file" class="form-element input md" @change="show_file_names($el);" accept="image/x-png,image/gif,image/jpeg,application/pdf"
-                                x-ref="upload_version_file"
-                                @click="$refs.upload_version_html.value = ''">
+                                <input type="file" name="upload_version_file" id="upload_version_file" class="form-element input md" @change="show_file_names($el);" accept="image/x-png,image/gif,image/jpeg,application/pdf" x-ref="upload_version_file" @click="$refs.upload_version_html.value = ''">
                             </div>
                         </div>
 
