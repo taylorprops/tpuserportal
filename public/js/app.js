@@ -8029,6 +8029,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 window.toastr = new toastr2__WEBPACK_IMPORTED_MODULE_0__["default"]();
 toastr.options.preventDuplicates = true;
+toastr.options.closeButton = true;
 (0,tippy_js__WEBPACK_IMPORTED_MODULE_2__["default"])('[data-tippy-content]', {
   allowHTML: true
 });
@@ -9837,11 +9838,11 @@ if (document.URL.match('marketing/schedule')) {
       },
       clear_form: function clear_form(form) {
         form.reset();
+        show_file_names(document.querySelector('[type="file"]'));
       },
       clear_add_version_form: function clear_add_version_form() {
-        this.$refs.upload_version_file.value = '';
-        show_file_names(this.$refs.upload_version_file);
-        this.$refs.upload_version_html.value = '';
+        var form = document.querySelector('#add_version_form');
+        this.clear_form(form);
       },
       save_item: function save_item(ele) {
         var scope = this;
@@ -9980,7 +9981,7 @@ if (document.URL.match('marketing/schedule')) {
           }, 1000);
         })["catch"](function (error) {});
       },
-      save_add_version: function save_add_version(ele) {
+      save_add_version: function save_add_version(ele, show_versions) {
         var scope = this;
         var button_html = ele.innerHTML;
         var event_id = document.querySelector('#event_id').value;
@@ -9988,16 +9989,20 @@ if (document.URL.match('marketing/schedule')) {
         remove_form_errors();
         var form = document.querySelector('#add_version_form');
         var formData = new FormData(form);
+        this.clear_add_version_form();
         axios.post('/marketing/save_add_version', formData).then(function (response) {
           ele.innerHTML = button_html;
           scope.show_add_version_modal = false;
           toastr.success('New Version Successfully Added');
           scope.get_schedule();
+
+          if (show_versions == true) {
+            scope.show_versions(event_id);
+          }
+
           setTimeout(function () {
-            console.log(document.querySelector('#show_details_' + event_id));
             document.querySelector('#show_details_' + event_id).click();
           }, 1000);
-          scope.clear_add_version_form();
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });

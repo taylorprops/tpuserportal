@@ -291,7 +291,7 @@ $breadcrumbs = [
 
                 <div class="sm:hidden">
                     <label for="tabs" class="sr-only">Select an Option</label>
-                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value; clear_form($refs.add_version_form);">
+                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value; clear_form($refs.add_version_form); clear_add_version_form()">
                         <option value="html">Paste HTML</option>
                         <option value="file">Image/PDF</option>
                     </select>
@@ -303,10 +303,10 @@ $breadcrumbs = [
 
                             <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                             :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"
-                            @click="active_tab = 'html';"> Paste HTML </a>
+                            @click="active_tab = 'html'; clear_add_version_form()"> Paste HTML </a>
 
                             <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page"
-                            @click="active_tab = 'file';"
+                            @click="active_tab = 'file'; clear_add_version_form()"
                             :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
 
                         </nav>
@@ -321,7 +321,6 @@ $breadcrumbs = [
                             <div>
                                 <input type="text" class="form-element input md"
                                 data-label="Paste URL"
-                                x-ref="paste_version_link"
                                 @change="get_html_from_link($el, $refs.upload_version_html);"
                                 @paste="get_html_from_link($el, $refs.upload_version_html);">
                             </div>
@@ -329,18 +328,16 @@ $breadcrumbs = [
                             <div>
                                 <textarea class="form-element textarea md" rows="3" name="upload_version_html"
                                 data-label="Paste HTML"
-                                x-ref="upload_version_html"
-                                @change="$refs.upload_version_file.value = ''; show_file_names($refs.upload_version_file)"></textarea>
+                                x-ref="upload_version_html"></textarea>
                             </div>
                         </div>
 
                         <div x-show="active_tab === 'file'" x-transition>
                             <div class="mt-12">
                                 <input type="file" name="upload_version_file" class="form-element input md"
-                                @change="show_file_names($el);"
-                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                                @change="show_file_names($el)"
                                 x-ref="upload_version_file"
-                                @click="$refs.upload_version_html.value = ''">
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf">
                             </div>
                         </div>
 
@@ -353,7 +350,7 @@ $breadcrumbs = [
             </div>
 
             <div class="flex justify-around items-center pb-6 pt-12">
-                <button type="button" class="button primary xl" @click="save_add_version($el)">Save Version <i class="fa-light fa-check ml-2"></i></button>
+                <button type="button" class="button primary xl" @click="save_add_version($el, true)">Save Version <i class="fa-light fa-check ml-2"></i></button>
             </div>
 
         </x-modals.modal>

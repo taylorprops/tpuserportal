@@ -47,12 +47,13 @@ if (document.URL.match('marketing/schedule')) {
 
             clear_form(form) {
                 form.reset();
+                show_file_names(document.querySelector('[type="file"]'));
             },
 
             clear_add_version_form() {
-                this.$refs.upload_version_file.value = '';
-                show_file_names(this.$refs.upload_version_file);
-                this.$refs.upload_version_html.value = '';
+
+                let form = document.querySelector('#add_version_form');
+                this.clear_form(form);
             },
 
             save_item(ele) {
@@ -220,7 +221,7 @@ if (document.URL.match('marketing/schedule')) {
                 });
             },
 
-            save_add_version(ele) {
+            save_add_version(ele, show_versions) {
 
                 let scope = this;
                 let button_html = ele.innerHTML;
@@ -231,18 +232,21 @@ if (document.URL.match('marketing/schedule')) {
                 let form = document.querySelector('#add_version_form');
                 let formData = new FormData(form);
 
+                this.clear_add_version_form();
+
                 axios.post('/marketing/save_add_version', formData)
                 .then(function (response) {
                     ele.innerHTML = button_html;
                     scope.show_add_version_modal = false;
                     toastr.success('New Version Successfully Added');
                     scope.get_schedule();
+                    if(show_versions == true) {
+                        scope.show_versions(event_id);
+                    }
                     setTimeout(function() {
-                        console.log(document.querySelector('#show_details_'+event_id));
-                        document
-                        .querySelector('#show_details_'+event_id).click();
+                        document.querySelector('#show_details_'+event_id).click();
                     }, 1000);
-                    scope.clear_add_version_form();
+
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);

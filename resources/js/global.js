@@ -5,6 +5,7 @@ import 'tippy.js/dist/tippy.css';
 
 window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
+toastr.options.closeButton = true;
 tippy('[data-tippy-content]', {
     allowHTML: true,
 });

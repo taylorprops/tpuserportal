@@ -220,6 +220,7 @@ class ScheduleController extends Controller
             $upload = new ScheduleUploads();
             $upload -> html = $upload_html;
             $upload -> event_id = $event_id;
+            $upload -> accepted_version = false;
             $upload -> save();
 
         }
