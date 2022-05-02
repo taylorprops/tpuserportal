@@ -34,6 +34,8 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
+        return date('G') < 20 ? 'yes' : 'no';
+
         // $a = [1,2,3,4,5,6,7,8,9,10];
         // $b = [3,5,7,9,11,12,13];
         // dd(array_diff($b,$a));

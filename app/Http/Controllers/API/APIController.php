@@ -877,7 +877,7 @@ class APIController extends Controller
             -> cc($cc)
             -> send(new EmailGeneral($message));
 
-            if(date('G') > 7 && date('G') < 20) {
+            if(date('G') > '7' && date('G') < '20') {
 
                 $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
