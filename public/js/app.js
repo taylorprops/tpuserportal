@@ -10,9 +10,9 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "popperGenerator": () => (/* binding */ popperGenerator),
 /* harmony export */   "createPopper": () => (/* binding */ createPopper),
-/* harmony export */   "detectOverflow": () => (/* reexport safe */ _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_13__["default"]),
-/* harmony export */   "popperGenerator": () => (/* binding */ popperGenerator)
+/* harmony export */   "detectOverflow": () => (/* reexport safe */ _utils_detectOverflow_js__WEBPACK_IMPORTED_MODULE_13__["default"])
 /* harmony export */ });
 /* harmony import */ var _dom_utils_getCompositeRect_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./dom-utils/getCompositeRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getCompositeRect.js");
 /* harmony import */ var _dom_utils_getLayoutRect_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./dom-utils/getLayoutRect.js */ "./node_modules/@popperjs/core/lib/dom-utils/getLayoutRect.js");
@@ -1185,30 +1185,30 @@ function listScrollParents(element, list) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "afterMain": () => (/* binding */ afterMain),
-/* harmony export */   "afterRead": () => (/* binding */ afterRead),
-/* harmony export */   "afterWrite": () => (/* binding */ afterWrite),
+/* harmony export */   "top": () => (/* binding */ top),
+/* harmony export */   "bottom": () => (/* binding */ bottom),
+/* harmony export */   "right": () => (/* binding */ right),
+/* harmony export */   "left": () => (/* binding */ left),
 /* harmony export */   "auto": () => (/* binding */ auto),
 /* harmony export */   "basePlacements": () => (/* binding */ basePlacements),
-/* harmony export */   "beforeMain": () => (/* binding */ beforeMain),
-/* harmony export */   "beforeRead": () => (/* binding */ beforeRead),
-/* harmony export */   "beforeWrite": () => (/* binding */ beforeWrite),
-/* harmony export */   "bottom": () => (/* binding */ bottom),
-/* harmony export */   "clippingParents": () => (/* binding */ clippingParents),
-/* harmony export */   "end": () => (/* binding */ end),
-/* harmony export */   "left": () => (/* binding */ left),
-/* harmony export */   "main": () => (/* binding */ main),
-/* harmony export */   "modifierPhases": () => (/* binding */ modifierPhases),
-/* harmony export */   "placements": () => (/* binding */ placements),
-/* harmony export */   "popper": () => (/* binding */ popper),
-/* harmony export */   "read": () => (/* binding */ read),
-/* harmony export */   "reference": () => (/* binding */ reference),
-/* harmony export */   "right": () => (/* binding */ right),
 /* harmony export */   "start": () => (/* binding */ start),
-/* harmony export */   "top": () => (/* binding */ top),
-/* harmony export */   "variationPlacements": () => (/* binding */ variationPlacements),
+/* harmony export */   "end": () => (/* binding */ end),
+/* harmony export */   "clippingParents": () => (/* binding */ clippingParents),
 /* harmony export */   "viewport": () => (/* binding */ viewport),
-/* harmony export */   "write": () => (/* binding */ write)
+/* harmony export */   "popper": () => (/* binding */ popper),
+/* harmony export */   "reference": () => (/* binding */ reference),
+/* harmony export */   "variationPlacements": () => (/* binding */ variationPlacements),
+/* harmony export */   "placements": () => (/* binding */ placements),
+/* harmony export */   "beforeRead": () => (/* binding */ beforeRead),
+/* harmony export */   "read": () => (/* binding */ read),
+/* harmony export */   "afterRead": () => (/* binding */ afterRead),
+/* harmony export */   "beforeMain": () => (/* binding */ beforeMain),
+/* harmony export */   "main": () => (/* binding */ main),
+/* harmony export */   "afterMain": () => (/* binding */ afterMain),
+/* harmony export */   "beforeWrite": () => (/* binding */ beforeWrite),
+/* harmony export */   "write": () => (/* binding */ write),
+/* harmony export */   "afterWrite": () => (/* binding */ afterWrite),
+/* harmony export */   "modifierPhases": () => (/* binding */ modifierPhases)
 /* harmony export */ });
 var top = 'top';
 var bottom = 'bottom';
@@ -1478,8 +1478,8 @@ function effect(_ref2) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "mapToStyles": () => (/* binding */ mapToStyles)
+/* harmony export */   "mapToStyles": () => (/* binding */ mapToStyles),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
 /* harmony import */ var _dom_utils_getOffsetParent_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../dom-utils/getOffsetParent.js */ "./node_modules/@popperjs/core/lib/dom-utils/getOffsetParent.js");
@@ -2031,8 +2031,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "distanceAndSkiddingToXY": () => (/* binding */ distanceAndSkiddingToXY)
+/* harmony export */   "distanceAndSkiddingToXY": () => (/* binding */ distanceAndSkiddingToXY),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _utils_getBasePlacement_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/getBasePlacement.js */ "./node_modules/@popperjs/core/lib/utils/getBasePlacement.js");
 /* harmony import */ var _enums_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../enums.js */ "./node_modules/@popperjs/core/lib/enums.js");
@@ -2310,9 +2310,9 @@ function preventOverflow(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "createPopper": () => (/* binding */ createPopper),
+/* harmony export */   "popperGenerator": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_4__.popperGenerator),
 /* harmony export */   "defaultModifiers": () => (/* binding */ defaultModifiers),
-/* harmony export */   "detectOverflow": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_5__["default"]),
-/* harmony export */   "popperGenerator": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_4__.popperGenerator)
+/* harmony export */   "detectOverflow": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_5__["default"])
 /* harmony export */ });
 /* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/createPopper.js");
 /* harmony import */ var _createPopper_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./createPopper.js */ "./node_modules/@popperjs/core/lib/utils/detectOverflow.js");
@@ -2343,18 +2343,18 @@ var createPopper = /*#__PURE__*/(0,_createPopper_js__WEBPACK_IMPORTED_MODULE_4__
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createPopper": () => (/* binding */ createPopper),
+/* harmony export */   "popperGenerator": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_9__.popperGenerator),
+/* harmony export */   "defaultModifiers": () => (/* binding */ defaultModifiers),
+/* harmony export */   "detectOverflow": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_10__["default"]),
+/* harmony export */   "createPopperLite": () => (/* reexport safe */ _popper_lite_js__WEBPACK_IMPORTED_MODULE_11__.createPopper),
 /* harmony export */   "applyStyles": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.applyStyles),
 /* harmony export */   "arrow": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.arrow),
 /* harmony export */   "computeStyles": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.computeStyles),
-/* harmony export */   "createPopper": () => (/* binding */ createPopper),
-/* harmony export */   "createPopperLite": () => (/* reexport safe */ _popper_lite_js__WEBPACK_IMPORTED_MODULE_11__.createPopper),
-/* harmony export */   "defaultModifiers": () => (/* binding */ defaultModifiers),
-/* harmony export */   "detectOverflow": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_10__["default"]),
 /* harmony export */   "eventListeners": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.eventListeners),
 /* harmony export */   "flip": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.flip),
 /* harmony export */   "hide": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.hide),
 /* harmony export */   "offset": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.offset),
-/* harmony export */   "popperGenerator": () => (/* reexport safe */ _createPopper_js__WEBPACK_IMPORTED_MODULE_9__.popperGenerator),
 /* harmony export */   "popperOffsets": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.popperOffsets),
 /* harmony export */   "preventOverflow": () => (/* reexport safe */ _modifiers_index_js__WEBPACK_IMPORTED_MODULE_12__.preventOverflow)
 /* harmony export */ });
@@ -9835,8 +9835,13 @@ if (document.URL.match('marketing/schedule')) {
           display_errors(error, ele, button_html);
         });
       },
-      clear_form: function clear_form() {
-        this.$refs.schedule_form.reset();
+      clear_form: function clear_form(form) {
+        form.reset();
+      },
+      clear_add_version_form: function clear_add_version_form() {
+        this.$refs.upload_version_file.value = '';
+        show_file_names(this.$refs.upload_version_file);
+        this.$refs.upload_version_html.value = '';
       },
       save_item: function save_item(ele) {
         var scope = this;
@@ -9889,9 +9894,12 @@ if (document.URL.match('marketing/schedule')) {
         var id = ele.getAttribute('data-id');
         scope.$refs.id.value = id;
         scope.$refs.event_date.value = ele.getAttribute('data-event-date');
+        var inputs = document.querySelectorAll('.states:checked');
+        inputs.forEach(function (input) {
+          input.click();
+        });
         var states = ele.getAttribute('data-state').split(',');
         states.forEach(function (state) {
-          document.querySelector('#' + state).checked = false;
           document.querySelector('#' + state).click();
         });
         scope.$refs.recipient_id.value = ele.getAttribute('data-recipient-id');
@@ -9907,9 +9915,7 @@ if (document.URL.match('marketing/schedule')) {
           scope.show_email_options = true;
         }
 
-        scope.$refs.delete_event_button.addEventListener('click', function () {
-          scope.show_delete_event(id, scope.$refs.delete_event_button);
-        });
+        scope.$refs.delete_event_button.setAttribute('data-id', ele.getAttribute('data-id'));
         scope.$refs.show_versions_button.addEventListener('click', function () {
           scope.show_versions(id);
         });
@@ -9926,6 +9932,7 @@ if (document.URL.match('marketing/schedule')) {
             ele.innerHTML = button_html;
             scope.get_schedule();
             scope.show_delete_event_modal = false;
+            scope.show_item_modal = false;
             toastr.error('Event Successfully Recycled');
           })["catch"](function (error) {
             display_errors(error, ele, button_html);
@@ -9958,17 +9965,39 @@ if (document.URL.match('marketing/schedule')) {
       add_version: function add_version(id) {
         var scope = this;
         scope.show_add_version_modal = true;
-        document.querySelector('#add_version_id').value = id;
+        document.querySelector('#event_id').value = id;
       },
-      save_version_item: function save_version_item(ele) {
+      delete_version: function delete_version(event_id, version_id) {
+        var scope = this;
+        var formData = new FormData();
+        formData.append('event_id', event_id);
+        formData.append('version_id', version_id);
+        axios.post('/marketing/delete_version', formData).then(function (response) {
+          scope.show_versions(event_id);
+          scope.get_schedule();
+          setTimeout(function () {
+            document.querySelector('#show_details_' + event_id).click();
+          }, 1000);
+        })["catch"](function (error) {});
+      },
+      save_add_version: function save_add_version(ele) {
         var scope = this;
         var button_html = ele.innerHTML;
+        var event_id = document.querySelector('#event_id').value;
         show_loading_button(ele, 'Saving ... ');
         remove_form_errors();
-        var form = scope.$refs.add_version_form;
+        var form = document.querySelector('#add_version_form');
         var formData = new FormData(form);
         axios.post('/marketing/save_add_version', formData).then(function (response) {
           ele.innerHTML = button_html;
+          scope.show_add_version_modal = false;
+          toastr.success('New Version Successfully Added');
+          scope.get_schedule();
+          setTimeout(function () {
+            console.log(document.querySelector('#show_details_' + event_id));
+            document.querySelector('#show_details_' + event_id).click();
+          }, 1000);
+          scope.clear_add_version_form();
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });
@@ -9986,7 +10015,10 @@ if (document.URL.match('marketing/schedule')) {
         })["catch"](function (error) {});
       },
       calendar: function calendar() {
-        axios.get('/marketing/calendar_get_events').then(function (response) {
+        var scope = this;
+        var form = scope.$refs.filter_form;
+        var formData = new FormData(form);
+        axios.post('/marketing/calendar_get_events', formData).then(function (response) {
           var calendarEl = document.querySelector('.calendar');
           var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
@@ -9996,7 +10028,6 @@ if (document.URL.match('marketing/schedule')) {
               right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: response.data,
-            eventColor: 'rgb(63 98 156)',
             eventTextColor: '#fff',
             eventClick: function eventClick(info) {
               var id = info.event.id;
@@ -10007,18 +10038,42 @@ if (document.URL.match('marketing/schedule')) {
         })["catch"](function (error) {
           console.log(error);
         });
+        /* axios.get('/marketing/calendar_get_events')
+        .then(function (response) {
+             let calendarEl = document.querySelector('.calendar');
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: response.data,
+                eventTextColor: '#fff',
+                eventClick: function(info) {
+                    let id = info.event.id;
+                    document.querySelector('.edit-button[data-id="'+id+'"]').click();
+                },
+            });
+             calendar.render();
+         })
+        .catch(function (error) {
+            console.log(error);
+        }); */
       },
       get_html_from_link: function get_html_from_link(ele, textarea) {
         show_loading();
-        textarea.value = '';
-        axios.get(ele.value).then(function (response) {
-          textarea.value = response.data;
-          hide_loading();
-        })["catch"](function (error) {
-          console.log(error);
-          hide_loading();
-          toastr.error('URL Not Found');
-        });
+        setTimeout(function () {
+          textarea.value = '';
+          axios.get(ele.value).then(function (response) {
+            textarea.value = response.data;
+            hide_loading();
+          })["catch"](function (error) {
+            console.log(error);
+            hide_loading();
+            toastr.error('URL Not Found');
+          });
+        }, 1000);
       }
     };
   };
@@ -16711,7 +16766,7 @@ module.exports = function (cssWithMappingToString) {
 /***/ (function(module) {
 
 /*!
- * FilePondPluginFileValidateType 1.2.7
+ * FilePondPluginFileValidateType 1.2.6
  * Licensed under MIT, https://opensource.org/licenses/MIT/
  * Please visit https://pqina.nl/filepond/ for details.
  */
@@ -16958,7 +17013,7 @@ module.exports = function (cssWithMappingToString) {
 /***/ (function(module) {
 
 /*!
- * FilePondPluginImagePreview 4.6.11
+ * FilePondPluginImagePreview 4.6.10
  * Licensed under MIT, https://opensource.org/licenses/MIT/
  * Please visit https://pqina.nl/filepond/ for details.
  */
@@ -19675,9 +19730,7 @@ module.exports = function (cssWithMappingToString) {
           props = _ref.props;
         var mask = SVG_MASK;
         if (document.querySelector('base')) {
-          var url = new URL(
-            window.location.href.replace(window.location.hash, '')
-          ).href;
+          var url = window.location.href.replace(window.location.hash, '');
           mask = mask.replace(/url\(\#/g, 'url(' + url + '#');
         }
 
@@ -51008,7 +51061,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /**!
- * Sortable 1.15.0
+ * Sortable 1.14.0
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT
@@ -51169,7 +51222,7 @@ function _nonIterableSpread() {
   throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
-var version = "1.15.0";
+var version = "1.14.0";
 
 function userAgent(pattern) {
   if (typeof window !== 'undefined' && window.navigator) {
@@ -52176,7 +52229,7 @@ _detectNearestEmptySortable = function _detectNearestEmptySortable(x, y) {
 }; // #1184 fix - Prevent click event on fallback if dragged but item not changed position
 
 
-if (documentExists && !ChromeForAndroid) {
+if (documentExists) {
   document.addEventListener('click', function (evt) {
     if (ignoreNextClick) {
       evt.preventDefault();
@@ -52795,7 +52848,6 @@ Sortable.prototype =
 
     if (!Sortable.eventCanceled) {
       cloneEl = clone(dragEl);
-      cloneEl.removeAttribute("id");
       cloneEl.draggable = false;
       cloneEl.style['will-change'] = '';
 
@@ -53037,14 +53089,7 @@ Sortable.prototype =
 
         if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
           capture();
-
-          if (elLastChild && elLastChild.nextSibling) {
-            // the last draggable element is not the last node
-            el.insertBefore(dragEl, elLastChild.nextSibling);
-          } else {
-            el.appendChild(dragEl);
-          }
-
+          el.appendChild(dragEl);
           parentEl = el; // actualization
 
           changed();
@@ -54189,13 +54234,11 @@ function MultiDragPlugin() {
       }
     }
 
-    if (!sortable.options.avoidImplicitDeselect) {
-      if (sortable.options.supportPointer) {
-        on(document, 'pointerup', this._deselectMultiDrag);
-      } else {
-        on(document, 'mouseup', this._deselectMultiDrag);
-        on(document, 'touchend', this._deselectMultiDrag);
-      }
+    if (sortable.options.supportPointer) {
+      on(document, 'pointerup', this._deselectMultiDrag);
+    } else {
+      on(document, 'mouseup', this._deselectMultiDrag);
+      on(document, 'touchend', this._deselectMultiDrag);
     }
 
     on(document, 'keydown', this._checkKeyDown);
@@ -54203,7 +54246,6 @@ function MultiDragPlugin() {
     this.defaults = {
       selectedClass: 'sortable-selected',
       multiDragKey: null,
-      avoidImplicitDeselect: false,
       setData: function setData(dataTransfer, dragEl) {
         var data = '';
 
@@ -54494,7 +54536,7 @@ function MultiDragPlugin() {
             rootEl: rootEl,
             name: 'select',
             targetEl: dragEl$1,
-            originalEvent: evt
+            originalEvt: evt
           }); // Modifier activated, select from last to dragEl
 
           if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
@@ -54523,7 +54565,7 @@ function MultiDragPlugin() {
                   rootEl: rootEl,
                   name: 'select',
                   targetEl: children[i],
-                  originalEvent: evt
+                  originalEvt: evt
                 });
               }
             }
@@ -54540,7 +54582,7 @@ function MultiDragPlugin() {
             rootEl: rootEl,
             name: 'deselect',
             targetEl: dragEl$1,
-            originalEvent: evt
+            originalEvt: evt
           });
         }
       } // Multi-drag drop
@@ -54651,7 +54693,7 @@ function MultiDragPlugin() {
           rootEl: this.sortable.el,
           name: 'deselect',
           targetEl: el,
-          originalEvent: evt
+          originalEvt: evt
         });
       }
     },
@@ -55115,9 +55157,9 @@ module.exports = function (list, options) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "animateFill": () => (/* binding */ animateFill),
 /* harmony export */   "createSingleton": () => (/* binding */ createSingleton),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "delegate": () => (/* binding */ delegate),
 /* harmony export */   "followCursor": () => (/* binding */ followCursor),
 /* harmony export */   "hideAll": () => (/* binding */ hideAll),
@@ -63288,7 +63330,7 @@ var Toastr = /** @class */ (function () {
 /******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
 /******/ 					installedChunks[chunkId][0]();
 /******/ 				}
-/******/ 				installedChunks[chunkId] = 0;
+/******/ 				installedChunks[chunkIds[i]] = 0;
 /******/ 			}
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}

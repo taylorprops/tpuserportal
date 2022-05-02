@@ -13,14 +13,14 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2 overflow-hidden" x-data="schedule()">
 
-        <div class="w-full mx-4 sm:px-6">
+        <div class="w-full mx-4">
 
             <form x-ref="filter_form">
 
                 <div class="my-6 flex justify-start items-end space-x-4">
 
                     <div>
-                        <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form()">
+                        <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form($refs.schedule_form)">
                             Add Item <i class="fa-light fa-plus ml-3"></i>
                         </button>
                     </div>
@@ -131,11 +131,15 @@ $breadcrumbs = [
 
                                 @foreach($states as $state)
 
-                                <label for="{{ $state }}" class="@if($loop -> first) rounded-l-md border-r border-gray-200 @elseif ($loop -> last) rounded-r-md @else border-r border-gray-200 @endif
-                                    flex justify-around items-center py-2 w-full  cursor-pointer" x-data="{ active: false }" x-ref="{{ $state }}" :class="active === true ? 'bg-primary text-white' : 'color-gray-700 hover:bg-gray-50'">
-                                    {{ $state }}
-                                    <input type="checkbox" class="hidden states @if ($loop -> last) form-element required @endif" name="state[]" id="{{ $state }}" value="{{ $state }}" @change="active = $el.checked; $refs.states.value = document.querySelectorAll('.states:checked').length">
-                                </label>
+                                    <label for="{{ $state }}"
+                                    class="@if($loop -> first) rounded-l-md border-r border-gray-200 @elseif ($loop -> last) rounded-r-md @else border-r border-gray-200 @endif
+                                    flex justify-around items-center py-2 w-full cursor-pointer state-radios"
+                                    x-data="{ active: false }"
+                                    x-ref="{{ $state }}"
+                                    :class="active === true ? 'bg-primary text-white' : 'color-gray-700 hover:bg-gray-50'">
+                                        {{ $state }}
+                                        <input type="checkbox" class="hidden states @if ($loop -> last) form-element required @endif" name="state[]" id="{{ $state }}" value="{{ $state }}" @change="active = $el.checked; $refs.states.value = document.querySelectorAll('.states:checked').length">
+                                    </label>
 
                                 @endforeach
 
@@ -238,7 +242,7 @@ $breadcrumbs = [
                     <div class="flex justify-around items-center">
 
                         <div class="mt-4 flex justify-around" x-show="edit_event">
-                            <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" x-ref="delete_event_button">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
+                            <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" @click="show_delete_event($el.getAttribute('data-id'), $el)" x-ref="delete_event_button">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
                         </div>
 
                         <div class="flex justify-around items-center pb-6 pt-12">
@@ -287,7 +291,7 @@ $breadcrumbs = [
 
                 <div class="sm:hidden">
                     <label for="tabs" class="sr-only">Select an Option</label>
-                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value;">
+                    <select id="tabs" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md" @change="active_tab = $el.value; clear_form($refs.add_version_form);">
                         <option value="html">Paste HTML</option>
                         <option value="file">Image/PDF</option>
                     </select>
@@ -297,38 +301,59 @@ $breadcrumbs = [
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';" @click="active_tab = 'html'"> Paste HTML </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                            :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"
+                            @click="active_tab = 'html';"> Paste HTML </a>
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page" @click="active_tab = 'file'" :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page"
+                            @click="active_tab = 'file';"
+                            :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
 
                         </nav>
                     </div>
                 </div>
 
-                <form x-ref="add_version_form">
+                <form id="add_version_form">
 
                     <div class="mt-8">
 
                         <div x-show="active_tab === 'html'" x-transition>
-                            <textarea class="form-element textarea md" rows="3" name="upload_version_html" x-ref="upload_version_html" @change="$refs.upload_version_file.value = ''; show_file_names($refs.upload_version_file)"></textarea>
+                            <div>
+                                <input type="text" class="form-element input md"
+                                data-label="Paste URL"
+                                x-ref="paste_version_link"
+                                @change="get_html_from_link($el, $refs.upload_version_html);"
+                                @paste="get_html_from_link($el, $refs.upload_version_html);">
+                            </div>
+                            <div class="my-2">OR</div>
+                            <div>
+                                <textarea class="form-element textarea md" rows="3" name="upload_version_html"
+                                data-label="Paste HTML"
+                                x-ref="upload_version_html"
+                                @change="$refs.upload_version_file.value = ''; show_file_names($refs.upload_version_file)"></textarea>
+                            </div>
                         </div>
 
                         <div x-show="active_tab === 'file'" x-transition>
                             <div class="mt-12">
-                                <input type="file" name="upload_version_file" id="upload_version_file" class="form-element input md" @change="show_file_names($el);" accept="image/x-png,image/gif,image/jpeg,application/pdf" x-ref="upload_version_file" @click="$refs.upload_version_html.value = ''">
+                                <input type="file" name="upload_version_file" class="form-element input md"
+                                @change="show_file_names($el);"
+                                accept="image/x-png,image/gif,image/jpeg,application/pdf"
+                                x-ref="upload_version_file"
+                                @click="$refs.upload_version_html.value = ''">
                             </div>
                         </div>
 
                     </div>
 
-                    <input type="hidden" name="id" id="add_version_id">
+                    <input type="hidden" name="event_id" id="event_id">
 
                 </form>
 
             </div>
 
             <div class="flex justify-around items-center pb-6 pt-12">
-                <button type="button" class="button primary xl" @click="save_version_item($el)">Save Version <i class="fa-light fa-check ml-2"></i></button>
+                <button type="button" class="button primary xl" @click="save_add_version($el)">Save Version <i class="fa-light fa-check ml-2"></i></button>
             </div>
 
         </x-modals.modal>

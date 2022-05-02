@@ -16,7 +16,7 @@
                         <span class="text-green-600">Accepted Version <i class="fa-light fa-check ml-2"></i></span>
                     </div>
                 @endif
-                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500">Delete <i class="fa-thin fa-times ml-2"></i></a>
+                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" @click="delete_version({{ $event_id }}, {{ $version -> id }})">Delete <i class="fa-thin fa-times ml-2"></i></a>
             </div>
 
             <div class="border rounded p-2 w-600-px h-800-px overflow-y-auto">

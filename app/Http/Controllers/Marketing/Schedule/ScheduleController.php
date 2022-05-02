@@ -48,7 +48,13 @@ class ScheduleController extends Controller
         -> orderBy('event_date', 'desc')
         -> get();
 
-        return view('marketing/schedule/get_schedule_html', compact('events'));
+        if($events) {
+
+            return view('marketing/schedule/get_schedule_html', compact('events'));
+
+        }
+
+        return response() -> json(['status' => 'no event']);
 
     }
 
@@ -170,16 +176,96 @@ class ScheduleController extends Controller
 
     public function save_add_version(Request $request) {
 
-        dd($request -> all());
+        $validated = $request -> validate([
+            'upload_version_html' => 'required_without:upload_version_file',
+            'upload_version_file' => 'required_without:upload_version_html',
+        ],
+        [
+            'upload_version_html.required_without' => 'You must paste HTML or upload a file',
+            'upload_version_file.required_without' => 'You must paste HTML or upload a file',
+        ]);
 
+        $event_id = $request -> event_id;
+
+        $upload_file = $request -> file('upload_version_file');
+        $upload_html = $request -> upload_version_html;
+
+        if($upload_file) {
+
+            $upload_file_name = Helper::clean_file_name($upload_file, '', false, true);
+            $ext = $upload_file -> getClientOriginalExtension();
+            $upload_file_type = strtolower($ext) == 'pdf' ? 'pdf' : 'image';
+
+            $dir = 'marketing/'.$event_id;
+            if (! is_dir($dir)) {
+                Storage::makeDirectory($dir);
+            }
+            $upload_file -> storeAs($dir, $upload_file_name);
+            $upload_file_location = $dir.'/'.$upload_file_name;
+            $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
+
+            $upload = new ScheduleUploads();
+            $upload -> file_name = $upload_file_name;
+            $upload -> file_type = $upload_file_type;
+            $upload -> file_location = $upload_file_location;
+            $upload -> file_url = $upload_file_url;
+            $upload -> event_id = $event_id;
+            $upload -> accepted_version = false;
+            $upload -> save();
+
+        }
+
+        if($upload_html) {
+
+            $upload = new ScheduleUploads();
+            $upload -> html = $upload_html;
+            $upload -> event_id = $event_id;
+            $upload -> save();
+
+        }
+
+        return response() -> json(['status' => 'success']);
+
+    }
+
+    public function delete_version(Request $request) {
+
+        $event_id = $request -> event_id;
+        $version_id = $request -> version_id;
+
+        $delete = ScheduleUploads::find($version_id) -> update([
+            'active' => false
+        ]);
+
+        return response() -> json(['status' => 'success']);
     }
 
     public function calendar_get_events(Request $request) {
 
-        $events = Schedule::select(['id', DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
+        $company_id = $request -> company_id;
+        $recipient_id = $request -> recipient_id;
+        $medium_id = $request -> medium_id;
+
+        $events = Schedule::select(['id', 'company_id', 'recipient_id', DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
+        -> where(function($query) use ($company_id, $recipient_id, $medium_id) {
+            if($company_id) {
+                $query -> where('company_id', $company_id);
+            }
+            if($recipient_id) {
+                $query -> where('recipient_id', $recipient_id);
+            }
+            if($medium_id) {
+                $query -> where('medium_id', $medium_id);
+            }
+        })
+        -> with(['company', 'recipient'])
         -> orderBy('event_date', 'desc')
-        -> get()
-        -> toArray();
+        -> get();
+
+        foreach($events as $event) {
+            $event -> className = ['bg-'.$event -> company -> color.'-600', 'border-'.$event -> company -> color.'-200', 'rounded', 'flex', 'items-center'];
+            $event -> title = $event -> title.'-'.$event -> recipient -> item;
+        }
 
         return response() -> json($events);
 
@@ -197,17 +283,37 @@ class ScheduleController extends Controller
 
     public function clone_event(Request $request) {
 
-        $id = $request -> id;
+        $event_id = $request -> id;
 
-        $event = Schedule::find($id);
+        $event = Schedule::find($event_id);
         $clone = $event -> replicate();
         $clone -> save();
         $clone_id = $clone -> id;
 
-        $uploads = ScheduleUploads::where('event_id', $id) -> get();
+        $uploads = ScheduleUploads::where('event_id', $event_id) -> get();
+
         foreach($uploads as $upload) {
+
             $upload_clone = $upload -> replicate();
             $upload_clone -> event_id = $clone_id;
+
+            if($upload -> html == '') {
+                $dir = 'marketing/'.$clone_id;
+                if (! is_dir($dir)) {
+                    Storage::makeDirectory($dir);
+                }
+
+                $upload_file_name = basename(Storage::path($upload -> file_location));
+
+                Storage::copy($upload -> file_location, $dir.'/'.$upload_file_name);
+
+                $upload_file_location = $dir.'/'.$upload_file_name;
+                $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
+
+                $upload_clone -> file_location = $upload_file_location;
+                $upload_clone -> file_url = $upload_file_url;
+            }
+
             $upload_clone -> save();
         }
 

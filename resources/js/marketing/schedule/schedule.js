@@ -45,8 +45,14 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
-            clear_form() {
-                this.$refs.schedule_form.reset();
+            clear_form(form) {
+                form.reset();
+            },
+
+            clear_add_version_form() {
+                this.$refs.upload_version_file.value = '';
+                show_file_names(this.$refs.upload_version_file);
+                this.$refs.upload_version_html.value = '';
             },
 
             save_item(ele) {
@@ -104,9 +110,14 @@ if (document.URL.match('marketing/schedule')) {
                 let id = ele.getAttribute('data-id');
                 scope.$refs.id.value = id;
                 scope.$refs.event_date.value = ele.getAttribute('data-event-date');
+
+                let inputs = document.querySelectorAll('.states:checked');
+                inputs.forEach(function (input) {
+                    input.click();
+                });
+
                 let states = ele.getAttribute('data-state').split(',');
                 states.forEach(function (state) {
-                    document.querySelector('#' + state).checked = false;
                     document.querySelector('#' + state).click();
                 });
                 scope.$refs.recipient_id.value = ele.getAttribute('data-recipient-id');
@@ -120,9 +131,7 @@ if (document.URL.match('marketing/schedule')) {
                 if(scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
                     scope.show_email_options = true;
                 }
-                scope.$refs.delete_event_button.addEventListener('click', function() {
-                    scope.show_delete_event(id, scope.$refs.delete_event_button);
-                });
+                scope.$refs.delete_event_button.setAttribute('data-id', ele.getAttribute('data-id'));
 
                 scope.$refs.show_versions_button.addEventListener('click', function() {
                     scope.show_versions(id);
@@ -148,6 +157,7 @@ if (document.URL.match('marketing/schedule')) {
                         ele.innerHTML = button_html;
                         scope.get_schedule();
                         scope.show_delete_event_modal = false;
+                        scope.show_item_modal = false;
                         toastr.error('Event Successfully Recycled');
                     })
                     .catch(function (error) {
@@ -187,24 +197,52 @@ if (document.URL.match('marketing/schedule')) {
 
                 let scope = this;
                 scope.show_add_version_modal = true;
-                document.querySelector('#add_version_id').value = id;
+                document.querySelector('#event_id').value = id;
 
             },
 
-            save_version_item(ele) {
+            delete_version(event_id, version_id) {
+
+                let scope = this;
+                let formData = new FormData();
+                formData.append('event_id', event_id);
+                formData.append('version_id', version_id);
+
+                axios.post('/marketing/delete_version', formData)
+                .then(function (response) {
+                    scope.show_versions(event_id);
+                    scope.get_schedule();
+                    setTimeout(function() {
+                        document.querySelector('#show_details_'+event_id).click();
+                    }, 1000);
+                })
+                .catch(function (error) {
+                });
+            },
+
+            save_add_version(ele) {
 
                 let scope = this;
                 let button_html = ele.innerHTML;
+                let event_id = document.querySelector('#event_id').value;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
-                let form = scope.$refs.add_version_form;
+                let form = document.querySelector('#add_version_form');
                 let formData = new FormData(form);
 
                 axios.post('/marketing/save_add_version', formData)
                 .then(function (response) {
                     ele.innerHTML = button_html;
-
+                    scope.show_add_version_modal = false;
+                    toastr.success('New Version Successfully Added');
+                    scope.get_schedule();
+                    setTimeout(function() {
+                        console.log(document.querySelector('#show_details_'+event_id));
+                        document
+                        .querySelector('#show_details_'+event_id).click();
+                    }, 1000);
+                    scope.clear_add_version_form();
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);
@@ -233,7 +271,11 @@ if (document.URL.match('marketing/schedule')) {
 
             calendar() {
 
-                axios.get('/marketing/calendar_get_events')
+                let scope = this;
+                let form = scope.$refs.filter_form;
+                let formData = new FormData(form);
+
+                axios.post('/marketing/calendar_get_events', formData)
                 .then(function (response) {
 
                     let calendarEl = document.querySelector('.calendar');
@@ -245,12 +287,11 @@ if (document.URL.match('marketing/schedule')) {
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                         },
                         events: response.data,
-                        eventColor: 'rgb(63 98 156)',
                         eventTextColor: '#fff',
                         eventClick: function(info) {
                             let id = info.event.id;
                             document.querySelector('.edit-button[data-id="'+id+'"]').click();
-                        }
+                        },
                     });
 
                     calendar.render();
@@ -260,23 +301,51 @@ if (document.URL.match('marketing/schedule')) {
                     console.log(error);
                 });
 
+                /* axios.get('/marketing/calendar_get_events')
+                .then(function (response) {
+
+                    let calendarEl = document.querySelector('.calendar');
+                    let calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        headerToolbar: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                        },
+                        events: response.data,
+                        eventTextColor: '#fff',
+                        eventClick: function(info) {
+                            let id = info.event.id;
+                            document.querySelector('.edit-button[data-id="'+id+'"]').click();
+                        },
+                    });
+
+                    calendar.render();
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                }); */
+
 
 
             },
 
             get_html_from_link(ele, textarea) {
                 show_loading();
-                textarea.value = '';
-                axios.get(ele.value)
-                .then(function (response) {
-                    textarea.value = response.data;
-                    hide_loading();
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    hide_loading();
-                    toastr.error('URL Not Found');
-                });
+                setTimeout(function() {
+                    textarea.value = '';
+                    axios.get(ele.value)
+                    .then(function (response) {
+                        textarea.value = response.data;
+                        hide_loading();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        hide_loading();
+                        toastr.error('URL Not Found');
+                    });
+                }, 1000);
             },
 
         }
