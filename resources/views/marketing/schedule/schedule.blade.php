@@ -100,7 +100,7 @@ $breadcrumbs = [
         </div>
 
 
-        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add/Edit Marketing Item'" :modalId="'show_item_modal'" x-show="show_item_modal">
+        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Add/Edit Marketing Item'" :modalId="'show_item_modal'" x-show="show_item_modal" :clickOutside="'show_item_modal = true;'">
 
             <form x-ref="schedule_form" enctype="multipart/form-data">
 
@@ -172,15 +172,15 @@ $breadcrumbs = [
                         </div>
 
                         <div class="col-span-2" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="subject_line_a" x-ref="subject_line_a" data-label="Subject Line A">
+                            <input type="text" class="form-element input md" name="subject_line_a" x-ref="subject_line_a" data-label="Subject Line A">
                         </div>
 
                         <div class="col-span-2" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="subject_line_b" x-ref="subject_line_b" data-label="Subject Line B">
+                            <input type="text" class="form-element input md" name="subject_line_b" x-ref="subject_line_b" data-label="Subject Line B">
                         </div>
 
                         <div class="col-span-4" x-show="show_email_options">
-                            <input type="text" class="form-element input md required" name="preview_text" x-ref="preview_text" data-label="Preview Text">
+                            <input type="text" class="form-element input md" name="preview_text" x-ref="preview_text" data-label="Preview Text">
                         </div>
 
                     </div>
@@ -235,13 +235,23 @@ $breadcrumbs = [
 
                     </div>
 
-                    <div class="flex justify-around items-center pb-6 pt-12">
-                        <button type="button" class="button primary xl" @click="save_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
+                    <div class="flex justify-around items-center">
+
+                        <div class="mt-4 flex justify-around" x-show="edit_event">
+                            <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" x-ref="delete_event_button">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
+                        </div>
+
+                        <div class="flex justify-around items-center pb-6 pt-12">
+                            <button type="button" class="button primary xl" @click="save_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
+                        </div>
+
+                        <div class="mt-4 flex justify-around" x-show="edit_event">
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" x-ref="show_versions_button">Show Versions <i class="fa-duotone fa-clone ml-2"></i></a>
+                        </div>
+
                     </div>
 
-                    <div class="mt-4 flex justify-around" x-show="edit_event">
-                        <a href="javascript:void(0)" class="text-red-600 hover:text-red-500" x-ref="delete_event_button">Delete <i class="fa-duotone fa-trash ml-2"></i></a>
-                    </div>
+
 
                 </div>
 

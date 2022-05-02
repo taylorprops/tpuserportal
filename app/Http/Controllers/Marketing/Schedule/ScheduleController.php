@@ -98,9 +98,6 @@ class ScheduleController extends Controller
         $recipient = ScheduleSettings::where('id', $recipient_id) -> first();
         $recipient = $recipient -> item;
 
-        $uuid = date("Y", strtotime($event_date)).'-'.date("m", strtotime($event_date)).'-'.Helper::get_initials($company).'-'.$recipient;
-
-
         if($id) {
             $event = Schedule::find($id);
         } else {
@@ -113,13 +110,16 @@ class ScheduleController extends Controller
         $event -> company_id = $company_id;
         $event -> medium_id = $medium_id;
         $event -> description = $description;
-        $event -> uuid = $uuid;
         $event -> subject_line_a = $subject_line_a;
         $event -> subject_line_b = $subject_line_b;
         $event -> preview_text = $preview_text;
 
         $event -> save();
         $event_id = $event -> id;
+
+        $uuid = date("Y", strtotime($event_date)).'-'.date("m", strtotime($event_date)).'_'.Helper::get_initials($company).'_'.$event_id;
+        $event -> uuid = $uuid;
+        $event -> save();
 
         if($upload_file) {
 
@@ -176,7 +176,7 @@ class ScheduleController extends Controller
 
     public function calendar_get_events(Request $request) {
 
-        $events = Schedule::select([DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
+        $events = Schedule::select(['id', DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
         -> orderBy('event_date', 'desc')
         -> get()
         -> toArray();
@@ -218,15 +218,6 @@ class ScheduleController extends Controller
 
     public function schedule_settings(Request $request) {
 
-        // $settings = ScheduleSettings::orderBy('item') -> get();
-        // $categories = [];
-        // foreach($settings as $setting) {
-        //     $categories[] = $setting -> category;
-        // }
-        // $categories = array_unique($categories);
-
-        // return view('marketing/schedule/schedule_settings', compact('categories'));
-
         return view('marketing/schedule/schedule_settings');
 
     }
@@ -240,25 +231,6 @@ class ScheduleController extends Controller
             $categories[] = $setting -> category;
         }
         $categories = array_unique($categories);
-
-        // $items = [];
-        // foreach($categories as $category) {
-        //     $data['category'] = $category;
-        //     $details = [];
-        //     foreach($settings -> where('category', $category) as $setting) {
-        //         $details[] = [
-        //             'id' => $setting -> id,
-        //             'item' => $setting -> item,
-        //             'color' => $setting -> color,
-        //         ];
-        //     }
-        //     $data['details'] = $details;
-        //     array_push($items, $data);
-        // }
-
-        // $items = json_encode($items);
-
-        // return $items;
 
         return view('marketing/schedule/get_schedule_settings_html', compact('categories', 'settings'));
 
@@ -276,7 +248,7 @@ class ScheduleController extends Controller
             return response() -> json(['deleted' => true]);
         }
 
-        $settings = ScheduleRecipients::where('id', '!=', $id) -> where('category', $category) -> orderBy('recipient') -> get();
+        $settings = ScheduleSettings::where('id', '!=', $id) -> where('category', $category) -> orderBy('item') -> get();
 
         return compact('settings');
 
@@ -310,9 +282,20 @@ class ScheduleController extends Controller
 
     }
 
-    public function settings_save_delete_item(Request $request) {
 
-        dd($request -> all());
+    public function settings_reassign_items(Request $request) {
+
+        $new_setting_id = $request -> new_setting_id;
+        $deleted_setting_id = $request -> deleted_setting_id;
+        $category = $request -> category;
+
+        $reassign = Schedule::where($category.'_id', $deleted_setting_id) -> update([
+            $category.'_id' => $new_setting_id
+        ]);
+
+        ScheduleSettings::find($deleted_setting_id) -> delete();
+
+        return response() -> json(['status' => 'success']);
 
     }
 

@@ -134,7 +134,9 @@ a.default {
     @apply transition-all duration-500  border-4 border-green-500;
 }
 
-
+.defaults {
+    @apply bg-sky-500;
+}
 .min-w-600 {
     min-width: 600px;
 }
@@ -154,6 +156,14 @@ a.default {
     }
     .fc-button-primary:not(:disabled).fc-button-active, .fc-button-primary:not(:disabled):active {
         @apply bg-gray-500;
+    }
+
+    th {
+        @apply rounded-t-lg;
+    }
+
+    .fc-event-main-frame {
+        @apply cursor-pointer;
     }
 }
 

@@ -5,10 +5,18 @@ if(document.URL.match('marketing/schedule_settings')) {
         return {
 
             show_delete_modal: false,
+            reassign_disabled: true,
 
             init() {
-                this.get_schedule_settings();
-                this.text_editor();
+
+                let scope = this;
+
+                scope.get_schedule_settings();
+                scope.text_editor();
+
+                scope.$refs.save_delete_item.addEventListener('click', function(e) {
+                    scope.settings_save_delete_item(e);
+                });
             },
 
             get_schedule_settings() {
@@ -48,6 +56,7 @@ if(document.URL.match('marketing/schedule_settings')) {
 
             settings_save_edit_item(id, value, field) {
 
+                let scope = this;
                 let formData = new FormData();
                 formData.append('id', id);
                 formData.append('value', value);
@@ -56,6 +65,7 @@ if(document.URL.match('marketing/schedule_settings')) {
                 axios.post('/marketing/settings_save_edit_item', formData)
                 .then(function (response) {
                     toastr.success('Item Successfully Changed');
+                    scope.get_schedule_settings();
 
                 })
                 .catch(function (error) {
@@ -79,17 +89,23 @@ if(document.URL.match('marketing/schedule_settings')) {
                     }
 
                     scope.show_delete_modal = true;
-                    let items_html = '';
+                    let items_html = ' \
+                    <div class="mb-6 flex items-center"> \
+                        <div class="mr-6"><i class="fa-duotone fa-exclamation-circle fa-2x text-orange-400"></i></div> \
+                        <div>The Item you are deleting is being used in saved events. To continue you will need to reassign a <span class="font-semibold">'+response.data.settings[0].category.toUpperCase()+'</span> for those events.</div> \
+                    </div> \
+                    ';
                     response.data.settings.forEach(function(setting) {
                         items_html += ' \
-                            <div class="p-2 border-b flex justify-between"> \
-                                <div>'+setting.item+'</div> \
+                            <div class="p-2 border-b"> \
+                                <div class="mr-3"><input type="radio" class="form-element radio lg" name="new_setting_id" value="'+setting.id+'" data-label="'+setting.item+'" @click="reassign_disabled = false"></div> \
+                            </div> \
+                            <input type="hidden" name="deleted_setting_id" value="'+id+'"> \
+                            <input type="hidden" name="category" value="'+category+'"> \
                         ';
                     });
-                    scope.$refs.reassign_div.innerHTML = items;
-                    scope.$refs.save_delete_item.addEventListener('click', function() {
+                    scope.$refs.reassign_div.innerHTML = items_html;
 
-                    });
 
                 })
                 .catch(function (error) {
@@ -98,8 +114,27 @@ if(document.URL.match('marketing/schedule_settings')) {
 
             },
 
-            settings_save_delete_item(id) {
+            settings_save_delete_item(e) {
 
+                let scope = this;
+                let ele = e.target;
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Reassigning and Deleting ... ');
+
+                let form = scope.$refs.reassign_form;
+                console.log(form);
+                let formData = new FormData(form);
+
+                axios.post('/marketing/settings_reassign_items', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    scope.show_delete_modal = false;
+                    scope.get_schedule_settings();
+                    toastr.success('Item Successfully Deleted and Reassigned');
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
             },
 
             text_editor() {

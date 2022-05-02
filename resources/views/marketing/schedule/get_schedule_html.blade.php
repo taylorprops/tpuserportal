@@ -1,22 +1,22 @@
 @foreach($events as $event)
 
-    <div class="p-2 mb-2 text-sm rounded" id="event_{{ $event -> id }}">
+    <div class="p-2 mb-2 text-sm rounded border border-{{ $event -> company -> color }}-200" id="event_{{ $event -> id }}">
 
         <div class="flex flex-col">
 
-            <div class="flex justify-between font-semibold bg-blue-50 p-2 rounded-t">
-                <div class="text-primary">
+            <div class="flex justify-between items-center font-semibold bg-{{ $event -> company -> color }}-50 text-{{ $event -> company -> color }}-700 p-2 rounded-t">
+                <div>
                     {{ $event -> event_date }}
                 </div>
-                <div class="text-gray-500">
+                <div class="font-semibold">
                     {{ $event -> uuid }}
                 </div>
-                <div style="color: {{ $event -> company -> color }}">
+                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200">
                     {{ $event -> company -> item }}
                 </div>
             </div>
 
-            <div class="border-r border-l py-2">
+            <div class="py-2">
 
                 <div class="grid grid-cols-3 px-2">
                     <div>
@@ -36,7 +36,7 @@
 
             </div>
 
-            <div class="flex justify-around bg-gray-50 p-2 rounded-b">
+            <div class="flex justify-around border-t p-2">
 
                 @php
                 $accepted = null;

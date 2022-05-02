@@ -18,6 +18,7 @@ if (document.URL.match('marketing/schedule')) {
 
             init() {
                 this.get_schedule();
+
             },
 
             get_schedule(id = null) {
@@ -121,6 +122,10 @@ if (document.URL.match('marketing/schedule')) {
                 }
                 scope.$refs.delete_event_button.addEventListener('click', function() {
                     scope.show_delete_event(id, scope.$refs.delete_event_button);
+                });
+
+                scope.$refs.show_versions_button.addEventListener('click', function() {
+                    scope.show_versions(id);
                 });
 
             },
@@ -230,7 +235,7 @@ if (document.URL.match('marketing/schedule')) {
 
                 axios.get('/marketing/calendar_get_events')
                 .then(function (response) {
-                    console.log(response.data[0]);
+
                     let calendarEl = document.querySelector('.calendar');
                     let calendar = new FullCalendar.Calendar(calendarEl, {
                         initialView: 'dayGridMonth',
@@ -241,7 +246,11 @@ if (document.URL.match('marketing/schedule')) {
                         },
                         events: response.data,
                         eventColor: 'rgb(63 98 156)',
-                        eventTextColor: '#fff'
+                        eventTextColor: '#fff',
+                        eventClick: function(info) {
+                            let id = info.event.id;
+                            document.querySelector('.edit-button[data-id="'+id+'"]').click();
+                        }
                     });
 
                     calendar.render();
