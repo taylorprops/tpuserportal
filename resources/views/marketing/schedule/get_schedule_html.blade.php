@@ -18,8 +18,10 @@
                     <div class="w-40 hidden sm:inline-block">
                         {{ $event -> medium -> item }}
                     </div>
-                    <div class="font-semibold">
-                        {{ $event -> uuid }}
+                    <div>
+                        <input class="font-semibold border-none bg-transparent focus:ring-0 focus:border-0 w-32 text-center p-0 overflow-visible" readonly
+                        value="{{ $event -> uuid }}"
+                        @click.default.stop="$el.select();">
                     </div>
                 </div>
                 <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200">

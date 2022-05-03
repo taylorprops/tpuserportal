@@ -234,7 +234,8 @@ class ScheduleController extends Controller
         $version_id = $request -> version_id;
 
         $delete = ScheduleUploads::find($version_id) -> update([
-            'active' => false
+            'active' => false,
+            'accepted_version' => false
         ]);
 
         return response() -> json(['status' => 'success']);
