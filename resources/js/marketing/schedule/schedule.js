@@ -15,6 +15,7 @@ if (document.URL.match('marketing/schedule')) {
             show_add_version_modal: false,
             show_delete_event_modal: false,
             show_email_options: false,
+            show_deleted_versions: false,
 
             init() {
                 this.get_schedule();
@@ -47,7 +48,9 @@ if (document.URL.match('marketing/schedule')) {
 
             clear_form(form) {
                 form.reset();
-                show_file_names(document.querySelector('[type="file"]'));
+                document.querySelectorAll('[type="file"]').forEach(function(input) {
+                    show_file_names(input);
+                });
             },
 
             clear_add_version_form() {
@@ -187,7 +190,7 @@ if (document.URL.match('marketing/schedule')) {
                                 iframe.document.write(html);
                                 iframe.document.close();
                             });
-                        }, 1000);
+                        }, 500);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -197,6 +200,7 @@ if (document.URL.match('marketing/schedule')) {
             add_version(id) {
 
                 let scope = this;
+                scope.clear_add_version_form();
                 scope.show_add_version_modal = true;
                 document.querySelector('#event_id').value = id;
 
@@ -206,10 +210,46 @@ if (document.URL.match('marketing/schedule')) {
 
                 let scope = this;
                 let formData = new FormData();
-                formData.append('event_id', event_id);
                 formData.append('version_id', version_id);
 
                 axios.post('/marketing/delete_version', formData)
+                .then(function (response) {
+                    scope.show_versions(event_id);
+                    scope.get_schedule();
+                    setTimeout(function() {
+                        document.querySelector('#show_details_'+event_id).click();
+                    }, 300);
+                })
+                .catch(function (error) {
+                });
+            },
+
+            reactivate_version(event_id, version_id) {
+
+                let scope = this;
+                let formData = new FormData();
+                formData.append('version_id', version_id);
+
+                axios.post('/marketing/reactivate_version', formData)
+                .then(function (response) {
+                    scope.show_versions(event_id);
+                    scope.get_schedule();
+                    setTimeout(function() {
+                        document.querySelector('#show_details_'+event_id).click();
+                    }, 300);
+                })
+                .catch(function (error) {
+                });
+            },
+
+            mark_version_accepted(event_id, version_id) {
+
+                let scope = this;
+                let formData = new FormData();
+                formData.append('event_id', event_id);
+                formData.append('version_id', version_id);
+
+                axios.post('/marketing/mark_version_accepted', formData)
                 .then(function (response) {
                     scope.show_versions(event_id);
                     scope.get_schedule();
@@ -219,6 +259,7 @@ if (document.URL.match('marketing/schedule')) {
                 })
                 .catch(function (error) {
                 });
+
             },
 
             save_add_version(ele, show_versions) {
@@ -240,6 +281,7 @@ if (document.URL.match('marketing/schedule')) {
                     scope.show_add_version_modal = false;
                     toastr.success('New Version Successfully Added');
                     scope.get_schedule();
+                    scope.clear_add_version_form();
                     if(show_versions == true) {
                         scope.show_versions(event_id);
                     }
@@ -341,7 +383,11 @@ if (document.URL.match('marketing/schedule')) {
                     textarea.value = '';
                     axios.get(ele.value)
                     .then(function (response) {
-                        textarea.value = response.data;
+                        if(response.data) {
+                            textarea.value = response.data;
+                        } else {
+                            toast.error('The URL is invalid');
+                        }
                         hide_loading();
                     })
                     .catch(function (error) {

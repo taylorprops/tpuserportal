@@ -630,6 +630,7 @@ class APIController extends Controller
             $cc = [];
         }
 
+
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
         Name: '.$full_name.'<br>
@@ -648,7 +649,7 @@ class APIController extends Controller
         ];
 
         Mail::to([$to])
-        -> cc([$cc])
+        -> cc($cc)
         -> send(new EmailGeneral($message));
 
 

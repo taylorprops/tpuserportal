@@ -1,12 +1,12 @@
 
 load_axios();
 
-let url = 'https://tpuserportal.com';
-// let url = 'https://2ee8-71-121-147-194.ngrok.io';
+// const url = 'https://tpuserportal.com';
+// let url = ' https://29b0-71-121-147-194.ngrok.io';
 
 window.addEventListener('load', function() {
 
-    let careers_pages = ['careers', '100-commission', '85-commission', 'real-estate-referral'];
+    let careers_pages = ['careers', '100-commission', '85-commission', 'real-estate-referral', 'mike-form-test'];
 
     let matched = careers_pages.filter(item => {
         return document.URL.match(item);
@@ -19,39 +19,50 @@ window.addEventListener('load', function() {
             let submit_button = document.getElementById('iq_lead_form-submit');
 
             if(submit_button) {
+
                 capture_form(form, submit_button);
                 clearInterval(get_form_interval);
 
-                if(document.URL.match(/#form/)) {
-                    let anchor = document.createElement('a');
-                    anchor.id = 'form_anchor';
-                    let parentDiv = form.parentNode;
-                    parentDiv.insertBefore(anchor, form);
-                    const y = anchor.getBoundingClientRect().top + window.scrollY;
-                    window.scroll({
-                        top: y - 500,
-                        behavior: 'smooth'
-                    });
-                }
             }
+
         }, 500);
 
-        if(document.URL.match(/#tech/)) {
+    }
 
-            let tech_interval = setInterval(function() {
-                let anchor = document.querySelector('#tech_anchor');
-                if(anchor) {
-                    clearInterval(tech_interval);
-                    const y = anchor.getBoundingClientRect().top + window.scrollY;
+    if(document.URL.match(/#join/)) {
+        let form = document.getElementById('iq_lead_form');
+        let anchor = document.createElement('a');
+        anchor.id = 'join_anchor';
+        let parentDiv = form.parentNode;
+        parentDiv.insertBefore(anchor, form);
+    }
+
+    let anchors = ['tech', 'join', 'commission'];
+
+    anchors.forEach(function(anchor) {
+
+        let offset = 50;
+        if(anchor == 'join') {
+            offset = 500;
+        }
+
+        let regex = new RegExp('#'+anchor, 'g');
+        if(document.URL.match(regex)) {
+            let find_interval = setInterval(function() {
+                let link = document.querySelector('#'+anchor+'_anchor');
+                if(link) {
+
+                    clearInterval(find_interval);
+                    const y = link.getBoundingClientRect().top + window.scrollY;
                     window.scroll({
-                        top: y - 50,
+                        top: y - offset,
                         behavior: 'smooth'
                     });
                 }
             },100);
         }
 
-    }
+    });
 
     if(document.URL.match(/utm_source/)) {
         send_lead_to_zoho();
@@ -75,7 +86,7 @@ function send_lead_to_zoho() {
     formData.append('utm_campaign', utm_campaign);
     formData.append('email', email);
 
-    axios.post(url+'/api/marketing/add_email_clicker_real_estate', formData)
+    axios.post('https://tpuserportal.com/api/marketing/add_email_clicker_real_estate', formData)
     .then(function (response) {
     })
     .catch(function (error) {
@@ -87,7 +98,7 @@ window.capture_form = function(form, submit_button) {
 
     submit_button.addEventListener('mousedown', function(event) {
 
-        let url = url+'/api/taylor_props/submit_recruiting_form';
+        let url = 'https://tpuserportal.com/api/taylor_props/submit_recruiting_form';
 
         let first_name = form.querySelector('#iq_lead_form-firstname').value;
         let last_name = form.querySelector('#iq_lead_form-lastname').value;

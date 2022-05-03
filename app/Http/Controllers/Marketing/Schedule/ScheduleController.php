@@ -168,7 +168,7 @@ class ScheduleController extends Controller
     public function show_versions(Request $request) {
 
         $event_id = $request -> id;
-        $versions = ScheduleUploads::where('event_id', $event_id) -> where('active', TRUE) -> get();
+        $versions = ScheduleUploads::where('event_id', $event_id) -> get();
 
         return view('marketing/schedule/get_versions_html', compact('event_id', 'versions'));
 
@@ -231,7 +231,6 @@ class ScheduleController extends Controller
 
     public function delete_version(Request $request) {
 
-        $event_id = $request -> event_id;
         $version_id = $request -> version_id;
 
         $delete = ScheduleUploads::find($version_id) -> update([
@@ -239,6 +238,34 @@ class ScheduleController extends Controller
         ]);
 
         return response() -> json(['status' => 'success']);
+    }
+
+    public function reactivate_version(Request $request) {
+
+        $version_id = $request -> version_id;
+
+        $reactivate_version = ScheduleUploads::find($version_id) -> update([
+            'active' => true
+        ]);
+
+        return response() -> json(['status' => 'success']);
+    }
+
+    public function mark_version_accepted(Request $request) {
+
+        $version_id = $request -> version_id;
+        $event_id = $request -> event_id;
+
+        $update = ScheduleUploads::where('event_id', $event_id) -> update([
+            'accepted_version' => false
+        ]);
+
+        $mark_accepted = ScheduleUploads::find($version_id) -> update([
+            'accepted_version' => true
+        ]);
+
+        return response() -> json(['status' => 'success']);
+
     }
 
     public function calendar_get_events(Request $request) {

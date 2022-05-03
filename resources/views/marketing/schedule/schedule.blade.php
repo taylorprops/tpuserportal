@@ -13,7 +13,7 @@ $breadcrumbs = [
 
     <div class="pb-12 pt-2 overflow-hidden" x-data="schedule()">
 
-        <div class="w-full mx-4">
+        <div class="mx-4">
 
             <form x-ref="filter_form">
 
@@ -56,11 +56,11 @@ $breadcrumbs = [
 
             </form>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
 
                 <div>
 
-                    <div class="border rounded-lg p-2 h-screen-80 overflow-auto">
+                    <div class="border rounded-lg p-2 max-h-screen-80 overflow-auto mb-12 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 
@@ -71,7 +71,7 @@ $breadcrumbs = [
 
                 <div class="flex flex-col">
 
-                    <div class="relative mr-8 h-screen-80 overflow-auto">
+                    <div class="relative lg:h-screen-80 lg:overflow-auto">
 
                         <div x-show="show_html || show_file">
 
@@ -218,8 +218,13 @@ $breadcrumbs = [
                             <div class="mt-8">
 
                                 <div x-show="active_tab === 'html'" x-transition>
-                                    <div>
-                                        <input type="text" class="form-element input md" data-label="Paste URL" x-ref="paste_link" @change="get_html_from_link($el, $refs.upload_html);" @paste="get_html_from_link($el, $refs.upload_html);">
+                                    <div class="flex w-full items-end">
+                                        <div class="w-4/5">
+                                            <input type="text" class="form-element input md" data-label="Paste URL" x-ref="paste_link" @change="get_html_from_link($el, $refs.upload_html);">
+                                        </div>
+                                        <div class="ml-2">
+                                            <button type="button" class="button primary md">Get HTML <i class="fa-light fa-arrow-right ml-2"></i></button>
+                                        </div>
                                     </div>
                                     <div class="my-2">OR</div>
                                     <div>
@@ -265,7 +270,7 @@ $breadcrumbs = [
 
         </x-modals.modal>
 
-        <x-modals.modal :modalWidth="'w-screen-95 h-screen-95'" :modalTitle="''" :modalId="'show_versions_modal'" x-show="show_versions_modal" :clickOutside="'show_versions_modal = true;'">
+        <x-modals.modal :modalWidth="'w-screen-95'" :modalTitle="''" :modalId="'show_versions_modal'" x-show="show_versions_modal" :clickOutside="'show_versions_modal = true;'">
             <div x-ref="versions_div"></div>
         </x-modals.modal>
 

@@ -135,6 +135,8 @@ module.exports = {
                 'screen-92': '92vh',
                 'screen-95': '95vh',
                 '7': '1.75rem',
+                '90-perc': '90%',
+                '95-perc': '95%'
             }),
             width: theme => ({
                 'screen-10': '10vw',
