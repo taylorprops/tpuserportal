@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\HeritageFinancial\Loans;
 use App\Models\HeritageFinancial\Lenders;
 use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\Marketing\Schedule\Schedule;
 use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\Marketing\Schedule\ScheduleUploads;
 use App\Models\DocManagement\Resources\LocationData;
 
 class APIController extends Controller
@@ -1144,6 +1146,25 @@ class APIController extends Controller
 
     }
 
+    /* from zoho */
+    public function get_medium(Request $request) {
+
+        $uuid = $request -> uuid;
+        $event = Schedule::where('uuid', $uuid) -> first();
+        $medium = ScheduleUploads::where('event_id', $event -> id) -> where('accepted_version', true) -> first();
+        $type = 'pdf';
+        $file_location = $medium -> file_location;
+        $html = '';
+        if($medium -> html) {
+            $type = 'email';
+            $html = $medium -> html;
+        }
+
+
+        return compact('type', 'html', 'file_location');
+
+    }
+
     public function add_lead_to_zoho($fields, $access_token, $api_url) {
 
         $headers = array(
@@ -1485,36 +1506,6 @@ class APIController extends Controller
 
 
     public function get_users() {
-
-        /* ID: 5119653000000348001
-Name: Taylor Properties
-Email: taylorpropertiesdigital@gmail.com
-Status: active
-
-ID: 5119653000000396005
-Name: Heritage Title
-Email: kyle@heritagetitlemd.com
-Status: deleted
-
-ID: 5119653000000396016
-Name: Kyle Abrams
-Email: kyle@taylorprops.com
-Status: active
-
-ID: 5119653000000787044
-Name: Kristen Hayghe
-Email: k.hayghe@heritagetitlemd.com
-Status: active
-
-ID: 5119653000001120291
-Name: Nikki Quesenberry
-Email: nikki@taylorprops.com
-Status: active
-
-ID: 5119653000001163805
-Name: Gabby Krajewski
-Email: gabby@taylorprops.com
-Status: disabled */
 
         $access_token = $this -> get_access_token('users');
 

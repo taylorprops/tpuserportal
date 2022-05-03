@@ -200,12 +200,17 @@ Route::get('/api/lending_pad/update_loan', [APIController::class, 'update_loan']
 Route::get('/api/lending_pad/get_critical_dates', [APIController::class, 'get_critical_dates']) -> middleware(['lending_pad']);
 Route::get('/api/lending_pad/search', [APIController::class, 'search']) -> middleware(['lending_pad']);
 
-
+// Taylorprops.com browser extension
 Route::get('/api/taylor_props/submit_recruiting_form', [APIController::class, 'submit_recruiting_form']) -> middleware(['taylor_props']);
 Route::post('/api/heritage_title/submit_contact_form_title', [APIController::class, 'submit_contact_form_title']) -> middleware(['heritage_title']);
 Route::post('/api/marketing/add_email_clicker_mortgage', [APIController::class, 'add_email_clicker_mortgage']) -> middleware(['heritage_financial']);
 Route::post('/api/marketing/add_email_clicker_title', [APIController::class, 'add_email_clicker_title']) -> middleware(['heritage_title']);
 Route::post('/api/marketing/add_email_clicker_real_estate', [APIController::class, 'add_email_clicker_real_estate']) -> middleware(['taylor_props']);
+
+// zoho browser extension
+Route::get('/api/zoho/get_medium', [APIController::class, 'get_medium']) -> middleware(['taylor_props']);
+
+
 /* Resources */
 Route::get('/zoho/create_access_token', [APIController::class, 'create_access_token']);
 Route::get('/zoho/get_users', [APIController::class, 'get_users']);

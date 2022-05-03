@@ -8,14 +8,14 @@
             <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 text-{{ $event -> company -> color }}-700 p-2 rounded-t"
                 id="show_details_{{ $event -> id }}"
                 @click="show_details = ! show_details">
-                <div class="flex justify-start space-x-6 cursor-pointer">
+                <div class="flex flex-wrap justify-start space-x-6 cursor-pointer">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                     </div>
                     <div>
                         {{ $event -> event_date }}
                     </div>
-                    <div class="w-40">
+                    <div class="w-40 hidden sm:inline-block">
                         {{ $event -> medium -> item }}
                     </div>
                     <div class="font-semibold">
@@ -41,7 +41,7 @@
 
                 </div>
 
-                <div class="flex justify-around border-t p-2 pb-0">
+                <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 pb-0">
 
                     @php
                     $accepted = null;
