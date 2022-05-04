@@ -176,7 +176,7 @@ $breadcrumbs = [
                         </div>
 
                         <div class="">
-                            <select class="form-element select md" name="focus_id" x-ref="focus_id" data-label="Focus" @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
+                            <select class="form-element select md" name="focus_id" x-ref="focus_id" data-label="Focus">
                                 <option value=""></option>
                                 @foreach($settings -> where('category', 'focus') as $focus)
                                 <option value="{{ $focus -> id }}">{{ $focus -> item }}</option>
@@ -185,7 +185,7 @@ $breadcrumbs = [
                         </div>
 
                         <div class="">
-                            <select class="form-element select md" name="goal_id" x-ref="goal_id" data-label="Goal" @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
+                            <select class="form-element select md" name="goal_id" x-ref="goal_id" data-label="Goal">
                                 <option value=""></option>
                                 @foreach($settings -> where('category', 'goal') as $goal)
                                 <option value="{{ $goal -> id }}">{{ $goal -> item }}</option>
