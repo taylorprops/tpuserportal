@@ -3,7 +3,9 @@
         <button type="button" class="button primary md" @click="add_version({{ $event_id }})">Add Version <i class="fa-light fa-plus ml-2"></i></button>
     </div>
     <div>
-        <button type="button" class="button primary sm" @click="show_deleted_versions = !show_deleted_versions"> <span x-show="show_deleted_versions == false">Show Deleted Versions</span><span x-show="show_deleted_versions == true">Show Active Versions</span></button>
+        <button type="button" class="button primary sm"
+        @click="show_deleted_versions = !show_deleted_versions"
+        x-show="{{ count($versions -> where('active', false)) }} > 0 "> <span x-show="show_deleted_versions == false">Show Deleted Versions</span><span x-show="show_deleted_versions == true">Show Active Versions</span></button>
     </div>
 </div>
 
