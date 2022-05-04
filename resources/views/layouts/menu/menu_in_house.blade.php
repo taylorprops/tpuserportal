@@ -193,7 +193,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
-    @if(auth() -> user() -> level == 'super_admin')
+    {{-- @if(auth() -> user() -> level == 'super_admin') --}}
 
         <x-nav.menu
         :level="'1'"
@@ -207,7 +207,7 @@
         :link="'/marketing/schedule_settings'"
         :icon="'fa-duotone fa-gears'"/>
 
-    @endif
+    {{-- @endif --}}
 
     <x-nav.menu
     :level="'1'"

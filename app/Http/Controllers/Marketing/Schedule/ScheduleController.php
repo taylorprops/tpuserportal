@@ -307,6 +307,8 @@ class ScheduleController extends Controller
                 'pt-1'
             ];
             $event -> textColor = 'inherit';
+            // $event -> backgroundColor = 'inherit';
+            // $event -> borderColor = 'inherit';
             $event -> title = $event -> title.'-'.$event -> recipient -> item;
         }
 

@@ -151,20 +151,34 @@ a.default {
     @apply text-xs;
 }
 .fc {
-    .fc-button-primary, .fc-today-button, .fc-button {
+    .fc-button-primary.fc-prev-button,
+    .fc-button-primary.fc-next-button,
+    .fc-button-primary.fc-today-button,
+    .fc-button-primary.fc-dayGridMonth-button,
+    .fc-button-primary.fc-timeGridWeek-button,
+    .fc-button-primary.fc-timeGridDay-button {
         @apply  bg-primary hover:bg-primary-light inline-block cursor-pointer text-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+        &:disabled {
+            opacity: 0.4 !important;
+            background-color: #003e64 !important;
+        }
     }
-    .fc-button-primary:not(:disabled).fc-button-active, .fc-button-primary:not(:disabled):active {
-        @apply bg-gray-500;
+    .fc-button-primary.fc-dayGridMonth-button,
+    .fc-button-primary.fc-timeGridWeek-button,
+    .fc-button-primary.fc-timeGridDay-button {
+        &.fc-button-active {
+            opacity: 0.4 !important;
+            background-color: #003e64 !important;
+        }
     }
 
-    th {
-        @apply rounded-t-lg;
-    }
+
+
 
     .fc-event-main-frame {
         @apply cursor-pointer;
     }
+
 }
 
 
