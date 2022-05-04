@@ -131,6 +131,8 @@ if (document.URL.match('marketing/schedule')) {
                 scope.$refs.subject_line_a.value = ele.getAttribute('data-subject-line-a');
                 scope.$refs.subject_line_b.value = ele.getAttribute('data-subject-line-b');
                 scope.$refs.preview_text.value = ele.getAttribute('data-preview-text');
+                scope.$refs.goal_id.value = ele.getAttribute('data-goal-id');
+                scope.$refs.focus_id.value = ele.getAttribute('data-focus-id');
                 scope.show_email_options = false;
                 if(scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
                     scope.show_email_options = true;

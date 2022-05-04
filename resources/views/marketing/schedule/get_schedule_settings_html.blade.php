@@ -22,41 +22,39 @@
             </div>
         </div>
 
-        <div>
+        <div class="">
             @foreach($settings -> where('category', $category) as $setting)
                 <div class="flex justify-start items-center my-2 border-b"
                 x-data="{ show_color_picker: false }">
-                    {{-- <div class="pl-2">
-                        <input type="color" class="w-8 h-8 border-4 rounded" value="{{ $setting -> color }}"
-                        @change="settings_save_edit_item({{ $setting -> id }}, $el.value, 'color')">
-                    </div> --}}
-                    <div class="pl-2 relative">
-                        <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500"
-                            @click="show_color_picker = ! show_color_picker"></div>
-                        <div class="absolute left-10 top-0 w-48 bg-white z-40 border-4 rounded-md p-4"
-                        x-show="show_color_picker" x-transition
-                        @click.outside="show_color_picker = false">
+                    @if($setting -> has_color == true)
+                        <div class="pl-2 relative">
+                            <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500"
+                                @click="show_color_picker = ! show_color_picker"></div>
+                            <div class="absolute left-10 top-0 w-48 bg-white z-40 border-4 rounded-md p-4"
+                            x-show="show_color_picker" x-transition
+                            @click.outside="show_color_picker = false">
 
-                            @php
-                            $colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'rose'];
-                            @endphp
-                            <div class="grid grid-cols-4 gap-2">
-                                @foreach($colors as $color)
+                                @php
+                                $colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'rose'];
+                                @endphp
+                                <div class="grid grid-cols-4 gap-2">
+                                    @foreach($colors as $color)
 
-                                    <div class="bg-{{ $color }}-500 border-2 rounded-md cursor-pointer hover:bg-{{ $color }}-400 h-8 w-8"
-                                    @click="settings_save_edit_item({{ $setting -> id }}, '{{ $color }}', 'color'); show_color_picker = false;"></div>
+                                        <div class="bg-{{ $color }}-500 border-2 rounded-md cursor-pointer hover:bg-{{ $color }}-400 h-8 w-8"
+                                        @click="settings_save_edit_item({{ $setting -> id }}, '{{ $color }}', 'color'); show_color_picker = false;"></div>
 
-                                @endforeach
+                                    @endforeach
+                                </div>
+
                             </div>
-
                         </div>
-                    </div>
-                    <div class="flex justify-between items-center pr-4">
-                        <div class="w-52">
+                    @endif
+                    <div class="flex justify-between items-center pr-2 w-full">
+                        <div class="">
                             <input type="text" class="editor-inline p-2" value="{{ $setting -> item }}"
                             @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')">
                         </div>
-                        <div>
+                        <div class="">
                             <button type="button" class="button danger md no-text"
                             @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
                                 <i class="fa-duotone fa-xmark fa-xl"></i>

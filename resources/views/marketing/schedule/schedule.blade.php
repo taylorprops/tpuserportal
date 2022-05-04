@@ -175,6 +175,24 @@ $breadcrumbs = [
                             <input type="text" class="form-element input md required" name="description" x-ref="description" data-label="Description">
                         </div>
 
+                        <div class="">
+                            <select class="form-element select md" name="focus_id" x-ref="focus_id" data-label="Focus" @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
+                                <option value=""></option>
+                                @foreach($settings -> where('category', 'focus') as $focus)
+                                <option value="{{ $focus -> id }}">{{ $focus -> item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="">
+                            <select class="form-element select md" name="goal_id" x-ref="goal_id" data-label="Goal" @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
+                                <option value=""></option>
+                                @foreach($settings -> where('category', 'goal') as $goal)
+                                <option value="{{ $goal -> id }}">{{ $goal -> item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="col-span-2" x-show="show_email_options">
                             <input type="text" class="form-element input md" name="subject_line_a" x-ref="subject_line_a" data-label="Subject Line A">
                         </div>

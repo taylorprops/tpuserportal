@@ -1150,18 +1150,35 @@ class APIController extends Controller
     public function get_medium(Request $request) {
 
         $uuid = $request -> uuid;
-        $event = Schedule::where('uuid', $uuid) -> first();
-        $medium = ScheduleUploads::where('event_id', $event -> id) -> where('accepted_version', true) -> first();
-        $type = 'pdf';
-        $file_location = $medium -> file_location;
-        $html = '';
-        if($medium -> html) {
-            $type = 'email';
-            $html = $medium -> html;
+        $event = Schedule::where('uuid', $uuid) -> with(['company', 'recipient']) -> first();
+
+        if($event) {
+
+            $medium = ScheduleUploads::where('event_id', $event -> id)
+            -> where('accepted_version', true)
+            -> first();
+
+            $from = $event -> company -> item;
+            $to = $event -> recipient -> item;
+            $subject = $event -> subject_line_a;
+            $preview_text = $event -> preview_text;
+            $description = $event -> description;
+            $states = $event -> state;
+            $event_date = $event -> event_date;
+            $type = $medium -> file_type;
+            $file_url = $medium -> file_url;
+            $html = '';
+
+            if($medium -> html) {
+                $type = 'email';
+                $html = $medium -> html;
+            }
+
+            return compact('from', 'to', 'subject', 'preview_text', 'description', 'states', 'event_date', 'type', 'html', 'file_url');
+
         }
 
-
-        return compact('type', 'html', 'file_location');
+        return response() -> json(['error' => 'not_found']);
 
     }
 

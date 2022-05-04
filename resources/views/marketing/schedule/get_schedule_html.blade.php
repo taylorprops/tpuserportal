@@ -8,7 +8,7 @@
             <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 text-{{ $event -> company -> color }}-700 p-2 rounded-t"
                 id="show_details_{{ $event -> id }}"
                 @click="show_details = ! show_details">
-                <div class="flex flex-wrap justify-start space-x-6 cursor-pointer">
+                <div class="flex flex-wrap justify-start space-x-6 cursor-pointer @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                     </div>
@@ -24,7 +24,7 @@
                         @click.default.stop="$el.select();">
                     </div>
                 </div>
-                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200">
+                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
                     {{ $event -> company -> item }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
                 </div>
             </div>
@@ -73,6 +73,8 @@
                     data-subject-line-a="{{ $event -> subject_line_a }}"
                     data-subject-line-b="{{ $event -> subject_line_b }}"
                     data-preview-text="{{ $event -> preview_text }}"
+                    data-goal-id="{{ $event -> goal_id }}"
+                    data-focus-id="{{ $event -> focus_id }}"
                     @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;">
                         Edit <i class="fa-thin fa-edit ml-2"></i>
                     </a>

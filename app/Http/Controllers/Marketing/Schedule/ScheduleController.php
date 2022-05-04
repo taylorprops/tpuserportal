@@ -98,6 +98,8 @@ class ScheduleController extends Controller
         $subject_line_a = $request -> subject_line_a;
         $subject_line_b = $request -> subject_line_b;
         $preview_text = $request -> preview_text;
+        $focus_id = $request -> focus_id;
+        $goal_id = $request -> goal_id;
 
         $company = ScheduleSettings::where('id', $company_id) -> first();
         $company = $company -> item;
@@ -119,6 +121,8 @@ class ScheduleController extends Controller
         $event -> subject_line_a = $subject_line_a;
         $event -> subject_line_b = $subject_line_b;
         $event -> preview_text = $preview_text;
+        $event -> focus_id = $focus_id;
+        $event -> goal_id = $goal_id;
 
         $event -> save();
         $event_id = $event -> id;
@@ -369,7 +373,7 @@ class ScheduleController extends Controller
 
     public function get_schedule_settings(Request $request) {
 
-        $settings = ScheduleSettings::orderBy('item') -> get();
+        $settings = ScheduleSettings::orderBy('category') -> orderBy('item') -> get();
 
         $categories = [];
         foreach($settings as $setting) {
@@ -404,9 +408,13 @@ class ScheduleController extends Controller
         $category = $request -> type;
         $value = $request -> value;
 
+        $has_color = ScheduleSettings::where('category', $category) -> first();
+        $has_color = $has_color -> has_color;
+
         ScheduleSettings::create([
             'category' => $category,
             'item' => $value,
+            'has_color' => $has_color
         ]);
 
         return response() -> json(['status' => 'success']);
