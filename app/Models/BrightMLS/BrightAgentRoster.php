@@ -21,7 +21,16 @@ class BrightAgentRoster extends Model
 
     public function office()
     {
-        return $this->hasOne(\App\Models\BrightMLS\BrightOffices::class, 'OfficeKey', 'OfficeKey');
+        return $this -> hasOne(\App\Models\BrightMLS\BrightOffices::class, 'OfficeKey', 'OfficeKey');
+    }
+
+    public function listings()
+    {
+        return $this -> hasMany(\App\Models\BrightMLS\BrightListings::class, 'ListAgentMlsId', 'MemberMlsId') -> where('MlsListDate', '>', date('Y-m-d', strtotime('-3 years'))) -> where('MlsStatus', '!=', 'Canceled');
+    }
+    public function contracts()
+    {
+        return $this -> hasMany(\App\Models\BrightMLS\BrightListings::class, 'BuyerAgentMlsId', 'MemberMlsId') -> where('MlsListDate', '>', date('Y-m-d', strtotime('-3 years'))) -> where('MlsStatus', '!=', 'Canceled');
     }
 
     /* public static function boot() {

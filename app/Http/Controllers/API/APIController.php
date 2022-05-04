@@ -1182,6 +1182,18 @@ class APIController extends Controller
 
     }
 
+    public function get_bright_agent_details(Request $request) {
+
+        $email = $request -> email;
+        $email = 'eve.marberger@foxroach.com';
+        $agent = BrightAgentRoster::where('MemberEmail', $email)
+        -> with(['listings:ListingId,ListingKey,MlsStatus,BuyerAgentMlsId,BuyerAgentEmail,BuyerAgentFirstName,BuyerAgentFullName,BuyerAgentLastName,BuyerAgentPreferredPhone,ClosePrice,ListPrice,BuyerOfficeName,BuyerOfficeMlsId,CloseDate,MLSListDate,CondoYN,City,County,StreetNumber,PostalCode,StateOrProvince,FullStreetAddress,ListAgentMlsId,ListAgentEmail,ListAgentFirstName,ListAgentLastName,ListOfficeMlsId,NewConstructionYN,ShortSale,RealEstateOwnedYN,SaleType,PropertySubType,PropertyType,ListPictureURL', 'contracts:ListingId,ListingKey,MlsStatus,BuyerAgentMlsId,BuyerAgentEmail,BuyerAgentFirstName,BuyerAgentFullName,BuyerAgentLastName,BuyerAgentPreferredPhone,ClosePrice,ListPrice,BuyerOfficeName,BuyerOfficeMlsId,CloseDate,MLSListDate,CondoYN,City,County,StreetNumber,PostalCode,StateOrProvince,FullStreetAddress,ListAgentMlsId,ListAgentEmail,ListAgentFirstName,ListAgentLastName,ListOfficeMlsId,NewConstructionYN,ShortSale,RealEstateOwnedYN,SaleType,PropertySubType,PropertyType,ListPictureURL', 'office:OfficeKey,OfficeName'])
+        -> first();
+
+        return view('API/zoho/get_bright_agent_details_html', compact('agent'));
+
+    }
+
     public function add_lead_to_zoho($fields, $access_token, $api_url) {
 
         $headers = array(

@@ -68,10 +68,10 @@ if (document.URL.match('marketing/schedule')) {
 
                 let form = scope.$refs.schedule_form;
                 let formData = new FormData(form);
-                let action = 'add';
-                if (scope.$refs.id.value != '') {
-                    action = 'edit';
-                }
+                // let action = 'add';
+                // if (scope.$refs.id.value != '') {
+                //     action = 'edit';
+                // }
 
                 axios.post('/marketing/save_item', formData)
                     .then(function (response) {

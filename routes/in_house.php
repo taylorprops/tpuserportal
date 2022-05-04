@@ -208,7 +208,8 @@ Route::post('/api/marketing/add_email_clicker_title', [APIController::class, 'ad
 Route::post('/api/marketing/add_email_clicker_real_estate', [APIController::class, 'add_email_clicker_real_estate']) -> middleware(['taylor_props']);
 
 // zoho browser extension
-Route::get('/api/zoho/get_medium', [APIController::class, 'get_medium']) -> middleware(['taylor_props']);
+Route::get('/api/zoho/get_medium', [APIController::class, 'get_medium']) -> middleware(['zoho']);
+Route::get('/api/zoho/get_bright_agent_details', [APIController::class, 'get_bright_agent_details']) -> middleware(['zoho']);
 
 
 /* Resources */

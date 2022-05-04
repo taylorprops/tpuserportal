@@ -5,7 +5,7 @@ namespace App\Http\Middleware\API;
 use Closure;
 use Illuminate\Http\Request;
 
-class TaylorProps
+class Zoho
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class TaylorProps
      */
     public function handle(Request $request, Closure $next)
     {
-        if (config('app.env') == 'production' && (stristr($_SERVER['HTTP_REFERER'], 'taylorprop'))) {
+        if (config('app.env') == 'production' && stristr($_SERVER['HTTP_REFERER'], 'zoho')) {
             return $next($request);
         } elseif (config('app.env') == 'local') {
             return $next($request);

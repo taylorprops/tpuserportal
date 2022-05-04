@@ -9853,12 +9853,10 @@ if (document.URL.match('marketing/schedule')) {
         show_loading_button(ele, 'Saving ... ');
         remove_form_errors();
         var form = scope.$refs.schedule_form;
-        var formData = new FormData(form);
-        var action = 'add';
-
-        if (scope.$refs.id.value != '') {
-          action = 'edit';
-        }
+        var formData = new FormData(form); // let action = 'add';
+        // if (scope.$refs.id.value != '') {
+        //     action = 'edit';
+        // }
 
         axios.post('/marketing/save_item', formData).then(function (response) {
           ele.innerHTML = button_html;
