@@ -333,7 +333,6 @@ if (document.URL.match('marketing/schedule')) {
                             right: 'dayGridMonth,timeGridWeek,timeGridDay'
                         },
                         events: response.data,
-                        eventTextColor: '#fff',
                         eventClick: function(info) {
                             let id = info.event.id;
                             document.querySelector('.edit-button[data-id="'+id+'"]').click();

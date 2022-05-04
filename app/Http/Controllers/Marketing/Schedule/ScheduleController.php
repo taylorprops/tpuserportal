@@ -292,7 +292,17 @@ class ScheduleController extends Controller
         -> get();
 
         foreach($events as $event) {
-            $event -> className = ['bg-'.$event -> company -> color.'-600', 'border-'.$event -> company -> color.'-200', 'rounded', 'flex', 'items-center'];
+            $event -> className = [
+                'text-'.$event -> company -> color.'-700',
+                'bg-'.$event -> company -> color.'-50',
+                'border-'.$event -> company -> color.'-200',
+                'rounded',
+                'flex',
+                'items-center',
+                'overflow-hidden',
+                'pt-1'
+            ];
+            $event -> textColor = 'inherit';
             $event -> title = $event -> title.'-'.$event -> recipient -> item;
         }
 

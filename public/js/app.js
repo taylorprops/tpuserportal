@@ -10062,7 +10062,6 @@ if (document.URL.match('marketing/schedule')) {
               right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: response.data,
-            eventTextColor: '#fff',
             eventClick: function eventClick(info) {
               var id = info.event.id;
               document.querySelector('.edit-button[data-id="' + id + '"]').click();
