@@ -9865,6 +9865,7 @@ if (document.URL.match('marketing/schedule')) {
           toastr.success('Item Successfully Added');
           scope.get_schedule();
           scope.show_item_modal = false;
+          scope.clear_form(form);
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });
