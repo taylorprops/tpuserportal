@@ -120,7 +120,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
         } catch (\Throwable $exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(90);
+            $this -> release(180);
             return;
         }
 
