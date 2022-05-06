@@ -1,4 +1,4 @@
-<div class="p-4 rounded-md shadow bg-white min-w-1000-px">
+<div class="p-4 rounded-md shadow bg-white min-w-1000-px max-h-500-px overflow-auto">
 
     <div class="flex justify-end mr-4 mt-2">
         <a href="javascript:void(0)" id="close_search_results"><i class="fa fa-times text-red-600"></i></a>

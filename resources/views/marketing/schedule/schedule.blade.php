@@ -115,7 +115,13 @@ $breadcrumbs = [
                         </div>
 
                         <div class="col-span-3">
-                            <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient">
+                            <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient"
+                            @change="
+                            if($el.options[$el.selectedIndex].text.match(/In\sHouse\sAgents/)) {
+                                document.querySelectorAll('.states').forEach(function(state) {
+                                    state.click();
+                                })
+                            }">
                                 <option value=""></option>
                                 @foreach($settings -> where('category', 'recipient') as $recipient)
                                 <option value="{{ $recipient -> id }}">{{ $recipient -> item }}</option>
