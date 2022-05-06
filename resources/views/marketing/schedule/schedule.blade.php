@@ -117,7 +117,7 @@ $breadcrumbs = [
                         <div class="col-span-3">
                             <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient"
                             @change="
-                            if($el.options[$el.selectedIndex].text.match(/In\sHouse\sAgents/)) {
+                            if($el.options[$el.selectedIndex].text.match(/In-House\sAgents/)) {
                                 document.querySelectorAll('.states').forEach(function(state) {
                                     state.click();
                                 })
