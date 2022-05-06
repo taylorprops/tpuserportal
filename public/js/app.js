@@ -10113,6 +10113,9 @@ if (document.URL.match('marketing/schedule')) {
             toastr.error('URL Not Found');
           });
         }, 1000);
+      },
+      update_states: function update_states() {
+        this.$refs.states.value = document.querySelectorAll('.states:checked').length;
       }
     };
   };

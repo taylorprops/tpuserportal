@@ -138,7 +138,7 @@ $breadcrumbs = [
                                 @foreach($states as $state)
 
                                 <div>
-                                    <input type="checkbox" class="states form-element checkbox primary lg states" name="state[]" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}" @change="$refs.states.value = document.querySelectorAll('.states:checked').length">
+                                    <input type="checkbox" class="states form-element checkbox primary lg states" name="state[]" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}" @change="update_states()">
                                 </div>
 
                                 @endforeach

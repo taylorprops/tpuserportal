@@ -400,6 +400,10 @@ if (document.URL.match('marketing/schedule')) {
                 }, 1000);
             },
 
+            update_states() {
+                this.$refs.states.value = document.querySelectorAll('.states:checked').length;
+            }
+
         }
 
     }
