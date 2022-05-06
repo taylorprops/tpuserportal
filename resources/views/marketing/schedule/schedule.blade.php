@@ -20,7 +20,7 @@ $breadcrumbs = [
                 <div class="my-6 flex justify-start items-end space-x-4">
 
                     <div>
-                        <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form($refs.schedule_form)">
+                        <button type="button" class="button primary lg" @click="show_item_modal = true; add_event = true; edit_event = false; $refs.id.value = ''; clear_form($refs.schedule_form);">
                             Add Item <i class="fa-light fa-plus ml-3"></i>
                         </button>
                     </div>
@@ -119,8 +119,8 @@ $breadcrumbs = [
                             @change="
                             if($el.options[$el.selectedIndex].text.match(/In-House\sAgents/)) {
                                 document.querySelectorAll('.states').forEach(function(state) {
-                                    state.click();
-                                })
+                                    state.checked = true;
+                                });
                             }">
                                 <option value=""></option>
                                 @foreach($settings -> where('category', 'recipient') as $recipient)
@@ -133,19 +133,13 @@ $breadcrumbs = [
 
                             <div class="text-gray-500 text-sm">States</div>
 
-                            <div class="flex justify-between shadow rounded-md">
+                            <div class="flex justify-between">
 
                                 @foreach($states as $state)
 
-                                    <label for="{{ $state }}"
-                                    class="@if($loop -> first) rounded-l-md border-r border-gray-200 @elseif ($loop -> last) rounded-r-md @else border-r border-gray-200 @endif
-                                    flex justify-around items-center py-2 w-full cursor-pointer state-radios"
-                                    x-data="{ active: false }"
-                                    x-ref="{{ $state }}"
-                                    :class="active === true ? 'bg-primary text-white' : 'color-gray-700 hover:bg-gray-50'">
-                                        {{ $state }}
-                                        <input type="checkbox" class="hidden states @if ($loop -> last) form-element required @endif" name="state[]" id="{{ $state }}" value="{{ $state }}" @change="active = $el.checked; $refs.states.value = document.querySelectorAll('.states:checked').length">
-                                    </label>
+                                <div>
+                                    <input type="checkbox" class="states form-element checkbox primary lg states" name="state[]" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}" @change="$refs.states.value = document.querySelectorAll('.states:checked').length">
+                                </div>
 
                                 @endforeach
 
