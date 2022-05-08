@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="flex p-0 border-2 rounded-md w-full">
                                     <div class="w-full">
-                                        <input type="text" readonly class="w-full p-2" x-ref="standard" value="https://taylorprops.com/careers?utm_campaign={{ $event -> uuid }}">
+                                        <input type="text" readonly class="w-full p-2" x-ref="standard" value="https://taylorprops.com/careers?email=@{{contact.EMAIL}}&utm_campaign={{ $event -> uuid }}">
                                     </div>
                                     <div class="w-8 border-l-2 bg-gray-50">
                                         <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.standard)"><i class="fa-duotone fa-clone"></i></a>
@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="flex p-0 border-2 rounded-md w-full">
                                     <div class="w-full">
-                                        <input type="text" readonly class="w-full p-2" x-ref="tech" value="https://taylorprops.com/careers#tech?utm_campaign={{ $event -> uuid }}">
+                                        <input type="text" readonly class="w-full p-2" x-ref="tech" value="https://taylorprops.com/careers#tech?email=@{{contact.EMAIL}}&utm_campaign={{ $event -> uuid }}">
                                     </div>
                                     <div class="w-8 border-l-2 bg-gray-50">
                                         <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.tech)"><i class="fa-duotone fa-clone"></i></a>
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="flex p-0 border-2 rounded-md w-full">
                                     <div class="w-full">
-                                        <input type="text" readonly class="w-full p-2" x-ref="join" value="https://taylorprops.com/careers#join?utm_campaign={{ $event -> uuid }}">
+                                        <input type="text" readonly class="w-full p-2" x-ref="join" value="https://taylorprops.com/careers#join?email=@{{contact.EMAIL}}&utm_campaign={{ $event -> uuid }}">
                                     </div>
                                     <div class="w-8 border-l-2 bg-gray-50">
                                         <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.join)"><i class="fa-duotone fa-clone"></i></a>
