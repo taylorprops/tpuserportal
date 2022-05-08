@@ -1,3 +1,4 @@
+
 if(document.URL.match('marketing/schedule_settings')) {
 
     window.schedule_settings = function() {
@@ -26,6 +27,7 @@ if(document.URL.match('marketing/schedule_settings')) {
                 axios.get('/marketing/get_schedule_settings')
                 .then(function (response) {
                     scope.$refs.settings_div.innerHTML = response.data;
+                    scope.sortable(scope.$refs.settings_div);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -147,7 +149,54 @@ if(document.URL.match('marketing/schedule_settings')) {
 
             },
 
+            sortable(container) {
 
+                let scope = this;
+
+                container.querySelectorAll('.settings-options').forEach(function(sortable_div) {
+
+                    let sortable = Sortable.create(sortable_div, {
+                        handle: ".setting-handle",  // Drag handle selector within list items
+                        draggable: ".settings-item",  // Specifies which items inside the element should be draggable
+                        chosenClass: "sortable-chosen",  // Class name for the chosen item
+                        ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+                        dragClass: "sortable-drag",  // Class name for the dragging item
+
+                        onEnd: function (evt) {
+
+                            let ele = evt.item;
+                            let container = ele.closest('.settings-options');
+                            scope.settings_update_order(container);
+
+                        },
+
+                    });
+
+                });
+
+            },
+
+            settings_update_order(container) {
+
+                let settings = [];
+                container.querySelectorAll('.settings-item').forEach(function(setting, i) {
+                    let data = {
+                        id: setting.getAttribute('data-id'),
+                        order: i
+                    }
+                    settings.push(data);
+                });
+
+                let formData = new FormData();
+                formData.append('settings', JSON.stringify(settings));
+                axios.post('/marketing/settings_update_order', formData)
+                .then(function (response) {
+                    toastr.success('Reorder Successful');
+                })
+                .catch(function (error) {
+                });
+
+            }
 
         }
 

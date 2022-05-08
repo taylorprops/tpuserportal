@@ -1,5 +1,3 @@
-import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
-
 if (document.URL.match(/checklists$/)) {
 
     window.addEventListener('load', (event) => {

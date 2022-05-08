@@ -151,6 +151,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/settings_save_edit_item', [ScheduleController::class, 'settings_save_edit_item']) -> middleware(['in_house']);
     Route::get('/marketing/settings_get_reassign_options', [ScheduleController::class, 'settings_get_reassign_options']) -> middleware(['in_house']);
     Route::post('/marketing/settings_reassign_items', [ScheduleController::class, 'settings_reassign_items']) -> middleware(['in_house']);
+    Route::post('/marketing/settings_update_order', [ScheduleController::class, 'settings_update_order']) -> middleware(['in_house']);
 
 
     // %%%% Import Loan Officers

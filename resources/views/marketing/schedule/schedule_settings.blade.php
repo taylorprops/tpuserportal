@@ -18,7 +18,7 @@ $breadcrumbs = [
 
         <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12 pt-16">
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8" x-ref="settings_div"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" x-ref="settings_div"></div>
 
         </div>
 

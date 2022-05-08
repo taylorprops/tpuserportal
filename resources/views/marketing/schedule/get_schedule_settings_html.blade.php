@@ -22,11 +22,20 @@
             </div>
         </div>
 
-        <div class="">
+        <div class="settings-options" data-category="{{ $category }}">
+
             @foreach($settings -> where('category', $category) as $setting)
-                <div class="flex justify-start items-center my-2 border-b"
+
+                <div class="flex justify-start items-center my-2 border-b settings-item"
+                data-id="{{ $setting -> id }}"
                 x-data="{ show_color_picker: false }">
+
+                    <div class="w-12">
+                        <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
+                    </div>
+
                     @if($setting -> has_color == true)
+
                         <div class="pl-2 relative">
                             <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500"
                                 @click="show_color_picker = ! show_color_picker"></div>
@@ -48,7 +57,9 @@
 
                             </div>
                         </div>
+
                     @endif
+
                     <div class="flex justify-between items-center pr-2 w-full">
                         <div class="">
                             <input type="text" class="editor-inline p-2" value="{{ $setting -> item }}"
@@ -61,7 +72,9 @@
                             </button>
                         </div>
                     </div>
+
                 </div>
+
             @endforeach
         </div>
 

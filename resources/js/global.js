@@ -1,8 +1,9 @@
 import Toastr from 'toastr2';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
+import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
-
+window.Sortable = Sortable;
 window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
 toastr.options.closeButton = true;

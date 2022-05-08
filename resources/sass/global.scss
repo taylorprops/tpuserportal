@@ -122,6 +122,18 @@ a.default {
 .drag-clone {
     @apply bg-secondary-lightest;
 }
+.sortable-chosen {
+    @apply opacity-100 bg-sky-800 text-white;
+    input {
+        @apply opacity-100 bg-sky-800;
+    }
+}
+.sortable-ghost {
+    @apply opacity-10;
+}
+.sortable-drag {
+    @apply opacity-100;
+}
 
 /* image cropping */
 

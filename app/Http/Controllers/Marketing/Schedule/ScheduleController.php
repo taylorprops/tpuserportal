@@ -375,7 +375,7 @@ class ScheduleController extends Controller
 
     public function get_schedule_settings(Request $request) {
 
-        $settings = ScheduleSettings::orderBy('category') -> orderBy('item') -> get();
+        $settings = ScheduleSettings::orderBy('category') -> orderBy('order') -> get();
 
         $categories = [];
         foreach($settings as $setting) {
@@ -432,6 +432,19 @@ class ScheduleController extends Controller
         ScheduleSettings::find($id) -> update([
             $field => $value
         ]);
+
+        return response() -> json(['status' => 'success']);
+
+    }
+
+    public function settings_update_order(Request $request) {
+
+        foreach (json_decode($request -> settings, true) as $key => $value) {
+            ScheduleSettings::find($value['id'])
+            -> update([
+                'order' => $value['order'],
+            ]);
+        }
 
         return response() -> json(['status' => 'success']);
 
