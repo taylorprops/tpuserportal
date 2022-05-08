@@ -1,107 +1,197 @@
 @foreach($events as $event)
 
-    <div class=" mb-2 text-sm rounded border border-{{ $event -> company -> color }}-200" id="event_{{ $event -> id }}"
-        x-data="{ show_details: false }">
+<div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200"
+    :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'"
+    id="event_{{ $event -> id }}"
+    x-data="{ show_details: false }"
+    data-id="{{ $event -> id }}"
+    data-event-date="{{ $event -> event_date }}"
+    data-state="{{ $event -> state }}"
+    data-status-id="{{ $event -> status_id }}"
+    data-recipient-id="{{ $event -> recipient_id }}"
+    data-company-id="{{ $event -> company_id }}"
+    data-medium-id="{{ $event -> medium_id }}"
+    data-description="{{ $event -> description }}"
+    data-subject-line-a="{{ $event -> subject_line_a }}"
+    data-subject-line-b="{{ $event -> subject_line_b }}"
+    data-preview-text="{{ $event -> preview_text }}"
+    data-goal-id="{{ $event -> goal_id }}"
+    data-focus-id="{{ $event -> focus_id }}">
 
-        <div class="flex flex-col">
+    <div class="flex flex-col">
 
-            <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 text-{{ $event -> company -> color }}-700 p-2 rounded-t"
-                id="show_details_{{ $event -> id }}"
-                @click="show_details = ! show_details">
-                <div class="flex flex-wrap justify-start space-x-6 cursor-pointer @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
-                    <div>
-                        <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
-                    </div>
-                    <div>
-                        {{ $event -> event_date }}
-                    </div>
-                    <div class="w-40 hidden sm:inline-block">
-                        {{ $event -> medium -> item }}
-                    </div>
-                    <div>
-                        <input class="font-semibold border-none bg-transparent focus:ring-0 focus:border-0 w-32 text-center p-0 overflow-visible" readonly
-                        value="{{ $event -> uuid }}"
-                        @click.default.stop="$el.select();">
-                    </div>
+        <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details">
+            <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
+                <div>
+                    <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                 </div>
+                <div>
+                    {{ $event -> event_date }}
+                </div>
+                <div class="w-40 hidden sm:inline-block">
+                    {{ $event -> medium -> item }}
+                </div>
+
                 <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
                     {{ $event -> company -> item }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
                 </div>
+
             </div>
 
-            <div class="py-2" x-show="show_details">
+            <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">{{ $event -> status -> item }}</div>
 
-                <div class="flex justify-start items-center p-2">
+        </div>
 
-                    <div class="pr-4 border-r">
-                        {{ str_replace(',', ', ', $event -> state) }}
-                    </div>
+        <div class="pt-2" x-show="show_details">
 
-                    <div class="p-2 pl-4 text-xs italic">
-                        {{ $event -> description }}
-                    </div>
+            <div class="flex justify-start items-center p-2">
 
+                <div class="pr-4 border-r">
+                    {{ str_replace(',', ', ', $event -> state) }}
                 </div>
 
-                <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 pb-0">
+                <div class="p-2 pl-4 text-xs italic">
+                    {{ $event -> description }}
+                </div>
 
-                    @php
-                    $accepted = null;
-                    $versions = [];
-                    foreach($event -> uploads as $upload) {
-                        $details = [
-                            'file_id' => $upload -> id,
-                            'file_type' => $upload -> file_type,
-                            'file_url' => $upload -> file_url,
-                            'html' => $upload -> html,
-                        ];
-                        if($upload -> accepted_version == true) {
-                            $accepted = $details;
-                        }
-                        $versions[] = $details;
-                    }
-                    @endphp
+            </div>
 
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
-                    data-id="{{ $event -> id }}"
-                    data-event-date="{{ $event -> event_date }}"
-                    data-state="{{ $event -> state }}"
-                    data-recipient-id="{{ $event -> recipient_id }}"
-                    data-company-id="{{ $event -> company_id }}"
-                    data-medium-id="{{ $event -> medium_id }}"
-                    data-description="{{ $event -> description }}"
-                    data-subject-line-a="{{ $event -> subject_line_a }}"
-                    data-subject-line-b="{{ $event -> subject_line_b }}"
-                    data-preview-text="{{ $event -> preview_text }}"
-                    data-goal-id="{{ $event -> goal_id }}"
-                    data-focus-id="{{ $event -> focus_id }}"
-                    @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;">
-                        Edit <i class="fa-thin fa-edit ml-2"></i>
-                    </a>
+            <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
 
-                    <div class="mx-2 w-1 border-r"></div>
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
+                @php
+                $accepted = null;
+                $versions = [];
+                foreach($event -> uploads as $upload) {
+                $details = [
+                'file_id' => $upload -> id,
+                'file_type' => $upload -> file_type,
+                'file_url' => $upload -> file_url,
+                'html' => $upload -> html,
+                ];
+                if($upload -> accepted_version == true) {
+                $accepted = $details;
+                }
+                $versions[] = $details;
+                }
+                @endphp
 
-                    <div class="mx-2 w-1 border-r"></div>
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
+                @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;">
+                    Edit <i class="fa-thin fa-edit ml-2"></i>
+                </a>
 
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
+                <div class="mx-2 w-1 border-r"></div>
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                <div class="mx-2 w-1 border-r"></div>
 
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_versions({{ $event -> id }})">View Versions <span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 ml-2 rounded-full text-xs font-medium">{{ count($versions) }}</span></a>
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                <div class="mx-2 w-1 border-r"></div>
 
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="clone({{ $event -> id }}, $el)">Clone <i class="fa-thin fa-clone ml-2"></i></a>
+                <div class="relative inline-block text-left" x-data="{ show_links: false }"
+                @click.outside="show_links = false">
+                    <div>
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light"
+                        @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
+                    </div>
 
+                    <div class="origin-top-right absolute right-0 z-100 mt-2 w-400-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
+                        <div class="p-4" role="none">
+
+                            <div class="flex justify-start items-center">
+
+                                <div class="w-24">
+                                    Standard
+                                </div>
+                                <div class="flex p-0 border-2 rounded-md w-full">
+                                    <div class="w-full">
+                                        <input type="text" readonly class="w-full p-2" x-ref="standard" value="https://taylorprops.com/careers?utm_campaign={{ $event -> uuid }}">
+                                    </div>
+                                    <div class="w-8 border-l-2 bg-gray-50">
+                                        <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.standard)"><i class="fa-duotone fa-clone"></i></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="flex justify-start items-center">
+
+                                <div class="w-24">
+                                    Technology
+                                </div>
+                                <div class="flex p-0 border-2 rounded-md w-full">
+                                    <div class="w-full">
+                                        <input type="text" readonly class="w-full p-2" x-ref="tech" value="https://taylorprops.com/careers#tech?utm_campaign={{ $event -> uuid }}">
+                                    </div>
+                                    <div class="w-8 border-l-2 bg-gray-50">
+                                        <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.tech)"><i class="fa-duotone fa-clone"></i></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="flex justify-start items-center">
+
+                                <div class="w-24">
+                                    Join Now
+                                </div>
+                                <div class="flex p-0 border-2 rounded-md w-full">
+                                    <div class="w-full">
+                                        <input type="text" readonly class="w-full p-2" x-ref="join" value="https://taylorprops.com/careers#join?utm_campaign={{ $event -> uuid }}">
+                                    </div>
+                                    <div class="w-8 border-l-2 bg-gray-50">
+                                        <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.join)"><i class="fa-duotone fa-clone"></i></a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mx-2 w-1 border-r"></div>
+
+                <div class="relative inline-block" x-data="{ show_dropdown: false }"
+                @click.outside="show_dropdown = false">
+                    <div>
+                        <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true"
+                        @click="show_dropdown = true">
+                            <span class="sr-only">Open options</span>
+                            <i class="fa-light fa-bars fa-xl"></i>
+                        </button>
+                    </div>
+
+                    <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
+                        <div class="py-2" role="none">
+
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                            @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
+
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                            @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span> View Versions</a>
+
+                            <hr>
+
+                            <a href="javascript:void(0)" class="block px-4 py-2 text-red-600 hover:text-red-500" @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
-
-
     </div>
+
+
+
+</div>
 
 @endforeach

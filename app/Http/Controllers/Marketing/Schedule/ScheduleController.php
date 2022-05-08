@@ -17,7 +17,7 @@ class ScheduleController extends Controller
 
     public function schedule(Request $request) {
 
-        $settings = ScheduleSettings::orderBy('item') -> get();
+        $settings = ScheduleSettings::orderBy('order') -> get();
         $states = LocationData::activeStates();
 
         return view('marketing/schedule/schedule', compact('settings', 'states'));
@@ -42,7 +42,7 @@ class ScheduleController extends Controller
                 $query -> where('medium_id', $medium_id);
             }
         })
-        -> with(['company', 'medium', 'recipient', 'uploads' => function($query) {
+        -> with(['company', 'medium', 'recipient', 'status', 'uploads' => function($query) {
             $query -> where('active', TRUE);
         }])
         -> orderBy('event_date', 'desc')
@@ -62,6 +62,7 @@ class ScheduleController extends Controller
 
         $validated = $request -> validate([
             'event_date' => 'required',
+            'status_id' => 'required',
             'recipient_id' => 'required',
             'states' => 'required|numeric|min:0|not_in:0',
             'company_id' => 'required',
@@ -73,21 +74,22 @@ class ScheduleController extends Controller
             'states.not_in' => 'State is required',
         ]);
 
-        if(!$request -> id) {
+        // if(!$request -> id) {
 
-            $validated = $request -> validate([
-                'upload_html' => 'required_without:upload_file',
-                'upload_file' => 'required_without:upload_html',
-            ],
-            [
-                'upload_html.required_without' => 'You must paste HTML or upload a file',
-                'upload_file.required_without' => 'You must paste HTML or upload a file',
-            ]);
+        //     $validated = $request -> validate([
+        //         'upload_html' => 'required_without:upload_file',
+        //         'upload_file' => 'required_without:upload_html',
+        //     ],
+        //     [
+        //         'upload_html.required_without' => 'You must paste HTML or upload a file',
+        //         'upload_file.required_without' => 'You must paste HTML or upload a file',
+        //     ]);
 
-        }
+        // }
 
         $id = $request -> id;
         $event_date = $request -> event_date;
+        $status_id = $request -> status_id;
         $recipient_id = $request -> recipient_id;
         $state = implode(',', $request -> state);
         $company_id = $request -> company_id;
@@ -114,6 +116,7 @@ class ScheduleController extends Controller
 
         $event -> event_date = $event_date;
         $event -> recipient_id = $recipient_id;
+        $event -> status_id = $status_id;
         $event -> state = $state;
         $event -> company_id = $company_id;
         $event -> medium_id = $medium_id;
@@ -273,6 +276,34 @@ class ScheduleController extends Controller
 
     }
 
+    public function send_email(Request $request) {
+
+        $event_id = $request -> email_event_id;
+        $tos = $request -> email_to;
+        $subject_option = $request -> subject_option;
+        $subject = $subject_option == 'a' ? $request -> email_subject_line_a : $request -> email_subject_line_b;
+        $preview_text = $request -> email_preview_text;
+
+        $body = null;
+        $attachments = [];
+
+        $event = Schedule::with(['uploads' => function($query) {
+            $query -> where('accepted_version', true);
+        }])
+        -> find($event_id);
+
+        $upload = $event -> uploads -> first();
+
+        if($upload -> html) {
+            $body = $upload -> html;
+        } else {
+            $attachments[] = $upload -> file_location;
+        }
+
+
+
+    }
+
     public function calendar_get_events(Request $request) {
 
         $company_id = $request -> company_id;
@@ -399,7 +430,7 @@ class ScheduleController extends Controller
             return response() -> json(['deleted' => true]);
         }
 
-        $settings = ScheduleSettings::where('id', '!=', $id) -> where('category', $category) -> orderBy('item') -> get();
+        $settings = ScheduleSettings::where('id', '!=', $id) -> where('category', $category) -> orderBy('order') -> get();
 
         return compact('settings');
 

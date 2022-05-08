@@ -245,7 +245,6 @@ window.show_form_errors = function (errors) {
         } else {
             element = document.querySelector('[name="'+field+'"]');
         }
-        console.log(element);
         let label = '';
         let error_message = '<div class="error-message text-red-500 text-xxs">' + message + '</div>';
 
@@ -791,7 +790,27 @@ window.global_get_url_parameters = function (key) {
     return false;
 }
 
-
-
-
+window.copy_to_clipboard = function(text) {
+    // navigator clipboard api needs a secure context (https)
+    if (navigator.clipboard && window.isSecureContext) {
+        // navigator clipboard api method'
+        return navigator.clipboard.writeText(text);
+    } else {
+        // text area method
+        let textArea = document.createElement("textarea");
+        textArea.value = text;
+        // make the textarea out of viewport
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        return new Promise((res, rej) => {
+            // here the magic happens
+            document.execCommand('copy') ? res() : rej();
+            textArea.remove();
+        });
+    }
+}
 

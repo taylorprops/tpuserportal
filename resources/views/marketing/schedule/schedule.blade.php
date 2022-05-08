@@ -60,7 +60,7 @@ $breadcrumbs = [
 
                 <div>
 
-                    <div class="border rounded-lg p-2 max-h-screen-80 overflow-auto mb-12 lg:mb-0">
+                    <div class="border rounded-lg p-2 h-screen-80 overflow-auto pb-16 mb-12 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 
@@ -106,6 +106,15 @@ $breadcrumbs = [
 
                 <div class="p-2 sm:p-4 lg:p-8 lg:pt-0">
 
+                    <div class="mt-4 w-48">
+                        <select class="form-element select md required" name="status_id" x-ref="status_id" data-label="Status">
+                            <option value=""></option>
+                            @foreach($settings -> where('category', 'status') as $status)
+                            <option value="{{ $status -> id }}" @if($loop -> first) selected @endif>{{ $status -> item }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="text-lg font-semibold my-4">Details</div>
 
                     <div class="grid grid-cols-1 md:grid-cols-9 gap-4">
@@ -115,8 +124,7 @@ $breadcrumbs = [
                         </div>
 
                         <div class="col-span-3">
-                            <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient"
-                            @change="
+                            <select class="form-element select md required" name="recipient_id" x-ref="recipient_id" data-label="Recipient" @change="
                             if($el.options[$el.selectedIndex].text.match(/In-House\sAgents/)) {
                                 document.querySelectorAll('.states').forEach(function(state) {
                                     state.checked = true;
@@ -171,9 +179,6 @@ $breadcrumbs = [
                             </select>
                         </div>
 
-                        <div class="col-span-2">
-                            <input type="text" class="form-element input md required" name="description" x-ref="description" data-label="Description">
-                        </div>
 
                         <div class="">
                             <select class="form-element select md" name="focus_id" x-ref="focus_id" data-label="Focus">
@@ -192,6 +197,12 @@ $breadcrumbs = [
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="col-span-2">
+                            <input type="text" class="form-element input md required" name="description" x-ref="description" data-label="Description">
+                        </div>
+
+                        <div class="col-span-2"></div>
 
                         <div class="col-span-2" x-show="show_email_options">
                             <input type="text" class="form-element input md" name="subject_line_a" x-ref="subject_line_a" data-label="Subject Line A">
@@ -297,12 +308,10 @@ $breadcrumbs = [
                 Are you sure you want to send this event to the recycle bin?
             </div>
             <div class="flex justify-around items-center py-6">
-                <button type="button" class="button danger sm"
-                @click="show_delete_event_modal = false">
+                <button type="button" class="button danger sm" @click="show_delete_event_modal = false">
                     Cancel <i class="fa-light fa-xmark ml-2"></i>
                 </button>
-                <button type="button" class="button primary md"
-                x-ref="delete_event">
+                <button type="button" class="button primary md" x-ref="delete_event">
                     Confirm <i class="fa-light fa-check ml-2"></i>
                 </button>
             </div>
@@ -324,13 +333,9 @@ $breadcrumbs = [
                     <div class="border-b border-gray-200">
                         <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                            :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"
-                            @click="active_tab = 'html'; clear_add_version_form()"> Paste HTML </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" :class="active_tab === 'html' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';" @click="active_tab = 'html'; clear_add_version_form()"> Paste HTML </a>
 
-                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page"
-                            @click="active_tab = 'file'; clear_add_version_form()"
-                            :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
+                            <a href="#" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" aria-current="page" @click="active_tab = 'file'; clear_add_version_form()" :class="active_tab === 'file' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300';"> PDF/Image </a>
 
                         </nav>
                     </div>
@@ -342,25 +347,17 @@ $breadcrumbs = [
 
                         <div x-show="active_tab === 'html'" x-transition>
                             <div>
-                                <input type="text" class="form-element input md"
-                                data-label="Paste URL"
-                                @change="get_html_from_link($el, $refs.upload_version_html);"
-                                @paste="get_html_from_link($el, $refs.upload_version_html);">
+                                <input type="text" class="form-element input md" data-label="Paste URL" @change="get_html_from_link($el, $refs.upload_version_html);" @paste="get_html_from_link($el, $refs.upload_version_html);">
                             </div>
                             <div class="my-2">OR</div>
                             <div>
-                                <textarea class="form-element textarea md" rows="3" name="upload_version_html"
-                                data-label="Paste HTML"
-                                x-ref="upload_version_html"></textarea>
+                                <textarea class="form-element textarea md" rows="3" name="upload_version_html" data-label="Paste HTML" x-ref="upload_version_html"></textarea>
                             </div>
                         </div>
 
                         <div x-show="active_tab === 'file'" x-transition>
                             <div class="mt-12">
-                                <input type="file" name="upload_version_file" class="form-element input md"
-                                @change="show_file_names($el)"
-                                x-ref="upload_version_file"
-                                accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                <input type="file" name="upload_version_file" class="form-element input md" @change="show_file_names($el)" x-ref="upload_version_file" accept="image/x-png,image/gif,image/jpeg,application/pdf">
                             </div>
                         </div>
 
@@ -375,6 +372,101 @@ $breadcrumbs = [
             <div class="flex justify-around items-center pb-6 pt-12">
                 <button type="button" class="button primary xl" @click="save_add_version($el, true)">Save Version <i class="fa-light fa-check ml-2"></i></button>
             </div>
+
+        </x-modals.modal>
+
+
+        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'" :modalTitle="'Email Item'" :modalId="'show_email_modal'" x-show="show_email_modal">
+
+            <form id="email_form">
+
+                <div x-data="{ active: 'a' }">
+
+                    <div class="my-4 relative" x-data="{ show_to_options: false }"
+                    @click.outside="show_to_options = false">
+                        <div class="mt-1 flex rounded-md shadow-sm"
+                        @click="show_to_options = !show_to_options">
+                            <a href="javascript:void(0)" class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-primary sm:text-sm w-28"> To: </a>
+                            <input type="text" name="email_to"
+                            class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300"
+                            placeholder="Separate emails with a comma"
+                            x-ref="email_to">
+                        </div>
+                        <div class="absolute top-10 left-28 p-2 bg-white rounded-lg shadow z-100 divide-y to-list"
+                        x-show="show_to_options" x-transition
+                        x-ref="to_list">
+                            @php
+                            $tos = [
+                                'Mike' => 'mike@taylorprops.com',
+                                'Jackie' => 'jackie@taylorprops.com',
+                                'Robb' => 'senorrobb@yahoo.com',
+                                'Delia' => 'delia@taylorprops.com',
+                                'Kyle' => 'kyle@taylorprops.com',
+                                'Nikki' => 'nikki@taylorprops.com',
+                            ];
+                            @endphp
+
+                            @foreach($tos as $name => $email)
+                                <div class="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 cursor-pointer">
+                                    <div>
+                                        <input type="checkbox" class="form-element checkbox lg to-address" id="{{ $email }}" data-email="{{ $email }}"
+                                        @change="update_to_addresses()">
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label for="{{ $email }}">{{ $name }}</label>
+                                    </div>
+                                    <div class="col-span-9">
+                                        <label for="{{ $email }}">{{ $email }}</label>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="flex justify-around p-2">
+                                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500 text-sm"
+                                @click="show_to_options = false"><i class="fa-light fa-xmark mr-2"></i> Close</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @foreach(['a', 'b'] as $subject)
+
+                        <div class="my-4">
+                            <div class="mt-1 flex w-full">
+                                <div class="flex rounded-md shadow-sm w-full">
+                                    <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
+                                        <div class="pr-2 flex justify-around items-center">
+                                            <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}"
+                                            @if($subject == 'a') checked @endif
+                                            @click="active = document.querySelector('[name=\'subject_option\']:checked').value;"
+                                            class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                        </div>
+                                        <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
+                                    </div>
+                                    <input type="text" name="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300"
+                                    :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                </div>
+                            </div>
+                        </div>
+
+                    @endforeach
+
+
+                    <div class="my-4">
+                        <div class="mt-1 flex rounded-md shadow-sm">
+                            <span class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28"> Preview Text: </span>
+                            <input type="text" name="email_preview_text" x-ref="email_preview_text" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-around mt-12 mb-8">
+                        <button type="button" class="button primary lg" @click="send_email($el)">Send Email <i class="fa-solid fa-share ml-2"></i></button>
+                    </div>
+
+                </div>
+
+                <input type="hidden" name="email_event_id">
+            </form>
 
         </x-modals.modal>
 

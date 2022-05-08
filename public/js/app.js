@@ -8243,7 +8243,6 @@ window.show_form_errors = function (errors) {
       element = document.querySelector('[name="' + field + '"]');
     }
 
-    console.log(element);
     var label = '';
     var error_message = '<div class="error-message text-red-500 text-xxs">' + message + '</div>';
 
@@ -8752,6 +8751,30 @@ window.global_get_url_parameters = function (key) {
   }
 
   return false;
+};
+
+window.copy_to_clipboard = function (text) {
+  // navigator clipboard api needs a secure context (https)
+  if (navigator.clipboard && window.isSecureContext) {
+    // navigator clipboard api method'
+    return navigator.clipboard.writeText(text);
+  } else {
+    // text area method
+    var textArea = document.createElement("textarea");
+    textArea.value = text; // make the textarea out of viewport
+
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    textArea.style.top = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    return new Promise(function (res, rej) {
+      // here the magic happens
+      document.execCommand('copy') ? res() : rej();
+      textArea.remove();
+    });
+  }
 };
 
 /***/ }),
@@ -9798,6 +9821,18 @@ if (document.URL.match('address_database')) {
   \*****************************************************/
 /***/ (() => {
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 if (document.URL.match('marketing/schedule')) {
   window.schedule = function () {
     return {
@@ -9812,6 +9847,7 @@ if (document.URL.match('marketing/schedule')) {
       show_delete_event_modal: false,
       show_email_options: false,
       show_deleted_versions: false,
+      show_email_modal: false,
       init: function init() {
         this.get_schedule();
       },
@@ -9892,33 +9928,35 @@ if (document.URL.match('marketing/schedule')) {
       },
       edit_item: function edit_item(ele) {
         var scope = this;
-        var id = ele.getAttribute('data-id');
+        var event_div = ele.closest('.event-div');
+        var id = event_div.getAttribute('data-id');
         scope.$refs.id.value = id;
-        scope.$refs.event_date.value = ele.getAttribute('data-event-date');
+        scope.$refs.event_date.value = event_div.getAttribute('data-event-date');
         var inputs = document.querySelectorAll('.states:checked');
         inputs.forEach(function (input) {
           input.click();
         });
-        var states = ele.getAttribute('data-state').split(',');
+        var states = event_div.getAttribute('data-state').split(',');
         states.forEach(function (state) {
           document.querySelector('#' + state).click();
         });
-        scope.$refs.recipient_id.value = ele.getAttribute('data-recipient-id');
-        scope.$refs.company_id.value = ele.getAttribute('data-company-id');
-        scope.$refs.medium_id.value = ele.getAttribute('data-medium-id');
-        scope.$refs.description.value = ele.getAttribute('data-description');
-        scope.$refs.subject_line_a.value = ele.getAttribute('data-subject-line-a');
-        scope.$refs.subject_line_b.value = ele.getAttribute('data-subject-line-b');
-        scope.$refs.preview_text.value = ele.getAttribute('data-preview-text');
-        scope.$refs.goal_id.value = ele.getAttribute('data-goal-id');
-        scope.$refs.focus_id.value = ele.getAttribute('data-focus-id');
+        scope.$refs.status_id.value = event_div.getAttribute('data-status-id');
+        scope.$refs.recipient_id.value = event_div.getAttribute('data-recipient-id');
+        scope.$refs.company_id.value = event_div.getAttribute('data-company-id');
+        scope.$refs.medium_id.value = event_div.getAttribute('data-medium-id');
+        scope.$refs.description.value = event_div.getAttribute('data-description');
+        scope.$refs.subject_line_a.value = event_div.getAttribute('data-subject-line-a');
+        scope.$refs.subject_line_b.value = event_div.getAttribute('data-subject-line-b');
+        scope.$refs.preview_text.value = event_div.getAttribute('data-preview-text');
+        scope.$refs.goal_id.value = event_div.getAttribute('data-goal-id');
+        scope.$refs.focus_id.value = event_div.getAttribute('data-focus-id');
         scope.show_email_options = false;
 
         if (scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
           scope.show_email_options = true;
         }
 
-        scope.$refs.delete_event_button.setAttribute('data-id', ele.getAttribute('data-id'));
+        scope.$refs.delete_event_button.setAttribute('data-id', event_div.getAttribute('data-id'));
         scope.$refs.show_versions_button.addEventListener('click', function () {
           scope.show_versions(id);
         });
@@ -9936,7 +9974,7 @@ if (document.URL.match('marketing/schedule')) {
             scope.get_schedule();
             scope.show_delete_event_modal = false;
             scope.show_item_modal = false;
-            toastr.error('Event Successfully Recycled');
+            toastr.error('Event Successfully Deleted');
           })["catch"](function (error) {
             display_errors(error, ele, button_html);
           });
@@ -10035,14 +10073,11 @@ if (document.URL.match('marketing/schedule')) {
           display_errors(error, ele, button_html);
         });
       },
-      clone: function clone(id, ele) {
+      clone: function clone(id) {
         var scope = this;
-        var button_html = ele.innerHTML;
-        show_loading_button(ele, 'Cloning ... ');
         var formData = new FormData();
         formData.append('id', id);
         axios.post('/marketing/clone_event', formData).then(function (response) {
-          ele.innerHTML = button_html;
           var id = response.data.id;
           scope.get_schedule(id);
         })["catch"](function (error) {});
@@ -10070,28 +10105,6 @@ if (document.URL.match('marketing/schedule')) {
         })["catch"](function (error) {
           console.log(error);
         });
-        /* axios.get('/marketing/calendar_get_events')
-        .then(function (response) {
-             let calendarEl = document.querySelector('.calendar');
-            let calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                events: response.data,
-                eventTextColor: '#fff',
-                eventClick: function(info) {
-                    let id = info.event.id;
-                    document.querySelector('.edit-button[data-id="'+id+'"]').click();
-                },
-            });
-             calendar.render();
-         })
-        .catch(function (error) {
-            console.log(error);
-        }); */
       },
       get_html_from_link: function get_html_from_link(ele, textarea) {
         show_loading();
@@ -10106,7 +10119,6 @@ if (document.URL.match('marketing/schedule')) {
 
             hide_loading();
           })["catch"](function (error) {
-            console.log(error);
             hide_loading();
             toastr.error('URL Not Found');
           });
@@ -10114,6 +10126,81 @@ if (document.URL.match('marketing/schedule')) {
       },
       update_states: function update_states() {
         this.$refs.states.value = document.querySelectorAll('.states:checked').length;
+      },
+      show_email: function show_email(ele, event_id) {
+        var scope = this;
+        var event_div = ele.closest('.event-div');
+        scope.show_email_modal = true;
+        setTimeout(function () {
+          document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
+          document.querySelector('[name="email_subject_line_b"]').value = event_div.getAttribute('data-subject-line-b');
+          document.querySelector('[name="email_preview_text"]').value = event_div.getAttribute('data-preview-text');
+          document.querySelector('[name="email_event_id"]').value = event_div.getAttribute('data-id');
+          document.querySelector('[name="email_to"]').focus();
+        }, 500);
+      },
+      send_email: function send_email(ele) {
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Sending Email ... ');
+        remove_form_errors();
+        var form = document.getElementById('email_form');
+        var formData = new FormData(form);
+        axios.post('/marketing/send_email', formData).then(function (response) {
+          ele.innerHTML = button_html;
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      },
+      update_to_addresses: function update_to_addresses() {
+        var scope = this;
+        var to_list = scope.$refs.to_list;
+        var to_input = scope.$refs.email_to;
+        var all_addresses = [];
+        to_list.querySelectorAll('.to-address').forEach(function (address) {
+          all_addresses.push(address.getAttribute('data-email'));
+        });
+        var to_addresses = [];
+        to_list.querySelectorAll('.to-address:checked').forEach(function (address) {
+          to_addresses.push(address.getAttribute('data-email'));
+        });
+        var not_to_addresses = all_addresses.filter(function (x) {
+          return to_addresses.indexOf(x) === -1;
+        });
+        var input_addresses = to_input.value;
+
+        if (input_addresses != '') {
+          if (input_addresses.match(/,/)) {
+            input_addresses = input_addresses.split(',');
+            input_addresses.forEach(function (address) {
+              address = address.trim();
+
+              if (address != '') {
+                if (!not_to_addresses.includes(address)) {
+                  to_addresses.push(address);
+                }
+              }
+            });
+          } else {
+            var address = input_addresses.trim();
+
+            if (!not_to_addresses.includes(address)) {
+              to_addresses.push(address);
+            }
+          }
+        }
+
+        to_addresses = _toConsumableArray(new Set(to_addresses));
+        to_input.value = to_addresses.join(', ');
+      },
+      copy_text: function copy_text(ele) {
+        ele.focus();
+        ele.select();
+        ele.setSelectionRange(0, 99999);
+        copy_to_clipboard(ele.value).then(function () {
+          return toastr.success('Link Successfully Copied To Clipboard');
+        })["catch"](function () {
+          return toastr.error('Link Not Copied To Clipboard');
+        });
       }
     };
   };

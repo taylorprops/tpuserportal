@@ -29,6 +29,21 @@ class Schedule extends Model
         return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'recipient_id');
     }
 
+    public function focus()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'focus_id');
+    }
+
+    public function goal()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'goal_id');
+    }
+
+    public function status()
+    {
+        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'status_id');
+    }
+
     public function uploads()
     {
         return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleUploads::class, 'event_id', 'id');
