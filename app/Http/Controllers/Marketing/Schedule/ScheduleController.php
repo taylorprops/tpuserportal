@@ -310,7 +310,7 @@ class ScheduleController extends Controller
         $recipient_id = $request -> recipient_id;
         $medium_id = $request -> medium_id;
 
-        $events = Schedule::select(['id', 'company_id', 'recipient_id', DB::raw('SUBSTRING(uuid, 9) as title'), 'event_date as start']) -> where('active', TRUE)
+        $events = Schedule::select(['id', 'company_id', 'recipient_id', 'event_date as start']) -> where('active', TRUE)
         -> where(function($query) use ($company_id, $recipient_id, $medium_id) {
             if($company_id) {
                 $query -> where('company_id', $company_id);
@@ -340,7 +340,7 @@ class ScheduleController extends Controller
             $event -> textColor = 'inherit';
             // $event -> backgroundColor = 'inherit';
             // $event -> borderColor = 'inherit';
-            $event -> title = $event -> title.'-'.$event -> recipient -> item;
+            $event -> title = Helper::get_initials($event -> company -> item).' -> '.$event -> recipient -> item;
         }
 
         return response() -> json($events);
