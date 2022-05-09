@@ -26,51 +26,63 @@
 
             @foreach($settings -> where('category', $category) as $setting)
 
-                <div class="flex justify-start items-center my-2 border-b settings-item"
+                <div class="flex justify-between items-center my-2 border-b settings-item"
                 data-id="{{ $setting -> id }}"
                 x-data="{ show_color_picker: false }">
 
-                    <div class="w-12">
-                        <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
+                    <div class="flex justify-start items-center">
+
+                        <div class="w-12">
+                            <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
+                        </div>
+
+                        @if($setting -> has_color == true)
+
+                            <div class="pl-2 relative">
+                                <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500"
+                                    @click="show_color_picker = ! show_color_picker"></div>
+                                <div class="absolute left-10 top-0 w-48 bg-white z-40 border-4 rounded-md p-4"
+                                x-show="show_color_picker" x-transition
+                                @click.outside="show_color_picker = false">
+
+                                    @php
+                                    $colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'rose'];
+                                    @endphp
+                                    <div class="grid grid-cols-4 gap-2">
+                                        @foreach($colors as $color)
+
+                                            <div class="bg-{{ $color }}-500 border-2 rounded-md cursor-pointer hover:bg-{{ $color }}-400 h-8 w-8"
+                                            @click="settings_save_edit_item({{ $setting -> id }}, '{{ $color }}', 'color'); show_color_picker = false;"></div>
+
+                                        @endforeach
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        @endif
+
+                        <div class="flex justify-between items-center pr-2">
+                            <div class="">
+                                <input type="text" class="editor-inline p-2 @if($setting -> has_email == true) w-28 @endif" value="{{ $setting -> item }}"
+                                @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')">
+                            </div>
+                            @if($setting -> has_email == true)
+                            <div class=" ml-2">
+                                <input type="text" class="editor-inline p-2 w-48" value="{{ $setting -> email }}"
+                                @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'email')">
+                            </div>
+                            @endif
+
+                        </div>
+
                     </div>
 
-                    @if($setting -> has_color == true)
-
-                        <div class="pl-2 relative">
-                            <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500"
-                                @click="show_color_picker = ! show_color_picker"></div>
-                            <div class="absolute left-10 top-0 w-48 bg-white z-40 border-4 rounded-md p-4"
-                            x-show="show_color_picker" x-transition
-                            @click.outside="show_color_picker = false">
-
-                                @php
-                                $colors = ['red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'rose'];
-                                @endphp
-                                <div class="grid grid-cols-4 gap-2">
-                                    @foreach($colors as $color)
-
-                                        <div class="bg-{{ $color }}-500 border-2 rounded-md cursor-pointer hover:bg-{{ $color }}-400 h-8 w-8"
-                                        @click="settings_save_edit_item({{ $setting -> id }}, '{{ $color }}', 'color'); show_color_picker = false;"></div>
-
-                                    @endforeach
-                                </div>
-
-                            </div>
-                        </div>
-
-                    @endif
-
-                    <div class="flex justify-between items-center pr-2 w-full">
-                        <div class="">
-                            <input type="text" class="editor-inline p-2" value="{{ $setting -> item }}"
-                            @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')">
-                        </div>
-                        <div class="">
-                            <button type="button" class="button danger md no-text"
-                            @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
-                                <i class="fa-duotone fa-xmark fa-xl"></i>
-                            </button>
-                        </div>
+                    <div class="pr-4">
+                        <button type="button" class="button danger md no-text"
+                        @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
+                            <i class="fa-duotone fa-xmark fa-xl"></i>
+                        </button>
                     </div>
 
                 </div>

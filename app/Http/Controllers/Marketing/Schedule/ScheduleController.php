@@ -427,6 +427,11 @@ class ScheduleController extends Controller
         $category = $request -> category;
         $id = $request -> id;
 
+        if($category == 'users') {
+            ScheduleSettings::find($id) -> delete();
+            return response() -> json(['deleted' => true]);
+        }
+
         $in_use = Schedule::where($category.'_id', $id) -> first();
 
         if(!$in_use) {
@@ -445,13 +450,15 @@ class ScheduleController extends Controller
         $category = $request -> type;
         $value = $request -> value;
 
-        $has_color = ScheduleSettings::where('category', $category) -> first();
-        $has_color = $has_color -> has_color;
+        $setting = ScheduleSettings::where('category', $category) -> first();
+        $has_color = $setting -> has_color;
+        $has_email = $setting -> has_email;
 
         ScheduleSettings::create([
             'category' => $category,
             'item' => $value,
-            'has_color' => $has_color
+            'has_color' => $has_color,
+            'has_email' => $has_email,
         ]);
 
         return response() -> json(['status' => 'success']);
