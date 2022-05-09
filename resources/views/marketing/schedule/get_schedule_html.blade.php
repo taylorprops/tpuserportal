@@ -46,7 +46,7 @@ foreach($event -> uploads as $upload) {
                     {{ $event -> event_date }}
                 </div>
                 <div class="w-40 hidden sm:inline-block">
-                    {{ $event -> medium -> item }}
+                    {{ $event -> medium -> item }} @if($event -> medium -> html != '') - {{ $event -> medium -> item }} @endif
                 </div>
 
                 <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
