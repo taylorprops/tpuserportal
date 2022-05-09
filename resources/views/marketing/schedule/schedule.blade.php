@@ -380,28 +380,19 @@ $breadcrumbs = [
                         <div class="absolute top-10 left-28 p-2 bg-white rounded-lg shadow z-100 divide-y to-list"
                         x-show="show_to_options" x-transition
                         x-ref="to_list">
-                            @php
-                            $tos = [
-                                'Mike' => 'mike@taylorprops.com',
-                                'Jackie' => 'jackie@taylorprops.com',
-                                'Robb' => 'senorrobb@yahoo.com',
-                                'Delia' => 'delia@taylorprops.com',
-                                'Kyle' => 'kyle@taylorprops.com',
-                                'Nikki' => 'nikki@taylorprops.com',
-                            ];
-                            @endphp
 
-                            @foreach($tos as $name => $email)
+                            @foreach($settings -> where('category', 'users') as $user)
+
                                 <div class="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 cursor-pointer">
                                     <div>
-                                        <input type="checkbox" class="form-element checkbox lg to-address" id="{{ $email }}" data-email="{{ $email }}"
+                                        <input type="checkbox" class="form-element checkbox lg to-address" id="{{ $user -> email }}" data-email="{{ $user -> email }}"
                                         @change="update_to_addresses()">
                                     </div>
                                     <div class="col-span-2">
-                                        <label for="{{ $email }}">{{ $name }}</label>
+                                        <label for="{{ $user -> email }}">{{ $user -> item }}</label>
                                     </div>
                                     <div class="col-span-9">
-                                        <label for="{{ $email }}">{{ $email }}</label>
+                                        <label for="{{ $user -> email }}">{{ $user -> email }}</label>
                                     </div>
                                 </div>
                             @endforeach
