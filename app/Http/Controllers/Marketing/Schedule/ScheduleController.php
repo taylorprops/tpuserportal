@@ -29,9 +29,10 @@ class ScheduleController extends Controller
         $company_id = $request -> company_id;
         $recipient_id = $request -> recipient_id;
         $medium_id = $request -> medium_id;
+        $status_id = $request -> status_id;
 
         $events = Schedule::where('active', TRUE)
-        -> where(function($query) use ($company_id, $recipient_id, $medium_id) {
+        -> where(function($query) use ($company_id, $recipient_id, $medium_id, $status_id) {
             if($company_id) {
                 $query -> where('company_id', $company_id);
             }
@@ -40,6 +41,9 @@ class ScheduleController extends Controller
             }
             if($medium_id) {
                 $query -> where('medium_id', $medium_id);
+            }
+            if($status_id) {
+                $query -> where('status_id', $status_id);
             }
         })
         -> with(['company', 'medium', 'recipient', 'status', 'uploads' => function($query) {
@@ -366,32 +370,32 @@ class ScheduleController extends Controller
         $clone -> save();
         $clone_id = $clone -> id;
 
-        $uploads = ScheduleUploads::where('event_id', $event_id) -> get();
+        // $uploads = ScheduleUploads::where('event_id', $event_id) -> get();
 
-        foreach($uploads as $upload) {
+        // foreach($uploads as $upload) {
 
-            $upload_clone = $upload -> replicate();
-            $upload_clone -> event_id = $clone_id;
+        //     $upload_clone = $upload -> replicate();
+        //     $upload_clone -> event_id = $clone_id;
 
-            if($upload -> html == '') {
-                $dir = 'marketing/'.$clone_id;
-                if (! is_dir($dir)) {
-                    Storage::makeDirectory($dir);
-                }
+        //     if($upload -> html == '') {
+        //         $dir = 'marketing/'.$clone_id;
+        //         if (! is_dir($dir)) {
+        //             Storage::makeDirectory($dir);
+        //         }
 
-                $upload_file_name = basename(Storage::path($upload -> file_location));
+        //         $upload_file_name = basename(Storage::path($upload -> file_location));
 
-                Storage::copy($upload -> file_location, $dir.'/'.$upload_file_name);
+        //         Storage::copy($upload -> file_location, $dir.'/'.$upload_file_name);
 
-                $upload_file_location = $dir.'/'.$upload_file_name;
-                $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
+        //         $upload_file_location = $dir.'/'.$upload_file_name;
+        //         $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
 
-                $upload_clone -> file_location = $upload_file_location;
-                $upload_clone -> file_url = $upload_file_url;
-            }
+        //         $upload_clone -> file_location = $upload_file_location;
+        //         $upload_clone -> file_url = $upload_file_url;
+        //     }
 
-            $upload_clone -> save();
-        }
+        //     $upload_clone -> save();
+        // }
 
         return response() -> json(['id' => $clone_id]);
 

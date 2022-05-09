@@ -25,32 +25,17 @@ $breadcrumbs = [
                         </button>
                     </div>
 
-                    <div>
-                        <select class="form-element select md" data-label="Company" name="company_id" @change="get_schedule()">
-                            <option value="">All</option>
-                            @foreach($settings -> where('category', 'company') as $company)
-                            <option value="{{ $company -> id }}">{{ $company -> item }}
+                    @foreach(['company', 'recipient', 'medium', 'status'] as $item)
+                        <div>
+                            <select class="form-element select md" data-label="{{ ucwords($item) }}" name="{{ $item }}_id" @change="get_schedule()">
+                                <option value="">All</option>
+                                @foreach($settings -> where('category', $item) as $setting)
+                                    <option value="{{ $setting -> id }}">{{ $setting -> item }}
                                 @endforeach
-                        </select>
-                    </div>
+                            </select>
+                        </div>
 
-                    <div>
-                        <select class="form-element select md" data-label="Recipients" name="recipient_id" @change="get_schedule()">
-                            <option value="">All</option>
-                            @foreach($settings -> where('category', 'recipient') as $recipient)
-                            <option value="{{ $recipient -> id }}">{{ $recipient -> item }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <select class="form-element select md" data-label="Medium" name="medium_id" @change="get_schedule()">
-                            <option value="">All</option>
-                            @foreach($settings -> where('category', 'medium') as $medium)
-                            <option value="{{ $medium -> id }}">{{ $medium -> item }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @endforeach
 
                 </div>
 
@@ -429,34 +414,30 @@ $breadcrumbs = [
                         </div>
                     </div>
 
-                    @foreach(['a', 'b'] as $subject)
+                    <div x-show="show_subject_options">
 
-                        <div class="my-4">
-                            <div class="mt-1 flex w-full">
-                                <div class="flex rounded-md shadow-sm w-full">
-                                    <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
-                                        <div class="pr-2 flex justify-around items-center">
-                                            <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}"
-                                            @if($subject == 'a') checked @endif
-                                            @click="active = document.querySelector('[name=\'subject_option\']:checked').value;"
-                                            class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                        @foreach(['a', 'b'] as $subject)
+
+                            <div class="my-4">
+                                <div class="mt-1 flex w-full">
+                                    <div class="flex rounded-md shadow-sm w-full">
+                                        <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
+                                            <div class="pr-2 flex justify-around items-center">
+                                                <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}"
+                                                @if($subject == 'a') checked @endif
+                                                @click="active = document.querySelector('[name=\'subject_option\']:checked').value;"
+                                                class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                            </div>
+                                            <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
                                         </div>
-                                        <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
+                                        <input type="text" name="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly
+                                        :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                     </div>
-                                    <input type="text" name="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300"
-                                    :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                 </div>
                             </div>
-                        </div>
 
-                    @endforeach
+                        @endforeach
 
-
-                    <div class="my-4">
-                        <div class="mt-1 flex rounded-md shadow-sm">
-                            <span class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28"> Preview Text: </span>
-                            <input type="text" name="email_preview_text" x-ref="email_preview_text" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300">
-                        </div>
                     </div>
 
                     <div class="flex items-center justify-around mt-12 mb-8">

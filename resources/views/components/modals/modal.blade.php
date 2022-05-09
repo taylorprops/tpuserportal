@@ -9,7 +9,7 @@
         <!-- This element is to trick the browser into centering the modal contents. -->
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-        <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle {{ $modalWidth }} sm:p-6 animate__animated animate__fadeIn" @if($clickOutside != '') @click.outside="{{ $clickOutside }}" @else @click.outside="{{ $modalId }} = false" @endif>
+        <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle {{ $modalWidth }} sm:p-6 animate__animated animate__fadeIn" @if($clickOutside != '') @click.outside="{{ $clickOutside }}" @else @click.outside="{{ $modalId }} = false" @endif>
 
             @if($modalTitle != '')
             <div class="flex justify-between border-b mb-4 pb-2">

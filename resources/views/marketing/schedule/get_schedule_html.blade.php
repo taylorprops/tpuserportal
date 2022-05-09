@@ -1,5 +1,22 @@
 @foreach($events as $event)
 
+@php
+$accepted = null;
+$versions = [];
+foreach($event -> uploads as $upload) {
+    $details = [
+        'file_id' => $upload -> id,
+        'file_type' => $upload -> file_type,
+        'file_url' => $upload -> file_url,
+        'html' => $upload -> html,
+    ];
+    if($upload -> accepted_version == true) {
+        $accepted = $details;
+    }
+    $versions[] = $details;
+}
+@endphp
+
 <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200"
     :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'"
     id="event_{{ $event -> id }}"
@@ -58,31 +75,15 @@
 
             <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
 
-                @php
-                $accepted = null;
-                $versions = [];
-                foreach($event -> uploads as $upload) {
-                $details = [
-                'file_id' => $upload -> id,
-                'file_type' => $upload -> file_type,
-                'file_url' => $upload -> file_url,
-                'html' => $upload -> html,
-                ];
-                if($upload -> accepted_version == true) {
-                $accepted = $details;
-                }
-                $versions[] = $details;
-                }
-                @endphp
-
                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                 @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;">
                     Edit <i class="fa-thin fa-edit ml-2"></i>
                 </a>
 
+                @if($accepted)
                 <div class="mx-2 w-1 border-r"></div>
                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
-
+                @endif
                 <div class="mx-2 w-1 border-r"></div>
 
                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>

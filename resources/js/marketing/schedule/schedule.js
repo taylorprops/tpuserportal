@@ -17,6 +17,7 @@ if (document.URL.match('marketing/schedule')) {
             show_email_options: false,
             show_deleted_versions: false,
             show_email_modal: false,
+            show_subject_options: false,
 
             init() {
                 this.get_schedule();
@@ -385,10 +386,14 @@ if (document.URL.match('marketing/schedule')) {
 
                 scope.show_email_modal = true;
 
+                scope.show_subject_options = false;
+                if(event_div.getAttribute('data-subject-line-a') != '') {
+                    scope.show_subject_options = true;
+                }
+
                 setTimeout(function() {
                     document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
                     document.querySelector('[name="email_subject_line_b"]').value = event_div.getAttribute('data-subject-line-b');
-                    document.querySelector('[name="email_preview_text"]').value = event_div.getAttribute('data-preview-text');
                     document.querySelector('[name="email_event_id"]').value = event_div.getAttribute('data-id');
                     document.querySelector('[name="email_to"]').focus();
                 }, 500);
