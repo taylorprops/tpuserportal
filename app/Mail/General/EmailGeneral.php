@@ -40,11 +40,12 @@ class EmailGeneral extends Mailable
 
         if ($this -> message['attachments']) {
             foreach ($this -> message['attachments'] as $attachment) {
-                $mail -> attach($attachment -> getRealPath(),
-                [
-                    'as' => $attachment -> getClientOriginalName(),
-                    'mime' => $attachment -> getClientMimeType(),
-                ]);
+                $mail -> attach($attachment);
+                // $mail -> attach($attachment -> getRealPath(),
+                // [
+                //     'as' => $attachment -> getClientOriginalName(),
+                //     'mime' => $attachment -> getClientMimeType(),
+                // ]);
             }
         }
 

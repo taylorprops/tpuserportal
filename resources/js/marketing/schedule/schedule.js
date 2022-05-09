@@ -53,6 +53,10 @@ if (document.URL.match('marketing/schedule')) {
                 document.querySelectorAll('[type="file"]').forEach(function(input) {
                     show_file_names(input);
                 });
+                document.querySelectorAll('.to-address').forEach(function (address) {
+                    address.checked = false;
+                });
+                this.update_to_addresses();
             },
 
             clear_add_version_form() {
@@ -386,22 +390,24 @@ if (document.URL.match('marketing/schedule')) {
 
                 scope.show_email_modal = true;
 
-                scope.show_subject_options = false;
                 if(event_div.getAttribute('data-subject-line-a') != '') {
                     scope.show_subject_options = true;
+                    document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
+                    document.querySelector('[name="email_subject"]').value = event_div.getAttribute('data-subject-line-a');
+                    document.querySelector('[name="email_subject_line_b"]').value = event_div.getAttribute('data-subject-line-b');
+                } else {
+                    scope.show_subject_options = false;
+                    document.querySelector('[name="email_subject"]').value = event_div.getAttribute('data-description');
                 }
 
-                setTimeout(function() {
-                    document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
-                    document.querySelector('[name="email_subject_line_b"]').value = event_div.getAttribute('data-subject-line-b');
-                    document.querySelector('[name="email_event_id"]').value = event_div.getAttribute('data-id');
-                    document.querySelector('[name="email_to"]').focus();
-                }, 500);
+                document.querySelector('[name="email_event_id"]').value = event_div.getAttribute('data-id');
+                document.querySelector('[name="email_to"]').focus();
 
             },
 
             send_email(ele) {
 
+                let scope = this;
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Sending Email ... ');
                 remove_form_errors();
@@ -412,7 +418,8 @@ if (document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/send_email', formData)
                 .then(function (response) {
                     ele.innerHTML = button_html;
-
+                    scope.show_email_modal = false;
+                    scope.clear_form(form);
                 })
                 .catch(function (error) {
                     display_errors(error, ele, button_html);

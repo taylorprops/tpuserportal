@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Marketing\Schedule;
 
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use App\Mail\General\EmailGeneral;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Marketing\Schedule\Schedule;
 use App\Models\Marketing\Schedule\ScheduleUploads;
@@ -284,12 +286,11 @@ class ScheduleController extends Controller
 
         $event_id = $request -> email_event_id;
         $tos = $request -> email_to;
-        $subject_option = $request -> subject_option;
-        $subject = $subject_option == 'a' ? $request -> email_subject_line_a : $request -> email_subject_line_b;
+        $subject = $request -> email_subject;
         $preview_text = $request -> email_preview_text;
 
         $body = null;
-        $attachments = [];
+        $attachment = null;
 
         $event = Schedule::with(['uploads' => function($query) {
             $query -> where('accepted_version', true);
@@ -301,10 +302,22 @@ class ScheduleController extends Controller
         if($upload -> html) {
             $body = $upload -> html;
         } else {
-            $attachments[] = $upload -> file_location;
+            $attachment = [Storage::path($upload -> file_location)];
+            $body = 'See Attached';
         }
 
 
+        $message = [
+            'company' => 'Taylor Properties',
+            'subject' => $subject,
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body,
+            'attachments' => $attachment
+        ];
+
+
+        Mail::to($tos)
+        -> send(new EmailGeneral($message));
 
     }
 

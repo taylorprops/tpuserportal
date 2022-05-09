@@ -45,7 +45,7 @@ $breadcrumbs = [
 
                 <div>
 
-                    <div class="border rounded-lg p-2 h-screen-80 overflow-auto pb-16 mb-12 lg:mb-0">
+                    <div class="h-screen-80 overflow-auto pb-16 mb-12 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 
@@ -62,11 +62,11 @@ $breadcrumbs = [
 
                             <div class="absolute top-12 right-12 z-20"><a href="javascript:void(0)" @click="show_html = false; show_file = false; show_calendar = true;"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a></div>
 
-                            <div class="absolute top-0 bg-white rounded border p-4 z-10 w-full h-full" x-show="show_html" x-ref="view_html">
+                            <div class="absolute top-0 bg-white z-10 w-full h-full" x-show="show_html" x-ref="view_html">
                                 <iframe class="view-accepted-iframe" width="100%" height="100%"></iframe>
                             </div>
 
-                            <div class="absolute top-0 bg-white rounded border p-4 z-10 w-full h-full" x-show="show_file">
+                            <div class="absolute top-0 bg-white z-10 w-full h-full" x-show="show_file">
                                 <embed src="" type="application/pdf" class="min-h-750-px" width="100%" height="100vh" x-ref="view_file" />
                             </div>
 
@@ -416,12 +416,12 @@ $breadcrumbs = [
                                             <div class="pr-2 flex justify-around items-center">
                                                 <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}"
                                                 @if($subject == 'a') checked @endif
-                                                @click="active = document.querySelector('[name=\'subject_option\']:checked').value;"
-                                                class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                                @click="active = document.querySelector('[name=\'subject_option\']:checked').value; if($el.checked) { $refs.email_subject.value = document.querySelector('[name=\'email_subject_line_'+$el.value+'\']').value; }"
+                                                :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                             </div>
                                             <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
                                         </div>
-                                        <input type="text" name="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly
+                                        <input type="text" name="email_subject_line_{{ $subject }}" x-ref="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly
                                         :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                     </div>
                                 </div>
@@ -429,6 +429,10 @@ $breadcrumbs = [
 
                         @endforeach
 
+                    </div>
+
+                    <div x-show="!show_subject_options">
+                        <input type="text" name="email_subject" class="form-element input md" x-ref="email_subject" placeholder="Subject">
                     </div>
 
                     <div class="flex items-center justify-around mt-12 mb-8">

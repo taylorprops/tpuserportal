@@ -64,7 +64,7 @@ window.addEventListener('load', function() {
 
     });
 
-    if(document.URL.match(/utm_source/)) {
+    if(document.URL.match(/utm_campaign/)) {
         send_lead_to_zoho();
     }
 
@@ -75,8 +75,8 @@ function send_lead_to_zoho() {
 
 
 
-    let utm_source = get_url_parameters('utm_source');
-    let utm_medium = get_url_parameters('utm_medium');
+    let utm_source = get_url_parameters('utm_source') || null;
+    let utm_medium = get_url_parameters('utm_medium') || null;
     let utm_campaign = get_url_parameters('utm_campaign');
     let email = get_url_parameters('email');
 
