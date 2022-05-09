@@ -3,17 +3,21 @@
 @php
 $accepted = null;
 $versions = [];
-foreach($event -> uploads as $upload) {
-    $details = [
-        'file_id' => $upload -> id,
-        'file_type' => $upload -> file_type,
-        'file_url' => $upload -> file_url,
-        'html' => $upload -> html,
-    ];
-    if($upload -> accepted_version == true) {
-        $accepted = $details;
+if($event -> uploads) {
+    $event_upload = null;
+    foreach($event -> uploads as $upload) {
+        $details = [
+            'file_id' => $upload -> id,
+            'file_type' => $upload -> file_type,
+            'file_url' => $upload -> file_url,
+            'html' => $upload -> html,
+        ];
+        if($upload -> accepted_version == true) {
+            $accepted = $details;
+            $event_upload = $upload;
+        }
+        $versions[] = $details;
     }
-    $versions[] = $details;
 }
 @endphp
 
@@ -46,7 +50,7 @@ foreach($event -> uploads as $upload) {
                     {{ $event -> event_date }}
                 </div>
                 <div class="w-40 hidden sm:inline-block">
-                    {{ $event -> medium -> item }} @if($event -> medium -> html != '') - {{ $event -> medium -> item }} @endif
+                    {{ $event -> medium -> item }} @if($event_upload && $event_upload -> html != '') - {{ $event -> id }} @endif
                 </div>
 
                 <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
