@@ -463,8 +463,10 @@ if (document.URL.match('marketing/schedule')) {
             update_to_addresses() {
 
                 let scope = this;
-                let to_list = scope.$refs.to_list;
-                let to_input = scope.$refs.email_to;
+                // let to_list = scope.$refs.to_list;
+                let to_list = document.querySelector('.to-list');
+                // let to_input = scope.$refs.email_to;
+                let to_input = document.querySelector('[name="email_to"]');
 
                 let all_addresses = [];
                 to_list.querySelectorAll('.to-address').forEach(function(address) {

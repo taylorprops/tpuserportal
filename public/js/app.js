@@ -10193,9 +10193,11 @@ if (document.URL.match('marketing/schedule')) {
         });
       },
       update_to_addresses: function update_to_addresses() {
-        var scope = this;
-        var to_list = scope.$refs.to_list;
-        var to_input = scope.$refs.email_to;
+        var scope = this; // let to_list = scope.$refs.to_list;
+
+        var to_list = document.querySelector('.to-list'); // let to_input = scope.$refs.email_to;
+
+        var to_input = document.querySelector('[name="email_to"]');
         var all_addresses = [];
         to_list.querySelectorAll('.to-address').forEach(function (address) {
           all_addresses.push(address.getAttribute('data-email'));
