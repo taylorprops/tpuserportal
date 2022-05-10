@@ -324,6 +324,39 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
+            get_email_list(ele) {
+
+                let event_div = ele.closest('.event-div');
+                let states = event_div.getAttribute('data-state').split(',');
+                let company = event_div.getAttribute('data-company');
+                let recipient = event_div.getAttribute('data-recipient');
+                let sender = 'sendinblue';
+                if(company == 'Heritage Title') {
+                    sender = 'mailchimp';
+                } else if(company == 'Heritage Financial') {
+                    sender = 'omnisend';
+                }
+
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Getting List ... ');
+
+                let formData = new FormData();
+                formData.append('states', states);
+                formData.append('sender', sender);
+                formData.append('recipient', recipient);
+
+                axios.post('/marketing/get_email_list', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    window.location = response.data;
+                    toastr.success('List Successfully Downloaded');
+                })
+                .catch(function (error) {
+                    display_errors(error, ele, button_html);
+                });
+
+            },
+
             calendar() {
 
                 let scope = this;

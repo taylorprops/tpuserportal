@@ -8,14 +8,22 @@ use App\Mail\General\EmailGeneral;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Marketing\Schedule\Schedule;
+use App\Models\HeritageFinancial\AgentDatabase;
 use App\Models\Marketing\Schedule\ScheduleUploads;
 use App\Models\Marketing\Schedule\ScheduleSettings;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use App\Models\DocManagement\Resources\LocationData;
 
 class ScheduleController extends Controller
 {
+
+    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_send_in_blue = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
 
     public function schedule(Request $request) {
 
@@ -318,6 +326,71 @@ class ScheduleController extends Controller
 
         Mail::to($tos)
         -> send(new EmailGeneral($message));
+
+    }
+
+    public function get_email_list(Request $request) {
+
+        $sender = $request -> sender;
+        $recipient = $request -> recipient;
+        $states = explode(',', $request -> states);
+
+        if($sender == 'mailchimp') {
+            $this -> agent_columns = $this -> agent_columns_mail_chimp;
+        } else if($sender == 'sendinblue') {
+            $this -> agent_columns = $this -> agent_columns_send_in_blue;
+        } else if($sender == 'omnisend') {
+            $this -> agent_columns = $this -> agent_columns_omni_send;
+        }
+
+        $file_name = 'agent_list_'.time().'.csv';
+        $file = Storage::path('/tmp/'.$file_name);
+        $handle = fopen($file, 'w');
+
+        if($recipient == 'In-House Agents') {
+
+            $this -> agent_columns = $this -> agent_columns_in_house;
+            $agents = AgentDatabase::select($this -> agent_columns_in_house) -> get();
+
+            fputcsv($handle, $this -> agent_columns, ',');
+            foreach ($agents as $agent) {
+                fputcsv($handle, $agent -> toArray(), ',');
+            }
+
+        } else if($recipient == 'PSI') {
+
+
+
+        } else {
+
+            $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+                -> whereIn('OfficeStateOrProvince', $states)
+                -> whereHas('agents', function (Builder $query) {
+                    $query -> where('MemberType', 'Agent')
+                    -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail');
+                })
+                -> with(['agents' => function ($query) {
+                    $query -> where('MemberType', 'Agent')
+                    -> where('MemberEmail', '!=', '')
+                    -> whereNotNull('MemberEmail')
+                    -> select($this -> agent_columns);
+                }])
+                -> get();
+
+
+            fputcsv($handle, $this -> agent_columns, ',');
+            foreach ($offices as $office) {
+                foreach ($office -> agents as $agent) {
+                    fputcsv($handle, $agent -> toArray(), ',');
+                }
+            }
+
+        }
+
+        $file_location = '/storage/tmp/'.$file_name;
+
+        return $file_location;
 
     }
 

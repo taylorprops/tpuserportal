@@ -10087,6 +10087,33 @@ if (document.URL.match('marketing/schedule')) {
           scope.get_schedule(id);
         })["catch"](function (error) {});
       },
+      get_email_list: function get_email_list(ele) {
+        var event_div = ele.closest('.event-div');
+        var states = event_div.getAttribute('data-state').split(',');
+        var company = event_div.getAttribute('data-company');
+        var recipient = event_div.getAttribute('data-recipient');
+        var sender = 'sendinblue';
+
+        if (company == 'Heritage Title') {
+          sender = 'mailchimp';
+        } else if (company == 'Heritage Financial') {
+          sender = 'omnisend';
+        }
+
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Getting List ... ');
+        var formData = new FormData();
+        formData.append('states', states);
+        formData.append('sender', sender);
+        formData.append('recipient', recipient);
+        axios.post('/marketing/get_email_list', formData).then(function (response) {
+          ele.innerHTML = button_html;
+          window.location = response.data;
+          toastr.success('List Successfully Downloaded');
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      },
       calendar: function calendar() {
         var scope = this;
         var form = scope.$refs.filter_form;

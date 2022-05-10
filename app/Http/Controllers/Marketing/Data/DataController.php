@@ -64,7 +64,7 @@ class DataController extends Controller
                 $this -> agent_columns = $this -> agent_columns_mail_chimp;
             } else if($sender == 'sendinblue') {
                 $this -> agent_columns = $this -> agent_columns_send_in_blue;
-            } else if($sender == 'mailchimp') {
+            } else if($sender == 'omnisend') {
                 $this -> agent_columns = $this -> agent_columns_omni_send;
             }
         }

@@ -30,7 +30,9 @@ if($event -> uploads) {
     data-state="{{ $event -> state }}"
     data-status-id="{{ $event -> status_id }}"
     data-recipient-id="{{ $event -> recipient_id }}"
+    data-recipient="{{ $event -> recipient -> item }}"
     data-company-id="{{ $event -> company_id }}"
+    data-company="{{ $event -> company -> item }}"
     data-medium-id="{{ $event -> medium_id }}"
     data-description="{{ $event -> description }}"
     data-subject-line-a="{{ $event -> subject_line_a }}"
@@ -156,6 +158,10 @@ if($event -> uploads) {
                         </div>
                     </div>
                 </div>
+
+                <div class="mx-2 w-1 border-r"></div>
+
+                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
 
                 <div class="mx-2 w-1 border-r"></div>
 
