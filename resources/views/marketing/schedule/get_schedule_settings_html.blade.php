@@ -65,9 +65,13 @@
                         <div class="flex justify-between items-center pr-2">
                             <div class="">
                                 <input type="text" class="editor-inline p-2 @if($setting -> has_email == true) w-28 @endif" value="{{ $setting -> item }}"
-                                @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')">
+                                @if($setting -> editable == true)
+                                @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')"
+                                @else
+                                readonly
+                                @endif>
                             </div>
-                            @if($setting -> has_email == true)
+                            @if($setting -> has_email == true && $setting -> editable == true)
                             <div class=" ml-2">
                                 <input type="text" class="editor-inline p-2 w-48" value="{{ $setting -> email }}"
                                 @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'email')">
