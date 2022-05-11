@@ -36,15 +36,11 @@
                             <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
                         </div>
 
-                        @if(auth() -> user() -> level == 'super_admin')
-
-                            <div class=""
-                            x-data="{ locked: {{ $setting -> locked }} }">
-                                <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @click="settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0;"><i class="fa-duotone fa-lock"></i></a>
-                                <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @click="settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1;"><i class="fa-duotone fa-lock-open"></i></a>
-                            </div>
-
-                        @endif
+                        <div class=""
+                        x-data="{ locked: {{ $setting -> locked }} }">
+                            <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @if(auth() -> user() -> level == 'super_admin') @click="settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0;" @endif><i class="fa-duotone fa-lock"></i></a>
+                            <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @if(auth() -> user() -> level == 'super_admin') @click="settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1;" @endif><i class="fa-duotone fa-lock-open"></i></a>
+                        </div>
 
                         @if($setting -> has_color == true)
 
