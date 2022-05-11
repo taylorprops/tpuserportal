@@ -798,9 +798,8 @@ class APIController extends Controller
         if($agent) {
 
             if(!$lead_source) {
-                $event = Schedule::where('uuid', $lead_campaign) -> with(['medium']) -> first();
-                $lead_source = $event -> description;
-                $lead_medium = $event -> medium -> item;
+                $lead_source = 'Email Clicker';
+                $lead_medium = 'Email';
             }
 
 
