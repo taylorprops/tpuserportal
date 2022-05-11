@@ -9966,6 +9966,19 @@ if (document.URL.match('marketing/schedule')) {
           scope.show_versions(id);
         });
       },
+      update_status: function update_status(ele, event_id, status_id) {
+        var scope = this;
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Updating ... ');
+        var formData = new FormData();
+        formData.append('event_id', event_id);
+        formData.append('status_id', status_id);
+        axios.post('/marketing/update_status', formData).then(function (response) {
+          ele.innerHTML = button_html;
+          toastr.success('Status Successfully Updated');
+          scope.get_schedule();
+        })["catch"](function (error) {});
+      },
       show_delete_event: function show_delete_event(id, ele) {
         var scope = this;
         scope.show_delete_event_modal = true;

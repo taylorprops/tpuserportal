@@ -64,15 +64,20 @@ if($event -> uploads) {
 
             <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @click.stop="show_edit_status = true">{{ $event -> status -> item }}</div>
 
-            {{-- <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status">
+            <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+            x-show="show_edit_status"
+            @click.outside="show_edit_status = false;">
                     <div class="p-4" role="none">
-
-                        <div>a sdfasd fasdf</div>
-
-
+                        @foreach($settings -> where('category', 'status') as $status)
+                            <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white"
+                            @click.stop="update_status($el, {{ $event -> id }}, {{ $status -> id }}); show_edit_status = false;">
+                                <div>{{ $status -> item }}</div>
+                                <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
+                            </div>
+                        @endforeach
                     </div>
 
-            </div> --}}
+            </div>
 
         </div>
 

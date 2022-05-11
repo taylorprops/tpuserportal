@@ -155,6 +155,27 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
+            update_status(ele, event_id, status_id) {
+
+                let scope = this;
+                let button_html = ele.innerHTML;
+                show_loading_button(ele, 'Updating ... ');
+
+                let formData = new FormData();
+                formData.append('event_id', event_id);
+                formData.append('status_id', status_id);
+
+                axios.post('/marketing/update_status', formData)
+                .then(function (response) {
+                    ele.innerHTML = button_html;
+                    toastr.success('Status Successfully Updated');
+                    scope.get_schedule();
+                })
+                .catch(function (error) {
+                });
+
+            },
+
             show_delete_event(id, ele) {
 
                 let scope = this;

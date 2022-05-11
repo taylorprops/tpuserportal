@@ -772,8 +772,8 @@ class APIController extends Controller
         // zoho fields
         $category = 'Real Estate';
         $lead_status = 'New';
-        $lead_source = $request -> utm_source;
-        $lead_medium = $request -> utm_medium;
+        $lead_source = 'Email Clickers';
+        $lead_medium = 'Email';
         $lead_campaign = $request -> utm_campaign;
 
 
@@ -796,10 +796,6 @@ class APIController extends Controller
         $company = $agent -> OfficeName;
 
         if($agent) {
-
-            $lead_source = 'Email Clickers';
-            $lead_medium = 'Email';
-
 
             $description = 'An agent clicked on a link in an email for more information';
 
@@ -940,8 +936,8 @@ class APIController extends Controller
         $category = 'Mortgage';
         $lead_status = 'New';
         $owner = '5119653000000396016'; // Kyle
-        $lead_source = $request -> utm_source;
-        $lead_medium = $request -> utm_medium;
+        $lead_source = 'Email Clickers';
+        $lead_medium = 'Email';
         $lead_campaign = $request -> utm_campaign;
 
         $check_exists = $this -> check_if_user_exists($email, $category);
@@ -1063,8 +1059,8 @@ class APIController extends Controller
         // zoho fields
         $category = 'Title';
         $lead_status = 'New';
-        $lead_source = $request -> utm_source;
-        $lead_medium = $request -> utm_medium;
+        $lead_source = 'Email Clickers';
+        $lead_medium = 'Email';
         $lead_campaign = $request -> utm_campaign;
 
         $check_exists = $this -> check_if_user_exists($email, $category);

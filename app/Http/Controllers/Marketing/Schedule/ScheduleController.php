@@ -62,9 +62,11 @@ class ScheduleController extends Controller
         -> orderBy('event_date', 'desc')
         -> get();
 
+        $settings = ScheduleSettings::orderBy('order') -> get();
+
         if($events) {
 
-            return view('marketing/schedule/get_schedule_html', compact('events'));
+            return view('marketing/schedule/get_schedule_html', compact('events', 'settings'));
 
         }
 
@@ -183,6 +185,16 @@ class ScheduleController extends Controller
 
 
 
+
+    }
+
+    public function update_status(Request $request) {
+
+        Schedule::find($request -> event_id) -> update([
+            'status_id' => $request -> status_id
+        ]);
+
+        return response() -> json(['status' => 'success']);
 
     }
 
