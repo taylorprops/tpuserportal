@@ -36,6 +36,16 @@
                             <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
                         </div>
 
+                        @if(auth() -> user() -> level == 'super_admin')
+
+                            <div class=""
+                            x-data="{ locked: {{ $setting -> locked }} }">
+                                <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @click="settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0;"><i class="fa-duotone fa-lock"></i></a>
+                                <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @click="settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1;"><i class="fa-duotone fa-lock-open"></i></a>
+                            </div>
+
+                        @endif
+
                         @if($setting -> has_color == true)
 
                             <div class="pl-2 relative">
@@ -64,16 +74,16 @@
 
                         <div class="flex justify-between items-center pr-2">
                             <div class="">
-                                <input type="text" class="editor-inline p-2 @if($setting -> has_email == true) w-28 @endif" value="{{ $setting -> item }}"
-                                @if($setting -> editable == true)
-                                @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')"
+                                <input type="text" class="editor-inline p-2 @if($setting -> has_email == true) w-28 @endif" value="{{ $setting -> item }}" data-default-value="{{ $setting -> item }}"
+                                @if($setting -> locked == false)
+                                    @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')"
                                 @else
-                                readonly
+                                    readonly
                                 @endif>
                             </div>
-                            @if($setting -> has_email == true && $setting -> editable == true)
+                            @if($setting -> has_email == true && $setting -> locked == false)
                             <div class=" ml-2">
-                                <input type="text" class="editor-inline p-2 w-48" value="{{ $setting -> email }}"
+                                <input type="text" class="editor-inline p-2 w-48" value="{{ $setting -> email }}" data-default-value="{{ $setting -> email }}"
                                 @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'email')">
                             </div>
                             @endif

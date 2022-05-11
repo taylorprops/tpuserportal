@@ -44,7 +44,7 @@ if($event -> uploads) {
     <div class="flex flex-col">
 
         <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details">
-            <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
+            <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> status -> item == 'Completed') opacity-50 @endif">
                 <div>
                     <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                 </div>
@@ -55,13 +55,13 @@ if($event -> uploads) {
                     {{ $event -> medium -> item }} @if($event_upload && $event_upload -> html != '') - {{ $event -> id }} @endif
                 </div>
 
-                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">
+                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> status -> item == 'Completed') opacity-50 @endif">
                     {{ $event -> company -> item }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
                 </div>
 
             </div>
 
-            <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 @if($event -> event_date < date('Y-m-d')) opacity-50 @endif">{{ $event -> status -> item }}</div>
+            <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 @if($event -> status -> item == 'Completed') opacity-50 @endif">{{ $event -> status -> item }}</div>
 
         </div>
 
