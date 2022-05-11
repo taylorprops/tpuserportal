@@ -903,18 +903,20 @@ class APIController extends Controller
 
             /* testing */
 
-            $body = 'TEST TEST An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
+            // $body = 'TEST TEST An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert!',
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => $body,
-                'attachments' => null
-            ];
+            // $message = [
+            //     'company' => 'Taylor Properties',
+            //     'subject' => 'Recruiting Alert!',
+            //     'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            //     'body' => $body,
+            //     'attachments' => null
+            // ];
 
-            Mail::to(['email' => '4432237356@vtext.com'])
-            -> send(new EmailGeneral($message));
+            // Mail::to(['email' => '4432237356@vtext.com'])
+            // -> send(new EmailGeneral($message));
+
+            /* end testing */
 
 
             return response() -> json(['status' => 'success']);
