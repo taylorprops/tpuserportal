@@ -64,7 +64,7 @@ if($event -> uploads) {
 
             <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @click.stop="show_edit_status = true">{{ $event -> status -> item }}</div>
 
-            <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status">
+            {{-- <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status">
                     <div class="p-4" role="none">
 
                         <div>a sdfasd fasdf</div>
@@ -72,7 +72,7 @@ if($event -> uploads) {
 
                     </div>
 
-            </div>
+            </div> --}}
 
         </div>
 
