@@ -798,7 +798,7 @@ class APIController extends Controller
         if($agent) {
 
             if(!$lead_source) {
-                $lead_source = 'Email Clicker';
+                $lead_source = 'Email Clickers';
                 $lead_medium = 'Email';
             }
 
