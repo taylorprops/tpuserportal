@@ -853,7 +853,7 @@ class APIController extends Controller
                 }
 
                 $text_to = [
-                    ['email' => '4432237356@vtext.com'],
+                    // ['email' => '4432237356@vtext.com'],
                     ['email' => '4105701014@vtext.com'],
                 ];
             } else {
@@ -881,7 +881,7 @@ class APIController extends Controller
             -> cc($cc)
             -> send(new EmailGeneral($message));
 
-            if(date('G') > '7' && date('G') < '20') {
+            if(date('G') > '7' && date('G') < '20' && date('Y-m-d') > '2022-05-30') {
 
                 $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
@@ -897,6 +897,21 @@ class APIController extends Controller
                 -> send(new EmailGeneral($message));
 
             }
+
+            /* testing */
+
+            $body = 'TEST TEST An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert!',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to(['email' => '4432237356@vtext.com'])
+            -> send(new EmailGeneral($message));
 
 
             return response() -> json(['status' => 'success']);
