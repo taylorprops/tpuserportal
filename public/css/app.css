@@ -1483,6 +1483,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-screen-75{width:75vw}
 .w-400-px{width:400px}
 .w-600-px{width:600px}
+.w-200-px{width:200px}
 .min-w-full{min-width:100%}
 .min-w-0{min-width:0px}
 .max-w-1400-px{max-width:1400px}

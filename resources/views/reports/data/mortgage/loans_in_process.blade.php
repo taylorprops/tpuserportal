@@ -130,18 +130,25 @@
                                         $loan_purpose = 'Refi';
                                     }
                                 }
+
+                                $settlement_date = $loan -> time_line_estimated_settlement;
+                                if($loan -> time_line_scheduled_settlement != '') {
+                                    $settlement_date = $loan -> time_line_scheduled_settlement;
+                                } else if($loan -> settlement_date != '') {
+                                    $settlement_date = $loan -> settlement_date;
+                                }
                                 @endphp
 
                                 <tr>
                                     <td>{!! $borrower !!}</td>
                                     <td>{!! $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip !!}</td>
                                     <td>{{ $loan_purpose }}</td>
-                                    <td>{{ $loan -> processor -> fullname }}</td>
+                                    <td>{{ $loan -> processor -> fullname ?? null }}</td>
                                     <td>{!! $agents !!}</td>
                                     <td>{{ $loan -> time_line_sent_to_processing }}</td>
                                     <td>{{ $loan -> time_line_conditions_received ?? null }}</td>
                                     <td>{{ $loan -> lock_expiration }}</td>
-                                    <td>{{ $loan -> settlement_date }}</td>
+                                    <td>{{ $settlement_date }}</td>
                                     <td>${{ number_format($loan -> loan_amount) }}</td>
                                     <td>${{ number_format($loan -> company_commission) }}</td>
                                     <td>{{ $loan -> title_company }}</td>

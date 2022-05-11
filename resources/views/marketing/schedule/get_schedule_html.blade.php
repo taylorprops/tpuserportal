@@ -43,8 +43,9 @@ if($event -> uploads) {
 
     <div class="flex flex-col">
 
-        <div class="flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details">
-            <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> status -> item == 'Completed') opacity-50 @endif">
+        <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details"
+        x-data="{ show_edit_status: false }">
+            <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> status -> item == 'Completed') opacity-40 @endif">
                 <div>
                     <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                 </div>
@@ -55,26 +56,72 @@ if($event -> uploads) {
                     {{ $event -> medium -> item }} @if($event_upload && $event_upload -> html != '') - {{ $event -> id }} @endif
                 </div>
 
-                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 @if($event -> status -> item == 'Completed') opacity-50 @endif">
+                <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
                     {{ $event -> company -> item }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
                 </div>
 
             </div>
 
-            <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 @if($event -> status -> item == 'Completed') opacity-50 @endif">{{ $event -> status -> item }}</div>
+            <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @click.stop="show_edit_status = true">{{ $event -> status -> item }}</div>
+
+            <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status">
+                    <div class="p-4" role="none">
+
+                        <div>a sdfasd fasdf</div>
+
+
+                    </div>
+
+            </div>
 
         </div>
 
-        <div class="pt-2" x-show="show_details">
+        <div class="" x-show="show_details">
 
-            <div class="flex justify-start items-center p-2">
+            <div class="flex justify-start items-center p-2 border-b">
 
                 <div class="pr-4 border-r">
                     {{ str_replace(',', ', ', $event -> state) }}
                 </div>
 
-                <div class="p-2 pl-4 text-xs italic">
+                <div class="pl-4 italic">
                     {{ $event -> description }}
+                </div>
+
+            </div>
+
+            <div class="flex justify-start items-center px-2 py-1 text-gray-500">
+
+                <div class="pr-4 border-r w-28 text-right">
+                    Subject A
+                </div>
+
+                <div class="pl-4">
+                    {{ $event -> subject_line_a }}
+                </div>
+
+            </div>
+
+            <div class="flex justify-start items-center px-2 py-1 text-gray-500">
+
+                <div class="pr-4 border-r w-28 text-right">
+                    Subject B
+                </div>
+
+                <div class="pl-4">
+                    {{ $event -> subject_line_b }}
+                </div>
+
+            </div>
+
+            <div class="flex justify-start items-center px-2 pt-1 pb-2 text-gray-500">
+
+                <div class="pr-4 border-r w-28 text-right">
+                    Preview Text
+                </div>
+
+                <div class="pl-4">
+                    {{ $event -> preview_text }}
                 </div>
 
             </div>

@@ -1,5 +1,8 @@
 @php
-$title = $loan ? $loan -> street : 'Add Loan';
+$title = 'Add Loan';
+if($loan) {
+    $title = $loan -> street;
+}
 
 $breadcrumbs = [
     ['Heritage Financial', ''],

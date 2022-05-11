@@ -154,6 +154,8 @@ class ReportsController extends Controller
                 'time_line_sent_to_processing',
                 'time_line_conditions_received',
                 'lock_expiration',
+                'time_line_estimated_settlement',
+                'time_line_scheduled_settlement',
                 'settlement_date',
                 'loan_amount',
                 'company_commission',
