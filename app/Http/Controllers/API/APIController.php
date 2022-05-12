@@ -927,7 +927,7 @@ class APIController extends Controller
     public function add_email_clicker_mortgage(Request $request) {
 
 
-        // http://heritagefinancial.com/?utm_source=MortgageClick&utm_medium=Click&utm_campaign=CampaignName&email=test@test.com
+        // http://heritagefinancial.com/?utm_campaign=2022-06_TP_37&email=test@test.com
 
         $access_token = $this -> get_access_token('leads');
 

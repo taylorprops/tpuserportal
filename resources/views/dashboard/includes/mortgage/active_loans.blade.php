@@ -15,7 +15,7 @@
 
 </div>
 
-<div class="flex flex-col h-screen-70 w-screen-90 xl:w-screen-70 overflow-auto">
+<div class="flex flex-col h-screen-70 w-auto xl:w-screen-70 overflow-y-auto overflow-x-hidden no-scrollbar">
 
     <div class="-my-2 sm:-mx-6 lg:-mx-8">
 
