@@ -158,7 +158,7 @@
                             @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
                         </div>
 
-                        <div class="origin-top-right absolute right-0 z-100 mt-2 w-400-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
+                        <div class="origin-top-right absolute -right-32 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
                             <div class="p-4" role="none">
 
                                 @php
@@ -202,7 +202,7 @@
 
                                     <div class="flex justify-start items-center">
 
-                                        <div class="w-24">
+                                        <div class="w-36">
                                             {{ $link['title'] }}
                                         </div>
                                         <div class="flex p-0 border-2 rounded-md w-full">

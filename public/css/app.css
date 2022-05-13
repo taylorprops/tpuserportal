@@ -1297,6 +1297,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .top-5{top:1.25rem}
 .-left-56{left:-14rem}
 .left-48{left:12rem}
+.right-24{right:6rem}
+.-right-24{right:-6rem}
+.-right-32{right:-8rem}
 .z-0{z-index:0}
 .z-50{z-index:50}
 .z-40{z-index:40}
@@ -1483,6 +1486,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-56{width:14rem}
 .w-9\/12{width:75%}
 .w-screen-75{width:75vw}
+.w-600-px{width:600px}
 .min-w-full{min-width:100%}
 .min-w-0{min-width:0px}
 .max-w-1000-px{max-width:1000px}
