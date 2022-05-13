@@ -56,7 +56,7 @@
                         {{ $event -> event_date }}
                     </div>
                     <div class="w-40 hidden sm:inline-block">
-                        {{ $event -> medium -> item }} @if($event_upload && $event_upload -> html != '') - {{ $event -> id }} @endif
+                        {{ $event -> medium -> item }} - {{ $event -> id }}
                     </div>
 
                     <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">

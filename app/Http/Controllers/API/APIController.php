@@ -1210,20 +1210,26 @@ class APIController extends Controller
 
             $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
             -> where('ListAgentMlsId', $agent -> MemberMlsId)
+            -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
             -> groupBy('year')
             -> orderBy('year', 'desc')
             -> get();
+
             $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
             -> where('BuyerAgentMlsId', $agent -> MemberMlsId)
+            -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
             -> groupBy('year')
             -> orderBy('year', 'desc')
             -> get();
 
+            $member_since = $listings -> last() -> year;
+            if($contracts -> last() -> year < $listings -> last() -> year) {
+                $member_since = $contracts -> last() -> year;
+            }
 
-            $member_since = BrightListings::where('ListAgentMlsId', $agent -> MemberMlsId) -> orWhere('BuyerAgentMlsId', $agent -> MemberMlsId) -> min('MlsListDate');
-            $years_active = date("Y") - date("Y", strtotime($member_since));
+            $years_active = date("Y") - $member_since;
             if($years_active > 9) {
                 $years_active = '10 plus';
             }
@@ -1235,6 +1241,8 @@ class APIController extends Controller
         return response() -> json(['status' => 'not found']);
 
     }
+
+    /* TODO Add location stats - sold per state, county */
 
     public function add_lead_to_zoho($fields, $access_token, $api_url) {
 
