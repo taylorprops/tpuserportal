@@ -45,7 +45,7 @@ if (document.URL.match('marketing/schedule')) {
                         document.querySelectorAll('.past-due').forEach(function(event) {
                             scope.$refs.schedule_list_div.prepend(event);
                         });
-                    }, 1000);
+                    }, 500);
                 })
                 .catch(function (error) {
                     display_errors(error);

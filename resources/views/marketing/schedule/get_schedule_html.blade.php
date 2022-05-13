@@ -61,7 +61,7 @@
                     <div>
                         {{ $event -> event_date }}
                         @if($past_due)
-                            <br><i class="fa-solid fa-exclamation-circle"></i> Past Due
+                            <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
                         @endif
                     </div>
                     <div class="w-40 hidden sm:inline-block">
