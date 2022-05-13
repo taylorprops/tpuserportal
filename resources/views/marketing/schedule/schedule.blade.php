@@ -37,6 +37,10 @@ $breadcrumbs = [
 
                     @endforeach
 
+                    <div>
+                        <button type="button" class="button primary sm" @click="$refs.filter_form.reset(); get_schedule()">Clear</button>
+                    </div>
+
                 </div>
 
             </form>
