@@ -9869,8 +9869,14 @@ if (document.URL.match('marketing/schedule')) {
               event_div.querySelector('.edit-button').click();
             }, 500);
           }
+
+          setTimeout(function () {
+            document.querySelectorAll('.past-due').forEach(function (event) {
+              scope.$refs.schedule_list_div.prepend(event);
+            });
+          }, 1000);
         })["catch"](function (error) {
-          display_errors(error, ele, button_html);
+          display_errors(error);
         });
       },
       clear_form: function clear_form(form) {

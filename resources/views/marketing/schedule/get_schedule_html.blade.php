@@ -22,9 +22,15 @@
 
     $company = $event -> company -> item;
 
+    $past_due = null;
+    if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Completed') {
+        $past_due = 'past_due';
+    }
+
     @endphp
 
-    <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200"
+    <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200
+        @if($past_due) past-due @endif"
         :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'"
         id="event_{{ $event -> id }}"
         x-data="{ show_details: false }"
@@ -48,12 +54,15 @@
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details"
             x-data="{ show_edit_status: false }">
-                <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer text-{{ $event -> company -> color }}-700 @if($event -> status -> item == 'Completed') opacity-40 @endif">
+                <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                     </div>
                     <div>
                         {{ $event -> event_date }}
+                        @if($past_due)
+                            <br><i class="fa-solid fa-exclamation-circle"></i> Past Due
+                        @endif
                     </div>
                     <div class="w-40 hidden sm:inline-block">
                         {{ $event -> medium -> item }} - {{ $event -> id }}
