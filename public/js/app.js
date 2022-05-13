@@ -8753,8 +8753,9 @@ window.global_get_url_parameters = function (key) {
   return false;
 };
 
-window.copy_to_clipboard = function (text) {
-  // navigator clipboard api needs a secure context (https)
+window.copy_to_clipboard = function (input) {
+  var text = input.value; // navigator clipboard api needs a secure context (https)
+
   if (navigator.clipboard && window.isSecureContext) {
     // navigator clipboard api method'
     return navigator.clipboard.writeText(text);
@@ -10252,7 +10253,7 @@ if (document.URL.match('marketing/schedule')) {
         ele.focus();
         ele.select();
         ele.setSelectionRange(0, 99999);
-        copy_to_clipboard(ele.value).then(function () {
+        copy_to_clipboard(ele).then(function () {
           return toastr.success('Link Successfully Copied To Clipboard');
         })["catch"](function () {
           return toastr.error('Link Not Copied To Clipboard');

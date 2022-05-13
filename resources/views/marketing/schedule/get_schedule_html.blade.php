@@ -207,7 +207,7 @@
                                         </div>
                                         <div class="flex p-0 border-2 rounded-md w-full">
                                             <div class="w-full">
-                                                <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}">
+                                                <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}" @focus="$el.select(); copy_text($el)">
                                             </div>
                                             <div class="w-8 border-l-2 bg-gray-50">
                                                 <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>

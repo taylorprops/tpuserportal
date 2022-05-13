@@ -531,8 +531,9 @@ if (document.URL.match('marketing/schedule')) {
                 ele.focus();
                 ele.select();
                 ele.setSelectionRange(0, 99999);
-                copy_to_clipboard(ele.value)
-                .then(() => toastr.success('Link Successfully Copied To Clipboard'))
+                copy_to_clipboard(ele)
+                .then(() =>
+                toastr.success('Link Successfully Copied To Clipboard'))
                 .catch(() => toastr.error('Link Not Copied To Clipboard'));
             }
 

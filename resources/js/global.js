@@ -790,7 +790,8 @@ window.global_get_url_parameters = function (key) {
     return false;
 }
 
-window.copy_to_clipboard = function(text) {
+window.copy_to_clipboard = function(input) {
+    let text = input.value;
     // navigator clipboard api needs a secure context (https)
     if (navigator.clipboard && window.isSecureContext) {
         // navigator clipboard api method'
