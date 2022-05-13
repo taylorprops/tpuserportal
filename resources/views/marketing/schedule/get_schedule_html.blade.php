@@ -182,6 +182,10 @@
                                         [
                                             'title' => 'Standard',
                                             'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign='.$event -> uuid
+                                        ],
+                                        [
+                                            'title' => 'Instant Quote',
+                                            'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign='.$event -> uuid
                                         ]
                                     ];
                                 } else if($company == 'Heritage Financial') {
