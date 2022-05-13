@@ -11,7 +11,7 @@ $breadcrumbs = [
         <x-nav.bread-crumbs :breadcrumbs="$breadcrumbs" />
     </x-slot>
 
-    <div class="pb-12 pt-2 overflow-hidden" x-data="schedule()">
+    <div class="overflow-hidden" x-data="schedule()">
 
         <div class="mx-4">
 

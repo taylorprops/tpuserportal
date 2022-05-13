@@ -105,7 +105,7 @@
                 @endif
 
                 <!-- Page Content -->
-                <main class="overflow-x-auto min-h-screen" :class="{
+                <main class="overflow-x-auto " :class="{
                     'ml-72' : main_nav_open && (window.innerWidth >= 1280),
                     '' : !(window.innerWidth >= 1280) || !main_nav_open,
                     'pt-8' : (window.innerWidth <= 640),
