@@ -215,6 +215,12 @@
     :link="'/marketing/data/address_database'"
     :icon="'fad fa-database'"/>
 
+    <x-nav.menu
+    :level="'1'"
+    :title="'Upload List'"
+    :link="'/marketing/data/upload_list'"
+    :icon="'fa-duotone fa-upload'"/>
+
     {{-- End Marketing --}}
 
     {{-- Reports --}}

@@ -15,6 +15,7 @@ use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
 {
+
     private $agent_columns = ['MemberFullName', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'MemberPreferredPhone', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberMlsId', 'OfficeName', 'OfficeKey', 'OfficeMlsId', 'MemberType'];
 
     private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
@@ -388,5 +389,11 @@ class DataController extends Controller
         }
 
         return $offices;
+    }
+
+    public function upload_list(Request $request) {
+
+        return view('/marketing/data/upload_list');
+
     }
 }
