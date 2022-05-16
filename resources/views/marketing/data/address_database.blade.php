@@ -59,7 +59,7 @@ $breadcrumbs = [
 
                             <div class="text-lg font-medium text-gray-900 mb-2">List Type</div>
 
-                            <p class="text-sm leading-5 text-gray-500">Is this for Agents or Loan Officers?</p>
+                            <p class="text-sm leading-5 text-gray-500">Who is the audience?</p>
 
                             <fieldset class="mt-2">
 
@@ -73,6 +73,15 @@ $breadcrumbs = [
                                         data-label="Agents"
                                         checked
                                         @click="agents_selected(); clear_results(); location_data();">
+                                    </div>
+
+                                    <div class="">
+                                        <input type="radio"
+                                        class="form-element radio lg primary"
+                                        name="list_group"
+                                        value="test_center"
+                                        data-label="Test Center Agents"
+                                        @click="test_center_selected(); clear_results(); location_data();">
                                     </div>
 
                                     <div class="">
@@ -136,13 +145,17 @@ $breadcrumbs = [
                                         @foreach($states as $state)
 
                                             @php
-                                            $disabled = null;
+                                            $disabled_los = null;
                                             if(!in_array($state, $states_loan_officers)) {
-                                                $disabled = true;
+                                                $disabled_los = true;
+                                            }
+                                            $disabled_test_center = null;
+                                            if(!in_array($state, $states_loan_officers)) {
+                                                $disabled_test_center = true;
                                             }
                                             @endphp
 
-                                            <div class="state_div @if($disabled) disabled_loan_officer @endif">
+                                            <div class="state_div @if($disabled_los) disabled_loan_officer @endif">
 
                                                 <input type="checkbox"
                                                 class="form-element checkbox lg primary"
@@ -278,7 +291,7 @@ $breadcrumbs = [
                         </div>
 
                         <div class="mt-6">
-                            <div class="mb-3 text-xl font-semibold">Recent Purges</div>
+                            <div class="mb-3 text-xl font-semibold">Recent Additions</div>
                             <div class="max-h-200-px overflow-y-auto">
                                 @foreach($recently_added_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">

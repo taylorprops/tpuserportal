@@ -148,6 +148,16 @@ if(document.URL.match('address_database')) {
 
             },
 
+            test_center_selected() {
+                this.list_group = 'test_center_selected';
+                this.$refs.office_search.innerHTML = '';
+                this.$refs.office_name.value = '';
+                this.$refs.address_input.setAttribute('disabled', true);
+                this.$refs.email_input.setAttribute('checked', true);
+                this.$refs.address_input_div.classList.remove('opacity-100');
+                this.$refs.address_input_div.classList.add('opacity-20');
+            },
+
             update_details() {
                 let county_checks = document.querySelectorAll('[name="counties[]"]');
                 let county_checks_checked = document.querySelectorAll('[name="counties[]"]:checked');

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Models\HeritageFinancial;
+namespace App\Models\Marketing;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AgentDatabase extends Model
+class InHouseAddresses extends Model
 {
     use HasFactory;
 
     protected $connection = 'mysql';
 
-    protected $table = 'heritage_financial_agent_database';
+    protected $table = 'marketing_in_house_agent_addresses';
 
     protected $guarded = [];
 }

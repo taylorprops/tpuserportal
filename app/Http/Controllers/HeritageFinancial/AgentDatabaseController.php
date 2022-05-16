@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\HeritageFinancial;
 
 use App\Helpers\Helper;
-use App\Http\Controllers\Controller;
-use App\Imports\AgentDatabaseImport;
-use App\Models\HeritageFinancial\AgentDatabase;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Imports\InHouseAddressesImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Marketing\InHouseAddresses;
 
 class AgentDatabaseController extends Controller
 {
@@ -26,7 +26,7 @@ class AgentDatabaseController extends Controller
         $date_col = $request -> date_col ?? null;
         $search = $request -> search ?? null;
 
-        $agents = AgentDatabase::select(['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'start_date', 'company'])
+        $agents = InHouseAddresses::select(['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'start_date', 'company'])
         -> where(function($query) use ($search) {
             if($search) {
                 $query -> where('fullname', 'like', '%'.$search.'%');
@@ -63,11 +63,11 @@ class AgentDatabaseController extends Controller
 
     public function add_new_list(Request $request)
     {
-        AgentDatabase::truncate();
+        InHouseAddresses::truncate();
 
         $file = $request -> file('agent_list');
 
-        Excel::import(new AgentDatabaseImport, $file);
+        Excel::import(new InHouseAddressesImport, $file);
     }
 
     public function validate_date($date, $format = 'Y-m-d')

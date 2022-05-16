@@ -10,8 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Marketing\InHouseAddresses;
 use App\Models\Marketing\Schedule\Schedule;
-use App\Models\HeritageFinancial\AgentDatabase;
 use App\Models\Marketing\Schedule\ScheduleUploads;
 use App\Models\Marketing\Schedule\ScheduleSettings;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -362,7 +362,7 @@ class ScheduleController extends Controller
         if($recipient == 'In-House Agents') {
 
             $this -> agent_columns = $this -> agent_columns_in_house;
-            $agents = AgentDatabase::select($this -> agent_columns_in_house) -> get();
+            $agents = InHouseAddresses::select($this -> agent_columns_in_house) -> get();
 
             fputcsv($handle, $this -> agent_columns, ',');
             foreach ($agents as $agent) {

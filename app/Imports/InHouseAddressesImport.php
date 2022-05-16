@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\HeritageFinancial\AgentDatabase;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\Marketing\InHouseAddresses;
 
-class AgentDatabaseImport implements ToModel
+class InHouseAddressesImport implements ToModel
 {
     /**
      * @param array $row
@@ -14,7 +14,7 @@ class AgentDatabaseImport implements ToModel
      */
     public function model(array $row)
     {
-        return new AgentDatabase([
+        return new InHouseAddresses([
             'first_name'     => $row[0],
             'last_name'     => $row[1],
             'email'     => $row[2],

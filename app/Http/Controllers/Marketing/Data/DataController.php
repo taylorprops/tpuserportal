@@ -31,6 +31,12 @@ class DataController extends Controller
         -> pluck('state')
         -> toArray();
 
+        $states_test_center = TestCenterAddresses::select(['state'])
+        -> groupBy('state')
+        -> orderBy('state')
+        -> pluck('state')
+        -> toArray();
+
         $recently_added_emails = BrightAgentRoster::select(DB::raw('count(*) as added, date_format(created_at, "%Y-%m-%d") as date_added'))
         -> where('created_at' , '>', date('Y-m-d', strtotime('-6 month')))
         -> groupBy('date_added')
@@ -44,7 +50,7 @@ class DataController extends Controller
         -> orderBy('date_purged', 'desc')
         -> get();
 
-        return view('/marketing/data/address_database', compact('states', 'states_loan_officers', 'recently_added_emails', 'purged_emails'));
+        return view('/marketing/data/address_database', compact('states', 'states_loan_officers', 'states_test_center', 'recently_added_emails', 'purged_emails'));
     }
 
     public function get_results(Request $request)
