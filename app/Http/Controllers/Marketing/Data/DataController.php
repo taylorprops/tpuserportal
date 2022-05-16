@@ -426,8 +426,11 @@ class DataController extends Controller
 
             foreach($agents as $agent) {
 
+                $agent = collect($agent);
+                $agent -> forget('id');
+
                 $add_agent = TestCenterAddresses::firstOrNew(
-                    ['email' => $agent -> email],
+                    ['email' => $agent['email']],
                     $agent -> toArray()
                 );
 

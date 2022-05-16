@@ -4,10 +4,10 @@ namespace App\Imports;
 
 
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use App\Models\Marketing\TestCenterAddressesTemp;
 
-class TestCenterAddressesImport implements ToModel, WithHeadingRow
+class TestCenterAddressesImport implements ToModel, WithStartRow
 {
     /**
     * @param array $row
@@ -31,5 +31,10 @@ class TestCenterAddressesImport implements ToModel, WithHeadingRow
             'result' => $row[10],
 
         ]);
+    }
+
+    public function startRow(): int
+    {
+        return 2;
     }
 }

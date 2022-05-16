@@ -4,9 +4,9 @@ namespace App\Imports;
 
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Marketing\InHouseAddresses;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class InHouseAddressesImport implements ToModel, WithHeadingRow
+class InHouseAddressesImport implements ToModel, WithStartRow
 {
     /**
      * @param array $row
@@ -28,5 +28,10 @@ class InHouseAddressesImport implements ToModel, WithHeadingRow
             'start_date'     => date('Y-m-d', strtotime($row[9])),
             'fullname' => $row[0].' '.$row[1],
         ]);
+    }
+
+    public function startRow(): int
+    {
+        return 2;
     }
 }
