@@ -1,10 +1,10 @@
 
 
-window.agent_database = function() {
+window.upload_list = function() {
 
     return {
 
-        show_add: false,
+        list_type: 'in_house',
 
         init() {
             if(document.URL.match(/success/)) {
@@ -14,6 +14,8 @@ window.agent_database = function() {
 
         add_list(ele) {
 
+            let scope = this;
+
             if(this.$refs.upload_input.value != '') {
 
                 let button_html = ele.innerHTML;
@@ -22,7 +24,7 @@ window.agent_database = function() {
 
                 let form = document.getElementById('add_list_form');
                 let formData = new FormData(form);
-                formData.append('type', 'in_house');
+                formData.append('type', scope.list_type);
 
                 axios.post('/marketing/data/add_new_list', formData)
                 .then(function (response) {
@@ -35,7 +37,6 @@ window.agent_database = function() {
             }
 
         }
-
 
     }
 

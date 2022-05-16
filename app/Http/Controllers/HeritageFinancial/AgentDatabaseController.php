@@ -5,8 +5,6 @@ namespace App\Http\Controllers\HeritageFinancial;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Imports\InHouseAddressesImport;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Marketing\InHouseAddresses;
 
 class AgentDatabaseController extends Controller
@@ -61,14 +59,6 @@ class AgentDatabaseController extends Controller
         }
     }
 
-    public function add_new_list(Request $request)
-    {
-        InHouseAddresses::truncate();
-
-        $file = $request -> file('agent_list');
-
-        Excel::import(new InHouseAddressesImport, $file);
-    }
 
     public function validate_date($date, $format = 'Y-m-d')
     {

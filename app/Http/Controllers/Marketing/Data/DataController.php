@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Marketing\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\InHouseAddressesImport;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use App\Imports\TestCenterAddressesImport;
+use App\Models\Marketing\InHouseAddresses;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\Marketing\TestCenterAddresses;
 use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\Marketing\TestCenterAddressesTemp;
 use App\Models\DocManagement\Resources\LocationData;
 
 class DataController extends Controller
@@ -395,5 +400,48 @@ class DataController extends Controller
 
         return view('/marketing/data/upload_list');
 
+    }
+
+    public function add_new_list(Request $request)
+    {
+
+        $type = $request -> type;
+        $file = $request -> file('upload_input');
+
+        if($type == 'in_house') {
+
+            InHouseAddresses::truncate();
+            Excel::import(new InHouseAddressesImport, $file);
+
+        } else if($type == 'test_center') {
+
+            // add new emails to temp table
+            TestCenterAddressesTemp::truncate();
+            Excel::import(new TestCenterAddressesImport, $file);
+
+            sleep(1);
+
+            // transfer agents from temp to table
+            $agents = TestCenterAddressesTemp::get();
+
+            foreach($agents as $agent) {
+
+                $add_agent = TestCenterAddresses::firstOrNew(
+                    ['email' => $agent -> email],
+                    $agent -> toArray()
+                );
+
+                $add_agent -> save();
+
+            }
+
+            // remove any agents who are now in the bright mls roster
+            $bright = BrightAgentRoster::select('MemberEmail') -> get() -> pluck('MemberEmail');
+            $test_center = TestCenterAddresses::select('email') -> get();
+
+            $delete = $test_center -> whereIn('email', $bright) -> pluck('email');
+            TestCenterAddresses::whereIn('email', $delete) -> delete();
+
+        }
     }
 }

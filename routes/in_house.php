@@ -133,6 +133,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/data/get_recently_added', [DataController::class, 'get_recently_added']) -> middleware(['in_house']);
     Route::post('/marketing/data/get_purged', [DataController::class, 'get_purged']) -> middleware(['in_house']);
     Route::get('/marketing/data/upload_list', [DataController::class, 'upload_list']) -> middleware(['in_house']);
+    Route::post('/marketing/data/add_new_list', [DataController::class, 'add_new_list']) -> middleware(['in_house']);
 
     Route::get('/marketing/schedule', [ScheduleController::class, 'schedule']) -> middleware(['in_house']);
     Route::post('/marketing/get_schedule', [ScheduleController::class, 'get_schedule']) -> middleware(['in_house']);

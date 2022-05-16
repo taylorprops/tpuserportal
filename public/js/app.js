@@ -5505,6 +5505,10 @@ __webpack_require__(/*! ./heritage_financial/agent_database */ "./resources/js/h
 
 __webpack_require__(/*! ./marketing/data/address_database.js */ "./resources/js/marketing/data/address_database.js");
 
+__webpack_require__(/*! ./marketing/data/upload_list.js */ "./resources/js/marketing/data/upload_list.js");
+
+__webpack_require__(/*! ./marketing/data/address_database.js */ "./resources/js/marketing/data/address_database.js");
+
 __webpack_require__(/*! ./marketing/schedule/schedule.js */ "./resources/js/marketing/schedule/schedule.js");
 
 __webpack_require__(/*! ./marketing/schedule/schedule_settings.js */ "./resources/js/marketing/schedule/schedule_settings.js");
@@ -8795,13 +8799,14 @@ window.agent_database = function () {
       }
     },
     add_list: function add_list(ele) {
-      if (this.$refs.agent_list.value != '') {
+      if (this.$refs.upload_input.value != '') {
         var button_html = ele.innerHTML;
         show_loading_button(ele, 'Adding List ... ');
         remove_form_errors();
         var form = document.getElementById('add_list_form');
         var formData = new FormData(form);
-        axios.post('/heritage_financial/agent_database/add_new_list', formData).then(function (response) {
+        formData.append('type', 'in_house');
+        axios.post('/marketing/data/add_new_list', formData).then(function (response) {
           window.location = document.URL.replace(/\?.*/, '') + '?status=success';
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
@@ -9822,6 +9827,42 @@ if (document.URL.match('address_database')) {
     };
   };
 }
+
+/***/ }),
+
+/***/ "./resources/js/marketing/data/upload_list.js":
+/*!****************************************************!*\
+  !*** ./resources/js/marketing/data/upload_list.js ***!
+  \****************************************************/
+/***/ (() => {
+
+window.upload_list = function () {
+  return {
+    list_type: 'in_house',
+    init: function init() {
+      if (document.URL.match(/success/)) {
+        toastr.success('List Successfully Added');
+      }
+    },
+    add_list: function add_list(ele) {
+      var scope = this;
+
+      if (this.$refs.upload_input.value != '') {
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Adding List ... ');
+        remove_form_errors();
+        var form = document.getElementById('add_list_form');
+        var formData = new FormData(form);
+        formData.append('type', scope.list_type);
+        axios.post('/marketing/data/add_new_list', formData).then(function (response) {
+          window.location = document.URL.replace(/\?.*/, '') + '?status=success';
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      }
+    }
+  };
+};
 
 /***/ }),
 

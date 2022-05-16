@@ -30,7 +30,7 @@ $breadcrumbs = [
                         <form id="add_list_form" enctype="multipart/form-data">
                             <div class="flex justify-start">
                                 <div class="flex-grow">
-                                    <input type="file" class="form-element input md" name="agent_list" id="agent_list" x-on:change="show_file_names($el, false);" x-ref="agent_list">
+                                    <input type="file" class="form-element input md" name="upload_input" id="upload_input" x-on:change="show_file_names($el, false);" x-ref="upload_input">
                                 </div>
                                 <div class="ml-2">
                                     <button class="button primary md"
