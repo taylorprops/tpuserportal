@@ -51,7 +51,7 @@
                     <div class="border-b p-2">{{ $listing -> year }}</div>
                     <div class="border-b p-2">{{ $listing -> total }}</div>
                     <div class="border-b p-2">${{ number_format($listing -> average) }}</div>
-                    <div class="border-b p-2">${{ number_format($listing -> total_sales) }}</div>
+                    <div class="border-b p-2 font-semibold">${{ number_format($listing -> total_sales) }}</div>
 
                 @endforeach
 
@@ -77,7 +77,7 @@
                             <div class="border-b p-2">{{ $contract -> year }}</div>
                             <div class="border-b p-2">{{ $contract -> total }}</div>
                             <div class="border-b p-2">${{ number_format($contract -> average) }}</div>
-                            <div class="border-b p-2">${{ number_format($contract -> total_sales) }}</div>
+                            <div class="border-b p-2 font-semibold">${{ number_format($contract -> total_sales) }}</div>
 
                     @endforeach
 
