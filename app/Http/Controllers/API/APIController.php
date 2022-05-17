@@ -1208,7 +1208,7 @@ class APIController extends Controller
 
         if($agent) {
 
-            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
+            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
             -> where('ListAgentMlsId', $agent -> MemberMlsId)
             -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
@@ -1216,7 +1216,7 @@ class APIController extends Controller
             -> orderBy('year', 'desc')
             -> get();
 
-            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
+            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
             -> where('BuyerAgentMlsId', $agent -> MemberMlsId)
             -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
