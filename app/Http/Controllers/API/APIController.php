@@ -1226,11 +1226,11 @@ class APIController extends Controller
 
             $member_since = 2022;
             if(count($listings) > 0) {
-                $member_since = $listings -> latest('CloseDate');
+                $member_since = $listings -> last() -> year;
             }
             if(count($contracts) > 0) {
-                if($contracts -> latest('CloseDate') < $listings -> latest('CloseDate')) {
-                    $member_since = $contracts -> latest('CloseDate');
+                if($contracts -> last() -> year < $listings -> last() -> year) {
+                    $member_since = $contracts -> last() -> year;
                 }
             }
 
