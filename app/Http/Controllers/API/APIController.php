@@ -1228,6 +1228,7 @@ class APIController extends Controller
             if(count($listings) > 0) {
                 $member_since = $listings -> last() -> year;
             }
+            return $contracts;
             if(count($contracts) > 0) {
                 if($contracts -> last() -> year < $listings -> last() -> year) {
                     $member_since = $contracts -> last() -> year;
