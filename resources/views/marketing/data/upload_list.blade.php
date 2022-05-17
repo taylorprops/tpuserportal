@@ -29,7 +29,24 @@
                         </select>
                     </div>
 
-                    <div class="flex justify-start mt-8">
+                    <div class="mb-8 ">
+
+                        <div class="text-gray-600 text-sm w-full">Select State</div>
+
+                        <div class="flex justify-start">
+
+                            @foreach($states_test_center as $state)
+
+                            <div class="@if(!$loop -> first) ml-6 @endif">
+                                <input type="radio" class="states form-element radio primary lg states" name="state" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}" @change="update_states()">
+                            </div>
+
+                            @endforeach
+
+                        </div>
+                    </div>
+
+                    <div class="flex justify-start mb-8">
                         <div class="flex-grow">
                             <input type="file" class="form-element input md" name="upload_input" id="upload_input" x-on:change="show_file_names($el, false);" x-ref="upload_input">
                         </div>
@@ -41,7 +58,7 @@
                     </div>
                 </form>
 
-                <div class="text-sm text-gray-400 mt-8">
+                <div class="text-sm text-gray-400">
                     <div x-show="list_type === 'in_house'">
                         Upload excel or csv<br>
                         Include header row<br>

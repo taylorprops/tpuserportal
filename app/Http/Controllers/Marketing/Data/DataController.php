@@ -38,10 +38,10 @@ class DataController extends Controller
         -> pluck('state')
         -> toArray();
 
-        $states_test_center = TestCenterAddresses::select(['state'])
-        -> groupBy('state')
-        -> orderBy('state')
-        -> pluck('state')
+        $states_test_center = TestCenterAddresses::select(['list_state'])
+        -> groupBy('list_state')
+        -> orderBy('list_state')
+        -> pluck('list_state')
         -> toArray();
 
         $recently_added_emails = BrightAgentRoster::select(DB::raw('count(*) as added, date_format(created_at, "%Y-%m-%d") as date_added'))
@@ -398,7 +398,10 @@ class DataController extends Controller
 
     public function upload_list(Request $request) {
 
-        return view('/marketing/data/upload_list');
+
+        $states_test_center = ['MD', 'VA'];
+
+        return view('/marketing/data/upload_list', compact('states_test_center'));
 
     }
 
@@ -407,6 +410,7 @@ class DataController extends Controller
 
         $type = $request -> type;
         $file = $request -> file('upload_input');
+        $state = $request -> state;
 
         if($type == 'in_house') {
 
@@ -425,7 +429,7 @@ class DataController extends Controller
             $agents = TestCenterAddressesTemp::get();
 
             foreach($agents as $agent) {
-
+                $agent -> state = $state;
                 $agent = collect($agent);
                 $agent -> forget('id');
 

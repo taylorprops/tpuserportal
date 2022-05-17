@@ -9768,6 +9768,13 @@ if (document.URL.match('address_database')) {
         this.$refs.email_input.setAttribute('checked', true);
         this.$refs.address_input_div.classList.remove('opacity-100');
         this.$refs.address_input_div.classList.add('opacity-20');
+        document.querySelectorAll('.disabled_test_center').forEach(function (state) {
+          state.classList.remove('opacity-100');
+          state.classList.add('opacity-20');
+          state.querySelector('input').setAttribute('disabled', true);
+          state.querySelector('input').checked = false;
+        });
+        this.update_details();
       },
       update_details: function update_details() {
         var county_checks = document.querySelectorAll('[name="counties[]"]');

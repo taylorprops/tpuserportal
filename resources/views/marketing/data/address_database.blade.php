@@ -29,14 +29,14 @@ $breadcrumbs = [
                                 List Options
                             </div>
 
-                            <div x-show="list_type === 'addresses'">
+                            <div x-show="list_type === 'addresses' || list_group == 'test_center_selected'">
                                 <div>
                                     <button type="button" class="button primary md"
                                     @click="get_results()">Get Results <i class="fa fa-share ml-2"></i></button>
                                 </div>
                             </div>
 
-                            <div class="flex justify-end items-center space-x-3" x-show="list_type === 'emails'">
+                            <div class="flex justify-end items-center space-x-3" x-show="list_type === 'emails' && list_group != 'test_center_selected'">
                                 <div>Get List For:</div>
                                 <div>
                                     <button type="button" class="button primary md"
@@ -81,7 +81,7 @@ $breadcrumbs = [
                                         name="list_group"
                                         value="test_center"
                                         data-label="Test Center Agents"
-                                        @click="test_center_selected(); clear_results(); location_data();">
+                                        @click="test_center_selected(); clear_results();">
                                     </div>
 
                                     <div class="">
@@ -134,7 +134,7 @@ $breadcrumbs = [
 
                             <div class="text-lg font-medium text-gray-900 mb-2">Location</div>
 
-                            <div class="flex flex-wrap justify-around">
+                            <div class="flex flex-wrap justify-start">
 
                                 <div class="">
 
@@ -149,10 +149,7 @@ $breadcrumbs = [
                                             if(!in_array($state, $states_loan_officers)) {
                                                 $disabled_los = true;
                                             }
-                                            $disabled_test_center = null;
-                                            if(!in_array($state, $states_loan_officers)) {
-                                                $disabled_test_center = true;
-                                            }
+
                                             @endphp
 
                                             <div class="state_div @if($disabled_los) disabled_loan_officer @endif">
@@ -184,7 +181,7 @@ $breadcrumbs = [
 
                                 </div>
 
-                                <div class="ml-8">
+                                <div class="ml-8" x-show="list_group != 'test_center_selected'">
 
                                     <div class="text-gray-500 mb-3">Counties</div>
 
@@ -224,7 +221,8 @@ $breadcrumbs = [
                         </div>
 
                         <div class="my-6 p-4 border rounded-lg"
-                        :class="{ 'opacity-20': list_group == 'loan_officers' }">
+                        :class="{ 'opacity-20': list_group == 'loan_officers' }"
+                        x-show="list_group != 'test_center_selected'">
 
                             <div class="text-lg font-medium text-gray-900 mb-2">Offices</div>
 
