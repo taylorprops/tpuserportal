@@ -1224,9 +1224,14 @@ class APIController extends Controller
             -> orderBy('year', 'desc')
             -> get();
 
-            $member_since = $listings -> last() -> year;
-            if($contracts -> last() -> year < $listings -> last() -> year) {
-                $member_since = $contracts -> last() -> year;
+            $member_since = 2022;
+            if($listings) {
+                $member_since = $listings -> last() -> year;
+            }
+            if($contracts) {
+                if($contracts -> last() -> year < $listings -> last() -> year) {
+                    $member_since = $contracts -> last() -> year;
+                }
             }
 
             $years_active = date("Y") - $member_since;
