@@ -433,6 +433,13 @@ class DataController extends Controller
     public function add_new_list(Request $request)
     {
 
+        $validated = $request -> validate([
+            'upload_input' => 'required',
+        ],
+        [
+            'required' => 'Required',
+        ]);
+
         $type = $request -> type;
         $file = $request -> file('upload_input');
         $state = $request -> state;

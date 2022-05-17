@@ -46,19 +46,19 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-start mb-8">
-                        <div class="flex-grow">
-                            <input type="file" class="form-element input md" name="upload_input" id="upload_input" x-on:change="show_file_names($el, false);" x-ref="upload_input">
-                        </div>
-                        <div class="ml-2">
-                            <button class="button primary md" @click.prevent="add_list($el)">
-                                Upload List <i class="fa fa-upload ml-2"></i>
-                            </button>
-                        </div>
+                    <div class="mb-8">
+                        <input type="file" class="form-element input md" name="upload_input" id="upload_input" x-on:change="show_file_names($el, false);" x-ref="upload_input">
                     </div>
+
+                    <div class="">
+                        <button class="button primary lg" @click.prevent="add_list($el)">
+                            Upload List <i class="fa-light fa-check ml-2"></i>
+                        </button>
+                    </div>
+
                 </form>
 
-                <div class="text-sm text-gray-400">
+                <div class="text-sm text-gray-400 mt-8">
                     <div x-show="list_type === 'in_house'">
                         Upload excel or csv<br>
                         Include header row<br>
