@@ -38,7 +38,7 @@
                             @foreach($states_test_center as $state)
 
                             <div class="@if(!$loop -> first) ml-6 @endif">
-                                <input type="radio" class="states form-element radio primary lg states" name="state" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}" @change="update_states()">
+                                <input type="radio" class="states form-element radio primary lg states" name="state" id="{{ $state }}" value="{{ $state }}" data-label="{{ $state }}">
                             </div>
 
                             @endforeach

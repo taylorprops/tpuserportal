@@ -33,20 +33,13 @@ class Helper
         return $file_name.'.'.$file_ext;
     }
 
-    public static function sanitize($string/* , $force_lowercase = false, $anal = false */)
+    public static function sanitize($string)
     {
         $strip = ['~', '`', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '=', '+', '[', '{', ']', '}', '\\', '|', ';', ':', '"', "'", '&#8216;', '&#8217;', '&#8220;', '&#8221;', '&#8211;', '&#8212;', 'â€”', 'â€“', ',', '<', '.', '>', '/', '?'];
         $clean = trim(str_replace($strip, '', strip_tags($string)));
         $clean = preg_replace('/\s+/', '-', $clean);
-        //$clean = $anal ? preg_replace('/[^a-zA-Z0-9]/', '', $clean) : $clean;
 
         return $clean;
-
-        /* return $force_lowercase ?
-        function_exists('mb_strtolower') ?
-        mb_strtolower($clean, 'UTF-8') :
-        strtolower($clean) :
-        $clean; */
     }
 
     public static function to_excel($rows, $filename, $select)
@@ -134,7 +127,7 @@ class Helper
 
     public static function format_phone($phone)
     {
-        $phone = preg_replace('/[\s\(\)-]+/', '', $phone);
+        $phone = preg_replace('/[\s\(\)-\.a-zA-Z]+/', '', $phone);
 
         return '('.substr($phone, 0, 3).') '.substr($phone, 3, 3).'-'.substr($phone, 6);
     }

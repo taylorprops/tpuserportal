@@ -128,6 +128,11 @@ if(document.URL.match('address_database')) {
                     state.querySelector('input').setAttribute('disabled', true);
                     state.querySelector('input').checked = false;
                 });
+                document.querySelectorAll('.disabled_test_center').forEach(function(state) {
+                    state.classList.remove('opacity-20');
+                    state.classList.add('opacity-100');
+                    state.querySelector('input').removeAttribute('disabled');
+                });
                 this.update_details();
 
             },
@@ -139,7 +144,7 @@ if(document.URL.match('address_database')) {
                 this.$refs.address_input_div.classList.remove('opacity-20');
                 this.$refs.address_input_div.classList.add('opacity-100');
 
-                document.querySelectorAll('.disabled_loan_officer').forEach(function(state) {
+                document.querySelectorAll('.disabled_loan_officer, .disabled_test_center').forEach(function(state) {
                     state.classList.remove('opacity-20');
                     state.classList.add('opacity-100');
                     state.querySelector('input').removeAttribute('disabled');
@@ -152,15 +157,18 @@ if(document.URL.match('address_database')) {
                 this.list_group = 'test_center_selected';
                 this.$refs.office_search.innerHTML = '';
                 this.$refs.office_name.value = '';
-                this.$refs.address_input.setAttribute('disabled', true);
-                this.$refs.email_input.setAttribute('checked', true);
-                this.$refs.address_input_div.classList.remove('opacity-100');
-                this.$refs.address_input_div.classList.add('opacity-20');
+                this.$refs.address_input_div.classList.remove('opacity-20');
+                this.$refs.address_input_div.classList.add('opacity-100');
                 document.querySelectorAll('.disabled_test_center').forEach(function(state) {
                     state.classList.remove('opacity-100');
                     state.classList.add('opacity-20');
                     state.querySelector('input').setAttribute('disabled', true);
                     state.querySelector('input').checked = false;
+                });
+                document.querySelectorAll('.disabled_loan_officer').forEach(function(state) {
+                    state.classList.remove('opacity-20');
+                    state.classList.add('opacity-100');
+                    state.querySelector('input').removeAttribute('disabled');
                 });
                 this.update_details();
             },

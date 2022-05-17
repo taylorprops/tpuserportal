@@ -29,6 +29,9 @@ class DataController extends Controller
 
     private $loan_officer_columns = ['id', 'first_name', 'last_name', 'full_name', 'email', 'phone', 'ext', 'city', 'state', 'county'];
 
+    private $test_center_columns = ['id', 'first_name', 'last_name', 'full_name', 'email', 'phone', 'street', 'city', 'state', 'zip'];
+    private $test_center_columns_send_in_blue = ['email', 'first_name', 'last_name'];
+
     public function address_database(Request $request)
     {
         $states = LocationData::ActiveStates();
@@ -38,11 +41,7 @@ class DataController extends Controller
         -> pluck('state')
         -> toArray();
 
-        $states_test_center = TestCenterAddresses::select(['list_state'])
-        -> groupBy('list_state')
-        -> orderBy('list_state')
-        -> pluck('list_state')
-        -> toArray();
+        $states_test_center = ['MD', 'VA'];
 
         $recently_added_emails = BrightAgentRoster::select(DB::raw('count(*) as added, date_format(created_at, "%Y-%m-%d") as date_added'))
         -> where('created_at' , '>', date('Y-m-d', strtotime('-6 month')))
@@ -71,6 +70,30 @@ class DataController extends Controller
         $offices = null;
         $results_count = '0';
         $file_location = null;
+
+        if($list_group == 'test_center') {
+
+            $state = $request -> state;
+            $location = null;
+
+            if($list_type == 'email') {
+                $agent_columns = $this -> test_center_columns_send_in_blue;
+            } else if($list_type == 'address') {
+                $agent_columns = $this -> test_center_columns;
+            }
+
+            $agents = TestCenterAddresses::select($agent_columns) -> where('state', $state) -> get();
+            $results_count = 0;
+            $file_name = 'test_center_list_'.time().'.csv';
+            $file = Storage::path('/tmp/'.$file_name);
+            $handle = fopen($file, 'w');
+            fputcsv($handle, $agent_columns, ',');
+            foreach ($agents as $agent) {
+                $results_count += 1;
+                fputcsv($handle, $agent -> toArray(), ',');
+            }
+
+        }
 
         if($list_type == 'email') {
             if($sender == 'mailchimp') {
@@ -135,8 +158,10 @@ class DataController extends Controller
                     $results_count += 1;
                 }
             }
-            $file_location = '/storage/tmp/'.$file_name;
+
         }
+
+        $file_location = '/storage/tmp/'.$file_name;
 
         return view('/marketing/data/get_results_html', compact('results_count', 'list_type', 'file_location'));
     }

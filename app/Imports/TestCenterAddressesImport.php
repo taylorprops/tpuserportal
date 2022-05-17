@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 
+use App\Helpers\Helper;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use App\Models\Marketing\TestCenterAddressesTemp;
@@ -24,7 +25,7 @@ class TestCenterAddressesImport implements ToModel, WithStartRow
             'city' => $row[3],
             'state' => $row[4],
             'zip' => $row[5],
-            'phone' => $row[6],
+            'phone' => Helper::format_phone($row[6]),
             'email' => $row[7],
             'last_test_date' => date("Y-m-d", strtotime($row[8])),
             'test_name' => $row[9],

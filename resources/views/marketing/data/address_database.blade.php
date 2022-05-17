@@ -149,10 +149,14 @@ $breadcrumbs = [
                                             if(!in_array($state, $states_loan_officers)) {
                                                 $disabled_los = true;
                                             }
+                                            $disabled_test_center = null;
+                                            if(!in_array($state, $states_test_center)) {
+                                                $disabled_test_center = true;
+                                            }
 
                                             @endphp
 
-                                            <div class="state_div @if($disabled_los) disabled_loan_officer @endif">
+                                            <div class="state_div @if($disabled_los) disabled_loan_officer @endif @if($disabled_test_center) disabled_test_center @endif">
 
                                                 <input type="checkbox"
                                                 class="form-element checkbox lg primary"
