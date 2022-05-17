@@ -34,19 +34,55 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $email = 'eve.marberger@foxroach.com';
+        $email = $request -> email;
+        $email = 'laurel.constantine@longandfoster.com';
         $agent = BrightAgentRoster::where('MemberEmail', $email)
-        -> with(['listings_zoho:ListingId,ListingKey,MlsStatus,BuyerAgentMlsId,BuyerAgentEmail,BuyerAgentFirstName,BuyerAgentFullName,BuyerAgentLastName,BuyerAgentPreferredPhone,ClosePrice,ListPrice,BuyerOfficeName,BuyerOfficeMlsId,CloseDate,MLSListDate,CondoYN,City,County,StreetNumber,PostalCode,StateOrProvince,FullStreetAddress,ListAgentMlsId,ListAgentEmail,ListAgentFirstName,ListAgentLastName,ListOfficeMlsId,NewConstructionYN,ShortSale,RealEstateOwnedYN,SaleType,PropertySubType,PropertyType,ListPictureURL', 'contracts_zoho:ListingId,ListingKey,MlsStatus,BuyerAgentMlsId,BuyerAgentEmail,BuyerAgentFirstName,BuyerAgentFullName,BuyerAgentLastName,BuyerAgentPreferredPhone,ClosePrice,ListPrice,BuyerOfficeName,BuyerOfficeMlsId,CloseDate,MLSListDate,CondoYN,City,County,StreetNumber,PostalCode,StateOrProvince,FullStreetAddress,ListAgentMlsId,ListAgentEmail,ListAgentFirstName,ListAgentLastName,ListOfficeMlsId,NewConstructionYN,ShortSale,RealEstateOwnedYN,SaleType,PropertySubType,PropertyType,ListPictureURL', 'office:OfficeKey,OfficeName'])
+        -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
         -> first();
 
-        $member_since = BrightListings::where('ListAgentMlsId', $agent -> MemberMlsId) -> orWhere('BuyerAgentMlsId', $agent -> MemberMlsId) -> min('MlsListDate');
+        if($agent) {
 
-        $years_active = date("Y") - date("Y", strtotime($member_since));
-        dump($years_active);
-        if($years_active > 9) {
-            $years_active = '10 plus';
+            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
+            -> where('ListAgentMlsId', $agent -> MemberMlsId)
+            -> where('MlsStatus', 'Closed')
+            -> whereNotNull('CloseDate')
+            -> groupBy('year')
+            -> orderBy('year', 'desc')
+            -> get();
+
+            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
+            -> where('BuyerAgentMlsId', $agent -> MemberMlsId)
+            -> where('MlsStatus', 'Closed')
+            -> whereNotNull('CloseDate')
+            -> groupBy('year')
+            -> orderBy('year', 'desc')
+            -> get();
+
+            $member_since = date('Y');
+            if(count($listings) > 0) {
+                $member_since = $listings -> last() -> year;
+            }
+
+            if(count($contracts) > 0) {
+                if($contracts -> last() -> year < $member_since) {
+                    $member_since = $contracts -> last() -> year;
+                }
+            }
+
+            $years_active = date('Y') - $member_since;
+            if($years_active > 9) {
+                $years_active = '10 plus';
+            } else if($years_active == 0) {
+                $years_active = 1;
+            }
+
+            return $years_active;
+
+            return view('API/zoho/get_bright_agent_details_html', compact('agent', 'years_active', 'listings', 'contracts'));
+
         }
-        dump($years_active);
+
+        return response() -> json(['status' => 'not found']);
 
     }
 

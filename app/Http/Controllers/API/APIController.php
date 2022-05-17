@@ -1224,20 +1224,22 @@ class APIController extends Controller
             -> orderBy('year', 'desc')
             -> get();
 
-            $member_since = 2022;
+            $member_since = date('Y');
             if(count($listings) > 0) {
                 $member_since = $listings -> last() -> year;
             }
-            return $contracts;
+
             if(count($contracts) > 0) {
-                if($contracts -> last() -> year < $listings -> last() -> year) {
+                if($contracts -> last() -> year < $member_since) {
                     $member_since = $contracts -> last() -> year;
                 }
             }
 
-            $years_active = date("Y") - $member_since;
+            $years_active = date('Y') - $member_since;
             if($years_active > 9) {
                 $years_active = '10 plus';
+            } else if($years_active == 0) {
+                $years_active = 1;
             }
 
             return view('API/zoho/get_bright_agent_details_html', compact('agent', 'years_active', 'listings', 'contracts'));
