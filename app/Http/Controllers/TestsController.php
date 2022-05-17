@@ -40,6 +40,7 @@ class TestsController extends Controller
         -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
         -> first();
 
+
         if($agent) {
 
             $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
