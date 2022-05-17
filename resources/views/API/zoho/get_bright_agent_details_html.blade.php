@@ -44,12 +44,14 @@
                 <div class="text-gray-800 border-b-2 p-2">Year</div>
                 <div class="text-gray-800 border-b-2 p-2">Sold</div>
                 <div class="text-gray-800 border-b-2 p-2">Average Price</div>
+                <div class="text-gray-800 border-b-2 p-2">Volume</div>
 
                 @foreach($listings as $listing)
 
                     <div class="border-b p-2">{{ $listing -> year }}</div>
                     <div class="border-b p-2">{{ $listing -> total }}</div>
                     <div class="border-b p-2">${{ number_format($listing -> average) }}</div>
+                    <div class="border-b p-2">${{ number_format($listing -> total_sales) }}</div>
 
                 @endforeach
 
