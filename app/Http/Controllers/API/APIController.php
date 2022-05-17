@@ -1225,10 +1225,10 @@ class APIController extends Controller
             -> get();
 
             $member_since = 2022;
-            if($listings) {
+            if(count($listings) > 0) {
                 $member_since = $listings -> last() -> year;
             }
-            if($contracts) {
+            if(count($contracts) > 0) {
                 if($contracts -> last() -> year < $listings -> last() -> year) {
                     $member_since = $contracts -> last() -> year;
                 }
