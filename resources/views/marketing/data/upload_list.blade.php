@@ -29,6 +29,20 @@
                         </select>
                     </div>
 
+                    <div class="text-sm text-gray-400 mb-8">
+                    <div x-show="list_type === 'in_house'">
+                        Upload excel or csv<br>
+                        Include header row<br>
+                        Columns: First Name, Last Name, Email, Cell Phone, Street, City, State, Zip, Company, Start Date
+                    </div>
+                    <div x-show="list_type === 'test_center'">
+                        Upload excel or csv<br>
+                        Include header row<br>
+                        Columns: Name, Address1, Address2, City, State, Zip, Phone, Email, LastTestDate, TestName, Result
+
+                    </div>
+                </div>
+
                     <div class="mb-8" x-show="list_type === 'test_center'">
 
                         <div class="text-gray-600 text-sm w-full">Select State</div>
@@ -57,20 +71,6 @@
                     </div>
 
                 </form>
-
-                <div class="text-sm text-gray-400 mt-8">
-                    <div x-show="list_type === 'in_house'">
-                        Upload excel or csv<br>
-                        Include header row<br>
-                        Columns: First Name, Last Name, Email, Cell Phone, Street, City, State, Zip, Company, Start Date
-                    </div>
-                    <div x-show="list_type === 'test_center'">
-                        Upload excel or csv<br>
-                        Include header row<br>
-                        Columns: Name, Address1, Address2, City, State, Zip, Phone, Email, LastTestDate, TestName, Result
-
-                    </div>
-                </div>
 
             </div>
 
