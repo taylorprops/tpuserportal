@@ -21,7 +21,7 @@
 
                 <form id="add_list_form" enctype="multipart/form-data">
 
-                    <div class="w-48 mb-4">
+                    <div class="w-48 mb-8">
                         <select class="form-element select md" name="list_type" data-label="Select List Type"
                         @change="list_type = $el.value">
                             <option value="in_house">In House Agents</option>
@@ -29,7 +29,7 @@
                         </select>
                     </div>
 
-                    <div class="mb-8 ">
+                    <div class="mb-8" x-show="list_type === 'test_center'">
 
                         <div class="text-gray-600 text-sm w-full">Select State</div>
 
