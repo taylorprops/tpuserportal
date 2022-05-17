@@ -39,7 +39,7 @@
 
             <div class="my-6 text-2xl font-semibold border-b">Listings</div>
 
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-4">
 
                 <div class="text-gray-800 border-b-2 p-2">Year</div>
                 <div class="text-gray-800 border-b-2 p-2">Sold</div>
