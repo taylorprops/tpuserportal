@@ -38,8 +38,8 @@
 
                         <div class=""
                         x-data="{ locked: {{ $setting -> locked }} }">
-                            <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @if(auth() -> user() -> level == 'super_admin') @click="settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0;" @endif><i class="fa-duotone fa-lock"></i></a>
-                            <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @if(auth() -> user() -> level == 'super_admin') @click="settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1;" @endif><i class="fa-duotone fa-lock-open"></i></a>
+                            <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @if(auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0; }" @endif><i class="fa-duotone fa-lock"></i></a>
+                            <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @if(auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1; }" @endif><i class="fa-duotone fa-lock-open"></i></a>
                         </div>
 
                         @if($setting -> has_color == true)

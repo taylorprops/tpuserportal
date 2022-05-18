@@ -72,6 +72,7 @@ if(document.URL.match('marketing/schedule_settings')) {
                 })
                 .catch(function (error) {
                 });
+
             },
 
             settings_show_delete_item(category, id) {

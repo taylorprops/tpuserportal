@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Monolog\Logger;
 use App\Models\User;
 use App\Helpers\Helper;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Artisan;
@@ -34,8 +36,11 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $email = $request -> email;
         $email = 'laurel.constantine@longandfoster.com';
+        $email = $request -> email;
+
+        $expire = Carbon::now() -> addMinutes(30);
+
         $agent = BrightAgentRoster::where('MemberEmail', $email)
         -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
         -> first();
@@ -43,47 +48,43 @@ class TestsController extends Controller
 
         if($agent) {
 
-            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
-            -> where('ListAgentMlsId', $agent -> MemberMlsId)
+            $agent_mls_id = $agent -> MemberMlsId;
+
+            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
+            -> where('ListAgentMlsId', $agent_mls_id)
             -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
             -> groupBy('year')
             -> orderBy('year', 'desc')
             -> get();
 
-            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average'))
-            -> where('BuyerAgentMlsId', $agent -> MemberMlsId)
+            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
+            -> where('BuyerAgentMlsId', $agent_mls_id)
             -> where('MlsStatus', 'Closed')
             -> whereNotNull('CloseDate')
             -> groupBy('year')
             -> orderBy('year', 'desc')
             -> get();
 
-            $member_since = date('Y');
-            if(count($listings) > 0) {
-                $member_since = $listings -> last() -> year;
-            }
+            $min_list_date = $listings -> min('year');
+            $min_contract_date = $contracts -> min('year');
 
-            if(count($contracts) > 0) {
-                if($contracts -> last() -> year < $member_since) {
-                    $member_since = $contracts -> last() -> year;
-                }
-            }
+            $min_year = min($min_list_date, $min_contract_date);
 
-            $years_active = date('Y') - $member_since;
-            if($years_active > 9) {
-                $years_active = '10 plus';
-            } else if($years_active == 0) {
+            $years_active = date('Y') - $min_year;
+            if($years_active == 0) {
                 $years_active = 1;
             }
 
-            return $years_active;
+            dd($years_active);
 
-            return view('API/zoho/get_bright_agent_details_html', compact('agent', 'years_active', 'listings', 'contracts'));
+            dd($listings);
+
+
+            return view('API/zoho/get_bright_agent_details_html', compact('agent', 'agent_mls_id', 'years_active', 'listings'));
+
 
         }
-
-        return response() -> json(['status' => 'not found']);
 
     }
 
