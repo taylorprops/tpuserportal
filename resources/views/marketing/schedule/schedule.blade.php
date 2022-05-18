@@ -45,20 +45,19 @@ $breadcrumbs = [
 
             </form>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-5 lg:gap-8">
 
-                <div>
+                <div class="col-span-3">
 
                     <div class="h-screen-80 overflow-auto pb-16 mb-12 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 
-
                     </div>
 
                 </div>
 
-                <div class="flex flex-col">
+                <div class="flex flex-col col-span-2">
 
                     <div class="relative lg:h-screen-80 lg:overflow-auto">
 

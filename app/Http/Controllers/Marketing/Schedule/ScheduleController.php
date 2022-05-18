@@ -12,6 +12,7 @@ use App\Models\BrightMLS\BrightOffices;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Marketing\InHouseAddresses;
 use App\Models\Marketing\Schedule\Schedule;
+use App\Models\Marketing\Schedule\ScheduleNotes;
 use App\Models\Marketing\Schedule\ScheduleUploads;
 use App\Models\Marketing\Schedule\ScheduleSettings;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -56,7 +57,7 @@ class ScheduleController extends Controller
                 $query -> where('status_id', $status_id);
             }
         })
-        -> with(['company', 'medium', 'recipient', 'status', 'uploads' => function($query) {
+        -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function($query) {
             $query -> where('active', TRUE);
         }])
         -> orderBy('event_date', 'desc')
@@ -90,18 +91,6 @@ class ScheduleController extends Controller
             'states.not_in' => 'State is required',
         ]);
 
-        // if(!$request -> id) {
-
-        //     $validated = $request -> validate([
-        //         'upload_html' => 'required_without:upload_file',
-        //         'upload_file' => 'required_without:upload_html',
-        //     ],
-        //     [
-        //         'upload_html.required_without' => 'You must paste HTML or upload a file',
-        //         'upload_file.required_without' => 'You must paste HTML or upload a file',
-        //     ]);
-
-        // }
 
         $id = $request -> id;
         $event_date = $request -> event_date;
@@ -190,11 +179,14 @@ class ScheduleController extends Controller
 
     public function update_status(Request $request) {
 
-        Schedule::find($request -> event_id) -> update([
-            'status_id' => $request -> status_id
-        ]);
+        if($request -> event_id) {
+            Schedule::find($request -> event_id) -> update([
+                'status_id' => $request -> status_id
+            ]);
 
-        return response() -> json(['status' => 'success']);
+            return response() -> json(['status' => 'success']);
+
+        }
 
     }
 
@@ -497,6 +489,37 @@ class ScheduleController extends Controller
 
         return response() -> json(['id' => $clone_id]);
 
+    }
+
+    public function get_notes(Request $request)
+    {
+        $notes = ScheduleNotes::where('event_id', $request -> event_id)
+        -> with(['user'])
+        -> orderBy('created_at', 'desc')
+        -> get();
+
+        return view('marketing/schedule/get_notes_html', compact('notes'));
+    }
+
+    public function add_notes(Request $request)
+    {
+
+        ScheduleNotes::create([
+            'event_id' => $request -> event_id,
+            'notes' => $request -> notes,
+            'user_id' => auth() -> user() -> id,
+        ]);
+    }
+
+    public function delete_note(Request $request)
+    {
+        ScheduleNotes::find($request -> id) -> delete();
+    }
+
+    public function mark_note_read(Request $request) {
+        ScheduleNotes::find($request -> note_id) -> update([
+            'read' => true
+        ]);
     }
 
 

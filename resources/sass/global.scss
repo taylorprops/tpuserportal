@@ -173,6 +173,9 @@ a.default {
 .fc-event-title {
     @apply text-xs;
 }
+.fc-header-toolbar {
+    @apply text-xs;
+}
 .fc {
     .fc-button-primary.fc-prev-button,
     .fc-button-primary.fc-next-button,

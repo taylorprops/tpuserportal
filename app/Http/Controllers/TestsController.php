@@ -23,6 +23,7 @@ use App\Models\BrightMLS\BrightListings;
 use App\Models\Employees\EmployeesNotes;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\Marketing\Schedule\Schedule;
 use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\OldDB\Company\BillingInvoicesItems;
@@ -36,55 +37,9 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $email = 'laurel.constantine@longandfoster.com';
-        $email = $request -> email;
+        $events = Schedule::with('notesss') -> get();
+        dd($events -> first() -> notesss);
 
-        $expire = Carbon::now() -> addMinutes(30);
-
-        $agent = BrightAgentRoster::where('MemberEmail', $email)
-        -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
-        -> first();
-
-
-        if($agent) {
-
-            $agent_mls_id = $agent -> MemberMlsId;
-
-            $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
-            -> where('ListAgentMlsId', $agent_mls_id)
-            -> where('MlsStatus', 'Closed')
-            -> whereNotNull('CloseDate')
-            -> groupBy('year')
-            -> orderBy('year', 'desc')
-            -> get();
-
-            $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
-            -> where('BuyerAgentMlsId', $agent_mls_id)
-            -> where('MlsStatus', 'Closed')
-            -> whereNotNull('CloseDate')
-            -> groupBy('year')
-            -> orderBy('year', 'desc')
-            -> get();
-
-            $min_list_date = $listings -> min('year');
-            $min_contract_date = $contracts -> min('year');
-
-            $min_year = min($min_list_date, $min_contract_date);
-
-            $years_active = date('Y') - $min_year;
-            if($years_active == 0) {
-                $years_active = 1;
-            }
-
-            dd($years_active);
-
-            dd($listings);
-
-
-            return view('API/zoho/get_bright_agent_details_html', compact('agent', 'agent_mls_id', 'years_active', 'listings'));
-
-
-        }
 
     }
 

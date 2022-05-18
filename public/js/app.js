@@ -9912,6 +9912,8 @@ if (document.URL.match('marketing/schedule')) {
       show_deleted_versions: false,
       show_email_modal: false,
       show_subject_options: false,
+      calendar_object: '',
+      show_weekends: false,
       init: function init() {
         this.get_schedule();
       },
@@ -10202,20 +10204,30 @@ if (document.URL.match('marketing/schedule')) {
         var formData = new FormData(form);
         axios.post('/marketing/calendar_get_events', formData).then(function (response) {
           var calendarEl = document.querySelector('.calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
+          scope.calendar_object = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             headerToolbar: {
               left: 'prev,next today',
               center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              right: 'showWeekends dayGridMonth,timeGridWeek,timeGridDay'
             },
             events: response.data,
             eventClick: function eventClick(info) {
               var id = info.event.id;
               document.querySelector('.edit-button[data-id="' + id + '"]').click();
+            },
+            weekends: false,
+            customButtons: {
+              showWeekends: {
+                text: 'Show Weekends',
+                click: function click() {
+                  scope.show_weekends = !scope.show_weekends;
+                  scope.calendar_object.setOption('weekends', scope.show_weekends);
+                }
+              }
             }
           });
-          calendar.render();
+          scope.calendar_object.render();
         })["catch"](function (error) {
           console.log(error);
         });
@@ -10326,6 +10338,62 @@ if (document.URL.match('marketing/schedule')) {
         })["catch"](function () {
           return toastr.error('Link Not Copied To Clipboard');
         });
+      },
+      get_notes: function get_notes(event_id) {
+        var scope = this;
+        axios.get('/marketing/get_notes', {
+          params: {
+            event_id: event_id
+          }
+        }).then(function (response) {
+          document.querySelector('.notes-div[data-id="' + event_id + '"]').innerHTML = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      },
+      add_notes: function add_notes(ele, event_id, form) {
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Saving ... ');
+        remove_form_errors();
+        var scope = this;
+        var formData = new FormData(form);
+        formData.append('event_id', event_id);
+        axios.post('/marketing/add_notes', formData).then(function (response) {
+          ele.innerHTML = button_html;
+          scope.get_notes(event_id);
+          toastr.success('Note Saved');
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      },
+      delete_note: function delete_note(ele, event_id, id) {
+        var scope = this;
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, '');
+        remove_form_errors();
+        var formData = new FormData();
+        formData.append('id', id);
+        axios.post('/marketing/delete_note', formData).then(function (response) {
+          ele.innerHTML = button_html;
+          scope.get_notes(event_id);
+          toastr.success('Note Deleted');
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+      },
+      mark_note_read: function mark_note_read(ele, event_id, note_id) {
+        var button_html = ele.innerHTML;
+        show_loading_button(ele, 'Saving ... ');
+        var formData = new FormData();
+        formData.append('note_id', note_id);
+        axios.post('/marketing/mark_note_read', formData).then(function (response) {
+          ele.innerHTML = button_html;
+        })["catch"](function (error) {
+          display_errors(error, ele, button_html);
+        });
+        var counter = document.querySelector('[data-note-id="' + event_id + '"]');
+        var count = parseInt(counter.innerText) - 1;
+        counter.innerText = count;
       }
     };
   };

@@ -14,6 +14,11 @@ class Schedule extends Model
     protected $guarded = [];
 
 
+    public function notes()
+    {
+        return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleNotes::class, 'event_id', 'id') -> orderBy('created_at', 'desc');
+    }
+
     public function medium()
     {
         return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'medium_id');
@@ -46,8 +51,10 @@ class Schedule extends Model
 
     public function uploads()
     {
-        return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleUploads::class, 'event_id', 'id');
+        return $this -> hasMany(\App\Models\Marketing\Schedule\ScheduleUploads::class, 'event_id', 'id') -> orderBy('created_at', 'desc');
     }
+
+
 
 
 

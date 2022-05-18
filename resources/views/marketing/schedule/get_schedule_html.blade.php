@@ -27,6 +27,12 @@
         $past_due = 'past_due';
     }
 
+    $notes =[];
+    if($event -> notes) {
+        $notes = $event -> notes;
+        $count_unread = count($notes -> where('read', false));
+    }
+
     @endphp
 
     <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200
@@ -50,10 +56,10 @@
         data-goal-id="{{ $event -> goal_id }}"
         data-focus-id="{{ $event -> focus_id }}">
 
-        <div class="flex flex-col">
+        <div class="flex flex-col"
+        x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
-            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details"
-            x-data="{ show_edit_status: false }">
+            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details">
                 <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
@@ -74,20 +80,79 @@
 
                 </div>
 
-                <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @click.stop="show_edit_status = true">{{ $event -> status -> item }}</div>
+                <div class="flex justify-end items-center">
 
-                <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
-                x-show="show_edit_status"
-                @click.outside="show_edit_status = false;">
-                        <div class="p-4" role="none">
-                            @foreach($settings -> where('category', 'status') as $status)
-                                <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white"
-                                @click.stop="update_status($el, {{ $event -> id }}, {{ $status -> id }}); show_edit_status = false;">
-                                    <div>{{ $status -> item }}</div>
-                                    <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
-                                </div>
-                            @endforeach
+                    <div class="relative">
+
+                        <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @click.stop="show_edit_status = ! show_edit_status">{{ $event -> status -> item }}</div>
+
+                        <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1"
+                        x-show="show_edit_status"
+                        @click.outside="show_edit_status = false;">
+                            <div class="p-4" role="none">
+                                @foreach($settings -> where('category', 'status') as $status)
+                                    <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white"
+                                    @click.stop="update_status($el, {{ $event -> id }}, {{ $status -> id }}); show_edit_status = false;">
+                                        <div>{{ $status -> item }}</div>
+                                        <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
+                                    </div>
+                                @endforeach
+                            </div>
+
                         </div>
+
+                    </div>
+
+                    <div class="mr-3 ml-6">
+                        <div class="relative">
+                            <button type="button" class="block w-full h-full px-4" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
+                                <i class="fa-duotone fa-notes fa-2x text-primary"></i>
+                            </button>
+                            <div class="absolute top-4 right-2 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class=" p-2" x-show="show_notes">
+
+                <div class="p-2 w-600-px mx-auto border rounded-lg">
+
+                    <div class="flex justify-between">
+                        <div class="font-medium text-xl">Notes</div>
+                        <div>
+                            <button type="button" class="button primary md"
+                            @click="show_add_notes = ! show_add_notes;"
+                            x-show="show_add_notes === false">
+                                <i class="fal fa-plus mr-2"></i> Add Note
+                            </button>
+                            <button type="button" class="button danger md no-text"
+                            @click="show_add_notes = ! show_add_notes"
+                            x-show="show_add_notes === true">
+                                <i class="fal fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border rounded-md p-4 my-3"
+                    x-show="show_add_notes" x-transition>
+                        <form x-ref="add_notes_form">
+                            <div>
+                                <textarea class="form-element textarea md" name="notes"
+                                x-ref="notes"></textarea>
+                            </div>
+                            <div class="flex justify-around mt-3">
+                                <button type="button" class="button primary md"
+                                @click.prevent="add_notes($el, {{ $event -> id }}, $refs.add_notes_form); show_add_notes = false; $refs.notes.value = ''">
+                                    Save Note <i class="fal fa-check ml-2"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="border-t-2 mt-4 max-w-600-px notes-div"
+                    data-id="{{ $event -> id }}"></div>
 
                 </div>
 
@@ -95,7 +160,7 @@
 
             <div class="" x-show="show_details">
 
-                <div class="flex justify-start items-center p-2 border-b">
+                <div class="flex justify-start items-center p-2 border-b border-t">
 
                     <div class="pr-4 border-r">
                         {{ str_replace(',', ', ', $event -> state) }}
