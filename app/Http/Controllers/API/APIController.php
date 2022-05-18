@@ -1228,8 +1228,8 @@ class APIController extends Controller
             -> orderBy('year', 'desc')
             -> get();
 
-            $min_list_date = $listings -> min('year');
-            $min_contract_date = $contracts -> min('year');
+            $min_list_date = $listings -> min('year') ?? 2022;
+            $min_contract_date = $contracts -> min('year') ?? 2022;
 
             $min_year = min($min_list_date, $min_contract_date);
 
