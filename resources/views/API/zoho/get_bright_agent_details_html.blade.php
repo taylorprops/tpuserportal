@@ -24,7 +24,7 @@
             </div>
 
             <div>
-                <div class="p-2 inline-block rounded bg-sky-800 text-white">Active for {{ $years_active }} years</div>
+                <div class="p-2 inline-block rounded bg-sky-800 text-white" id="active_for">Active for {{-- {{ $years_active }} --}} years</div>
             </div>
 
         </div>
@@ -33,7 +33,7 @@
 
     <div class="my-4 border-b h-1"></div>
 
-    <div class="flex justify-start space-x-12">
+    {{-- <div class="flex justify-start space-x-12">
 
         <div>
 
@@ -87,6 +87,6 @@
 
         </div>
 
-    </div>
+    </div> --}}
 
 </div>
