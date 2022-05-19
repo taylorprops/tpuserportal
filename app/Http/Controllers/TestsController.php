@@ -37,8 +37,38 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $events = Schedule::with('notesss') -> get();
-        dd($events -> first() -> notesss);
+        $start = date('2022-04-01');
+        $end = date('2022-04-30');
+        $listings = BrightListings::whereIn('ListOfficeMlsId', config('global.bright_office_codes'))
+        -> where('MlsStatus', 'Closed')
+        -> whereBetween('CloseDate', [$start, $end])
+        -> get();
+        dd($listings);
+
+        ini_set('memory_limit', '-1');
+
+        // $rets = Helper::rets_login();
+
+        // if($rets) {
+
+        //     $resource = "Property";
+        //     $class = "ALL";
+
+        //     $query = 'ListOfficeMlsId=|'.implode(',', config('global.bright_office_codes'));
+
+        //     $results = $rets -> Search(
+        //         $resource,
+        //         $class,
+        //         $query,
+        //         [
+        //             'Select' => config('global.bright_listings_columns')
+        //         ]
+        //     );
+
+        //     $results = $results -> toArray();
+        //     dd($results);
+
+        // }
 
 
     }
