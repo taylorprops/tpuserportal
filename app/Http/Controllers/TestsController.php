@@ -39,7 +39,10 @@ class TestsController extends Controller
 
         $start = date('2022-04-01');
         $end = date('2022-04-30');
-        $listings = BrightListings::whereIn('ListOfficeMlsId', config('global.bright_office_codes'))
+        $listings = BrightListings::where(function($query) use ($start, $end) {
+            $query -> whereIn('ListOfficeMlsId', config('global.bright_office_codes'))
+            -> orWhereIn('BuyerOfficeMlsId', config('global.bright_office_codes'));
+        })
         -> where('MlsStatus', 'Closed')
         -> whereBetween('CloseDate', [$start, $end])
         -> get();
