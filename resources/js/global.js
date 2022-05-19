@@ -7,6 +7,7 @@ window.Sortable = Sortable;
 window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
 toastr.options.closeButton = true;
+window.tippy = tippy;
 tippy('[data-tippy-content]', {
     allowHTML: true,
 });

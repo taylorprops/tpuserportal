@@ -8032,6 +8032,7 @@ window.Sortable = sortablejs_modular_sortable_complete_esm_js__WEBPACK_IMPORTED_
 window.toastr = new toastr2__WEBPACK_IMPORTED_MODULE_0__["default"]();
 toastr.options.preventDuplicates = true;
 toastr.options.closeButton = true;
+window.tippy = tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"];
 (0,tippy_js__WEBPACK_IMPORTED_MODULE_3__["default"])('[data-tippy-content]', {
   allowHTML: true
 });
