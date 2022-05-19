@@ -9,9 +9,9 @@
     }
     @endphp
 
-    <div class="my-2">
+    <div class="my-1">
         <ul role="list" class="divide-y">
-            <li class="py-2 border-b">
+            <li class="py-1 border-b">
                 <div class="flex space-x-3">
 
                     <div>

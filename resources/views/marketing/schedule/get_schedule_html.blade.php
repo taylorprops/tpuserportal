@@ -30,7 +30,7 @@
     $notes =[];
     if($event -> notes) {
         $notes = $event -> notes;
-        $count_unread = count($notes -> where('read', false) -> where('user_id', auth() -> user() -> id));
+        $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
     }
 
     @endphp
@@ -116,17 +116,16 @@
 
             </div>
 
-            <div class=" p-2" x-show="show_notes">
+            <div class="p-2" x-show="show_notes">
 
-                <div class="p-2 w-600-px mx-auto border rounded-lg">
+                <div class="w-600-px mx-auto">
 
-                    <div class="flex justify-between">
-                        <div class="font-medium text-xl">Notes</div>
+                    <div class="flex justify-end mb-2">
                         <div>
-                            <button type="button" class="button primary md"
+                            <button type="button" class="button primary md no-text"
                             @click="show_add_notes = ! show_add_notes;"
                             x-show="show_add_notes === false">
-                                <i class="fal fa-plus mr-2"></i> Add Note
+                                <i class="fal fa-plus fa-lg"></i>
                             </button>
                             <button type="button" class="button danger md no-text"
                             @click="show_add_notes = ! show_add_notes"
@@ -135,11 +134,12 @@
                             </button>
                         </div>
                     </div>
-                    <div class="border rounded-md p-4 my-3"
+
+                    <div class="my-3"
                     x-show="show_add_notes" x-transition>
                         <form x-ref="add_notes_form">
                             <div>
-                                <textarea class="form-element textarea md" name="notes"
+                                <textarea class="form-element textarea md" name="notes" placeholder="Enter Notes"
                                 x-ref="notes"></textarea>
                             </div>
                             <div class="flex justify-around mt-3">
@@ -149,10 +149,14 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                        </div>
 
-                    <div class="border-t-2 mt-4 max-w-600-px notes-div"
-                    data-id="{{ $event -> id }}"></div>
+                    <div class="p-2 border rounded-lg">
+
+                        <div class="max-w-600-px notes-div"
+                        data-id="{{ $event -> id }}"></div>
+
+                    </div>
 
                 </div>
 
