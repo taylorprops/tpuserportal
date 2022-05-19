@@ -10229,7 +10229,8 @@ if (document.URL.match('marketing/schedule')) {
                   scope.calendar_object.setOption('weekends', scope.show_weekends);
                 }
               }
-            }
+            },
+            contentHeight: 600
           });
           scope.calendar_object.render();
         })["catch"](function (error) {
