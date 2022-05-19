@@ -25,7 +25,7 @@ window.addEventListener('load', (event) => {
 
     numbers_only();
 
-    document.querySelectorAll('.filepond--credits').forEach(function(div) {
+    document.querySelectorAll('.filepond--credits').forEach(function (div) {
         div.style.display = 'none';
     });
 
@@ -42,27 +42,27 @@ window.axios_options = {
 
 
 
-window.form_elements = function() {
+window.form_elements = function () {
 
-    document.querySelectorAll('.form-element').forEach(function(element) {
+    document.querySelectorAll('.form-element').forEach(function (element) {
 
         let classes = element.classList;
 
         let size = '';
-        if(classes.contains('sm')) {
+        if (classes.contains('sm')) {
             size = 'sm';
-        } else if(classes.contains('md')) {
+        } else if (classes.contains('md')) {
             size = 'md';
-        } else if(classes.contains('lg')) {
+        } else if (classes.contains('lg')) {
             size = 'lg';
-        } else if(classes.contains('xl')) {
+        } else if (classes.contains('xl')) {
             size = 'xl';
         }
 
-        if(!classes.contains('label-added') && !classes.contains('range')) {
+        if (!classes.contains('label-added') && !classes.contains('range')) {
 
             let type = classes.contains('checkbox') || classes.contains('radio') ? 'checkbox' : 'text';
-            if(element.getAttribute('type') == 'file') {
+            if (element.getAttribute('type') == 'file') {
                 type = 'file';
             }
 
@@ -70,10 +70,10 @@ window.form_elements = function() {
             let label_text = element.getAttribute('data-label');
             let parent = element.parentNode;
 
-            if(element.parentNode.tagName !== 'LABEL' && element.getAttribute('type') != 'file') {
+            if (element.parentNode.tagName !== 'LABEL' && element.getAttribute('type') != 'file') {
                 label = document.createElement('LABEL');
                 //parent.replaceChild(label, element);
-                if(type == 'checkbox') {
+                if (type == 'checkbox') {
                     parent.append(label);
                 } else {
                     parent.prepend(label);
@@ -81,21 +81,21 @@ window.form_elements = function() {
             } else {
                 label = element.parentNode;
             }
-            if(!size) {
+            if (!size) {
                 size = 'md';
             }
             label.classList.add(type, size);
 
-            let element_id = element.id ? element.id : 'input_'+(Date.now() * Math.random() * 1000).toFixed(0);
+            let element_id = element.id ? element.id : 'input_' + (Date.now() * Math.random() * 1000).toFixed(0);
             element.id = element_id;
 
-            if(label_text) {
+            if (label_text) {
                 label.classList.add('form-element-label');
                 label.setAttribute('for', element_id);
-                if(type == 'checkbox') {
+                if (type == 'checkbox') {
                     label.classList.add('mt-2');
-                    label.insertAdjacentHTML('beforeend', '<div class="label-text inline-block">'+label_text+'</div>');
-                    if(size == 'xl') {
+                    label.insertAdjacentHTML('beforeend', '<div class="label-text inline-block">' + label_text + '</div>');
+                    if (size == 'xl') {
                         element.classList.add('align-text-bottom');
                     }
                 } else {
@@ -103,7 +103,7 @@ window.form_elements = function() {
                 }
             }
 
-            if(element.getAttribute('type') == 'file') {
+            if (element.getAttribute('type') == 'file') {
                 label = document.createElement('LABEL');
                 let html = ' \
                 <div class="flex justify-start w-full"> \
@@ -111,7 +111,7 @@ window.form_elements = function() {
                         <i class="fad fa-upload mr-2"></i> Select Files \
                     </div> \
                     <div class="flex-1"> \
-                        <div class="file-names '+element_id+' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
+                        <div class="file-names '+ element_id + ' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
                     </div> \
                 </div>';
                 label.innerHTML = html;
@@ -122,7 +122,7 @@ window.form_elements = function() {
 
             classes.add('label-added');
 
-            if(element.hasAttribute('required') || element.classList.contains('required')) {
+            if (element.hasAttribute('required') || element.classList.contains('required')) {
                 element.parentNode.insertAdjacentHTML('beforeend', '<div class="relative"> <span class="text-red-500 text-xxs error-message h-4 inline-block absolute top-0"></span> </div>');
             }
 
@@ -149,7 +149,7 @@ window.form_elements = function() {
 
 }
 
-window.clear_select = function(ele) {
+window.clear_select = function (ele) {
     ele.closest('.relative').querySelector('select').value = '';
     ele.closest('.cancel-div').classList.add('hidden');
 }
@@ -172,7 +172,7 @@ window.ele_loading = function (ele) {
     </div>';
 }
 
-window.main_search = function() {
+window.main_search = function () {
 
     return {
 
@@ -184,25 +184,25 @@ window.main_search = function() {
             let value = search_input.value;
             let search_results_div = scope.$refs.search_results_div;
 
-            if(value.length > 0) {
+            if (value.length > 0) {
 
                 axios.get('/search', {
                     params: {
                         value: value
                     },
                 })
-                .then(function (response) {
-                    if(response){
-                        search_results_div.innerHTML = response.data;
-                        scope.show_search_results_div = true;
+                    .then(function (response) {
+                        if (response) {
+                            search_results_div.innerHTML = response.data;
+                            scope.show_search_results_div = true;
 
-                    } else {
-                        scope.show_search_results_div = false;
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                        } else {
+                            scope.show_search_results_div = false;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             } else {
                 scope.show_search_results_div = false;
             }
@@ -213,7 +213,7 @@ window.main_search = function() {
 
 }
 
-window.display_errors = function(error, ele, button_html) {
+window.display_errors = function (error, ele, button_html) {
     if (error) {
         if (error.response) {
             if (error.response.status == 422) {
@@ -234,23 +234,23 @@ window.show_form_errors = function (errors) {
         let field = `${key}`;
         value = `${value}`;
         let message = value;
-        if(Array.isArray(value)) {
+        if (Array.isArray(value)) {
             message = value[0];
         }
 
         let element = '';
-        if(field.match(/\.[0-9]+$/)) {
+        if (field.match(/\.[0-9]+$/)) {
             let fields = field.split('.');
-            let elements = document.querySelectorAll('[name="'+fields[0]+'[]"]');
+            let elements = document.querySelectorAll('[name="' + fields[0] + '[]"]');
             element = elements[fields[1]];
         } else {
-            element = document.querySelector('[name="'+field+'"]');
+            element = document.querySelector('[name="' + field + '"]');
         }
         let label = '';
         let error_message = '<div class="error-message text-red-500 text-xxs">' + message + '</div>';
 
         if (element) {
-            if(element.parentNode.tagName == 'LABEL') {
+            if (element.parentNode.tagName == 'LABEL') {
                 label = element.parentNode;
                 label.insertAdjacentHTML('beforeend', error_message);
             } else {
@@ -290,8 +290,8 @@ window.text_editor = function (options) {
         options.selector = '.text-editor';
     }
     options.content_style = 'body { font-size: .9rem; }',
-    // options.content_css = '/css/tinymce.css';
-    options.content_style = "body { font-size: 12pt; font-family: Arial; }";
+        // options.content_css = '/css/tinymce.css';
+        options.content_style = "body { font-size: 12pt; font-family: Arial; }";
     options.forced_root_block = false;
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
@@ -301,11 +301,11 @@ window.text_editor = function (options) {
     tinymce.init(options);
 
     // select upload option on add image
-    setTimeout(function() {
+    setTimeout(function () {
         let insert_button = document.querySelector('[aria-label="Insert/edit image"]');
-        if(insert_button) {
+        if (insert_button) {
             document.querySelector('[aria-label="Insert/edit image"]').addEventListener('click', function () {
-                setTimeout(function() {
+                setTimeout(function () {
                     document.querySelector('.tox-dialog__body-nav').lastChild.click();
                 }, 500);
             });
@@ -386,7 +386,7 @@ window.randomHSL = function () {
     return `hsla(${~~(360 * Math.random())},70%,70%,0.8)`
 }
 
-window.truncate_string = function(str, num) {
+window.truncate_string = function (str, num) {
     if (str.length > num) {
         return str.slice(0, num) + "...";
     } else {
@@ -687,7 +687,7 @@ document.querySelectorAll('.ssn').forEach(function (input) {
 
 
 // Numbers Only
-window.numbers_only = function() {
+window.numbers_only = function () {
 
     document.querySelectorAll('.numbers-only').forEach(function (input) {
 
@@ -791,7 +791,7 @@ window.global_get_url_parameters = function (key) {
     return false;
 }
 
-window.copy_to_clipboard = function(input) {
+window.copy_to_clipboard = function (input) {
     let text = input.value;
     // navigator clipboard api needs a secure context (https)
     if (navigator.clipboard && window.isSecureContext) {
@@ -815,4 +815,139 @@ window.copy_to_clipboard = function(input) {
         });
     }
 }
+
+
+
+class Badger {
+    constructor(options) {
+        Object.assign(
+            this, {
+            backgroundColor: "#f00",
+            color: "#fff",
+            size: 0.8,      // 0..1 (Scale in respect to the favicon image size)
+            position: "se", // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
+            radius: 10,      // Border radius
+            src: "",        // Favicon source (dafaults to the <link> icon href)
+            onChange() { },
+        },
+            options
+        );
+        this.canvas = document.createElement("canvas");
+        this.src = this.src || this.faviconEL.getAttribute("href");
+        this.ctx = this.canvas.getContext("2d");
+    }
+
+    faviconEL = document.querySelector("link[rel$=icon]");
+
+    _drawIcon() {
+        this.ctx.clearRect(0, 0, this.faviconSize, this.faviconSize);
+        this.ctx.drawImage(this.img, 0, 0, this.faviconSize, this.faviconSize);
+    }
+
+    _drawShape() {
+        const r = this.radius;
+        const xa = this.offset.x;
+        const ya = this.offset.y;
+        const xb = this.offset.x + this.badgeSize;
+        const yb = this.offset.y + this.badgeSize;
+        this.ctx.beginPath();
+        this.ctx.moveTo(xb - r, ya);
+        this.ctx.quadraticCurveTo(xb, ya, xb, ya + r);
+        this.ctx.lineTo(xb, yb - r);
+        this.ctx.quadraticCurveTo(xb, yb, xb - r, yb);
+        this.ctx.lineTo(xa + r, yb);
+        this.ctx.quadraticCurveTo(xa, yb, xa, yb - r);
+        this.ctx.lineTo(xa, ya + r);
+        this.ctx.quadraticCurveTo(xa, ya, xa + r, ya);
+        this.ctx.fillStyle = this.backgroundColor;
+        this.ctx.fill();
+        this.ctx.closePath();
+    }
+
+    _drawVal() {
+        const margin = (this.badgeSize * 0.18) / 2;
+        this.ctx.beginPath();
+        this.ctx.textBaseline = "middle";
+        this.ctx.textAlign = "center";
+        this.ctx.font = `bold ${this.badgeSize * 0.82}px Arial`;
+        this.ctx.fillStyle = this.color;
+        this.ctx.fillText(this.value, this.badgeSize / 2 + this.offset.x, this.badgeSize / 2 + this.offset.y + margin);
+        this.ctx.closePath();
+    }
+
+    _drawFavicon() {
+        this.faviconEL.setAttribute("href", this.dataURL);
+    }
+
+    _draw() {
+        this._drawIcon();
+        if (this.value) this._drawShape();
+        if (this.value) this._drawVal();
+        this._drawFavicon();
+    }
+
+    _setup() {
+        this.faviconSize = this.img.naturalWidth;
+        this.badgeSize = this.faviconSize * this.size;
+        this.canvas.width = this.faviconSize;
+        this.canvas.height = this.faviconSize;
+        const sd = this.faviconSize - this.badgeSize;
+        const sd2 = sd / 2;
+        this.offset = {
+            n: { x: sd2, y: 0 },
+            e: { x: sd, y: sd2 },
+            s: { x: sd2, y: sd },
+            w: { x: 0, y: sd2 },
+            nw: { x: 0, y: 0 },
+            ne: { x: sd, y: 0 },
+            sw: { x: 0, y: sd },
+            se: { x: 8, y: 8 },
+        }[this.position];
+    }
+
+    // Public functions / methods:
+
+    update() {
+        this._value = Math.min(99, parseInt(this._value, 10));
+        if (this.img) {
+            this._draw();
+            if (this.onChange) this.onChange.call(this);
+        } else {
+            this.img = new Image();
+            this.img.addEventListener("load", () => {
+                this._setup();
+                this._draw();
+                if (this.onChange) this.onChange.call(this);
+            });
+            this.img.src = this.src;
+        }
+    }
+
+    get dataURL() {
+        return this.canvas.toDataURL();
+    }
+
+    get value() {
+        return this._value;
+    }
+
+    set value(val) {
+        this._value = val;
+        this.update();
+    }
+}
+
+
+const myBadgerOptions = {}; // See: constructor for customization options
+const myBadger = new Badger(myBadgerOptions);
+setInterval(() => {
+    axios.get('/marketing/get_notification_count')
+    .then(function (response) {
+        let count = response.data.count;
+        myBadger.value = count;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}, 2000);
 

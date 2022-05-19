@@ -522,6 +522,15 @@ class ScheduleController extends Controller
         ]);
     }
 
+    public function get_notification_count(Request $request) {
+
+        $status_count = Schedule::whereIn('status_id', ['37', '26']) -> count();
+        $notes_count = ScheduleNotes::where('user_id', '!=', auth() -> user() -> id) -> where('read', FALSE) -> count();
+        $count = $status_count + $notes_count;
+        return response() -> json(['count' => $count]);
+
+    }
+
 
     public function schedule_settings(Request $request) {
 

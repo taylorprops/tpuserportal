@@ -154,6 +154,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/add_notes', [ScheduleController::class, 'add_notes']) -> middleware(['in_house']);
     Route::post('/marketing/delete_note', [ScheduleController::class, 'delete_note']) -> middleware(['in_house']);
     Route::post('/marketing/mark_note_read', [ScheduleController::class, 'mark_note_read']) -> middleware(['in_house']);
+    Route::get('/marketing/get_notification_count', [ScheduleController::class, 'get_notification_count']) -> middleware(['in_house']);
 
     Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
     Route::post('/marketing/settings_save_add_item', [ScheduleController::class, 'settings_save_add_item']) -> middleware(['in_house']);

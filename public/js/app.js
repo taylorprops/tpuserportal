@@ -8010,6 +8010,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tippy_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tippy.js */ "./node_modules/tippy.js/dist/tippy.esm.js");
 /* harmony import */ var tippy_js_dist_tippy_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tippy.js/dist/tippy.css */ "./node_modules/tippy.js/dist/tippy.css");
 /* harmony import */ var sortablejs_modular_sortable_complete_esm_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! sortablejs/modular/sortable.complete.esm.js */ "./node_modules/sortablejs/modular/sortable.complete.esm.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -8782,6 +8788,183 @@ window.copy_to_clipboard = function (input) {
     });
   }
 };
+
+var Badger = /*#__PURE__*/function () {
+  function Badger(options) {
+    _classCallCheck(this, Badger);
+
+    _defineProperty(this, "faviconEL", document.querySelector("link[rel$=icon]"));
+
+    Object.assign(this, {
+      backgroundColor: "#f00",
+      color: "#fff",
+      size: 0.8,
+      // 0..1 (Scale in respect to the favicon image size)
+      position: "se",
+      // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
+      radius: 10,
+      // Border radius
+      src: "",
+      // Favicon source (dafaults to the <link> icon href)
+      onChange: function onChange() {}
+    }, options);
+    this.canvas = document.createElement("canvas");
+    this.src = this.src || this.faviconEL.getAttribute("href");
+    this.ctx = this.canvas.getContext("2d");
+  }
+
+  _createClass(Badger, [{
+    key: "_drawIcon",
+    value: function _drawIcon() {
+      this.ctx.clearRect(0, 0, this.faviconSize, this.faviconSize);
+      this.ctx.drawImage(this.img, 0, 0, this.faviconSize, this.faviconSize);
+    }
+  }, {
+    key: "_drawShape",
+    value: function _drawShape() {
+      var r = this.radius;
+      var xa = this.offset.x;
+      var ya = this.offset.y;
+      var xb = this.offset.x + this.badgeSize;
+      var yb = this.offset.y + this.badgeSize;
+      this.ctx.beginPath();
+      this.ctx.moveTo(xb - r, ya);
+      this.ctx.quadraticCurveTo(xb, ya, xb, ya + r);
+      this.ctx.lineTo(xb, yb - r);
+      this.ctx.quadraticCurveTo(xb, yb, xb - r, yb);
+      this.ctx.lineTo(xa + r, yb);
+      this.ctx.quadraticCurveTo(xa, yb, xa, yb - r);
+      this.ctx.lineTo(xa, ya + r);
+      this.ctx.quadraticCurveTo(xa, ya, xa + r, ya);
+      this.ctx.fillStyle = this.backgroundColor;
+      this.ctx.fill();
+      this.ctx.closePath();
+    }
+  }, {
+    key: "_drawVal",
+    value: function _drawVal() {
+      var margin = this.badgeSize * 0.18 / 2;
+      this.ctx.beginPath();
+      this.ctx.textBaseline = "middle";
+      this.ctx.textAlign = "center";
+      this.ctx.font = "bold ".concat(this.badgeSize * 0.82, "px Arial");
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillText(this.value, this.badgeSize / 2 + this.offset.x, this.badgeSize / 2 + this.offset.y + margin);
+      this.ctx.closePath();
+    }
+  }, {
+    key: "_drawFavicon",
+    value: function _drawFavicon() {
+      this.faviconEL.setAttribute("href", this.dataURL);
+    }
+  }, {
+    key: "_draw",
+    value: function _draw() {
+      this._drawIcon();
+
+      if (this.value) this._drawShape();
+      if (this.value) this._drawVal();
+
+      this._drawFavicon();
+    }
+  }, {
+    key: "_setup",
+    value: function _setup() {
+      this.faviconSize = this.img.naturalWidth;
+      this.badgeSize = this.faviconSize * this.size;
+      this.canvas.width = this.faviconSize;
+      this.canvas.height = this.faviconSize;
+      var sd = this.faviconSize - this.badgeSize;
+      var sd2 = sd / 2;
+      this.offset = {
+        n: {
+          x: sd2,
+          y: 0
+        },
+        e: {
+          x: sd,
+          y: sd2
+        },
+        s: {
+          x: sd2,
+          y: sd
+        },
+        w: {
+          x: 0,
+          y: sd2
+        },
+        nw: {
+          x: 0,
+          y: 0
+        },
+        ne: {
+          x: sd,
+          y: 0
+        },
+        sw: {
+          x: 0,
+          y: sd
+        },
+        se: {
+          x: 8,
+          y: 8
+        }
+      }[this.position];
+    } // Public functions / methods:
+
+  }, {
+    key: "update",
+    value: function update() {
+      var _this = this;
+
+      this._value = Math.min(99, parseInt(this._value, 10));
+
+      if (this.img) {
+        this._draw();
+
+        if (this.onChange) this.onChange.call(this);
+      } else {
+        this.img = new Image();
+        this.img.addEventListener("load", function () {
+          _this._setup();
+
+          _this._draw();
+
+          if (_this.onChange) _this.onChange.call(_this);
+        });
+        this.img.src = this.src;
+      }
+    }
+  }, {
+    key: "dataURL",
+    get: function get() {
+      return this.canvas.toDataURL();
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this._value;
+    },
+    set: function set(val) {
+      this._value = val;
+      this.update();
+    }
+  }]);
+
+  return Badger;
+}();
+
+var myBadgerOptions = {}; // See: constructor for customization options
+
+var myBadger = new Badger(myBadgerOptions);
+setInterval(function () {
+  axios.get('/marketing/get_notification_count').then(function (response) {
+    var count = response.data.count;
+    myBadger.value = count;
+  })["catch"](function (error) {
+    console.log(error);
+  });
+}, 2000);
 
 /***/ }),
 
