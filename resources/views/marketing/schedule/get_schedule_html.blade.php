@@ -116,7 +116,7 @@
 
             </div>
 
-            <div class="p-2" x-show="show_notes">
+            <div class="p-4" x-show="show_notes">
 
                 <div class="w-600-px mx-auto">
 
