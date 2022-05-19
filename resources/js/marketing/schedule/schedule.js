@@ -420,6 +420,7 @@ if (document.URL.match('marketing/schedule')) {
                             }
                         },
                         height:'auto',
+                        fixedWeekCount: false,
                     });
 
                     scope.calendar_object.render();

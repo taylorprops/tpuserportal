@@ -10230,7 +10230,8 @@ if (document.URL.match('marketing/schedule')) {
                 }
               }
             },
-            height: 'auto'
+            height: 'auto',
+            fixedWeekCount: false
           });
           scope.calendar_object.render();
         })["catch"](function (error) {
