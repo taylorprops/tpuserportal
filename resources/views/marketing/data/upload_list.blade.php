@@ -13,7 +13,7 @@
 
     <div class="pb-12 pt-2" x-data="upload_list()">
 
-        <div class="max-w-800-px mx-auto sm:px-6 lg:px-12 pt-12">
+        <div class="max-w-1000-px mx-auto sm:px-6 lg:px-12 pt-12">
 
             <div class="text-lg font-semibold text-gray-500 mb-8">Add New List</div>
 
@@ -33,7 +33,7 @@
                     <div x-show="list_type === 'in_house'">
                         Upload excel or csv<br>
                         Include header row<br>
-                        Columns: First Name, Last Name, Email, Cell Phone, Street, City, State, Zip, Company, Start Date
+                        Columns: First Name, Last Name, Email, Cell Phone, Street, City, State, Zip, Company, Start Date, MLS ID 1, MLS ID 2, MLS ID 3
                     </div>
                     <div x-show="list_type === 'test_center'">
                         Upload excel or csv<br>

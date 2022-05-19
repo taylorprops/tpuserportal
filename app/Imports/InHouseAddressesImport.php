@@ -27,6 +27,9 @@ class InHouseAddressesImport implements ToModel, WithStartRow
             'company'     => $row[8],
             'start_date'     => date('Y-m-d', strtotime($row[9])),
             'fullname' => $row[0].' '.$row[1],
+            'mls_id_1' => $row[10],
+            'mls_id_2' => $row[11],
+            'mls_id_3' => $row[12],
         ]);
     }
 

@@ -1283,6 +1283,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .top-2{top:0.5rem}
 .top-1\/3{top:33.333333%}
 .top-10{top:2.5rem}
+.right-2{right:0.5rem}
 .-right-32{right:-8rem}
 .right-12{right:3rem}
 .left-28{left:7rem}
@@ -1298,11 +1299,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .top-5{top:1.25rem}
 .-left-56{left:-14rem}
 .left-48{left:12rem}
-.left-4{left:1rem}
-.top-14{top:3.5rem}
-.left-3{left:0.75rem}
-.left-6{left:1.5rem}
-.right-2{right:0.5rem}
 .z-0{z-index:0}
 .z-50{z-index:50}
 .z-40{z-index:40}
@@ -1328,6 +1324,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .-mx-2{margin-left:-0.5rem;margin-right:-0.5rem}
 .my-6{margin-top:1.5rem;margin-bottom:1.5rem}
 .mx-1{margin-left:0.25rem;margin-right:0.25rem}
+.my-1{margin-top:0.25rem;margin-bottom:0.25rem}
 .mx-3{margin-left:0.75rem;margin-right:0.75rem}
 .my-4{margin-top:1rem;margin-bottom:1rem}
 .mx-2{margin-left:0.5rem;margin-right:0.5rem}
@@ -1336,7 +1333,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mx-8{margin-left:2rem;margin-right:2rem}
 .-my-2{margin-top:-0.5rem;margin-bottom:-0.5rem}
 .my-0{margin-top:0px;margin-bottom:0px}
-.my-1{margin-top:0.25rem;margin-bottom:0.25rem}
 .my-8{margin-top:2rem;margin-bottom:2rem}
 .my-auto{margin-top:auto;margin-bottom:auto}
 .my-5{margin-top:1.25rem;margin-bottom:1.25rem}
@@ -1470,8 +1466,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-auto{width:auto}
 .w-40{width:10rem}
 .w-200-px{width:200px}
-.w-1{width:0.25rem}
 .w-600-px{width:600px}
+.w-1{width:0.25rem}
 .w-500-px{width:500px}
 .w-128{width:32rem}
 .w-52{width:13rem}
@@ -1684,6 +1680,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-yellow-600{--tw-bg-opacity:1;background-color:rgb(202 138 4 / var(--tw-bg-opacity))}
 .bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246 / var(--tw-bg-opacity))}
 .bg-sky-800{--tw-bg-opacity:1;background-color:rgb(7 89 133 / var(--tw-bg-opacity))}
+.bg-orange-500{--tw-bg-opacity:1;background-color:rgb(249 115 22 / var(--tw-bg-opacity))}
 .bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity))}
 .bg-secondary{--tw-bg-opacity:1;background-color:rgb(206 102 33 / var(--tw-bg-opacity))}
 .bg-default{--tw-bg-opacity:1;background-color:rgb(0 62 100 / var(--tw-bg-opacity))}
@@ -1717,7 +1714,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-fuchsia-400{--tw-bg-opacity:1;background-color:rgb(232 121 249 / var(--tw-bg-opacity))}
 .bg-rose-400{--tw-bg-opacity:1;background-color:rgb(251 113 133 / var(--tw-bg-opacity))}
 .bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity))}
-.bg-orange-500{--tw-bg-opacity:1;background-color:rgb(249 115 22 / var(--tw-bg-opacity))}
 .bg-amber-500{--tw-bg-opacity:1;background-color:rgb(245 158 11 / var(--tw-bg-opacity))}
 .bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity))}
 .bg-lime-500{--tw-bg-opacity:1;background-color:rgb(132 204 22 / var(--tw-bg-opacity))}
@@ -1886,6 +1882,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175 / var(--tw-text-opacity))}
 .text-green-800{--tw-text-opacity:1;color:rgb(22 101 52 / var(--tw-text-opacity))}
 .text-red-800{--tw-text-opacity:1;color:rgb(153 27 27 / var(--tw-text-opacity))}
+.text-success{--tw-text-opacity:1;color:rgb(81 141 84 / var(--tw-text-opacity))}
 .text-primary-dark{--tw-text-opacity:1;color:rgb(55 87 138 / var(--tw-text-opacity))}
 .text-primary{--tw-text-opacity:1;color:rgb(63 98 156 / var(--tw-text-opacity))}
 .text-yellow-700{--tw-text-opacity:1;color:rgb(161 98 7 / var(--tw-text-opacity))}
@@ -1901,7 +1898,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-gray-300{--tw-text-opacity:1;color:rgb(209 213 219 / var(--tw-text-opacity))}
 .text-green-700{--tw-text-opacity:1;color:rgb(21 128 61 / var(--tw-text-opacity))}
 .text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity))}
-.text-success{--tw-text-opacity:1;color:rgb(81 141 84 / var(--tw-text-opacity))}
 .text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229 / var(--tw-text-opacity))}
 .text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity))}
 .text-green-500{--tw-text-opacity:1;color:rgb(34 197 94 / var(--tw-text-opacity))}
