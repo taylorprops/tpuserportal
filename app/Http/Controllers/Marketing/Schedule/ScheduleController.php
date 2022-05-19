@@ -524,7 +524,11 @@ class ScheduleController extends Controller
 
     public function get_notification_count(Request $request) {
 
-        $status_count = Schedule::whereIn('status_id', ['37', '26']) -> count();
+        if(auth() -> user() -> level == 'marketing') {
+            $status_count = Schedule::whereIn('status_id', ['37', '26']) -> count();
+        } else if(auth() -> user() -> level == 'super_user') {
+            $status_count = Schedule::whereIn('status_id', ['25']) -> count();
+        }
         $notes_count = ScheduleNotes::where('user_id', '!=', auth() -> user() -> id) -> where('read', FALSE) -> count();
         $count = $status_count + $notes_count;
         return response() -> json(['count' => $count]);
