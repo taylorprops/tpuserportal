@@ -532,7 +532,7 @@ class ScheduleController extends Controller
         }
         $notes_count = ScheduleNotes::where('user_id', '!=', auth() -> user() -> id) -> where('read', FALSE) -> count();
         $count = $status_count + $notes_count;
-        return response() -> json(['count' => $status_count]);
+        return response() -> json(['count' => $notes_count]);
 
     }
 
