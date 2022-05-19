@@ -10580,9 +10580,17 @@ if (document.URL.match('marketing/schedule')) {
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });
-        var counter = document.querySelector('[data-note-id="' + event_id + '"]');
+        this.update_counter(document.querySelector('[data-note-id="' + event_id + '"]'));
+      },
+      update_counter: function update_counter(counter) {
         var count = parseInt(counter.innerText) - 1;
         counter.innerText = count;
+
+        if (count == 0) {
+          counter.classList.add('hidden');
+        } else {
+          counter.classList.remove('hidden');
+        }
       }
     };
   };

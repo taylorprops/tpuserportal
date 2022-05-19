@@ -108,7 +108,7 @@
                             <button type="button" class="block w-full h-full pl-4" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                 <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                             </button>
-                            <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes" data-tippy-content="{{ $count_unread }} Unread Messages">{{ $count_unread }}</div>
+                            <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if($count_unread == 0) hidden @endif" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
                         </div>
                     </div>
 
