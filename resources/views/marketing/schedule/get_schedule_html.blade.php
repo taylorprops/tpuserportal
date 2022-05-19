@@ -30,7 +30,7 @@
     $notes =[];
     if($event -> notes) {
         $notes = $event -> notes;
-        $count_unread = count($notes -> where('read', false));
+        $count_unread = count($notes -> where('read', false) -> where('user_id', auth() -> user() -> id));
     }
 
     @endphp
