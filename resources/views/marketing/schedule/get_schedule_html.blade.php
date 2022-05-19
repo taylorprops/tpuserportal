@@ -56,11 +56,11 @@
         data-goal-id="{{ $event -> goal_id }}"
         data-focus-id="{{ $event -> focus_id }}">
 
-        <div class="flex flex-col"
+        <div class="flex flex-col text-xs"
         x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details">
-                <div class="flex flex-wrap justify-start items-center space-x-6 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
+                <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                     </div>
@@ -70,7 +70,7 @@
                             <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
                         @endif
                     </div>
-                    <div class="w-40 hidden sm:inline-block">
+                    <div class="w-32 hidden sm:inline-block">
                         {{ $event -> medium -> item }} - {{ $event -> id }}
                     </div>
 
@@ -103,7 +103,7 @@
 
                     </div>
 
-                    <div class="mr-3 ml-6">
+                    <div class="mr-3 ml-3">
                         <div class="relative">
                             <button type="button" class="block w-full h-full px-4" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                 <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
