@@ -419,7 +419,7 @@ if (document.URL.match('marketing/schedule')) {
                                 }
                             }
                         },
-                        contentHeight: 600,
+                        contentHeight: 700,
                     });
 
                     scope.calendar_object.render();
