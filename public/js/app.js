@@ -10550,13 +10550,14 @@ if (document.URL.match('marketing/schedule')) {
           console.log(error);
         });
       },
-      add_notes: function add_notes(ele, event_id, form) {
+      add_notes: function add_notes(ele, event_id) {
         var button_html = ele.innerHTML;
         show_loading_button(ele, 'Saving ... ');
         remove_form_errors();
         var scope = this;
-        var formData = new FormData(form);
+        var formData = new FormData();
         formData.append('event_id', event_id);
+        formData.append('notes', tinymce.activeEditor.getContent());
         axios.post('/marketing/add_notes', formData).then(function (response) {
           ele.innerHTML = button_html;
           scope.get_notes(event_id);

@@ -115,7 +115,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                                 <input class="editor-inline" name="notes" placeholder="Enter Notes" x-ref="notes">
                             </div>
                             <div class="flex justify-around mt-3">
-                                <button type="button" class="button primary md" @click.prevent="add_notes($el, {{ $event -> id }}, $refs.add_notes_form); show_add_notes = false; $refs.notes.value = ''">
+                                <button type="button" class="button primary md" @click.prevent="add_notes($el, {{ $event -> id }}); show_add_notes = false; $refs.notes.value = ''">
                                     Save Note <i class="fal fa-check ml-2"></i>
                                 </button>
                             </div>

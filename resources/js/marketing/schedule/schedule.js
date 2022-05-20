@@ -583,15 +583,16 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
-            add_notes(ele, event_id, form) {
+            add_notes(ele, event_id) {
 
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving ... ');
                 remove_form_errors();
 
                 let scope = this;
-                let formData = new FormData(form);
+                let formData = new FormData();
                 formData.append('event_id', event_id);
+                formData.append('notes', tinymce.activeEditor.getContent());
 
                 axios.post('/marketing/add_notes', formData)
                     .then(function (response) {
