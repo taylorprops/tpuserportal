@@ -49,7 +49,7 @@ $breadcrumbs = [
 
                 <div class="">
 
-                    <div class="h-screen-80 overflow-auto pb-16 mb-12 lg:mb-0">
+                    <div class="h-screen-80 overflow-auto pb-16 pr-4 mb-12 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 
