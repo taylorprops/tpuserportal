@@ -37,7 +37,9 @@ window.addEventListener('load', (event) => {
 window._token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 // axios headersObj
 window.axios_options = {
-    headers: { 'X-CSRF-TOKEN': _token }
+    headers: {
+        'X-CSRF-TOKEN': _token
+    }
 };
 
 
@@ -111,7 +113,7 @@ window.form_elements = function () {
                         <i class="fad fa-upload mr-2"></i> Select Files \
                     </div> \
                     <div class="flex-1"> \
-                        <div class="file-names '+ element_id + ' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
+                        <div class="file-names ' + element_id + ' text-xs max-h-24 overflow-y-auto p-2 w-full"></div> \
                     </div> \
                 </div>';
                 label.innerHTML = html;
@@ -187,10 +189,10 @@ window.main_search = function () {
             if (value.length > 0) {
 
                 axios.get('/search', {
-                    params: {
-                        value: value
-                    },
-                })
+                        params: {
+                            value: value
+                        },
+                    })
                     .then(function (response) {
                         if (response) {
                             search_results_div.innerHTML = response.data;
@@ -329,7 +331,9 @@ window.image_upload_handler = function (blobInfo, success, failure, progress) {
         var json;
 
         if (xhr.status === 403) {
-            failure('HTTP Error: ' + xhr.status, { remove: true });
+            failure('HTTP Error: ' + xhr.status, {
+                remove: true
+            });
             return;
         }
 
@@ -337,7 +341,7 @@ window.image_upload_handler = function (blobInfo, success, failure, progress) {
             failure('HTTP Error: ' + xhr.status);
             return;
         }
-        console.log(xhr);
+        console.log(xhr.responseText);
         json = JSON.parse(xhr.responseText);
 
         if (!json || typeof json.location != 'string') {
@@ -364,7 +368,10 @@ window.scroll_above = function (element) {
 
     let yOffset = -150;
     let y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    window.scrollTo({
+        top: y,
+        behavior: 'smooth'
+    });
     element.focus({
         preventScroll: true
     });
@@ -412,10 +419,10 @@ window.get_location_details = function (container, member_id, zip, city, state, 
 
     if (zip_code.length == 5) {
         axios.get('/transactions/get_location_details', {
-            params: {
-                zip: zip_code
-            },
-        })
+                params: {
+                    zip: zip_code
+                },
+            })
             .then(function (response) {
                 city.value = response.data.city;
                 state.value = response.data.state;
@@ -435,7 +442,10 @@ window.get_location_details = function (container, member_id, zip, city, state, 
 
 window.datatable_settings = {
     "autoWidth": false,
-    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+    ],
     "responsive": true,
     "destroy": true,
     "fixedHeader": true,
@@ -481,7 +491,9 @@ window.data_table = function (src, cols, page_length, table, sort_by, no_sort_co
     }
 
     if (sort_by.length > 0) {
-        datatable_settings.order = [[sort_by[0], sort_by[1]]];
+        datatable_settings.order = [
+            [sort_by[0], sort_by[1]]
+        ];
     }
 
     if (no_sort_cols.length > 0) {
@@ -505,28 +517,23 @@ window.data_table = function (src, cols, page_length, table, sort_by, no_sort_co
     if (show_buttons == true) {
 
         if (show_hide_cols == true) {
-            datatable_settings.buttons = [
-                {
-                    extend: 'colvis',
-                    text: 'Hide Columns'
-                }
-            ];
+            datatable_settings.buttons = [{
+                extend: 'colvis',
+                text: 'Hide Columns'
+            }];
         }
 
-        datatable_settings.buttons.push(
-            {
-                extend: 'excelHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
+        datatable_settings.buttons.push({
+            extend: 'excelHtml5',
+            exportOptions: {
+                columns: ':visible'
             }
-        );
+        }, {
+            extend: 'pdfHtml5',
+            exportOptions: {
+                columns: ':visible'
+            }
+        });
         buttons = '<B>';
 
 
@@ -603,7 +610,8 @@ window.global_format_number = function (num) {
 
 window.global_format_number_with_decimals = function (num) {
     const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency', currency: 'USD'
+        style: 'currency',
+        currency: 'USD'
     });
 
     num = num.replace(/[,\$]/g, '').toString();
@@ -702,7 +710,7 @@ window.numbers_only = function () {
                 event.preventDefault();
             } else {
 
-                let max = input.getAttribute('max') ?? null;
+                let max = input.getAttribute('max') || null;
 
                 if (max) {
                     if (parseInt(input.value + event.key) > max) {
@@ -722,7 +730,11 @@ window.numbers_only = function () {
 window.global_format_phone = function (obj) {
     if (obj) {
         let numbers = obj.value.replace(/\D/g, ''),
-            char = { 0: '(', 3: ') ', 6: '-' };
+            char = {
+                0: '(',
+                3: ') ',
+                6: '-'
+            };
         obj.value = '';
         for (let i = 0; i < numbers.length; i++) {
             if (i > 13) {
@@ -822,14 +834,14 @@ class Badger {
     constructor(options) {
         Object.assign(
             this, {
-            backgroundColor: "#f00",
-            color: "#fff",
-            size: 0.8,      // 0..1 (Scale in respect to the favicon image size)
-            position: "se", // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
-            radius: 10,      // Border radius
-            src: "",        // Favicon source (dafaults to the <link> icon href)
-            onChange() { },
-        },
+                backgroundColor: "#f00",
+                color: "#fff",
+                size: 0.8, // 0..1 (Scale in respect to the favicon image size)
+                position: "se", // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
+                radius: 10, // Border radius
+                src: "", // Favicon source (dafaults to the <link> icon href)
+                onChange() {},
+            },
             options
         );
         this.canvas = document.createElement("canvas");
@@ -894,15 +906,39 @@ class Badger {
         const sd = this.faviconSize - this.badgeSize;
         const sd2 = sd / 2;
         this.offset = {
-            n: { x: sd2, y: 0 },
-            e: { x: sd, y: sd2 },
-            s: { x: sd2, y: sd },
-            w: { x: 0, y: sd2 },
-            nw: { x: 0, y: 0 },
-            ne: { x: sd, y: 0 },
-            sw: { x: 0, y: sd },
-            se: { x: 8, y: 8 },
-        }[this.position];
+            n: {
+                x: sd2,
+                y: 0
+            },
+            e: {
+                x: sd,
+                y: sd2
+            },
+            s: {
+                x: sd2,
+                y: sd
+            },
+            w: {
+                x: 0,
+                y: sd2
+            },
+            nw: {
+                x: 0,
+                y: 0
+            },
+            ne: {
+                x: sd,
+                y: 0
+            },
+            sw: {
+                x: 0,
+                y: sd
+            },
+            se: {
+                x: 8,
+                y: 8
+            },
+        } [this.position];
     }
 
     // Public functions / methods:
@@ -942,12 +978,11 @@ const myBadgerOptions = {}; // See: constructor for customization options
 const myBadger = new Badger(myBadgerOptions);
 setInterval(() => {
     axios.get('/marketing/get_notification_count')
-    .then(function (response) {
-        let count = response.data.count;
-        myBadger.value = count;
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        .then(function (response) {
+            let count = response.data.count;
+            myBadger.value = count;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }, 2000);
-

@@ -1,12 +1,12 @@
-    /* Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 
-    .no-scrollbar {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-    }
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
 
 html {
     scroll-behavior: smooth;
@@ -25,9 +25,7 @@ a.default {
     display: none !important;
 }
 
-
 .resizers {
-
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -60,23 +58,18 @@ a.default {
             bottom: -10px;
             cursor: nwse-resize;
         }
-
     }
 
     .group-label {
         position: absolute;
         top: 0px;
         right: 1px;
-        font-size: .6rem;
+        font-size: 0.6rem;
     }
-
-
-
 }
 
-
 .custom-dropdown:hover > .custom-dropdown-content {
-	display: block;
+    display: block;
 }
 
 .table-container {
@@ -91,7 +84,7 @@ a.default {
                 }
             }
             tbody {
-                @apply  bg-white divide-y divide-gray-200;
+                @apply bg-white divide-y divide-gray-200;
                 td {
                     @apply p-2 text-gray-500 text-xs;
                 }
@@ -105,16 +98,16 @@ a.default {
 
     &.th-text-center {
         th {
-            @apply text-center
+            @apply text-center;
         }
     }
     &.td-text-center {
         td {
-            @apply text-center
+            @apply text-center;
         }
     }
     th {
-        @apply p-2 border-b
+        @apply p-2 border-b;
     }
     td {
         @apply p-2 border-b;
@@ -149,7 +142,6 @@ a.default {
 /* image cropping */
 
 .filepond--panel-root {
-
     @apply bg-primary-lightest text-gray-700 border-dashed border-4 border-blue-500;
 }
 
@@ -167,7 +159,6 @@ a.default {
     min-width: 1000px;
 }
 
-
 /* fullcalendar */
 
 .fc-event-title {
@@ -183,7 +174,7 @@ a.default {
     .fc-button-primary.fc-dayGridMonth-button,
     .fc-button-primary.fc-timeGridWeek-button,
     .fc-button-primary.fc-timeGridDay-button {
-        @apply  bg-primary hover:bg-primary-light inline-block cursor-pointer text-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
+        @apply bg-primary hover:bg-primary-light inline-block cursor-pointer text-center border border-transparent font-medium rounded shadow-md hover:shadow-lg text-white whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-offset-2;
         &:disabled {
             opacity: 0.4 !important;
             background-color: #003e64 !important;
@@ -198,31 +189,26 @@ a.default {
         }
     }
 
-
-
-
     .fc-event-main-frame {
         @apply cursor-pointer;
     }
-
 }
 
+.test {
+    // default
+    color: #4770b3;
+    color: #3f629c;
+    color: #365483;
+    color: #2a4266;
+    color: #273d5e;
 
-.test{
-// default
-color: #4770b3;
-color: #3f629c;
-color: #365483;
-color: #2a4266;
-color: #273d5e;
+    // primary
+    color: #e0ecff;
+    color: #4e84da;
+    color: #4a78c2;
+    color: #3f629c;
+    color: #37578a;
+    color: #2b4670;
 
-// primary
-color: #e0ecff;
-color: #4e84da;
-color: #4a78c2;
-color: #3f629c;
-color: #37578a;
-color: #2b4670;
-
-color: #ffa366;
+    color: #ffa366;
 }

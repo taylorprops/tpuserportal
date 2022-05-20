@@ -1,4 +1,3 @@
-
 if (document.URL.match('marketing/schedule')) {
 
     window.schedule = function () {
@@ -33,34 +32,46 @@ if (document.URL.match('marketing/schedule')) {
                 let formData = new FormData(form);
 
                 axios.post('/marketing/get_schedule', formData)
-                .then(function (response) {
-                    scope.$refs.schedule_list_div.innerHTML = response.data;
-                    scope.calendar();
-                    if(id) {
-                        let event_div = document.querySelector('#event_'+id);
-                        event_div.classList.add('cloned');
-                        setTimeout(function() {
-                            event_div.querySelector('.edit-button').click();
+                    .then(function (response) {
+                        scope.$refs.schedule_list_div.innerHTML = response.data;
+                        scope.calendar();
+                        if (id) {
+                            let event_div = document.querySelector('#event_' + id);
+                            event_div.classList.add('cloned');
+                            setTimeout(function () {
+                                event_div.querySelector('.edit-button').click();
+                            }, 500);
+                        }
+                        setTimeout(function () {
+                            document.querySelectorAll('.past-due').forEach(function (event) {
+                                scope.$refs.schedule_list_div.prepend(event);
+                            });
+                            tippy('[data-tippy-content]', {
+                                allowHTML: true,
+                            });
+                            let options = {
+                                selector: '.editor-inline',
+                                height: '400',
+                                menubar: 'tools edit format table',
+                                statusbar: false,
+                                plugins: 'image table code',
+                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
+                                table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                                relative_urls: false,
+                                document_base_url: location.hostname
+                            }
+                            text_editor(options);
                         }, 500);
-                    }
-                    setTimeout(function() {
-                        document.querySelectorAll('.past-due').forEach(function(event) {
-                            scope.$refs.schedule_list_div.prepend(event);
-                        });
-                        tippy('[data-tippy-content]', {
-                            allowHTML: true,
-                        });
-                    }, 500);
-                })
-                .catch(function (error) {
-                    display_errors(error);
-                });
+                    })
+                    .catch(function (error) {
+                        display_errors(error);
+                    });
 
             },
 
             clear_form(form) {
                 form.reset();
-                document.querySelectorAll('[type="file"]').forEach(function(input) {
+                document.querySelectorAll('[type="file"]').forEach(function (input) {
                     show_file_names(input);
                 });
                 document.querySelectorAll('.to-address').forEach(function (address) {
@@ -154,12 +165,12 @@ if (document.URL.match('marketing/schedule')) {
                 scope.$refs.goal_id.value = event_div.getAttribute('data-goal-id');
                 scope.$refs.focus_id.value = event_div.getAttribute('data-focus-id');
                 scope.show_email_options = false;
-                if(scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
+                if (scope.$refs.medium_id.options[scope.$refs.medium_id.selectedIndex].text == 'Email') {
                     scope.show_email_options = true;
                 }
                 scope.$refs.delete_event_button.setAttribute('data-id', event_div.getAttribute('data-id'));
 
-                scope.$refs.show_versions_button.addEventListener('click', function() {
+                scope.$refs.show_versions_button.addEventListener('click', function () {
                     scope.show_versions(id);
                 });
 
@@ -176,13 +187,12 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('status_id', status_id);
 
                 axios.post('/marketing/update_status', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    toastr.success('Status Successfully Updated');
-                    scope.get_schedule();
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        toastr.success('Status Successfully Updated');
+                        scope.get_schedule();
+                    })
+                    .catch(function (error) {});
 
             },
 
@@ -191,7 +201,7 @@ if (document.URL.match('marketing/schedule')) {
                 let scope = this;
                 scope.show_delete_event_modal = true;
 
-                scope.$refs.delete_event.addEventListener('click', function() {
+                scope.$refs.delete_event.addEventListener('click', function () {
 
                     let button_html = ele.innerHTML;
                     show_loading_button(ele, 'Deleting ... ');
@@ -200,16 +210,16 @@ if (document.URL.match('marketing/schedule')) {
                     formData.append('id', id);
 
                     axios.post('/marketing/delete_event', formData)
-                    .then(function (response) {
-                        ele.innerHTML = button_html;
-                        scope.get_schedule();
-                        scope.show_delete_event_modal = false;
-                        scope.show_item_modal = false;
-                        toastr.error('Event Successfully Deleted');
-                    })
-                    .catch(function (error) {
-                        display_errors(error, ele, button_html);
-                    });
+                        .then(function (response) {
+                            ele.innerHTML = button_html;
+                            scope.get_schedule();
+                            scope.show_delete_event_modal = false;
+                            scope.show_item_modal = false;
+                            toastr.error('Event Successfully Deleted');
+                        })
+                        .catch(function (error) {
+                            display_errors(error, ele, button_html);
+                        });
 
                 });
             },
@@ -217,10 +227,10 @@ if (document.URL.match('marketing/schedule')) {
             show_versions(id) {
                 let scope = this;
                 axios.get('/marketing/show_versions', {
-                    params: {
-                        id: id
-                    },
-                })
+                        params: {
+                            id: id
+                        },
+                    })
                     .then(function (response) {
                         scope.show_versions_modal = true;
                         scope.$refs.versions_div.innerHTML = response.data;
@@ -256,15 +266,14 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('version_id', version_id);
 
                 axios.post('/marketing/delete_version', formData)
-                .then(function (response) {
-                    scope.show_versions(event_id);
-                    scope.get_schedule();
-                    setTimeout(function() {
-                        document.querySelector('#show_details_'+event_id).click();
-                    }, 300);
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        scope.show_versions(event_id);
+                        scope.get_schedule();
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 300);
+                    })
+                    .catch(function (error) {});
             },
 
             reactivate_version(event_id, version_id) {
@@ -274,15 +283,14 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('version_id', version_id);
 
                 axios.post('/marketing/reactivate_version', formData)
-                .then(function (response) {
-                    scope.show_versions(event_id);
-                    scope.get_schedule();
-                    setTimeout(function() {
-                        document.querySelector('#show_details_'+event_id).click();
-                    }, 300);
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        scope.show_versions(event_id);
+                        scope.get_schedule();
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 300);
+                    })
+                    .catch(function (error) {});
             },
 
             mark_version_accepted(event_id, version_id) {
@@ -293,15 +301,14 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('version_id', version_id);
 
                 axios.post('/marketing/mark_version_accepted', formData)
-                .then(function (response) {
-                    scope.show_versions(event_id);
-                    scope.get_schedule();
-                    setTimeout(function() {
-                        document.querySelector('#show_details_'+event_id).click();
-                    }, 1000);
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        scope.show_versions(event_id);
+                        scope.get_schedule();
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 1000);
+                    })
+                    .catch(function (error) {});
 
             },
 
@@ -319,23 +326,23 @@ if (document.URL.match('marketing/schedule')) {
                 this.clear_add_version_form();
 
                 axios.post('/marketing/save_add_version', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.show_add_version_modal = false;
-                    toastr.success('New Version Successfully Added');
-                    scope.get_schedule();
-                    scope.clear_add_version_form();
-                    if(show_versions == true) {
-                        scope.show_versions(event_id);
-                    }
-                    setTimeout(function() {
-                        document.querySelector('#show_details_'+event_id).click();
-                    }, 1000);
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.show_add_version_modal = false;
+                        toastr.success('New Version Successfully Added');
+                        scope.get_schedule();
+                        scope.clear_add_version_form();
+                        if (show_versions == true) {
+                            scope.show_versions(event_id);
+                        }
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 1000);
 
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             clone(id) {
@@ -346,12 +353,11 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('id', id);
 
                 axios.post('/marketing/clone_event', formData)
-                .then(function (response) {
-                    let id = response.data.id;
-                    scope.get_schedule(id);
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        let id = response.data.id;
+                        scope.get_schedule(id);
+                    })
+                    .catch(function (error) {});
 
             },
 
@@ -362,9 +368,9 @@ if (document.URL.match('marketing/schedule')) {
                 let company = event_div.getAttribute('data-company');
                 let recipient = event_div.getAttribute('data-recipient');
                 let sender = 'sendinblue';
-                if(company == 'Heritage Title') {
+                if (company == 'Heritage Title') {
                     sender = 'mailchimp';
-                } else if(company == 'Heritage Financial') {
+                } else if (company == 'Heritage Financial') {
                     sender = 'omnisend';
                 }
 
@@ -377,14 +383,14 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('recipient', recipient);
 
                 axios.post('/marketing/get_email_list', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    window.location = response.data;
-                    toastr.success('List Successfully Downloaded');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        window.location = response.data;
+                        toastr.success('List Successfully Downloaded');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
 
             },
 
@@ -395,42 +401,43 @@ if (document.URL.match('marketing/schedule')) {
                 let formData = new FormData(form);
 
                 axios.post('/marketing/calendar_get_events', formData)
-                .then(function (response) {
+                    .then(function (response) {
 
-                    let calendarEl = document.querySelector('.calendar');
-                    scope.calendar_object = new FullCalendar.Calendar(calendarEl, {
-                        initialView: 'dayGridMonth',
-                        headerToolbar: {
-                            left: 'prev,next today',
-                            center: 'title',
-                            right: 'showWeekends dayGridMonth,timeGridWeek,timeGridDay'
-                        },
-                        events: response.data,
-                        eventClick: function(info) {
-                            let id = info.event.id;
-                            document.querySelector('.edit-button[data-id="'+id+'"]').click();
-                        },
-                        weekends: false,
-                        customButtons: {
-                            showWeekends: {
-                                text: 'Show Weekends',
-                                click: function() {
-                                    scope.show_weekends = ! scope.show_weekends; scope.calendar_object.setOption('weekends', scope.show_weekends)
+                        let calendarEl = document.querySelector('.calendar');
+                        scope.calendar_object = new FullCalendar.Calendar(calendarEl, {
+                            initialView: 'dayGridMonth',
+                            headerToolbar: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'showWeekends dayGridMonth,timeGridWeek,timeGridDay'
+                            },
+                            events: response.data,
+                            eventClick: function (info) {
+                                let id = info.event.id;
+                                document.querySelector('.edit-button[data-id="' + id + '"]').click();
+                            },
+                            weekends: false,
+                            customButtons: {
+                                showWeekends: {
+                                    text: 'Show Weekends',
+                                    click: function () {
+                                        scope.show_weekends = !scope.show_weekends;
+                                        scope.calendar_object.setOption('weekends', scope.show_weekends)
+                                    }
                                 }
-                            }
-                        },
-                        height:'auto',
-                        fixedWeekCount: false,
+                            },
+                            height: 'auto',
+                            fixedWeekCount: false,
+                        });
+
+                        scope.calendar_object.render();
+
+
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
                     });
-
-                    scope.calendar_object.render();
-
-
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
 
 
 
@@ -438,21 +445,21 @@ if (document.URL.match('marketing/schedule')) {
 
             get_html_from_link(ele, textarea) {
                 show_loading();
-                setTimeout(function() {
+                setTimeout(function () {
                     textarea.value = '';
                     axios.get(ele.value)
-                    .then(function (response) {
-                        if(response.data) {
-                            textarea.value = response.data;
-                        } else {
-                            toast.error('The URL is invalid');
-                        }
-                        hide_loading();
-                    })
-                    .catch(function (error) {
-                        hide_loading();
-                        toastr.error('URL Not Found');
-                    });
+                        .then(function (response) {
+                            if (response.data) {
+                                textarea.value = response.data;
+                            } else {
+                                toast.error('The URL is invalid');
+                            }
+                            hide_loading();
+                        })
+                        .catch(function (error) {
+                            hide_loading();
+                            toastr.error('URL Not Found');
+                        });
                 }, 1000);
             },
 
@@ -467,7 +474,7 @@ if (document.URL.match('marketing/schedule')) {
 
                 scope.show_email_modal = true;
 
-                if(event_div.getAttribute('data-subject-line-a') != '') {
+                if (event_div.getAttribute('data-subject-line-a') != '') {
                     scope.show_subject_options = true;
                     document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
                     document.querySelector('[name="email_subject"]').value = event_div.getAttribute('data-subject-line-a');
@@ -493,14 +500,14 @@ if (document.URL.match('marketing/schedule')) {
                 let formData = new FormData(form);
 
                 axios.post('/marketing/send_email', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.show_email_modal = false;
-                    scope.clear_form(form);
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.show_email_modal = false;
+                        scope.clear_form(form);
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
 
             },
 
@@ -513,32 +520,32 @@ if (document.URL.match('marketing/schedule')) {
                 let to_input = document.querySelector('[name="email_to"]');
 
                 let all_addresses = [];
-                to_list.querySelectorAll('.to-address').forEach(function(address) {
+                to_list.querySelectorAll('.to-address').forEach(function (address) {
                     all_addresses.push(address.getAttribute('data-email'));
                 });
 
                 let to_addresses = [];
-                to_list.querySelectorAll('.to-address:checked').forEach(function(address) {
+                to_list.querySelectorAll('.to-address:checked').forEach(function (address) {
                     to_addresses.push(address.getAttribute('data-email'));
                 });
 
                 let not_to_addresses = all_addresses.filter(x => to_addresses.indexOf(x) === -1);
 
                 let input_addresses = to_input.value;
-                if(input_addresses != '') {
-                    if(input_addresses.match(/,/)) {
+                if (input_addresses != '') {
+                    if (input_addresses.match(/,/)) {
                         input_addresses = input_addresses.split(',');
-                        input_addresses.forEach(function(address) {
+                        input_addresses.forEach(function (address) {
                             address = address.trim();
-                            if(address != '') {
-                                if(!not_to_addresses.includes(address)) {
+                            if (address != '') {
+                                if (!not_to_addresses.includes(address)) {
                                     to_addresses.push(address);
                                 }
                             }
                         });
                     } else {
                         let address = input_addresses.trim();
-                        if(!not_to_addresses.includes(address)) {
+                        if (!not_to_addresses.includes(address)) {
                             to_addresses.push(address);
                         }
                     }
@@ -555,24 +562,24 @@ if (document.URL.match('marketing/schedule')) {
                 ele.select();
                 ele.setSelectionRange(0, 99999);
                 copy_to_clipboard(ele)
-                .then(() =>
-                toastr.success('Link Successfully Copied To Clipboard'))
-                .catch(() => toastr.error('Link Not Copied To Clipboard'));
+                    .then(() =>
+                        toastr.success('Link Successfully Copied To Clipboard'))
+                    .catch(() => toastr.error('Link Not Copied To Clipboard'));
             },
 
             get_notes(event_id) {
                 let scope = this;
                 axios.get('/marketing/get_notes', {
-                    params: {
-                        event_id: event_id
-                    },
-                })
-                .then(function (response) {
-                    document.querySelector('.notes-div[data-id="' + event_id + '"]').innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                        params: {
+                            event_id: event_id
+                        },
+                    })
+                    .then(function (response) {
+                        document.querySelector('.notes-div[data-id="' + event_id + '"]').innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             },
 
@@ -587,15 +594,15 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('event_id', event_id);
 
                 axios.post('/marketing/add_notes', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes(event_id);
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes(event_id);
 
-                    toastr.success('Note Saved');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                        toastr.success('Note Saved');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             delete_note(ele, event_id, id) {
@@ -608,14 +615,14 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('id', id);
 
                 axios.post('/marketing/delete_note', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes(event_id);
-                    toastr.success('Note Deleted');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes(event_id);
+                        toastr.success('Note Deleted');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             mark_note_read(ele, event_id, note_id) {
@@ -627,15 +634,15 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('note_id', note_id);
 
                 axios.post('/marketing/mark_note_read', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
 
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
 
-                this.update_counter(document.querySelector('[data-note-id="'+event_id+'"]'));
+                this.update_counter(document.querySelector('[data-note-id="' + event_id + '"]'));
 
 
             },
@@ -644,7 +651,7 @@ if (document.URL.match('marketing/schedule')) {
 
                 let count = parseInt(counter.innerText) - 1;
                 counter.innerText = count;
-                if(count == 0) {
+                if (count == 0) {
                     counter.classList.add('hidden');
                 } else {
                     counter.classList.remove('hidden');

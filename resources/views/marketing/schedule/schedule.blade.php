@@ -26,14 +26,14 @@ $breadcrumbs = [
                     </div>
 
                     @foreach(['company', 'recipient', 'medium', 'status'] as $item)
-                        <div>
-                            <select class="form-element select md" data-label="{{ ucwords($item) }}" name="{{ $item }}_id" @change="get_schedule()">
-                                <option value="">All</option>
-                                @foreach($settings -> where('category', $item) as $setting)
-                                    <option value="{{ $setting -> id }}">{{ $setting -> item }}
+                    <div>
+                        <select class="form-element select md" data-label="{{ ucwords($item) }}" name="{{ $item }}_id" @change="get_schedule()">
+                            <option value="">All</option>
+                            @foreach($settings -> where('category', $item) as $setting)
+                            <option value="{{ $setting -> id }}">{{ $setting -> item }}
                                 @endforeach
-                            </select>
-                        </div>
+                        </select>
+                    </div>
 
                     @endforeach
 
@@ -370,39 +370,30 @@ $breadcrumbs = [
 
                 <div x-data="{ active: 'a' }">
 
-                    <div class="my-4 relative" x-data="{ show_to_options: false }"
-                    @click.outside="show_to_options = false">
-                        <div class="mt-1 flex rounded-md shadow-sm"
-                        @click="show_to_options = !show_to_options">
+                    <div class="my-4 relative" x-data="{ show_to_options: false }" @click.outside="show_to_options = false">
+                        <div class="mt-1 flex rounded-md shadow-sm" @click="show_to_options = !show_to_options">
                             <a href="javascript:void(0)" class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-primary sm:text-sm w-28"> To: </a>
-                            <input type="text" name="email_to"
-                            class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 mail-to"
-                            placeholder="Separate emails with a comma"
-                            x-ref="email_to">
+                            <input type="text" name="email_to" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 mail-to" placeholder="Separate emails with a comma" x-ref="email_to">
                         </div>
-                        <div class="absolute top-10 left-28 p-2 bg-white rounded-lg shadow z-100 divide-y to-list"
-                        x-show="show_to_options" x-transition
-                        x-ref="to_list">
+                        <div class="absolute top-10 left-28 p-2 bg-white rounded-lg shadow z-100 divide-y to-list" x-show="show_to_options" x-transition x-ref="to_list">
 
                             @foreach($settings -> where('category', 'users') as $user)
 
-                                <div class="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 cursor-pointer">
-                                    <div>
-                                        <input type="checkbox" class="form-element checkbox lg to-address" id="{{ $user -> email }}" data-email="{{ $user -> email }}"
-                                        @change="update_to_addresses()">
-                                    </div>
-                                    <div class="col-span-2">
-                                        <label for="{{ $user -> email }}">{{ $user -> item }}</label>
-                                    </div>
-                                    <div class="col-span-9">
-                                        <label for="{{ $user -> email }}">{{ $user -> email }}</label>
-                                    </div>
+                            <div class="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 cursor-pointer">
+                                <div>
+                                    <input type="checkbox" class="form-element checkbox lg to-address" id="{{ $user -> email }}" data-email="{{ $user -> email }}" @change="update_to_addresses()">
                                 </div>
+                                <div class="col-span-2">
+                                    <label for="{{ $user -> email }}">{{ $user -> item }}</label>
+                                </div>
+                                <div class="col-span-9">
+                                    <label for="{{ $user -> email }}">{{ $user -> email }}</label>
+                                </div>
+                            </div>
                             @endforeach
 
                             <div class="flex justify-around p-2">
-                                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500 text-sm"
-                                @click="show_to_options = false"><i class="fa-light fa-xmark mr-2"></i> Close</a>
+                                <a href="javascript:void(0)" class="text-red-600 hover:text-red-500 text-sm" @click="show_to_options = false"><i class="fa-light fa-xmark mr-2"></i> Close</a>
                             </div>
 
                         </div>
@@ -412,23 +403,19 @@ $breadcrumbs = [
 
                         @foreach(['a', 'b'] as $subject)
 
-                            <div class="my-4">
-                                <div class="mt-1 flex w-full">
-                                    <div class="flex rounded-md shadow-sm w-full">
-                                        <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
-                                            <div class="pr-2 flex justify-around items-center">
-                                                <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}"
-                                                @if($subject == 'a') checked @endif
-                                                @click="active = document.querySelector('[name=\'subject_option\']:checked').value; if($el.checked) { $refs.email_subject.value = document.querySelector('[name=\'email_subject_line_'+$el.value+'\']').value; }"
-                                                :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
-                                            </div>
-                                            <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
+                        <div class="my-4">
+                            <div class="mt-1 flex w-full">
+                                <div class="flex rounded-md shadow-sm w-full">
+                                    <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
+                                        <div class="pr-2 flex justify-around items-center">
+                                            <input type="radio" class="form-element radio md" id="input_{{ $subject }}" name="subject_option" value="{{ $subject }}" @if($subject=='a' ) checked @endif @click="active = document.querySelector('[name=\'subject_option\']:checked').value; if($el.checked) { $refs.email_subject.value = document.querySelector('[name=\'email_subject_line_'+$el.value+'\']').value; }" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                         </div>
-                                        <input type="text" name="email_subject_line_{{ $subject }}" x-ref="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly
-                                        :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                        <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
                                     </div>
+                                    <input type="text" name="email_subject_line_{{ $subject }}" x-ref="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                 </div>
                             </div>
+                        </div>
 
                         @endforeach
 

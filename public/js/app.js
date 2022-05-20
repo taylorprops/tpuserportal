@@ -8339,7 +8339,7 @@ window.image_upload_handler = function (blobInfo, success, failure, progress) {
       return;
     }
 
-    console.log(xhr);
+    console.log(xhr.responseText);
     json = JSON.parse(xhr.responseText);
 
     if (!json || typeof json.location != 'string') {
@@ -8663,9 +8663,7 @@ window.numbers_only = function () {
       if (!allowed_keys.includes(event.key)) {
         event.preventDefault();
       } else {
-        var _input$getAttribute;
-
-        var max = (_input$getAttribute = input.getAttribute('max')) !== null && _input$getAttribute !== void 0 ? _input$getAttribute : null;
+        var max = input.getAttribute('max') || null;
 
         if (max) {
           if (parseInt(input.value + event.key) > max) {
@@ -10125,6 +10123,18 @@ if (document.URL.match('marketing/schedule')) {
             tippy('[data-tippy-content]', {
               allowHTML: true
             });
+            var options = {
+              selector: '.editor-inline',
+              height: '400',
+              menubar: 'tools edit format table',
+              statusbar: false,
+              plugins: 'image table code',
+              toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
+              table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+              relative_urls: false,
+              document_base_url: location.hostname
+            };
+            text_editor(options);
           }, 500);
         })["catch"](function (error) {
           display_errors(error);
