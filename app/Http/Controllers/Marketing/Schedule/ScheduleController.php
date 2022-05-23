@@ -297,7 +297,7 @@ class ScheduleController extends Controller
     public function send_email(Request $request) {
 
         $event_id = $request -> email_event_id;
-        $tos = $request -> email_to;
+        $tos = explode(',', $request -> email_to);
         $subject = $request -> email_subject;
         $preview_text = $request -> email_preview_text;
 
