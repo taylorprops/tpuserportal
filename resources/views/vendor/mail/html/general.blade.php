@@ -2,8 +2,6 @@
 
 {{ $header }}
 
-@endcomponent
-
 {{-- Body --}}
 {{ $slot }}
 

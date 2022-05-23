@@ -311,8 +311,18 @@ class ScheduleController extends Controller
 
         $upload = $event -> uploads -> first();
 
-        if($upload -> html) {
-            $body = $upload -> html;
+        $html = $upload -> html;
+
+        if($html) {
+            $preview_html = '
+            <div style="display: none; max-height: 0px; overflow: hidden;">
+                '.$preview_text.'
+            </div>
+            <div style="display: none; max-height: 0px; overflow: hidden;">
+                &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+            </div>';
+            $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
+            $body = $html;
         } else {
             $attachment = [Storage::path($upload -> file_location)];
             $body = 'See Attached';
@@ -324,7 +334,8 @@ class ScheduleController extends Controller
             'subject' => $subject,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'body' => $body,
-            'attachments' => $attachment
+            'attachments' => $attachment,
+            'bcc' => config('global.contact_email_title_bcc_addresses')
         ];
 
 

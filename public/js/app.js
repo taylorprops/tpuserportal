@@ -10462,6 +10462,7 @@ if (document.URL.match('marketing/schedule')) {
           document.querySelector('[name="email_subject_line_a"]').value = event_div.getAttribute('data-subject-line-a');
           document.querySelector('[name="email_subject"]').value = event_div.getAttribute('data-subject-line-a');
           document.querySelector('[name="email_subject_line_b"]').value = event_div.getAttribute('data-subject-line-b');
+          document.querySelector('[name="email_preview_text"]').value = event_div.getAttribute('data-preview-text');
         } else {
           scope.show_subject_options = false;
           document.querySelector('[name="email_subject"]').value = event_div.getAttribute('data-description');

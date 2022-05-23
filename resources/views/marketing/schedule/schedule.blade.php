@@ -419,6 +419,18 @@ $breadcrumbs = [
 
                         @endforeach
 
+                        <div class="my-4">
+
+                            <div class="flex rounded-md shadow-sm w-full">
+                                <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
+                                    <label for="email_preview_text"> Preview Text: </label>
+                                </div>
+                                <input type="text" name="email_preview_text" id="email_preview_text" class=" flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                     <div x-show="!show_subject_options">

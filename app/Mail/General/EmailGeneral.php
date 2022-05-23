@@ -32,6 +32,7 @@ class EmailGeneral extends Mailable
     {
         $mail = $this -> markdown('mail.general')
         -> from($this -> message['from']['email'], $this -> message['from']['name'])
+        -> bcc($this -> message['bcc'])
         -> subject($this -> message['subject'])
         -> html($this -> message['body'])
         -> with([
