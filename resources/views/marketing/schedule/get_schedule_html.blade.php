@@ -146,7 +146,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                     <div class="p-2 border rounded-lg">
 
-                        <div class="max-w-600-px notes-div max-h-500 overflow-auto" data-id="{{ $event -> id }}"></div>
+                        <div class="w-full notes-div max-h-500-px overflow-auto" data-id="{{ $event -> id }}"></div>
 
                     </div>
 
