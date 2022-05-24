@@ -100,13 +100,20 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                     </div>
 
-                    <div class="mx-1">
-                        <div class="relative">
-                            <button type="button" class="block w-full h-full pl-4" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
+                    <div class="mx-1 pl-4">
+                        <div class="relative" x-show="!show_notes">
+                            <button type="button" class="block w-full h-full" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                 <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                             </button>
                             <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if($count_unread == 0) hidden @endif" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
                         </div>
+
+                        <div x-show="show_notes">
+                            <button type="button" class="" @click="show_notes = false">
+                                <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
+                            </button>
+                        </div>
+
                     </div>
 
                 </div>
@@ -126,7 +133,6 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                             </button>
                             <button type="button" class="" @click="show_add_notes = ! show_add_notes" x-show="show_add_notes === true">
                                 <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
-
                             </button>
                         </div>
                     </div>
@@ -296,6 +302,10 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                     <div class="mx-2 w-1 border-r"></div>
 
+                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem" @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+
+                    <div class="mx-2 w-1 border-r"></div>
+
                     <div class="relative inline-block" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
                         <div>
                             <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
@@ -308,8 +318,6 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                             <div class="py-2" role="none">
 
                                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem" @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
-
-                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem" @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
 
                                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem" @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span> View Versions</a>
 
