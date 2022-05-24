@@ -121,8 +121,8 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                     <div class="flex justify-end mb-2">
                         <div>
-                            <button type="button" class="" @click="show_add_notes = ! show_add_notes;" x-show="show_add_notes === false">
-                                <i class="fa-duotone fa-plus-circle text-green-600 hover:text-green-700 fa-2x"></i>
+                            <button type="button" class="button success sm" @click="show_add_notes = ! show_add_notes;" x-show="show_add_notes === false">
+                                <i class="fa-light fa-plus mr-2"></i> Add
                             </button>
                             <button type="button" class="" @click="show_add_notes = ! show_add_notes" x-show="show_add_notes === true">
                                 <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
