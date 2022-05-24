@@ -126,7 +126,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                 <div class="w-full">
 
-                    <div class="max-w-600-px mx-auto flex justify-end mb-2">
+                    <div class="flex justify-end mb-2 max-w-700-px mx-auto">
                         <div>
                             <button type="button" class="button success sm" @click="show_add_notes = ! show_add_notes;" x-show="show_add_notes === false">
                                 <i class="fa-light fa-plus mr-2"></i> Add
@@ -137,7 +137,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                         </div>
                     </div>
 
-                    <div class="my-3" x-show="show_add_notes" x-transition>
+                    <div class="max-w-700-px mx-auto" x-show="show_add_notes" x-transition>
                         <form x-ref="add_notes_form">
                             <div>
                                 <input class="editor-inline" name="notes" placeholder="Enter Notes" x-ref="notes">
@@ -150,11 +150,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                         </form>
                     </div>
 
-                    <div class="max-w-600-px mx-auto p-2 border rounded-lg shadow-md">
-
-                        <div class="notes-div max-h-500-px overflow-auto pr-4" data-id="{{ $event -> id }}"></div>
-
-                    </div>
+                    <div class="notes-div max-h-500-px overflow-auto pr-4 max-w-700-px mx-auto p-2 border rounded-lg shadow-md" data-id="{{ $event -> id }}"></div>
 
                 </div>
 

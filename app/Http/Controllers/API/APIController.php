@@ -857,7 +857,8 @@ class APIController extends Controller
                     ['email' => '4105701014@vtext.com'],
                 ];
             } else {
-                $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+                $to = ['email' => 'mike@taylorprops.com'];
+                $cc = null;
             }
 
 

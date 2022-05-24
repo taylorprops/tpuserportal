@@ -30,6 +30,9 @@ class EmailGeneral extends Mailable
      */
     public function build()
     {
+        if(!isset($this -> message['bcc'])) {
+            $this -> message['bcc'] = null;
+        }
         $mail = $this -> markdown('mail.general')
         -> from($this -> message['from']['email'], $this -> message['from']['name'])
         -> bcc($this -> message['bcc'])
