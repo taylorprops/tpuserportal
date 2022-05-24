@@ -186,7 +186,7 @@ $breadcrumbs = [
                             </select>
                         </div>
 
-                        <div class="col-span-2">
+                        <div class="col-span-4">
                             <input type="text" class="form-element input md required" name="description" x-ref="description" data-label="Description">
                         </div>
 
@@ -416,6 +416,7 @@ $breadcrumbs = [
                                 </div>
                             </div>
                         </div>
+
 
                         @endforeach
 

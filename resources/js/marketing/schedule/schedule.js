@@ -192,7 +192,7 @@ if (document.URL.match('marketing/schedule')) {
                         toastr.success('Status Successfully Updated');
                         scope.get_schedule();
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) { });
 
             },
 
@@ -227,10 +227,10 @@ if (document.URL.match('marketing/schedule')) {
             show_versions(id) {
                 let scope = this;
                 axios.get('/marketing/show_versions', {
-                        params: {
-                            id: id
-                        },
-                    })
+                    params: {
+                        id: id
+                    },
+                })
                     .then(function (response) {
                         scope.show_versions_modal = true;
                         scope.$refs.versions_div.innerHTML = response.data;
@@ -273,7 +273,7 @@ if (document.URL.match('marketing/schedule')) {
                             document.querySelector('#show_details_' + event_id).click();
                         }, 300);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) { });
             },
 
             reactivate_version(event_id, version_id) {
@@ -290,7 +290,7 @@ if (document.URL.match('marketing/schedule')) {
                             document.querySelector('#show_details_' + event_id).click();
                         }, 300);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) { });
             },
 
             mark_version_accepted(event_id, version_id) {
@@ -308,7 +308,7 @@ if (document.URL.match('marketing/schedule')) {
                             document.querySelector('#show_details_' + event_id).click();
                         }, 1000);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) { });
 
             },
 
@@ -357,7 +357,7 @@ if (document.URL.match('marketing/schedule')) {
                         let id = response.data.id;
                         scope.get_schedule(id);
                     })
-                    .catch(function (error) {});
+                    .catch(function (error) { });
 
             },
 
@@ -571,10 +571,10 @@ if (document.URL.match('marketing/schedule')) {
             get_notes(event_id) {
                 let scope = this;
                 axios.get('/marketing/get_notes', {
-                        params: {
-                            event_id: event_id
-                        },
-                    })
+                    params: {
+                        event_id: event_id
+                    },
+                })
                     .then(function (response) {
                         document.querySelector('.notes-div[data-id="' + event_id + '"]').innerHTML = response.data;
                     })
@@ -599,7 +599,7 @@ if (document.URL.match('marketing/schedule')) {
                     .then(function (response) {
                         ele.innerHTML = button_html;
                         scope.get_notes(event_id);
-
+                        tinymce.activeEditor.setContent('');
                         toastr.success('Note Saved');
                     })
                     .catch(function (error) {

@@ -297,17 +297,20 @@ class ScheduleController extends Controller
     public function send_email(Request $request) {
 
         $event_id = $request -> email_event_id;
+
+        $event = Schedule::with(['recipient', 'company', 'uploads' => function($query) {
+            $query -> where('accepted_version', true);
+        }])
+        -> find($event_id);
+
         $tos = explode(',', $request -> email_to);
-        $subject = $request -> email_subject;
+        $subject = $request -> email_subject.' - '.$event_id.' - '.$event -> company -> item.' to '.$event -> recipient -> item;
         $preview_text = $request -> email_preview_text;
 
         $body = null;
         $attachment = null;
 
-        $event = Schedule::with(['uploads' => function($query) {
-            $query -> where('accepted_version', true);
-        }])
-        -> find($event_id);
+
 
         $upload = $event -> uploads -> first();
 

@@ -36,7 +36,25 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
     @endphp
 
     <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200
-        @if($past_due) past-due @endif" :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'" id="event_{{ $event -> id }}" x-data="{ show_details: false }" data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}" data-status-id="{{ $event -> status_id }}" data-recipient-id="{{ $event -> recipient_id }}" data-recipient="{{ $event -> recipient -> item }}" data-company-id="{{ $event -> company_id }}" data-company="{{ $company }}" data-medium-id="{{ $event -> medium_id }}" data-description="{{ $event -> description }}" data-subject-line-a="{{ $event -> subject_line_a }}" data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}" data-focus-id="{{ $event -> focus_id }}">
+        @if($past_due) past-due @endif"
+        :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'"
+        id="event_{{ $event -> id }}"
+        x-data="{ show_details: false }"
+        data-id="{{ $event -> id }}"
+        data-event-date="{{ $event -> event_date }}"
+        data-state="{{ $event -> state }}"
+        data-status-id="{{ $event -> status_id }}"
+        data-recipient-id="{{ $event -> recipient_id }}"
+        data-recipient="{{ $event -> recipient -> item }}"
+        data-company-id="{{ $event -> company_id }}"
+        data-company="{{ $company }}"
+        data-medium-id="{{ $event -> medium_id }}"
+        data-description="{{ $event -> description }}"
+        data-subject-line-a="{{ $event -> subject_line_a }}"
+        data-subject-line-b="{{ $event -> subject_line_b }}"
+        data-preview-text="{{ $event -> preview_text }}"
+        data-goal-id="{{ $event -> goal_id }}"
+        data-focus-id="{{ $event -> focus_id }}">
 
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
@@ -95,6 +113,8 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
             </div>
 
+
+
             <div class="p-4" x-show="show_notes" x-transition>
 
                 <div class="w-full">
@@ -126,7 +146,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                     <div class="p-2 border rounded-lg">
 
-                        <div class="max-w-600-px notes-div" data-id="{{ $event -> id }}"></div>
+                        <div class="max-w-600-px notes-div max-h-500 overflow-auto" data-id="{{ $event -> id }}"></div>
 
                     </div>
 

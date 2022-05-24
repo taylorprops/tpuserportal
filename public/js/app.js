@@ -10562,6 +10562,7 @@ if (document.URL.match('marketing/schedule')) {
         axios.post('/marketing/add_notes', formData).then(function (response) {
           ele.innerHTML = button_html;
           scope.get_notes(event_id);
+          tinymce.activeEditor.setContent('');
           toastr.success('Note Saved');
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
