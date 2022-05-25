@@ -59,13 +59,13 @@ $breadcrumbs = [
 
                 <div class="flex flex-col ">
 
-                    <div class="relative lg:h-screen-80 lg:overflow-auto">
+                    <div class="relative lg:h-screen-80 lg:overflow-y-auto">
 
                         <div x-show="show_html || show_file">
 
                             <div class="absolute top-12 right-12 z-20"><a href="javascript:void(0)" @click="show_html = false; show_file = false; show_calendar = true;"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a></div>
 
-                            <div class="absolute top-0 bg-white z-10 w-full h-full" x-show="show_html" x-ref="view_html">
+                            <div class="absolute top-0 bg-white z-10 w-full h-full border-4" x-show="show_html" x-ref="view_html">
                                 <iframe class="view-accepted-iframe" width="100%" height="100%"></iframe>
                             </div>
 

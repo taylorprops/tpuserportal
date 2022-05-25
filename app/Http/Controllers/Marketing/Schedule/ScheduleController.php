@@ -215,6 +215,10 @@ class ScheduleController extends Controller
         $upload_file = $request -> file('upload_version_file');
         $upload_html = $request -> upload_version_html;
 
+        ScheduleUploads::where('event_id', $event_id) -> update([
+            'accepted_version' => false
+        ]);
+
         if($upload_file) {
 
             $upload_file_name = Helper::clean_file_name($upload_file, '', false, true);
@@ -235,7 +239,7 @@ class ScheduleController extends Controller
             $upload -> file_location = $upload_file_location;
             $upload -> file_url = $upload_file_url;
             $upload -> event_id = $event_id;
-            $upload -> accepted_version = false;
+            $upload -> accepted_version = true;
             $upload -> save();
 
         }
@@ -245,7 +249,7 @@ class ScheduleController extends Controller
             $upload = new ScheduleUploads();
             $upload -> html = $upload_html;
             $upload -> event_id = $event_id;
-            $upload -> accepted_version = false;
+            $upload -> accepted_version = true;
             $upload -> save();
 
         }
