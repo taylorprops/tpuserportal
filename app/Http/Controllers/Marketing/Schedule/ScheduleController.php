@@ -26,6 +26,8 @@ class ScheduleController extends Controller
     private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
     private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
 
+
+
     public function schedule(Request $request) {
 
         $settings = ScheduleSettings::orderBy('order') -> get();
@@ -359,10 +361,25 @@ class ScheduleController extends Controller
 
         if($sender == 'mailchimp') {
             $this -> agent_columns = $this -> agent_columns_mail_chimp;
+            $employees = [
+                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', ''],
+                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', ''],
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '']
+            ];
         } else if($sender == 'sendinblue') {
             $this -> agent_columns = $this -> agent_columns_send_in_blue;
+            $employees = [
+                ['delia@taylorprops.com', 'Delia', 'Abrams', '', ''],
+                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', ''],
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '']
+            ];
         } else if($sender == 'omnisend') {
             $this -> agent_columns = $this -> agent_columns_omni_send;
+            $employees = [
+                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', '', ''],
+                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', '', ''],
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', '']
+            ];
         }
 
         $file_name = 'agent_list_'.time().'.csv';
@@ -377,6 +394,16 @@ class ScheduleController extends Controller
             fputcsv($handle, $this -> agent_columns, ',');
             foreach ($agents as $agent) {
                 fputcsv($handle, $agent -> toArray(), ',');
+            }
+
+            $employees = [
+                ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
+                ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
+                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', '']
+            ];
+
+            foreach ($employees as $employee) {
+                fputcsv($handle, $employee, ',');
             }
 
         } else if($recipient == 'PSI') {
@@ -406,6 +433,10 @@ class ScheduleController extends Controller
                 foreach ($office -> agents as $agent) {
                     fputcsv($handle, $agent -> toArray(), ',');
                 }
+            }
+
+            foreach ($employees as $employee) {
+                fputcsv($handle, $employee, ',');
             }
 
         }

@@ -17,6 +17,6 @@ class BrightOffices extends Model
 
     public function agents()
     {
-        return $this->hasMany(\App\Models\BrightMLS\BrightAgentRoster::class, 'OfficeKey', 'OfficeKey')->where('active', 'yes')->orderBy('MemberLastName', 'ASC');
+        return $this -> hasMany(\App\Models\BrightMLS\BrightAgentRoster::class, 'OfficeKey', 'OfficeKey') -> where('active', 'yes') -> orderBy('MemberLastName', 'ASC');
     }
 }
