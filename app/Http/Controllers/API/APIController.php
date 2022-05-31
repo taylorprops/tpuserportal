@@ -732,6 +732,7 @@ class APIController extends Controller
             }
         } else {
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
+            $cc = [];
         }
 
         $body = '
