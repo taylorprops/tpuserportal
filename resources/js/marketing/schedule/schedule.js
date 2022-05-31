@@ -136,6 +136,12 @@ if (document.URL.match('marketing/schedule')) {
                 }
             },
 
+            hide_view_div() {
+                this.show_calendar = true;
+                this.show_file = false;
+                this.show_html = false;
+            },
+
             edit_item(ele) {
 
                 let scope = this;

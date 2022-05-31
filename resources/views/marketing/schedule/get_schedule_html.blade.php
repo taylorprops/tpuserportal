@@ -40,7 +40,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
-            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details; if(show_details === false) { show_notes = false }">
+            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
 
                 <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
