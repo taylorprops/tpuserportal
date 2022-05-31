@@ -1530,7 +1530,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .cursor-pointer{cursor:pointer}
 .cursor-not-allowed{cursor:not-allowed}
 .cursor-auto{cursor:auto}
-.resize-x{resize:horizontal}
 .resize{resize:both}
 .list-inside{list-style-position:inside}
 .list-disc{list-style-type:disc}
@@ -2289,7 +2288,6 @@ textarea.required,
 .hover\:text-primary:hover{--tw-text-opacity:1;color:rgb(63 98 156 / var(--tw-text-opacity))}
 .hover\:text-gray-50:hover{--tw-text-opacity:1;color:rgb(249 250 251 / var(--tw-text-opacity))}
 .hover\:text-red-500:hover{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity))}
-.hover\:text-green-700:hover{--tw-text-opacity:1;color:rgb(21 128 61 / var(--tw-text-opacity))}
 .hover\:text-red-700:hover{--tw-text-opacity:1;color:rgb(185 28 28 / var(--tw-text-opacity))}
 .hover\:text-primary-light:hover{--tw-text-opacity:1;color:rgb(74 120 194 / var(--tw-text-opacity))}
 .hover\:text-gray-600:hover{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity))}
@@ -2468,7 +2466,6 @@ textarea.required,
 .lg\:grid-cols-8{grid-template-columns:repeat(8, minmax(0, 1fr))}
 .lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}
 .lg\:gap-8{gap:2rem}
-.lg\:overflow-auto{overflow:auto}
 .lg\:overflow-y-auto{overflow-y:auto}
 .lg\:p-8{padding:2rem}
 .lg\:px-12{padding-left:3rem;padding-right:3rem}
