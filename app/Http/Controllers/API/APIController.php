@@ -33,14 +33,14 @@ class APIController extends Controller
 
         // verify request is coming from our lending pad account
         $client_id = $request -> client_id;
-        if($client_id != 'd7acee3e89454909ae18d06e9a18c077') {
+        if ($client_id != 'd7acee3e89454909ae18d06e9a18c077') {
             return response() -> json(['status' => 'success']);
         }
 
         $loan_status_detailed = $request -> loan_status;
         $ignore_statuses = ['Lead', 'Prospect', 'Pre Qualify', 'Pre Approval', 'Application Taken', 'Registered', 'Broker Initial Submission'];
 
-        if (! in_array($loan_status_detailed, $ignore_statuses)) {
+        if (!in_array($loan_status_detailed, $ignore_statuses)) {
             $action = $request -> action ?? null;
             $loan_id = $request -> loan_id ?? null;
 
@@ -104,9 +104,9 @@ class APIController extends Controller
                 $street_name = $address['street_name'] ?? null;
                 $street_address = $address['address'] ?? null;
                 $unit = $address['unit'] ?? null;
-                $street = trim($street_number.' '.$street_address);
+                $street = trim($street_number . ' ' . $street_address);
                 if ($unit) {
-                    $street .= ' '.$unit;
+                    $street .= ' ' . $unit;
                 }
                 $city = $address['city'] ?? null;
                 $state = $address['state'] ?? null;
@@ -130,7 +130,7 @@ class APIController extends Controller
                 $borrower = $this -> parse_name($borrower_fullname);
                 $borrower_first = $borrower['first'];
                 if ($borrower['middle'] != '') {
-                    $borrower_first .= ' '.$borrower['middle'];
+                    $borrower_first .= ' ' . $borrower['middle'];
                 }
                 $borrower_last = $borrower['last'];
             }
@@ -140,21 +140,21 @@ class APIController extends Controller
                 $co_borrower = $this -> parse_name($co_borrower_fullname);
                 $co_borrower_first = $co_borrower['first'];
                 if ($co_borrower['middle'] != '') {
-                    $co_borrower_first .= ' '.$co_borrower['middle'];
+                    $co_borrower_first .= ' ' . $co_borrower['middle'];
                 }
                 $co_borrower_last = $co_borrower['last'];
             }
 
             // People
 
-            if($request -> loan_officer) {
+            if ($request -> loan_officer) {
                 $loan_officer = Mortgage::where(function ($query) use ($request) {
                     $query -> where('email', $request -> loan_officer_email)
-                    -> orWhere('fullname', $request -> loan_officer)
-                    -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
+                        -> orWhere('fullname', $request -> loan_officer)
+                        -> orWhere('nmls_id', $request -> loan_officer_nmls_id);
                 })
-                -> first();
-                if($loan_officer) {
+                    -> first();
+                if ($loan_officer) {
                     $loan_officer_1_id = $loan_officer -> id;
                 }
             }
@@ -171,11 +171,11 @@ class APIController extends Controller
                 $lender_short = substr($lender, strpos($lender, '(') + 1, -1);
 
                 $lender_search = Lenders::where('active', 'yes')
-                -> where(function($query) use ($lender_name, $lender_short) {
-                    $query -> where('company_name', $lender_name)
-                    -> orWhere('company_name_short', $lender_short);
-                })
-                -> get();
+                    -> where(function ($query) use ($lender_name, $lender_short) {
+                        $query -> where('company_name', $lender_name)
+                            -> orWhere('company_name_short', $lender_short);
+                    })
+                    -> get();
 
                 if (count($lender_search) == 1) {
                     $lender_uuid = $lender_search -> first() -> uuid;
@@ -188,7 +188,7 @@ class APIController extends Controller
             if ($action && $action == 'match') {
                 $loan = Loans::with(['loan_officer_1']) -> find($loan_id);
                 $status = 'matched';
-            } else if($action && $action == 'add') {
+            } else if ($action && $action == 'add') {
                 // add loan
                 $loan = new Loans();
                 $status = 'added';
@@ -196,20 +196,20 @@ class APIController extends Controller
                 $db_log_data_before = null;
             }
 
-            if (! $loan) {
+            if (!$loan) {
 
                 // get loan if it has the lending_pad_loan_number
                 $loan = Loans::where(function ($query) use ($lending_pad_loan_number) {
                     $query -> where('lending_pad_loan_number', $lending_pad_loan_number)
-                    -> whereNotNull('lending_pad_loan_number')
-                    -> where('lending_pad_loan_number', '!=', '');
+                        -> whereNotNull('lending_pad_loan_number')
+                        -> where('lending_pad_loan_number', '!=', '');
                 })
-                -> with(['loan_officer_1'])
-                -> first();
+                    -> with(['loan_officer_1'])
+                    -> first();
             }
 
             // if no loan search for matches by address and borrower
-            if (! $loan) {
+            if (!$loan) {
                 $loans = null;
 
                 $cut_off_date = '2021-08-01';
@@ -223,27 +223,27 @@ class APIController extends Controller
                 $borrower_first = $borrower['first'];
 
                 $loans = Loans::select('*', DB::raw('DATE_FORMAT(settlement_date,"%m/%d/%Y") as settle_date'))
-                -> where(function ($query) use ($street, $borrower_first, $borrower_last) {
-                    $query -> where(function ($query) use ($borrower_first, $borrower_last) {
-                        $query -> where('borrower_first', $borrower_first)
-                        -> where('borrower_last', $borrower_last);
+                    -> where(function ($query) use ($street, $borrower_first, $borrower_last) {
+                        $query -> where(function ($query) use ($borrower_first, $borrower_last) {
+                            $query -> where('borrower_first', $borrower_first)
+                                -> where('borrower_last', $borrower_last);
+                        })
+                            -> orWhere(function ($query) use ($street) {
+                                if ($street) {
+                                    $query -> where('street', 'like', '%' . $street . '%');
+                                }
+                            });
                     })
-                    -> orWhere(function ($query) use ($street) {
-                        if ($street) {
-                            $query -> where('street', 'like', '%'.$street.'%');
-                        }
-                    });
-                })
-                -> where(function ($query) {
-                    $query -> whereNull('lending_pad_loan_number')
-                    -> orWhere('lending_pad_loan_number', '');
-                })
-                -> where(function($query) use ($cut_off_date) {
-                    $query -> whereNull('settlement_date')
-                    -> orWhere('settlement_date', '>', $cut_off_date);
-                })
-                -> with(['loan_officer_1'])
-                -> get();
+                    -> where(function ($query) {
+                        $query -> whereNull('lending_pad_loan_number')
+                            -> orWhere('lending_pad_loan_number', '');
+                    })
+                    -> where(function ($query) use ($cut_off_date) {
+                        $query -> whereNull('settlement_date')
+                            -> orWhere('settlement_date', '>', $cut_off_date);
+                    })
+                    -> with(['loan_officer_1'])
+                    -> get();
 
                 if (count($loans) > 0) {
                     return response() -> json([
@@ -253,7 +253,7 @@ class APIController extends Controller
                 }
             }
 
-            if (! $loan && (! $action || $action == 'retry')) {
+            if (!$loan && (!$action || $action == 'retry')) {
                 return response() -> json([
                     'status' => 'not_found',
                 ]);
@@ -279,7 +279,7 @@ class APIController extends Controller
             $loan -> co_borrower_last = $co_borrower_last;
             $loan -> co_borrower_fullname = $co_borrower_fullname;
 
-            if($update_address == 'yes' || $action == 'add' || $action == 'match') {
+            if ($update_address == 'yes' || $action == 'add' || $action == 'match') {
                 $loan -> street = $street;
                 $loan -> city = $city;
                 $loan -> state = $state;
@@ -314,20 +314,20 @@ class APIController extends Controller
             $settlement_date = null;
             $loan -> time_line_scheduled_settlement = null;
             $loan -> time_line_estimated_settlement = null;
-            if($request -> Estimate_Closing != null) {
+            if ($request -> Estimate_Closing != null) {
                 $loan -> time_line_estimated_settlement = date('Y-m-d', strtotime($request -> Estimate_Closing));
             }
-            if($request -> Schedule_Closing != null) {
+            if ($request -> Schedule_Closing != null) {
                 $loan -> time_line_scheduled_settlement = date('Y-m-d', strtotime($request -> Schedule_Closing));
                 $settlement_date = date('Y-m-d', strtotime($request -> Schedule_Closing));
             }
-            if($request -> Closed) {
+            if ($request -> Closed) {
                 $loan -> time_line_closed = date('Y-m-d', strtotime($request -> Closed));
                 $settlement_date = date('Y-m-d', strtotime($request -> Closed));
             }
             $loan -> settlement_date = $settlement_date;
 
-            if($request -> Processing) {
+            if ($request -> Processing) {
                 $loan -> time_line_sent_to_processing = date('Y-m-d', strtotime($request -> Processing));
             }
             if ($request -> Clear_To_Close) {
@@ -374,23 +374,24 @@ class APIController extends Controller
         return response() -> json(['status' => 'not_added']);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $search = $request -> search;
         $loans = Loans::where(function ($query) use ($search) {
             if ($search) {
                 $query -> whereHas('loan_officer_1', function ($query) use ($search) {
-                    $query -> where('fullname', 'like', '%'.$search.'%');
+                    $query -> where('fullname', 'like', '%' . $search . '%');
                 })
-                -> orWhere('street', 'like', '%'.$search.'%')
-                -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
-                -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
+                    -> orWhere('street', 'like', '%' . $search . '%')
+                    -> orWhere('borrower_fullname', 'like', '%' . $search . '%')
+                    -> orWhere('co_borrower_fullname', 'like', '%' . $search . '%');
             }
         })
-        -> whereNotNull('lending_pad_uuid')
-        -> orderBy('created_at', 'desc')
-        -> get();
+            -> whereNotNull('lending_pad_uuid')
+            -> orderBy('created_at', 'desc')
+            -> get();
 
-        if(count($loans) == 0) {
+        if (count($loans) == 0) {
             return response() -> json(['status' => 'not_found']);
         }
 
@@ -403,14 +404,14 @@ class APIController extends Controller
         $name = $parser -> parse($name);
         $first = $name -> getFirstname();
         $middle = $name -> getInitials();
-        if(!$middle) {
+        if (!$middle) {
             $middle = $name -> getMiddleName();
         }
         $last = $name -> getLastname();
         $suffix = $name -> getSuffix();
 
         if ($suffix) {
-            $last .= ', '.$suffix;
+            $last .= ', ' . $suffix;
         }
 
         return [
@@ -428,13 +429,13 @@ class APIController extends Controller
         // only able to get tax records for MD at this point
         if ($state == 'MD') {
             if ($tax_id != '') {
-                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?account_id_mdp_field_acctid='.urlencode($tax_id);
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?account_id_mdp_field_acctid=' . urlencode($tax_id);
             } else {
                 $unit_number = '';
                 if ($unit != '') {
-                    $unit_number = '&mdp_street_address_units_mdp_field_strtunt='.urlencode($unit);
+                    $unit_number = '&mdp_street_address_units_mdp_field_strtunt=' . urlencode($unit);
                 }
-                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27'.$street_number.'%20'.urlencode(strtoupper($street_name)).'%27%29&mdp_street_address_zip_code_mdp_field_zipcode='.$zip.$unit_number;
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27' . $street_number . '%20' . urlencode(strtoupper($street_name)) . '%27%29&mdp_street_address_zip_code_mdp_field_zipcode=' . $zip . $unit_number;
             }
             $headers = [
                 'Content-Type' => 'application/json',
@@ -470,7 +471,7 @@ class APIController extends Controller
                     $details = [
                         'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
                         'TransferDate' => str_replace('.', '-', $property['sales_segment_1_transfer_date_yyyy_mm_dd_mdp_field_tradate_sdat_field_89']) ?? null,
-                        'OriginalCost' => '$'.number_format($property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'], 2) ?? null,
+                        'OriginalCost' => '$' . number_format($property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'], 2) ?? null,
                         'NumberOfUnits' => $property['c_a_m_a_system_data_number_of_dwelling_units_mdp_field_bldg_units_sdat_field_239'] ?? null,
                         'County' => $tax_county ?? null,
                         'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
@@ -559,7 +560,8 @@ class APIController extends Controller
     }
 
     /* from taylorprops.com */
-    public function submit_recruiting_form(Request $request) {
+    public function submit_recruiting_form(Request $request)
+    {
 
         $access_token = $this -> get_access_token('leads');
 
@@ -573,7 +575,7 @@ class APIController extends Controller
 
         $first_name = $request -> first_name;
         $last_name = $request -> last_name;
-        $full_name = $request -> first_name.' '.$request -> last_name;
+        $full_name = $request -> first_name . ' ' . $request -> last_name;
         $phone = $request -> phone;
         $email = $request -> email;
         $message_from_agent = $request -> message ?? null;
@@ -585,7 +587,7 @@ class APIController extends Controller
         $new_category = $check_exists['new_category'];
 
         $existing_lead = false;
-        if($lead_id) {
+        if ($lead_id) {
             $existing_lead = true;
         }
 
@@ -596,7 +598,7 @@ class APIController extends Controller
 
         $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-        if($new_category == true) {
+        if ($new_category == true) {
 
             $data = [
                 'id' => $lead_id,
@@ -611,22 +613,20 @@ class APIController extends Controller
                 )
             );
             $this -> add_email_to_lead($fields, $access_token, $api_url);
-
         }
 
         // add message
-        if($message_from_agent) {
+        if ($message_from_agent) {
 
             $this -> add_notes($lead_id, $message_from_agent);
-
         }
 
         // Send email notification to Nikki and Kyle
 
-        if(config('app.env') == 'production') {
+        if (config('app.env') == 'production') {
             $to = ['email' => config('global.recruiting_email_real_estate_to_address')];
             $cc = [];
-            foreach(config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
+            foreach (config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
                 $cc[] = ['email' => $cc_recip];
             }
         } else {
@@ -637,11 +637,11 @@ class APIController extends Controller
 
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
-        Name: '.$full_name.'<br>
-        Phone: '.$phone.'<br>
-        Email: '.$email.'<br>
-        Message: '.$message_from_agent.'<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+        Name: ' . $full_name . '<br>
+        Phone: ' . $phone . '<br>
+        Email: ' . $email . '<br>
+        Message: ' . $message_from_agent . '<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
 
 
         $message = [
@@ -653,16 +653,16 @@ class APIController extends Controller
         ];
 
         Mail::to([$to])
-        -> cc($cc)
-        -> send(new EmailGeneral($message));
+            -> cc($cc)
+            -> send(new EmailGeneral($message));
 
 
         return response() -> json(['status' => 'success']);
-
     }
 
     /* from heritagetitlemd.com */
-    public function submit_contact_form_title(Request $request) {
+    public function submit_contact_form_title(Request $request)
+    {
 
         $access_token = $this -> get_access_token('leads');
 
@@ -688,7 +688,7 @@ class APIController extends Controller
         $new_category = $check_exists['new_category'];
 
         $existing_lead = false;
-        if($lead_id) {
+        if ($lead_id) {
             $existing_lead = true;
         }
 
@@ -699,7 +699,7 @@ class APIController extends Controller
 
         $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-        if($new_category == true) {
+        if ($new_category == true) {
 
             $data = [
                 'id' => $lead_id,
@@ -714,36 +714,33 @@ class APIController extends Controller
                 )
             );
             $this -> add_email_to_lead($fields, $access_token, $api_url);
-
         }
 
         // add message
-        if($message) {
+        if ($message) {
 
             $this -> add_notes($lead_id, $message);
-
         }
 
         // Send email notification
 
-        if(config('app.env') == 'production') {
+        if (config('app.env') == 'production') {
             $to = ['email' => config('global.contact_email_title_to_address')];
             $cc = [];
-            foreach(config('global.contact_email_title_cc_addresses') as $cc_recip) {
+            foreach (config('global.contact_email_title_cc_addresses') as $cc_recip) {
                 $cc[] = ['email' => $cc_recip];
             }
-
         } else {
             $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
         }
 
         $body = '
         Someone just submitted a contact form on heritagetitle.com.<br><br>
-        Name: '.$full_name.'<br>
-        Phone: '.$phone.'<br>
-        Email: '.$email.'<br>
-        Message: '.$message.'<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+        Name: ' . $full_name . '<br>
+        Phone: ' . $phone . '<br>
+        Email: ' . $email . '<br>
+        Message: ' . $message . '<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
 
 
         $message = [
@@ -755,15 +752,15 @@ class APIController extends Controller
         ];
 
         Mail::to([$to])
-        -> cc($cc)
-        -> send(new EmailGeneral($message));
+            -> cc($cc)
+            -> send(new EmailGeneral($message));
 
 
         return response() -> json(['status' => 'success']);
-
     }
 
-    public function add_email_clicker_real_estate(Request $request) {
+    public function add_email_clicker_real_estate(Request $request)
+    {
 
         // https://taylorprops.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
@@ -783,7 +780,7 @@ class APIController extends Controller
         $new_category = $check_exists['new_category'];
 
         $existing_lead = false;
-        if($lead_id) {
+        if ($lead_id) {
             $existing_lead = true;
         }
 
@@ -796,7 +793,7 @@ class APIController extends Controller
         $phone = $agent -> MemberPreferredPhone;
         $company = $agent -> OfficeName;
 
-        if($agent) {
+        if ($agent) {
 
             $description = 'An agent clicked on a link in an email for more information';
 
@@ -806,7 +803,7 @@ class APIController extends Controller
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-            if($new_category == true) {
+            if ($new_category == true) {
 
                 $data = [
                     'id' => $lead_id,
@@ -821,34 +818,31 @@ class APIController extends Controller
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
-
             }
 
-            if($existing_lead == false) {
+            if ($existing_lead == false) {
 
                 $this -> add_notes($lead_id, 'Lead added from Email Click');
-
             } else {
 
                 $notes =
-                $agent -> MemberFullname.' clicked on a link in an email again
-                Lead Source - '.$lead_source.'
-                Lead Medium - '.$lead_medium.'
-                Lead Campaign - '.$lead_campaign;
+                    $agent -> MemberFullname . ' clicked on a link in an email again
+                Lead Source - ' . $lead_source . '
+                Lead Medium - ' . $lead_medium . '
+                Lead Campaign - ' . $lead_campaign;
 
                 $this -> add_notes($lead_id, $notes);
-
             }
 
 
             // Send email notification
 
-            if(config('app.env') == 'production') {
+            if (config('app.env') == 'production') {
                 $to = [
                     ['email' => config('global.recruiting_email_real_estate_to_address')],
                 ];
                 $cc = [];
-                foreach(config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
+                foreach (config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
                     $cc[] = ['email' => $cc_recip];
                 }
 
@@ -864,10 +858,10 @@ class APIController extends Controller
 
             $body = '
             An agent just clicked on a link in an email for more information.<br><br>
-            Name: '.$agent -> MemberFullName.'<br>
-            Phone: '.$agent -> MemberPreferredPhone.'<br>
-            Email: '.$agent -> MemberEmail.'<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+            Name: ' . $agent -> MemberFullName . '<br>
+            Phone: ' . $agent -> MemberPreferredPhone . '<br>
+            Email: ' . $agent -> MemberEmail . '<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
 
 
             $message = [
@@ -879,25 +873,21 @@ class APIController extends Controller
             ];
 
             Mail::to($to)
-            -> cc($cc)
-            -> send(new EmailGeneral($message));
-
-            if(date('G') > '7' && date('G') < '20' && date('Y-m-d') > '2022-05-30') {
-
-                $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
-
-                $message = [
-                    'company' => 'Taylor Properties',
-                    'subject' => 'Recruiting Alert!',
-                    'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                    'body' => $body,
-                    'attachments' => null
-                ];
-
-                Mail::to($text_to)
+                -> cc($cc)
                 -> send(new EmailGeneral($message));
 
-            }
+            $body = 'An agent just clicked on a link. Agent: ' . $agent -> MemberFullName . ' - ' . $agent -> MemberPreferredPhone . ' - ' . $agent -> MemberEmail;
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert!',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to($text_to)
+                -> send(new EmailGeneral($message));
 
             /* testing */
 
@@ -918,15 +908,14 @@ class APIController extends Controller
 
 
             return response() -> json(['status' => 'success']);
-
         }
 
         return response() -> json(['status' => 'Agent Not Found']);
-
     }
 
     /* from heritagefinancial.com */
-    public function add_email_clicker_mortgage(Request $request) {
+    public function add_email_clicker_mortgage(Request $request)
+    {
 
 
         // http://heritagefinancial.com/?utm_campaign=2022-06_TP_37&email=test@test.com
@@ -947,7 +936,7 @@ class APIController extends Controller
         $new_category = $check_exists['new_category'];
 
         $existing_lead = false;
-        if($lead_id) {
+        if ($lead_id) {
             $existing_lead = true;
         }
 
@@ -955,7 +944,7 @@ class APIController extends Controller
 
         $loan_officer = LoanOfficerAddresses::where('email', $email) -> first();
 
-        if($loan_officer) {
+        if ($loan_officer) {
 
 
             $description = 'Loan Officer clicked on a link in an email for more information';
@@ -973,7 +962,7 @@ class APIController extends Controller
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-            if($new_category == true) {
+            if ($new_category == true) {
 
                 $data = [
                     'id' => $lead_id,
@@ -988,31 +977,29 @@ class APIController extends Controller
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
-
             }
 
-            if($existing_lead == false) {
+            if ($existing_lead == false) {
 
                 $this -> add_notes($lead_id, 'Lead added from Email Click');
 
                 return response() -> json(['status' => 'success']);
-
             }
 
             $notes =
-            $loan_officer -> full_name.' clicked on a link in an email
-            Lead Source - '.$lead_source.'
-            Lead Medium - '.$lead_medium.'
-            Lead Campaign - '.$lead_campaign;
+                $loan_officer -> full_name . ' clicked on a link in an email
+            Lead Source - ' . $lead_source . '
+            Lead Medium - ' . $lead_medium . '
+            Lead Campaign - ' . $lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
 
 
             // Send email notification to Kyle
-            if(config('app.env') == 'production') {
+            if (config('app.env') == 'production') {
                 $to = ['email' => config('global.recruiting_email_mortgage_to_address')];
                 $cc = [];
-                foreach(config('global.recruiting_email_mortgage_cc_addresses') as $cc_recip) {
+                foreach (config('global.recruiting_email_mortgage_cc_addresses') as $cc_recip) {
                     $cc[] = ['email' => $cc_recip];
                 }
             } else {
@@ -1022,10 +1009,10 @@ class APIController extends Controller
 
             $body = '
             A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
-            Name: '.$loan_officer -> full_name.'<br>
-            Phone: '.$loan_officer -> phone.'<br>
-            Email: '.$loan_officer -> email.'<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+            Name: ' . $loan_officer -> full_name . '<br>
+            Phone: ' . $loan_officer -> phone . '<br>
+            Email: ' . $loan_officer -> email . '<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
 
 
             $message = [
@@ -1037,20 +1024,19 @@ class APIController extends Controller
             ];
 
             Mail::to([$to])
-            -> cc($cc)
-            -> send(new EmailGeneral($message));
+                -> cc($cc)
+                -> send(new EmailGeneral($message));
 
 
             return response() -> json(['status' => 'success']);
-
         }
 
         return response() -> json(['status' => 'Loan Officer Not Found']);
-
     }
 
     /* from heritagetitlemd.com */
-    public function add_email_clicker_title(Request $request) {
+    public function add_email_clicker_title(Request $request)
+    {
 
 
         // http://heritagetitlemd.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
@@ -1070,7 +1056,7 @@ class APIController extends Controller
         $new_category = $check_exists['new_category'];
 
         $existing_lead = false;
-        if($lead_id) {
+        if ($lead_id) {
             $existing_lead = true;
         }
 
@@ -1085,7 +1071,7 @@ class APIController extends Controller
         $phone = $agent -> MemberPreferredPhone;
         $company = $agent -> OfficeName;
 
-        if($agent) {
+        if ($agent) {
 
             $description = 'An agent clicked on a link in an email for more information';
 
@@ -1095,7 +1081,7 @@ class APIController extends Controller
 
             $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
-            if($new_category == true) {
+            if ($new_category == true) {
 
                 $data = [
                     'id' => $lead_id,
@@ -1110,28 +1096,26 @@ class APIController extends Controller
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
-
             }
 
-            if($existing_lead == false) {
+            if ($existing_lead == false) {
 
                 $this -> add_notes($lead_id, 'Lead added from Email Click');
 
                 return response() -> json(['status' => 'success']);
-
             }
 
             $notes =
-            $agent -> MemberFullname.' clicked on a link in an email
-            Lead Source - '.$lead_source.'
-            Lead Medium - '.$lead_medium.'
-            Lead Campaign - '.$lead_campaign;
+                $agent -> MemberFullname . ' clicked on a link in an email
+            Lead Source - ' . $lead_source . '
+            Lead Medium - ' . $lead_medium . '
+            Lead Campaign - ' . $lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
 
 
             // Send email notification to Kyle
-            if(config('app.env') == 'production') {
+            if (config('app.env') == 'production') {
                 $to = ['email' => config('global.contact_email_title_to_address')];
             } else {
                 $to = ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'];
@@ -1139,10 +1123,10 @@ class APIController extends Controller
 
             $body = '
             An Agent just clicked on a link in an email for more information. This is the second contact from the Agent.<br><br>
-            Name: '.$agent -> MemberFullName.'<br>
-            Phone: '.$agent -> MemberPreferredPhone.'<br>
-            Email: '.$agent -> MemberEmail.'<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
+            Name: ' . $agent -> MemberFullName . '<br>
+            Phone: ' . $agent -> MemberPreferredPhone . '<br>
+            Email: ' . $agent -> MemberEmail . '<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
 
 
             $message = [
@@ -1154,28 +1138,27 @@ class APIController extends Controller
             ];
 
             Mail::to([$to])
-            -> send(new EmailGeneral($message));
+                -> send(new EmailGeneral($message));
 
 
             return response() -> json(['status' => 'success']);
-
         }
 
         return response() -> json(['status' => 'Agent Not Found']);
-
     }
 
     /* from zoho */
-    public function get_medium(Request $request) {
+    public function get_medium(Request $request)
+    {
 
         $uuid = $request -> uuid;
         $event = Schedule::where('uuid', $uuid) -> with(['company', 'recipient']) -> first();
 
-        if($event) {
+        if ($event) {
 
             $medium = ScheduleUploads::where('event_id', $event -> id)
-            -> where('accepted_version', true)
-            -> first();
+                -> where('accepted_version', true)
+                -> first();
 
             $from = $event -> company -> item;
             $to = $event -> recipient -> item;
@@ -1188,46 +1171,45 @@ class APIController extends Controller
             $file_url = $medium -> file_url;
             $html = '';
 
-            if($medium -> html) {
+            if ($medium -> html) {
                 $type = 'email';
                 $html = $medium -> html;
             }
 
             return compact('from', 'to', 'subject', 'preview_text', 'description', 'states', 'event_date', 'type', 'html', 'file_url');
-
         }
 
         return response() -> json(['error' => 'not_found']);
-
     }
 
-    public function get_bright_agent_details(Request $request) {
+    public function get_bright_agent_details(Request $request)
+    {
 
         $email = $request -> email;
 
         $agent = BrightAgentRoster::where('MemberEmail', $email)
-        -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
-        -> first();
+            -> with(['office:OfficeKey,OfficeName,OfficeAddress1,OfficeCity,OfficeStateOrProvince,OfficePostalCode'])
+            -> first();
 
-        if($agent) {
+        if ($agent) {
 
             $agent_mls_id = $agent -> MemberMlsId;
 
             $listings = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
-            -> where('ListAgentMlsId', $agent_mls_id)
-            -> where('MlsStatus', 'Closed')
-            -> whereNotNull('CloseDate')
-            -> groupBy('year')
-            -> orderBy('year', 'desc')
-            -> get();
+                -> where('ListAgentMlsId', $agent_mls_id)
+                -> where('MlsStatus', 'Closed')
+                -> whereNotNull('CloseDate')
+                -> groupBy('year')
+                -> orderBy('year', 'desc')
+                -> get();
 
             $contracts = BrightListings::select(DB::raw('YEAR(CloseDate) as year, count(*) as total, AVG(ClosePrice) as average, sum(ClosePrice) as total_sales'))
-            -> where('BuyerAgentMlsId', $agent_mls_id)
-            -> where('MlsStatus', 'Closed')
-            -> whereNotNull('CloseDate')
-            -> groupBy('year')
-            -> orderBy('year', 'desc')
-            -> get();
+                -> where('BuyerAgentMlsId', $agent_mls_id)
+                -> where('MlsStatus', 'Closed')
+                -> whereNotNull('CloseDate')
+                -> groupBy('year')
+                -> orderBy('year', 'desc')
+                -> get();
 
             $min_list_date = $listings -> min('year') ?? 2022;
             $min_contract_date = $contracts -> min('year') ?? 2022;
@@ -1235,21 +1217,20 @@ class APIController extends Controller
             $min_year = min($min_list_date, $min_contract_date);
 
             $years_active = date('Y') - $min_year;
-            if($years_active == 0) {
+            if ($years_active == 0) {
                 $years_active = 1;
             }
 
             return view('API/zoho/get_bright_agent_details_html', compact('agent', 'agent_mls_id', 'years_active', 'listings', 'contracts'));
-
         }
 
         return response() -> json(['status' => 'not found']);
-
     }
 
     /* TODO Add location stats - sold per state, county */
 
-    public function add_lead_to_zoho($fields, $access_token, $api_url) {
+    public function add_lead_to_zoho($fields, $access_token, $api_url)
+    {
 
         $headers = array(
             'Content-Type: application/json',
@@ -1272,10 +1253,10 @@ class APIController extends Controller
         curl_close($curl);
 
         return $result['data'][0]['details']['id'];
-
     }
 
-    public function fields($existing_lead, $new_category = false, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, $round_robin) {
+    public function fields($existing_lead, $new_category = false, $full_name, $first_name, $last_name, $company, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, $round_robin)
+    {
 
         $data = [
             'Phone' => $phone,
@@ -1284,7 +1265,7 @@ class APIController extends Controller
             'Follow_Up_Date' => date('Y-m-d')
         ];
 
-        if($existing_lead == false || $new_category == true) {
+        if ($existing_lead == false || $new_category == true) {
             $data = [
                 'Full_Name' => $full_name,
                 'First_Name' => $first_name,
@@ -1312,7 +1293,7 @@ class APIController extends Controller
             )
         );
 
-        if($new_category == true) {
+        if ($new_category == true) {
             unset($data['Email']);
             $fields = json_encode(
                 array(
@@ -1325,7 +1306,7 @@ class APIController extends Controller
             );
         }
 
-        if($round_robin == true) {
+        if ($round_robin == true) {
             $fields = json_encode(
                 array(
                     'data' => array($data),
@@ -1340,10 +1321,10 @@ class APIController extends Controller
 
 
         return $fields;
-
     }
 
-    public function add_email_to_lead($fields, $access_token, $api_url) {
+    public function add_email_to_lead($fields, $access_token, $api_url)
+    {
 
         $headers = array(
             'Content-Type: application/json',
@@ -1366,59 +1347,59 @@ class APIController extends Controller
         curl_close($curl);
 
         return $result['data'][0]['details']['id'];
-
     }
 
-    public function add_notes($id, $message) {
+    public function add_notes($id, $message)
+    {
 
         $access_token = $this -> get_access_token('modules');
 
-        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/'.$id.'/Notes';
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/' . $id . '/Notes';
 
-            $message_data = json_encode(
-                array(
-                    'data' => array(
-                        [
-                            'Note_Title' => 'Message From Lead',
-                            'Note_Content' => $message,
-                            'Parent_Id' => $id,
-                            'se_module' => 'Leads'
-                        ]
-                    )
+        $message_data = json_encode(
+            array(
+                'data' => array(
+                    [
+                        'Note_Title' => 'Message From Lead',
+                        'Note_Content' => $message,
+                        'Parent_Id' => $id,
+                        'se_module' => 'Leads'
+                    ]
                 )
-            );
+            )
+        );
 
-            $headers = array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($message_data),
-                sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
-            );
+        $headers = array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($message_data),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+        );
 
-            $curl = curl_init();
+        $curl = curl_init();
 
-            curl_setopt($curl, CURLOPT_URL, $api_url);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $message_data);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_URL, $api_url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $message_data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 60);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
 
-            $response = curl_exec($curl);
-            $response = json_decode($response, true);
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
 
-            curl_close($curl);
+        curl_close($curl);
 
-            return $response['data'][0]['status'];
-
+        return $response['data'][0]['status'];
     }
 
-    public function check_if_user_exists($email, $category) {
+    public function check_if_user_exists($email, $category)
+    {
 
         $access_token = $this -> get_access_token('leads');
 
         $lead_id = null;
-        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/search?email='.$email;
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/search?email=' . $email;
 
         $headers = array(
             'Content-Type: application/json',
@@ -1440,9 +1421,9 @@ class APIController extends Controller
 
         $new_category = false;
 
-        if($result) {
+        if ($result) {
             $lead_id = $result['data'][0]['id'];
-            if($category != $result['data'][0]['Category']) {
+            if ($category != $result['data'][0]['Category']) {
                 $new_category = true;
             }
         }
@@ -1451,11 +1432,10 @@ class APIController extends Controller
             'lead_id' => $lead_id,
             'new_category' => $new_category
         ];
-
-
     }
 
-    public function reports_query(Request $request) {
+    public function reports_query(Request $request)
+    {
 
         $access_token = $this -> get_access_token('coql');
         $api_url = 'https://www.zohoapis.com/crm/v2/coql';
@@ -1485,11 +1465,11 @@ class APIController extends Controller
         dd($result);
 
         curl_close($curl);
-
     }
 
 
-    public function get_access_token($scope) {
+    public function get_access_token($scope)
+    {
 
         $oauth = ZohoOAuth::where('scope', $scope) -> first();
         $expires = $oauth -> expires;
@@ -1497,7 +1477,7 @@ class APIController extends Controller
         $refresh_token = $oauth -> refresh_token;
         $time_now = time();
 
-        if($time_now > $expires) {
+        if ($time_now > $expires) {
             $new_expires = time() + 3600;
             $access_token = $this -> refresh_access_token($scope);
             $oauth -> access_token = $access_token;
@@ -1515,7 +1495,8 @@ class APIController extends Controller
     }
 
 
-    public function refresh_access_token($scope) {
+    public function refresh_access_token($scope)
+    {
 
         $oauth = ZohoOAuth::where('scope', $scope) -> first();
         $refresh_token = $oauth -> refresh_token;
@@ -1526,7 +1507,7 @@ class APIController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token?refresh_token='.$refresh_token.'&client_id='.$client_id.'&client_secret='.$client_secret.'&grant_type=refresh_token',
+            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token?refresh_token=' . $refresh_token . '&client_id=' . $client_id . '&client_secret=' . $client_secret . '&grant_type=refresh_token',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -1545,10 +1526,10 @@ class APIController extends Controller
         curl_close($curl);
 
         return $response -> access_token;
-
     }
 
-    public function create_access_token() {
+    public function create_access_token()
+    {
 
         $code = '1000.8256d377e11e23c986f22b8d027a4792.850854c727938e8ecb4ea74c27e0ed0e';
         $client_id = config('global.zoho_client_id');
@@ -1581,15 +1562,14 @@ class APIController extends Controller
         /* ZohoOAuth::where('scope', $scope) -> update([
             'refresh_token' => $data['refresh_token']
         ]); */
-
-
     }
 
 
     /* Resources */
 
 
-    public function get_users() {
+    public function get_users()
+    {
 
         $access_token = $this -> get_access_token('users');
 
@@ -1605,7 +1585,7 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Authorization: Zoho-oauthtoken ' . $access_token,
                 'Content-Type: application/json'
             ),
         ));
@@ -1616,19 +1596,17 @@ class APIController extends Controller
 
         $users = json_decode($response) -> users;
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             echo '
-            ID: '.$user -> id.'<br>
-            Name: '.$user -> first_name.' '.$user -> last_name.'<br>
-            Email: '.$user -> email.'<br>
-            Status: '.$user -> status.'<br><br>';
-
+            ID: ' . $user -> id . '<br>
+            Name: ' . $user -> first_name . ' ' . $user -> last_name . '<br>
+            Email: ' . $user -> email . '<br>
+            Status: ' . $user -> status . '<br><br>';
         }
-
-
     }
 
-    public function get_fields() {
+    public function get_fields()
+    {
 
         $access_token = $this -> get_access_token('fields');
 
@@ -1644,7 +1622,7 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Authorization: Zoho-oauthtoken ' . $access_token,
                 'Content-Type: application/json',
                 'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
             ),
@@ -1656,13 +1634,13 @@ class APIController extends Controller
 
         $fields = json_decode($response);
 
-        foreach($fields -> fields as $field) {
-            echo $field -> id.' - '.$field -> api_name.'<br>';
+        foreach ($fields -> fields as $field) {
+            echo $field -> id . ' - ' . $field -> api_name . '<br>';
         }
-
     }
 
-    public function get_assignment_rules() {
+    public function get_assignment_rules()
+    {
 
         $access_token = $this -> get_access_token('assignment_rules');
 
@@ -1678,7 +1656,7 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Authorization: Zoho-oauthtoken ' . $access_token,
                 'Content-Type: application/json',
                 'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
             ),
@@ -1690,11 +1668,8 @@ class APIController extends Controller
 
         $fields = json_decode($response);
 
-        foreach($fields -> assignment_rules as $field) {
-            echo $field -> id.' - '.$field -> name.'<br>';
+        foreach ($fields -> assignment_rules as $field) {
+            echo $field -> id . ' - ' . $field -> name . '<br>';
         }
-
     }
-
-
 }
