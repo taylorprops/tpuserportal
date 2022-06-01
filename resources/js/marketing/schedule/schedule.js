@@ -199,6 +199,9 @@ if (document.URL.match('marketing/schedule')) {
                         ele.innerHTML = button_html;
                         toastr.success('Status Successfully Updated');
                         scope.get_schedule();
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 300);
                     })
                     .catch(function (error) { });
 
