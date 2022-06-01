@@ -95,10 +95,7 @@ if (document.URL.match('marketing/schedule')) {
 
                 let form = scope.$refs.schedule_form;
                 let formData = new FormData(form);
-                // let action = 'add';
-                // if (scope.$refs.id.value != '') {
-                //     action = 'edit';
-                // }
+                let event_id = scope.$refs.id.value || null;
 
                 axios.post('/marketing/save_item', formData)
                     .then(function (response) {
@@ -107,6 +104,11 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         scope.show_item_modal = false;
                         scope.clear_form(form);
+                        if (event_id) {
+                            setTimeout(function () {
+                                document.querySelector('#show_details_' + event_id).click();
+                            }, 300);
+                        }
                     })
                     .catch(function (error) {
                         display_errors(error, ele, button_html);

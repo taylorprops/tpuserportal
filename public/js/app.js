@@ -10160,17 +10160,20 @@ if (document.URL.match('marketing/schedule')) {
         show_loading_button(ele, 'Saving ... ');
         remove_form_errors();
         var form = scope.$refs.schedule_form;
-        var formData = new FormData(form); // let action = 'add';
-        // if (scope.$refs.id.value != '') {
-        //     action = 'edit';
-        // }
-
+        var formData = new FormData(form);
+        var event_id = scope.$refs.id.value || null;
         axios.post('/marketing/save_item', formData).then(function (response) {
           ele.innerHTML = button_html;
           toastr.success('Item Successfully Added');
           scope.get_schedule();
           scope.show_item_modal = false;
           scope.clear_form(form);
+
+          if (event_id) {
+            setTimeout(function () {
+              document.querySelector('#show_details_' + event_id).click();
+            }, 300);
+          }
         })["catch"](function (error) {
           display_errors(error, ele, button_html);
         });

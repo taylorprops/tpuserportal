@@ -412,7 +412,7 @@ $breadcrumbs = [
                                         </div>
                                         <label for="input_{{ $subject }}" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'"> Subject {{ strtoupper($subject) }}: </label>
                                     </div>
-                                    <input type="text" name="email_subject_line_{{ $subject }}" x-ref="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
+                                    <input type="text" name="email_subject_line_{{ $subject }}" x-ref="email_subject_line_{{ $subject }}" class="flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                 </div>
                             </div>
                         </div>
@@ -426,7 +426,7 @@ $breadcrumbs = [
                                 <div class="inline-flex justify-end items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm w-28">
                                     <label for="email_preview_text"> Preview Text: </label>
                                 </div>
-                                <input type="text" name="email_preview_text" id="email_preview_text" class=" flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300" readonly>
+                                <input type="text" name="email_preview_text" id="email_preview_text" class=" flex-1 min-w-0 block w-full px-3 py-2 border rounded-none rounded-r-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300">
 
                             </div>
 
