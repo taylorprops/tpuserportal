@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
 
         $schedule -> command('backup:run --only-db')
         -> timezone('America/New_York')
-        -> twiceDaily(2, 14)
+        -> twiceDaily(2, 18)
         -> environments(['production']);
 
         // prune failed jobs
@@ -72,13 +72,13 @@ class Kernel extends ConsoleKernel
         // update db with missing from bright
         $schedule -> command('bright_mls:update_missing_from_bright')
         -> timezone('America/New_York')
-        -> everyThreeHours()
+        -> hourly()
         -> environments('production');
 
         // update db with missing from db
         $schedule -> command('bright_mls:update_missing_from_db')
         -> timezone('America/New_York')
-        -> everyThreeHours()
+        -> hourly()
         -> environments('production');
 
         // Schedule - update status to complete on event date
