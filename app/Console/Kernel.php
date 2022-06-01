@@ -81,6 +81,12 @@ class Kernel extends ConsoleKernel
         -> everyThreeHours()
         -> environments('production');
 
+        // Schedule - update status to complete on event date
+        $schedule -> command('schedule:set_status_to_complete')
+        -> timezone('America/New_York')
+        -> dailyAt('09:00')
+        -> environments('production');
+
 
 
         // %%% TEMP %%% //
