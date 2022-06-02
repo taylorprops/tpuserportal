@@ -1,55 +1,54 @@
-@foreach($events as $event)
-
-@php
-$accepted = null;
-$versions = [];
-if($event -> uploads) {
-$event_upload = null;
-foreach($event -> uploads as $upload) {
-$details = [
-'file_id' => $upload -> id,
-'file_type' => $upload -> file_type,
-'file_url' => $upload -> file_url,
-'html' => $upload -> html,
-];
-if($upload -> accepted_version == true) {
-$accepted = $details;
-$event_upload = $upload;
-}
-$versions[] = $details;
-}
-}
-
-$company = $event -> company -> item;
-
-$past_due = null;
-if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Completed') {
-    $past_due = 'past_due';
-    }
-
-    $notes =[];
-    if($event -> notes) {
-    $notes = $event -> notes;
-    $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
-    }
-
+@foreach ($events as $event)
+    @php
+        $accepted = null;
+        $versions = [];
+        if ($event -> uploads) {
+            $event_upload = null;
+            foreach ($event -> uploads as $upload) {
+                $details = [
+                    'file_id' => $upload -> id,
+                    'file_type' => $upload -> file_type,
+                    'file_url' => $upload -> file_url,
+                    'html' => $upload -> html,
+                ];
+                if ($upload -> accepted_version == true) {
+                    $accepted = $details;
+                    $event_upload = $upload;
+                }
+                $versions[] = $details;
+            }
+        }
+        
+        $company = $event -> company -> item;
+        
+        $past_due = null;
+        if ($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Completed') {
+            $past_due = 'past_due';
+        }
+        
+        $notes = [];
+        if ($event -> notes) {
+            $notes = $event -> notes;
+            $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
+        }
+        
     @endphp
 
     <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200
-        @if($past_due) past-due @endif" :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'" id="event_{{ $event -> id }}" x-data="{ show_details: false }" data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}" data-status-id="{{ $event -> status_id }}" data-recipient-id="{{ $event -> recipient_id }}" data-recipient="{{ $event -> recipient -> item }}" data-company-id="{{ $event -> company_id }}" data-company="{{ $company }}" data-medium-id="{{ $event -> medium_id }}" data-description="{{ $event -> description }}" data-subject-line-a="{{ $event -> subject_line_a }}" data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}" data-focus-id="{{ $event -> focus_id }}">
+        @if ($past_due) past-due @endif" :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'" id="event_{{ $event -> id }}" x-data="{ show_details: false }" data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}" data-status-id="{{ $event -> status_id }}" data-recipient-id="{{ $event -> recipient_id }}" data-recipient="{{ $event -> recipient -> item }}" data-company-id="{{ $event -> company_id }}" data-company="{{ $company }}" data-medium-id="{{ $event -> medium_id }}" data-description="{{ $event -> description }}" data-subject-line-a="{{ $event -> subject_line_a }}" data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}" data-focus-id="{{ $event -> focus_id }}">
 
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t" id="show_details_{{ $event -> id }}" @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
 
-                <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if($event -> status -> item == 'Completed') opacity-40 @endif">
+                <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
                     </div>
                     <div>
                         {{ $event -> event_date }}
-                        @if($past_due)
-                        <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
+                        @if ($past_due)
+                            <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
                         @endif
                     </div>
                     <div class="w-32 hidden sm:inline-block">
@@ -70,11 +69,11 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
                         <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status" @click.outside="show_edit_status = false;">
                             <div class="p-4" role="none">
-                                @foreach($settings -> where('category', 'status') as $status)
-                                <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white" @click.stop="update_status($el, {{ $event -> id }}, {{ $status -> id }}); show_edit_status = false;">
-                                    <div>{{ $status -> item }}</div>
-                                    <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
-                                </div>
+                                @foreach ($settings -> where('category', 'status') as $status)
+                                    <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white" @click.stop="update_status($el, {{ $event -> id }}, {{ $status -> id }}); show_edit_status = false;">
+                                        <div>{{ $status -> item }}</div>
+                                        <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
+                                    </div>
                                 @endforeach
                             </div>
 
@@ -87,7 +86,7 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                             <button type="button" class="block w-full h-full" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                 <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                             </button>
-                            <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if($count_unread == 0) hidden @endif" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
+                            <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if ($count_unread == 0) hidden @endif" data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
                         </div>
 
                         <div x-show="show_notes">
@@ -194,9 +193,9 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                         Edit <i class="fa-thin fa-edit ml-2"></i>
                     </a>
 
-                    @if($accepted)
-                    <div class="mx-2 w-1 border-r"></div>
-                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
+                    @if ($accepted)
+                        <div class="mx-2 w-1 border-r"></div>
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
                     @endif
                     <div class="mx-2 w-1 border-r"></div>
 
@@ -209,64 +208,62 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
                         </div>
 
-                        <div class="origin-top-right absolute -right-32 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
+                        <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
                             <div class="p-4" role="none">
 
                                 @php
-                                if($company == 'Taylor Properties') {
-                                $links = [
-                                [
-                                'title' => 'Standard',
-                                'url' => 'https://taylorprops.com/careers?email={{contact.EMAIL}}&utm_campaign='.$event -> uuid
-                                ],
-                                [
-                                'title' => 'Technology',
-                                'url' => 'https://taylorprops.com/careers#tech?email={{contact.EMAIL}}&utm_campaign='.$event -> uuid
-                                ],
-                                [
-                                'title' => 'Join Now',
-                                'url' => 'https://taylorprops.com/careers#join?email={{contact.EMAIL}}&utm_campaign='.$event -> uuid
-                                ]
-                                ];
-                                } else if($company == 'Heritage Title') {
-                                $links = [
-                                [
-                                'title' => 'Standard',
-                                'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign='.$event -> uuid
-                                ],
-                                [
-                                'title' => 'Instant Quote',
-                                'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign='.$event -> uuid
-                                ]
-                                ];
-                                } else if($company == 'Heritage Financial') {
-                                $links = [
-                                [
-                                'title' => 'Loan Officer Jobs',
-                                'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign='.$event -> uuid
-                                ]
-                                ];
-                                }
+                                    if ($company == 'Taylor Properties') {
+                                        $links = [
+                                            [
+                                                'title' => 'Standard',
+                                                'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                            ],
+                                            [
+                                                'title' => 'Technology',
+                                                'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                            ],
+                                            [
+                                                'title' => 'Join Now',
+                                                'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                            ],
+                                        ];
+                                    } elseif ($company == 'Heritage Title') {
+                                        $links = [
+                                            [
+                                                'title' => 'Standard',
+                                                'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                            ],
+                                            [
+                                                'title' => 'Instant Quote',
+                                                'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                            ],
+                                        ];
+                                    } elseif ($company == 'Heritage Financial') {
+                                        $links = [
+                                            [
+                                                'title' => 'Loan Officer Jobs',
+                                                'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                            ],
+                                        ];
+                                    }
                                 @endphp
 
-                                @foreach($links as $link)
+                                @foreach ($links as $link)
+                                    <div class="flex justify-start items-center">
 
-                                <div class="flex justify-start items-center">
-
-                                    <div class="w-36">
-                                        {{ $link['title'] }}
-                                    </div>
-                                    <div class="flex p-0 border-2 rounded-md w-full">
-                                        <div class="w-full">
-                                            <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}" @focus="$el.select(); copy_text($el)">
+                                        <div class="w-36">
+                                            {{ $link['title'] }}
                                         </div>
-                                        <div class="w-8 border-l-2 bg-gray-50">
-                                            <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                        <div class="flex p-0 border-2 rounded-md w-full">
+                                            <div class="w-full">
+                                                <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}" @focus="$el.select(); copy_text($el)">
+                                            </div>
+                                            <div class="w-8 border-l-2 bg-gray-50">
+                                                <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                            </div>
                                         </div>
+
                                     </div>
-
-                                </div>
-
                                 @endforeach
 
 
@@ -316,5 +313,4 @@ if($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Complete
 
 
     </div>
-
-    @endforeach
+@endforeach
