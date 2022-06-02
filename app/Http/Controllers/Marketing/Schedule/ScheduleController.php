@@ -307,16 +307,14 @@ class ScheduleController extends Controller
         $event = Schedule::with(['recipient', 'company', 'uploads' => function ($query) {
             $query -> where('accepted_version', true);
         }])
-            -> find($event_id);
+        -> find($event_id);
 
         $tos = explode(',', $request -> email_to);
-        $subject = $request -> email_subject . ' - ' . $event_id . ' - ' . $event -> company -> item . ' to ' . $event -> recipient -> item;
+        $subject = 'Email to review | '.$request -> email_subject;
         $preview_text = $request -> email_preview_text;
 
         $body = null;
         $attachment = null;
-
-
 
         $upload = $event -> uploads -> first();
 
@@ -330,8 +328,10 @@ class ScheduleController extends Controller
             <div style="display: none; max-height: 0px; overflow: hidden;">
                 &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
             </div>';
-            $html = preg_replace('/(<body\s.*>)/', '$1' . $preview_html, $html);
-            $body = $html;
+            $details = 'Send Date: '.$event -> event_date.'<br>
+            From '.$event -> company -> item . ' to ' . $event -> recipient -> item.' | ID: '.$event_id;
+
+            $body = preg_replace('/(<body\s.*>)/', '$1' . $preview_html.$details, $html);
         } else {
             $attachment = [Storage::path($upload -> file_location)];
             $body = 'See Attached';
