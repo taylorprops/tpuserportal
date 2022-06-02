@@ -244,6 +244,10 @@
                                                 'title' => 'Loan Officer Jobs',
                                                 'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
                                             ],
+                                            [
+                                                'title' => 'Agents',
+                                                'url' => 'https://heritagefinancial.com/?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                            ],
                                         ];
                                     }
                                 @endphp
