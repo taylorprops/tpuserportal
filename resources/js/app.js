@@ -64,6 +64,7 @@ require('./marketing/data/address_database.js');
 require('./marketing/schedule/schedule.js');
 require('./marketing/schedule/schedule_settings.js');
 require('./admin/system_monitor.js');
+require('./notes/notes.js');
 
 
 

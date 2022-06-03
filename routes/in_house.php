@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestsController;
 use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Notes\NotesController;
 use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
@@ -95,6 +96,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/admin/system_monitor', [AdminController::class, 'system_monitor']) -> middleware(['in_house']);
     Route::get('/admin/system_monitor/get_failed_jobs', [AdminController::class, 'get_failed_jobs']) -> middleware(['in_house']);
     Route::post('/admin/system_monitor/delete_failed_jobs', [AdminController::class, 'delete_failed_jobs']) -> middleware(['in_house']);
+
+    // Notes
+    Route::get('/notes', [NotesController::class, 'notes']) -> middleware(['in_house']);
+    Route::post('/notes/save_notes', [NotesController::class, 'save_notes']) -> middleware(['in_house']);
 
     // %%%% Queue Monitor
     Route::get('/admin/queue_monitor', [AdminController::class, 'queue_monitor']) -> middleware(['in_house']);
