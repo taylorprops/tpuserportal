@@ -78,6 +78,14 @@ class ScheduleController extends Controller
         return response() -> json(['status' => 'no event']);
     }
 
+    public function schedule_review(Request $request) {
+        return view('marketing/schedule/schedule_review');
+    }
+
+    public function get_schedule_review(Request $request) {
+
+    }
+
     public function save_item(Request $request)
     {
 
