@@ -1,9 +1,15 @@
 if (document.URL.match('marketing/schedule')) {
 
+    let review = null;
+    if (document.URL.match(/review/)) {
+        review = 'yes';
+    }
+
     window.schedule = function () {
 
         return {
 
+            review: review,
             show_item_modal: false,
             show_calendar: true,
             show_html: false,
@@ -21,7 +27,12 @@ if (document.URL.match('marketing/schedule')) {
             show_weekends: false,
 
             init() {
-                this.get_schedule();
+
+                if (this.review) {
+                    this.get_schedule_review();
+                } else {
+                    this.get_schedule();
+                }
 
             },
 
@@ -59,6 +70,44 @@ if (document.URL.match('marketing/schedule')) {
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                                 relative_urls: false,
                                 document_base_url: location.hostname
+                            }
+                            text_editor(options);
+                        }, 500);
+                    })
+                    .catch(function (error) {
+                        display_errors(error);
+                    });
+
+            },
+
+            get_schedule_review(id = null) {
+
+                let scope = this;
+                let form = scope.$refs.filter_form;
+                let formData = new FormData(form);
+
+                axios.post('/marketing/get_schedule_review', formData)
+                    .then(function (response) {
+                        scope.$refs.schedule_review_list_div.innerHTML = response.data;
+                        if (id) {
+                            let event_div = document.querySelector('#event_' + id);
+                            event_div.classList.add('cloned');
+                            setTimeout(function () {
+                                event_div.querySelector('.edit-button').click();
+                            }, 500);
+                        }
+                        setTimeout(function () {
+                            tippy('[data-tippy-content]', {
+                                allowHTML: true,
+                            });
+                            let options = {
+                                selector: '.editor-inline',
+                                height: '400',
+                                menubar: 'tools edit format table',
+                                statusbar: false,
+                                plugins: 'image table code',
+                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
+                                table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                             }
                             text_editor(options);
                         }, 500);

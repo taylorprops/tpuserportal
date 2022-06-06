@@ -79,10 +79,41 @@ class ScheduleController extends Controller
     }
 
     public function schedule_review(Request $request) {
-        return view('marketing/schedule/schedule_review');
+
+        $settings = ScheduleSettings::orderBy('order') -> get();
+        $states = LocationData::activeStates();
+
+        return view('marketing/schedule/schedule_review', compact('settings', 'states'));
     }
 
     public function get_schedule_review(Request $request) {
+
+        $company_id = $request -> company_id;
+        $recipient_id = $request -> recipient_id;
+
+        $events = Schedule::where('active', TRUE)
+            -> where(function ($query) use ($company_id, $recipient_id) {
+                if ($company_id) {
+                    $query -> where('company_id', $company_id);
+                }
+                if ($recipient_id) {
+                    $query -> where('recipient_id', $recipient_id);
+                }
+            })
+            -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
+                $query -> where('active', TRUE);
+            }])
+            -> orderBy('event_date', 'desc')
+            -> get();
+
+        $settings = ScheduleSettings::orderBy('order') -> get();
+
+        if ($events) {
+
+            return view('marketing/schedule/get_schedule_review_html', compact('events', 'settings'));
+        }
+
+        return response() -> json(['status' => 'no event']);
 
     }
 

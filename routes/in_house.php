@@ -162,7 +162,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/get_notification_count', [ScheduleController::class, 'get_notification_count']) -> middleware(['in_house']);
 
     Route::get('/marketing/schedule_review', [ScheduleController::class, 'schedule_review']) -> middleware(['owner']);
-    Route::get('/marketing/get_schedule_review', [ScheduleController::class, 'get_schedule_review']) -> middleware(['owner']);
+    Route::post('/marketing/get_schedule_review', [ScheduleController::class, 'get_schedule_review']) -> middleware(['owner']);
 
     Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
     Route::post('/marketing/settings_save_add_item', [ScheduleController::class, 'settings_save_add_item']) -> middleware(['in_house']);

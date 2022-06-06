@@ -17,12 +17,6 @@
         :link="'/heritage_financial/loans'"
         :icon="'fad fa-copy'" />
 
-    {{-- Loan Software --}}
-    <x-nav.menu :level="'1'"
-        :title="'Lending Pad/Floify'"
-        :link="'/heritage_financial/loan_software'"
-        :icon="'fad fa-desktop'" />
-
     {{-- Lenders --}}
     <x-nav.menu :level="'1'"
         :title="'Lenders'"
