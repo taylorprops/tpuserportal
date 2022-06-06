@@ -201,7 +201,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
-                        }, 300);
+                        }, 1000);
                     })
                     .catch(function (error) { });
 
