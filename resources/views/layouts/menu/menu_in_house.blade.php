@@ -185,6 +185,13 @@
         :link="'/marketing/schedule'"
         :icon="'fa-duotone fa-calendar'" />
 
+    @if (auth() -> user() -> level == 'super_admin')
+        <x-nav.menu :level="'1'"
+            :title="'Schedule Review'"
+            :link="'/marketing/schedule_review'"
+            :icon="'fa-duotone fa-calendar'" />
+    @endif
+
     <x-nav.menu :level="'1'"
         :title="'Schedule Settings'"
         :link="'/marketing/schedule_settings'"

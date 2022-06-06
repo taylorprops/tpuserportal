@@ -45,29 +45,10 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
-    {{-- @if (auth() -> user() -> level == 'super_admin') --}}
-
     <x-nav.menu :level="'1'"
         :title="'Schedule'"
         :link="'/marketing/schedule_review'"
         :icon="'fa-duotone fa-calendar'" />
-
-    <x-nav.menu :level="'1'"
-        :title="'Schedule Settings'"
-        :link="'/marketing/schedule_settings'"
-        :icon="'fa-duotone fa-gears'" />
-
-    {{-- @endif --}}
-
-    <x-nav.menu :level="'1'"
-        :title="'Address Database'"
-        :link="'/marketing/data/address_database'"
-        :icon="'fad fa-database'" />
-
-    <x-nav.menu :level="'1'"
-        :title="'Upload List'"
-        :link="'/marketing/data/upload_list'"
-        :icon="'fa-duotone fa-upload'" />
 
     {{-- End Marketing --}}
 

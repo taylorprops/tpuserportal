@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
 
         'auth' => \App\Http\Middleware\Authenticate::class,
         'in_house' => \App\Http\Middleware\InHouse::class,
+        'owner' => \App\Http\Middleware\Owner::class,
         'agent' => \App\Http\Middleware\Agent::class,
         'mortgage' => \App\Http\Middleware\Mortgage::class,
         'transaction_coordinator' => \App\Http\Middleware\TransactionCoordinator::class,
