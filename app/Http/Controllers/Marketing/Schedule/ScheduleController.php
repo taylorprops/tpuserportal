@@ -129,6 +129,9 @@ class ScheduleController extends Controller
 
         if ($id) {
             $event = Schedule::find($id);
+            if($event -> status_id != $request -> status_id) {
+                $event -> status_changed_at = date('Y-m-d H:i:s');
+            }
         } else {
             $event = new Schedule();
         }
@@ -190,7 +193,8 @@ class ScheduleController extends Controller
 
         if ($request -> event_id) {
             Schedule::find($request -> event_id) -> update([
-                'status_id' => $request -> status_id
+                'status_id' => $request -> status_id,
+                'status_changed_at' => date('Y-m-d H:i:s')
             ]);
 
             return response() -> json(['status' => 'success']);
