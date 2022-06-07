@@ -153,7 +153,7 @@
                         Subject
                     </div>
 
-                    <div class="px-4">
+                    <div class="pl-4">
                         {{ $event -> subject_line_a }}
                     </div>
 
@@ -163,11 +163,11 @@
 
                     <div class="flex">
 
-                        <div class="flex-0 pr-4 border-r w-28 text-right">
+                        <div class="pr-4 border-r w-28 text-right">
                             Preview Text
                         </div>
 
-                        <div class="px-4">
+                        <div class="">
                             {{ $event -> preview_text }}
                         </div>
 
