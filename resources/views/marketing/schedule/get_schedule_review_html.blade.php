@@ -187,7 +187,7 @@
                                 @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
                         </div>
 
-                        <div x-show="show_notes">
+                        <div x-show="show_notes whitespace-nowrap">
                             <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
                                 @click="show_notes = false">
                                 Close Notes <i class="fa-duotone fa-times-circle fa-2x ml-2"></i>
