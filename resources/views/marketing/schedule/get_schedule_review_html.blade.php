@@ -139,7 +139,7 @@
                             Description
                         </div>
 
-                        <div class="pl-4">
+                        <div class="pl-4 ml-4">
                             {{ $event -> description }}
                         </div>
 
