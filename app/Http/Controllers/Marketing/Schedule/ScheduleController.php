@@ -91,6 +91,9 @@ class ScheduleController extends Controller
         $company_id = $request -> company_id;
         $recipient_id = $request -> recipient_id;
 
+        // TODO where status = waiting for final approval
+        // or status is changes made an status update date is today
+        // stasus is ready to send and ...
         $events = Schedule::where('active', TRUE)
         -> whereIn('status_id', [26,37,38])
             -> where(function ($query) use ($company_id, $recipient_id) {
