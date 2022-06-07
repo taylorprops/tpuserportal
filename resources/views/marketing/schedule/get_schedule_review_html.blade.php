@@ -159,7 +159,7 @@
 
                 </div>
 
-                <div class="flex justify-between items-center px-2 py-1 text-gray-500 w-full">
+                <div class="flex justify-between items-center px-2 py-1 ml-4 text-gray-500 w-full">
 
                     <div class="flex">
 
