@@ -629,6 +629,10 @@ class APIController extends Controller
             foreach (config('global.recruiting_email_real_estate_cc_addresses') as $cc_recip) {
                 $cc[] = ['email' => $cc_recip];
             }
+            $text_to = [
+                ['email' => '4439953422@vtext.com'],
+               //  ['email' => '4105701014@vtext.com'],
+            ];
         } else {
             $to = ['email' => 'mike@taylorprops.com'];
             $cc = [];
@@ -655,6 +659,20 @@ class APIController extends Controller
         Mail::to([$to])
             -> cc($cc)
             -> send(new EmailGeneral($message));
+
+
+            $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert!',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to($text_to)
+                -> send(new EmailGeneral($message));
 
 
         return response() -> json(['status' => 'success']);
@@ -848,7 +866,7 @@ class APIController extends Controller
                 }
 
                 $text_to = [
-                    // ['email' => '4432237356@vtext.com'],
+                    ['email' => '4439953422@vtext.com'],
                     ['email' => '4105701014@vtext.com'],
                 ];
             } else {

@@ -100,10 +100,11 @@
                             <div class="p-4"
                                 role="none">
                                 @foreach ($settings -> where('category', 'status') as $status)
-                                    <div class="group flex justify-between items-center p-2 rounded-lg cursor-pointer hover:bg-green-600/75 hover:text-white"
+                                    <div class="group flex justify-between items-center p-2 rounded-lg
+                                    @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
                                         @click.stop="if({{ $event -> status_id }} != {{ $status -> id }}) { update_status($el, {{ $event -> id }}, {{ $status -> id }}); } show_edit_status = false;">
-                                        <div>{{ $status -> item }}</div>
-                                        <div class="hidden group-hover:inline-block"><i class="fa-light fa-check"></i></div>
+                                        <div class="@if ($event -> status -> id == $status -> id) opacity-60 @endif">{{ $status -> item }}</div>
+                                        <div class="hidden @if ($event -> status -> id != $status -> id) group-hover:inline-block @endif"><i class="fa-light fa-check"></i></div>
                                     </div>
                                 @endforeach
                             </div>

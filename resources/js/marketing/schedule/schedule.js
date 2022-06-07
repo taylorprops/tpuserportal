@@ -89,6 +89,7 @@ if (document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/get_schedule_review', formData)
                     .then(function (response) {
                         scope.$refs.schedule_review_list_div.innerHTML = response.data;
+                        scope.calendar();
                         if (id) {
                             let event_div = document.querySelector('#event_' + id);
                             event_div.classList.add('cloned');

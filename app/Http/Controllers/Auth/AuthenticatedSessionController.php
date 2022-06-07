@@ -29,19 +29,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $request -> authenticate();
 
-        $request->session()->regenerate();
+        $request -> session() -> regenerate();
 
         // TODO: Add login middleware
 
-        $user = User::find(auth()->user()->id);
+        $user = User::find(auth() -> user() -> id);
         //$group = auth() -> user() -> group;
 
-        if ($user->active != 'yes') {
+        if ($user -> active != 'yes') {
             Auth::logout();
 
-            return back()->withErrors(['Your account is inactive']);
+            return back() -> withErrors(['Your account is inactive']);
         }
         // $user_details = null;
         // if($group == 'agent') {
@@ -50,7 +50,7 @@ class AuthenticatedSessionController extends Controller
         //     $user_details = $user -> loan_officer;
         // }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect() -> intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -61,12 +61,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request)
     {
-        Auth::guard('web')->logout();
+        Auth::guard('web') -> logout();
 
-        $request->session()->invalidate();
+        $request -> session() -> invalidate();
 
-        $request->session()->regenerateToken();
+        $request -> session() -> regenerateToken();
 
         return redirect('/');
+    }
+
+    public function checkSession()
+    {
+        return response() -> json(['isLoggedIn' => Auth::check()]);
     }
 }

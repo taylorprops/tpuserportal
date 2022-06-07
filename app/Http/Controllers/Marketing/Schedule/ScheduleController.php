@@ -92,6 +92,7 @@ class ScheduleController extends Controller
         $recipient_id = $request -> recipient_id;
 
         $events = Schedule::where('active', TRUE)
+        -> whereIn('status_id', [26,37,38])
             -> where(function ($query) use ($company_id, $recipient_id) {
                 if ($company_id) {
                     $query -> where('company_id', $company_id);
@@ -103,10 +104,10 @@ class ScheduleController extends Controller
             -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
                 $query -> where('active', TRUE);
             }])
-            -> orderBy('event_date', 'desc')
+            -> orderBy('event_date', 'asc')
             -> get();
 
-        $settings = ScheduleSettings::orderBy('order') -> get();
+        $settings = ScheduleSettings::whereIn('id', [26,37,38]) -> orderBy('order') -> get();
 
         if ($events) {
 

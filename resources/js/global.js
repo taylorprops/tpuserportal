@@ -8,6 +8,7 @@ window.toastr = new Toastr();
 toastr.options.preventDuplicates = true;
 toastr.options.closeButton = true;
 window.tippy = tippy;
+
 tippy('[data-tippy-content]', {
     allowHTML: true,
 });
@@ -42,7 +43,16 @@ window.axios_options = {
     }
 };
 
-
+setInterval(function checkSession() {
+    axios.get('/is-logged-in')
+        .then(function (response) {
+        })
+        .catch(function (error) {
+            if (error) {
+                location.reload();
+            }
+        });
+}, 10000);
 
 window.form_elements = function () {
 
@@ -189,10 +199,10 @@ window.main_search = function () {
             if (value.length > 0) {
 
                 axios.get('/search', {
-                        params: {
-                            value: value
-                        },
-                    })
+                    params: {
+                        value: value
+                    },
+                })
                     .then(function (response) {
                         if (response) {
                             search_results_div.innerHTML = response.data;
@@ -419,10 +429,10 @@ window.get_location_details = function (container, member_id, zip, city, state, 
 
     if (zip_code.length == 5) {
         axios.get('/transactions/get_location_details', {
-                params: {
-                    zip: zip_code
-                },
-            })
+            params: {
+                zip: zip_code
+            },
+        })
             .then(function (response) {
                 city.value = response.data.city;
                 state.value = response.data.state;
@@ -834,14 +844,14 @@ class Badger {
     constructor(options) {
         Object.assign(
             this, {
-                backgroundColor: "#f00",
-                color: "#fff",
-                size: 0.8, // 0..1 (Scale in respect to the favicon image size)
-                position: "se", // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
-                radius: 10, // Border radius
-                src: "", // Favicon source (dafaults to the <link> icon href)
-                onChange() {},
-            },
+            backgroundColor: "#f00",
+            color: "#fff",
+            size: 0.8, // 0..1 (Scale in respect to the favicon image size)
+            position: "se", // Position inside favicon "n", "e", "s", "w", "ne", "nw", "se", "sw"
+            radius: 10, // Border radius
+            src: "", // Favicon source (dafaults to the <link> icon href)
+            onChange() { },
+        },
             options
         );
         this.canvas = document.createElement("canvas");
@@ -938,7 +948,7 @@ class Badger {
                 x: 8,
                 y: 8
             },
-        } [this.position];
+        }[this.position];
     }
 
     // Public functions / methods:
