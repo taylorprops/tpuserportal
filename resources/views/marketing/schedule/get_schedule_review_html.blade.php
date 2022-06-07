@@ -163,7 +163,7 @@
 
                     <div class="flex">
 
-                        <div class="pr-4 border-r w-28 text-right">
+                        <div class="flex-0 pr-4 border-r w-28 text-right">
                             Preview Text
                         </div>
 
