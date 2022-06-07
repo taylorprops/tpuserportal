@@ -64,7 +64,7 @@ class EmployeesController extends Controller
         $length = $request -> length ? $request -> length : 10;
 
         $search = $request -> search ?? null;
-        $active = $request -> active;
+        $active = $request -> active ?? 'yes';
 
         $employees = InHouse::select(['id', 'first_name', 'last_name', 'fullname', 'email', 'phone', 'active', 'job_title'])
         -> where(function ($query) use ($search) {
