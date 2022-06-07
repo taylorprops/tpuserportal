@@ -154,13 +154,12 @@
                                 class="button success sm"
                                 @click="show_add_notes = ! show_add_notes;"
                                 x-show="show_add_notes === false">
-                                <i class="fa-light fa-plus mr-2"></i> Add
+                                <i class="fa-light fa-plus mr-2"></i> Add Note
                             </button>
-                            <button type="button"
-                                class=""
+                            <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
                                 @click="show_add_notes = ! show_add_notes"
                                 x-show="show_add_notes === true">
-                                <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
+                                Cancel <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x ml-2"></i>
                             </button>
                         </div>
                     </div>

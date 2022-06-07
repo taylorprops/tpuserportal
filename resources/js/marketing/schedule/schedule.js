@@ -248,10 +248,14 @@ if (document.URL.match('marketing/schedule')) {
                     .then(function (response) {
                         ele.innerHTML = button_html;
                         toastr.success('Status Successfully Updated');
-                        scope.get_schedule();
-                        setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
-                        }, 1000);
+                        if (review) {
+                            scope.get_schedule_review();
+                        } else {
+                            scope.get_schedule();
+                            setTimeout(function () {
+                                document.querySelector('#show_details_' + event_id).click();
+                            }, 1000);
+                        }
                     })
                     .catch(function (error) { });
 
