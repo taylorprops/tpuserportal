@@ -153,7 +153,7 @@
                         Subject
                     </div>
 
-                    <div class="pl-4">
+                    <div class="shrink pl-4">
                         {{ $event -> subject_line_a }}
                     </div>
 
@@ -167,7 +167,7 @@
                             Preview Text
                         </div>
 
-                        <div class="">
+                        <div class="shrink px-4">
                             {{ $event -> preview_text }}
                         </div>
 
