@@ -618,7 +618,7 @@ class APIController extends Controller
         // add message
         if ($message_from_agent) {
 
-            $this -> add_notes($lead_id, $message_from_agent);
+            // $this -> add_notes($lead_id, $message_from_agent);
         }
 
         // Send email notification to Nikki and Kyle
@@ -662,18 +662,18 @@ class APIController extends Controller
         //     -> send(new EmailGeneral($message));
 
 
-            $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
+        $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
 
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert!',
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => $body,
-                'attachments' => null
-            ];
+        $message = [
+            'company' => 'Taylor Properties',
+            'subject' => 'Recruiting Alert!',
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body,
+            'attachments' => null
+        ];
 
-            Mail::to($text_to)
-                -> send(new EmailGeneral($message));
+        Mail::to($text_to)
+            -> send(new EmailGeneral($message));
 
 
         return response() -> json(['status' => 'success']);
