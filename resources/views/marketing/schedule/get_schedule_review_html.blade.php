@@ -202,7 +202,7 @@
 
             <div>
 
-                <div class="p-4 mb-8 border-t"
+                <div class="p-8 mb-8 border-t"
                     x-show="show_notes"
                     x-transition>
 
@@ -211,7 +211,7 @@
                         <div class="flex justify-end mb-2 max-w-700-px mx-auto">
                             <div>
                                 <button type="button"
-                                    class="button success sm"
+                                    class="button primary md"
                                     @click="show_add_notes = ! show_add_notes;"
                                     x-show="show_add_notes === false">
                                     <i class="fa-light fa-plus mr-2"></i> Add Note
@@ -244,7 +244,7 @@
                             </form>
                         </div>
 
-                        <div class="notes-div max-h-500-px overflow-auto pr-4 max-w-700-px mx-auto p-2 border rounded-lg shadow-md" data-id="{{ $event -> id }}"></div>
+                        <div class="notes-div max-h-500-px overflow-auto pr-4 max-w-700-px mx-auto" data-id="{{ $event -> id }}"></div>
 
                     </div>
 
