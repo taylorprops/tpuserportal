@@ -147,19 +147,19 @@
 
                 </div>
 
-                <div class="flex justify-start items-center px-2 py-1 ml-4 text-gray-500">
+                <div class="flex justify-start items-center px-2 py-1 text-gray-500">
 
                     <div class="pr-4 border-r w-28 text-right">
                         Subject
                     </div>
 
-                    <div class="pl-4">
+                    <div class="pl-4 ml-4">
                         {{ $event -> subject_line_a }}
                     </div>
 
                 </div>
 
-                <div class="flex justify-between items-center px-2 py-1 ml-4 text-gray-500 w-full">
+                <div class="flex justify-between items-center px-2 py-1 text-gray-500 w-full">
 
                     <div class="flex">
 
@@ -167,7 +167,7 @@
                             Preview Text
                         </div>
 
-                        <div class="pl-4">
+                        <div class="pl-4 ml-4">
                             {{ $event -> preview_text }}
                         </div>
 
