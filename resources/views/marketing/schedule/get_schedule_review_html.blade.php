@@ -139,7 +139,7 @@
                             Description
                         </div>
 
-                        <div class="pl-4 ml-4">
+                        <div class="pl-4">
                             {{ $event -> description }}
                         </div>
 
@@ -147,7 +147,7 @@
 
                 </div>
 
-                <div class="flex justify-start items-center px-2 py-1 text-gray-500">
+                <div class="flex justify-start items-center px-2 py-1 ml-4 text-gray-500">
 
                     <div class="pr-4 border-r w-28 text-right">
                         Subject
