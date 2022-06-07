@@ -594,9 +594,9 @@ class APIController extends Controller
 
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
-        // $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
+        $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
 
-        // $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
+        $lead_id = $this -> add_lead_to_zoho($fields, $access_token, $api_url);
 
         if ($new_category == true) {
 
@@ -612,13 +612,13 @@ class APIController extends Controller
                     'data' => array($data)
                 )
             );
-           //  $this -> add_email_to_lead($fields, $access_token, $api_url);
+            $this -> add_email_to_lead($fields, $access_token, $api_url);
         }
 
         // add message
         if ($message_from_agent) {
 
-            // $this -> add_notes($lead_id, $message_from_agent);
+            $this -> add_notes($lead_id, $message_from_agent);
         }
 
         // Send email notification to Nikki and Kyle
@@ -630,9 +630,8 @@ class APIController extends Controller
                 $cc[] = ['email' => $cc_recip];
             }
             $text_to = [
-                // ['email' => '4439953422@vtext.com'],
-                //  ['email' => '4105701014@vtext.com'],
-                ['email' => '4432237356@vtext.com'],
+                ['email' => '4439953422@vtext.com'],
+               //  ['email' => '4105701014@vtext.com'],
             ];
         } else {
             $to = ['email' => 'mike@taylorprops.com'];
@@ -657,23 +656,23 @@ class APIController extends Controller
             'attachments' => null
         ];
 
-        // Mail::to([$to])
-        //     -> cc($cc)
-        //     -> send(new EmailGeneral($message));
-
-
-        $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
-
-        $message = [
-            'company' => 'Taylor Properties',
-            'subject' => 'Recruiting Alert!',
-            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-            'body' => $body,
-            'attachments' => null
-        ];
-
-        Mail::to($text_to)
+        Mail::to([$to])
+            -> cc($cc)
             -> send(new EmailGeneral($message));
+
+
+            $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Recruiting Alert!',
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            Mail::to($text_to)
+                -> send(new EmailGeneral($message));
 
 
         return response() -> json(['status' => 'success']);
