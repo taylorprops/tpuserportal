@@ -95,20 +95,30 @@ class ScheduleController extends Controller
         // or status is changes made an status update date is today
         // stasus is ready to send and ...
         $events = Schedule::where('active', TRUE)
-        -> whereIn('status_id', [26,37,38])
-            -> where(function ($query) use ($company_id, $recipient_id) {
-                if ($company_id) {
-                    $query -> where('company_id', $company_id);
-                }
-                if ($recipient_id) {
-                    $query -> where('recipient_id', $recipient_id);
-                }
-            })
-            -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
-                $query -> where('active', TRUE);
-            }])
-            -> orderBy('event_date', 'asc')
-            -> get();
+        -> where(function($query) {
+            $query -> where(function($query) {
+                $query -> whereIn('status_id', [38])
+                -> orWhere(function($query) {
+                    $query -> where('status_id', 37) -> where('status_changed_at', date('Y-m-d'));
+                })
+                -> orWhere(function($query) {
+                    $query -> where('status_id', 26) -> where('status_changed_at', date('Y-m-d'));
+                });
+            });
+        })
+        -> where(function ($query) use ($company_id, $recipient_id) {
+            if ($company_id) {
+                $query -> where('company_id', $company_id);
+            }
+            if ($recipient_id) {
+                $query -> where('recipient_id', $recipient_id);
+            }
+        })
+        -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
+            $query -> where('active', TRUE);
+        }])
+        -> orderBy('event_date', 'asc')
+        -> get();
 
         $settings = ScheduleSettings::whereIn('id', [26,37,38]) -> orderBy('order') -> get();
 
