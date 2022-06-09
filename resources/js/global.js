@@ -43,16 +43,18 @@ window.axios_options = {
     }
 };
 
-// setInterval(function checkSession() {
-//     axios.get('/is-logged-in')
-//         .then(function (response) {
-//         })
-//         .catch(function (error) {
-//             if (error) {
-//                 location.reload();
-//             }
-//         });
-// }, 10000);
+if (document.URL.match(/[a-z]+/)) {
+    setInterval(function checkSession() {
+        axios.get('/is-logged-in')
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                if (error) {
+                    location.reload();
+                }
+            });
+    }, 10000);
+}
 
 window.form_elements = function () {
 
