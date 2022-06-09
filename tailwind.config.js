@@ -7,6 +7,7 @@ module.exports = {
         './resources/**/*.{php,scss,js}',
         './app/Http/Controllers/**/*.php',
         './app/Helpers/*.php',
+        './storage/app/public/tools/*.txt',
     ],
     theme: {
         extend: {
@@ -136,7 +137,8 @@ module.exports = {
                 'screen-95': '95vh',
                 '7': '1.75rem',
                 '90-perc': '90%',
-                '95-perc': '95%'
+                '95-perc': '95%',
+                '98-perc': '98%',
             }),
             width: theme => ({
                 'screen-10': '10vw',
@@ -172,6 +174,7 @@ module.exports = {
                 '1200-px': '1200px',
                 '1300-px': '1300px',
                 '1400-px': '1400px',
+                '98-perc': '98% ',
             }),
             colors: {
                 default: {

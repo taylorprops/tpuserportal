@@ -25,6 +25,7 @@ if (document.URL.match('marketing/schedule')) {
             show_subject_options: false,
             calendar_object: '',
             show_weekends: false,
+            active_event: '',
 
             init() {
 

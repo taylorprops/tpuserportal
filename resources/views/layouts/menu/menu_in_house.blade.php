@@ -288,6 +288,11 @@
                     'link' => '/resources/config/config_variables',
                     'icon' => 'fad fa-cogs mr-2',
                 ],
+                [
+                    'title' => 'Tools',
+                    'link' => '/tools/tools',
+                    'icon' => 'fad fa-cogs mr-2',
+                ],
             ];
             
         @endphp

@@ -5,6 +5,7 @@ use App\Http\Controllers\TestsController;
 use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Notes\NotesController;
+use App\Http\Controllers\Tools\ToolsController;
 use App\Http\Controllers\AuthNet\AuthNetController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Employees\EmployeesController;
@@ -174,6 +175,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
+
+    // %%%% Tools
+    Route::get('/tools/tools', [ToolsController::class, 'tools']) -> middleware(['in_house']);
+    Route::post('/tools/create_classes', [ToolsController::class, 'create_classes']) -> middleware(['in_house']);
 
     // %%%% Import Loans
     Route::get('/heritage_financial/loans/import_loans', [LoansController::class, 'import_loans']) -> middleware(['in_house']);

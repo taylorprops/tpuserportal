@@ -48,9 +48,9 @@ $breadcrumbs = [[$title]];
 
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8">
 
-                <div class="h-screen-80 mb-12 overflow-auto pb-16 pr-4 lg:mb-0">
+                <div class="h-screen-80 mb-12 overflow-auto pb-16 lg:mb-0">
 
                     <div x-ref="schedule_review_list_div"></div>
 

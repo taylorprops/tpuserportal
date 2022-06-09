@@ -34,9 +34,8 @@
         
     @endphp
 
-    <div class="event-div my-2 text-sm rounded border-{{ $event -> company -> color }}-200
-        @if ($past_due) past-due @endif"
-        :class="show_details === true ? 'border-4 shadow-lg my-4' : 'border'"
+    <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
+        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'"
         id="event_{{ $event -> id }}"
         x-data="{ show_details: false }"
         data-id="{{ $event -> id }}"
@@ -58,7 +57,7 @@
         <div class="flex flex-col text-xs"
             x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
-            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-50 p-2 rounded-t"
+            <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
                 id="show_details_{{ $event -> id }}"
                 @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
 
@@ -256,7 +255,7 @@
                         <div class="mx-2 w-1 border-r"></div>
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light"
-                            @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); ">View <i class="fa-thin fa-eye ml-2"></i></a>
+                            @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); active_event = {{ $event -> id }}">View <i class="fa-thin fa-eye ml-2"></i></a>
                     @endif
                     <div class="mx-2 w-1 border-r"></div>
 

@@ -29,7 +29,8 @@
         
     @endphp
 
-    <div class="event-div my-2 text-sm rounded border border-{{ $event -> company -> color }}-200"
+    <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif"
+        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'"
         id="event_{{ $event -> id }}"
         data-id="{{ $event -> id }}"
         data-event-date="{{ $event -> event_date }}"
@@ -50,7 +51,7 @@
         <div class="flex flex-col"
             x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
-            <div class="relative flex justify-between items-center flex-wrap font-semibold text-xs bg-{{ $event -> company -> color }}-50 p-2 rounded">
+            <div class="relative flex justify-between items-center flex-wrap font-semibold text-xs bg-{{ $event -> company -> color }}-100 p-2 rounded">
 
                 <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer text-{{ $event -> company -> color }}-700 @if ($event -> status -> item == 'Completed') opacity-40 @endif">
                     <div>
@@ -126,7 +127,7 @@
                     <div class="mt-1">
                         <button type="button"
                             class="button primary sm"
-                            @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); ">View <i class="fa-solid fa-eye ml-2"></i></button>
+                            @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View <i class="fa-solid fa-eye ml-2"></i></button>
                     </div>
 
                 </div>
