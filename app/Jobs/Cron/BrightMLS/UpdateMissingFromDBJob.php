@@ -16,7 +16,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 3;
+    public $tries = 2;
 
     /**
      * Create a new job instance.
@@ -114,7 +114,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
 
         } catch (\Throwable $exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(90);
+            $this -> release(180);
             return;
         }
 
