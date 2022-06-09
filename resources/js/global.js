@@ -43,16 +43,16 @@ window.axios_options = {
     }
 };
 
-setInterval(function checkSession() {
-    axios.get('/is-logged-in')
-        .then(function (response) {
-        })
-        .catch(function (error) {
-            if (error) {
-                location.reload();
-            }
-        });
-}, 10000);
+// setInterval(function checkSession() {
+//     axios.get('/is-logged-in')
+//         .then(function (response) {
+//         })
+//         .catch(function (error) {
+//             if (error) {
+//                 location.reload();
+//             }
+//         });
+// }, 10000);
 
 window.form_elements = function () {
 
@@ -855,7 +855,7 @@ class Badger {
             options
         );
         this.canvas = document.createElement("canvas");
-        this.src = this.src/*  || this.faviconEL.getAttribute("href") */;
+        this.src = this.src || this.faviconEL.getAttribute("href");
         this.ctx = this.canvas.getContext("2d");
     }
 
