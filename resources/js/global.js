@@ -855,7 +855,7 @@ class Badger {
             options
         );
         this.canvas = document.createElement("canvas");
-        this.src = this.src || this.faviconEL.getAttribute("href");
+        this.src = this.src/*  || this.faviconEL.getAttribute("href") */;
         this.ctx = this.canvas.getContext("2d");
     }
 
