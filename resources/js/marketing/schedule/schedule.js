@@ -193,6 +193,7 @@ if (document.URL.match('marketing/schedule')) {
                 this.show_calendar = true;
                 this.show_file = false;
                 this.show_html = false;
+                this.active_event = '';
             },
 
             edit_item(ele) {

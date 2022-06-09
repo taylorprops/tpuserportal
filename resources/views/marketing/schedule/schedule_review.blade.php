@@ -63,7 +63,7 @@ $breadcrumbs = [[$title]];
                         <div x-show="show_html || show_file">
 
                             <div class="absolute top-12 right-12 z-20"><a href="javascript:void(0)"
-                                    @click="show_html = false; show_file = false; show_calendar = true;"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a>
+                                    @click="show_html = false; show_file = false; show_calendar = true; active_event = '';"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a>
                             </div>
 
                             <div class="absolute top-0 z-10 h-full w-full border-4 bg-white"
