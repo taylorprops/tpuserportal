@@ -55,7 +55,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
 
                 <div class="">
 
-                    <div class="h-screen-80 mb-12 overflow-auto pb-16 lg:mb-0">
+                    <div class="h-screen-80 mb-12 overflow-auto pb-16 pt-2 lg:mb-0">
 
                         <div x-ref="schedule_list_div"></div>
 

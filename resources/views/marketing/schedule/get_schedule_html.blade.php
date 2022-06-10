@@ -72,8 +72,11 @@
                             <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
                         @endif
                     </div>
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-around">
+                        {{ $event -> id }}
+                    </div>
                     <div class="w-32 hidden sm:inline-block">
-                        {{ $event -> medium -> item }} - {{ $event -> id }}
+                        {{ $event -> medium -> item }}
                     </div>
 
                     <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
@@ -84,10 +87,11 @@
 
                 <div class="flex justify-end items-center">
 
+
                     <div class="relative">
 
                         <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer"
-                            @click.stop="show_edit_status = ! show_edit_status">{{ $event -> status -> item }}</div>
+                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>{{ $event -> status -> item }}</div>
 
                         <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu"
@@ -112,28 +116,30 @@
 
                     </div>
 
-                    <div class="mx-1 pl-4">
-                        <div class="relative"
-                            x-show="!show_notes">
-                            <button type="button"
-                                class="block w-full h-full"
-                                @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
-                                <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
-                            </button>
-                            <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if ($count_unread == 0) hidden @endif"
-                                data-note-id="{{ $event -> id }}"
-                                @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
-                        </div>
+                    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
+                        <div class="mx-1 pl-4">
+                            <div class="relative"
+                                x-show="!show_notes">
+                                <button type="button"
+                                    class="block w-full h-full"
+                                    @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
+                                    <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
+                                </button>
+                                <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if ($count_unread == 0) hidden @endif"
+                                    data-note-id="{{ $event -> id }}"
+                                    @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
+                            </div>
 
-                        <div x-show="show_notes">
-                            <button type="button"
-                                class=""
-                                @click="show_notes = false">
-                                <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
-                            </button>
-                        </div>
+                            <div x-show="show_notes">
+                                <button type="button"
+                                    class=""
+                                    @click="show_notes = false">
+                                    <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
+                                </button>
+                            </div>
 
-                    </div>
+                        </div>
+                    @endif
 
                 </div>
 
@@ -194,15 +200,27 @@
                 x-show="show_details"
                 x-transition>
 
-                <div class="flex justify-start items-center p-2 border-b border-t">
+                <div class="flex justify-between items-center p-2 border-b border-t">
 
-                    <div class="pr-4 border-r">
-                        {{ str_replace(',', ', ', $event -> state) }}
+                    <div class="flex justify-start">
+
+                        <div class="pr-4 border-r">
+                            {{ str_replace(',', ', ', $event -> state) }}
+                        </div>
+
+                        <div class="pl-4 italic">
+                            {{ $event -> description }}
+                        </div>
+
                     </div>
 
-                    <div class="pl-4 italic">
-                        {{ $event -> description }}
-                    </div>
+                    @if ($accepted)
+                        <div class="pl-4">
+                            <button type="button"
+                                class="button primary sm"
+                                @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View <i class="fa-solid fa-eye ml-2"></i></button>
+                        </div>
+                    @endif
 
                 </div>
 
@@ -242,177 +260,175 @@
 
                 </div>
 
-                <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
+                @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
+                    <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
 
-                    <a href="javascript:void(0)"
-                        class="text-primary hover:text-primary-light edit-button"
-                        @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;"
-                        data-id="{{ $event -> id }}">
-                        Edit <i class="fa-thin fa-edit ml-2"></i>
-                    </a>
+                        <a href="javascript:void(0)"
+                            class="text-primary hover:text-primary-light edit-button"
+                            @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;"
+                            data-id="{{ $event -> id }}">
+                            Edit <i class="fa-thin fa-edit ml-2"></i>
+                        </a>
 
-                    @if ($accepted)
                         <div class="mx-2 w-1 border-r"></div>
+
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light"
-                            @click="show_view_div('{{ $accepted['file_type'] }}', '{{ $accepted['file_url'] }}', `{{ $accepted['html'] }}`); active_event = {{ $event -> id }}">View <i class="fa-thin fa-eye ml-2"></i></a>
-                    @endif
-                    <div class="mx-2 w-1 border-r"></div>
+                            @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
-                    <a href="javascript:void(0)"
-                        class="text-primary hover:text-primary-light"
-                        @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
+                        <div class="mx-2 w-1 border-r"></div>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                        <div class="relative inline-block text-left"
+                            x-data="{ show_links: false }"
+                            @click.outside="show_links = false">
+                            <div>
+                                <a href="javascript:void(0)"
+                                    class="text-primary hover:text-primary-light"
+                                    @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
+                            </div>
 
-                    <div class="relative inline-block text-left"
-                        x-data="{ show_links: false }"
-                        @click.outside="show_links = false">
-                        <div>
-                            <a href="javascript:void(0)"
-                                class="text-primary hover:text-primary-light"
-                                @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
-                        </div>
+                            <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby="menu-button"
+                                tabindex="-1"
+                                x-show="show_links">
+                                <div class="p-4"
+                                    role="none">
 
-                        <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="menu-button"
-                            tabindex="-1"
-                            x-show="show_links">
-                            <div class="p-4"
-                                role="none">
+                                    @php
+                                        if ($company == 'Taylor Properties') {
+                                            $links = [
+                                                [
+                                                    'title' => 'Standard',
+                                                    'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                                ],
+                                                [
+                                                    'title' => 'Technology',
+                                                    'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                                ],
+                                                [
+                                                    'title' => 'Join Now',
+                                                    'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                                ],
+                                            ];
+                                        } elseif ($company == 'Heritage Title') {
+                                            $links = [
+                                                [
+                                                    'title' => 'Standard',
+                                                    'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                                ],
+                                                [
+                                                    'title' => 'Instant Quote',
+                                                    'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                                ],
+                                            ];
+                                        } elseif ($company == 'Heritage Financial') {
+                                            $links = [
+                                                [
+                                                    'title' => 'Loan Officer Jobs',
+                                                    'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                                ],
+                                                [
+                                                    'title' => 'Agents',
+                                                    'url' => 'https://heritagefinancial.com/?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                                ],
+                                            ];
+                                        }
+                                    @endphp
 
-                                @php
-                                    if ($company == 'Taylor Properties') {
-                                        $links = [
-                                            [
-                                                'title' => 'Standard',
-                                                'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
-                                            ],
-                                            [
-                                                'title' => 'Technology',
-                                                'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
-                                            ],
-                                            [
-                                                'title' => 'Join Now',
-                                                'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
-                                            ],
-                                        ];
-                                    } elseif ($company == 'Heritage Title') {
-                                        $links = [
-                                            [
-                                                'title' => 'Standard',
-                                                'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
-                                            ],
-                                            [
-                                                'title' => 'Instant Quote',
-                                                'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
-                                            ],
-                                        ];
-                                    } elseif ($company == 'Heritage Financial') {
-                                        $links = [
-                                            [
-                                                'title' => 'Loan Officer Jobs',
-                                                'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
-                                            ],
-                                            [
-                                                'title' => 'Agents',
-                                                'url' => 'https://heritagefinancial.com/?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
-                                            ],
-                                        ];
-                                    }
-                                @endphp
+                                    @foreach ($links as $link)
+                                        <div class="flex justify-start items-center">
 
-                                @foreach ($links as $link)
-                                    <div class="flex justify-start items-center">
-
-                                        <div class="w-36">
-                                            {{ $link['title'] }}
-                                        </div>
-                                        <div class="flex p-0 border-2 rounded-md w-full">
-                                            <div class="w-full">
-                                                <input type="text"
-                                                    readonly
-                                                    class="w-full p-2"
-                                                    x-ref="link_{{ $loop -> index }}"
-                                                    value="{{ $link['url'] }}"
-                                                    @focus="$el.select(); copy_text($el)">
+                                            <div class="w-36">
+                                                {{ $link['title'] }}
                                             </div>
-                                            <div class="w-8 border-l-2 bg-gray-50">
-                                                <a href="javascript:void(0)"
-                                                    class="block p-2"
-                                                    @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                            <div class="flex p-0 border-2 rounded-md w-full">
+                                                <div class="w-full">
+                                                    <input type="text"
+                                                        readonly
+                                                        class="w-full p-2"
+                                                        x-ref="link_{{ $loop -> index }}"
+                                                        value="{{ $link['url'] }}"
+                                                        @focus="$el.select(); copy_text($el)">
+                                                </div>
+                                                <div class="w-8 border-l-2 bg-gray-50">
+                                                    <a href="javascript:void(0)"
+                                                        class="block p-2"
+                                                        @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                                </div>
                                             </div>
+
                                         </div>
-
-                                    </div>
-                                @endforeach
+                                    @endforeach
 
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 border-r"></div>
 
-                    <a href="javascript:void(0)"
-                        class="text-primary hover:text-primary-light"
-                        @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
+                        <a href="javascript:void(0)"
+                            class="text-primary hover:text-primary-light"
+                            @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 border-r"></div>
 
-                    <a href="javascript:void(0)"
-                        class="text-primary hover:text-primary-light"
-                        role="menuitem"
-                        @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+                        <a href="javascript:void(0)"
+                            class="text-primary hover:text-primary-light"
+                            role="menuitem"
+                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
 
-                    <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 border-r"></div>
 
-                    <div class="relative inline-block"
-                        x-data="{ show_dropdown: false }"
-                        @click.outside="show_dropdown = false">
-                        <div>
-                            <button type="button"
-                                class="block text-gray-400 hover:text-gray-600"
-                                aria-expanded="true"
-                                aria-haspopup="true"
-                                @click="show_dropdown = true">
-                                <span class="sr-only">Open options</span>
-                                <i class="fa-light fa-bars fa-xl"></i>
-                            </button>
-                        </div>
+                        <div class="relative inline-block"
+                            x-data="{ show_dropdown: false }"
+                            @click.outside="show_dropdown = false">
+                            <div>
+                                <button type="button"
+                                    class="block text-gray-400 hover:text-gray-600"
+                                    aria-expanded="true"
+                                    aria-haspopup="true"
+                                    @click="show_dropdown = true">
+                                    <span class="sr-only">Open options</span>
+                                    <i class="fa-light fa-bars fa-xl"></i>
+                                </button>
+                            </div>
 
-                        <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                            role="menu"
-                            aria-orientation="vertical"
-                            aria-labelledby="menu-button"
-                            tabindex="-1"
-                            x-show="show_dropdown">
-                            <div class="py-2"
-                                role="none">
+                            <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby="menu-button"
+                                tabindex="-1"
+                                x-show="show_dropdown">
+                                <div class="py-2"
+                                    role="none">
 
-                                <a href="javascript:void(0)"
-                                    class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
-                                    role="menuitem"
-                                    @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
+                                    <a href="javascript:void(0)"
+                                        class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
+                                        role="menuitem"
+                                        @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
 
-                                <a href="javascript:void(0)"
-                                    class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
-                                    role="menuitem"
-                                    @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span> View Versions</a>
+                                    <a href="javascript:void(0)"
+                                        class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
+                                        role="menuitem"
+                                        @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span> View Versions</a>
 
-                                <hr>
+                                    <hr>
 
-                                <a href="javascript:void(0)"
-                                    class="block px-4 py-2 text-red-600 hover:text-red-500"
-                                    @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
+                                    <a href="javascript:void(0)"
+                                        class="block px-4 py-2 text-red-600 hover:text-red-500"
+                                        @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                </div>
+                    </div>
+                @else
+                    <div class="hidden edit-button"></div>
+                @endif
 
             </div>
 

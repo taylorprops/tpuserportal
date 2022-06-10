@@ -41,7 +41,7 @@
 
     <x-nav.menu :level="'1'"
         :title="'Schedule'"
-        :link="'/marketing/schedule_review'"
+        :link="'/marketing/schedule'"
         :icon="'fa-duotone fa-calendar'" />
 
     {{-- End Marketing --}}

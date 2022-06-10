@@ -14,7 +14,7 @@ $breadcrumbs = [[$title]];
     <div class="pb-12 pt-2"
         x-data="schedule()">
 
-        <div class="max-w-1600-px mx-auto sm:px-6 lg:px-12">
+        <div class="w-full sm:px-6">
 
             <div class="">
 
@@ -22,7 +22,7 @@ $breadcrumbs = [[$title]];
 
                     <div class="my-6 flex items-end justify-start space-x-4">
 
-                        @foreach (['company', 'recipient'] as $item)
+                        @foreach (['company', 'recipient', 'medium', 'status'] as $item)
                             <div>
                                 <select class="form-element select md"
                                     data-label="{{ ucwords($item) }}"
