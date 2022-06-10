@@ -37,42 +37,8 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        $start = date('2022-04-01');
-        $end = date('2022-04-30');
-        $listings = BrightListings::where(function($query) use ($start, $end) {
-            $query -> whereIn('ListOfficeMlsId', config('global.bright_office_codes'))
-            -> orWhereIn('BuyerOfficeMlsId', config('global.bright_office_codes'));
-        })
-        -> where('MlsStatus', 'Closed')
-        -> whereBetween('CloseDate', [$start, $end])
-        -> get();
-        dd($listings);
 
-        ini_set('memory_limit', '-1');
-
-        // $rets = Helper::rets_login();
-
-        // if($rets) {
-
-        //     $resource = "Property";
-        //     $class = "ALL";
-
-        //     $query = 'ListOfficeMlsId=|'.implode(',', config('global.bright_office_codes'));
-
-        //     $results = $rets -> Search(
-        //         $resource,
-        //         $class,
-        //         $query,
-        //         [
-        //             'Select' => config('global.bright_listings_columns')
-        //         ]
-        //     );
-
-        //     $results = $results -> toArray();
-        //     dd($results);
-
-        // }
-
+        return view('tests/test');
 
     }
 
