@@ -91,7 +91,7 @@
                     <div class="relative">
 
                         <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer"
-                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>{{ $event -> status -> item }}</div>
+                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>{{ $event -> status -> item }}</div>
 
                         <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu"
@@ -116,7 +116,7 @@
 
                     </div>
 
-                    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
+                    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
                         <div class="mx-1 pl-4">
                             <div class="relative"
                                 x-show="!show_notes">
@@ -260,7 +260,7 @@
 
                 </div>
 
-                @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
+                @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
                     <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
 
                         <a href="javascript:void(0)"
