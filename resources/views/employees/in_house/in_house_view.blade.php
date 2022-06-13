@@ -156,8 +156,8 @@ $breadcrumbs = [['In House Employees', '/employees/in_house'], [$title]];
                                             data-label="Website Level">
                                             <option value=""></option>
                                             <option value="admin" @if ($employee && $employee -> emp_position == 'admin') selected @endif>Admin</option>
-                                            <option value="admin" @if ($employee && $employee -> emp_position == 'admin') selected @endif>Marketing</option>
-                                            <option value="marketing" @if ($employee && $employee -> emp_position == 'marketing') selected @endif>Owner</option>
+                                            <option value="marketing" @if ($employee && $employee -> emp_position == 'marketing') selected @endif>Marketing</option>
+                                            <option value="owner" @if ($employee && $employee -> emp_position == 'owner') selected @endif>Owner</option>
                                             <option value="manager" @if ($employee && $employee -> emp_position == 'manager') selected @endif>Manager</option>
                                             <option value="super_admin" @if ($employee && $employee -> emp_position == 'super_admin') selected @endif>Super Admin</option>
                                         </select>
