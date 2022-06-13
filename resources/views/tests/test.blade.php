@@ -22,7 +22,7 @@ $breadcrumbs = [
 
             <div class="">
 
-                <x-select-multiple  id="select2" name="select2[]">
+                <x-select-multiple  id="selectxxxxxxxxxxx" name="select2[]">
                     <option value="above">Above</option>
                     <option value="after">After</option>
                     <option value="back" selected>Back</option>

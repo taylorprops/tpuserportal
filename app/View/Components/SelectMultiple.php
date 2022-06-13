@@ -4,8 +4,9 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class select-multiple extends Component
+class SelectMultiple extends Component
 {
+
     /**
      * Create a new component instance.
      *

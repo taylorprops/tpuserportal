@@ -194,6 +194,27 @@ a.default {
     }
 }
 
+// multiple select
+[x-cloak] {
+    display: none;
+}
+
+.select.svg-icon {
+    width: 1em;
+    height: 1em;
+}
+
+.select.svg-icon path,
+.select.svg-icon polygon,
+.select.svg-icon rect {
+    fill: #333;
+}
+
+.select.svg-icon circle {
+    stroke: #4691f6;
+    stroke-width: 1;
+}
+
 .test {
     // default
     color: #4770b3;
