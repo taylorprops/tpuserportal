@@ -379,7 +379,7 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
-            save_add_version(ele, show_versions) {
+            save_add_version(ele) {
 
                 let scope = this;
                 let button_html = ele.innerHTML;
@@ -399,12 +399,10 @@ if (document.URL.match('marketing/schedule')) {
                         toastr.success('New Version Successfully Added');
                         scope.get_schedule();
                         scope.clear_add_version_form();
-                        if (show_versions == true) {
-                            scope.show_versions(event_id);
-                        }
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
-                        }, 1000);
+                            document.querySelector('#view_' + event_id).click();
+                        }, 300);
 
                     })
                     .catch(function (error) {

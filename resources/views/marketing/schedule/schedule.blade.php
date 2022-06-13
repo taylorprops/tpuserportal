@@ -523,7 +523,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
             <div class="flex items-center justify-around pb-6 pt-12">
                 <button type="button"
                     class="button primary xl"
-                    @click="save_add_version($el, true)">Save Version <i class="fa-light fa-check ml-2"></i></button>
+                    @click="save_add_version($el)">Save Version <i class="fa-light fa-check ml-2"></i></button>
             </div>
 
         </x-modals.modal>

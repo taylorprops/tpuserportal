@@ -217,6 +217,7 @@
                     @if ($accepted)
                         <div class="pl-4">
                             <button type="button"
+                                id="view_{{ $event -> id }}"
                                 class="button primary sm"
                                 @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View <i class="fa-solid fa-eye ml-2"></i></button>
                         </div>
