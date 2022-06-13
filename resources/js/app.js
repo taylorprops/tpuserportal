@@ -63,6 +63,7 @@ require('./marketing/data/upload_list.js');
 require('./marketing/data/address_database.js');
 require('./marketing/schedule/schedule.js');
 require('./marketing/schedule/schedule_settings.js');
+require('./marketing/schedule/checklist.js');
 require('./admin/system_monitor.js');
 require('./notes/notes.js');
 require('./tools/tools.js');

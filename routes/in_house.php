@@ -22,6 +22,7 @@ use App\Http\Controllers\DocManagement\Archives\EscrowController;
 use App\Http\Controllers\OldDB\Company\OldTransactionsController;
 use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
 use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
+use App\Http\Controllers\Marketing\Schedule\ScheduleChecklistController;
 use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
 
 Route::middleware(['auth', 'web']) -> group(function () {
@@ -165,12 +166,17 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/schedule_review', [ScheduleController::class, 'schedule_review']) -> middleware(['owner']);
     Route::post('/marketing/get_schedule_review', [ScheduleController::class, 'get_schedule_review']) -> middleware(['owner']);
 
+    /* Settings */
     Route::get('/marketing/get_schedule_settings', [ScheduleController::class, 'get_schedule_settings']) -> middleware(['in_house']);
     Route::post('/marketing/settings_save_add_item', [ScheduleController::class, 'settings_save_add_item']) -> middleware(['in_house']);
     Route::post('/marketing/settings_save_edit_item', [ScheduleController::class, 'settings_save_edit_item']) -> middleware(['in_house']);
     Route::get('/marketing/settings_get_reassign_options', [ScheduleController::class, 'settings_get_reassign_options']) -> middleware(['in_house']);
     Route::post('/marketing/settings_reassign_items', [ScheduleController::class, 'settings_reassign_items']) -> middleware(['in_house']);
     Route::post('/marketing/settings_update_order', [ScheduleController::class, 'settings_update_order']) -> middleware(['in_house']);
+
+    /* Checklist */
+    Route::get('/marketing/schedule/checklist', [ScheduleChecklistController::class, 'checklist']) -> middleware(['in_house']);
+    Route::get('/marketing/schedule/get_checklist', [ScheduleChecklistController::class, 'get_checklist']) -> middleware(['in_house']);
 
 
     // %%%% Import Loan Officers
@@ -210,6 +216,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     // %%%% Tests
     Route::get('/tests/test', [TestsController::class, 'test']) -> middleware(['in_house']);
+    Route::get('/tests/test2', [TestsController::class, 'test2']) -> middleware(['in_house']);
     Route::get('/tests/bright_missing_from_bright', [TestsController::class, 'bright_missing_from_bright']) -> middleware(['in_house']);
     Route::get('/tests/bright_missing_from_db', [TestsController::class, 'bright_missing_from_db']) -> middleware(['in_house']);
 

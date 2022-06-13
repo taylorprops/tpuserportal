@@ -189,6 +189,11 @@
             :link="'/marketing/schedule_settings'"
             :icon="'fa-duotone fa-gears'" />
 
+        <x-nav.menu :level="'1'"
+            :title="'Schedule Checklist'"
+            :link="'/marketing/schedule/checklist'"
+            :icon="'fa-duotone fa-check'" />
+
 
         <x-nav.menu :level="'1'"
             :title="'Address Database'"
