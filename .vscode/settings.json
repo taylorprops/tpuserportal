@@ -384,7 +384,8 @@
     "git.ignoreLimitWarning": true,
     "github.copilot.autocomplete.enable": true,
     "cSpell.words": [],
-    "editor.wordWrap": "on",
+    "editor.wordWrap": "wordWrapColumn",
     "intelephense.diagnostics.undefinedTypes": false,
-    "intelephense.diagnostics.undefinedMethods": false
+    "intelephense.diagnostics.undefinedMethods": false,
+    "editor.wordWrapColumn": 160
 }

@@ -4,7 +4,7 @@ if (document.URL.match(/checklist/)) {
 
         return {
 
-            active_tab: '1',
+            active_tab: '0',
             show_add_item_modal: false,
 
             init() {
