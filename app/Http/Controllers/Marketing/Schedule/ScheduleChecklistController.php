@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Marketing\Schedule;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Marketing\Schedule\ScheduleChecklist;
 
 class ScheduleChecklistController extends Controller
 {
@@ -15,7 +16,9 @@ class ScheduleChecklistController extends Controller
 
     public function get_checklist(Request $request) {
 
+        $checklist = ScheduleChecklist::get();
 
+        return view('/marketing/schedule/get_checklist_html', compact('checklist'));
 
     }
 }

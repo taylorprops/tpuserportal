@@ -411,7 +411,7 @@ class ScheduleController extends Controller
     {
 
         $sender = $request -> sender;
-        $recipient = $request -> recipient;
+        $recipient_id = $request -> recipient_id;
         $states = explode(',', $request -> states);
 
         if ($sender == 'mailchimp') {
@@ -441,7 +441,7 @@ class ScheduleController extends Controller
         $file = Storage::path('/tmp/' . $file_name);
         $handle = fopen($file, 'w');
 
-        if ($recipient == 'In-House Agents') {
+        if ($recipient_id == '13' /* 'In-House Agents' */) {
 
             $this -> agent_columns = $this -> agent_columns_in_house;
             $agents = InHouseAddresses::select($this -> agent_columns_in_house) -> get();
@@ -460,7 +460,7 @@ class ScheduleController extends Controller
             foreach ($employees as $employee) {
                 fputcsv($handle, $employee, ',');
             }
-        } else if ($recipient == 'PSI') {
+        } else if ($recipient_id == '12' /* PSI */) {
 
             $agents = TestCenterAddresses::select($this -> agent_columns_psi) -> get();
 

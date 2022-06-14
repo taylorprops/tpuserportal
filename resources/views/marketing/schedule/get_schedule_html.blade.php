@@ -19,10 +19,10 @@
             }
         }
         
-        $company = $event -> company -> item;
+        $company_id = $event -> company -> id;
         
         $past_due = null;
-        if ($event -> event_date < date('Y-m-d') && $event -> status -> item != 'Completed') {
+        if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
             $past_due = 'past_due';
         }
         
@@ -43,9 +43,7 @@
         data-state="{{ $event -> state }}"
         data-status-id="{{ $event -> status_id }}"
         data-recipient-id="{{ $event -> recipient_id }}"
-        data-recipient="{{ $event -> recipient -> item }}"
         data-company-id="{{ $event -> company_id }}"
-        data-company="{{ $company }}"
         data-medium-id="{{ $event -> medium_id }}"
         data-description="{{ $event -> description }}"
         data-subject-line-a="{{ $event -> subject_line_a }}"
@@ -61,7 +59,8 @@
                 id="show_details_{{ $event -> id }}"
                 @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
 
-                <div class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> item == 'Completed') opacity-40 @endif">
+                <div
+                    class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light"
                                 :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
@@ -219,7 +218,8 @@
                             <button type="button"
                                 id="view_{{ $event -> id }}"
                                 class="button primary sm"
-                                @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View <i class="fa-solid fa-eye ml-2"></i></button>
+                                @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View
+                                <i class="fa-solid fa-eye ml-2"></i></button>
                         </div>
                     @endif
 
@@ -298,7 +298,7 @@
                                     role="none">
 
                                     @php
-                                        if ($company == 'Taylor Properties') {
+                                        if ($company_id == '1') {
                                             $links = [
                                                 [
                                                     'title' => 'Standard',
@@ -313,7 +313,7 @@
                                                     'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
                                                 ],
                                             ];
-                                        } elseif ($company == 'Heritage Title') {
+                                        } elseif ($company_id == '3') {
                                             $links = [
                                                 [
                                                     'title' => 'Standard',
@@ -324,7 +324,7 @@
                                                     'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
                                                 ],
                                             ];
-                                        } elseif ($company == 'Heritage Financial') {
+                                        } elseif ($company_id == '2') {
                                             $links = [
                                                 [
                                                     'title' => 'Loan Officer Jobs',
@@ -414,7 +414,9 @@
                                     <a href="javascript:void(0)"
                                         class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
                                         role="menuitem"
-                                        @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span> View Versions</a>
+                                        @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span
+                                            class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span>
+                                        View Versions</a>
 
                                     <hr>
 

@@ -430,13 +430,11 @@ if (document.URL.match('marketing/schedule')) {
 
                 let event_div = ele.closest('.event-div');
                 let states = event_div.getAttribute('data-state').split(',');
-                let company = event_div.getAttribute('data-company');
-                let recipient = event_div.getAttribute('data-recipient');
+                let company_id = event_div.getAttribute('data-company-id');
+                let recipient_id = event_div.getAttribute('data-recipient-id');
                 let sender = 'sendinblue';
-                if (company == 'Heritage Title') {
+                if (company_id == '3' || company_id == '2') {
                     sender = 'mailchimp';
-                } else if (company == 'Heritage Financial') {
-                    sender = 'omnisend';
                 }
 
                 let button_html = ele.innerHTML;
@@ -445,7 +443,7 @@ if (document.URL.match('marketing/schedule')) {
                 let formData = new FormData();
                 formData.append('states', states);
                 formData.append('sender', sender);
-                formData.append('recipient', recipient);
+                formData.append('recipient_id', recipient_id);
 
                 axios.post('/marketing/get_email_list', formData)
                     .then(function (response) {
