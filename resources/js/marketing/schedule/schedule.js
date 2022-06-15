@@ -53,7 +53,7 @@ if (document.URL.match('marketing/schedule')) {
                             });
                             let options = {
                                 selector: '.editor-inline',
-                                height: '400',
+                                height: '200',
                                 menubar: 'tools edit format table',
                                 statusbar: false,
                                 plugins: 'image table code',
@@ -108,7 +108,9 @@ if (document.URL.match('marketing/schedule')) {
                         scope.clear_form(form);
                         if (event_id) {
                             setTimeout(function () {
-                                document.querySelector('#show_details_' + event_id).click();
+                                let div = document.querySelector('#show_details_' + event_id);
+                                div.click();
+                                scroll_above(div);
                             }, 500);
                         }
                     })
