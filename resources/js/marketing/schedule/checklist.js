@@ -22,7 +22,7 @@ if (document.URL.match(/checklist/)) {
                     });
             },
 
-            add_item(company_id, recipient_id) {
+            add_item(company_id, recipient_id, state) {
                 let scope = this;
                 scope.show_add_item_modal = true;
             },
