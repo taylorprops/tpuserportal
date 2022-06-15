@@ -38,9 +38,29 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
+        $events = Schedule::where('event_date', date('Y-m-d')) -> whereIn('status_id', ['26', '33', '24']) -> where('medium_id', '7') -> get();
+        $events = Schedule::get();
+        foreach($events as $event) {
+
+            switch ($event -> company_id) {
+                case '1': // TP
+                    $tos = config('global.marketing_email_notification_TP');
+                    break;
+                case '2': // HF
+                    $tos = config('global.marketing_email_notification_HF');
+                    break;
+                case '3': // HT
+                    $tos = config('global.marketing_email_notification_HT');
+                    break;
+            }
+
+            dd($tos);
 
 
-        return view('tests/test');
+        }
+
+
+        // return view('tests/test');
 
     }
 
