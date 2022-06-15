@@ -18,20 +18,20 @@
                 $versions[] = $details;
             }
         }
-        
+
         $company_id = $event -> company -> id;
-        
+
         $past_due = null;
         if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
             $past_due = 'past_due';
         }
-        
+
         $notes = [];
         if ($event -> notes) {
             $notes = $event -> notes;
             $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
         }
-        
+
     @endphp
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
@@ -74,12 +74,12 @@
                     <div class="w-8 h-8 rounded-full bg-white flex items-center justify-around">
                         {{ $event -> id }}
                     </div>
-                    <div class="w-32 hidden sm:inline-block">
+                    <div class="w-24 hidden sm:inline-block">
                         {{ $event -> medium -> item }}
                     </div>
 
                     <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
-                        {{ $event -> company -> item }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
+                        {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
                     </div>
 
                 </div>
@@ -132,7 +132,7 @@
                             <div x-show="show_notes">
                                 <button type="button"
                                     class=""
-                                    @click="show_notes = false">
+                                    @click.stop="show_notes = false">
                                     <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
                                 </button>
                             </div>
