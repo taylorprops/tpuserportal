@@ -44,16 +44,19 @@ window.axios_options = {
 };
 
 if (document.URL.match(/tpuserportal.com\/[a-z]+/)) {
-    setInterval(function checkSession() {
-        axios.get('/is-logged-in')
-            .then(function (response) {
-            })
-            .catch(function (error) {
-                if (error) {
-                    location.reload();
-                }
-            });
-    }, 10000);
+
+    if (!document.URL.match(/(login|forgot-password|register)/)) {
+        setInterval(function checkSession() {
+            axios.get('/is-logged-in')
+                .then(function (response) {
+                })
+                .catch(function (error) {
+                    if (error) {
+                        location.reload();
+                    }
+                });
+        }, 10000);
+    }
 }
 
 window.form_elements = function () {
