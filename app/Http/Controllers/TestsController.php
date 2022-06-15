@@ -37,18 +37,10 @@ class TestsController extends Controller
 
     public function test(Request $request) {
 
-        ini_set('memory_limit', '-1');
-
-        Cache::forget('listings');
-        $expire = Carbon::now() -> addMinutes(10);
-
-        $listings1 = Cache::remember('listings', $expire, function() {
-            return BrightListings::select(['ListingKey']) -> where('MlsListDate', '<', '2012-01-01') -> get();
-        });
-        dd($listings);
 
 
-        return view('tests/test', compact('listings'));
+
+        return view('tests/test');
 
     }
 

@@ -22,17 +22,11 @@ $breadcrumbs = [
 
             <div class="">
 
-                <x-select-multiple  id="selectxxxxxxxxxxx" name="select2[]">
+                <x-select-multiple  id="my_id" name="my_name[]" :size="'md'">
                     <option value="above">Above</option>
                     <option value="after">After</option>
                     <option value="back" selected>Back</option>
                     <option value="behind" selected>Behind</option>
-                    <option value="before" selected>Before</option>
-                    <option value="beyond" selected>Beyond</option>
-                    <option value="forward">Forward</option>
-                    <option value="front">Front</option>
-                    <option value="later">Later</option>
-                    <option value="under">Under</option>
                 </x-select-multiple>
 
             </div>

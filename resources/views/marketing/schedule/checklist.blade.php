@@ -34,7 +34,14 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
 
                 <form x-ref="add_item_form">
 
-
+                    <div>
+                        <x-select-multiple name="company_id[]" mulitple>
+                            <option value="above">Above</option>
+                            <option value="after">After</option>
+                            <option value="back" selected>Back</option>
+                            <option value="behind" selected>Behind</option>
+                        </x-select-multiple>
+                    </div>
 
                 </form>
 

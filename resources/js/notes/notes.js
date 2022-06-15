@@ -53,8 +53,8 @@ if (document.URL.match(/notes/)) {
                     inline: true,
                     menubar: '',
                     statusbar: false,
-                    plugins: 'image table code',
-                    toolbar: 'undo redo | table | bold italic underline | forecolor backcolor | align outdent indent |  numlist bullist checklist | image | formatselect fontselect fontsizeselect | code |',
+                    plugins: 'image table code hr',
+                    toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | align outdent indent |  numlist bullist checklist | image | formatselect fontselect fontsizeselect | code |',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
                 }
                 text_editor(options);
