@@ -1,10 +1,5 @@
 if (document.URL.match('marketing/schedule')) {
 
-    let review = null;
-    if (document.URL.match(/review/)) {
-        review = 'yes';
-    }
-
     window.schedule = function () {
 
         return {
@@ -29,11 +24,7 @@ if (document.URL.match('marketing/schedule')) {
 
             init() {
 
-                if (this.review) {
-                    this.get_schedule_review();
-                } else {
-                    this.get_schedule();
-                }
+                this.get_schedule();
 
             },
 
@@ -71,45 +62,6 @@ if (document.URL.match('marketing/schedule')) {
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                                 relative_urls: false,
                                 document_base_url: location.hostname
-                            }
-                            text_editor(options);
-                        }, 500);
-                    })
-                    .catch(function (error) {
-                        display_errors(error);
-                    });
-
-            },
-
-            get_schedule_review(id = null) {
-
-                let scope = this;
-                let form = scope.$refs.filter_form;
-                let formData = new FormData(form);
-
-                axios.post('/marketing/get_schedule_review', formData)
-                    .then(function (response) {
-                        scope.$refs.schedule_review_list_div.innerHTML = response.data;
-                        scope.calendar();
-                        if (id) {
-                            let event_div = document.querySelector('#event_' + id);
-                            event_div.classList.add('cloned');
-                            setTimeout(function () {
-                                event_div.querySelector('.edit-button').click();
-                            }, 500);
-                        }
-                        setTimeout(function () {
-                            tippy('[data-tippy-content]', {
-                                allowHTML: true,
-                            });
-                            let options = {
-                                selector: '.editor-inline',
-                                height: '400',
-                                menubar: 'tools edit format table',
-                                statusbar: false,
-                                plugins: 'image table code',
-                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
-                                table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                             }
                             text_editor(options);
                         }, 500);
@@ -158,7 +110,7 @@ if (document.URL.match('marketing/schedule')) {
                         if (event_id) {
                             setTimeout(function () {
                                 document.querySelector('#show_details_' + event_id).click();
-                            }, 300);
+                            }, 500);
                         }
                     })
                     .catch(function (error) {
@@ -250,14 +202,10 @@ if (document.URL.match('marketing/schedule')) {
                     .then(function (response) {
                         ele.innerHTML = button_html;
                         toastr.success('Status Successfully Updated');
-                        if (review) {
-                            scope.get_schedule_review();
-                        } else {
-                            scope.get_schedule();
-                            setTimeout(function () {
-                                document.querySelector('#show_details_' + event_id).click();
-                            }, 1000);
-                        }
+                        scope.get_schedule();
+                        setTimeout(function () {
+                            document.querySelector('#show_details_' + event_id).click();
+                        }, 1000);
                     })
                     .catch(function (error) { });
 
