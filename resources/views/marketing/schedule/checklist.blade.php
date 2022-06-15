@@ -14,7 +14,7 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
     <div class="pb-12 pt-2"
         x-data="checklist()">
 
-        <div class="max-w-1400-px mx-auto sm:px-6 lg:px-12">
+        <div class="max-w-1600-px mx-auto sm:px-6">
 
             <div class="mt-8">
 

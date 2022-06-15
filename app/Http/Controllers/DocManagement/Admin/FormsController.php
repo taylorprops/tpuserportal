@@ -23,7 +23,7 @@ class FormsController extends Controller
         $checklist_groups = ChecklistGroups::get();
         $form_groups = FormGroups::get();
         $form_tags = FormTags::get();
-        $active_states = config('global.company_active_states');
+        $active_states = config('global.taylor_properties_active_states');
 
         return view('/doc_management/admin/forms/forms', compact('checklist_groups', 'form_groups', 'form_tags', 'active_states'));
     }
@@ -31,57 +31,57 @@ class FormsController extends Controller
     public function get_form_groups(Request $request)
     {
         $form_groups = FormGroups::with(['forms' => function ($query) {
-            $query->select('id', 'form_group_id', 'checklist_group_id', 'form_name', 'form_name_display', 'form_location', 'helper_text', 'state', 'created_at')
-            ->where('active', 'yes');
-        }])->get();
+            $query -> select('id', 'form_group_id', 'checklist_group_id', 'form_name', 'form_name_display', 'form_location', 'helper_text', 'state', 'created_at')
+            -> where('active', 'yes');
+        }]) -> get();
 
         return view('/doc_management/admin/forms/get_form_groups_html', compact('form_groups'));
     }
 
     public function get_forms(Request $request)
     {
-        $form_group_id = $request->form_group_id;
-        $sort_by = $request->sort_by;
+        $form_group_id = $request -> form_group_id;
+        $sort_by = $request -> sort_by;
         $order = $sort_by == 'created_at' ? 'desc' : 'asc';
-        $published = $request->published;
-        $active = $request->active;
+        $published = $request -> published;
+        $active = $request -> active;
 
         $forms = Forms::select(['id', 'form_group_id', 'checklist_group_id', 'form_name', 'form_name_display', 'form_location', 'helper_text', 'state', 'created_at'])
-        ->where('form_group_id', $form_group_id)
-        ->where(function ($query) use ($active) {
+        -> where('form_group_id', $form_group_id)
+        -> where(function ($query) use ($active) {
             if ($active != '') {
-                $query->where('active', $active);
+                $query -> where('active', $active);
             }
         })
-        ->where(function ($query) use ($published) {
+        -> where(function ($query) use ($published) {
             if ($published != '') {
-                $query->where('published', $published);
+                $query -> where('published', $published);
             }
         })
-        ->with(['fields'])
-        ->orderBy($sort_by, $order)
-        ->get();
+        -> with(['fields'])
+        -> orderBy($sort_by, $order)
+        -> get();
 
         return view('/doc_management/admin/forms/get_forms_html', compact('forms'));
     }
 
     public function search_forms(Request $request)
     {
-        $value = $request->value;
+        $value = $request -> value;
         $forms = Forms::select(['id', 'form_group_id', 'form_name_display', 'state'])
-        ->where('form_name_display', 'like', '%'.$value.'%')
-        ->with(['form_group', 'checklist_group'])
-        ->get()
-        ->toJson();
+        -> where('form_name_display', 'like', '%'.$value.'%')
+        -> with(['form_group', 'checklist_group'])
+        -> get()
+        -> toJson();
 
         return compact('forms');
     }
 
     public function get_upload_text(Request $request)
     {
-        $upload = $request->file('upload');
+        $upload = $request -> file('upload');
 
-        $new_file_name = str_replace('.pdf', '', $upload->getClientOriginalName());
+        $new_file_name = str_replace('.pdf', '', $upload -> getClientOriginalName());
         $sanitized = date('YmdHis').'_'.Helper::sanitize($new_file_name);
         $new_file_name_pdf = $sanitized.'.pdf';
         $new_file_name_image = $sanitized.'.png';
@@ -97,8 +97,8 @@ class FormsController extends Controller
 
         // scan text
         $text = (new TesseractOCR($upload_image))
-            ->allowlist(range('a', 'z'), range('A', 'Z'), '-_/\'/')
-            ->run();
+            -> allowlist(range('a', 'z'), range('A', 'Z'), '-_/\'/')
+            -> run();
 
         // store results to text file so we can loop through the lines
         $temp_text_file = 'tmp/'.date('YmdHis').'.txt';
@@ -111,7 +111,7 @@ class FormsController extends Controller
         }
         fclose($fn);
 
-        $file_title = preg_replace('/[-_]+/', ' ', $upload->getClientOriginalName());
+        $file_title = preg_replace('/[-_]+/', ' ', $upload -> getClientOriginalName());
         $file_title = preg_replace('/\.pdf/', '', $file_title);
         $file_title = preg_replace('/[0-9\s-]+$/', '', $file_title);
         $file_title = preg_replace('/Changes\sIncluded/i', '', $file_title);
@@ -141,7 +141,7 @@ class FormsController extends Controller
 
         $upload_location = '/storage/tmp/'.$new_file_name_pdf;
 
-        return response()->json([
+        return response() -> json([
             'upload_location' => $upload_location,
             'titles' => $titles,
         ]);
@@ -149,15 +149,15 @@ class FormsController extends Controller
 
     public function save_form(Request $request)
     {
-        $file = $request->file('upload') ?? null;
-        $form_id = $request->form_id ?? null;
+        $file = $request -> file('upload') ?? null;
+        $form_id = $request -> form_id ?? null;
 
         if (! $form_id) {
-            $validator = $request->validate([
+            $validator = $request -> validate([
                 'upload' => 'file|required',
             ]);
         }
-        $validator = $request->validate([
+        $validator = $request -> validate([
             'form_name_display' => 'required',
             'state' => 'required',
             'checklist_group_id' => 'required',
@@ -194,30 +194,30 @@ class FormsController extends Controller
 
                 // if existing delete all files and images
                 if ($form_id) {
-                    $this->clear_form_files($form_id);
+                    $this -> clear_form_files($form_id);
 
                     $form = Forms::find($form_id);
-                    if ($form->published == 'no') {
-                        $form->checklist_group_id = $checklist_group_id;
-                        $form->form_group_id = $form_group_id;
+                    if ($form -> published == 'no') {
+                        $form -> checklist_group_id = $checklist_group_id;
+                        $form -> form_group_id = $form_group_id;
                     }
                 } else {
                     $form = new Forms();
-                    $form->checklist_group_id = $checklist_group_id;
-                    $form->form_group_id = $form_group_id;
+                    $form -> checklist_group_id = $checklist_group_id;
+                    $form -> form_group_id = $form_group_id;
                 }
 
-                $form->form_name = $form_name;
-                $form->form_name_display = $form_name_display;
-                $form->state = $state;
-                $form->helper_text = $helper_text;
-                $form->form_tag = $form_tags;
-                $form->pages_total = $pages_total;
-                $form->page_width = $page_width;
-                $form->page_height = $page_height;
-                $form->page_size = $page_size;
-                $form->save();
-                $form_id = $form->id;
+                $form -> form_name = $form_name;
+                $form -> form_name_display = $form_name_display;
+                $form -> state = $state;
+                $form -> helper_text = $helper_text;
+                $form -> form_tag = $form_tags;
+                $form -> pages_total = $pages_total;
+                $form -> page_width = $page_width;
+                $form -> page_height = $page_height;
+                $form -> page_size = $page_size;
+                $form -> save();
+                $form_id = $form -> id;
 
                 // main storage location
                 $storage_dir = 'doc_management/forms/'.$form_id;
@@ -244,24 +244,24 @@ class FormsController extends Controller
                 Storage::copy($storage_dir.'/'.$form_name, $template_dir.'/'.$form_name);
 
                 // add to esign_templates
-                if ($request->form_id) {
-                    $template = EsignTemplates::where('system_form_id', $form_id)->first();
+                if ($request -> form_id) {
+                    $template = EsignTemplates::where('system_form_id', $form_id) -> first();
                 } else {
                     $template = new EsignTemplates();
-                    $template->system_form_id = $form_id;
+                    $template -> system_form_id = $form_id;
                 }
-                $template->template_type = 'system';
-                $template->template_name = $form_name_display;
-                $template->file_name = $form_name;
-                $template->file_location = $template_dir.'/'.$form_name;
-                $template->save();
-                $template_id = $template->id;
+                $template -> template_type = 'system';
+                $template -> template_name = $form_name_display;
+                $template -> file_name = $form_name;
+                $template -> file_location = $template_dir.'/'.$form_name;
+                $template -> save();
+                $template_id = $template -> id;
 
                 // update form with template id
-                $form->esign_template_id = $template_id;
+                $form -> esign_template_id = $template_id;
                 // update form directory path in database
-                $form->form_location = $storage_dir.'/'.$form_name;
-                $form->save();
+                $form -> form_location = $storage_dir.'/'.$form_name;
+                $form -> save();
 
                 // split pdf into pages and images
                 $input_file = Storage::path($storage_dir.'/'.$form_name);
@@ -283,12 +283,12 @@ class FormsController extends Controller
 
                     // add pages to db
                     $upload_pages = new FormsPages();
-                    $upload_pages->form_id = $form_id;
-                    $upload_pages->pdf_location = $storage_dir_pages.'/'.$c.'.pdf';
-                    $upload_pages->image_location = $storage_dir_images.'/'.$c.'.jpg';
-                    $upload_pages->pages_total = $pages_total;
-                    $upload_pages->page_number = $c;
-                    $upload_pages->save();
+                    $upload_pages -> form_id = $form_id;
+                    $upload_pages -> pdf_location = $storage_dir_pages.'/'.$c.'.pdf';
+                    $upload_pages -> image_location = $storage_dir_images.'/'.$c.'.jpg';
+                    $upload_pages -> pages_total = $pages_total;
+                    $upload_pages -> page_number = $c;
+                    $upload_pages -> save();
 
                     $template_image_location = $template_dir.'/images/'.$c.'.jpg';
                     // copy image to templates directory
@@ -299,12 +299,12 @@ class FormsController extends Controller
 
                     // add to template images
                     $template_image = new EsignTemplatesDocumentImages();
-                    $template_image->template_id = $template_id;
-                    $template_image->file_location = $template_dir.'/images/'.$c.'.jpg';
-                    $template_image->page_number = $c;
-                    $template_image->width = $page_width;
-                    $template_image->height = $page_height;
-                    $template_image->save();
+                    $template_image -> template_id = $template_id;
+                    $template_image -> file_location = $template_dir.'/images/'.$c.'.jpg';
+                    $template_image -> page_number = $c;
+                    $template_image -> width = $page_width;
+                    $template_image -> height = $page_height;
+                    $template_image -> save();
 
                     $c += 1;
                 }
@@ -313,35 +313,35 @@ class FormsController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 // only delete directories if a new upload
-                if (! $request->form_id) {
-                    $this->clear_form_files($form_id);
+                if (! $request -> form_id) {
+                    $this -> clear_form_files($form_id);
                 }
 
-                return response()->json(['error' => $e->getMessage()]);
+                return response() -> json(['error' => $e -> getMessage()]);
             }
         } else {
 
             // if file not being replaced
-            $form_id = $request->form_id;
-            $form_name_display = $request->form_name_display;
-            $form_group_id = $request->form_group_id;
-            $checklist_group_id = $request->checklist_group_id;
-            $helper_text = $request->helper_text;
-            $form_tag = $request->form_tag;
+            $form_id = $request -> form_id;
+            $form_name_display = $request -> form_name_display;
+            $form_group_id = $request -> form_group_id;
+            $checklist_group_id = $request -> checklist_group_id;
+            $helper_text = $request -> helper_text;
+            $form_tag = $request -> form_tag;
 
-            $form = Forms::where('id', $form_id)->first();
+            $form = Forms::where('id', $form_id) -> first();
 
-            if ($form->published == 'no') {
-                $form->form_group_id = $form_group_id;
-                $form->checklist_group_id = $checklist_group_id;
+            if ($form -> published == 'no') {
+                $form -> form_group_id = $form_group_id;
+                $form -> checklist_group_id = $checklist_group_id;
             }
 
-            $form->form_name_display = $form_name_display;
-            $form->helper_text = $helper_text;
-            $form->form_tag = $form_tag;
-            $form->save();
+            $form -> form_name_display = $form_name_display;
+            $form -> helper_text = $helper_text;
+            $form -> form_tag = $form_tag;
+            $form -> save();
 
-            return response()->json(['success' => true]);
+            return response() -> json(['success' => true]);
         }
     }
 
@@ -350,10 +350,10 @@ class FormsController extends Controller
         Storage::deleteDirectory('doc_management/forms/'.$form_id);
         Storage::deleteDirectory('esign_templates/system/'.$form_id);
 
-        $delete_upload_images = FormsPages::where('form_id', $form_id)->delete();
-        $template = EsignTemplates::where('system_form_id', $form_id)->first();
+        $delete_upload_images = FormsPages::where('form_id', $form_id) -> delete();
+        $template = EsignTemplates::where('system_form_id', $form_id) -> first();
         if ($template) {
-            $delete_template_images = EsignTemplatesDocumentImages::where('template_id', $template->id)->delete();
+            $delete_template_images = EsignTemplatesDocumentImages::where('template_id', $template -> id) -> delete();
         }
     }
 }

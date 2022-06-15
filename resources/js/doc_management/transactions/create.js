@@ -1,4 +1,4 @@
-if(document.URL.match(/transactions\/create/)) {
+if (document.URL.match(/transactions\/create/)) {
 
     window.addEventListener('load', (event) => {
 
@@ -7,7 +7,7 @@ if(document.URL.match(/transactions\/create/)) {
 
     });
 
-    window.create = function(transaction_type) {
+    window.create = function (transaction_type) {
 
         return {
             transaction_type: transaction_type,
@@ -45,20 +45,20 @@ if(document.URL.match(/transactions\/create/)) {
 
                 this.address_search();
 
-                setTimeout(function() {
+                setTimeout(function () {
                     scope.get_contacts();
                 }, 200);
 
-                if(this.transaction_type == 'listing') { this.show_both = true; };
+                if (this.transaction_type == 'listing') { this.show_both = true; };
 
                 axios.get('/transactions/get_property_types')
-                .then(function (response) {
-                    scope.property_types = response.data;
-                });
+                    .then(function (response) {
+                        scope.property_types = response.data;
+                    });
                 axios.get('/transactions/get_property_sub_types')
-                .then(function (response) {
-                    scope.property_sub_types = response.data;
-                });
+                    .then(function (response) {
+                        scope.property_sub_types = response.data;
+                    });
 
             },
             address_search() {
@@ -120,11 +120,11 @@ if(document.URL.match(/transactions\/create/)) {
                     document.getElementById('city').value = city;
                     document.getElementById('state').value = state;
 
-                    if(county && county != '') {
+                    if (county && county != '') {
 
                         let event = new Event('change');
                         document.getElementById('state').dispatchEvent(event);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             document.getElementById('county').value = county;
                         }, 300);
 
@@ -154,9 +154,9 @@ if(document.URL.match(/transactions\/create/)) {
 
                 let mls_search = null;
 
-                if(ele.classList.contains('address-search')) {
+                if (ele.classList.contains('address-search')) {
 
-                    if(document.getElementById('address_search_input').value == '') {
+                    if (document.getElementById('address_search_input').value == '') {
                         return false;
                     }
 
@@ -179,29 +179,29 @@ if(document.URL.match(/transactions\/create/)) {
                     document.getElementById('state').value = state;
                     let event = new Event('change');
                     document.getElementById('state').dispatchEvent(event);
-                    setTimeout(function() {
+                    setTimeout(function () {
                         document.getElementById('county').value = county;
                     }, 100);
 
                     scope.address_header(street_number, street_name, unit_number, city, state, zip);
 
-                    let active_states = document.getElementById('global_company_active_states').value.split(',');
-                    if(active_states.includes(state) == false) {
+                    let active_states = document.getElementById('global_taylor_properties_active_states').value.split(',');
+                    if (active_states.includes(state) == false) {
                         scope.show_license_state_error = true;
                         return false;
                     }
 
-                } else if(ele.classList.contains('mls-search')) {
+                } else if (ele.classList.contains('mls-search')) {
 
                     mls_search = 'yes';
-                    if(document.getElementById('mls_search_input').value == '') {
+                    if (document.getElementById('mls_search_input').value == '') {
                         return false;
                     }
                     ListingId = document.getElementById('mls_search_input').value;
 
                 }
 
-                if(scope.transaction_type == 'referral') {
+                if (scope.transaction_type == 'referral') {
                     scope.active_step = 3;
                     return false;
 
@@ -225,99 +225,99 @@ if(document.URL.match(/transactions\/create/)) {
                         county: county
                     },
                 })
-                .then(function (response) {
+                    .then(function (response) {
 
-                    if(mls_search) {
-                        if(response.data.error && response.data.error == 'not found') {
-                            scope.show_no_property_error = true;
-                            ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
-                            return false;
-                        }
-                    }
-
-                    let details = response.data.property_details;
-
-                    ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
-
-
-                    if(details) {
-                        // show result
-
-                        document.querySelector('#property_address').innerHTML = details.FullStreetAddress+'<br>'+details.City+', '+details.StateOrProvince+' '+details.PostalCode;
-                        if(details.ListingId) {
-                            document.querySelector('#property_listing_id').innerHTML = details.ListingId;
-                            document.querySelector('#property_status').innerHTML = details.MlsStatus;
-                            document.querySelector('#property_list_office').innerHTML = details.ListOfficeName;
-                            document.querySelector('#property_list_agent').innerHTML = details.ListAgentFirstName+' '+details.ListAgentLastName;
-                            document.querySelector('#property_list_date').innerHTML = details.MLSListDate;
-                            document.querySelector('#property_list_price').innerHTML = '$'+global_format_number(details.ListPrice);
-                            document.querySelector('#property_type_display').innerHTML = details.PropertyType;
-                        }
-                        if(details.TaxRecordLink) {
-                            scope.tax_records_link = true;
-                            scope.property_found_tax_records = true;
-                            document.querySelector('#property_tax_records_link').setAttribute('href', details.TaxRecordLink);
-                        }
-                        // let owners = details.Owner1;
-                        // if(details.Owner2 != '') {
-                        //     owners += ', '+details.Owner2;
-                        // }
-                        // document.querySelector('#property_owners').innerHTML = owners;
-
-                        scope.property_details = details;
-
-                        scope.final_result = true;
-
-                        scope.property_found_mls = false;
-                        if(details.ListingId) {
-                            scope.property_found_mls = true;
-                            document.querySelector('#property_image').setAttribute('src', details.ListPictureURL);
-                            scope.set_checklist_details();
+                        if (mls_search) {
+                            if (response.data.error && response.data.error == 'not found') {
+                                scope.show_no_property_error = true;
+                                ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
+                                return false;
+                            }
                         }
 
-                        // add if mls
-                        if(mls_search) {
-                            scope.address_header(details.StreetNumber, details.StreetName, details.UnitNumber, details.City, details.StateOrProvince, details.PostalCode);
+                        let details = response.data.property_details;
+
+                        ele.innerHTML = 'Continue <i class="fal fa-arrow-right ml-2"></i>';
+
+
+                        if (details) {
+                            // show result
+
+                            document.querySelector('#property_address').innerHTML = details.FullStreetAddress + '<br>' + details.City + ', ' + details.StateOrProvince + ' ' + details.PostalCode;
+                            if (details.ListingId) {
+                                document.querySelector('#property_listing_id').innerHTML = details.ListingId;
+                                document.querySelector('#property_status').innerHTML = details.MlsStatus;
+                                document.querySelector('#property_list_office').innerHTML = details.ListOfficeName;
+                                document.querySelector('#property_list_agent').innerHTML = details.ListAgentFirstName + ' ' + details.ListAgentLastName;
+                                document.querySelector('#property_list_date').innerHTML = details.MLSListDate;
+                                document.querySelector('#property_list_price').innerHTML = '$' + global_format_number(details.ListPrice);
+                                document.querySelector('#property_type_display').innerHTML = details.PropertyType;
+                            }
+                            if (details.TaxRecordLink) {
+                                scope.tax_records_link = true;
+                                scope.property_found_tax_records = true;
+                                document.querySelector('#property_tax_records_link').setAttribute('href', details.TaxRecordLink);
+                            }
+                            // let owners = details.Owner1;
+                            // if(details.Owner2 != '') {
+                            //     owners += ', '+details.Owner2;
+                            // }
+                            // document.querySelector('#property_owners').innerHTML = owners;
+
+                            scope.property_details = details;
+
+                            scope.final_result = true;
+
+                            scope.property_found_mls = false;
+                            if (details.ListingId) {
+                                scope.property_found_mls = true;
+                                document.querySelector('#property_image').setAttribute('src', details.ListPictureURL);
+                                scope.set_checklist_details();
+                            }
+
+                            // add if mls
+                            if (mls_search) {
+                                scope.address_header(details.StreetNumber, details.StreetName, details.UnitNumber, details.City, details.StateOrProvince, details.PostalCode);
+                            }
+
+                            setTimeout(function () {
+                                window.scrollTo({ top: 5000, behavior: 'smooth' });
+                            }, 100);
+
+                        } else {
+
+                            if (!mls_search) {
+
+                                scope.search_type = 'manually';
+                                scope.address_not_found = true;
+                                document.getElementById('street_number').value = street_number;
+                                document.getElementById('street_name').value = street_name;
+                                document.getElementById('unit').value = unit_number;
+                                document.getElementById('zip').value = zip;
+                                document.getElementById('city').value = city;
+                                document.getElementById('state').value = state;
+                                let event = new Event('change');
+                                document.getElementById('state').dispatchEvent(event);
+                                setTimeout(function () {
+                                    document.getElementById('county').value = county;
+                                }, 300);
+
+                            }
+
+                            scope.property_details = [];
+
                         }
 
-                        setTimeout(function() {
-                            window.scrollTo({ top: 5000, behavior: 'smooth' });
-                        }, 100);
-
-                    } else {
-
-                        if(!mls_search) {
-
-                            scope.search_type = 'manually';
-                            scope.address_not_found = true;
-                            document.getElementById('street_number').value = street_number;
-                            document.getElementById('street_name').value = street_name;
-                            document.getElementById('unit').value = unit_number;
-                            document.getElementById('zip').value = zip;
-                            document.getElementById('city').value = city;
-                            document.getElementById('state').value = state;
-                            let event = new Event('change');
-                            document.getElementById('state').dispatchEvent(event);
-                            setTimeout(function() {
-                                document.getElementById('county').value = county;
-                            }, 300);
-
-                        }
-
-                        scope.property_details = [];
-
-                    }
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             },
             save_manual_entry() {
 
                 remove_form_errors();
-                document.querySelector('#checklist_details_div').querySelectorAll('input, select').forEach(function(input) {
+                document.querySelector('#checklist_details_div').querySelectorAll('input, select').forEach(function (input) {
                     input.value = '';
                 });
 
@@ -333,7 +333,7 @@ if(document.URL.match(/transactions\/create/)) {
 
 
                 let details = {
-                    'FullStreetAddress': street_number+' '+street_name,
+                    'FullStreetAddress': street_number + ' ' + street_name,
                     'Unit': unit,
                     'City': city,
                     'StateOrProvince': state,
@@ -346,24 +346,24 @@ if(document.URL.match(/transactions\/create/)) {
                 let formData = new FormData(form);
 
                 axios.post('/transactions/validate_form_manual_entry', formData)
-                .then(function (response) {
-                    scope.property_details = details;
+                    .then(function (response) {
+                        scope.property_details = details;
 
-                    // go to step 2
-                    scope.active_step = 2;
-                    scope.steps_complete = 1;
+                        // go to step 2
+                        scope.active_step = 2;
+                        scope.steps_complete = 1;
 
-                    scope.address_header(street_number, street_name, unit_number, city, state, zip);
+                        scope.address_header(street_number, street_name, unit_number, city, state, zip);
 
-                })
-                .catch(function (error) {
-                    if(error) {
-                        if(error.response.status == 422) {
-                            let errors = error.response.data.errors;
-                            show_form_errors(errors);
+                    })
+                    .catch(function (error) {
+                        if (error) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                            }
                         }
-                    }
-                });
+                    });
 
 
 
@@ -374,7 +374,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                 let details = this.property_details;
 
-                if(details.ListingId) {
+                if (details.ListingId) {
 
                     let property_type = details.PropertyType;
                     let property_type_value = property_type.replace(/\sLease/, '');
@@ -386,31 +386,31 @@ if(document.URL.match(/transactions\/create/)) {
                     this.for_sale = property_type.match(/lease/i) ? 'no' : 'yes';
 
 
-                    if(property_sub_type) {
+                    if (property_sub_type) {
 
                         let end = property_sub_type.indexOf(',');
-                        if(end < 0) {
+                        if (end < 0) {
                             end = property_sub_type.length;
                         }
                         property_sub_type = property_sub_type.substring(0, end);
 
-                        if(property_sub_type.match(/(hud|reo)/i)) {
+                        if (property_sub_type.match(/(hud|reo)/i)) {
                             property_sub_type = 'REO/Bank/HUD Owned';
-                        } else if(property_sub_type.match(/foreclosure/i)) {
+                        } else if (property_sub_type.match(/foreclosure/i)) {
                             property_sub_type = 'Foreclosure';
-                        } else if(property_sub_type.match(/auction/i)) {
+                        } else if (property_sub_type.match(/auction/i)) {
                             property_sub_type = 'Auction';
-                        } else if(property_sub_type.match(/(short|third)/i)) {
+                        } else if (property_sub_type.match(/(short|third)/i)) {
                             property_sub_type = 'Short Sale';
-                        } else if(property_sub_type.match(/standard/i)) {
+                        } else if (property_sub_type.match(/standard/i)) {
                             property_sub_type = 'Standard';
                         } else {
                             property_sub_type = '';
                         }
 
                         // if no results check new construction
-                        if(property_sub_type == '') {
-                            if(details.NewConstructionYN == 'Y') {
+                        if (property_sub_type == '') {
+                            if (details.NewConstructionYN == 'Y') {
                                 property_sub_type = 'New Construction';
                             }
                         }
@@ -420,12 +420,12 @@ if(document.URL.match(/transactions\/create/)) {
 
                     let hoa_condo = 'none';
                     let condo = details.CondoYN || null;
-                    if(condo && condo == 'Y') {
+                    if (condo && condo == 'Y') {
                         hoa_condo = 'condo';
                     }
                     let hoa = details.AssociationYN ?? null;
-                    if(hoa && hoa == 'Y') {
-                        if(details.AssociationFee > 0) {
+                    if (hoa && hoa == 'Y') {
+                        if (details.AssociationFee > 0) {
                             hoa_condo = 'hoa';
                         }
                     }
@@ -442,7 +442,7 @@ if(document.URL.match(/transactions\/create/)) {
 
                 } else {
 
-                    document.querySelector('#checklist_details_div').querySelectorAll('input, select').forEach(function(input) {
+                    document.querySelector('#checklist_details_div').querySelectorAll('input, select').forEach(function (input) {
                         input.value = '';
                     });
 
@@ -464,30 +464,30 @@ if(document.URL.match(/transactions\/create/)) {
                 formData.append('show_disclosures', this.show_disclosures == true ? 'yes' : 'no');
 
                 axios.post('/transactions/validate_form_checklist_details', formData)
-                .then(function (response) {
+                    .then(function (response) {
 
-                    scope.checklist_details = {
-                        'Agent_ID': document.getElementById('Agent_ID').value,
-                        'SaleRent': document.getElementById('SaleRent').value,
-                        'PropertyType': document.getElementById('PropertyType').value,
-                        'PropertySubType': document.getElementById('PropertySubType').value,
-                        'YearBuilt': document.getElementById('YearBuilt').value,
-                        'HoaCondoFees': document.getElementById('HoaCondoFees').value
-                    };
+                        scope.checklist_details = {
+                            'Agent_ID': document.getElementById('Agent_ID').value,
+                            'SaleRent': document.getElementById('SaleRent').value,
+                            'PropertyType': document.getElementById('PropertyType').value,
+                            'PropertySubType': document.getElementById('PropertySubType').value,
+                            'YearBuilt': document.getElementById('YearBuilt').value,
+                            'HoaCondoFees': document.getElementById('HoaCondoFees').value
+                        };
 
-                    // go to step 2
-                    scope.active_step = 3;
-                    scope.steps_complete = 2;
-                })
-                .catch(function (error) {
-                    if(error) {
-                        console.log(error);
-                        if(error.response.status == 422) {
-                            let errors = error.response.data.errors;
-                            show_form_errors(errors);
+                        // go to step 2
+                        scope.active_step = 3;
+                        scope.steps_complete = 2;
+                    })
+                    .catch(function (error) {
+                        if (error) {
+                            console.log(error);
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                            }
                         }
-                    }
-                });
+                    });
             },
             property_type_selected() {
 
@@ -495,7 +495,7 @@ if(document.URL.match(/transactions\/create/)) {
                 let prop_sub_type = document.getElementById('PropertySubType');
 
 
-                if(prop_type.value == 'Residential') {
+                if (prop_type.value == 'Residential') {
                     this.show_disclosures = true;
                 } else {
                     this.show_disclosures = false;
@@ -503,14 +503,14 @@ if(document.URL.match(/transactions\/create/)) {
                 }
 
                 let need_disclosures = ['Standard', 'Short Sale', 'For Sale By Owner'];
-                if(need_disclosures.includes(prop_sub_type.value)) {
+                if (need_disclosures.includes(prop_sub_type.value)) {
                     this.show_disclosures = true;
                 } else {
                     this.show_disclosures = false;
                 }
 
-                if(this.transaction_type == 'contract') {
-                    if(this.for_sale == 'yes') {
+                if (this.transaction_type == 'contract') {
+                    if (this.for_sale == 'yes') {
                         document.getElementById('CloseDate').closest('label').querySelector('.label-text').innerText = 'Settlement Date';
                     } else {
                         document.getElementById('CloseDate').closest('label').querySelector('.label-text').innerText = 'Lease Date';
@@ -530,12 +530,12 @@ if(document.URL.match(/transactions\/create/)) {
             },
             address_header(street_number, street_name, unit_number, city, state, zip) {
 
-                let address = street_number+' '+street_name;
-                if(unit_number != '') {
-                    address += ' #'+unit_number;
+                let address = street_number + ' ' + street_name;
+                if (unit_number != '') {
+                    address += ' #' + unit_number;
                 }
-                address += ' '+city+', '+state+' '+zip;
-                document.querySelectorAll('.address-header').forEach(function(header) {
+                address += ' ' + city + ', ' + state + ' ' + zip;
+                document.querySelectorAll('.address-header').forEach(function (header) {
                     header.innerHTML = address;
                 });
 
@@ -543,10 +543,10 @@ if(document.URL.match(/transactions\/create/)) {
                 let referral_city = document.getElementById('ReferralClientCity');
                 let referral_state = document.getElementById('ReferralClientState');
                 let referral_zip = document.getElementById('ReferralClientZip');
-                if(referral_street) {
-                    referral_street.setAttribute('data-default-value', street_number+' '+street_name);
-                    if(unit_number != '') {
-                        referral_street.setAttribute('data-default-value', street_number+' '+street_name+' #'+unit_number);
+                if (referral_street) {
+                    referral_street.setAttribute('data-default-value', street_number + ' ' + street_name);
+                    if (unit_number != '') {
+                        referral_street.setAttribute('data-default-value', street_number + ' ' + street_name + ' #' + unit_number);
                     }
                     referral_city.setAttribute('data-default-value', city);
                     referral_state.setAttribute('data-default-value', state);
@@ -577,7 +577,7 @@ if(document.URL.match(/transactions\/create/)) {
                 let zip = ele.getAttribute('data-zip');
                 let member_id = this.import_contact_member_id;
 
-                let container = document.querySelector('[data-id="'+member_id+'"]');
+                let container = document.querySelector('[data-id="' + member_id + '"]');
 
                 container.querySelector('.member-first').value = first;
                 container.querySelector('.member-last').value = last;
@@ -596,12 +596,12 @@ if(document.URL.match(/transactions\/create/)) {
             add_member(member_type, seller_for_contract = false) {
 
                 let container = document.querySelectorAll('.members-container')[0];
-                if(seller_for_contract == true) {
+                if (seller_for_contract == true) {
                     container = document.querySelectorAll('.members-container')[1];
                 }
 
                 let member_html = document.querySelector('#member_template').innerHTML;
-                if(seller_for_contract == true) {
+                if (seller_for_contract == true) {
                     member_html = document.querySelector('#member_seller_for_contract_template').innerHTML;
                 }
 
@@ -623,14 +623,14 @@ if(document.URL.match(/transactions\/create/)) {
             remove_member(member_id, ele) {
                 console.log('working');
                 let container = ele.closest('.members-container');
-                let member = container.querySelector('[data-id="'+member_id+'"]');
+                let member = container.querySelector('[data-id="' + member_id + '"]');
                 member.classList.remove('opacity-100');
                 member.classList.add('opacity-0');
                 setTimeout(() => {
                     member.classList.add('h-0');
                     member.remove();
                     let c = 1;
-                    container.querySelectorAll('.member-container').forEach(function(member_div) {
+                    container.querySelectorAll('.member-container').forEach(function (member_div) {
                         member_div.querySelector('.member-id').innerText = c;
                         c += 1;
                     });
@@ -645,26 +645,26 @@ if(document.URL.match(/transactions\/create/)) {
 
                 let type = ucwords(transaction_type);
                 ele_html = ele.innerHTML;
-                show_loading_button(ele, 'Saving '+type+'...');
+                show_loading_button(ele, 'Saving ' + type + '...');
 
                 let sellers = [];
                 let buyers = [];
 
                 let members_container = document.querySelectorAll('.members-container');
 
-                members_container.forEach(function(member_container) {
+                members_container.forEach(function (member_container) {
 
                     let type = member_container.getAttribute('data-type');
 
                     let members = member_container.querySelectorAll('.member-container');
-                    if(members) {
+                    if (members) {
 
                         let cont = true;
 
-                        members.forEach(function(member) {
+                        members.forEach(function (member) {
 
-                            member.querySelectorAll('.required').forEach(function(required) {
-                                if(required.value == '') {
+                            member.querySelectorAll('.required').forEach(function (required) {
+                                if (required.value == '') {
                                     let error_message = required.closest('label').querySelector('.error-message');
                                     error_message.innerHTML = 'Required';
                                     required.scrollIntoView();
@@ -672,7 +672,7 @@ if(document.URL.match(/transactions\/create/)) {
                                 }
                             });
 
-                            if(cont == true) {
+                            if (cont == true) {
 
                                 let details = {
                                     'type': type
@@ -680,10 +680,10 @@ if(document.URL.match(/transactions\/create/)) {
 
                                 details.first_name = member.querySelector('.member-first').value;
                                 details.last_name = member.querySelector('.member-last').value;
-                                if(member.querySelector('.member-entity-name')) {
+                                if (member.querySelector('.member-entity-name')) {
                                     details.entity_name = member.querySelector('.member-entity-name').value;
                                 }
-                                if(member.querySelector('.member-phone')) {
+                                if (member.querySelector('.member-phone')) {
                                     details.phone = member.querySelector('.member-phone').value;
                                     details.email = member.querySelector('.member-email').value;
                                     details.street = member.querySelector('.member-street').value;
@@ -692,9 +692,9 @@ if(document.URL.match(/transactions\/create/)) {
                                     details.zip = member.querySelector('.member-zip').value;
                                 }
 
-                                if(type == 'seller') {
+                                if (type == 'seller') {
                                     sellers.push(details);
-                                } else if(type == 'buyer') {
+                                } else if (type == 'buyer') {
                                     buyers.push(details);
                                 }
 
@@ -707,14 +707,14 @@ if(document.URL.match(/transactions\/create/)) {
                 });
 
 
-                if(sellers.length == 0 && transaction_type != 'referral') {
+                if (sellers.length == 0 && transaction_type != 'referral') {
                     toastr.error('You must enter at least one Owner');
                     document.querySelector('.seller-header').scrollIntoView();
                     ele.innerHTML = ele_html;
                     return false;
                 }
-                if(transaction_type == 'contract') {
-                    if(buyers.length == 0) {
+                if (transaction_type == 'contract') {
+                    if (buyers.length == 0) {
                         toastr.error('You must enter at least one Buyer');
                         document.querySelector('.buyer-header').scrollIntoView();
                         ele.innerHTML = ele_html;
@@ -726,7 +726,7 @@ if(document.URL.match(/transactions\/create/)) {
                 let formData = new FormData(form);
 
                 let required_details = {};
-                formData.forEach(function(value, key){
+                formData.forEach(function (value, key) {
                     required_details[key] = value;
                 });
 
@@ -739,18 +739,18 @@ if(document.URL.match(/transactions\/create/)) {
                 formData.append('buyers', JSON.stringify(buyers));
 
                 axios.post('/transactions/save_transaction', formData)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    if(error) {
-                        if(error.response.status == 422) {
-                            let errors = error.response.data.errors;
-                            show_form_errors(errors);
-                            ele.innerHTML = ele_html;
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        if (error) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                                ele.innerHTML = ele_html;
+                            }
                         }
-                    }
-                });
+                    });
 
             },
             agent_search(val) {
@@ -760,42 +760,42 @@ if(document.URL.match(/transactions\/create/)) {
                         val: val
                     },
                 })
-                .then(function (response) {
+                    .then(function (response) {
 
-                    let results_div = document.getElementById('agent_search_results');
-                    results_div.innerHTML = '';
+                        let results_div = document.getElementById('agent_search_results');
+                        results_div.innerHTML = '';
 
-                    response.data.forEach(function(agent) {
-                        let li = document.querySelector('#agent_search_result_template').innerHTML;
-                        li = li.replace(/%%MemberFirstName%%/g, agent.MemberFirstName);
-                        li = li.replace(/%%MemberLastName%%/g, agent.MemberLastName);
-                        li = li.replace(/%%MemberType%%/g, agent.MemberType);
-                        li = li.replace(/%%MemberMlsId%%/g, agent.MemberMlsId);
-                        li = li.replace(/%%MemberEmail%%/g, agent.MemberEmail);
-                        li = li.replace(/%%MemberPreferredPhone%%/g, agent.MemberPreferredPhone);
-                        li = li.replace(/%%MemberMlsId%%/g, agent.MemberMlsId);
-                        li = li.replace(/%%OfficePhone%%/g, agent.OfficePhone);
-                        li = li.replace(/%%OfficeName%%/g, agent.OfficeName);
-                        li = li.replace(/%%OfficeMlsId%%/g, agent.OfficeMlsId);
-                        li = li.replace(/%%OfficeAddress1%%/g, agent.OfficeAddress1);
-                        li = li.replace(/%%OfficeCity%%/g, agent.OfficeCity);
-                        li = li.replace(/%%OfficeStateOrProvince%%/g, agent.OfficeStateOrProvince);
-                        li = li.replace(/%%OfficePostalCode%%/g, agent.OfficePostalCode);
+                        response.data.forEach(function (agent) {
+                            let li = document.querySelector('#agent_search_result_template').innerHTML;
+                            li = li.replace(/%%MemberFirstName%%/g, agent.MemberFirstName);
+                            li = li.replace(/%%MemberLastName%%/g, agent.MemberLastName);
+                            li = li.replace(/%%MemberType%%/g, agent.MemberType);
+                            li = li.replace(/%%MemberMlsId%%/g, agent.MemberMlsId);
+                            li = li.replace(/%%MemberEmail%%/g, agent.MemberEmail);
+                            li = li.replace(/%%MemberPreferredPhone%%/g, agent.MemberPreferredPhone);
+                            li = li.replace(/%%MemberMlsId%%/g, agent.MemberMlsId);
+                            li = li.replace(/%%OfficePhone%%/g, agent.OfficePhone);
+                            li = li.replace(/%%OfficeName%%/g, agent.OfficeName);
+                            li = li.replace(/%%OfficeMlsId%%/g, agent.OfficeMlsId);
+                            li = li.replace(/%%OfficeAddress1%%/g, agent.OfficeAddress1);
+                            li = li.replace(/%%OfficeCity%%/g, agent.OfficeCity);
+                            li = li.replace(/%%OfficeStateOrProvince%%/g, agent.OfficeStateOrProvince);
+                            li = li.replace(/%%OfficePostalCode%%/g, agent.OfficePostalCode);
 
-                        results_div.insertAdjacentHTML('beforeend', li);
+                            results_div.insertAdjacentHTML('beforeend', li);
 
+                        });
+
+                        scope.show_agent_search_results = true;
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
                     });
-
-                    scope.show_agent_search_results = true;
-
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
             },
             select_agent(ele) {
                 console.log(ele);
-                if(this.transaction_type == 'contract') {
+                if (this.transaction_type == 'contract') {
 
                     document.getElementById('ListAgentFirstName').value = ele.getAttribute('data-MemberFirstName');
                     document.getElementById('ListAgentLastName').value = ele.getAttribute('data-MemberLastName');
@@ -808,7 +808,7 @@ if(document.URL.match(/transactions\/create/)) {
                     document.getElementById('ListOfficeStateOrProvince').value = ele.getAttribute('data-OfficeStateOrProvince');
                     document.getElementById('ListOfficePostalCode').value = ele.getAttribute('data-OfficePostalCode');
 
-                } else if(this.transaction_type == 'referral') {
+                } else if (this.transaction_type == 'referral') {
 
                     document.getElementById('ReferralReceivingAgentFirstName').value = ele.getAttribute('data-MemberFirstName');
                     document.getElementById('ReferralReceivingAgentLastName').value = ele.getAttribute('data-MemberLastName');
@@ -829,7 +829,7 @@ if(document.URL.match(/transactions\/create/)) {
                 let referral_city = document.getElementById('ReferralClientCity');
                 let referral_state = document.getElementById('ReferralClientState');
                 let referral_zip = document.getElementById('ReferralClientZip');
-                if(referral_street) {
+                if (referral_street) {
                     referral_street.value = referral_street.getAttribute('data-default-value');
                     referral_city.value = referral_city.getAttribute('data-default-value');
                     referral_state.value = referral_state.getAttribute('data-default-value');
@@ -843,7 +843,7 @@ if(document.URL.match(/transactions\/create/)) {
                 let total_commission = document.getElementById('ReferralCommissionAmount').value.replace(regex, '');
                 let percent = parseInt(document.getElementById('ReferralReferralPercentage').value) / 100;
                 let agent_commission = total_commission * percent;
-                if(agent_commission > 0) {
+                if (agent_commission > 0) {
                     document.getElementById('ReferralAgentCommission').value = agent_commission;
                     format_money_with_decimals(document.getElementById('ReferralAgentCommission'));
                 }

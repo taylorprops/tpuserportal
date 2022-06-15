@@ -108,7 +108,7 @@
 
             <!-- Page Content -->
             <main class="overflow-x-auto " :class="{
-                'ml-72': main_nav_open && (window.innerWidth >= 1280),
+                'ml-64': main_nav_open && (window.innerWidth >= 1280),
                 '': !(window.innerWidth >= 1280) || !main_nav_open,
                 'pt-8': (window.innerWidth <= 640),
                 'pt-12': (window.innerWidth > 640) && (window.innerWidth < 1280),
@@ -120,7 +120,7 @@
 
     </div>
 
-    <input type="hidden" id="global_company_active_states" value="{{ implode(',', config('global.company_active_states')) }}">
+    <input type="hidden" id="global_taylor_properties_active_states" value="{{ implode(',', config('global.taylor_properties_active_states')) }}">
 
     <div class="page-loading w-full h-full fixed top-0 left-0 bg-white opacity-70 z-90 hidden">
         <span class="text-gray-700 opacity-75 top-1/3 my-0 mx-auto block relative w-0 h-0">

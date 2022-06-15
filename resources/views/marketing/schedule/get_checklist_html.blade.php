@@ -17,7 +17,9 @@
 
         <div class="border-b border-gray-200">
 
-            <nav class="-mb-px flex space-x-12" aria-label="Tabs">
+            <div class="text-lg font-semibold text-secondary">Company</div>
+
+            <nav class="-mb-px flex items-center space-x-12" aria-label="Tabs">
 
                 @foreach ($settings -> where('category', 'company') as $setting)
                     <a href="javascript:void(0)"
@@ -39,6 +41,13 @@
 
 
     @foreach ($settings -> where('category', 'company') as $setting)
+
+    @php
+    if($setting -> id == 1) {
+        $states = config('global.heritage_financial_active_states');
+    }
+
+    @endphp
         <div x-show="active_tab === '{{ $loop -> index }}'" x-transition"
             class="p-4 border"
             x-data="{ active_sub_tab: '0' }">
@@ -61,7 +70,9 @@
 
                     <div class="border-b border-gray-200">
 
-                        <nav class="-mb-px flex space-x-8 overflow-x-auto" aria-label="Tabs">
+                        <div class="text-lg font-semibold text-secondary">Recipient</div>
+
+                        <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
                             @foreach ($settings -> where('category', 'recipient') as $setting)
                                 <a href="javascript:void(0)"

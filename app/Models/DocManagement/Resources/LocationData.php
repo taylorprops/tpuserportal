@@ -17,11 +17,11 @@ class LocationData extends Model
 
     public function scopeGetStates()
     {
-        return $this->select('state')->distinct()->orderBy('state')->get();
+        return $this -> select('state') -> distinct() -> orderBy('state') -> get();
     }
 
     public function scopeActiveStates()
     {
-        return config('global.company_active_states');
+        return config('global.taylor_properties_active_states');
     }
 }
