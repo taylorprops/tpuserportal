@@ -18,24 +18,25 @@
                 $versions[] = $details;
             }
         }
-
+        
         $company_id = $event -> company -> id;
-
+        
         $past_due = null;
         if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
             $past_due = 'past_due';
         }
-
+        
         $notes = [];
         if ($event -> notes) {
             $notes = $event -> notes;
             $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
         }
-
+        
     @endphp
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
-        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'"
+        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' :
+            'ring-transparent'"
         id="event_{{ $event -> id }}"
         x-data="{ show_details: false }"
         data-id="{{ $event -> id }}"
@@ -78,8 +79,11 @@
                         {{ $event -> medium -> item }}
                     </div>
 
-                    <div class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
-                        {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i class="fa-light fa-arrow-right mx-2"></i> {{ $event -> recipient -> item }}
+                    <div
+                        class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
+                        {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i
+                            class="fa-light fa-arrow-right mx-2"></i>
+                        {{ $event -> recipient -> item }}
                     </div>
 
                 </div>
@@ -90,7 +94,8 @@
                     <div class="relative">
 
                         <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer"
-                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>{{ $event -> status -> item }}</div>
+                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>
+                            {{ $event -> status -> item }}</div>
 
                         <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu"
@@ -105,8 +110,12 @@
                                     <div class="group flex justify-between items-center p-2 rounded-lg
                                     @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
                                         @click.stop="if({{ $event -> status_id }} != {{ $status -> id }}) { update_status($el, {{ $event -> id }}, {{ $status -> id }}); } show_edit_status = false;">
-                                        <div class="@if ($event -> status -> id == $status -> id) opacity-60 @endif">{{ $status -> item }}</div>
-                                        <div class="hidden @if ($event -> status -> id != $status -> id) group-hover:inline-block @endif"><i class="fa-light fa-check"></i></div>
+                                        <div
+                                            class="@if ($event -> status -> id == $status -> id) opacity-60 @endif">
+                                            {{ $status -> item }}</div>
+                                        <div
+                                            class="hidden @if ($event -> status -> id != $status -> id) group-hover:inline-block @endif">
+                                            <i class="fa-light fa-check"></i></div>
                                     </div>
                                 @endforeach
                             </div>
@@ -115,25 +124,28 @@
 
                     </div>
 
-                    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
+                    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
                         <div class="mx-1 pl-4">
                             <div class="relative"
                                 x-show="!show_notes">
                                 <button type="button"
                                     class="block w-full h-full"
                                     @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
-                                    <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
+                                    <i
+                                        class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                                 </button>
                                 <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if ($count_unread == 0) hidden @endif"
                                     data-note-id="{{ $event -> id }}"
-                                    @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">{{ $count_unread }}</div>
+                                    @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
+                                    {{ $count_unread }}</div>
                             </div>
 
                             <div x-show="show_notes">
                                 <button type="button"
                                     class=""
                                     @click.stop="show_notes = false">
-                                    <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
+                                    <i
+                                        class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x"></i>
                                 </button>
                             </div>
 
@@ -160,10 +172,12 @@
                                 x-show="show_add_notes === false">
                                 <i class="fa-light fa-plus mr-2"></i> Add Note
                             </button>
-                            <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
+                            <button type="button"
+                                class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
                                 @click="show_add_notes = ! show_add_notes"
                                 x-show="show_add_notes === true">
-                                Cancel <i class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x ml-2"></i>
+                                Cancel <i
+                                    class="fa-duotone fa-times-circle text-red-600 hover:text-red-700 fa-2x ml-2"></i>
                             </button>
                         </div>
                     </div>
@@ -262,7 +276,8 @@
                 </div>
 
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
-                    <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
+                    <div
+                        class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
 
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light edit-button"
@@ -275,7 +290,8 @@
 
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light"
-                            @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
+                            @click="add_version({{ $event -> id }})">Add Version <i
+                                class="fa-thin fa-plus ml-2"></i></a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
@@ -285,7 +301,8 @@
                             <div>
                                 <a href="javascript:void(0)"
                                     class="text-primary hover:text-primary-light"
-                                    @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
+                                    @click="show_links = true">Links <i
+                                        class="fa-thin fa-link ml-2"></i></a>
                             </div>
 
                             <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -356,7 +373,8 @@
                                                 <div class="w-8 border-l-2 bg-gray-50">
                                                     <a href="javascript:void(0)"
                                                         class="block p-2"
-                                                        @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                                        @click="copy_text($refs.link_{{ $loop -> index }})"><i
+                                                            class="fa-duotone fa-clone"></i></a>
                                                 </div>
                                             </div>
 
@@ -372,14 +390,16 @@
 
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light"
-                            @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
+                            @click="get_email_list($el)">Get Email List <i
+                                class="fa-thin fa-download ml-2"></i></a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
                         <a href="javascript:void(0)"
                             class="text-primary hover:text-primary-light"
                             role="menuitem"
-                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i
+                                class="fa-thin fa-envelope mr-2"></i> Email</a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
@@ -409,7 +429,8 @@
                                     <a href="javascript:void(0)"
                                         class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
                                         role="menuitem"
-                                        @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
+                                        @click="clone({{ $event -> id }}); show_dropdown = false;"><i
+                                            class="fa-thin fa-clone mr-2"></i> Clone</a>
 
                                     <a href="javascript:void(0)"
                                         class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2"
@@ -422,7 +443,8 @@
 
                                     <a href="javascript:void(0)"
                                         class="block px-4 py-2 text-red-600 hover:text-red-500"
-                                        @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
+                                        @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i
+                                            class="fa-duotone fa-trash mr-2"></i> Delete</a>
 
                                 </div>
                             </div>
