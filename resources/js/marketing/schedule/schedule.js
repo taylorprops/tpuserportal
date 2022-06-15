@@ -4,7 +4,6 @@ if (document.URL.match('marketing/schedule')) {
 
         return {
 
-            review: review,
             show_item_modal: false,
             show_calendar: true,
             show_html: false,
