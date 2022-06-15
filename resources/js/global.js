@@ -43,7 +43,7 @@ window.axios_options = {
     }
 };
 
-if (document.URL.match(/[a-z]+/)) {
+if (document.URL.match(/tpuserportal.com\/[a-z]+/)) {
     setInterval(function checkSession() {
         axios.get('/is-logged-in')
             .then(function (response) {
