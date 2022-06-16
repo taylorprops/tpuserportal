@@ -45,9 +45,6 @@ if (document.URL.match('marketing/schedule')) {
                             }, 500);
                         }
                         setTimeout(function () {
-                            // document.querySelectorAll('.past-due').forEach(function (event) {
-                            //     scope.$refs.schedule_list_div.prepend(event);
-                            // });
                             tippy('[data-tippy-content]', {
                                 allowHTML: true,
                             });
