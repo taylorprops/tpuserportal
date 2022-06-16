@@ -44,8 +44,10 @@ class UpdateMissingFromDBJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
+            $this -> queueData(['Logging into Rets'], true);
             if($rets) {
 
+                $this -> queueData(['Logged into Rets'], true);
                 $resource = "Property";
                 $class = "ALL";
 
@@ -60,6 +62,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
                     ]
                 );
 
+                $this -> queueData(['Bright Query Complete'], true);
                 $results = $results -> toArray();
 
                 $bright_results = [];
@@ -72,6 +75,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
                 -> get()
                 -> pluck('ListingKey')
                 -> toArray();
+                $this -> queueData(['db_results complete'], true);
 
                 $missing_from_db = array_diff($bright_results, $db_results);
 
@@ -88,6 +92,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
                     ]
                 );
 
+                $this -> queueData(['Rets Query Complete'], true);
                 $results = $results -> toArray();
 
                 foreach($results as $listing) {
@@ -107,6 +112,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
                 }
 
             }
+            $this -> queueData(['All Done'], true);
 
             $this -> queueProgress(100);
 
