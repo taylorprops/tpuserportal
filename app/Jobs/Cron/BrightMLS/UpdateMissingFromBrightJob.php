@@ -36,7 +36,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
     public function handle()
     {
 
-        try {
+        // try {
 
             $this -> queueProgress(0);
 
@@ -124,11 +124,11 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             return;
 
-        } /* catch (\Throwable $exception) {
-            $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(180);
-            return;
-        } */
+        // } catch (\Throwable $exception) {
+        //     $this -> queueData(['Failed' => 'Retrying'], true);
+        //     $this -> release(180);
+        //     return;
+        // }
 
     }
 }
