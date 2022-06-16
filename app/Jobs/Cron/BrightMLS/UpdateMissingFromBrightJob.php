@@ -44,8 +44,10 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
+            $this -> queueData(['Logging into Rets'], true);
             if($rets) {
 
+                $this -> queueData(['Logged into Rets'], true);
                 $resource = "Property";
                 $class = "ALL";
 
@@ -59,6 +61,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
                         'Select' => config('global.bright_listings_columns')
                     ]
                 );
+                $this -> queueData(['Query Completed'], true);
 
                 $results = $results -> toArray();
 
@@ -66,12 +69,14 @@ class UpdateMissingFromBrightJob implements ShouldQueue
                 foreach($results as $result) {
                     $bright_results[] = $result['ListingKey'];
                 }
+                $this -> queueData(['ListingKeys Added'], true);
 
                 $db_results = BrightListings::select('ListingKey')
                 -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
                 -> get()
                 -> pluck('ListingKey')
                 -> toArray();
+                $this -> queueData(['BrightListings Queried'], true);
 
                 $missing_from_bright = array_diff($db_results, $bright_results);
                 // dd($missing_from_bright);
@@ -82,6 +87,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
                     'MlsStatus' => 'CANCELED',
                     'ModificationTimestamp' => date('Y-m-d H:i:s')
                 ]);
+                $this -> queueData(['BrightListings Canceled Queried'], true);
 
                 $query = 'ListingKey='.implode(',', $missing_from_bright);
 
@@ -118,11 +124,11 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             return;
 
-        } catch (\Throwable $exception) {
+        } /* catch (\Throwable $exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
             $this -> release(180);
             return;
-        }
+        } */
 
     }
 }
