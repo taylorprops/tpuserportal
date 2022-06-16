@@ -9,11 +9,13 @@ use App\Helpers\Helper;
 use Illuminate\Http\Request;
 use App\Models\Backups\Rsync;
 use App\Models\Employees\Agents;
+use App\Mail\General\EmailGeneral;
 use App\Models\Temp\DatabaseDates;
 use Illuminate\Support\Facades\DB;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BrightMLS\BrightOffices;
@@ -38,8 +40,20 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
-        $events = Schedule::where('event_date', date('Y-m-d')) -> whereIn('status_id', ['26', '33', '24']) -> where('medium_id', '7') -> get();
-        $events = Schedule::get();
+        $events = Schedule::where('event_date', date('Y-m-d'))
+        -> whereIn('status_id', ['26', '33', '24'])
+        -> where('medium_id', '7')
+        -> with(['company', 'recipient', 'uploads' => function($query) {
+            $query -> where('accepted_version', true);
+        }])
+        -> get();
+dd($events);
+        // $events = Schedule::with(['company', 'recipient', 'uploads' => function($query) {
+        //     $query -> where('accepted_version', true);
+        // }])
+        // -> limit(3)
+        // -> get();
+
         foreach($events as $event) {
 
             switch ($event -> company_id) {
@@ -54,7 +68,25 @@ class TestsController extends Controller
                     break;
             }
 
-            dd($tos);
+
+            $html = $event -> uploads -> first() -> html;
+            $details = 'Send Date: '.$event -> event_date.'<br>
+            From '.$event -> company -> item . ' to ' . $event -> recipient -> item.' | ID: '.$event -> id;
+
+            $body = preg_replace('/(<body\s.*>)/', '$1' . $details, $html);
+
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => 'Marketing Email - '.$event -> subject_line_a,
+                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                'body' => $body,
+                'attachments' => null
+            ];
+
+            $tos = ['miketaylor0101@gmail.com'];
+            Mail::to($tos)
+                -> send(new EmailGeneral($message));
 
 
         }
