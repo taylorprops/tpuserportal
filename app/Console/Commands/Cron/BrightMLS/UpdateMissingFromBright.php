@@ -12,7 +12,7 @@ class UpdateMissingFromBright extends Command
      *
      * @var string
      */
-    protected $signature = 'bright_mls:update_missing_from_bright {temp?}';
+    protected $signature = 'bright_mls:update_missing_from_bright';
 
     /**
      * The console command description.
