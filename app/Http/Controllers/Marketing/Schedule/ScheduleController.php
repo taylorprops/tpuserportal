@@ -195,7 +195,7 @@ class ScheduleController extends Controller
         $event -> save();
         $event_id = $event -> id;
 
-        $uuid = date("Y", strtotime($event_date)) . '-' . date("m", strtotime($event_date)) . '_' . Helper::get_initials($company) . '_' . $event_id;
+        $uuid = date("Y", strtotime($event_date)).'-'.date("m", strtotime($event_date)).'_'.Helper::get_initials($company).'_'.$event_id;
         $event -> uuid = $uuid;
         $event -> save();
 
@@ -205,13 +205,13 @@ class ScheduleController extends Controller
             $ext = $upload_file -> getClientOriginalExtension();
             $upload_file_type = strtolower($ext) == 'pdf' ? 'pdf' : 'image';
 
-            $dir = 'marketing/' . $event_id;
+            $dir = 'marketing/'.$event_id;
             if (!is_dir($dir)) {
                 Storage::makeDirectory($dir);
             }
             $upload_file -> storeAs($dir, $upload_file_name);
-            $upload_file_location = $dir . '/' . $upload_file_name;
-            $upload_file_url = Storage::url($dir . '/' . $upload_file_name);
+            $upload_file_location = $dir.'/'.$upload_file_name;
+            $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
 
             $upload = new ScheduleUploads();
             $upload -> file_name = $upload_file_name;
@@ -282,13 +282,13 @@ class ScheduleController extends Controller
             $ext = $upload_file -> getClientOriginalExtension();
             $upload_file_type = strtolower($ext) == 'pdf' ? 'pdf' : 'image';
 
-            $dir = 'marketing/' . $event_id;
+            $dir = 'marketing/'.$event_id;
             if (!is_dir($dir)) {
                 Storage::makeDirectory($dir);
             }
             $upload_file -> storeAs($dir, $upload_file_name);
-            $upload_file_location = $dir . '/' . $upload_file_name;
-            $upload_file_url = Storage::url($dir . '/' . $upload_file_name);
+            $upload_file_location = $dir.'/'.$upload_file_name;
+            $upload_file_url = Storage::url($dir.'/'.$upload_file_name);
 
             $upload = new ScheduleUploads();
             $upload -> file_name = $upload_file_name;
@@ -378,15 +378,15 @@ class ScheduleController extends Controller
         if ($html) {
             $preview_html = '
             <div style="display: none; max-height: 0px; overflow: hidden;">
-                ' . $preview_text . '
+                '.$preview_text.'
             </div>
             <div style="display: none; max-height: 0px; overflow: hidden;">
                 &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
             </div>';
             $details = 'Send Date: '.$event -> event_date.'<br>
-            From '.$event -> company -> item . ' to ' . $event -> recipient -> item.' | ID: '.$event_id;
+            From '.$event -> company -> item.' to '.$event -> recipient -> item.' | ID: '.$event_id;
 
-            $body = preg_replace('/(<body\s.*>)/', '$1' . $preview_html.$details, $html);
+            $body = preg_replace('/(<body\s.*>)/', '$1'.$preview_html.$details, $html);
         } else {
             $attachment = [Storage::path($upload -> file_location)];
             $body = 'See Attached';
@@ -437,8 +437,8 @@ class ScheduleController extends Controller
             ];
         }
 
-        $file_name = 'agent_list_' . time() . '.csv';
-        $file = Storage::path('/tmp/' . $file_name);
+        $file_name = 'agent_list_'.time().'.csv';
+        $file = Storage::path('/tmp/'.$file_name);
         $handle = fopen($file, 'w');
 
         if ($recipient_id == '13' /* 'In-House Agents' */) {
@@ -508,7 +508,7 @@ class ScheduleController extends Controller
             }
         }
 
-        $file_location = '/storage/tmp/' . $file_name;
+        $file_location = '/storage/tmp/'.$file_name;
 
         return $file_location;
     }
@@ -538,9 +538,9 @@ class ScheduleController extends Controller
 
         foreach ($events as $event) {
             $event -> className = [
-                'text-' . $event -> company -> color . '-700',
-                'bg-' . $event -> company -> color . '-50',
-                'border-' . $event -> company -> color . '-200',
+                'text-'.$event -> company -> color.'-700',
+                'bg-'.$event -> company -> color.'-50',
+                'border-'.$event -> company -> color.'-200',
                 'rounded',
                 'flex',
                 'items-center',
@@ -550,7 +550,7 @@ class ScheduleController extends Controller
             $event -> textColor = 'inherit';
             // $event -> backgroundColor = 'inherit';
             // $event -> borderColor = 'inherit';
-            $event -> title = Helper::get_initials($event -> company -> item) . ' -> ' . $event -> recipient -> item;
+            $event -> title = Helper::get_initials($event -> company -> item).' -> '.$event -> recipient -> item;
         }
 
         return response() -> json($events);
@@ -687,7 +687,7 @@ class ScheduleController extends Controller
             return response() -> json(['deleted' => true]);
         }
 
-        $in_use = Schedule::where($category . '_id', $id) -> first();
+        $in_use = Schedule::where($category.'_id', $id) -> first();
 
         if (!$in_use) {
             ScheduleSettings::find($id) -> delete();
@@ -754,8 +754,8 @@ class ScheduleController extends Controller
         $deleted_setting_id = $request -> deleted_setting_id;
         $category = $request -> category;
 
-        $reassign = Schedule::where($category . '_id', $deleted_setting_id) -> update([
-            $category . '_id' => $new_setting_id
+        $reassign = Schedule::where($category.'_id', $deleted_setting_id) -> update([
+            $category.'_id' => $new_setting_id
         ]);
 
         ScheduleSettings::find($deleted_setting_id) -> delete();
