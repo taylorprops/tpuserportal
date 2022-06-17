@@ -36,76 +36,69 @@ class NotifySendingJob implements ShouldQueue
      */
     public function handle()
     {
-        try {
 
-            $this -> queueProgress(0);
+        $this -> queueProgress(0);
 
-            $events = Schedule::where('event_date', '<', date('Y-m-d'))
-            -> whereIn('status_id', ['33', '24'])
-            -> where('medium_id', '7')
-            -> with(['company', 'recipient', 'uploads' => function($query) {
-                $query -> where('accepted_version', true);
-            }])
-            -> limit(2)
-            -> get();
+        $events = Schedule::where('event_date', date('Y-m-d'))
+        -> whereIn('status_id', ['33', '24'])
+        -> where('medium_id', '7')
+        -> with(['company', 'recipient', 'uploads' => function($query) {
+            $query -> where('accepted_version', true);
+        }])
+        -> get();
 
-            $this -> queueData(['Found '.count($events).' events'], true);
+        $this -> queueData(['Found '.count($events).' events'], true);
 
-            if(count($events) > 0) {
+        if(count($events) > 0) {
 
-                foreach($events as $event) {
+            foreach($events as $event) {
 
-                    switch ($event -> company_id) {
-                        case '1': // TP
-                            $tos = config('global.marketing_email_notification_TP');
-                            break;
-                        case '2': // HF
-                            $tos = config('global.marketing_email_notification_HF');
-                            break;
-                        case '3': // HT
-                            $tos = config('global.marketing_email_notification_HT');
-                            break;
-                    }
-
-
-                    $html = $event -> uploads -> first() -> html;
-                    $details = 'Send Date: '.$event -> event_date.'<br>
-                    From: '.$event -> company -> item.'<br>
-                    To: '.$event -> recipient -> item.'<br>
-                    ID: '.$event -> id;
-
-                    $body = preg_replace('/(<body\s.*>)/', '$1'.$details, $html);
-
-
-                    $message = [
-                        'company' => 'Taylor Properties',
-                        'subject' => 'Marketing Email - '.$event -> subject_line_a,
-                        'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                        'body' => $body,
-                        'attachments' => null
-                    ];
-
-                    $tos = ['miketaylor0101@gmail.com'];
-                    Mail::to($tos)
-                        -> send(new EmailGeneral($message));
-
-                    $event -> notification_sent = true;
-                    $event -> save();
-
-                    $this -> queueData([$event -> id.' - Completed'], true);
-
+                switch ($event -> company_id) {
+                    case '1': // TP
+                        $tos = config('global.marketing_email_notification_TP');
+                        break;
+                    case '2': // HF
+                        $tos = config('global.marketing_email_notification_HF');
+                        break;
+                    case '3': // HT
+                        $tos = config('global.marketing_email_notification_HT');
+                        break;
                 }
+
+
+                $html = $event -> uploads -> first() -> html;
+                $details = 'Send Date: '.$event -> event_date.'<br>
+                From: '.$event -> company -> item.'<br>
+                To: '.$event -> recipient -> item.'<br>
+                ID: '.$event -> id;
+
+                $body = preg_replace('/(<body\s.*>)/', '$1'.$details, $html);
+
+
+                $message = [
+                    'company' => 'Taylor Properties',
+                    'subject' => 'Marketing Email - '.$event -> subject_line_a,
+                    'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+                    'body' => $body,
+                    'attachments' => null
+                ];
+
+                Mail::to($tos)
+                    -> send(new EmailGeneral($message));
+
+                $event -> notification_sent = true;
+                $event -> save();
+
+                $this -> queueData([$event -> id.' - Completed'], true);
 
             }
 
-            $this -> queueProgress(100);
-
-            return true;
-
-
-        } catch (\Throwable $exception) {
-            $this -> release(90);
-            return;
         }
+
+        $this -> queueProgress(100);
+
+        return true;
+
+
     }
 }
