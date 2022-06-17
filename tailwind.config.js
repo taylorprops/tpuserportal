@@ -7,7 +7,7 @@ module.exports = {
         './resources/**/*.{php,scss,js}',
         './app/Http/Controllers/**/*.php',
         './app/Helpers/*.php',
-        './storage/app/public/tools/*.txt',
+        './storage/app/tools/*.txt',
     ],
     theme: {
         extend: {
