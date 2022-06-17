@@ -18,20 +18,20 @@
                 $versions[] = $details;
             }
         }
-        
+
         $company_id = $event -> company -> id;
-        
+
         $past_due = null;
         if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
             $past_due = 'past_due';
         }
-        
+
         $notes = [];
         if ($event -> notes) {
             $notes = $event -> notes;
             $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
         }
-        
+
     @endphp
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
@@ -320,37 +320,37 @@
                                             $links = [
                                                 [
                                                     'title' => 'Standard',
-                                                    'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
                                                 ],
-                                                [
+                                                /* [
                                                     'title' => 'Technology',
-                                                    'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
                                                 ],
                                                 [
                                                     'title' => 'Join Now',
-                                                    'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign=' . $event -> uuid,
-                                                ],
+                                                    'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
+                                                ], */
                                             ];
                                         } elseif ($company_id == '3') {
                                             $links = [
                                                 [
                                                     'title' => 'Standard',
-                                                    'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
                                                 ],
                                                 [
                                                     'title' => 'Instant Quote',
-                                                    'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
                                                 ],
                                             ];
                                         } elseif ($company_id == '2') {
                                             $links = [
                                                 [
                                                     'title' => 'Loan Officer Jobs',
-                                                    'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=[[contact.email]]&utm_campaign='.$event -> uuid,
                                                 ],
                                                 [
                                                     'title' => 'Agents',
-                                                    'url' => 'https://heritagefinancial.com/?email=[[contact.email]]&utm_campaign=' . $event -> uuid,
+                                                    'url' => 'https://heritagefinancial.com/?email=[[contact.email]]&utm_campaign='.$event -> uuid,
                                                 ],
                                             ];
                                         }

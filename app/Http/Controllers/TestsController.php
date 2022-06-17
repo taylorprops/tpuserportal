@@ -40,19 +40,24 @@ class TestsController extends Controller
     public function test(Request $request) {
 
 
-        $events = Schedule::where('event_date', date('Y-m-d'))
-        -> whereIn('status_id', ['26', '33', '24'])
+        // $events = Schedule::where('event_date', date('Y-m-d'))
+        // -> whereIn('status_id', ['33', '24'])
+        // -> where('medium_id', '7')
+        // -> with(['company', 'recipient', 'uploads' => function($query) {
+        //     $query -> where('accepted_version', true);
+        // }])
+        // -> get();
+
+        $events = Schedule::where('event_date', '<' ,date('Y-m-d'))
+        -> whereIn('status_id', ['33', '24'])
         -> where('medium_id', '7')
+        -> where('notification_sent', false)
         -> with(['company', 'recipient', 'uploads' => function($query) {
             $query -> where('accepted_version', true);
         }])
+        -> limit(3)
         -> get();
-dd($events);
-        // $events = Schedule::with(['company', 'recipient', 'uploads' => function($query) {
-        //     $query -> where('accepted_version', true);
-        // }])
-        // -> limit(3)
-        // -> get();
+
 
         foreach($events as $event) {
 
@@ -71,9 +76,11 @@ dd($events);
 
             $html = $event -> uploads -> first() -> html;
             $details = 'Send Date: '.$event -> event_date.'<br>
-            From '.$event -> company -> item . ' to ' . $event -> recipient -> item.' | ID: '.$event -> id;
+            From: '.$event -> company -> item.'<br>
+            To: '.$event -> recipient -> item.'<br>
+            ID: '.$event -> id;
 
-            $body = preg_replace('/(<body\s.*>)/', '$1' . $details, $html);
+            $body = preg_replace('/(<body\s.*>)/', '$1'.$details, $html);
 
 
             $message = [
@@ -88,6 +95,8 @@ dd($events);
             Mail::to($tos)
                 -> send(new EmailGeneral($message));
 
+            $event -> notification_sent = true;
+            $event -> save();
 
         }
 
