@@ -87,6 +87,12 @@ class Kernel extends ConsoleKernel
         -> dailyAt('09:00')
         -> environments('production');
 
+        // Schedule - Notify related parties of email being sent
+        $schedule -> command('schedule:notify_sending')
+        -> timezone('America/New_York')
+        -> hourly()
+        -> environments('production');
+
 
 
         // %%% TEMP %%% //
