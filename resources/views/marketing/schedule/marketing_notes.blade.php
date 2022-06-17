@@ -1,6 +1,6 @@
 {{-- blade-formatter-disable --}}
 @php
-$title = 'Email Addresses and Phone Numbers for Marketing';
+$title = 'Marketing Notes';
 $breadcrumbs = [
     ['Schedule', '/marketing/schedule'],
     [$title],

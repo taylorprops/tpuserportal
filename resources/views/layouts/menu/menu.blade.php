@@ -1,4 +1,4 @@
-<div class="fixed top-0 left-0 h-screen overflow-y-auto xl:overflow-y-none z-10"
+<div class="fixed top-0 left-0 h-screen overflow-y-auto xl:overflow-y-none z-10 border-r shadow"
     @click.outside="if(screen.width < 1000) { main_nav_open = false }">
 
     <div class="fixed top-0 left-0 z-100">
@@ -55,7 +55,7 @@
                                 $group = 'owner';
                             }
                         @endphp
-                        @include('layouts/menu/menu_' . $group)
+                        @include('layouts/menu/menu_'.$group)
                     </nav>
 
                 </div>

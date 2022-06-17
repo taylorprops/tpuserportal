@@ -221,6 +221,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/test2', [TestsController::class, 'test2']) -> middleware(['in_house']);
     Route::get('/tests/bright_missing_from_bright', [TestsController::class, 'bright_missing_from_bright']) -> middleware(['in_house']);
     Route::get('/tests/bright_missing_from_db', [TestsController::class, 'bright_missing_from_db']) -> middleware(['in_house']);
+    Route::get('/tests/create_zimbra_account', [TestsController::class, 'create_zimbra_account']) -> middleware(['in_house']);
 
 
     Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['in_house']);

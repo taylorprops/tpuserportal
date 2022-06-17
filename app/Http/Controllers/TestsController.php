@@ -2,110 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Monolog\Logger;
-use App\Models\User;
+use App\Classes\Zimbra;
 use App\Helpers\Helper;
-use Illuminate\Http\Request;
-use App\Models\Backups\Rsync;
+use App\Models\BrightMLS\BrightAgentRoster;
+use App\Models\BrightMLS\BrightListings;
+use App\Models\BrightMLS\BrightOffices;
+use App\Models\DocManagement\Archives\Documents;
+use App\Models\DocManagement\Archives\Transactions;
 use App\Models\Employees\Agents;
-use App\Mail\General\EmailGeneral;
-use App\Models\Temp\DatabaseDates;
-use Illuminate\Support\Facades\DB;
-use Monolog\Handler\StreamHandler;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Employees\Mortgage as LoanOfficersNew;
+use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\OldDB\Company\BillingInvoicesItems;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
-use App\Models\BrightMLS\BrightOffices;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use App\Models\BrightMLS\BrightListings;
-use App\Models\Employees\EmployeesNotes;
-use Illuminate\Database\Eloquent\Builder;
-use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\Marketing\Schedule\Schedule;
-use App\Models\Marketing\LoanOfficerAddresses;
-use App\Models\DocManagement\Archives\Documents;
-use App\Models\OldDB\Company\BillingInvoicesItems;
-use App\Models\DocManagement\Archives\Transactions;
-use App\Models\Employees\Mortgage as LoanOfficersNew;
-use App\Models\OldDB\LoanOfficers as LoanOfficersOld;
-use App\Models\DocManagement\Resources\CommonFieldsGroups;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class TestsController extends Controller
 {
 
-    public function test(Request $request) {
+    public function create_zimbra_account(Request $request)
+    {
 
-
-        // $events = Schedule::where('event_date', date('Y-m-d'))
-        // -> whereIn('status_id', ['33', '24'])
-        // -> where('medium_id', '7')
-        // -> with(['company', 'recipient', 'uploads' => function($query) {
-        //     $query -> where('accepted_version', true);
-        // }])
-        // -> get();
-
-        $events = Schedule::where('event_date', '<' ,date('Y-m-d'))
-        -> whereIn('status_id', ['33', '24'])
-        -> where('medium_id', '7')
-        -> where('notification_sent', false)
-        -> with(['company', 'recipient', 'uploads' => function($query) {
-            $query -> where('accepted_version', true);
-        }])
-        -> limit(3)
-        -> get();
-
-
-        foreach($events as $event) {
-
-            switch ($event -> company_id) {
-                case '1': // TP
-                    $tos = config('global.marketing_email_notification_TP');
-                    break;
-                case '2': // HF
-                    $tos = config('global.marketing_email_notification_HF');
-                    break;
-                case '3': // HT
-                    $tos = config('global.marketing_email_notification_HT');
-                    break;
-            }
-
-
-            $html = $event -> uploads -> first() -> html;
-            $details = 'Send Date: '.$event -> event_date.'<br>
-            From: '.$event -> company -> item.'<br>
-            To: '.$event -> recipient -> item.'<br>
-            ID: '.$event -> id;
-
-            $body = preg_replace('/(<body\s.*>)/', '$1'.$details, $html);
-
-
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Marketing Email - '.$event -> subject_line_a,
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => $body,
-                'attachments' => null
-            ];
-
-            $tos = ['miketaylor0101@gmail.com'];
-            Mail::to($tos)
-                -> send(new EmailGeneral($message));
-
-            $event -> notification_sent = true;
-            $event -> save();
-
-        }
-
-
-        // return view('tests/test');
+        $zimbra = new Zimbra();
+        $result = $zimbra -> ZimbraAdminCreateAccount('test@heritagefinanciallending.com', 'T@yl0rprops', 'Heritage Financial');
+        dump($result);
 
     }
 
-    public function test2(Request $request) {
+    public function test2(Request $request)
+    {
 
         $listings = Cache::pull('listings');
         dd($listings);
@@ -113,7 +44,8 @@ class TestsController extends Controller
 
     }
 
-    public function edit_los(Request $request) {
+    public function edit_los(Request $request)
+    {
 
         //dump(count(LoanOfficerAddresses::whereNull('full_name') -> get()));
 
@@ -139,8 +71,8 @@ class TestsController extends Controller
         }
     }
 
-
-    public function bright_missing_from_bright(Request $request) {
+    public function bright_missing_from_bright(Request $request)
+    {
 
         // listings in our database that are not in bright - most likely canceled
 
@@ -148,7 +80,7 @@ class TestsController extends Controller
 
         $rets = Helper::rets_login();
 
-        if($rets) {
+        if ($rets) {
 
             $resource = "Property";
             $class = "ALL";
@@ -160,22 +92,22 @@ class TestsController extends Controller
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns')
+                    'Select' => config('global.bright_listings_columns'),
                 ]
             );
 
             $results = $results -> toArray();
 
             $bright_results = [];
-            foreach($results as $result) {
+            foreach ($results as $result) {
                 $bright_results[] = $result['ListingKey'];
             }
 
             $db_results = BrightListings::select('ListingKey')
-            -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
-            -> get()
-            -> pluck('ListingKey')
-            -> toArray();
+                -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired'])
+                -> get()
+                -> pluck('ListingKey')
+                -> toArray();
 
             $missing_from_bright = array_diff($db_results, $bright_results);
             // dd($missing_from_bright);
@@ -183,10 +115,10 @@ class TestsController extends Controller
             $listings_to_update = BrightListings::whereIn('ListingKey', $missing_from_bright) -> get();
 
             BrightListings::whereIn('ListingKey', $missing_from_bright)
-            -> update([
-                'MlsStatus' => 'CANCELED',
-                'ModificationTimestamp' => date('Y-m-d H:i:s')
-            ]);
+                -> update([
+                    'MlsStatus' => 'CANCELED',
+                    'ModificationTimestamp' => date('Y-m-d H:i:s'),
+                ]);
 
             $query = 'ListingKey='.implode(',', $missing_from_bright);
 
@@ -195,17 +127,17 @@ class TestsController extends Controller
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns')
+                    'Select' => config('global.bright_listings_columns'),
                 ]
             );
 
             $results = $results -> toArray();
 
-            foreach($results as $listing) {
+            foreach ($results as $listing) {
 
                 $data = [];
-                foreach($listing as $key => $value) {
-                    if($value != '') {
+                foreach ($listing as $key => $value) {
+                    if ($value != '') {
                         $data[$key] = $value;
                     }
                 }
@@ -221,7 +153,8 @@ class TestsController extends Controller
 
     }
 
-    public function bright_missing_from_db(Request $request) {
+    public function bright_missing_from_db(Request $request)
+    {
 
         // listings in bright that are not in our database - most likely reactivated
 
@@ -229,7 +162,7 @@ class TestsController extends Controller
 
         $rets = Helper::rets_login();
 
-        if($rets) {
+        if ($rets) {
 
             $resource = "Property";
             $class = "ALL";
@@ -241,22 +174,22 @@ class TestsController extends Controller
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns')
+                    'Select' => config('global.bright_listings_columns'),
                 ]
             );
 
             $results = $results -> toArray();
 
             $bright_results = [];
-            foreach($results as $result) {
+            foreach ($results as $result) {
                 $bright_results[] = $result['ListingKey'];
             }
 
             $db_results = BrightListings::select('ListingKey')
-            -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired', 'canceled'])
-            -> get()
-            -> pluck('ListingKey')
-            -> toArray();
+                -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired', 'canceled'])
+                -> get()
+                -> pluck('ListingKey')
+                -> toArray();
 
             $missing_from_db = array_diff($bright_results, $db_results);
             //dd($missing_from_db);
@@ -268,17 +201,17 @@ class TestsController extends Controller
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns')
+                    'Select' => config('global.bright_listings_columns'),
                 ]
             );
 
             $results = $results -> toArray();
 
-            foreach($results as $listing) {
+            foreach ($results as $listing) {
 
                 $data = [];
-                foreach($listing as $key => $value) {
-                    if($value != '') {
+                foreach ($listing as $key => $value) {
+                    if ($value != '') {
                         $data[$key] = $value;
                     }
                 }
@@ -329,26 +262,26 @@ class TestsController extends Controller
 
         $deactivate_agents = [];
         foreach ($agents_in_db as $agent) {
-            if (! in_array($agent, $agents_in_bright_array)) {
+            if (!in_array($agent, $agents_in_bright_array)) {
                 $deactivate_agents[] = $agent;
             }
         }
 
         if (count($deactivate_agents) > 0) {
             BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
-            -> update([
-                'active' => 'no',
-            ]);
+                -> update([
+                    'active' => 'no',
+                ]);
         }
 
         $missing_agents = [];
         foreach ($agents_in_bright_array as $agent) {
-            if (! in_array($agent, $agents_in_db)) {
+            if (!in_array($agent, $agents_in_db)) {
                 $missing_agents[] = $agent;
             }
         }
 
-        if(count($missing_agents) > 0) {
+        if (count($missing_agents) > 0) {
 
             $agents_in_db_string = implode(', ', $missing_agents);
 
@@ -466,13 +399,13 @@ class TestsController extends Controller
     {
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
-        -> setUsername(config('global.rets_username'))
-        -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.7.2')
-        -> setUserAgent('Bright RETS Application/1.0')
-        -> setHttpAuthenticationMethod('digest') // or 'basic' if required
-        -> setOption('use_post_method', true)
-        -> setOption('disable_follow_location', false);
+            -> setUsername(config('global.rets_username'))
+            -> setPassword(config('global.rets_password'))
+            -> setRetsVersion('RETS/1.7.2')
+            -> setUserAgent('Bright RETS Application/1.0')
+            -> setHttpAuthenticationMethod('digest') // or 'basic' if required
+            -> setOption('use_post_method', true)
+            -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
         $connect = $rets -> Login();
@@ -524,13 +457,13 @@ class TestsController extends Controller
     {
         $rets_config = new \PHRETS\Configuration;
         $rets_config -> setLoginUrl(config('global.rets_url'))
-        -> setUsername(config('global.rets_username'))
-        -> setPassword(config('global.rets_password'))
-        -> setRetsVersion('RETS/1.7.2')
-        -> setUserAgent('Bright RETS Application/1.0')
-        -> setHttpAuthenticationMethod('digest')
-        -> setOption('use_post_method', true)
-        -> setOption('disable_follow_location', false);
+            -> setUsername(config('global.rets_username'))
+            -> setPassword(config('global.rets_password'))
+            -> setRetsVersion('RETS/1.7.2')
+            -> setUserAgent('Bright RETS Application/1.0')
+            -> setHttpAuthenticationMethod('digest')
+            -> setOption('use_post_method', true)
+            -> setOption('disable_follow_location', false);
 
         $rets = new \PHRETS\Session($rets_config);
 
@@ -593,7 +526,6 @@ class TestsController extends Controller
         $addresses = AgentsAddresses::where('found_status', 'found') -> get();
     }
 
-
     public function add_documents()
     {
         // $transactions = Transactions::whereIn('docs_added', ['no']) -> where('data_source', 'skyslope') -> inRandomOrder() -> limit(100) -> get();
@@ -617,7 +549,7 @@ class TestsController extends Controller
 
             $data = '';
             foreach ($transactions as $transaction) {
-                $data .= "(listingGuid = '".$transaction -> listingGuid."' and saleGuid = '".$transaction -> saleGuid."') or ";
+                $data .= "(listingGuid = '".$transaction -> listingGuid . "' and saleGuid = '".$transaction -> saleGuid . "') or ";
             }
             // $this -> queueData([$data], true);
             //$this -> queueData(['count' => count($transactions)], true);
@@ -642,7 +574,7 @@ class TestsController extends Controller
                 $saleGuid = $type == 'sale' ? $id : 0;
 
                 $dir = 'doc_management/archives/'.$listingGuid.'_'.$saleGuid;
-                if (! Storage::exists($dir)) {
+                if (!Storage::exists($dir)) {
                     Storage::makeDirectory($dir);
                 }
                 File::cleanDirectory(Storage::path($dir));
@@ -691,7 +623,7 @@ class TestsController extends Controller
                                     $file_location = $dir.'/'.$document['fileName'];
 
                                     foreach ($document as $col => $value) {
-                                        if (! in_array($col, ['fileSize', 'pages'])) {
+                                        if (!in_array($col, ['fileSize', 'pages'])) {
                                             $add_document -> $col = $value;
                                         }
                                     }
@@ -724,7 +656,6 @@ class TestsController extends Controller
 
                 dump($transaction);
 
-
                 $progress += 1;
                 //$this -> queueProgress($progress);
             }
@@ -752,8 +683,6 @@ class TestsController extends Controller
 
             //$this -> queueProgress(100);
         }
-
-
 
         //$this -> queueProgress(100);
     }
@@ -820,20 +749,20 @@ class TestsController extends Controller
         // -> get();
 
         $items = BillingInvoicesItems::select(['in_invoice_id', 'in_item_quantity', 'in_item_desc', 'in_item_total'])
-        -> where(function ($query) {
-            $query -> where('in_item_desc', 'like', '%sign%')
-            -> orWhere('in_item_desc', 'like', '%post%');
-        })
-        -> whereHas('invoice', function (Builder $query) {
-            $query -> where('in_date_sent', '>', '2021-07-31')
-            -> where('in_type', 'charge');
-        })
-        -> with(['invoice' => function ($query) {
-            $query -> where('in_date_sent', '>', '2021-07-31')
-            -> where('in_type', 'charge')
-            -> select(['in_id', 'in_type', 'in_agent_fullname', 'in_date_sent']);
-        }])
-        -> get();
+            -> where(function ($query) {
+                $query -> where('in_item_desc', 'like', '%sign%')
+                    -> orWhere('in_item_desc', 'like', '%post%');
+            })
+            -> whereHas('invoice', function (Builder $query) {
+                $query -> where('in_date_sent', '>', '2021-07-31')
+                    -> where('in_type', 'charge');
+            })
+            -> with(['invoice' => function ($query) {
+                $query -> where('in_date_sent', '>', '2021-07-31')
+                    -> where('in_type', 'charge')
+                    -> select(['in_id', 'in_type', 'in_agent_fullname', 'in_date_sent']);
+            }])
+            -> get();
 
         dd($items);
     }
@@ -846,10 +775,10 @@ class TestsController extends Controller
     public function agent_data(Request $request)
     {
         $agents = Agents::select(['id', 'first', 'last', 'email1'])
-        -> where('active', 'yes')
-        -> with(['docs', 'licenses'])
-        -> get()
-        -> toJson();
+            -> where('active', 'yes')
+            -> with(['docs', 'licenses'])
+            -> get()
+            -> toJson();
 
         dd($agents);
     }
@@ -859,7 +788,8 @@ class TestsController extends Controller
         return view('/tests/alpine');
     }
 
-    public function test_connection() {
+    public function test_connection()
+    {
 
         try {
 
@@ -878,9 +808,9 @@ class TestsController extends Controller
                 $query
             );
 
-        } catch(RETSException $e) {
+        } catch (RETSException $e) {
             return $e -> getMessage();
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             return $e -> getMessage();
         }
 
