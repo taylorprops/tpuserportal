@@ -655,6 +655,12 @@ class ScheduleController extends Controller
         return 0;
     }
 
+    public function marketing_notes(Request $request) {
+
+        return view('marketing/schedule/marketing_notes');
+
+    }
+
 
     public function schedule_settings(Request $request)
     {

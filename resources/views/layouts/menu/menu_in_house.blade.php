@@ -194,6 +194,11 @@
             :link="'/marketing/schedule/checklist'"
             :icon="'fa-duotone fa-check'" />
 
+        <x-nav.menu :level="'1'"
+            :title="'Marketing Notes'"
+            :link="'/marketing/marketing_notes'"
+            :icon="'fa-duotone fa-notes'" />
+
 
         <x-nav.menu :level="'1'"
             :title="'Address Database'"
