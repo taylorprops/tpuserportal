@@ -1,5 +1,5 @@
-<div class="w-full lg:w-1000-px mx-auto text-right text-sm text-green-600">Autosaved: <span x-ref="updated_at"></span></div>
-<div class="w-full lg:w-1000-px mx-auto border-2 rounded-lg p-4" x-ref="notes_div" id="notes_div">
+<div class="w-full text-right text-sm text-green-600">Autosaved: <span x-ref="updated_at"></span></div>
+<div class="w-full border-2 rounded-lg p-4" x-ref="notes_div" id="notes_div">
     {!! $notes -> notes !!}
 </div>
 

@@ -5,26 +5,27 @@ namespace App\Classes;
 class Zimbra
 {
 
-    public $ServerAddress;
-    public $AdminUserName;
-    public $AdminPassword;
-    public $COSId;
+    private $ServerAddress;
+    private $AdminUserName;
+    private $AdminPassword;
+    private $COSId;
+    private $CurlHandle;
 
-    public function __construct($ServerAddress, $AdminUserName, $AdminPassword, $COSId)
+    public function __construct()
     {
 
-        $this -> ServerAddress = config('global.email_server_id');
+        $this -> ServerAddress = config('global.email_server_ip');
         $this -> AdminUserName = config('global.email_server_username');
         $this -> AdminPassword = config('global.email_server_password');
         $this -> COSId = config('global.email_server_cosid');
+        $this -> CurlHandle = curl_init();
 
     }
 
     public function ZimbraAdminCreateAccount($NewUserEmail, $NewUserPassword, $NewUserName)
     {
-
         $auth = $this -> zimbra_auth();
-        $CurlHandle = $auth['CurlHandle'];
+
         $sessionId = $auth['sessionId'];
         $authToken = $auth['authToken'];
 
@@ -45,10 +46,10 @@ class Zimbra
                                         </CreateAccountRequest>
                                 </soap:Body>
                         </soap:Envelope>';
-        curl_setopt($CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
+        curl_setopt($this -> CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
 
-        if (!($ZimbraSOAPResponse = curl_exec($CurlHandle))) {
-            $msg = 'ERROR: curl_exec - ('.curl_errno($CurlHandle).') '.curl_error($CurlHandle);
+        if (!($ZimbraSOAPResponse = curl_exec($this -> CurlHandle))) {
+            $msg = 'ERROR: curl_exec - ('.curl_errno($this -> CurlHandle).') '.curl_error($this -> CurlHandle);
             return response() -> json(['error' => $msg]);
         }
 
@@ -60,7 +61,6 @@ class Zimbra
     {
 
         $auth = $this -> zimbra_auth();
-        $CurlHandle = $auth['CurlHandle'];
         $sessionId = $auth['sessionId'];
         $authToken = $auth['authToken'];
 
@@ -77,9 +77,9 @@ class Zimbra
 										</GetAccountRequest>
 								</soap:Body>
 						</soap:Envelope>';
-        curl_setopt($CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
-        if (!($ZimbraSOAPResponse = curl_exec($CurlHandle))) {
-            $msg = "ERROR: curl_exec - (" . curl_errno($CurlHandle) . ") " . curl_error($CurlHandle);
+        curl_setopt($this -> CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
+        if (!($ZimbraSOAPResponse = curl_exec($this -> CurlHandle))) {
+            $msg = "ERROR: curl_exec - (" . curl_errno($this -> CurlHandle) . ") " . curl_error($this -> CurlHandle);
             mail('mike@taylorprops.com', 'Email Account Error', $msg, 'From: Mike <mike@taylorprops.com>');
         }
         $zimbraId = strstr($ZimbraSOAPResponse, "<a n=\"zimbraId\"");
@@ -659,12 +659,11 @@ class Zimbra
     public function zimbra_auth()
     {
 
-        $CurlHandle = curl_init();
-        curl_setopt($CurlHandle, CURLOPT_URL, 'https://'.$this -> ServerAddress.':7071/service/admin/soap');
-        curl_setopt($CurlHandle, CURLOPT_POST, true);
-        curl_setopt($CurlHandle, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($CurlHandle, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($CurlHandle, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($this -> CurlHandle, CURLOPT_URL, 'https://'.$this -> ServerAddress.':7071/service/admin/soap');
+        curl_setopt($this -> CurlHandle, CURLOPT_POST, true);
+        curl_setopt($this -> CurlHandle, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this -> CurlHandle, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this -> CurlHandle, CURLOPT_SSL_VERIFYHOST, false);
         // ------ Send the zimbraAdmin AuthRequest -----
         $SOAPMessage = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
 								<soap:Header>
@@ -678,10 +677,12 @@ class Zimbra
 								</soap:Body>
 						</soap:Envelope>';
 
-        curl_setopt($CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
+        curl_setopt($this -> CurlHandle, CURLOPT_POSTFIELDS, $SOAPMessage);
 
-        if (!($ZimbraSOAPResponse = curl_exec($CurlHandle))) {
-            return response() -> json(['error' => curl_errno($CurlHandle)]);
+        $ZimbraSOAPResponse = curl_exec($this -> CurlHandle);
+
+        if (!($ZimbraSOAPResponse = curl_exec($this -> CurlHandle))) {
+            return response() -> json(['error' => curl_error($this -> CurlHandle)]);
         }
 
         $sessionId = strstr($ZimbraSOAPResponse, '<sessionId');
@@ -691,7 +692,7 @@ class Zimbra
         $authToken = strstr($authToken, '>');
         $authToken = substr($authToken, 1, strpos($authToken, '<') - 1);
 
-        return ['CurlHandle' => $CurlHandle, 'sessionId' => $sessionId, 'authToken' => $authToken];
+        return ['sessionId' => $sessionId, 'authToken' => $authToken];
 
     }
 

@@ -31,17 +31,17 @@ class DatabaseChangeLog
         $data_before = collect($data_before);
         $data_after = collect($data_after);
 
-        if (! $data_before) {
+        if (!$data_before) {
             $add_changes = new ChangeLog();
-            $add_changes->model = $model;
-            $add_changes->model_id = $model_id;
-            $add_changes->changed_by = $changed_by;
-            $add_changes->change_type = 'add';
-            $add_changes->save();
-            $add_changes_id = $add_changes->id;
+            $add_changes -> model = $model;
+            $add_changes -> model_id = $model_id;
+            $add_changes -> changed_by = $changed_by;
+            $add_changes -> change_type = 'add';
+            $add_changes -> save();
+            $add_changes_id = $add_changes -> id;
         }
 
-        foreach ($this->ignore_fields as $ignore_field) {
+        foreach ($this -> ignore_fields as $ignore_field) {
             unset($data_before[$ignore_field]);
             unset($data_after[$ignore_field]);
         }
@@ -49,8 +49,8 @@ class DatabaseChangeLog
         $changes = [];
 
         foreach ($data_before as $key => $value_before) {
-            if (! is_array($value_before)) {
-                if (! preg_match('/(_id|_uuid)/', $key)) {
+            if (!is_array($value_before)) {
+                if (!preg_match('/(_id|_uuid)/', $key)) {
                     $value_after = $data_after[$key];
                     if (is_numeric($data_after[$key]) && preg_match('/\./', $data_after[$key])) {
                         $value_after = number_format($data_after[$key], 2, '.', '');
@@ -72,25 +72,25 @@ class DatabaseChangeLog
 
         if (count($changes) > 0) {
             $add_changes = new ChangeLog();
-            $add_changes->model = $model;
-            $add_changes->model_id = $model_id;
-            $add_changes->changed_by = $changed_by;
-            $add_changes->change_type = 'edit';
-            $add_changes->save();
-            $add_changes_id = $add_changes->id;
+            $add_changes -> model = $model;
+            $add_changes -> model_id = $model_id;
+            $add_changes -> changed_by = $changed_by;
+            $add_changes -> change_type = 'edit';
+            $add_changes -> save();
+            $add_changes_id = $add_changes -> id;
 
             foreach ($changes as $change) {
                 $add_change = new ChangeLogChanges();
-                $add_change->change_id = $add_changes_id;
-                $add_change->field_name = $change['field_name'];
-                $add_change->field_name_display = ucwords(preg_replace('/_/', ' ', $change['field_name']));
-                $add_change->value_before = $change['value_before'];
-                $add_change->value_after = $change['value_after'];
-                $add_change->save();
+                $add_change -> change_id = $add_changes_id;
+                $add_change -> field_name = $change['field_name'];
+                $add_change -> field_name_display = ucwords(preg_replace('/_/', ' ', $change['field_name']));
+                $add_change -> value_before = $change['value_before'];
+                $add_change -> value_after = $change['value_after'];
+                $add_change -> save();
             }
         }
 
-        return response()->json([
+        return response() -> json([
             'status' => 'success',
             'changes' => $changes,
         ]);

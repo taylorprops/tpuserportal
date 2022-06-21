@@ -1,4 +1,5 @@
 @foreach ($events as $event)
+    {{-- blade-formatter-disable --}}
     @php
         $accepted = null;
         $versions = [];
@@ -26,13 +27,15 @@
             $past_due = 'past_due';
         }
 
-        $notes = [];
+
         if ($event -> notes) {
             $notes = $event -> notes;
             $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
         }
 
     @endphp
+
+    {{-- blade-formatter-enable --}}
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
         :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' :
@@ -315,20 +318,21 @@
                                 <div class="p-4"
                                     role="none">
 
+                                    {{-- blade-formatter-disable --}}
                                     @php
                                         if ($company_id == '1') {
                                             $links = [
                                                 [
                                                     'title' => 'Standard',
-                                                    'url' => 'https://taylorprops.com/careers?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
+                                                    'url' => 'https://taylorprops.com/careers?email={{ contact.EMAIL }}&utm_campaign='.$event -> uuid,
                                                 ],
                                                 /* [
                                                     'title' => 'Technology',
-                                                    'url' => 'https://taylorprops.com/careers#tech?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
+                                                    'url' => 'https://taylorprops.com/careers#tech?email={{ contact.EMAIL }}&utm_campaign='.$event -> uuid,
                                                 ],
                                                 [
                                                     'title' => 'Join Now',
-                                                    'url' => 'https://taylorprops.com/careers#join?email={{ contact . EMAIL }}&utm_campaign='.$event -> uuid,
+                                                    'url' => 'https://taylorprops.com/careers#join?email={{ contact.EMAIL }}&utm_campaign='.$event -> uuid,
                                                 ], */
                                             ];
                                         } elseif ($company_id == '3') {
@@ -355,6 +359,7 @@
                                             ];
                                         }
                                     @endphp
+                                    {{-- blade-formatter-enable --}}
 
                                     @foreach ($links as $link)
                                         <div class="flex justify-start items-center">
