@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GlobalController;
-use App\Http\Controllers\FileUploadController;
-use App\Http\Controllers\Email\EmailController;
-use App\Http\Controllers\Search\SearchController;
-use App\Http\Controllers\FilepondUploadController;
-use App\Http\Controllers\Reports\ReportsController;
-use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Employees\EmployeesController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Email\EmailController;
+use App\Http\Controllers\Employees\EmployeesController;
+use App\Http\Controllers\FilepondUploadController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\Reports\ReportsController;
+use App\Http\Controllers\Search\SearchController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'web']) -> group(function () {
 
@@ -50,7 +50,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     /***** Reports ******/
     Route::get('/reports', [ReportsController::class, 'reports']) -> middleware(['all']);
 
-    Route::get('/reports/mortgage/loans_in_process', [ReportsController::class, 'loans_in_process']) -> middleware(['all']);
+    Route::get('/reports/mortgage/loans_in_process_by_loan_officer', [ReportsController::class, 'loans_in_process_by_loan_officer']) -> middleware(['all']);
     Route::get('/reports/mortgage/closed_loans_by_month', [ReportsController::class, 'closed_loans_by_month']) -> middleware(['all']);
     Route::get('/reports/mortgage/closed_loans_by_month_detailed', [ReportsController::class, 'closed_loans_by_month_detailed']) -> middleware(['all']);
     Route::get('/reports/mortgage/closed_loans_by_loan_officer', [ReportsController::class, 'closed_loans_by_loan_officer']) -> middleware(['all']);

@@ -64,7 +64,7 @@
                 @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
 
                 <div
-                    class="flex flex-wrap justify-start items-center space-x-4 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
+                    class="flex flex-wrap justify-start items-center space-x-2 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
                     <div>
                         <button type="button"><i class="fa-light"
                                 :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
@@ -78,7 +78,7 @@
                     <div class="w-8 h-8 rounded-full bg-white flex items-center justify-around">
                         {{ $event -> id }}
                     </div>
-                    <div class="w-24 hidden sm:inline-block">
+                    <div class="w-16 hidden sm:inline-block">
                         {{ $event -> medium -> item }}
                     </div>
 
@@ -156,6 +156,16 @@
                         </div>
                     @endif
 
+                    @if ($accepted)
+                        <div class="pl-4">
+                            <button type="button"
+                                id="view_{{ $event -> id }}"
+                                class="button primary sm px-1"
+                                @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View
+                                <i class="fa-solid fa-eye ml-2"></i></button>
+                        </div>
+                    @endif
+
                 </div>
 
             </div>
@@ -230,16 +240,6 @@
                         </div>
 
                     </div>
-
-                    @if ($accepted)
-                        <div class="pl-4">
-                            <button type="button"
-                                id="view_{{ $event -> id }}"
-                                class="button primary sm"
-                                @click="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View
-                                <i class="fa-solid fa-eye ml-2"></i></button>
-                        </div>
-                    @endif
 
                 </div>
 
