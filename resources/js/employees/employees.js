@@ -1,9 +1,9 @@
-if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
+if (document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
 
-    window.profile = function(emp_id, emp_type, photo_exists, text_editor_ele, url = null) {
+    window.profile = function (emp_id, emp_type, photo_exists, text_editor_ele, url = null) {
 
-        if(!emp_id) {
+        if (!emp_id) {
             photo_exists = false;
         }
 
@@ -27,23 +27,23 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                 let scope = this;
 
-                if(emp_id) {
+                if (emp_id) {
                     let show_licenses = ['agent', 'mortgage'];
-                    if(show_licenses.includes(emp_type)) {
-                        if(document.querySelector('.licenses-div')) {
+                    if (show_licenses.includes(emp_type)) {
+                        if (document.querySelector('.licenses-div')) {
                             scope.get_licenses();
                         }
                     }
 
-                    if(!profile) {
+                    if (!profile) {
                         scope.docs();
                         scope.get_docs();
                     }
                     scope.photo();
 
-                    if(Array.isArray(text_editor_ele)) {
-                        if(text_editor_ele.length > 0) {
-                            text_editor_ele.forEach(function(editor) {
+                    if (Array.isArray(text_editor_ele)) {
+                        if (text_editor_ele.length > 0) {
+                            text_editor_ele.forEach(function (editor) {
                                 scope.init_text_editor(editor);
                             });
                         }
@@ -53,8 +53,8 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     scope.show_profile_link();
                     scope.show_floify_link();
 
-                    if(emp_type == 'mortgage') {
-                        if(document.getElementById('credit_cards_div')) {
+                    if (emp_type == 'mortgage') {
+                        if (document.getElementById('credit_cards_div')) {
                             scope.get_credit_cards();
                         }
                     }
@@ -72,7 +72,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
 
                 let scope = this;
 
-                setTimeout(function() {
+                setTimeout(function () {
 
                     let form = document.getElementById('employee_form');
                     let formData = new FormData(form);
@@ -80,46 +80,46 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     formData.append('emp_type', emp_type);
 
                     axios.post('/employees/save_details', formData)
-                    .then(function (response) {
-                        ele.innerHTML = button_html;
-                        if(response.data) {
-                            if(response.data.success) {
-                                toastr.success('Employee details successfully saved')
-                            } else if(response.data.error) {
-                                scope.show_email_error_modal = true;
-                                document.querySelector('.error-message').innerHTML = response.data.error;
-                            } else if(response.data.emp_id) {
-                                emp_id = response.data.emp_id;
-                                window.location = '/employees/'+emp_type+'/'+emp_type+'_view/'+emp_id;
-                            }
-                        }
-                    })
-                    .catch(function (error) {
-                        if(error) {
-                            if(error.response) {
-                                if(error.response.status == 422) {
-                                    let errors = error.response.data.errors;
-                                    show_form_errors(errors);
-                                    ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                        .then(function (response) {
+                            ele.innerHTML = button_html;
+                            if (response.data) {
+                                if (response.data.success) {
+                                    toastr.success('Employee details successfully saved')
+                                } else if (response.data.error) {
+                                    scope.show_email_error_modal = true;
+                                    document.querySelector('.error-message').innerHTML = response.data.error;
+                                } else if (response.data.emp_id) {
+                                    emp_id = response.data.emp_id;
+                                    window.location = '/employees/' + emp_type + '/' + emp_type + '_view/' + emp_id;
                                 }
                             }
-                        }
-                    });
+                        })
+                        .catch(function (error) {
+                            if (error) {
+                                if (error.response) {
+                                    if (error.response.status == 422) {
+                                        let errors = error.response.data.errors;
+                                        show_form_errors(errors);
+                                        ele.innerHTML = '<i class="fal fa-check mr-2"></i> Save';
+                                    }
+                                }
+                            }
+                        });
 
                 }, 500);
             },
             show_profile_link() {
-                if(document.querySelector('#folder')) {
+                if (document.querySelector('#folder')) {
                     let folder = document.querySelector('#folder').value;
-                    let link = this.url+'/'+folder;
+                    let link = this.url + '/' + folder;
                     document.querySelector('#folder_url').innerHTML = link;
                 }
             },
             show_floify_link() {
-                if(document.querySelector('#floify_folder')) {
+                if (document.querySelector('#floify_folder')) {
                     let folder = document.querySelector('#floify_folder').value;
-                    let link = 'https://'+folder+'.floify.com';
-                    document.querySelector('#floify_folder_url').innerHTML = '<a href="'+link+'" target="_blank">'+link+'</a>';
+                    let link = 'https://' + folder + '.floify.com';
+                    document.querySelector('#floify_folder_url').innerHTML = '<a href="' + link + '" target="_blank">' + link + '</a>';
                 }
             },
             get_licenses() {
@@ -129,12 +129,12 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         emp_type: emp_type,
                     },
                 })
-                .then(function (response) {
-                    document.querySelector('.licenses-div').innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        document.querySelector('.licenses-div').innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             add_license() {
                 let html = document.querySelector('#license_template').innerHTML;
@@ -181,35 +181,35 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
 
                 axios.post('/employees/docs/get_docs', formData, axios_options)
-                .then(function (response) {
-                    document.querySelector('.docs-div').innerHTML = '';
-                    if(response.data.docs.length > 0) {
-                        response.data.docs.forEach(function(doc) {
-                            let html = document.querySelector('#doc_template').innerHTML;
-                            html = html.replace(/%%id%%/g, doc.id);
-                            html = html.replace(/%%file_name%%/g, doc.file_name);
-                            html = html.replace(/%%url%%/g, doc.file_location_url);
-                            document.querySelector('.docs-div').insertAdjacentHTML('beforeend', html);
-                        });
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        document.querySelector('.docs-div').innerHTML = '';
+                        if (response.data.docs.length > 0) {
+                            response.data.docs.forEach(function (doc) {
+                                let html = document.querySelector('#doc_template').innerHTML;
+                                html = html.replace(/%%id%%/g, doc.id);
+                                html = html.replace(/%%file_name%%/g, doc.file_name);
+                                html = html.replace(/%%url%%/g, doc.file_location_url);
+                                document.querySelector('.docs-div').insertAdjacentHTML('beforeend', html);
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             },
             delete_doc(id) {
-                if(confirm('Are you sure you want to delete this document?')) {
+                if (confirm('Are you sure you want to delete this document?')) {
                     let scope = this;
                     let formData = new FormData();
                     formData.append('id', id);
                     axios.post('/employees/docs/delete_doc', formData)
-                    .then(function (response) {
-                        scope.get_docs();
-                        toastr.success('Document deleted successfully.');
-                    })
-                    .catch(function (error) {
-                    });
+                        .then(function (response) {
+                            scope.get_docs();
+                            toastr.success('Document deleted successfully.');
+                        })
+                        .catch(function (error) {
+                        });
                 }
             },
 
@@ -221,12 +221,12 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         emp_type: emp_type,
                     },
                 })
-                .then(function (response) {
-                    scope.$refs.notes_div.innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        scope.$refs.notes_div.innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             },
 
@@ -243,15 +243,15 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('emp_type', emp_type);
 
                 axios.post('/employees/add_notes', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes();
-                    scope.show_add_notes = false;
-                    toastr.success('Note Saved');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes();
+                        scope.show_add_notes = false;
+                        toastr.success('Note Saved');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             delete_note(ele, id) {
@@ -264,14 +264,14 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('id', id);
 
                 axios.post('/employees/delete_note', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes();
-                    toastr.success('Note Deleted');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes();
+                        toastr.success('Note Deleted');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             photo() {
@@ -358,24 +358,24 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
 
                     axios.post('/employees/photos/save_cropped_upload', formData, axios_options)
-                    .then(function (response) {
-                        scope.cropper.destroy();
-                        scope.show_cropper_modal = false;
-                        document.getElementById('employee_image').setAttribute('src', response.data.url+'?t='+Date.now())
-                        scope.has_photo = true;
-                        scope.employee_photo_pond.removeFiles();
-                        ele.innerHTML = '<i class="fad fa-save mr-2"></i> Save';
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                        .then(function (response) {
+                            scope.cropper.destroy();
+                            scope.show_cropper_modal = false;
+                            document.getElementById('employee_image').setAttribute('src', response.data.url + '?t=' + Date.now())
+                            scope.has_photo = true;
+                            scope.employee_photo_pond.removeFiles();
+                            ele.innerHTML = '<i class="fad fa-save mr-2"></i> Save';
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
 
                 }, 'image/png');
 
             },
             delete_photo() {
 
-                if(confirm('Are you sure you want to delete this photo?')) {
+                if (confirm('Are you sure you want to delete this photo?')) {
 
                     let scope = this;
                     let formData = new FormData();
@@ -383,13 +383,13 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     formData.append('emp_type', emp_type);
 
                     axios.post('/employees/photos/delete_photo', formData, axios_options)
-                    .then(function (response) {
-                        document.getElementById('employee_image').setAttribute('src', '');
-                        scope.has_photo = false;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                        .then(function (response) {
+                            document.getElementById('employee_image').setAttribute('src', '');
+                            scope.has_photo = false;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
 
                 }
             },
@@ -401,10 +401,10 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                     //width: 700,
                     menubar: 'tools edit format table',
                     statusbar: false,
-                    plugins: 'image table code',
+                    plugins: 'image table code autoresize',
                     toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-                    relative_urls : false,
+                    relative_urls: false,
                     document_base_url: location.hostname
                 }
                 text_editor(options);
@@ -415,50 +415,50 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 let button_html = button.innerHTML;
                 show_loading_button(button, 'Saving Bio...');
                 let bio = tinyMCE.activeEditor.getContent();
-                bio = '<div style="width: 100%">'+bio+'</div>';
+                bio = '<div style="width: 100%">' + bio + '</div>';
 
                 let formData = new FormData();
                 formData.append('bio', bio);
                 formData.append('emp_type', emp_type);
                 formData.append('emp_id', emp_id);
                 axios.post('/employees/profile/save_bio', formData)
-                .then(function (response) {
-                    toastr.success('Your Bio has been saved successfully!');
-                    button.innerHTML = button_html;
-                })
-                .catch(function (error) {
-                    if(error) {
-                        if(error.response.status == 422) {
-                            let errors = error.response.data.errors;
-                            show_form_errors(errors);
+                    .then(function (response) {
+                        toastr.success('Your Bio has been saved successfully!');
+                        button.innerHTML = button_html;
+                    })
+                    .catch(function (error) {
+                        if (error) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                            }
                         }
-                    }
-                });
+                    });
             },
             save_signature(ele) {
 
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Saving Signature...');
                 let signature = tinyMCE.activeEditor.getContent();
-                signature = '<div style="width: 100%">'+signature+'</div>';
+                signature = '<div style="width: 100%">' + signature + '</div>';
 
                 let formData = new FormData();
                 formData.append('signature', signature);
                 formData.append('emp_type', emp_type);
                 formData.append('emp_id', emp_id);
                 axios.post('/employees/profile/save_signature', formData)
-                .then(function (response) {
-                    toastr.success('Your Signature has been saved successfully!');
-                    ele.innerHTML = button_html;
-                })
-                .catch(function (error) {
-                    if(error) {
-                        if(error.response.status == 422) {
-                            let errors = error.response.data.errors;
-                            show_form_errors(errors);
+                    .then(function (response) {
+                        toastr.success('Your Signature has been saved successfully!');
+                        ele.innerHTML = button_html;
+                    })
+                    .catch(function (error) {
+                        if (error) {
+                            if (error.response.status == 422) {
+                                let errors = error.response.data.errors;
+                                show_form_errors(errors);
+                            }
                         }
-                    }
-                });
+                    });
             },
 
             get_credit_cards() {
@@ -468,12 +468,12 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                         emp_id: emp_id
                     },
                 })
-                .then(function (response) {
-                    document.getElementById('credit_cards_div').innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        document.getElementById('credit_cards_div').innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             add_credit_card(ele) {
 
@@ -490,22 +490,22 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('emp_type', emp_type);
 
                 axios.post('/employees/billing/add_credit_card', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    if(response.data.success) {
-                        scope.get_credit_cards();
-                        scope.show_add_credit_card_modal = false;
+                    .then(function (response) {
                         ele.innerHTML = button_html;
-                        //document.getElementById('add_credit_card_form').reset();
-                        toastr.success('Credit Card successfully added');
-                    } else if(response.data.error) {
-                        scope.show_add_card_error_div = true;
-                        document.getElementById('add_card_error_message').innerText = response.data.error;
-                    }
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                        if (response.data.success) {
+                            scope.get_credit_cards();
+                            scope.show_add_credit_card_modal = false;
+                            ele.innerHTML = button_html;
+                            //document.getElementById('add_credit_card_form').reset();
+                            toastr.success('Credit Card successfully added');
+                        } else if (response.data.error) {
+                            scope.show_add_card_error_div = true;
+                            document.getElementById('add_card_error_message').innerText = response.data.error;
+                        }
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
             show_delete_credit_card(ele, profile_id, payment_profile_id) {
 
@@ -525,7 +525,7 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 let button = document.getElementById('confirm_delete_credit_card');
                 let ele = button.getAttribute('data-ele');
                 ele = document.getElementById(ele);
-                let profile_id  = button.getAttribute('data-profile-id');
+                let profile_id = button.getAttribute('data-profile-id');
                 let payment_profile_id = button.getAttribute('data-payment-profile-id');
 
                 ele.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
@@ -535,18 +535,18 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('payment_profile_id', payment_profile_id);
 
                 axios.post('/employees/billing/delete_credit_card', formData)
-                .then(function (response) {
-                    ele.innerHTML = '<i class="fal fa-times"></i>';
-                    if(response.data.success) {
-                        scope.get_credit_cards();
-                        toastr.success('Credit Card successfully deleted');
-                        scope.show_confirm_delete_credit_card = false;
-                    } else if(response.data.error) {
+                    .then(function (response) {
+                        ele.innerHTML = '<i class="fal fa-times"></i>';
+                        if (response.data.success) {
+                            scope.get_credit_cards();
+                            toastr.success('Credit Card successfully deleted');
+                            scope.show_confirm_delete_credit_card = false;
+                        } else if (response.data.error) {
 
-                    }
-                })
-                .catch(function (error) {
-                });
+                        }
+                    })
+                    .catch(function (error) {
+                    });
 
             },
             set_default_credit_card(profile_id, payment_profile_id) {
@@ -558,16 +558,16 @@ if(document.URL.match(/profile/) || document.URL.match(/_view/)) {
                 formData.append('payment_profile_id', payment_profile_id);
 
                 axios.post('/employees/billing/set_default_credit_card', formData)
-                .then(function (response) {
-                    if(response.data.success) {
-                        scope.get_credit_cards();
-                        toastr.success('Default Credit Card Successfully Changed');
-                    } else if(response.data.error) {
+                    .then(function (response) {
+                        if (response.data.success) {
+                            scope.get_credit_cards();
+                            toastr.success('Default Credit Card Successfully Changed');
+                        } else if (response.data.error) {
 
-                    }
-                })
-                .catch(function (error) {
-                });
+                        }
+                    })
+                    .catch(function (error) {
+                    });
             }
 
         }

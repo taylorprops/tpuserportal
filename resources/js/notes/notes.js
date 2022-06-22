@@ -71,9 +71,11 @@ window.notes = function (note_type) {
                 inline: true,
                 menubar: '',
                 statusbar: false,
-                plugins: 'image table code hr',
+                plugins: 'image table code hr autoresize',
                 toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | align outdent indent |  numlist bullist checklist | image | formatselect fontselect fontsizeselect | code |',
-                table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol'
+                table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                relative_urls: false,
+                document_base_url: location.hostname,
             }
             text_editor(options);
 

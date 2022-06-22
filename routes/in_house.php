@@ -1,29 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestsController;
-use App\Http\Controllers\API\APIController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Notes\NotesController;
-use App\Http\Controllers\Tools\ToolsController;
-use App\Http\Controllers\AuthNet\AuthNetController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\API\APIController;
+use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
+use App\Http\Controllers\DocManagement\Admin\FormsController;
+use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
+use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
+use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
+use App\Http\Controllers\DocManagement\Archives\EscrowController;
 use App\Http\Controllers\Employees\EmployeesController;
-use App\Http\Controllers\Marketing\Data\DataController;
-use App\Http\Controllers\Resources\ResourcesController;
+use App\Http\Controllers\HeritageFinancial\LendersController;
 use App\Http\Controllers\HeritageFinancial\LoansController;
 use App\Http\Controllers\Marketing\AgentAddressesController;
-use App\Http\Controllers\DocManagement\Admin\FormsController;
-use App\Http\Controllers\HeritageFinancial\LendersController;
-use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
-use App\Http\Controllers\Marketing\Schedule\ScheduleController;
-use App\Http\Controllers\DocManagement\Admin\SkySlopeController;
-use App\Http\Controllers\DocManagement\Archives\EscrowController;
-use App\Http\Controllers\OldDB\Company\OldTransactionsController;
-use App\Http\Controllers\DocManagement\Admin\ChecklistsController;
-use App\Http\Controllers\DocManagement\Admin\FormsFieldsController;
+use App\Http\Controllers\Marketing\Data\DataController;
 use App\Http\Controllers\Marketing\Schedule\ScheduleChecklistController;
-use App\Http\Controllers\DocManagement\Archives\ArchivedTransactionsController;
+use App\Http\Controllers\Marketing\Schedule\ScheduleController;
+use App\Http\Controllers\Notes\NotesController;
+use App\Http\Controllers\OldDB\Company\OldTransactionsController;
+use App\Http\Controllers\OldDB\SkySlope\OldSkySlopeController;
+use App\Http\Controllers\Resources\ResourcesController;
+use App\Http\Controllers\TestsController;
+use App\Http\Controllers\Tools\ToolsController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'web']) -> group(function () {
 
@@ -179,7 +177,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     /* Checklist */
     Route::get('/marketing/schedule/checklist', [ScheduleChecklistController::class, 'checklist']) -> middleware(['in_house']);
     Route::get('/marketing/schedule/get_checklist', [ScheduleChecklistController::class, 'get_checklist']) -> middleware(['in_house']);
-
+    Route::post('/marketing/schedule/save_item', [ScheduleChecklistController::class, 'save_item']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);
@@ -209,8 +207,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
     // %%%% get ccs
     Route::get('/old_db/company/agents', [OldTransactionsController::class, 'agents']) -> middleware(['in_house']);
 
-
-
     // Agent Addresses TEMP
     Route::get('/marketing/import_agent_addresses', [AgentAddressesController::class, 'import_agent_addresses']) -> middleware(['in_house']);
     Route::get('/marketing/merge_agents', [AgentAddressesController::class, 'merge_agents']) -> middleware(['in_house']);
@@ -222,7 +218,6 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/tests/bright_missing_from_bright', [TestsController::class, 'bright_missing_from_bright']) -> middleware(['in_house']);
     Route::get('/tests/bright_missing_from_db', [TestsController::class, 'bright_missing_from_db']) -> middleware(['in_house']);
     Route::get('/tests/create_zimbra_account', [TestsController::class, 'create_zimbra_account']) -> middleware(['in_house']);
-
 
     Route::get('/tests/update_encrypted_fields', [TestsController::class, 'update_encrypted_fields']) -> middleware(['in_house']);
     Route::get('/tests/test_connection', [TestsController::class, 'test_connection']) -> middleware(['in_house']);
@@ -244,7 +239,6 @@ Route::post('/api/marketing/add_email_clicker_real_estate', [APIController::clas
 // zoho browser extension
 Route::get('/api/zoho/get_medium', [APIController::class, 'get_medium']) -> middleware(['zoho']);
 Route::get('/api/zoho/get_bright_agent_details', [APIController::class, 'get_bright_agent_details']) -> middleware(['zoho']);
-
 
 /* Resources */
 Route::get('/zoho/create_access_token', [APIController::class, 'create_access_token']);

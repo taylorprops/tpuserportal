@@ -22,8 +22,7 @@
             <nav class="-mb-px flex items-center space-x-12" aria-label="Tabs">
 
                 @foreach ($settings -> where('category', 'company') as $company)
-                    <a href="javascript:void(0)"
-                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                    <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                         :class="{
                             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !==
                                 '{{ $loop -> index }}',
@@ -52,9 +51,7 @@
             
         @endphp
 
-        <div x-show="active_tab === '{{ $loop -> index }}'" x-transition"
-            class="p-8 border"
-            x-data="{ active_sub_tab: '0' }">
+        <div x-show="active_tab === '{{ $loop -> index }}'" x-transition" class="p-8 border" x-data="{ active_sub_tab: '0' }">
 
             <div>
 
@@ -79,8 +76,7 @@
                         <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
                             @foreach ($settings -> where('category', 'recipient') as $recipient)
-                                <a href="javascript:void(0)"
-                                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                                     :class="{
                                         'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !==
                                             '{{ $loop -> index }}',
@@ -122,8 +118,7 @@
                                     <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
                                         @foreach ($states as $state)
-                                            <a href="javascript:void(0)"
-                                                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                            <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                                                 :class="{
                                                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_sub_tab !==
                                                         '{{ $loop -> index }}',
@@ -144,12 +139,17 @@
                                 <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4">
 
                                     <a href="javascript:void(0)" class="button primary md"
-                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}')">Add Item
-                                        <i class="fa-light fa-plus ml-2"></i>
+                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}')">Add Item <i class="fa-light fa-plus ml-2"></i>
                                     </a>
 
-                                    <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4">
-                                        {{ $company -> id }} {{ $recipient -> id }} {{ $state }}
+                                    <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4 space-y-2">
+                                        {{-- blade-formatter-disable --}}
+                                        @foreach ($checklist -> where('recipient_id', $recipient -> id) -> where('company_id', $company -> id) -> where('states', 'like', "%{$state}%") as $item )
+                                            <div class="border-b py-2">
+                                                {{ $item -> states }}
+                                            </div>
+                                        @endforeach
+                                        {{-- blade-formatter-enable --}}
                                     </div>
 
 

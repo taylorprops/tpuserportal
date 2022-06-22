@@ -2,31 +2,29 @@
 
 namespace App\Http\Controllers\API;
 
-use Carbon\Carbon;
-use App\Helpers\Helper;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\Config\Config;
-use App\Models\Zoho\ZohoOAuth;
-use TheIconic\NameParser\Parser;
 use App\Classes\DatabaseChangeLog;
-use App\Mail\General\EmailGeneral;
-use App\Models\Employees\Mortgage;
-use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
-use App\Models\HeritageFinancial\Loans;
-use App\Models\BrightMLS\BrightListings;
-use App\Models\HeritageFinancial\Lenders;
+use App\Mail\General\EmailGeneral;
 use App\Models\BrightMLS\BrightAgentRoster;
-use App\Models\Marketing\Schedule\Schedule;
-use App\Models\Marketing\LoanOfficerAddresses;
-use App\Models\Marketing\Schedule\ScheduleUploads;
+use App\Models\BrightMLS\BrightListings;
+use App\Models\Config\Config;
 use App\Models\DocManagement\Resources\LocationData;
+use App\Models\Employees\Mortgage;
+use App\Models\HeritageFinancial\Lenders;
+use App\Models\HeritageFinancial\Loans;
+use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\Marketing\Schedule\Schedule;
+use App\Models\Marketing\Schedule\ScheduleUploads;
+use App\Models\Zoho\ZohoOAuth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use TheIconic\NameParser\Parser;
 
 class APIController extends Controller
 {
-
 
     public function update_loan(Request $request)
     {
@@ -104,9 +102,9 @@ class APIController extends Controller
                 $street_name = $address['street_name'] ?? null;
                 $street_address = $address['address'] ?? null;
                 $unit = $address['unit'] ?? null;
-                $street = trim($street_number . ' ' . $street_address);
+                $street = trim($street_number.' '.$street_address);
                 if ($unit) {
-                    $street .= ' ' . $unit;
+                    $street .= ' '.$unit;
                 }
                 $city = $address['city'] ?? null;
                 $state = $address['state'] ?? null;
@@ -130,7 +128,7 @@ class APIController extends Controller
                 $borrower = $this -> parse_name($borrower_fullname);
                 $borrower_first = $borrower['first'];
                 if ($borrower['middle'] != '') {
-                    $borrower_first .= ' ' . $borrower['middle'];
+                    $borrower_first .= ' '.$borrower['middle'];
                 }
                 $borrower_last = $borrower['last'];
             }
@@ -140,7 +138,7 @@ class APIController extends Controller
                 $co_borrower = $this -> parse_name($co_borrower_fullname);
                 $co_borrower_first = $co_borrower['first'];
                 if ($co_borrower['middle'] != '') {
-                    $co_borrower_first .= ' ' . $co_borrower['middle'];
+                    $co_borrower_first .= ' '.$co_borrower['middle'];
                 }
                 $co_borrower_last = $co_borrower['last'];
             }
@@ -230,7 +228,7 @@ class APIController extends Controller
                         })
                             -> orWhere(function ($query) use ($street) {
                                 if ($street) {
-                                    $query -> where('street', 'like', '%' . $street . '%');
+                                    $query -> where('street', 'like', '%'.$street.'%');
                                 }
                             });
                     })
@@ -262,8 +260,6 @@ class APIController extends Controller
             if ($loan) {
                 $db_log_data_before = $loan -> replicate();
             }
-
-
 
             $loan -> lending_pad_uuid = $lending_pad_uuid;
             $loan -> lending_pad_loan_number = $lending_pad_loan_number;
@@ -349,7 +345,6 @@ class APIController extends Controller
                 $loan -> time_line_appraisal_received = date('Y-m-d', strtotime($request -> Appraisal_Delivered));
             }
 
-
             $loan -> save();
 
             $tax_record_link = $loan -> tax_record_link;
@@ -380,11 +375,11 @@ class APIController extends Controller
         $loans = Loans::where(function ($query) use ($search) {
             if ($search) {
                 $query -> whereHas('loan_officer_1', function ($query) use ($search) {
-                    $query -> where('fullname', 'like', '%' . $search . '%');
+                    $query -> where('fullname', 'like', '%'.$search.'%');
                 })
-                    -> orWhere('street', 'like', '%' . $search . '%')
-                    -> orWhere('borrower_fullname', 'like', '%' . $search . '%')
-                    -> orWhere('co_borrower_fullname', 'like', '%' . $search . '%');
+                    -> orWhere('street', 'like', '%'.$search.'%')
+                    -> orWhere('borrower_fullname', 'like', '%'.$search.'%')
+                    -> orWhere('co_borrower_fullname', 'like', '%'.$search.'%');
             }
         })
             -> whereNotNull('lending_pad_uuid')
@@ -411,7 +406,7 @@ class APIController extends Controller
         $suffix = $name -> getSuffix();
 
         if ($suffix) {
-            $last .= ', ' . $suffix;
+            $last .= ', '.$suffix;
         }
 
         return [
@@ -429,13 +424,13 @@ class APIController extends Controller
         // only able to get tax records for MD at this point
         if ($state == 'MD') {
             if ($tax_id != '') {
-                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?account_id_mdp_field_acctid=' . urlencode($tax_id);
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?account_id_mdp_field_acctid='.urlencode($tax_id);
             } else {
                 $unit_number = '';
                 if ($unit != '') {
-                    $unit_number = '&mdp_street_address_units_mdp_field_strtunt=' . urlencode($unit);
+                    $unit_number = '&mdp_street_address_units_mdp_field_strtunt='.urlencode($unit);
                 }
-                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27' . $street_number . '%20' . urlencode(strtoupper($street_name)) . '%27%29&mdp_street_address_zip_code_mdp_field_zipcode=' . $zip . $unit_number;
+                $url = 'https://opendata.maryland.gov/resource/ed4q-f8tm.json?$where=starts_with%28mdp_street_address_mdp_field_address,%20%27'.$street_number.'%20'.urlencode(strtoupper($street_name)).'%27%29&mdp_street_address_zip_code_mdp_field_zipcode='.$zip.$unit_number;
             }
             $headers = [
                 'Content-Type' => 'application/json',
@@ -471,7 +466,7 @@ class APIController extends Controller
                     $details = [
                         'ResidenceType' => $property['mdp_street_address_type_code_mdp_field_resityp'] ?? null,
                         'TransferDate' => str_replace('.', '-', $property['sales_segment_1_transfer_date_yyyy_mm_dd_mdp_field_tradate_sdat_field_89']) ?? null,
-                        'OriginalCost' => '$' . number_format($property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'], 2) ?? null,
+                        'OriginalCost' => '$'.number_format($property['sales_segment_1_consideration_mdp_field_considr1_sdat_field_90'], 2) ?? null,
                         'NumberOfUnits' => $property['c_a_m_a_system_data_number_of_dwelling_units_mdp_field_bldg_units_sdat_field_239'] ?? null,
                         'County' => $tax_county ?? null,
                         'ListingTaxID' => $property['account_id_mdp_field_acctid'] ?? null,
@@ -501,55 +496,52 @@ class APIController extends Controller
 
                     /* if (isset($property['real_property_search_link']['url'])) {
 
-                        // Owner name not available from response so we have to follow the link provided in the results and get the owner's name from that page
+                // Owner name not available from response so we have to follow the link provided in the results and get the owner's name from that page
 
-                        $link = $property['real_property_search_link']['url'];
-                        $link = str_replace('http', 'https', $link);
+                $link = $property['real_property_search_link']['url'];
+                $link = str_replace('http', 'https', $link);
 
-                        $headers = @get_headers($link);
+                $headers = @get_headers($link);
 
-                        if($headers && strpos( $headers[0], '302')) {
-                            $link = str_replace('Location: ', '', $headers[1]);
-                            $headers = @get_headers($link);
-                        }
+                if($headers && strpos( $headers[0], '302')) {
+                $link = str_replace('Location: ', '', $headers[1]);
+                $headers = @get_headers($link);
+                }
 
-                        if($headers && strpos( $headers[0], '200')) {
+                if($headers && strpos( $headers[0], '200')) {
 
-                            $page = new \DOMDocument();
-                            libxml_use_internal_errors(true);
-                            $page -> loadHTMLFile($link);
-                            $xpath = new \DOMXpath($page);
+                $page = new \DOMDocument();
+                libxml_use_internal_errors(true);
+                $page -> loadHTMLFile($link);
+                $xpath = new \DOMXpath($page);
 
+                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName_0"])');
 
-                            $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName_0"])');
+                if ($owner1 == '') {
+                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName_0"])');
+                }
 
-                            if ($owner1 == '') {
-                                $owner1 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName_0"])');
-                            }
+                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName2_0"])');
 
-                            $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblOwnerName2_0"])');
+                if ($owner2 == '') {
+                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName2_0"])');
+                }
 
-                            if ($owner2 == '') {
-                                $owner2 = $xpath -> evaluate('string(//span[@id="MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_ucDetailsSearch_dlstDetaisSearch_lblOwnerName2_0"])');
-                            }
+                $details['Owner1'] = $owner1;
+                $details['Owner2'] = $owner2;
 
-                            $details['Owner1'] = $owner1;
-                            $details['Owner2'] = $owner2;
+                // $details['frederick_city'] = 'no';
+                // if(stristr($property['town_code_mdp_field_towncode_desctown_sdat_field_36'], 'Frederick')) { //MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblSpecTaxTown_0
+                //     $details['frederick_city'] = 'yes';
+                // }
+                // $details['condo'] = 'no';
+                // if(stristr($property['land_use_code_mdp_field_lu_desclu_sdat_field_50'], 'condominium')) {
+                //     $details['condo'] = 'yes';
+                // }
 
+                }
 
-                            // $details['frederick_city'] = 'no';
-                            // if(stristr($property['town_code_mdp_field_towncode_desctown_sdat_field_36'], 'Frederick')) { //MainContent_MainContent_cphMainContentArea_ucSearchType_wzrdRealPropertySearch_query_ucDetailsSearch_query_dlstDetaisSearch_lblSpecTaxTown_0
-                            //     $details['frederick_city'] = 'yes';
-                            // }
-                            // $details['condo'] = 'no';
-                            // if(stristr($property['land_use_code_mdp_field_lu_desclu_sdat_field_50'], 'condominium')) {
-                            //     $details['condo'] = 'yes';
-                            // }
-
-                        }
-
-
-                    } */
+                } */
                 }
             }
         }
@@ -575,7 +567,7 @@ class APIController extends Controller
 
         $first_name = $request -> first_name;
         $last_name = $request -> last_name;
-        $full_name = $request -> first_name . ' ' . $request -> last_name;
+        $full_name = $request -> first_name.' '.$request -> last_name;
         $phone = $request -> phone;
         $email = $request -> email;
         $message_from_agent = $request -> message ?? null;
@@ -591,7 +583,6 @@ class APIController extends Controller
             $existing_lead = true;
         }
 
-
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
         $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
@@ -604,12 +595,12 @@ class APIController extends Controller
                 'id' => $lead_id,
                 'Email' => $email,
                 'First_Name' => $first_name,
-                'Last_Name' => $last_name
+                'Last_Name' => $last_name,
             ];
 
             $fields = json_encode(
                 array(
-                    'data' => array($data)
+                    'data' => array($data),
                 )
             );
             $this -> add_email_to_lead($fields, $access_token, $api_url);
@@ -631,49 +622,47 @@ class APIController extends Controller
             }
             $text_to = [
                 ['email' => '4439953422@vtext.com'],
-               //  ['email' => '4105701014@vtext.com'],
+                //  ['email' => '4105701014@vtext.com'],
             ];
         } else {
             $to = ['email' => 'mike@taylorprops.com'];
             $cc = [];
         }
 
-
         $body = '
         An agent just submitted a contact form on taylorprops.com.<br><br>
-        Name: ' . $full_name . '<br>
-        Phone: ' . $phone . '<br>
-        Email: ' . $email . '<br>
-        Message: ' . $message_from_agent . '<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
-
+        Name: '.$full_name.'<br>
+        Phone: '.$phone.'<br>
+        Email: '.$email.'<br>
+        Message: '.$message_from_agent.'<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
         $message = [
             'company' => $request -> company ?? 'Taylor Properties',
             'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'body' => $body,
-            'attachments' => null
+            'attachments' => null,
         ];
 
         Mail::to([$to])
             -> cc($cc)
             -> send(new EmailGeneral($message));
 
+        $body = 'Recruiting Form Submitted. Agent: '.$full_name.' - '.$phone.' - '.$email.' - '.$message_from_agent;
 
-            $body = 'Recruiting Form Submitted. Agent: ' . $full_name . ' - ' . $phone . ' - ' . $email.' - '.$message_from_agent;
+        $message = [
+            'company' => 'Taylor Properties',
+            'subject' => 'Recruiting Alert!',
+            'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
+            'body' => $body,
+            'attachments' => null,
+        ];
 
-            $message = [
-                'company' => 'Taylor Properties',
-                'subject' => 'Recruiting Alert!',
-                'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
-                'body' => $body,
-                'attachments' => null
-            ];
-
+        if (date('H') > '08' && date('H') < '10') {
             Mail::to($text_to)
                 -> send(new EmailGeneral($message));
-
+        }
 
         return response() -> json(['status' => 'success']);
     }
@@ -710,7 +699,6 @@ class APIController extends Controller
             $existing_lead = true;
         }
 
-
         $api_url = 'https://www.zohoapis.com/crm/v2/Leads/upsert';
 
         $fields = $this -> fields($existing_lead, $new_category, $full_name, $first_name, $last_name, null, $email, $phone, $category, $lead_status, $owner, $lead_source, $lead_medium, $lead_campaign, $description, false);
@@ -723,12 +711,12 @@ class APIController extends Controller
                 'id' => $lead_id,
                 'Email' => $email,
                 'First_Name' => $first_name,
-                'Last_Name' => $last_name
+                'Last_Name' => $last_name,
             ];
 
             $fields = json_encode(
                 array(
-                    'data' => array($data)
+                    'data' => array($data),
                 )
             );
             $this -> add_email_to_lead($fields, $access_token, $api_url);
@@ -755,25 +743,23 @@ class APIController extends Controller
 
         $body = '
         Someone just submitted a contact form on heritagetitle.com.<br><br>
-        Name: ' . $full_name . '<br>
-        Phone: ' . $phone . '<br>
-        Email: ' . $email . '<br>
-        Message: ' . $message . '<br><br>
-        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
-
+        Name: '.$full_name.'<br>
+        Phone: '.$phone.'<br>
+        Email: '.$email.'<br>
+        Message: '.$message.'<br><br>
+        <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
         $message = [
             'company' => $request -> company ?? 'Taylor Properties',
             'subject' => $description,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'body' => $body,
-            'attachments' => null
+            'attachments' => null,
         ];
 
         Mail::to([$to])
             -> cc($cc)
             -> send(new EmailGeneral($message));
-
 
         return response() -> json(['status' => 'success']);
     }
@@ -792,7 +778,6 @@ class APIController extends Controller
         $lead_source = 'Email Clickers';
         $lead_medium = 'Email';
         $lead_campaign = $request -> utm_campaign;
-
 
         $check_exists = $this -> check_if_user_exists($email, $category);
         $lead_id = $check_exists['lead_id'];
@@ -828,12 +813,12 @@ class APIController extends Controller
                     'id' => $lead_id,
                     'Email' => $email,
                     'First_Name' => $first_name,
-                    'Last_Name' => $last_name
+                    'Last_Name' => $last_name,
                 ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array($data)
+                        'data' => array($data),
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
@@ -845,14 +830,13 @@ class APIController extends Controller
             } else {
 
                 $notes =
-                    $agent -> MemberFullname . ' clicked on a link in an email again
-                Lead Source - ' . $lead_source . '
-                Lead Medium - ' . $lead_medium . '
-                Lead Campaign - ' . $lead_campaign;
+                $agent -> MemberFullname.' clicked on a link in an email again
+                Lead Source - '.$lead_source.'
+                Lead Medium - '.$lead_medium.'
+                Lead Campaign - '.$lead_campaign;
 
                 $this -> add_notes($lead_id, $notes);
             }
-
 
             // Send email notification
 
@@ -874,40 +858,39 @@ class APIController extends Controller
                 $cc = null;
             }
 
-
             $body = '
             An agent just clicked on a link in an email for more information.<br><br>
-            Name: ' . $agent -> MemberFullName . '<br>
-            Phone: ' . $agent -> MemberPreferredPhone . '<br>
-            Email: ' . $agent -> MemberEmail . '<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
-
+            Name: '.$agent -> MemberFullName.'<br>
+            Phone: '.$agent -> MemberPreferredPhone.'<br>
+            Email: '.$agent -> MemberEmail.'<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
             $message = [
                 'company' => 'Taylor Properties',
                 'subject' => 'Recruiting Alert! Contact from an Agent',
                 'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
-                'attachments' => null
+                'attachments' => null,
             ];
 
             Mail::to($to)
                 -> cc($cc)
                 -> send(new EmailGeneral($message));
 
-            $body = 'An agent just clicked on a link. Agent: ' . $agent -> MemberFullName . ' - ' . $agent -> MemberPreferredPhone . ' - ' . $agent -> MemberEmail;
+            $body = 'An agent just clicked on a link. Agent: '.$agent -> MemberFullName.' - '.$agent -> MemberPreferredPhone.' - '.$agent -> MemberEmail;
 
             $message = [
                 'company' => 'Taylor Properties',
                 'subject' => 'Recruiting Alert!',
                 'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
-                'attachments' => null
+                'attachments' => null,
             ];
 
-            Mail::to($text_to)
-                -> send(new EmailGeneral($message));
-
+            if (date('H') > '08' && date('H') < '10') {
+                Mail::to($text_to)
+                    -> send(new EmailGeneral($message));
+            }
 
             return response() -> json(['status' => 'success']);
         }
@@ -918,7 +901,6 @@ class APIController extends Controller
     /* from heritagefinancial.com */
     public function add_email_clicker_mortgage(Request $request)
     {
-
 
         // http://heritagefinancial.com/?utm_campaign=2022-06_TP_37&email=test@test.com
 
@@ -942,12 +924,9 @@ class APIController extends Controller
             $existing_lead = true;
         }
 
-
-
         $loan_officer = LoanOfficerAddresses::where('email', $email) -> first();
 
         if ($loan_officer) {
-
 
             $description = 'Loan Officer clicked on a link in an email for more information';
 
@@ -970,12 +949,12 @@ class APIController extends Controller
                     'id' => $lead_id,
                     'Email' => $email,
                     'First_Name' => $first_name,
-                    'Last_Name' => $last_name
+                    'Last_Name' => $last_name,
                 ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array($data)
+                        'data' => array($data),
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
@@ -989,13 +968,12 @@ class APIController extends Controller
             }
 
             $notes =
-                $loan_officer -> full_name . ' clicked on a link in an email
-            Lead Source - ' . $lead_source . '
-            Lead Medium - ' . $lead_medium . '
-            Lead Campaign - ' . $lead_campaign;
+            $loan_officer -> full_name.' clicked on a link in an email
+            Lead Source - '.$lead_source.'
+            Lead Medium - '.$lead_medium.'
+            Lead Campaign - '.$lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
-
 
             // Send email notification to Kyle
             if (config('app.env') == 'production') {
@@ -1011,24 +989,22 @@ class APIController extends Controller
 
             $body = '
             A Loan Officer just clicked on a link in an email for more information. This is the second contact from the Loan Officer.<br><br>
-            Name: ' . $loan_officer -> full_name . '<br>
-            Phone: ' . $loan_officer -> phone . '<br>
-            Email: ' . $loan_officer -> email . '<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
-
+            Name: '.$loan_officer -> full_name.'<br>
+            Phone: '.$loan_officer -> phone.'<br>
+            Email: '.$loan_officer -> email.'<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
             $message = [
                 'company' => 'Heritage Financial',
                 'subject' => 'Recruiting Alert! Second Contact from a Loan Officer',
                 'from' => ['email' => 'info@heritagefinancial.com', 'name' => 'Heritage Financial'],
                 'body' => $body,
-                'attachments' => null
+                'attachments' => null,
             ];
 
             Mail::to([$to])
                 -> cc($cc)
                 -> send(new EmailGeneral($message));
-
 
             return response() -> json(['status' => 'success']);
         }
@@ -1039,7 +1015,6 @@ class APIController extends Controller
     /* from heritagetitlemd.com */
     public function add_email_clicker_title(Request $request)
     {
-
 
         // http://heritagetitlemd.com/?utm_source=SourceID&utm_medium=MediumID&utm_campaign=CampaignID&email=test@test.com
 
@@ -1061,8 +1036,6 @@ class APIController extends Controller
         if ($lead_id) {
             $existing_lead = true;
         }
-
-
 
         $agent = BrightAgentRoster::where('MemberEmail', $email) -> first();
 
@@ -1089,12 +1062,12 @@ class APIController extends Controller
                     'id' => $lead_id,
                     'Email' => $email,
                     'First_Name' => $first_name,
-                    'Last_Name' => $last_name
+                    'Last_Name' => $last_name,
                 ];
 
                 $fields = json_encode(
                     array(
-                        'data' => array($data)
+                        'data' => array($data),
                     )
                 );
                 $this -> add_email_to_lead($fields, $access_token, $api_url);
@@ -1108,13 +1081,12 @@ class APIController extends Controller
             }
 
             $notes =
-                $agent -> MemberFullname . ' clicked on a link in an email
-            Lead Source - ' . $lead_source . '
-            Lead Medium - ' . $lead_medium . '
-            Lead Campaign - ' . $lead_campaign;
+            $agent -> MemberFullname.' clicked on a link in an email
+            Lead Source - '.$lead_source.'
+            Lead Medium - '.$lead_medium.'
+            Lead Campaign - '.$lead_campaign;
 
             $this -> add_notes($lead_id, $notes);
-
 
             // Send email notification to Kyle
             if (config('app.env') == 'production') {
@@ -1125,23 +1097,21 @@ class APIController extends Controller
 
             $body = '
             An Agent just clicked on a link in an email for more information. This is the second contact from the Agent.<br><br>
-            Name: ' . $agent -> MemberFullName . '<br>
-            Phone: ' . $agent -> MemberPreferredPhone . '<br>
-            Email: ' . $agent -> MemberEmail . '<br><br>
-            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/' . $lead_id . '" target="_blank">View Lead on Zoho</a>';
-
+            Name: '.$agent -> MemberFullName.'<br>
+            Phone: '.$agent -> MemberPreferredPhone.'<br>
+            Email: '.$agent -> MemberEmail.'<br><br>
+            <a href="https://crm.zoho.com/crm/org768224201/tab/Leads/'.$lead_id.'" target="_blank">View Lead on Zoho</a>';
 
             $message = [
                 'company' => 'Taylor Properties',
                 'subject' => 'Marketing Alert! Second Contact from an Agent',
                 'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                 'body' => $body,
-                'attachments' => null
+                'attachments' => null,
             ];
 
             Mail::to([$to])
                 -> send(new EmailGeneral($message));
-
 
             return response() -> json(['status' => 'success']);
         }
@@ -1236,8 +1206,8 @@ class APIController extends Controller
 
         $headers = array(
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($fields),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            'Content-Length: '.strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token),
         );
 
         $curl = curl_init();
@@ -1264,7 +1234,7 @@ class APIController extends Controller
             'Phone' => $phone,
             'Email' => $email,
             'Last_Name' => $last_name,
-            'Follow_Up_Date' => date('Y-m-d')
+            'Follow_Up_Date' => date('Y-m-d'),
         ];
 
         if ($existing_lead == false || $new_category == true) {
@@ -1281,7 +1251,7 @@ class APIController extends Controller
                 'Lead_Source' => $lead_source,
                 'Lead_Medium' => $lead_medium,
                 'Lead_Campaign' => $lead_campaign,
-                'Description' => $description
+                'Description' => $description,
             ];
         }
 
@@ -1290,8 +1260,8 @@ class APIController extends Controller
                 'data' => array($data),
                 'duplicate_check_fields' => array(
                     'Email',
-                    'Phone'
-                )
+                    'Phone',
+                ),
             )
         );
 
@@ -1302,7 +1272,7 @@ class APIController extends Controller
                     'data' => array($data),
                     'duplicate_check_fields' => array(
                         'Email',
-                        'Phone'
+                        'Phone',
                     ),
                 )
             );
@@ -1314,13 +1284,12 @@ class APIController extends Controller
                     'data' => array($data),
                     'duplicate_check_fields' => array(
                         'Email',
-                        'Phone'
+                        'Phone',
                     ),
                     'lar_id' => '5119653000001162013',
                 )
             );
         }
-
 
         return $fields;
     }
@@ -1330,8 +1299,8 @@ class APIController extends Controller
 
         $headers = array(
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($fields),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            'Content-Length: '.strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token),
         );
 
         $curl = curl_init();
@@ -1356,7 +1325,7 @@ class APIController extends Controller
 
         $access_token = $this -> get_access_token('modules');
 
-        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/' . $id . '/Notes';
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/'.$id.'/Notes';
 
         $message_data = json_encode(
             array(
@@ -1365,16 +1334,16 @@ class APIController extends Controller
                         'Note_Title' => 'Message From Lead',
                         'Note_Content' => $message,
                         'Parent_Id' => $id,
-                        'se_module' => 'Leads'
-                    ]
-                )
+                        'se_module' => 'Leads',
+                    ],
+                ),
             )
         );
 
         $headers = array(
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($message_data),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            'Content-Length: '.strlen($message_data),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token),
         );
 
         $curl = curl_init();
@@ -1401,11 +1370,11 @@ class APIController extends Controller
         $access_token = $this -> get_access_token('leads');
 
         $lead_id = null;
-        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/search?email=' . $email;
+        $api_url = 'https://www.zohoapis.com/crm/v2/Leads/search?email='.$email;
 
         $headers = array(
             'Content-Type: application/json',
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token),
         );
 
         $curl = curl_init();
@@ -1432,7 +1401,7 @@ class APIController extends Controller
 
         return [
             'lead_id' => $lead_id,
-            'new_category' => $new_category
+            'new_category' => $new_category,
         ];
     }
 
@@ -1442,13 +1411,13 @@ class APIController extends Controller
         $access_token = $this -> get_access_token('coql');
         $api_url = 'https://www.zohoapis.com/crm/v2/coql';
         $fields = json_encode([
-            "select_query" => "select Last_Name, First_Name from Leads where Last_Activity_Time between '2022-04-23T00:00:01+05:00' and '2022-04-23T23:59:59+05:00' and Owner = '5119653000001120291' and Modified_By = '5119653000001120291'"
+            "select_query" => "select Last_Name, First_Name from Leads where Last_Activity_Time between '2022-04-23T00:00:01+05:00' and '2022-04-23T23:59:59+05:00' and Owner = '5119653000001120291' and Modified_By = '5119653000001120291'",
         ]);
 
         $headers = array(
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($fields),
-            sprintf('Authorization: Zoho-oauthtoken %s', $access_token)
+            'Content-Length: '.strlen($fields),
+            sprintf('Authorization: Zoho-oauthtoken %s', $access_token),
         );
 
         $curl = curl_init();
@@ -1469,7 +1438,6 @@ class APIController extends Controller
         curl_close($curl);
     }
 
-
     public function get_access_token($scope)
     {
 
@@ -1489,13 +1457,11 @@ class APIController extends Controller
 
         return $access_token;
 
-
         // access valid 1 hour
         // 10 access tokens from a refresh token in a span of 10 minutes
         // 20 refresh tokens in a span of 10 minutes
 
     }
-
 
     public function refresh_access_token($scope)
     {
@@ -1505,11 +1471,10 @@ class APIController extends Controller
         $client_id = config('global.zoho_client_id');
         $client_secret = config('global.zoho_client_secret');
 
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token?refresh_token=' . $refresh_token . '&client_id=' . $client_id . '&client_secret=' . $client_secret . '&grant_type=refresh_token',
+            CURLOPT_URL => 'https://accounts.zoho.com/oauth/v2/token?refresh_token='.$refresh_token.'&client_id='.$client_id.'&client_secret='.$client_secret.'&grant_type=refresh_token',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -1562,13 +1527,11 @@ class APIController extends Controller
         dd($data);
 
         /* ZohoOAuth::where('scope', $scope) -> update([
-            'refresh_token' => $data['refresh_token']
-        ]); */
+    'refresh_token' => $data['refresh_token']
+    ]); */
     }
 
-
     /* Resources */
-
 
     public function get_users()
     {
@@ -1587,8 +1550,8 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken ' . $access_token,
-                'Content-Type: application/json'
+                'Authorization: Zoho-oauthtoken '.$access_token,
+                'Content-Type: application/json',
             ),
         ));
 
@@ -1600,10 +1563,10 @@ class APIController extends Controller
 
         foreach ($users as $user) {
             echo '
-            ID: ' . $user -> id . '<br>
-            Name: ' . $user -> first_name . ' ' . $user -> last_name . '<br>
-            Email: ' . $user -> email . '<br>
-            Status: ' . $user -> status . '<br><br>';
+            ID: '.$user -> id.'<br>
+            Name: '.$user -> first_name.' '.$user -> last_name.'<br>
+            Email: '.$user -> email.'<br>
+            Status: '.$user -> status.'<br><br>';
         }
     }
 
@@ -1624,9 +1587,9 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken ' . $access_token,
+                'Authorization: Zoho-oauthtoken '.$access_token,
                 'Content-Type: application/json',
-                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
+                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59',
             ),
         ));
 
@@ -1637,7 +1600,7 @@ class APIController extends Controller
         $fields = json_decode($response);
 
         foreach ($fields -> fields as $field) {
-            echo $field -> id . ' - ' . $field -> api_name . '<br>';
+            echo $field -> id.' - '.$field -> api_name.'<br>';
         }
     }
 
@@ -1658,9 +1621,9 @@ class APIController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Zoho-oauthtoken ' . $access_token,
+                'Authorization: Zoho-oauthtoken '.$access_token,
                 'Content-Type: application/json',
-                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59'
+                'Cookie: 1a99390653=cf1af5bd11d238cae52ce89fbd714eb4; JSESSIONID=5ADFA4F079C5D5E75D94211B1C417F71; _zcsr_tmp=753e1372-89eb-4d0a-9fa2-683f0df48f59; crmcsr=753e1372-89eb-4d0a-9fa2-683f0df48f59',
             ),
         ));
 
@@ -1671,7 +1634,7 @@ class APIController extends Controller
         $fields = json_decode($response);
 
         foreach ($fields -> assignment_rules as $field) {
-            echo $field -> id . ' - ' . $field -> name . '<br>';
+            echo $field -> id.' - '.$field -> name.'<br>';
         }
     }
 }

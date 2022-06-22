@@ -11,6 +11,7 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
             :breadcrumbs="$breadcrumbs" />
     </x-slot>
 
+
     <div class="pb-12 pt-2"
         x-data="checklist()">
 
@@ -25,10 +26,11 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
         </div>
 
         <x-modals.modal
-            :modalWidth="'w-full sm:w-11/12 md:w-1/3'"
+            :modalWidth="'w-full sm:w-11/12 md:w-1/2'"
             :modalTitle="'Add/Edit Item'"
             :modalId="'show_add_item_modal'"
-            x-show="show_add_item_modal">
+            x-show="show_add_item_modal"
+            :clickOutside="'show_add_item_modal = true;'">
 
             <div class="p-2 sm:p-4 lg:p-8">
 
@@ -39,14 +41,14 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                         <div class="space-y-2">
 
                             <div>
-                                <select class="form-element select md" name="company_id[]" x-ref="company_id" data-label="Company">
+                                <select class="form-element select md" name="company_id" x-ref="company_id" data-label="Company">
                                     @foreach ($settings -> where('category', 'company') as $setting)
                                         <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div>
-                                <select class="form-element select md" name="recipient_id[]" x-ref="recipient_id" data-label="Recipient">
+                                <select class="form-element select md" name="recipient_id" x-ref="recipient_id" data-label="Recipient">
                                     @foreach ($settings -> where('category', 'recipient') as $setting)
                                         <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
                                     @endforeach
@@ -55,15 +57,15 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                         </div>
 
                         <div>
-                            <select class="form-element select md" name="states" x-ref="states" multiple data-label="States">
+                            <select class="form-element select md" name="states[]" x-ref="states" multiple data-label="States">
 
                             </select>
                         </div>
 
                     </div>
 
-                    <div>
-                        <div x-ref="item" name="item"></div>
+                    <div class="mt-4">
+                        <div x-ref="data" id="data"></div>
                     </div>
 
                     <div class="flex justify-around p-4 pt-8">
