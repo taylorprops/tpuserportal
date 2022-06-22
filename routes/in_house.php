@@ -176,8 +176,9 @@ Route::middleware(['auth', 'web']) -> group(function () {
 
     /* Checklist */
     Route::get('/marketing/schedule/checklist', [ScheduleChecklistController::class, 'checklist']) -> middleware(['in_house']);
-    Route::get('/marketing/schedule/get_checklist', [ScheduleChecklistController::class, 'get_checklist']) -> middleware(['in_house']);
-    Route::post('/marketing/schedule/save_item', [ScheduleChecklistController::class, 'save_item']) -> middleware(['in_house']);
+    Route::get('/marketing/schedule/checklist/get_checklist', [ScheduleChecklistController::class, 'get_checklist']) -> middleware(['in_house']);
+    Route::post('/marketing/schedule/checklist/save_item', [ScheduleChecklistController::class, 'save_item']) -> middleware(['in_house']);
+    Route::post('/marketing/schedule/checklist/update_order', [ScheduleChecklistController::class, 'update_order']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers
     Route::get('/employees/loan_officer/import_los', [EmployeesController::class, 'import_los']) -> middleware(['in_house']);

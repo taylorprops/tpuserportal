@@ -136,18 +136,25 @@
 
 
                             @foreach ($states as $state)
-                                <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4">
+                                <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="py-8">
 
                                     <a href="javascript:void(0)" class="button primary md"
                                         @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}')">Add Item <i class="fa-light fa-plus ml-2"></i>
                                     </a>
 
-                                    <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4 space-y-2">
+                                    <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4 space-y-2 checklist-div">
                                         {{-- blade-formatter-disable --}}
-                                        @foreach ($checklist -> where('recipient_id', $recipient -> id) -> where('company_id', $company -> id) -> where('states', 'like', "%{$state}%") as $item )
-                                            <div class="border-b py-2">
-                                                {{ $item -> states }}
-                                            </div>
+                                        @foreach ($checklist -> where('recipient_id', $recipient -> id) -> where('company_id', $company -> id) as $item )
+                                            @if(stristr($item -> states, $state))
+                                                <div class="flex justify-start items-center border-b py-2 space-x-4 checklist-item" data-id="{{ $item -> id }}">
+                                                    <div>
+                                                        <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
+                                                    </div>
+                                                    <div>
+                                                        {!! $item -> data !!}
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endforeach
                                         {{-- blade-formatter-enable --}}
                                     </div>

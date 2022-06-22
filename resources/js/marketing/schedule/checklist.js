@@ -15,9 +15,10 @@ if (document.URL.match(/checklist/)) {
 
             get_checklist() {
                 let scope = this;
-                axios.get('/marketing/schedule/get_checklist')
+                axios.get('/marketing/schedule/checklist/get_checklist')
                     .then(function (response) {
                         scope.$refs.checklist_div.innerHTML = response.data;
+                        scope.sortable(scope.$refs.checklist_div);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -57,7 +58,7 @@ if (document.URL.match(/checklist/)) {
                 let formData = new FormData(form);
                 formData.append('data', tinymce.activeEditor.getContent());
 
-                axios.post('/marketing/schedule/save_item', formData)
+                axios.post('/marketing/schedule/checklist/save_item', formData)
                     .then(function (response) {
                         ele.innerHTML = button_html;
 
@@ -84,6 +85,56 @@ if (document.URL.match(/checklist/)) {
                 text_editor(options);
 
             },
+
+            sortable(container) {
+
+                let scope = this;
+
+                container.querySelectorAll('.checklist-div').forEach(function (sortable_div) {
+
+                    let sortable = Sortable.create(sortable_div, {
+                        handle: ".setting-handle",  // Drag handle selector within list items
+                        draggable: ".settings-item",  // Specifies which items inside the element should be draggable
+                        chosenClass: "sortable-chosen",  // Class name for the chosen item
+                        ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+                        dragClass: "sortable-drag",  // Class name for the dragging item
+
+                        onEnd: function (evt) {
+
+                            let ele = evt.item;
+                            let container = ele.closest('.checklist-div');
+                            scope.settings_update_order(container);
+
+                        },
+
+                    });
+
+                });
+
+            },
+
+            settings_update_order(container) {
+
+                let items = [];
+                container.querySelectorAll('.checklist-item').forEach(function (item, i) {
+                    console.log(item);
+                    let data = {
+                        id: item.getAttribute('data-id'),
+                        order: i
+                    }
+                    items.push(data);
+                });
+
+                let formData = new FormData();
+                formData.append('items', JSON.stringify(items));
+                axios.post('/marketing/schedule/checklist/update_order', formData)
+                    .then(function (response) {
+                        toastr.success('Reorder Successful');
+                    })
+                    .catch(function (error) {
+                    });
+
+            }
 
         }
 

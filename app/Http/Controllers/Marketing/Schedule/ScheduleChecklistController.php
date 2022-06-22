@@ -50,4 +50,9 @@ class ScheduleChecklistController extends Controller
 
     }
 
+    public function update_order(Request $request)
+    {
+
+    }
+
 }
