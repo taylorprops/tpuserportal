@@ -26,6 +26,13 @@ use Monolog\Logger;
 class TestsController extends Controller
 {
 
+    public function test(Request $request)
+    {
+
+        dd(time(), time() * rand());
+
+    }
+
     public function create_zimbra_account(Request $request)
     {
 

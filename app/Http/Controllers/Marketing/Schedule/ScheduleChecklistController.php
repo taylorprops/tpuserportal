@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers\Marketing\Schedule;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Marketing\Schedule\ScheduleSettings;
 use App\Models\Marketing\Schedule\ScheduleChecklist;
+use App\Models\Marketing\Schedule\ScheduleSettings;
+use Illuminate\Http\Request;
 
 class ScheduleChecklistController extends Controller
 {
-    public function checklist(Request $request) {
+    public function checklist(Request $request)
+    {
 
-        return view('/marketing/schedule/checklist');
+        $settings = ScheduleSettings::whereIn('category', ['company', 'recipient']) -> orderBy('order') -> get();
+
+        return view('/marketing/schedule/checklist', compact('settings'));
 
     }
 
-    public function get_checklist(Request $request) {
+    public function get_checklist(Request $request)
+    {
 
         $checklist = ScheduleChecklist::get();
         $settings = ScheduleSettings::whereIn('category', ['company', 'recipient']) -> orderBy('order') -> get();

@@ -2,15 +2,14 @@
 
 namespace App\Jobs\Cron\Schedule;
 
-use Illuminate\Bus\Queueable;
 use App\Mail\General\EmailGeneral;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Models\Marketing\Schedule\Schedule;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class NotifySendingJob implements ShouldQueue
@@ -39,19 +38,20 @@ class NotifySendingJob implements ShouldQueue
 
         $this -> queueProgress(0);
 
-        $events = Schedule::where('event_date', date('Y-m-d'))
-        -> whereIn('status_id', ['33', '24'])
-        -> where('medium_id', '7')
-        -> with(['company', 'recipient', 'uploads' => function($query) {
-            $query -> where('accepted_version', true);
-        }])
-        -> get();
+        $events = Schedule::where('event_date', '<=', date('Y-m-d'))
+            -> whereIn('status_id', ['33', '24'])
+            -> where('medium_id', '7')
+            -> where('notification_sent', false)
+            -> with(['company', 'recipient', 'uploads' => function ($query) {
+                $query -> where('accepted_version', true);
+            }])
+            -> get();
 
         $this -> queueData(['Found '.count($events).' events'], true);
 
-        if(count($events) > 0) {
+        if (count($events) > 0) {
 
-            foreach($events as $event) {
+            foreach ($events as $event) {
 
                 switch ($event -> company_id) {
                     case '1': // TP
@@ -65,7 +65,6 @@ class NotifySendingJob implements ShouldQueue
                         break;
                 }
 
-
                 $html = $event -> uploads -> first() -> html;
                 $details = 'Send Date: '.$event -> event_date.'<br>
                 From: '.$event -> company -> item.'<br>
@@ -74,13 +73,12 @@ class NotifySendingJob implements ShouldQueue
 
                 $body = preg_replace('/(<body\s.*>)/', '$1'.$details, $html);
 
-
                 $message = [
                     'company' => 'Taylor Properties',
                     'subject' => 'Marketing Email - '.$event -> subject_line_a,
                     'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
                     'body' => $body,
-                    'attachments' => null
+                    'attachments' => null,
                 ];
 
                 Mail::to($tos)
@@ -98,7 +96,6 @@ class NotifySendingJob implements ShouldQueue
         $this -> queueProgress(100);
 
         return true;
-
 
     }
 }

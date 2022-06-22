@@ -62,12 +62,17 @@ window.remove_file = function (id, index) {
 
 }
 
+
 window.dropdown = function (ele) {
+
     return {
         ele: ele,
         options: [],
         selected: [],
         show: false,
+        init() {
+            this.loadOptions();
+        },
         open() { this.show = true },
         close() { this.show = false },
         isOpen() { return this.show === true },
@@ -91,7 +96,9 @@ window.dropdown = function (ele) {
 
         },
         loadOptions() {
+            console.log('working');
             const options = ele.options;
+
             for (let i = 0; i < options.length; i++) {
                 this.options.push({
                     value: options[i].value,
@@ -100,12 +107,13 @@ window.dropdown = function (ele) {
                 });
             }
 
-
         },
+
         selectedValues() {
             return this.selected.map((option) => {
                 return this.options[option].value;
             })
-        }
+        },
+
     }
 }

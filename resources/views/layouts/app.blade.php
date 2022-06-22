@@ -69,7 +69,8 @@
                 show_search_results_div = false;
                 document.querySelectorAll('.main-search-input').forEach(function(input) {
                     input.value = '';
-                });"></div>
+                });">
+            </div>
         </div>
 
         @include('layouts.menu.menu')
@@ -107,12 +108,13 @@
             @endif
 
             <!-- Page Content -->
-            <main class="overflow-x-auto " :class="{
-                'ml-64': main_nav_open && (window.innerWidth >= 1280),
-                '': !(window.innerWidth >= 1280) || !main_nav_open,
-                'pt-8': (window.innerWidth <= 640),
-                'pt-12': (window.innerWidth > 640) && (window.innerWidth < 1280),
-            }">
+            <main class="overflow-x-auto "
+                :class="{
+                    'ml-64': main_nav_open && (window.innerWidth >= 1280),
+                    '': !(window.innerWidth >= 1280) || !main_nav_open,
+                    'pt-8': (window.innerWidth <= 640),
+                    'pt-12': (window.innerWidth > 640) && (window.innerWidth < 1280),
+                }">
                 {{ $slot }}
             </main>
 

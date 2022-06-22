@@ -41,16 +41,15 @@
 
 
     @foreach ($settings -> where('category', 'company') as $company)
-
         @php
-        if($company -> id == 1) {
-            $states = config('global.taylor_properties_active_states');
-        } else if($company -> id == 2) {
-            $states = config('global.heritage_financial_active_states');
-        } else if($company -> id == 3) {
-            $states = config('global.heritage_title_active_states');
-        }
-
+            if ($company -> id == 1) {
+                $states = config('global.taylor_properties_active_states');
+            } elseif ($company -> id == 2) {
+                $states = config('global.heritage_financial_active_states');
+            } elseif ($company -> id == 3) {
+                $states = config('global.heritage_title_active_states');
+            }
+            
         @endphp
 
         <div x-show="active_tab === '{{ $loop -> index }}'" x-transition"
@@ -99,7 +98,6 @@
 
 
                 @foreach ($settings -> where('category', 'recipient') as $recipient)
-
                     <div x-show="active_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-8">
 
                         <div x-data="{ active_sub_sub_tab: '0' }">
@@ -143,11 +141,11 @@
 
 
                             @foreach ($states as $state)
-
                                 <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4">
 
                                     <a href="javascript:void(0)" class="button primary md"
-                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}')">Add Item <i class="fa-light fa-plus ml-2"></i>
+                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}')">Add Item
+                                        <i class="fa-light fa-plus ml-2"></i>
                                     </a>
 
                                     <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4">
@@ -157,19 +155,16 @@
 
 
                                 </div>
-
                             @endforeach
 
                         </div>
 
                     </div>
-
                 @endforeach
 
             </div>
 
         </div>
-
     @endforeach
 
 </div>
