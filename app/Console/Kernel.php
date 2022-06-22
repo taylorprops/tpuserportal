@@ -19,81 +19,79 @@ class Kernel extends ConsoleKernel
 
         // clear failed jobs -
         $schedule -> command('queue:flush')
-        -> dailyAt('2:00')
-        -> timezone('America/New_York')
-        -> environments(['production']);
+            -> dailyAt('2:00')
+            -> timezone('America/New_York')
+            -> environments(['production']);
 
         // Backups
         $schedule -> command('backup:clean')
-        -> dailyAt('02:00')
-        -> timezone('America/New_York')
-        -> environments(['production']);
+            -> dailyAt('02:00')
+            -> timezone('America/New_York')
+            -> environments(['production']);
 
         $schedule -> command('backup:run --only-db')
-        -> timezone('America/New_York')
-        -> twiceDaily(2, 18)
-        -> environments(['production']);
+            -> timezone('America/New_York')
+            -> twiceDaily(2, 18)
+            -> environments(['production']);
 
         // prune failed jobs
         $schedule -> command('queue:prune-failed')
-        -> timezone('America/New_York')
-        -> everyTwoHours();
+            -> timezone('America/New_York')
+            -> everyTwoHours();
 
         // update bright agents and offices
         $schedule -> command('bright_mls:update_agents_and_offices')
-        -> timezone('America/New_York')
-        -> everyTwoHours()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> everyTwoHours()
+            -> environments('production');
 
         // add missing agents from bright
         $schedule -> command('bright_mls:find_missing_agents')
-        -> timezone('America/New_York')
-        -> dailyAt('03:00')
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> dailyAt('03:00')
+            -> environments('production');
 
         // add bright listings
         $schedule -> command('bright_mls:add_listings')
-        -> timezone('America/New_York')
-        -> hourly()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // update bright listings
         $schedule -> command('bright_mls:update_listings')
-        -> timezone('America/New_York')
-        -> hourly()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // cancel bright listings
         $schedule -> command('bright_mls:cancel_listings')
-        -> timezone('America/New_York')
-        -> everyThirtyMinutes()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> everyThirtyMinutes()
+            -> environments('production');
 
         // update db with missing from bright
         $schedule -> command('bright_mls:update_missing_from_bright')
-        -> timezone('America/New_York')
-        -> hourly()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // update db with missing from db
         $schedule -> command('bright_mls:update_missing_from_db')
-        -> timezone('America/New_York')
-        -> hourly()
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // Schedule - update status to complete on event date
         $schedule -> command('schedule:set_status_to_complete')
-        -> timezone('America/New_York')
-        -> dailyAt('09:00')
-        -> environments('production');
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // Schedule - Notify related parties of email being sent
         $schedule -> command('schedule:notify_sending')
-        -> timezone('America/New_York')
-        -> hourly()
-        -> environments('production');
-
-
+            -> timezone('America/New_York')
+            -> hourly()
+            -> environments('production');
 
         // %%% TEMP %%% //
 
@@ -130,7 +128,7 @@ class Kernel extends ConsoleKernel
         // add escrow checks
         // ends - when no more transactions added to skyslope
         //if(env('APP_EVN') == 'local') {
-            //$schedule -> command('archives:get_escrow_checks') -> everyMinute();
+        //$schedule -> command('archives:get_escrow_checks') -> everyMinute();
         //}
 
         // %%% END TEMP %%% //

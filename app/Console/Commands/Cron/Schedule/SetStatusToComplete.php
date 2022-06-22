@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Cron\Schedule;
 
-use Illuminate\Console\Command;
 use App\Models\Marketing\Schedule\Schedule;
+use Illuminate\Console\Command;
 
 class SetStatusToComplete extends Command
 {
@@ -28,10 +28,10 @@ class SetStatusToComplete extends Command
      */
     public function handle()
     {
-        $events = Schedule::where('event_date', date('Y-m-d'))
-        -> where('status_id', '33')
-        -> update([
-            'status_id' => '24'
-        ]);
+        $events = Schedule::where('event_date', '<=', date('Y-m-d'))
+            -> where('status_id', '33')
+            -> update([
+                'status_id' => '24',
+            ]);
     }
 }

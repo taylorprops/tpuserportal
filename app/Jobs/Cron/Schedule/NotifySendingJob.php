@@ -39,7 +39,7 @@ class NotifySendingJob implements ShouldQueue
         $this -> queueProgress(0);
 
         $events = Schedule::where('event_date', '<=', date('Y-m-d'))
-            -> whereIn('status_id', ['33', '24'])
+            -> whereIn('status_id', ['24'])
             -> where('medium_id', '7')
             -> where('notification_sent', false)
             -> with(['company', 'recipient', 'uploads' => function ($query) {
