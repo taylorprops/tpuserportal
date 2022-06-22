@@ -82,11 +82,18 @@
                         {{ $event -> medium -> item }}
                     </div>
 
-                    <div
-                        class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
-                        {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i
-                            class="fa-light fa-arrow-right mx-2"></i>
-                        {{ $event -> recipient -> item }}
+                    <div>
+
+                        <div
+                            class="bg-white px-2 py-1 rounded-lg border border-{{ $event -> company -> color }}-200 ">
+                            {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i
+                                class="fa-light fa-arrow-right mx-2"></i>
+                            {{ $event -> recipient -> item }}
+                        </div>
+                        @if ($event -> notification_sent == true)
+                            <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent <i
+                                    class="fa-light fa-check ml-2"></i></div>
+                        @endif
                     </div>
 
                 </div>
