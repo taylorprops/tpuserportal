@@ -216,24 +216,24 @@ a.default {
 }
 
 /* TinyMCE */
-.tox .tox-tbtn {
-    transform: scale(0.85) !important;
-    /* you can set the scale that you want */
-    height: unset !important;
-    width: unset !important;
-}
+// .tox .tox-tbtn {
+//     transform: scale(0.9) !important;
+//     /* you can set the scale that you want */
+//     height: unset !important;
+//     width: unset !important;
+// }
 
-.tox .tox-tbtn--bespoke .tox-tbtn__select-label {
-    width: unset !important;
-}
+// .tox .tox-tbtn--bespoke .tox-tbtn__select-label {
+//     width: unset !important;
+// }
 
-.tox .tox-toolbar,
-.tox .tox-toolbar__overflow,
-.tox .tox-toolbar__primary {
-    /* change the background y-positionning to : bottom 0*/
-    background: url("data:image/svg+xml;charset=utf8,%3Csvg height='39px' viewBox='0 0 40 39px' width='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='38px' width='100' height='1' fill='%23cccccc'/%3E%3C/svg%3E")
-        left 0 bottom 0 #fff !important;
-}
+// .tox .tox-toolbar,
+// .tox .tox-toolbar__overflow,
+// .tox .tox-toolbar__primary {
+//     /* change the background y-positionning to : bottom 0*/
+//     background: url("data:image/svg+xml;charset=utf8,%3Csvg height='39px' viewBox='0 0 40 39px' width='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='38px' width='100' height='1' fill='%23cccccc'/%3E%3C/svg%3E")
+//         left 0 bottom 0 #fff !important;
+// }
 
 .test {
     // default
