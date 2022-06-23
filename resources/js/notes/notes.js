@@ -12,9 +12,9 @@ window.notes = function (note_type) {
 
             scope.button_html = '';
             scope.get_notes();
-            // setInterval(() => {
-            //     scope.save_notes();
-            // }, 3000);
+            setInterval(() => {
+                scope.save_notes();
+            }, 3000);
         },
 
         get_notes() {
