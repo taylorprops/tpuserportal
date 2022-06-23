@@ -52,7 +52,13 @@ class ScheduleChecklistController extends Controller
 
     public function update_order(Request $request)
     {
-
+        foreach (json_decode($request -> items, true) as $key => $value) {
+            dump($key, $value);
+            ScheduleChecklist::find($value['id'])
+                -> update([
+                    'order' => $value['order'],
+                ]);
+        }
     }
 
 }

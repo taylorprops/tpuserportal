@@ -72,6 +72,7 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                         <button type="button" class="button primary md" @click="save_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
                     </div>
 
+                    <input type="hidden" name="state" x-ref="state">
                     <input type="hidden" name="id" x-ref="id">
 
                 </form>
