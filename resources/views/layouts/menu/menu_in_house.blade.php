@@ -190,7 +190,7 @@
             :icon="'fa-duotone fa-gears'" />
 
         <x-nav.menu :level="'1'"
-            :title="'Schedule Checklist'"
+            :title="'Marketing Checklist'"
             :link="'/marketing/schedule/checklist'"
             :icon="'fa-duotone fa-check'" />
 
