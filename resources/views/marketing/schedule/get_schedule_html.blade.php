@@ -90,7 +90,7 @@
                                 class="fa-light fa-arrow-right mx-2"></i>
                             {{ $event -> recipient -> item }}
                         </div>
-                        @if ($event -> notification_sent == true)
+                        @if ($event -> sending_notification_sent == true)
                             <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent <i
                                     class="fa-light fa-check ml-2"></i></div>
                         @endif

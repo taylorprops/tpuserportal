@@ -93,6 +93,12 @@ class Kernel extends ConsoleKernel
             -> hourly()
             -> environments('production');
 
+        // Schedule - Notify marketing if overdue
+        $schedule -> command('schedule:notify_overdue')
+            -> timezone('America/New_York')
+            -> everyThreeHours()
+            -> environments('production');
+
         // %%% TEMP %%% //
 
         // add bright fields

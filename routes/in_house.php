@@ -178,6 +178,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/schedule/checklist', [ScheduleChecklistController::class, 'checklist']) -> middleware(['in_house']);
     Route::get('/marketing/schedule/checklist/get_checklist', [ScheduleChecklistController::class, 'get_checklist']) -> middleware(['in_house']);
     Route::post('/marketing/schedule/checklist/save_item', [ScheduleChecklistController::class, 'save_item']) -> middleware(['in_house']);
+    Route::post('/marketing/schedule/checklist/delete_item', [ScheduleChecklistController::class, 'delete_item']) -> middleware(['in_house']);
     Route::post('/marketing/schedule/checklist/update_order', [ScheduleChecklistController::class, 'update_order']) -> middleware(['in_house']);
 
     // %%%% Import Loan Officers

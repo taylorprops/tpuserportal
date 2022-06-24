@@ -41,7 +41,7 @@ class NotifySendingJob implements ShouldQueue
         $events = Schedule::where('event_date', '<=', date('Y-m-d'))
             -> whereIn('status_id', ['24'])
             -> where('medium_id', '7')
-            -> where('notification_sent', false)
+            -> where('sending_notification_sent', false)
             -> with(['company', 'recipient', 'uploads' => function ($query) {
                 $query -> where('accepted_version', true);
             }])
@@ -84,7 +84,7 @@ class NotifySendingJob implements ShouldQueue
                 Mail::to($tos)
                     -> send(new EmailGeneral($message));
 
-                $event -> notification_sent = true;
+                $event -> sending_notification_sent = true;
                 $event -> save();
 
                 $this -> queueData([$event -> id.' - Completed'], true);

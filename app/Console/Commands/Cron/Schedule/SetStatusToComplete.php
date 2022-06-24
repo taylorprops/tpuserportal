@@ -28,10 +28,13 @@ class SetStatusToComplete extends Command
      */
     public function handle()
     {
+        // set to complete
         $events = Schedule::where('event_date', '<=', date('Y-m-d'))
             -> where('status_id', '33')
             -> update([
                 'status_id' => '24',
             ]);
+
     }
+
 }

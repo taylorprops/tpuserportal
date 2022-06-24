@@ -32,9 +32,13 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
             x-show="show_add_item_modal"
             :clickOutside="'show_add_item_modal = true;'">
 
-            <div class="p-2 sm:p-4 lg:p-8">
+            <div class="p-2 sm:p-4 lg:p-8 lg:pt-2">
 
                 <form x-ref="add_item_form">
+
+                    <div class="flex justify-end " x-show="show_delete">
+                        <button type="button" class="button danger sm" @click="delete_item()">Delete <i class="fa-light fa-times ml-2"></i></button>
+                    </div>
 
                     <div class="grid grid-cols-2 gap-4">
 
@@ -48,17 +52,17 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                                 </select>
                             </div>
                             <div>
-                                <select class="form-element select md" name="recipient_id" x-ref="recipient_id" data-label="Recipient">
-                                    @foreach ($settings -> where('category', 'recipient') as $setting)
-                                        <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
-                                    @endforeach
+                                <select class="form-element select md" name="states[]" x-ref="states_select" multiple data-label="States">
+
                                 </select>
                             </div>
                         </div>
 
                         <div>
-                            <select class="form-element select md" name="states[]" x-ref="states" multiple data-label="States">
-
+                            <select class="form-element select md h-44" name="recipient_ids[]" x-ref="recipient_ids" multiple data-label="Recipients">
+                                @foreach ($settings -> where('category', 'recipient') as $setting)
+                                    <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -72,7 +76,8 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                         <button type="button" class="button primary md" @click="save_item($el)">Save Item <i class="fa-light fa-check ml-2"></i></button>
                     </div>
 
-                    <input type="hidden" name="state" x-ref="state">
+                    <input type="hidden" x-ref="state">
+                    <input type="hidden" x-ref="recipient_id">
                     <input type="hidden" name="id" x-ref="id">
 
                 </form>

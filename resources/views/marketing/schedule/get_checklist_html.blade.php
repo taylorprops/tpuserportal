@@ -28,7 +28,7 @@
                             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '{{ $loop -> index }}',
                             'border-primary text-primary-dark': active_tab === '{{ $loop -> index }}'
                         }"
-                        @click="active_tab = '{{ $loop -> index }}'; console.log('company_button clicked')">{{ $company -> item }} </a>
+                        @click="active_tab = '{{ $loop -> index }}';">{{ $company -> item }} </a>
                 @endforeach
 
             </nav>
@@ -80,7 +80,7 @@
                                         'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop -> index }}',
                                         'border-primary text-primary-dark': active_sub_tab === '{{ $loop -> index }}'
                                     }"
-                                    @click="active_sub_tab = '{{ $loop -> index }}'; console.log('recipient_button clicked')">{{ $recipient -> item }}</a>
+                                    @click="active_sub_tab = '{{ $loop -> index }}';">{{ $recipient -> item }}</a>
                             @endforeach
 
                         </nav>
@@ -141,19 +141,32 @@
 
                                     <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-4 space-y-2 checklist-div">
                                         {{-- blade-formatter-disable --}}
-                                        @foreach ($checklist -> where('recipient_id', $recipient -> id) -> where('company_id', $company -> id) as $item )
-                                            @if(stristr($item -> states, $state))
-                                                <div class="flex justify-start items-center border-b py-2 space-x-4 checklist-item" data-id="{{ $item -> id }}">
-                                                    <div class="item-handle">
-                                                        <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
+                                        @foreach ($checklist -> where('company_id', $company -> id) as $item )
+
+                                            @if(stristr($item -> states, $state) && stristr($item -> recipient_ids, $recipient -> id ))
+
+                                                <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
+                                                    <div class="flex justify-start items-center py-2 space-x-8">
+                                                        <div class="item-handle">
+                                                            <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
+                                                        </div>
+                                                        <div>
+                                                            {!! $item -> data !!}
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        {!! $item -> data !!}
+                                                    <div class="flex items-center">
+                                                        <button class="button primary md"
+                                                        @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}')">
+                                                            Edit <i class="fa-solid fa-edit ml-2"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
+
                                             @endif
+
                                         @endforeach
                                         {{-- blade-formatter-enable --}}
+
                                     </div>
 
 

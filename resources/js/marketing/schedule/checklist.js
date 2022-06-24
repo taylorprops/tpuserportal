@@ -7,6 +7,7 @@ if (document.URL.match(/checklist/)) {
             active_tab: '0',
             show_add_item_modal: false,
             modal_title: 'Add Item',
+            show_delete: false,
 
             init() {
                 this.get_checklist();
@@ -38,17 +39,20 @@ if (document.URL.match(/checklist/)) {
                     });
             },
 
-            add_item(company_id, recipient_id, selected_state, states) {
+            add_item(company_id, recipient_id, selected_state, available_states) {
 
                 let scope = this;
-                let state_select = scope.$refs.states;
+                scope.show_delete = false;
                 scope.show_add_item_modal = true;
+                scope.clear_form();
+                let states_select = scope.$refs.states_select;
                 scope.$refs.company_id.value = company_id;
                 scope.$refs.recipient_id.value = recipient_id;
+                scope.$refs.recipient_ids.value = recipient_id;
                 scope.$refs.state.value = selected_state;
-                states = states.split(',');
-                state_select.innerHTML = '';
-                states.forEach(function (state) {
+                available_states = available_states.split(',');
+                states_select.innerHTML = '';
+                available_states.forEach(function (state) {
 
                     let option = document.createElement('option');
                     option.value = state;
@@ -56,9 +60,58 @@ if (document.URL.match(/checklist/)) {
                     if (state == selected_state) {
                         option.selected = true;
                     }
-                    state_select.append(option);
+                    states_select.append(option);
 
                 });
+
+            },
+
+            edit_item(id, company_id, recipient_id, recipient_ids, state, states, data, available_states) {
+
+                let scope = this;
+                scope.show_add_item_modal = true;
+                scope.clear_form();
+                scope.show_delete = true;
+
+                scope.$refs.id.value = id;
+                scope.$refs.company_id.value = company_id;
+                scope.$refs.recipient_id.value = recipient_id;
+                scope.$refs.state.value = state;
+
+                let recipient_ids_select = scope.$refs.recipient_ids;
+                recipient_ids = recipient_ids.split(',');
+                for (let i = 0; i < recipient_ids_select.options.length; i++) {
+                    recipient_ids_select.options[i].selected = recipient_ids.indexOf(recipient_ids_select.options[i].value) >= 0;
+                }
+
+                let states_select = scope.$refs.states_select;
+                states = states.split(',');
+                available_states = available_states.split(',');
+
+                states_select.innerHTML = '';
+                available_states.forEach(function (state) {
+
+                    let option = document.createElement('option');
+                    option.value = state;
+                    option.text = state;
+                    if (states.includes(state)) {
+                        option.selected = true;
+                    }
+                    states_select.append(option);
+
+                });
+
+                tinymce.activeEditor.setContent(data);
+
+                let tiny_interval = window.setInterval(function () {
+                    if (tinymce.activeEditor.getContent() == '') {
+                        tinymce.activeEditor.setContent(data);
+                    } else {
+                        clearInterval(tiny_interval);
+                    }
+                }, 500);
+
+
 
             },
 
@@ -89,6 +142,28 @@ if (document.URL.match(/checklist/)) {
                     })
                     .catch(function (error) {
                         display_errors(error, ele, button_html);
+                    });
+
+            },
+
+            delete_item() {
+
+                let scope = this;
+                let id = scope.$refs.id.value;
+                let company_id = scope.$refs.company_id.value;
+                let recipient_id = scope.$refs.recipient_id.value;
+                let state = scope.$refs.state.value;
+
+                let formData = new FormData();
+                formData.append('id', id);
+
+                axios.post('/marketing/schedule/checklist/delete_item', formData)
+                    .then(function (response) {
+                        scope.show_add_item_modal = false;
+                        toastr.success('Item Successfully Deleted');
+                        scope.get_checklist(company_id, recipient_id, state);
+                    })
+                    .catch(function (error) {
                     });
 
             },
@@ -157,6 +232,10 @@ if (document.URL.match(/checklist/)) {
                     .catch(function (error) {
                     });
 
+            },
+
+            clear_form() {
+                tinymce.activeEditor.setContent('');
             }
 
         }
