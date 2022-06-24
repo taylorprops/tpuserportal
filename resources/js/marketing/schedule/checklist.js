@@ -127,7 +127,9 @@ if (document.URL.match(/checklist/)) {
 
                 let form = scope.$refs.add_item_form;
                 let formData = new FormData(form);
-                formData.append('data', tinymce.activeEditor.getContent());
+                let data = tinymce.activeEditor.getContent();
+                data = data.replace(/<ul>/, '<ul class="list-disc list-inside">');
+                formData.append('data', data);
 
                 axios.post('/marketing/schedule/checklist/save_item', formData)
                     .then(function (response) {
@@ -175,8 +177,8 @@ if (document.URL.match(/checklist/)) {
                     height: 400,
                     menubar: '',
                     statusbar: false,
-                    plugins: 'image table code hr autoresize paste',
-                    toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | align outdent indent |  numlist bullist checklist | image | formatselect fontselect fontsizeselect | paste | code |',
+                    plugins: 'image table code hr autoresize paste lists',
+                    toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | bullist numlist | align outdent indent | image | formatselect fontselect fontsizeselect | paste | code |',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                     relative_urls: false,
                     document_base_url: location.hostname,
