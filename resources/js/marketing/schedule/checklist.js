@@ -237,6 +237,9 @@ if (document.URL.match(/checklist/)) {
             },
 
             clear_form() {
+                this.$refs.id.value = '';
+                this.$refs.recipient_id.value = '';
+                this.$refs.state.value = '';
                 tinymce.activeEditor.setContent('');
             }
 
