@@ -167,7 +167,7 @@
         <x-nav.menu :level="'1'" :title="'Upload List'" :link="'/marketing/data/upload_list'" :icon="'fa-duotone fa-upload'" />
     @endif
 
-    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
+    @if (auth() -> user() -> level == 'super_admin')
         <x-nav.menu :level="'1'" :title="'Schedule Settings'" :link="'/marketing/schedule_settings'" :icon="'fa-duotone fa-gears'" />
     @endif
 
