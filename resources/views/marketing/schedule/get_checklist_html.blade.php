@@ -22,8 +22,7 @@
             <nav class="-mb-px flex items-center space-x-12" aria-label="Tabs">
 
                 @foreach ($settings -> where('category', 'company') as $company)
-                    <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                        data-id="company_button_{{ $company -> id }}"
+                    <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-id="company_button_{{ $company -> id }}"
                         :class="{
                             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '{{ $loop -> index }}',
                             'border-primary text-primary-dark': active_tab === '{{ $loop -> index }}'
@@ -74,8 +73,7 @@
                         <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
                             @foreach ($settings -> where('category', 'recipient') as $recipient)
-                                <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                                    data-id="recipient_button_{{ $recipient -> id }}"
+                                <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-id="recipient_button_{{ $recipient -> id }}"
                                     :class="{
                                         'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop -> index }}',
                                         'border-primary text-primary-dark': active_sub_tab === '{{ $loop -> index }}'
@@ -115,8 +113,7 @@
                                     <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
                                         @foreach ($states as $state)
-                                            <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                                                data-id="state_{{ $state }}"
+                                            <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-id="state_{{ $state }}"
                                                 :class="{
                                                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_sub_tab !== '{{ $loop -> index }}',
                                                     'border-primary text-primary-dark': active_sub_sub_tab === '{{ $loop -> index }}'
@@ -143,7 +140,12 @@
                                         {{-- blade-formatter-disable --}}
                                         @foreach ($checklist -> where('company_id', $company -> id) as $item )
 
-                                            @if(stristr($item -> states, $state) && stristr($item -> recipient_ids, $recipient -> id ))
+                                            @php
+                                                $states_array = explode(',', $item -> states);
+                                                $recipients_array = explode(',', $item -> recipient_ids);
+                                            @endphp
+
+                                            @if(in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
 
                                                 <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
                                                     <div class="flex justify-start items-center py-2 space-x-8">
@@ -168,8 +170,6 @@
                                         {{-- blade-formatter-enable --}}
 
                                     </div>
-
-
 
                                 </div>
                             @endforeach
