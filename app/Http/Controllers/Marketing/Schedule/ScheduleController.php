@@ -3,21 +3,20 @@
 namespace App\Http\Controllers\Marketing\Schedule;
 
 use App\Helpers\Helper;
-use Illuminate\Http\Request;
-use App\Mail\General\EmailGeneral;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\General\EmailGeneral;
 use App\Models\BrightMLS\BrightOffices;
-use Illuminate\Support\Facades\Storage;
+use App\Models\DocManagement\Resources\LocationData;
 use App\Models\Marketing\InHouseAddresses;
 use App\Models\Marketing\Schedule\Schedule;
-use App\Models\Marketing\TestCenterAddresses;
 use App\Models\Marketing\Schedule\ScheduleNotes;
-use App\Models\Marketing\Schedule\ScheduleUploads;
 use App\Models\Marketing\Schedule\ScheduleSettings;
+use App\Models\Marketing\Schedule\ScheduleUploads;
+use App\Models\Marketing\TestCenterAddresses;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use App\Models\DocManagement\Resources\LocationData;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ScheduleController extends Controller
 {
@@ -27,8 +26,6 @@ class ScheduleController extends Controller
     private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
     private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
     private $agent_columns_psi = ['email', 'first_name', 'last_name'];
-
-
 
     public function schedule(Request $request)
     {
@@ -47,7 +44,7 @@ class ScheduleController extends Controller
         $medium_id = $request -> medium_id;
         $status_id = $request -> status_id;
 
-        $events = Schedule::where('active', TRUE)
+        $events = Schedule::where('active', true)
             -> where(function ($query) use ($company_id, $recipient_id, $medium_id, $status_id) {
                 if ($company_id) {
                     $query -> where('company_id', $company_id);
@@ -63,7 +60,7 @@ class ScheduleController extends Controller
                 }
             })
             -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
-                $query -> where('active', TRUE);
+                $query -> where('active', true);
             }])
             -> orderBy('event_date', 'desc')
             -> get();
@@ -78,7 +75,8 @@ class ScheduleController extends Controller
         return response() -> json(['status' => 'no event']);
     }
 
-    public function schedule_review(Request $request) {
+    public function schedule_review(Request $request)
+    {
 
         $settings = ScheduleSettings::orderBy('order') -> get();
         $states = LocationData::activeStates();
@@ -86,12 +84,13 @@ class ScheduleController extends Controller
         return view('marketing/schedule/schedule_review', compact('settings', 'states'));
     }
 
-    public function get_schedule_review(Request $request) {
+    public function get_schedule_review(Request $request)
+    {
 
         $company_id = $request -> company_id;
         $recipient_id = $request -> recipient_id;
 
-        $events = Schedule::where('active', TRUE)
+        $events = Schedule::where('active', true)
         // -> where(function($query) {
         //         $query -> whereIn('status_id', [38])
         //         -> orWhere(function($query) {
@@ -104,21 +103,21 @@ class ScheduleController extends Controller
         //             $query -> where('read', false) -> where('user_id', auth() -> user() -> id);
         //         });
         // })
-        -> where(function ($query) use ($company_id, $recipient_id) {
-            if ($company_id) {
-                $query -> where('company_id', $company_id);
-            }
-            if ($recipient_id) {
-                $query -> where('recipient_id', $recipient_id);
-            }
-        })
-        -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
-            $query -> where('active', TRUE);
-        }])
-        -> orderBy('event_date', 'asc')
-        -> get();
+            -> where(function ($query) use ($company_id, $recipient_id) {
+                if ($company_id) {
+                    $query -> where('company_id', $company_id);
+                }
+                if ($recipient_id) {
+                    $query -> where('recipient_id', $recipient_id);
+                }
+            })
+            -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
+                $query -> where('active', true);
+            }])
+            -> orderBy('event_date', 'asc')
+            -> get();
 
-        $settings = ScheduleSettings::whereIn('id', [26,37,38]) -> orderBy('order') -> get();
+        $settings = ScheduleSettings::whereIn('id', [26, 37, 38]) -> orderBy('order') -> get();
 
         if ($events) {
 
@@ -148,7 +147,6 @@ class ScheduleController extends Controller
             ]
         );
 
-
         $id = $request -> id;
         $event_date = $request -> event_date;
         $status_id = $request -> status_id;
@@ -172,7 +170,7 @@ class ScheduleController extends Controller
 
         if ($id) {
             $event = Schedule::find($id);
-            if($event -> status_id != $request -> status_id) {
+            if ($event -> status_id != $request -> status_id) {
                 $event -> status_changed_at = date('Y-m-d H:i:s');
             }
         } else {
@@ -237,7 +235,7 @@ class ScheduleController extends Controller
         if ($request -> event_id) {
             Schedule::find($request -> event_id) -> update([
                 'status_id' => $request -> status_id,
-                'status_changed_at' => date('Y-m-d H:i:s')
+                'status_changed_at' => date('Y-m-d H:i:s'),
             ]);
 
             return response() -> json(['status' => 'success']);
@@ -273,7 +271,7 @@ class ScheduleController extends Controller
         $upload_html = $request -> upload_version_html;
 
         ScheduleUploads::where('event_id', $event_id) -> update([
-            'accepted_version' => false
+            'accepted_version' => false,
         ]);
 
         if ($upload_file) {
@@ -319,7 +317,7 @@ class ScheduleController extends Controller
 
         $delete = ScheduleUploads::find($version_id) -> update([
             'active' => false,
-            'accepted_version' => false
+            'accepted_version' => false,
         ]);
 
         return response() -> json(['status' => 'success']);
@@ -331,7 +329,7 @@ class ScheduleController extends Controller
         $version_id = $request -> version_id;
 
         $reactivate_version = ScheduleUploads::find($version_id) -> update([
-            'active' => true
+            'active' => true,
         ]);
 
         return response() -> json(['status' => 'success']);
@@ -344,11 +342,11 @@ class ScheduleController extends Controller
         $event_id = $request -> event_id;
 
         $update = ScheduleUploads::where('event_id', $event_id) -> update([
-            'accepted_version' => false
+            'accepted_version' => false,
         ]);
 
         $mark_accepted = ScheduleUploads::find($version_id) -> update([
-            'accepted_version' => true
+            'accepted_version' => true,
         ]);
 
         return response() -> json(['status' => 'success']);
@@ -362,7 +360,7 @@ class ScheduleController extends Controller
         $event = Schedule::with(['recipient', 'company', 'uploads' => function ($query) {
             $query -> where('accepted_version', true);
         }])
-        -> find($event_id);
+            -> find($event_id);
 
         $tos = explode(',', $request -> email_to);
         $subject = 'Email to review | '.$request -> email_subject;
@@ -392,16 +390,14 @@ class ScheduleController extends Controller
             $body = 'See Attached';
         }
 
-
         $message = [
             'company' => 'Taylor Properties',
             'subject' => $subject,
             'from' => ['email' => 'internal@taylorprops.com', 'name' => 'Taylor Properties'],
             'body' => $body,
             'attachments' => $attachment,
-            'bcc' => config('global.contact_email_title_bcc_addresses')
+            'bcc' => config('global.contact_email_title_bcc_addresses'),
         ];
-
 
         Mail::to($tos)
             -> send(new EmailGeneral($message));
@@ -419,21 +415,21 @@ class ScheduleController extends Controller
             $employees = [
                 ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', ''],
                 ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '']
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', ''],
             ];
         } else if ($sender == 'sendinblue') {
             $this -> agent_columns = $this -> agent_columns_send_in_blue;
             $employees = [
                 ['delia@taylorprops.com', 'Delia', 'Abrams', '', ''],
                 ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '']
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', ''],
             ];
         } else if ($sender == 'omnisend') {
             $this -> agent_columns = $this -> agent_columns_omni_send;
             $employees = [
                 ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', '', ''],
                 ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', '']
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', ''],
             ];
         }
 
@@ -454,7 +450,7 @@ class ScheduleController extends Controller
             $employees = [
                 ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
                 ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
-                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', '']
+                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
             ];
 
             foreach ($employees as $employee) {
@@ -472,7 +468,7 @@ class ScheduleController extends Controller
             $employees = [
                 ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
                 ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
-                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', '']
+                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
             ];
 
             foreach ($employees as $employee) {
@@ -494,7 +490,6 @@ class ScheduleController extends Controller
                         -> select($this -> agent_columns);
                 }])
                 -> get();
-
 
             fputcsv($handle, $this -> agent_columns, ',');
             foreach ($offices as $office) {
@@ -520,7 +515,7 @@ class ScheduleController extends Controller
         $recipient_id = $request -> recipient_id;
         $medium_id = $request -> medium_id;
 
-        $events = Schedule::select(['id', 'company_id', 'recipient_id', 'event_date as start']) -> where('active', TRUE)
+        $events = Schedule::select(['id', 'company_id', 'recipient_id', 'event_date as start']) -> where('active', true)
             -> where(function ($query) use ($company_id, $recipient_id, $medium_id) {
                 if ($company_id) {
                     $query -> where('company_id', $company_id);
@@ -545,7 +540,7 @@ class ScheduleController extends Controller
                 'flex',
                 'items-center',
                 'overflow-hidden',
-                'pt-1'
+                'pt-1',
             ];
             $event -> textColor = 'inherit';
             // $event -> backgroundColor = 'inherit';
@@ -560,7 +555,7 @@ class ScheduleController extends Controller
     {
 
         $delete = Schedule::find($request -> id) -> update([
-            'active' => 0
+            'active' => 0,
         ]);
 
         return response() -> json(['status' => 'success']);
@@ -634,33 +629,33 @@ class ScheduleController extends Controller
     public function mark_note_read(Request $request)
     {
         ScheduleNotes::find($request -> note_id) -> update([
-            'read' => true
+            'read' => true,
         ]);
     }
 
     public function get_notification_count(Request $request)
     {
 
-        if(auth() -> user() -> level != 'owner') {
+        if (auth() -> user() -> level != 'owner') {
             $status_count = 0;
             if (auth() -> user() -> level == 'marketing') {
                 $status_count = Schedule::whereIn('status_id', ['37', '26']) -> where('active', true) -> count();
             } else if (auth() -> user() -> level == 'super_admin') {
                 $status_count = Schedule::whereIn('status_id', ['25']) -> where('active', true) -> count();
             }
-            $notes_count = ScheduleNotes::where('user_id', '!=', auth() -> user() -> id) -> where('read', FALSE) -> count();
+            $notes_count = ScheduleNotes::where('user_id', '!=', auth() -> user() -> id) -> where('read', false) -> count();
             $count = $status_count + $notes_count;
             return response() -> json(['count' => $count]);
         }
         return 0;
     }
 
-    public function marketing_notes(Request $request) {
+    public function marketing_notes(Request $request)
+    {
 
         return view('marketing/schedule/marketing_notes');
 
     }
-
 
     public function schedule_settings(Request $request)
     {
@@ -727,13 +722,12 @@ class ScheduleController extends Controller
 
     public function settings_save_edit_item(Request $request)
     {
-
         $id = $request -> id;
         $value = $request -> value;
         $field = $request -> field;
 
         ScheduleSettings::find($id) -> update([
-            $field => $value
+            $field => $value,
         ]);
 
         return response() -> json(['status' => 'success']);
@@ -752,7 +746,6 @@ class ScheduleController extends Controller
         return response() -> json(['status' => 'success']);
     }
 
-
     public function settings_reassign_items(Request $request)
     {
 
@@ -761,7 +754,7 @@ class ScheduleController extends Controller
         $category = $request -> category;
 
         $reassign = Schedule::where($category.'_id', $deleted_setting_id) -> update([
-            $category.'_id' => $new_setting_id
+            $category.'_id' => $new_setting_id,
         ]);
 
         ScheduleSettings::find($deleted_setting_id) -> delete();

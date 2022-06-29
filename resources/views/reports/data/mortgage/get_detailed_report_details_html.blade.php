@@ -1,5 +1,4 @@
-
-
+{{-- blade-formatter-disable --}}
 @php
 
 $count_total_loans = count($loans);
@@ -35,52 +34,46 @@ $count_refi_loans = 0;
 $amount_refi_loans = 0;
 $percent_refi_loans = 0;
 
-foreach($loans as $loan) {
-
+foreach ($loans as $loan) {
     $loan_type = $loan -> loan_type;
     $loan_amount = $loan -> loan_amount;
 
     $amount_total_loans += $loan_amount;
     $company_net += $loan -> company_commission;
 
-    if($loan_type == 'FHA') {
+    if ($loan_type == 'FHA') {
         $count_fha_loans += 1;
         $amount_fha_loans += $loan_amount;
-    }
-    else if($loan_type == 'VA') {
+    } elseif ($loan_type == 'VA') {
         $count_va_loans += 1;
         $amount_va_loans += $loan_amount;
-    }
-    else if($loan_type == 'USDA') {
+    } elseif ($loan_type == 'USDA') {
         $count_usda_loans += 1;
         $amount_usda_loans += $loan_amount;
-    }
-    else if($loan_type == 'Conventional') {
+    } elseif ($loan_type == 'Conventional') {
         $count_conventional_loans += 1;
         $amount_conventional_loans += $loan_amount;
     }
 
-    if($loan_type == 'FHA' || $loan_type == 'VA' || $loan_type == 'USDA') {
+    if ($loan_type == 'FHA' || $loan_type == 'VA' || $loan_type == 'USDA') {
         $count_total_gov_loans += 1;
         $amount_total_gov_loans += $loan_amount;
     }
 
-
-    if($loan -> reverse == 'yes') {
+    if ($loan -> reverse == 'yes') {
         $count_reverse_loans += 1;
         $amount_reverse_loans += $loan_amount;
     }
 
-    if($loan -> loan_purpose == 'purchase') {
+    if ($loan -> loan_purpose == 'purchase') {
         $count_purchase_loans += 1;
         $amount_purchase_loans += $loan_amount;
     }
 
-    if($loan -> loan_purpose == 'refi') {
+    if ($loan -> loan_purpose == 'refi') {
         $count_refi_loans += 1;
         $amount_refi_loans += $loan_amount;
     }
-
 }
 
 $percent_fha_loans = round($count_fha_loans / $count_total_loans, 2);
@@ -92,8 +85,8 @@ $percent_purchase_loans = round($count_purchase_loans / $count_total_loans, 2);
 $percent_refi_loans = round($count_refi_loans / $count_total_loans, 2);
 $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2);
 
-
 @endphp
+{{-- blade-formatter-enable --}}
 
 <div class="flex justify-around flex-wrap w-full space-x-3">
 
@@ -144,7 +137,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_fha_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_fha_loans }}%
                                 </td>
                             </tr>
@@ -158,7 +151,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_va_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_va_loans }}%
                                 </td>
                             </tr>
@@ -172,7 +165,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_usda_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_usda_loans }}%
                                 </td>
                             </tr>
@@ -186,7 +179,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_total_gov_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_total_gov_loans }}%
                                 </td>
                             </tr>
@@ -200,7 +193,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_conventional_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_conventional_loans }}%
                                 </td>
                             </tr>
@@ -214,7 +207,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_reverse_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_reverse_loans }}%
                                 </td>
                             </tr>
@@ -228,7 +221,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_purchase_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_purchase_loans }}%
                                 </td>
                             </tr>
@@ -242,7 +235,7 @@ $percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2)
                                 <td>
                                     ${{ number_format($amount_refi_loans, 2) }}
                                 </td>
-                                <td >
+                                <td>
                                     {{ $percent_refi_loans }}%
                                 </td>
                             </tr>

@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 
 $classes = 'text-'.$color.'-600 ';
@@ -17,6 +18,7 @@ if($size == 'sm') {
 }
 
 @endphp
+{{-- blade-formatter-enable --}}
 
 <label class="inline-flex items-center cursor-pointer">
     <input type="radio" class="form-radio cursor-pointer {{ $classes }} " {!! $attributes -> merge(['class' => $classes]) !!}><span class="ml-2 text-gray-500 {{ $text_size }}">{{ $label }}</span>

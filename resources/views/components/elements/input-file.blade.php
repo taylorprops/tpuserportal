@@ -1,18 +1,19 @@
-
+{{-- blade-formatter-disable --}}
 @php
 
-if($size == 'sm') {
+if ($size == 'sm') {
     $classes = 'px-3 py-1 text-xs';
-} else if($size == 'md') {
+} elseif ($size == 'md') {
     $classes = 'px-3 pt-2 pb-1 text-sm';
-} else if($size == 'lg') {
+} elseif ($size == 'lg') {
     $classes = 'px-3 py-3 text-base';
-} else if($size == 'xl') {
+} elseif ($size == 'xl') {
     $classes = 'px-3 py-3 text-lg';
 }
 
 $required = $attributes['class'] == 'required' ? true : false;
 @endphp
+{{-- blade-formatter-enable --}}
 
 <div class="flex items-start">
 
@@ -20,7 +21,9 @@ $required = $attributes['class'] == 'required' ? true : false;
 
         <div class="file-input-div flex justify-start rounded-sm border border-gray-300 cursor-pointer {{ $required ? 'required' : '' }}">
 
-            <span class="{{ $classes }} mr-2 bg-{{ $buttonClass }} hover:bg-{{ $buttonClass }}-dark active:bg-{{ $buttonClass }}-dark focus:border-{{ $buttonClass }}-dark ring-{{ $buttonClass }}-dark inline-flex items-center border border-transparent rounded-sm-l font-semibold text-white focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150"><i class="fal fa-upload mr-2"></i> Select A File</span>
+            <span
+                class="{{ $classes }} mr-2 bg-{{ $buttonClass }} hover:bg-{{ $buttonClass }}-dark active:bg-{{ $buttonClass }}-dark focus:border-{{ $buttonClass }}-dark ring-{{ $buttonClass }}-dark inline-flex items-center border border-transparent rounded-sm-l font-semibold text-white focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150"><i
+                    class="fal fa-upload mr-2"></i> Select A File</span>
 
             <div class="file-names my-auto truncate"></div>
 

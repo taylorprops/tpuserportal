@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = $employee ? $employee -> fullname : 'Add In House Employee';
 $breadcrumbs = [['In House Employees', '/employees/in_house'], [$title]];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title')
         {{ $title }}

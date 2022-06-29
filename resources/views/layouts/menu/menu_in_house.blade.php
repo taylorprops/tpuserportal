@@ -1,10 +1,7 @@
 <ul class="">
 
     {{-- Dashboard --}}
-    <x-nav.menu :level="'1'"
-        :title="'Dashboard'"
-        :link="'/dashboard'"
-        :icon="'fad fa-tachometer-alt'" />
+    <x-nav.menu :level="'1'" :title="'Dashboard'" :link="'/dashboard'" :icon="'fad fa-tachometer-alt'" />
 
 
     @if (auth() -> user() -> level == 'super_admin')
@@ -14,6 +11,7 @@
         </li>
 
         {{-- Transactions --}}
+        {{-- blade-formatter-disable --}}
         @php
             $level2 = [
                 [
@@ -37,13 +35,11 @@
                     'icon' => 'fad fa-plus mr-2',
                 ],
             ];
-            
-        @endphp
 
-        <x-nav.menu :level="'2'"
-            :title="'Transactions'"
-            :icon="'fad fa-sign'"
-            :level2="$level2" />
+        @endphp
+        {{-- blade-formatter-enable --}}
+
+        <x-nav.menu :level="'2'" :title="'Transactions'" :icon="'fad fa-sign'" :level2="$level2" />
 
         {{-- End Transactions --}}
 
@@ -51,6 +47,7 @@
 
         {{-- Admin --}}
 
+        {{-- blade-formatter-disable --}}
         @php
             $level3 = [
                 [
@@ -80,13 +77,11 @@
                     ],
                 ],
             ];
-            
-        @endphp
 
-        <x-nav.menu :level="'3'"
-            :title="'Admin'"
-            :icon="'far fa-user-lock'"
-            :level3="$level3" />
+        @endphp
+{{-- blade-formatter-enable --}}
+
+        <x-nav.menu :level="'3'" :title="'Admin'" :icon="'far fa-user-lock'" :level3="$level3" />
 
         {{-- End Admin --}}
 
@@ -99,34 +94,19 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Heritage Financial</div>
     </li>
 
-    <x-nav.menu :level="'1'"
-        :title="'Loans'"
-        :link="'/heritage_financial/loans'"
-        :icon="'fad fa-copy'" />
+    <x-nav.menu :level="'1'" :title="'Loans'" :link="'/heritage_financial/loans'" :icon="'fad fa-copy'" />
 
     {{-- Loan Software --}}
-    <x-nav.menu :level="'1'"
-        :title="'Lending Pad/Floify'"
-        :link="'/heritage_financial/loan_software'"
-        :icon="'fad fa-desktop'" />
+    <x-nav.menu :level="'1'" :title="'Lending Pad/Floify'" :link="'/heritage_financial/loan_software'" :icon="'fad fa-desktop'" />
 
     {{-- Lenders --}}
-    <x-nav.menu :level="'1'"
-        :title="'Lenders'"
-        :link="'/heritage_financial/lenders'"
-        :icon="'fad fa-sack-dollar'" />
+    <x-nav.menu :level="'1'" :title="'Lenders'" :link="'/heritage_financial/lenders'" :icon="'fad fa-sack-dollar'" />
 
-    <x-nav.menu :level="'1'"
-        :title="'Agent Database'"
-        :link="'/heritage_financial/agent_database'"
-        :icon="'fad fa-database'" />
+    <x-nav.menu :level="'1'" :title="'Agent Database'" :link="'/heritage_financial/agent_database'" :icon="'fad fa-database'" />
 
     @if (in_array(auth() -> user() -> level, ['manager', 'super_admin']))
         {{-- Manager Bonus --}}
-        <x-nav.menu :level="'1'"
-            :title="'Manager Bonuses'"
-            :link="'/heritage_financial/manager_bonuses'"
-            :icon="'fad fa-money-bill-wave'" />
+        <x-nav.menu :level="'1'" :title="'Manager Bonuses'" :link="'/heritage_financial/manager_bonuses'" :icon="'fad fa-money-bill-wave'" />
     @endif
 
     {{-- End Heritage Financial --}}
@@ -136,6 +116,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Employees/Users</div>
     </li>
 
+    {{-- blade-formatter-disable --}}
     @php
         $level2 = [
             [
@@ -154,20 +135,15 @@
                 'icon' => 'fad fa-user-chart mr-2',
             ],
         ];
-        
+
     @endphp
+{{-- blade-formatter-enable --}}
 
     @if (auth() -> user() -> level == 'super_admin')
-        <x-nav.menu :level="'2'"
-            :title="'Employees'"
-            :icon="'fad fa-users'"
-            :level2="$level2" />
+        <x-nav.menu :level="'2'" :title="'Employees'" :icon="'fad fa-users'" :level2="$level2" />
     @endif
 
-    <x-nav.menu :level="'1'"
-        :title="'Website Users'"
-        :link="'/users'"
-        :icon="'fad fa-users-cog'" />
+    <x-nav.menu :level="'1'" :title="'Website Users'" :link="'/users'" :icon="'fad fa-users-cog'" />
 
 
     {{-- End Employees --}}
@@ -178,37 +154,19 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Marketing</div>
     </li>
 
-    <x-nav.menu :level="'1'"
-        :title="'Schedule'"
-        :link="'/marketing/schedule'"
-        :icon="'fa-duotone fa-calendar'" />
+    <x-nav.menu :level="'1'" :title="'Schedule'" :link="'/marketing/schedule'" :icon="'fa-duotone fa-calendar'" />
 
     @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
-        <x-nav.menu :level="'1'"
-            :title="'Schedule Settings'"
-            :link="'/marketing/schedule_settings'"
-            :icon="'fa-duotone fa-gears'" />
+        <x-nav.menu :level="'1'" :title="'Schedule Settings'" :link="'/marketing/schedule_settings'" :icon="'fa-duotone fa-gears'" />
 
-        <x-nav.menu :level="'1'"
-            :title="'Marketing Checklist'"
-            :link="'/marketing/schedule/checklist'"
-            :icon="'fa-duotone fa-check'" />
+        <x-nav.menu :level="'1'" :title="'Marketing Checklist'" :link="'/marketing/schedule/checklist'" :icon="'fa-duotone fa-check'" />
 
-        <x-nav.menu :level="'1'"
-            :title="'Marketing Notes'"
-            :link="'/marketing/marketing_notes'"
-            :icon="'fa-duotone fa-notes'" />
+        <x-nav.menu :level="'1'" :title="'Marketing Notes'" :link="'/marketing/marketing_notes'" :icon="'fa-duotone fa-notes'" />
 
 
-        <x-nav.menu :level="'1'"
-            :title="'Address Database'"
-            :link="'/marketing/data/address_database'"
-            :icon="'fad fa-database'" />
+        <x-nav.menu :level="'1'" :title="'Address Database'" :link="'/marketing/data/address_database'" :icon="'fad fa-database'" />
 
-        <x-nav.menu :level="'1'"
-            :title="'Upload List'"
-            :link="'/marketing/data/upload_list'"
-            :icon="'fa-duotone fa-upload'" />
+        <x-nav.menu :level="'1'" :title="'Upload List'" :link="'/marketing/data/upload_list'" :icon="'fa-duotone fa-upload'" />
     @endif
 
     {{-- End Marketing --}}
@@ -218,10 +176,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Reports</div>
     </li>
 
-    <x-nav.menu :level="'1'"
-        :title="'Reports'"
-        :link="'/reports'"
-        :icon="'fad fa-chart-bar'" />
+    <x-nav.menu :level="'1'" :title="'Reports'" :link="'/reports'" :icon="'fad fa-chart-bar'" />
     {{-- End Reports --}}
 
     {{-- Notes --}}
@@ -229,10 +184,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Notes</div>
     </li>
 
-    <x-nav.menu :level="'1'"
-        :title="'Notes'"
-        :link="'/notes'"
-        :icon="'fad fa-chart-bar'" />
+    <x-nav.menu :level="'1'" :title="'Notes'" :link="'/notes'" :icon="'fad fa-chart-bar'" />
     {{-- End Notes --}}
 
     {{-- Archives --}}
@@ -240,15 +192,9 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Archives</div>
     </li>
 
-    <x-nav.menu :level="'1'"
-        :title="'Transactions'"
-        :link="'/transactions_archived'"
-        :icon="'fad fa-file-archive'" />
+    <x-nav.menu :level="'1'" :title="'Transactions'" :link="'/transactions_archived'" :icon="'fad fa-file-archive'" />
 
-    <x-nav.menu :level="'1'"
-        :title="'Escrow'"
-        :link="'/transactions_archived/escrow'"
-        :icon="'fad fa-money-check'" />
+    <x-nav.menu :level="'1'" :title="'Escrow'" :link="'/transactions_archived/escrow'" :icon="'fad fa-money-check'" />
 
     {{-- End Archives --}}
 
@@ -256,10 +202,7 @@
         <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">My Account</div>
     </li>
     {{-- Profile --}}
-    <x-nav.menu :level="'1'"
-        :title="'Profile'"
-        :link="'/employees/profile/'"
-        :icon="'fad fa-user'" />
+    <x-nav.menu :level="'1'" :title="'Profile'" :link="'/employees/profile/'" :icon="'fad fa-user'" />
 
 
     @if (auth() -> user() -> level == 'super_admin')
@@ -268,6 +211,7 @@
             <div class="text-gray-700 font-semibold pl-2 pt-1 pb-2 text-sm border-t mt-3">Super Admin</div>
         </li>
 
+        {{-- blade-formatter-disable --}}
         @php
             $level2 = [
                 [
@@ -296,13 +240,11 @@
                     'icon' => 'fad fa-cogs mr-2',
                 ],
             ];
-            
-        @endphp
 
-        <x-nav.menu :level="'2'"
-            :title="'Super Admin'"
-            :icon="'fad fa-globe'"
-            :level2="$level2" />
+        @endphp
+{{-- blade-formatter-enable --}}
+
+        <x-nav.menu :level="'2'" :title="'Super Admin'" :icon="'fad fa-globe'" :level2="$level2" />
 
         {{-- End Super Admin --}}
     @endif

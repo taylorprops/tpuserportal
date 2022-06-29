@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = $employee ? $employee -> fullname : 'Add Heritage Financial Employee';
 $breadcrumbs = [
@@ -7,6 +8,7 @@ $breadcrumbs = [
 
 $hidden_from_processor = auth() -> user() -> level == 'processor' ? 'hidden' : '';
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">
@@ -345,7 +347,8 @@ $hidden_from_processor = auth() -> user() -> level == 'processor' ? 'hidden' : '
 
                             <div class="flex justify-start items-center flex-space-x-4 {{ $hidden_from_processor }}">
 
-                                @php
+                                {{-- blade-formatter-disable --}}
+@php
                                 $bonus_type = 'standard';
                                 if($employee) {
                                     if($employee -> manager_bonus != '0') {
@@ -353,6 +356,7 @@ $hidden_from_processor = auth() -> user() -> level == 'processor' ? 'hidden' : '
                                     }
                                 }
                                 @endphp
+{{-- blade-formatter-enable --}}
 
                                 <div class="flex ml-2 sm:ml-3"
                                 x-data="{ bonus_type: '{{ $bonus_type }}' }">
@@ -777,11 +781,13 @@ $hidden_from_processor = auth() -> user() -> level == 'processor' ? 'hidden' : '
                             id="expire_year"
                             name="expire_year">
                                 <option value="">Expire Year</option>
-                                @php
+                                {{-- blade-formatter-disable --}}
+@php
                                 for($y = date('Y'); $y <= date('Y') + 20; $y++) {
                                     echo '<option value="'.$y.'">'.$y.'</option>';
                                 }
                                 @endphp
+{{-- blade-formatter-enable --}}
                             </select>
                         </div>
                     </div>

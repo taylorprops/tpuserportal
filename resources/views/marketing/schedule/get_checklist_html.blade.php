@@ -38,6 +38,7 @@
 
 
     @foreach ($settings -> where('category', 'company') as $company)
+        {{-- blade-formatter-disable --}}
         @php
             if ($company -> id == 1) {
                 $states = config('global.taylor_properties_active_states');
@@ -46,8 +47,9 @@
             } elseif ($company -> id == 3) {
                 $states = config('global.heritage_title_active_states');
             }
-            
+
         @endphp
+        {{-- blade-formatter-enable --}}
 
         <div x-show="active_tab === '{{ $loop -> index }}'" data-id="company_div_{{ $company -> id }}" x-transition" class="p-8 pr-2 border" x-data="{ active_sub_tab: '0' }">
 
@@ -145,29 +147,29 @@
                                                 $recipients_array = explode(',', $item -> recipient_ids);
                                             @endphp
 
-                                            @if(in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
+                                        @if (in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
 
-                                                <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
-                                                    <div class="flex justify-start items-center py-2 space-x-8">
-                                                        <div class="item-handle">
-                                                            <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
-                                                        </div>
-                                                        <div>
-                                                            {!! $item -> data !!}
-                                                        </div>
+                                            <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
+                                                <div class="flex justify-start items-center py-2 space-x-8">
+                                                    <div class="item-handle">
+                                                        <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
                                                     </div>
-                                                    <div class="flex items-center">
-                                                        <button class="button primary md"
-                                                        @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}')">
-                                                            Edit <i class="fa-solid fa-edit ml-2"></i>
-                                                        </button>
+                                                    <div>
+                                                        {!! $item -> data !!}
                                                     </div>
                                                 </div>
+                                                <div class="flex items-center">
+                                                    <button class="button primary md"
+                                                        @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}')">
+                                                        Edit <i class="fa-solid fa-edit ml-2"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                                            @endif
+                                        @endif
 
-                                        @endforeach
-                                        {{-- blade-formatter-enable --}}
+                                    @endforeach
+                                    {{-- blade-formatter-enable --}}
 
                                     </div>
 

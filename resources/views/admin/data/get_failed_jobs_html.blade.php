@@ -1,10 +1,11 @@
 <input type="hidden" x-ref="failed_count" value="{{ count($queue_failed_jobs) }}">
 
-@foreach($queue_failed_jobs as $job)
-
+@foreach ($queue_failed_jobs as $job)
+    {{-- blade-formatter-disable --}}
     @php
-    $job_name = substr($job -> name, (strrpos($job -> name, '\\') + 1));
+        $job_name = substr($job -> name, strrpos($job -> name, '\\') + 1);
     @endphp
+{{-- blade-formatter-enable --}}
 
     <div class="border-b p-2 text-xs" x-data="{ show_details: false }">
 
@@ -50,5 +51,4 @@
         </div>
 
     </div>
-
 @endforeach

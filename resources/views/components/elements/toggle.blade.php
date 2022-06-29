@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 if($size == 'sm') {
     $line_classes = 'w-6 h-2';
@@ -17,6 +18,7 @@ if($size == 'sm') {
     $label_text_size = 'text-lg';
 }
 @endphp
+{{-- blade-formatter-enable --}}
 
 <div class="flex items-center w-full toggle-container">
     <label for="{{ $attributes['id'] }}" class="flex items-center cursor-pointer">

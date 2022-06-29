@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Notes';
 $breadcrumbs = [[$title]];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title')
         {{ $title }}

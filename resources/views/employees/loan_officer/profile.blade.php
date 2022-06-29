@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Edit Profile';
 $breadcrumbs = [
@@ -16,6 +17,7 @@ $profile_link = '
     </div>
 </div>';
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">

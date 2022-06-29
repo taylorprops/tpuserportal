@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 
 if($size == 'sm') {
@@ -22,6 +23,7 @@ if($attributes['id']) {
     $id = $attributes['id'];
 }
 @endphp
+{{-- blade-formatter-enable --}}
 
 <label class="text-gray-500 italic block {{ $label_text_size }}">
     @if($label != '')

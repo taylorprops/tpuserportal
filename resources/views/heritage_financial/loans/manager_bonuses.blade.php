@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Manager Bonuses';
 $breadcrumbs = [
@@ -5,6 +6,7 @@ $breadcrumbs = [
 [$title],
 ];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">
@@ -21,7 +23,9 @@ $breadcrumbs = [
                 <div class="border rounded-lg mb-3"
                 x-data="{ year_selected: 1 }">
 
+                    {{-- blade-formatter-disable --}}
                     @php $c = 1; @endphp
+                    {{-- blade-formatter-enable --}}
                     @foreach($years as $year)
 
                         @if(count($loans -> where('year', $year)) > 0)
@@ -97,7 +101,9 @@ $breadcrumbs = [
                                                                 </thead>
 
                                                                 <tbody class="bg-white divide-y divide-gray-200">
-                                                                    @php $bonus_total = 0; @endphp
+                                                                    {{-- blade-formatter-disable --}}
+@php $bonus_total = 0; @endphp
+{{-- blade-formatter-enable --}}
                                                                     @foreach($loans -> where('year', $year) -> where('month', $month) as $loan)
 
                                                                         <tr class="bg-white">
@@ -122,7 +128,9 @@ $breadcrumbs = [
                                                                                 ${{ number_format($loan -> manager_bonus, 2) }}
                                                                             </td>
                                                                         </tr>
+                                                                        {{-- blade-formatter-disable --}}
                                                                         @php $bonus_total += $loan -> manager_bonus; @endphp
+                                                                        {{-- blade-formatter-enable --}}
                                                                     @endforeach
 
                                                                     <tr>
@@ -145,7 +153,9 @@ $breadcrumbs = [
                                 </div>
 
                             </div>
+                            {{-- blade-formatter-disable --}}
                             @php $c += 1; @endphp
+                            {{-- blade-formatter-enable --}}
 
                         @endif
 

@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 
 
@@ -24,6 +25,7 @@ if($attributes['id']) {
     $id = $attributes['id'];
 }
 @endphp
+{{-- blade-formatter-enable --}}
 
 <label class="text-gray-500 block italic {{ $label_text_size }}">
     @if($label != '')

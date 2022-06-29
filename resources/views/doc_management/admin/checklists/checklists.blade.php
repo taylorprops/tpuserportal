@@ -1,9 +1,11 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Checklists';
 $breadcrumbs = [
     [$title],
 ];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">
@@ -11,7 +13,9 @@ $breadcrumbs = [
         :breadcrumbs="$breadcrumbs"/>
     </x-slot>
 
-    @php $location_id = $checklist_locations -> first() -> id; @endphp
+    {{-- blade-formatter-disable --}}
+@php $location_id = $checklist_locations -> first() -> id; @endphp
+{{-- blade-formatter-enable --}}
     <div class="page-container"
     x-data="checklists('{{ $location_id }}')"
     {{-- x-init="get_checklist_locations();
@@ -33,9 +37,11 @@ $breadcrumbs = [
 
                             @foreach($checklist_locations as $checklist_location)
 
-                                @php
+                                {{-- blade-formatter-disable --}}
+@php
                                 $checklist_location_id = $checklist_location -> id;
                                 @endphp
+{{-- blade-formatter-enable --}}
 
                                 <li class="form-group form-group-{{ $checklist_location_id }} border border-b p-3 cursor-pointer hover:bg-primary-light hover:text-white @if($loop -> first) rounded bg-primary-darker text-white @endif"
                                     data-form-group-id="{{ $checklist_location_id }}"
@@ -104,11 +110,13 @@ $breadcrumbs = [
 
                         @foreach($form_groups as $form_group)
 
-                            @php
+                            {{-- blade-formatter-disable --}}
+@php
                             $form_group_id = $form_group -> id;
                             $form_group_name = $form_group -> group_name;
                             $forms = $form_group -> forms;
                             @endphp
+{{-- blade-formatter-enable --}}
 
                             <div class="mr-4" x-show="active_form_group === '{{ $form_group -> id }}' || active_form_group === ''">
 
@@ -121,12 +129,14 @@ $breadcrumbs = [
 
                                     @foreach($forms as $form)
 
-                                        @php
+                                        {{-- blade-formatter-disable --}}
+@php
                                         $form_id = $form -> id;
                                         $form_name = $form -> form_name_display;
                                         $checklist_group_id = $form -> checklist_group_id;
                                         $checklist_group = $form -> checklist_group -> group_name;
                                         @endphp
+{{-- blade-formatter-enable --}}
 
                                         <li class="form-name p-2 border-b text-sm text-gray-700 hover:bg-gray-50"
                                         data-form-name="{{ $form_name }}">
@@ -173,9 +183,11 @@ $breadcrumbs = [
 
                         @foreach($checklist_groups as $checklist_group)
 
-                            @php
+                            {{-- blade-formatter-disable --}}
+@php
                             $items = $checklist_group -> checklist_items;
                             @endphp
+{{-- blade-formatter-enable --}}
 
                             <div class="rounded-lg border mb-4">
 

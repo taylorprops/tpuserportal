@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Dashboard';
 $breadcrumbs = [];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">

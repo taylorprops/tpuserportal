@@ -1,9 +1,11 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Transactions';
 $breadcrumbs = [
     [$title],
 ];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">

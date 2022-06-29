@@ -15,36 +15,28 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($configs as $config)
+            @foreach ($configs as $config)
                 <tr>
                     <td>
-                        <input class="form-element input md config-input config-value w-full"
-                        rows="3"
-                        data-id="{{ $config -> id }}"
-                        data-field="config_key"
-                        value="{{ $config -> config_key }}">
+                        <input class="form-element input md config-input config-value w-full" rows="3" data-id="{{ $config -> id }}" data-field="config_key"
+                            value="{{ $config -> config_key }}">
                     </td>
                     <td>
-                        <textarea class="form-element textarea md config-input config-value w-full"
-                        rows="1{{-- {{ (strlen($config -> config_value) / 110) }} --}}"
-                        data-id="{{ $config -> id }}"
-                        data-field="config_value"
-                        >{{ $config -> config_value }}</textarea>
+                        <textarea class="form-element textarea md config-input config-value w-full" rows="1{{-- {{ (strlen($config -> config_value) / 110) }} --}}" data-id="{{ $config -> id }}" data-field="config_value">{{ $config -> config_value }}</textarea>
                     </td>
                     <td>
+                        {{-- blade-formatter-disable --}}
                         @php
-                        $string = '';
-                        $array = '';
-                        if($config -> value_type == 'string') {
-                            $string = 'selected';
-                        } else {
-                            $array = 'selected';
-                        }
+                            $string = '';
+                            $array = '';
+                            if ($config -> value_type == 'string') {
+                                $string = 'selected';
+                            } else {
+                                $array = 'selected';
+                            }
                         @endphp
-                        <select class="form-element select md config-input config-key"
-                        data-id="{{ $config -> id }}"
-                        data-field="value_type"
-                        >
+{{-- blade-formatter-enable --}}
+                        <select class="form-element select md config-input config-key" data-id="{{ $config -> id }}" data-field="value_type">
                             <option value="string" {{ $string }}>String</option>
                             <option value="array" {{ $array }}>Array</option>
                         </select>

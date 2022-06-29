@@ -1,5 +1,3 @@
-
-
 <div class="flex justify-between items-center rounded-t-lg border-b">
 
     <div class="flex items-center space-x-4">
@@ -26,7 +24,7 @@
                 <div class="w-128 flex-none"></div>
 
                 <div class="flex flex-none bg-gray-100">
-                    @foreach($table_headers as $header)
+                    @foreach ($table_headers as $header)
                         <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
                             <div class="transform rotate-270 translate-y-30 text-sm">
                                 {{ $header['title'] }}
@@ -37,27 +35,29 @@
 
             </div>
 
-            <div class="p-2 pt-0 h-auto max-h-600-px overflow-auto whitespace-nowrap{{--  @if(count($active_loans) > 7) pb-96 @endif --}}">
+            <div class="p-2 pt-0 h-auto max-h-600-px overflow-auto whitespace-nowrap{{-- @if (count($active_loans) > 7) pb-96 @endif --}}">
 
                 @forelse($active_loans as $loan)
 
+                    {{-- blade-formatter-disable --}}
                     @php
-                    $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
-                    if($loan -> co_borrower_first != '') {
-                        $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
-                    }
-                    $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
+                        $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
+                        if ($loan -> co_borrower_first != '') {
+                            $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
+                        }
+                        $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
 
-                    $close_date_type = 'Estimated';
-                    $close_date_details = 'ECD ';
-                    $close_date_details .= $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement )) : '---';
-                    $class = 'text-blue-500';
-                    if($loan -> time_line_scheduled_settlement != '') {
-                        $close_date_type = 'Scheduled';
-                        $close_date_details = 'SCD  '.date('n/j/Y', strtotime($loan -> time_line_scheduled_settlement));
-                        $class = 'text-green-500';
-                    }
+                        $close_date_type = 'Estimated';
+                        $close_date_details = 'ECD ';
+                        $close_date_details .= $loan -> time_line_estimated_settlement ? date('n/j/Y', strtotime($loan -> time_line_estimated_settlement)) : '---';
+                        $class = 'text-blue-500';
+                        if ($loan -> time_line_scheduled_settlement != '') {
+                            $close_date_type = 'Scheduled';
+                            $close_date_details = 'SCD  '.date('n/j/Y', strtotime($loan -> time_line_scheduled_settlement));
+                            $class = 'text-green-500';
+                        }
                     @endphp
+{{-- blade-formatter-enable --}}
 
                     <div class="flex justify-start items-center p-2 border-b hover:bg-gray-50">
 
@@ -82,81 +82,74 @@
                                 {{ $close_date_details }}
                             </div>
                             <div class="text-xs">
-                                {{ $loan -> loan_officer_1 -> fullname }}
+                                {{ $loan -> loan_officer_1-> fullname }}
                             </div>
                         </div>
 
                         <div class="flex flex-none">
 
-                            @foreach($table_headers as $header)
-
+                            @foreach ($table_headers as $header)
                                 <div class="flex items-center justify-around w-12 border-r border-gray-400">
 
+                                    {{-- blade-formatter-disable --}}
                                     @php
-                                    $field = $header['db_field'];
+                                        $field = $header['db_field'];
 
-                                    $complete = false;
-                                    $incomplete = false;
-                                    $not_available = false;
-                                    $suspended = false;
+                                        $complete = false;
+                                        $incomplete = false;
+                                        $not_available = false;
+                                        $suspended = false;
 
-                                    if($field == 'locked') {
+                                        if ($field == 'locked') {
+                                            if ($loan -> locked == 'Locked') {
+                                                $complete = true;
+                                            } else {
+                                                $incomplete = true;
+                                            }
 
-                                        if($loan -> locked == 'Locked') {
-                                            $complete = true;
+                                            $text_complete = 'Yes<br>Expires: '.date('n/j/Y', strtotime($loan -> lock_expiration));
+                                            $text_incomplete = $loan -> locked ?? 'No';
+                                        } elseif ($field == 'time_line_conditions_received_status') {
+                                            if ($loan -> time_line_conditions_received_status == 'approved') {
+                                                $complete = true;
+                                            } elseif ($loan -> time_line_conditions_received_status == 'suspended') {
+                                                $incomplete = true;
+                                                $suspended = true;
+                                            } else {
+                                                $not_available = true;
+                                            }
+
+                                            $text_complete = 'Approved';
+                                            $text_incomplete = 'Suspended';
                                         } else {
-                                            $incomplete = true;
+                                            if ($loan -> $field) {
+                                                $complete = true;
+                                            } else {
+                                                $incomplete = true;
+                                            }
+
+                                            $text_complete = 'Completed<br>'.date('n/j/Y', strtotime($loan -> $field));
+                                            $text_incomplete = 'Not Completed';
+
+                                            if ($field == 'time_line_scheduled_settlement') {
+                                                $text_complete = 'Scheduled<br>'.date('n/j/Y', strtotime($loan -> $field));
+                                                $text_incomplete = 'Not Scheduled';
+                                            }
                                         }
 
-                                        $text_complete = 'Yes<br>Expires: '.date('n/j/Y', strtotime($loan -> lock_expiration));
-                                        $text_incomplete = $loan -> locked ?? 'No';
-
-                                    } elseif($field == 'time_line_conditions_received_status') {
-
-                                        if($loan -> time_line_conditions_received_status == 'approved') {
-                                            $complete = true;
-                                        } elseif($loan -> time_line_conditions_received_status == 'suspended') {
-                                            $incomplete = true;
-                                            $suspended = true;
-                                        } else {
-                                            $not_available = true;
+                                        if ($complete == true) {
+                                            echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
+                                        } elseif ($incomplete == true && $suspended == false) {
+                                            echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times text-red-600"></i></span>';
+                                        } elseif ($incomplete == true && $suspended == true) {
+                                            echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle fa-2x text-red-600"></i></span>';
+                                        } elseif ($not_available == true) {
+                                            echo '<span data-tippy-content="N/A"><i class="fal fa-minus fa-2x text-gray-300"></i></span>';
                                         }
-
-                                        $text_complete = 'Approved';
-                                        $text_incomplete = 'Suspended';
-
-                                    } else {
-
-                                        if($loan -> $field) {
-                                            $complete = true;
-                                        } else {
-                                            $incomplete = true;
-                                        }
-
-                                        $text_complete = 'Completed<br>'.date('n/j/Y', strtotime($loan -> $field));
-                                        $text_incomplete = 'Not Completed';
-
-                                        if($field == 'time_line_scheduled_settlement') {
-                                            $text_complete = 'Scheduled<br>'.date('n/j/Y', strtotime($loan -> $field));
-                                            $text_incomplete = 'Not Scheduled';
-                                        }
-
-                                    }
-
-
-                                    if($complete == true) {
-                                        echo '<span data-tippy-content="'.$text_complete.'"><i class="fal fa-check fa-2x text-green-600"></i></span>';
-                                    } else if($incomplete == true && $suspended == false) {
-                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-times text-red-600"></i></span>';
-                                    } else if($incomplete == true && $suspended == true) {
-                                        echo '<span data-tippy-content="'.$text_incomplete.'"><i class="fal fa-exclamation-circle fa-2x text-red-600"></i></span>';
-                                    } else if($not_available == true) {
-                                        echo '<span data-tippy-content="N/A"><i class="fal fa-minus fa-2x text-gray-300"></i></span>';
-                                    }
                                     @endphp
+{{-- blade-formatter-enable --}}
 
                                 </div>
-
                             @endforeach
                         </div>
 
@@ -168,14 +161,14 @@
 
                 @endforelse
 
-                @if(count($active_loans) > 7)
+                @if (count($active_loans) > 7)
 
                     <div class="flex border-b">
 
                         <div class="w-128"></div>
 
                         <div class="flex bg-gray-100">
-                            @foreach($table_headers as $header)
+                            @foreach ($table_headers as $header)
                                 <div class="w-12 h-40 whitespace-nowrap border-r border-gray-500">
                                     <div class="transform rotate-90 translate-y-5 text-sm">
                                         {{ $header['title'] }}
@@ -195,4 +188,3 @@
     </div>
 
 </div>
-

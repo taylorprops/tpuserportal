@@ -19,23 +19,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($transactions as $transaction)
+            @foreach ($transactions as $transaction)
+                {{-- blade-formatter-disable --}}
                 @php
-                $address = $transaction -> address.' '.$transaction -> city.', '.$transaction -> state.' '.$transaction -> zip;
-                if($transaction -> data_source == 'mls_company') {
-                    $data_source = 'Company Site';
-                } else if($transaction -> data_source == 'skyslope') {
-                    $data_source = 'Skyslope';
-                }
-                $docs_count = count($transaction -> docs_listing) + count($transaction -> docs_sale);
-                $close_date = substr($transaction -> escrowClosingDate, 0, 10);
-                if($transaction -> actualClosingDate != '') {
-                    $close_date = substr($transaction -> actualClosingDate, 0, 10);
-                }
+                    $address = $transaction -> address.' '.$transaction -> city.', '.$transaction -> state.' '.$transaction -> zip;
+                    if ($transaction -> data_source == 'mls_company') {
+                        $data_source = 'Company Site';
+                    } elseif ($transaction -> data_source == 'skyslope') {
+                        $data_source = 'Skyslope';
+                    }
+                    $docs_count = count($transaction -> docs_listing) + count($transaction -> docs_sale);
+                    $close_date = substr($transaction -> escrowClosingDate, 0, 10);
+                    if ($transaction -> actualClosingDate != '') {
+                        $close_date = substr($transaction -> actualClosingDate, 0, 10);
+                    }
                 @endphp
+{{-- blade-formatter-enable --}}
                 <tr>
                     <td>
-                        <a href="transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link button primary md" target="_blank">View</a>
+                        <a href="transactions_archived_view/{{ $transaction -> listingGuid }}/{{ $transaction -> saleGuid }}" class="view-link button primary md"
+                            target="_blank">View</a>
                     </td>
                     <td>{{ ucwords($transaction -> status) }}</td>
                     <td>{{ $address }}</td>

@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Schedule Checklist';
 $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title')
         {{ $title }}

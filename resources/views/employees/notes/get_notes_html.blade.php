@@ -1,14 +1,15 @@
-
 @forelse($notes as $note)
 
+    {{-- blade-formatter-disable --}}
     @php
-    $date = $note -> created_at;
-    if(date('Ymd') == date('Ymd', strtotime($date))) {
-        $date = 'Today '.date('g:iA', strtotime($date));
-    } else {
-        $date = date('n/j/y g:iA', strtotime($date));
-    }
+        $date = $note -> created_at;
+        if (date('Ymd') == date('Ymd', strtotime($date))) {
+            $date = 'Today '.date('g:iA', strtotime($date));
+        } else {
+            $date = date('n/j/y g:iA', strtotime($date));
+        }
     @endphp
+{{-- blade-formatter-enable --}}
 
     <div class="my-2">
         <ul role="list" class="divide-y">
@@ -27,7 +28,7 @@
                         <p class="text-sm text-gray-500">{!! nl2br($note -> notes) !!}</p>
                     </div>
                 </div>
-                @if(auth() -> user() -> id == $note -> user_id)
+                @if (auth() -> user() -> id == $note -> user_id)
                     <div class="flex justify-end">
                         <div>
                             <button type="button" class="button danger sm no-text" @click="delete_note($el, {{ $note -> id }})"><i class="fal fa-times"></i></button>
@@ -44,4 +45,3 @@
     <div class="text-gray-400 font-semibold">No Notes Added</div>
 
 @endif
-

@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Add Loan';
 if($loan) {
@@ -19,6 +20,7 @@ if(isset($_GET['tab']) && $_GET['tab'] == 'commission') {
 $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">
@@ -411,12 +413,14 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                 {{-- Loan Status --}}
                                 <div class="col-span-1 m-2 sm:m-3">
+                                    {{-- blade-formatter-disable --}}
                                     @php
                                     $loan_status_detailed_open = $loan && $loan -> loan_status == 'Open' ? ' / '.$loan -> loan_status_detailed : null;
                                     $loan_status_detailed_closed = $loan && $loan -> loan_status == 'Closed' ? ' / '.$loan -> loan_status_detailed : null;
                                     $loan_status_detailed_cancelled = $loan && $loan -> loan_status == 'Cancelled' ? ' / '.$loan -> loan_status_detailed : null;
 
                                     @endphp
+                                    {{-- blade-formatter-enable --}}
                                     <select
                                     class="form-element select {{ $input_size }}"
                                     id="loan_status"
@@ -567,6 +571,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                             <div class="mt-12 border-2 rounded-lg p-4 divide-y">
 
+                                {{-- blade-formatter-disable --}}
                                 @php
                                 $fields = [
                                     ['select', 'locked', 'Locked', $disabled],
@@ -594,10 +599,13 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                     ['date', 'time_line_cd_issued', 'CD Issued', $disabled],
                                 ];
                                 @endphp
+                                {{-- blade-formatter-enable --}}
 
                                 @foreach($fields as $field)
 
+                                    {{-- blade-formatter-disable --}}
                                     @php $db_field = $field[1]; @endphp
+                                    {{-- blade-formatter-enable --}}
 
                                     <div class="grid grid-cols-5 py-2">
 
@@ -639,7 +647,9 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                                 @foreach($processing_fields as $processing_field)
 
-                                                    @php $db_processing_field = $processing_field[1]; @endphp
+                                                    {{-- blade-formatter-disable --}}
+@php $db_processing_field = $processing_field[1]; @endphp
+{{-- blade-formatter-enable --}}
 
                                                     <div class="grid grid-cols-5 py-2">
 
@@ -759,10 +769,14 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                             <div class="p-2 border-b">Deductions</div>
 
+                                            {{-- blade-formatter-disable --}}
                                             @php $total_deductions = 0; @endphp
+                                            {{-- blade-formatter-enable --}}
 
                                             @foreach($loan_officer_deductions -> where('lo_index', '1') as $loan_officer_deduction)
-                                                @php $total_deductions += $loan_officer_deduction -> amount; @endphp
+                                            {{-- blade-formatter-disable --}}
+                                            @php $total_deductions += $loan_officer_deduction -> amount; @endphp
+                                            {{-- blade-formatter-enable --}}
                                                 <div class="grid grid-cols-2 p-2">
                                                     <div class="">{{ $loan_officer_deduction -> description }}</div>
                                                     <div class="text-right">${{ number_format($loan_officer_deduction -> amount, 2) }}</div>
@@ -821,6 +835,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                                 @forelse($deductions as $deduction)
 
+                                                    {{-- blade-formatter-disable --}}
                                                     @php
                                                     $non_other = ['Company', 'Loan Officer 1', 'Loan Officer 2'];
                                                     $show_other = null;
@@ -828,6 +843,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                         $show_other = 'yes';
                                                     }
                                                     @endphp
+                                                    {{-- blade-formatter-enable --}}
 
                                                     <div class="flex justify-between items-end deduction">
 
@@ -1100,6 +1116,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                                     @forelse($deductions as $deduction)
 
+                                                        {{-- blade-formatter-disable --}}
                                                         @php
                                                         $non_other = ['Company', 'Loan Officer 1', 'Loan Officer 2'];
                                                         $show_other = null;
@@ -1107,6 +1124,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                             $show_other = 'yes';
                                                         }
                                                         @endphp
+                                                        {{-- blade-formatter-enable --}}
 
                                                         <div class="flex justify-between items-end deduction">
 
@@ -1218,15 +1236,18 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                         <div class="col-span-4">
 
 
+                                            {{-- blade-formatter-disable --}}
                                             @php
                                             $los = ['1'];
                                             if($loan_officer_2) {
                                                 $los[] = '2';
                                             }
                                             @endphp
+                                            {{-- blade-formatter-enable --}}
 
                                             @foreach($los as $index)
 
+                                                {{-- blade-formatter-disable --}}
                                                 @php
                                                 if($index == '1') {
                                                     $loan_officer = $loan_officer_1;
@@ -1236,6 +1257,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                     $loan_officer_active_commission_tab = $loan_officer_2_active_commission_tab;
                                                 }
                                                 @endphp
+                                                {{-- blade-formatter-enable --}}
 
                                                 <div class="p-4 mb-8 border rounded-md" id="loan_officer_{{ $index }}_commission"
                                                 x-data="{
@@ -1325,7 +1347,8 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                                                         @if($loan_officer)
                                                                         <div class="w-24">
-                                                                            @php
+                                                                            {{-- blade-formatter-disable --}}
+@php
                                                                             $commission_percent = $loan_officer -> commission_percent;
                                                                             if($index == '1') {
                                                                                 if($loan -> loan_officer_1_commission_percent) {
@@ -1339,6 +1362,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                                             //$commission_percent = rtrim(rtrim($commission_percent, '0'), '.');
                                                                             $commission_percent = $commission_percent + 0;
                                                                             @endphp
+{{-- blade-formatter-enable --}}
                                                                             <input
                                                                             type="text"
                                                                             class="form-element input {{ $input_size }} numbers-only text-center commission-input required"
@@ -1396,7 +1420,8 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                             </div>
 
                                                             @if($loan_officer)
-                                                                @php
+                                                                {{-- blade-formatter-disable --}}
+@php
                                                                 $loan_amount_percent = $loan_officer -> loan_amount_percent;
 
                                                                 if($index == '1') {
@@ -1411,6 +1436,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                                     $loan_officer_commission_type = $loan -> loan_officer_2_commission_type;
                                                                 }
                                                                 @endphp
+                                                                {{-- blade-formatter-enable --}}
                                                                 <input type="hidden" name="loan_officer_{{ $index }}_loan_amount_percent" value="{{ $loan_amount_percent }}">
                                                             @endif
 

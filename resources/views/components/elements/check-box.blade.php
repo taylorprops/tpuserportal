@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 
 $classes = 'text-'.$color.'-600 ';
@@ -17,6 +18,7 @@ if($size == 'sm') {
 }
 
 @endphp
+{{-- blade-formatter-enable --}}
 
 <label class="inline-flex items-center {{ $text_size }}">
     <input type="checkbox" class="form-checkbox {{ $classes }}" {!! $attributes -> merge(['class' => $classes]) !!}><span class="ml-2">{{ $label }}</span>

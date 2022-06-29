@@ -25,17 +25,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($loans as $loan)
+            @foreach ($loans as $loan)
+                {{-- blade-formatter-disable --}}
                 @php
-                $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
-                if($loan -> co_borrower_first != '') {
-                    $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
-                }
-                $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
+                    $borrower = $loan -> borrower_last.', '.$loan -> borrower_first;
+                    if ($loan -> co_borrower_first != '') {
+                        $borrower .= '<br>'.$loan -> co_borrower_last.', '.$loan -> co_borrower_first;
+                    }
+                    $address = $loan -> street.'<br>'.$loan -> city.' '.$loan -> state.' '.$loan -> zip;
                 @endphp
+{{-- blade-formatter-enable --}}
                 <tr>
                     <td><a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" target="_blank" class="default">View</a></td>
-                    <td>@if($loan -> loan_officer_1) {{ $loan -> loan_officer_1 -> last_name.', '.$loan -> loan_officer_1 -> first_name }} @endif</td>
+                    <td>
+                        @if ($loan -> loan_officer_1)
+                            {{ $loan -> loan_officer_1-> last_name.', '.$loan -> loan_officer_1-> first_name }}
+                        @endif
+                    </td>
                     <td class="whitespace-nowrap">{!! $borrower !!}</td>
                     <td class="whitespace-nowrap">{!! $address !!}</td>
                     <td>{{ $loan -> settlement_date }}</td>

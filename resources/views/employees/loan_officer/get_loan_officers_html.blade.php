@@ -1,6 +1,7 @@
 <div class="flex justify-between flex-wrap mb-2 pagination-div">
     <div>
-        <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email Selected Loan Officers</button>
+        <button type="button" class="button primary md" @click="email_modal = true; show_recipients_added()" :disabled="!show_email_option"><i class="fad fa-envelope mr-2"></i> Email
+            Selected Loan Officers</button>
     </div>
     <div class="">
         {!! $employees -> links() !!}
@@ -28,27 +29,28 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($employees as $employee)
+            @foreach ($employees as $employee)
+                {{-- blade-formatter-disable --}}
                 @php
-                if($employee -> emp_position == 'loan_officer') {
-                    $emp_position = 'Loan Officer';
-                } else {
-                    $emp_position = ucwords($employee -> emp_position);
-                }
-                $licenses = $employee -> licenses -> pluck('license_state') -> toArray();
-                $licenses = implode(', ', $licenses);
+                    if ($employee -> emp_position == 'loan_officer') {
+                        $emp_position = 'Loan Officer';
+                    } else {
+                        $emp_position = ucwords($employee -> emp_position);
+                    }
+                    $licenses = $employee -> licenses -> pluck('license_state') -> toArray();
+                    $licenses = implode(', ', $licenses);
                 @endphp
+{{-- blade-formatter-enable --}}
                 <tr>
                     <td class="w-14">
                         <div class="flex justify-around items-center">
-                            <input type="checkbox" class="form-element checkbox success md recipient-checkbox"
-                            data-name="{{ $employee -> fullname }}"
-                            data-email="{{ $employee -> email }}"
-                            @click="show_email_button()">
+                            <input type="checkbox" class="form-element checkbox success md recipient-checkbox" data-name="{{ $employee -> fullname }}"
+                                data-email="{{ $employee -> email }}" @click="show_email_button()">
                         </div>
                     </td>
                     <td>
-                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
+                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i
+                                class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
                     <td>{{ $emp_position }}</td>
@@ -56,7 +58,7 @@
                     <td>{{ $employee -> phone }}</td>
                     <td>{{ $licenses }}</td>
                     <td>
-                        @if($employee -> active == 'yes')
+                        @if ($employee -> active == 'yes')
                             <div class="inline-block text-white py-2 px-4 rounded-lg bg-success">
                                 <i class="fal fa-check mr-2"></i> Yes
                             </div>

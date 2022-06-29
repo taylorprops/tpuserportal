@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Address Database';
 $breadcrumbs = [['Marketing', ''], [$title]];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title')
         {{ $title }}
@@ -152,7 +154,8 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                         class="p-2 rounded bg-gray-50 w-64 min-h-150-px max-h-300-px overflow-y-auto">
 
                                         @foreach ($states as $state)
-                                            @php
+                                            {{-- blade-formatter-disable --}}
+@php
                                                 $disabled_los = null;
                                                 if (!in_array($state, $states_loan_officers)) {
                                                     $disabled_los = true;
@@ -161,8 +164,9 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                 if (!in_array($state, $states_test_center)) {
                                                     $disabled_test_center = true;
                                                 }
-                                                
+
                                             @endphp
+{{-- blade-formatter-enable --}}
 
                                             <div
                                                 class="state_div @if ($disabled_los) disabled_loan_officer @endif @if ($disabled_test_center) disabled_test_center @endif">

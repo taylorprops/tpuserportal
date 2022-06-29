@@ -20,14 +20,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($loans as $loan)
+            @foreach ($loans as $loan)
+                {{-- blade-formatter-disable --}}
                 @php
-                $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
-                $loan_officer = $loan -> loan_officer_last.', '.$loan -> loan_officer_first;
+                    $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
+                    $loan_officer = $loan -> loan_officer_last.', '.$loan -> loan_officer_first;
                 @endphp
+{{-- blade-formatter-enable --}}
                 <tr>
                     <td>
-                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
+                        <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $loan -> loan_status }}</td>
                     <td>{{ $loan_officer }}</td>
@@ -35,14 +37,18 @@
                     <td>{{ $loan -> settlement_date }}</td>
                     <td>
                         {{ $loan -> borrower_last.', '.$loan -> borrower_first }}
-                        @if($loan -> co_borrower_last != '')
+                        @if ($loan -> co_borrower_last != '')
                             <br>
                             {{ $loan -> co_borrower_last.', '.$loan -> co_borrower_first }}
                         @endif
                     </td>
                     <td>${{ number_format($loan -> loan_amount) }}</td>
-                    <td>@if($loan -> processor) {{ $loan -> processor -> fullname }} @endif</td>
-                <td>{{ date('M jS, Y', strtotime($loan -> created_at)) }} {{ date('g:i A', strtotime($loan -> created_at)) }}</td>
+                    <td>
+                        @if ($loan -> processor)
+                            {{ $loan -> processor -> fullname }}
+                        @endif
+                    </td>
+                    <td>{{ date('M jS, Y', strtotime($loan -> created_at)) }} {{ date('g:i A', strtotime($loan -> created_at)) }}</td>
                 </tr>
             @endforeach
         </tbody>

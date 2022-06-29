@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Forms';
 $breadcrumbs = [
@@ -5,6 +6,7 @@ $breadcrumbs = [
 ];
 $active_tab = $form_groups -> first() -> id; $default_state = $form_groups -> first() -> state;
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">
@@ -54,11 +56,13 @@ $active_tab = $form_groups -> first() -> id; $default_state = $form_groups -> fi
 
                             @foreach($form_groups as $form_group)
 
-                                @php
+                                {{-- blade-formatter-disable --}}
+@php
                                 $form_group_id = $form_group -> id;
                                 $state = $form_group -> state;
                                 $count = $form_group -> forms -> count();
                                 @endphp
+{{-- blade-formatter-enable --}}
 
                                 <li class="form-group-{{ $form_group_id }} border border-b p-3 cursor-pointer hover:bg-primary-light hover:text-white @if($loop -> first) bg-primary-dark text-white @endif"
                                     data-form-group-id="{{ $form_group_id }}"

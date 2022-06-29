@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
 $slider_id = time() * rand();
 $id = $attributes['id'];
@@ -7,6 +8,7 @@ $min = $attributes['min'];
 $max = $attributes['max'];
 $step = $attributes['step'];
 @endphp
+{{-- blade-formatter-enable --}}
 <div x-data="{ slider_{{ $id }}: {{ $value }} }">
     <input type="hidden" id="{{ $id }}" name="{{ $name }}" x-model="slider_{{ $id }}" />
     <div class="flex">

@@ -17,19 +17,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($loans as $loan)
+            @foreach ($loans as $loan)
+                {{-- blade-formatter-disable --}}
                 @php
-                $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
+                    $address = $loan -> street.' '.$loan -> city.', '.$loan -> state.' '.$loan -> zip;
                 @endphp
+{{-- blade-formatter-enable --}}
                 <tr>
                     <td>
-                    <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View <i class="fal fa-arrow-right ml-2"></i></a>
+                        <a href="/heritage_financial/loans/view_loan/{{ $loan -> uuid }}" class="view-link button primary md" target="_blank">View <i
+                                class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $address }}</td>
                     <td>{{ $loan -> settlement_date }}</td>
                     <td>
                         {{ $loan -> borrower_last.', '.$loan -> borrower_first }}
-                        @if($loan -> co_borrower_last != '')
+                        @if ($loan -> co_borrower_last != '')
                             <br>
                             {{ $loan -> co_borrower_last.', '.$loan -> co_borrower_first }}
                         @endif

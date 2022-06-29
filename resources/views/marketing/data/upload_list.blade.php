@@ -1,3 +1,4 @@
+{{-- blade-formatter-disable --}}
 @php
     $title = 'Upload List';
     $breadcrumbs = [
@@ -5,6 +6,7 @@
     [$title],
     ];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title') {{ $title }} @endsection
     <x-slot name="header">

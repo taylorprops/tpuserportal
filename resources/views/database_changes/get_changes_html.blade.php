@@ -14,22 +14,22 @@
 
             <tbody>
 
-                @foreach($changes as $change)
-
+                @foreach ($changes as $change)
                     <tr>
                         <td valign="top" class="whitespace-nowrap">{{ date('n/j/Y g:i A', strtotime($change -> created_at)) }}</td>
                         <td valign="top" class="whitespace-nowrap">{{ $change -> user -> name ?? 'System' }}</td>
                         <td class="p-0">
-                            @foreach($change -> changes -> where('field_name', '!=', 'property_details') as $change_detail)
-
+                            @foreach ($change -> changes -> where('field_name', '!=', 'property_details') as $change_detail)
+                                {{-- blade-formatter-disable --}}
                                 @php
-                                $value_before = $change_detail -> value_before;
-                                $value_after = $change_detail -> value_after;
+                                    $value_before = $change_detail -> value_before;
+                                    $value_after = $change_detail -> value_after;
 
-                                if(!$value_before) {
-                                    $value_before = '<span class="text-gray-300">-----------</span>' ;
-                                }
+                                    if (!$value_before) {
+                                        $value_before = '<span class="text-gray-300">-----------</span>';
+                                    }
                                 @endphp
+{{-- blade-formatter-enable --}}
 
                                 <div class="mb-2 px-2 py-1 border-b">
                                     <div class="grid grid-cols-8 gap-4">
@@ -42,11 +42,9 @@
                                     </div>
 
                                 </div>
-
                             @endforeach
                         </td>
                     </tr>
-
                 @endforeach
 
             </tbody>

@@ -1,7 +1,9 @@
+{{-- blade-formatter-disable --}}
 @php
 $title = 'Reports';
 $breadcrumbs = [[$title]];
 @endphp
+{{-- blade-formatter-enable --}}
 <x-app-layout>
     @section('title')
         {{ $title }}
@@ -135,9 +137,11 @@ $breadcrumbs = [[$title]];
 
                                                         <tbody class="bg-white divide-y divide-gray-200">
 
+                                                            {{-- blade-formatter-disable --}}
                                                             @php
                                                                 $reports = ['loans_in_process_by_loan_officer', 'closed_loans_by_month', 'closed_loans_by_month_detailed', 'closed_loans_by_loan_officer'];
                                                             @endphp
+                                                            {{-- blade-formatter-enable --}}
                                                             @foreach ($reports as $report)
                                                                 <tr>
                                                                     <td class="p-2">
