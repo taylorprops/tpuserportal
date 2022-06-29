@@ -156,7 +156,7 @@
 
     <x-nav.menu :level="'1'" :title="'Schedule'" :link="'/marketing/schedule'" :icon="'fa-duotone fa-calendar'" />
 
-    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> group == 'marketing')
+    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
         <x-nav.menu :level="'1'" :title="'Schedule Settings'" :link="'/marketing/schedule_settings'" :icon="'fa-duotone fa-gears'" />
 
         <x-nav.menu :level="'1'" :title="'Marketing Checklist'" :link="'/marketing/schedule/checklist'" :icon="'fa-duotone fa-check'" />
