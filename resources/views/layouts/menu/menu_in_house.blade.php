@@ -157,8 +157,6 @@
     <x-nav.menu :level="'1'" :title="'Schedule'" :link="'/marketing/schedule'" :icon="'fa-duotone fa-calendar'" />
 
     @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
-        <x-nav.menu :level="'1'" :title="'Schedule Settings'" :link="'/marketing/schedule_settings'" :icon="'fa-duotone fa-gears'" />
-
         <x-nav.menu :level="'1'" :title="'Marketing Checklist'" :link="'/marketing/schedule/checklist'" :icon="'fa-duotone fa-check'" />
 
         <x-nav.menu :level="'1'" :title="'Marketing Notes'" :link="'/marketing/marketing_notes'" :icon="'fa-duotone fa-notes'" />
@@ -167,6 +165,10 @@
         <x-nav.menu :level="'1'" :title="'Address Database'" :link="'/marketing/data/address_database'" :icon="'fad fa-database'" />
 
         <x-nav.menu :level="'1'" :title="'Upload List'" :link="'/marketing/data/upload_list'" :icon="'fa-duotone fa-upload'" />
+    @endif
+
+    @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'marketing')
+        <x-nav.menu :level="'1'" :title="'Schedule Settings'" :link="'/marketing/schedule_settings'" :icon="'fa-duotone fa-gears'" />
     @endif
 
     {{-- End Marketing --}}
