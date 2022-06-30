@@ -12,8 +12,6 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
         <x-nav.bread-crumbs
             :breadcrumbs="$breadcrumbs" />
     </x-slot>
-
-
     <div class="pb-12 pt-2"
         x-data="checklist()">
 
@@ -48,9 +46,13 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
 
                             <div>
                                 <select class="form-element select md" name="company_id" x-ref="company_id" data-label="Company">
+
                                     @foreach ($settings -> where('category', 'company') as $setting)
+
                                         <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
+
                                     @endforeach
+
                                 </select>
                             </div>
                             <div>
@@ -62,9 +64,13 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
 
                         <div>
                             <select class="form-element select md h-44" name="recipient_ids[]" x-ref="recipient_ids" multiple data-label="Recipients">
+
                                 @foreach ($settings -> where('category', 'recipient') as $setting)
+
                                     <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
 
