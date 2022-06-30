@@ -8,7 +8,7 @@
             $date = date('n/j/y g:iA', strtotime($date));
         }
     @endphp
-{{-- blade-formatter-enable --}}
+    {{-- blade-formatter-enable --}}
 
     <div class="my-1">
         <ul role="list" class="divide-y">
@@ -27,15 +27,21 @@
                         <p class="text-sm text-gray-500">{!! nl2br($note -> notes) !!}</p>
                     </div>
                 </div>
+
                 @if (auth() -> user() -> id == $note -> user_id)
+
                     <div class="flex justify-end">
                         <div>
+
                             @if ($note -> read == 0)
+
                                 <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
                                     @click="delete_note($el, {{ $note -> event_id }}, {{ $note -> id }})">Delete <i class="fa-duotone fa-times-circle  fa-lg ml-2"></i></button>
                             @else
                                 <span class="text-success"><i class="fal fa-check mr-2"></i> Read</span>
+
                             @endif
+
                         </div>
                     </div>
                 @else
@@ -46,11 +52,12 @@
                             <span class="text-success" x-show="show_mark_read === 'no'"><i class="fal fa-check mr-2"></i> Read</span>
                         </div>
                     </div>
+
                 @endif
+
             </li>
         </ul>
     </div>
-
 
 @empty
 

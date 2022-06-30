@@ -103,26 +103,25 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         scope.show_item_modal = false;
                         scope.clear_form(form);
-                        if (event_id) {
-                            setTimeout(function () {
-                                let div = document.querySelector('#show_details_' + event_id);
-                                div.click();
-                                scroll_above(div);
-                            }, 500);
-                        }
+                        document.querySelector('#event_div_' + event_id).click();
                     })
                     .catch(function (error) {
                         display_errors(error, ele, button_html);
                     });
             },
 
-            show_view_div(type, file, html) {
+            show_view_div(type, file, html, subject_line_a, subject_line_b, preview_text) {
                 let scope = this;
                 scope.show_calendar = false;
                 scope.show_file = false;
                 scope.show_html = false;
                 if (html) {
                     scope.show_html = true;
+                    let details = ' \
+                    <span class="font-semibold">Subject Line 1:</span> '+ subject_line_a + '<br> \
+                    <span class="font-semibold">Subject Line 2:</span> '+ subject_line_b + '<br> \
+                    <span class="font-semibold">Preview Text:</span> '+ preview_text;
+                    scope.$refs.view_details_html.innerHTML = details;
                     let iframe = document.querySelector('.view-accepted-iframe');
                     iframe = iframe.contentWindow || (iframe.contentDocument.document || iframe.contentDocument);
                     iframe.document.open();
@@ -202,7 +201,7 @@ if (document.URL.match('marketing/schedule')) {
                         toastr.success('Status Successfully Updated');
                         scope.get_schedule();
                         setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('#event_div_' + event_id).click();
                             setTimeout(function () {
                                 document.querySelector('.fc-dayGridMonth-button').click();
                             }, 100);
@@ -286,7 +285,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.show_versions(event_id);
                         scope.get_schedule();
                         setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('#event_div_' + event_id).click();
                             document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);
                     })
@@ -304,7 +303,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.show_versions(event_id);
                         scope.get_schedule();
                         setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('#event_div_' + event_id).click();
                             document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);
                     })
@@ -323,7 +322,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.show_versions(event_id);
                         scope.get_schedule();
                         setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('#event_div_' + event_id).click();
                             document.querySelector('.fc-dayGridMonth-button').click();
                         }, 1000);
                     })
@@ -352,7 +351,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         scope.clear_add_version_form();
                         setTimeout(function () {
-                            document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('#event_div_' + event_id).click();
                             document.querySelector('#view_' + event_id).click();
                             document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);

@@ -11,6 +11,9 @@
                     'file_type' => $upload -> file_type,
                     'file_url' => $upload -> file_url,
                     'html' => $upload -> html,
+                    'subject_line_a' => $event -> subject_line_a,
+                    'subject_line_b' => $event -> subject_line_b,
+                    'preview_text' => $event -> preview_text,
                 ];
                 if ($upload -> accepted_version == true) {
                     $accepted = $details;
@@ -26,8 +29,6 @@
         if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
             $past_due = 'past_due';
         }
-
-
         if ($event -> notes) {
             $notes = $event -> notes;
             $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
@@ -37,9 +38,10 @@
     {{-- blade-formatter-enable --}}
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
+
         :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' :
             'ring-transparent'" id="event_{{ $event -> id }}"
-        x-data="{ show_details: false }" data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}"
+        data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}"
         data-status-id="{{ $event -> status_id }}" data-recipient-id="{{ $event -> recipient_id }}" data-company-id="{{ $event -> company_id }}"
         data-medium-id="{{ $event -> medium_id }}" data-description="{{ $event -> description }}" data-subject-line-a="{{ $event -> subject_line_a }}"
         data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}"
@@ -48,18 +50,18 @@
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
-                id="show_details_{{ $event -> id }}" @click="show_details = ! show_details; if(show_details === false) { show_notes = false }; hide_view_div();">
+                @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif
+                id="event_div_{{ $event -> id }}">
 
-                <div
-                    class="flex flex-wrap justify-start items-center space-x-2 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
-                    <div>
-                        <button type="button"><i class="fa-light" :class="show_details === false ? 'fa-bars' : 'fa-xmark fa-lg '"></i></button>
-                    </div>
+                <div class="flex flex-wrap justify-start items-center space-x-2 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
+
                     <div>
                         {{ $event -> event_date }}
+
                         @if ($past_due)
                             <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
                         @endif
+
                     </div>
                     <div class="w-8 h-8 rounded-full bg-white flex items-center justify-around">
                         {{ $event -> id }}
@@ -74,38 +76,43 @@
                             {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i class="fa-light fa-arrow-right mx-2"></i>
                             {{ $event -> recipient -> item }}
                         </div>
+
                         @if ($event -> sending_notification_sent == true)
-                            <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent <i
-                                    class="fa-light fa-check ml-2"></i></div>
+                            <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent
+                                <i class="fa-light fa-check ml-2"></i>
+                            </div>
                         @endif
+
                     </div>
 
                 </div>
 
                 <div class="flex justify-end items-center">
 
-
                     <div class="relative">
 
-                        <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer"
-                            @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>
-                            {{ $event -> status -> item }}</div>
+                        <div class="rounded-lg p-1 text-white bg-{{ $event -> status -> color }}-600 cursor-pointer" @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing') @click.stop="show_edit_status = ! show_edit_status" @endif>{{ $event -> status -> item }}</div>
 
                         <div class="origin-top-right absolute right-0 top-10 z-100 mt-2 w-200-px rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status"
                             @click.outside="show_edit_status = false;">
                             <div class="p-4" role="none">
+
                                 @foreach ($settings -> where('category', 'status') as $status)
-                                    <div class="group flex justify-between items-center p-2 rounded-lg
-                                    @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
+                                    <div class="group flex justify-between items-center p-2 rounded-lg @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
                                         @click.stop="if({{ $event -> status_id }} != {{ $status -> id }}) { update_status($el, {{ $event -> id }}, {{ $status -> id }}); } show_edit_status = false;">
+
                                         <div class="@if ($event -> status -> id == $status -> id) opacity-60 @endif">
+
                                             {{ $status -> item }}</div>
+
                                         <div class="hidden @if ($event -> status -> id != $status -> id) group-hover:inline-block @endif">
+
                                             <i class="fa-light fa-check"></i>
                                         </div>
                                     </div>
                                 @endforeach
+
                             </div>
 
                         </div>
@@ -118,7 +125,9 @@
                                 <button type="button" class="block w-full h-full" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                     <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                                 </button>
+
                                 <div class="absolute top-3 right-0 cursor-pointer flex items-center justify-around bg-orange-500 text-white p-1 rounded-full h-4 w-4 text-xxs notes-count @if ($count_unread == 0) hidden @endif"
+
                                     data-note-id="{{ $event -> id }}" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
                                     {{ $count_unread }}</div>
                             </div>
@@ -135,7 +144,7 @@
                     @if ($accepted)
                         <div class="pl-4">
                             <button type="button" id="view_{{ $event -> id }}" class="button primary sm px-1"
-                                @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`); active_event = {{ $event -> id }}">View
+                                @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}">View
                                 <i class="fa-solid fa-eye ml-2"></i>
                             </button>
                         </div>
@@ -144,8 +153,6 @@
                 </div>
 
             </div>
-
-
 
             <div class="p-8" x-show="show_notes" x-transition>
 
@@ -183,7 +190,7 @@
 
             </div>
 
-            <div class="" x-show="show_details" x-transition>
+            <div class="">
 
                 <div class="flex justify-between items-center p-2 border-b border-t">
 
@@ -197,42 +204,6 @@
                             {{ $event -> description }}
                         </div>
 
-                    </div>
-
-                </div>
-
-                <div class="flex justify-start items-center px-2 py-1 text-gray-500">
-
-                    <div class="pr-4 border-r w-28 text-right">
-                        Subject A
-                    </div>
-
-                    <div class="pl-4">
-                        {{ $event -> subject_line_a }}
-                    </div>
-
-                </div>
-
-                <div class="flex justify-start items-center px-2 py-1 text-gray-500">
-
-                    <div class="pr-4 border-r w-28 text-right">
-                        Subject B
-                    </div>
-
-                    <div class="pl-4">
-                        {{ $event -> subject_line_b }}
-                    </div>
-
-                </div>
-
-                <div class="flex justify-start items-center px-2 pt-1 pb-2 text-gray-500">
-
-                    <div class="pr-4 border-r w-28 text-right">
-                        Preview Text
-                    </div>
-
-                    <div class="pl-4">
-                        {{ $event -> preview_text }}
                     </div>
 
                 </div>
@@ -324,7 +295,6 @@
 
                                         </div>
                                     @endforeach
-
 
                                 </div>
                             </div>

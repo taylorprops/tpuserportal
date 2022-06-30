@@ -30,17 +30,23 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                     </div>
 
                     @foreach (['company', 'recipient', 'medium', 'status'] as $item)
+
                         <div>
                             <select class="form-element select md"
                                 data-label="{{ ucwords($item) }}"
                                 name="{{ $item }}_id"
                                 @change="get_schedule()">
                                 <option value="">All</option>
+
                                 @foreach ($settings -> where('category', $item) as $setting)
+
                                     <option value="{{ $setting -> id }}">{{ $setting -> item }}
+
                                 @endforeach
+
                             </select>
                         </div>
+
                     @endforeach
 
                     <div>
@@ -72,12 +78,13 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         <div x-show="show_html || show_file">
 
                             <div class="absolute top-12 right-12 z-20"><a href="javascript:void(0)"
-                                    @click="show_html = false; show_file = false; show_calendar = true; active_event = '';"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a>
+                                @click="show_html = false; show_file = false; show_calendar = true; active_event = '';"><i class="fa-duotone fa-circle-xmark fa-3x text-red-600 hover:text-red-500"></i></a>
                             </div>
 
                             <div class="absolute top-0 z-10 h-full w-full border-4 bg-white"
                                 x-show="show_html"
                                 x-ref="view_html">
+                                <div x-ref="view_details_html" class="p-4"></div>
                                 <iframe class="view-accepted-iframe"
                                     width="100%"
                                     height="100%"></iframe>
@@ -108,7 +115,6 @@ $breadcrumbs = [['Marketing', ''], [$title]];
 
         </div>
 
-
         <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'"
             :modalTitle="'Add/Edit Marketing Item'"
             :modalId="'show_item_modal'"
@@ -126,11 +132,17 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             x-ref="status_id"
                             data-label="Status">
                             <option value=""></option>
+
                             @foreach ($settings -> where('category', 'status') as $status)
+
                                 <option value="{{ $status -> id }}"
+
                                     @if ($loop -> first) selected @endif>
+
                                     {{ $status -> item }}</option>
+
                             @endforeach
+
                         </select>
                     </div>
 
@@ -152,15 +164,19 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 x-ref="recipient_id"
                                 data-label="Recipient"
                                 @change="
-                            if($el.options[$el.selectedIndex].text.match(/In-House\sAgents/)) {
-                                document.querySelectorAll('.states').forEach(function(state) {
-                                    state.checked = true;
-                                });
-                            }">
+                                if($el.options[$el.selectedIndex].text.match(/In-House\sAgents/)) {
+                                    document.querySelectorAll('.states').forEach(function(state) {
+                                        state.checked = true;
+                                    });
+                                }">
                                 <option value=""></option>
+
                                 @foreach ($settings -> where('category', 'recipient') as $recipient)
+
                                     <option value="{{ $recipient -> id }}">{{ $recipient -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
 
@@ -171,6 +187,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             <div class="flex justify-between">
 
                                 @foreach ($states as $state)
+
                                     <div>
                                         <input type="checkbox"
                                             class="states form-element checkbox primary lg states"
@@ -180,6 +197,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                             data-label="{{ $state }}"
                                             @change="update_states()">
                                     </div>
+
                                 @endforeach
 
                             </div>
@@ -201,9 +219,13 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 x-ref="company_id"
                                 data-label="Company">
                                 <option value=""></option>
+
                                 @foreach ($settings -> where('category', 'company') as $company)
+
                                     <option value="{{ $company -> id }}">{{ $company -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
 
@@ -214,22 +236,28 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 data-label="Medium"
                                 @change="$el.options[$el.selectedIndex].text == 'Email' ? show_email_options = true : show_email_options = false">
                                 <option value=""></option>
+
                                 @foreach ($settings -> where('category', 'medium') as $medium)
+
                                     <option value="{{ $medium -> id }}">{{ $medium -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
-
-
                         <div class="">
                             <select class="form-element select md"
                                 name="focus_id"
                                 x-ref="focus_id"
                                 data-label="Focus">
                                 <option value=""></option>
+
                                 @foreach ($settings -> where('category', 'focus') as $focus)
+
                                     <option value="{{ $focus -> id }}">{{ $focus -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
 
@@ -239,9 +267,13 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 x-ref="goal_id"
                                 data-label="Goal">
                                 <option value=""></option>
+
                                 @foreach ($settings -> where('category', 'goal') as $goal)
+
                                     <option value="{{ $goal -> id }}">{{ $goal -> item }}</option>
+
                                 @endforeach
+
                             </select>
                         </div>
 
@@ -393,9 +425,6 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         </div>
 
                     </div>
-
-
-
                 </div>
 
                 <input type="hidden"
@@ -529,8 +558,6 @@ $breadcrumbs = [['Marketing', ''], [$title]];
             </div>
 
         </x-modals.modal>
-
-
         <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-3/4 lg:w-1/2'"
             :modalTitle="'Email Item'"
             :modalId="'show_email_modal'"
@@ -560,6 +587,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             x-ref="to_list">
 
                             @foreach ($settings -> where('category', 'users') as $user)
+
                                 <div class="grid cursor-pointer grid-cols-12 gap-4 p-2 hover:bg-gray-50">
                                     <div>
                                         <input type="checkbox"
@@ -575,6 +603,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                         <label for="{{ $user -> email }}">{{ $user -> email }}</label>
                                     </div>
                                 </div>
+
                             @endforeach
 
                             <div class="flex justify-around p-2">
@@ -589,6 +618,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                     <div x-show="show_subject_options">
 
                         @foreach (['a', 'b'] as $subject)
+
                             <div class="my-4">
                                 <div class="mt-1 flex w-full">
                                     <div class="flex w-full rounded-md shadow-sm">
@@ -599,7 +629,9 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                     id="input_{{ $subject }}"
                                                     name="subject_option"
                                                     value="{{ $subject }}"
+
                                                     @if ($subject == 'a') checked @endif
+
                                                     @click="active = document.querySelector('[name=\'subject_option\']:checked').value; if($el.checked) { $refs.email_subject.value = document.querySelector('[name=\'email_subject_line_'+$el.value+'\']').value; }"
                                                     :class="active === '{{ $subject }}' ? 'opacity-100' : 'opacity-50'">
                                             </div>
@@ -615,6 +647,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                     </div>
                                 </div>
                             </div>
+
                         @endforeach
 
                         <div class="my-4">

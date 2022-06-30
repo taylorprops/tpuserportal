@@ -391,6 +391,7 @@
     "intelephense.diagnostics.undefinedMethods": false,
     "editor.wordWrapColumn": 160,
     "html.format.wrapLineLength": 180,
-    "bladeFormatter.format.wrapLineLength": 180,
-    "scssFormatter.printWidth": 180
+    "bladeFormatter.format.wrapLineLength": 300,
+    "scssFormatter.printWidth": 180,
+    "bladeFormatter.format.wrapAttributes": "preserve"
 }
