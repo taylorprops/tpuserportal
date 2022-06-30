@@ -203,6 +203,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('.fc-dayGridMonth-button').click();
                         }, 1000);
                     })
                     .catch(function (error) { });
@@ -284,6 +285,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);
                     })
                     .catch(function (error) { });
@@ -301,6 +303,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);
                     })
                     .catch(function (error) { });
@@ -319,6 +322,7 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
+                            document.querySelector('.fc-dayGridMonth-button').click();
                         }, 1000);
                     })
                     .catch(function (error) { });
@@ -348,6 +352,7 @@ if (document.URL.match('marketing/schedule')) {
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
                             document.querySelector('#view_' + event_id).click();
+                            document.querySelector('.fc-dayGridMonth-button').click();
                         }, 300);
 
                     })
