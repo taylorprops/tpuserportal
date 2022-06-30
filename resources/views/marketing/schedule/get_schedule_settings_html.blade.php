@@ -130,7 +130,7 @@
                         <div x-show="show_companies">
                             <select class="form-element select md" name="companies[]" multiple x-ref="select" data-label="Select Companies">
                                 @foreach ($settings -> where('category', 'company') as $company)
-                                    <option value="{{ $company -> id }}">{{ $company -> item }}</option>
+                                    <option value="{{ $company -> id }}" @if (in_array($company -> id, $companies)) selected @endif>{{ $company -> item }}</option>
                                 @endforeach
                             </select>
                             <div class="flex justify-around p-2">
