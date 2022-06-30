@@ -58,7 +58,7 @@
         {{-- blade-formatter-enable --}}
 
         <div class="p-8 pr-2 border"
-            data-id="company_div_{{ $company -> id }}"\
+            data-id="company_div_{{ $company -> id }}"
             data-company-div="{{ $loop -> index }}"
             x-show="active_tab === '{{ $loop -> index }}'"
             x-transition>
@@ -98,6 +98,12 @@
 
                         <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
+                            {{-- blade-formatter-disable --}}
+                            @php
+                            $recipient_ids = [];
+                            @endphp
+                            {{-- blade-formatter-enable --}}
+
                             @foreach ($settings -> where('category', 'recipient') as $recipient)
 
                                 {{-- blade-formatter-disable --}}
@@ -107,6 +113,12 @@
                                 {{-- blade-formatter-enable --}}
 
                                 @if (in_array($company -> id, $recipient_companies))
+
+                                    {{-- blade-formatter-disable --}}
+                                    @php
+                                    $recipient_ids[] = $recipient -> id;
+                                    @endphp
+                                    {{-- blade-formatter-enable --}}
 
                                     <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm recipient"
                                         data-id="recipient_button_{{ $recipient -> id }}"
@@ -133,8 +145,6 @@
                     $recipient_companies = explode(',', $recipient -> company_ids);
                     @endphp
                     {{-- blade-formatter-enable --}}
-
-                    {{-- @if (in_array($company -> id, $recipient_companies)) --}}
 
                     <div x-show="active_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-8 pr-2" data-id="recipient_div_{{ $recipient -> id }}">
 
@@ -186,7 +196,7 @@
                                 <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="py-8">
 
                                     <a href="javascript:void(0)" class="button primary md"
-                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}')">Add
+                                        @click="add_item('{{ $company -> id }}', '{{ $recipient -> id }}', '{{ $state }}', '{{ implode(',', $states) }}', '{{ json_encode($recipient_ids) }}')">Add
                                         Item
                                         <i class="fa-light fa-plus ml-2"></i>
                                     </a>
@@ -195,37 +205,37 @@
 
                                         {{-- blade-formatter-disable --}}
 
-                                            @foreach ($checklist -> where('company_id', $company -> id) as $item )
+                                        @foreach ($checklist -> where('company_id', $company -> id) as $item )
 
-                                                @php
-                                                    $states_array = explode(',', $item -> states);
-                                                    $recipients_array = explode(',', $item -> recipient_ids);
-                                                @endphp
+                                            @php
+                                                $states_array = explode(',', $item -> states);
+                                                $recipients_array = explode(',', $item -> recipient_ids);
+                                            @endphp
 
-                                                @if (in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
+                                            @if (in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
 
-                                                    <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
-                                                        <div class="flex justify-start items-center py-2 space-x-8">
-                                                            <div class="item-handle">
-                                                                <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
-                                                            </div>
-                                                            <div>
-                                                                {!! $item -> data !!}
-                                                            </div>
+                                                <div class="flex justify-between max-w-800-px border-b pb-2 checklist-item" data-id="{{ $item -> id }}">
+                                                    <div class="flex justify-start items-center py-2 space-x-8">
+                                                        <div class="item-handle">
+                                                            <a href="javascript:void(0)" class="block"><i class="fa-light fa-bars"></i></a>
                                                         </div>
-                                                        <div class="flex items-center">
-                                                            <button class="button primary md"
-                                                                @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}')">
-                                                                Edit <i class="fa-solid fa-edit ml-2"></i>
-                                                            </button>
+                                                        <div>
+                                                            {!! $item -> data !!}
                                                         </div>
                                                     </div>
+                                                    <div class="flex items-center">
+                                                        <button class="button primary md"
+                                                            @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}', '{{ json_encode($recipient_ids) }}')">
+                                                            Edit <i class="fa-solid fa-edit ml-2"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
 
-                                                @endif
+                                            @endif
 
-                                            @endforeach
+                                        @endforeach
 
-                                            {{-- blade-formatter-enable --}}
+                                        {{-- blade-formatter-enable --}}
 
                                     </div>
 
@@ -236,8 +246,6 @@
                         </div>
 
                     </div>
-
-                    {{-- @endif --}}
 
                 @endforeach
 

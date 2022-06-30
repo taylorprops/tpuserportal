@@ -41,7 +41,7 @@ if (document.URL.match(/checklist/)) {
                     });
             },
 
-            add_item(company_id, recipient_id, selected_state, available_states) {
+            add_item(company_id, recipient_id, selected_state, available_states, select_recipient_ids) {
 
                 let scope = this;
                 scope.show_delete = false;
@@ -66,9 +66,16 @@ if (document.URL.match(/checklist/)) {
 
                 });
 
+                Array.from(scope.$refs.recipient_ids.options).forEach(function (option) {
+                    option.classList.remove('hidden');
+                    if (!select_recipient_ids.includes(option.value)) {
+                        option.classList.add('hidden');
+                    }
+                });
+
             },
 
-            edit_item(id, company_id, recipient_id, recipient_ids, state, states, data, available_states) {
+            edit_item(id, company_id, recipient_id, recipient_ids, state, states, data, available_states, select_recipient_ids) {
 
                 let scope = this;
                 scope.show_add_item_modal = true;
@@ -101,6 +108,13 @@ if (document.URL.match(/checklist/)) {
                     }
                     states_select.append(option);
 
+                });
+
+                Array.from(scope.$refs.recipient_ids.options).forEach(function (option) {
+                    option.classList.remove('hidden');
+                    if (!select_recipient_ids.includes(option.value)) {
+                        option.classList.add('hidden');
+                    }
                 });
 
                 tinymce.activeEditor.setContent(data);
