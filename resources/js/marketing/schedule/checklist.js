@@ -5,6 +5,8 @@ if (document.URL.match(/checklist/)) {
         return {
 
             active_tab: '0',
+            active_sub_tab: '0',
+            active_sub_sub_tab: '0',
             show_add_item_modal: false,
             modal_title: 'Add Item',
             show_delete: false,

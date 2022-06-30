@@ -143,7 +143,7 @@ if (document.URL.match('marketing/schedule')) {
                 this.show_calendar = true;
                 this.show_file = false;
                 this.show_html = false;
-                this.active_event = '';
+                // this.active_event = '';
             },
 
             edit_item(ele) {
@@ -203,8 +203,10 @@ if (document.URL.match('marketing/schedule')) {
                         scope.get_schedule();
                         setTimeout(function () {
                             document.querySelector('#show_details_' + event_id).click();
-                            document.querySelector('.fc-dayGridMonth-button').click();
-                        }, 1000);
+                            setTimeout(function () {
+                                document.querySelector('.fc-dayGridMonth-button').click();
+                            }, 100);
+                        }, 300);
                     })
                     .catch(function (error) { });
 

@@ -2,8 +2,8 @@
 
     <div class="sm:hidden">
 
-        <label for="tabs" class="sr-only">Select a tab</label>
-        <select id="tabs" name="tabs"
+        <label for="company_select" class="sr-only">Select a tab</label>
+        <select id="company_select" name="company_select"
             class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
             @change="active_tab = $el.value">
 
@@ -32,7 +32,8 @@
                             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '{{ $loop -> index }}',
                             'border-primary text-primary-dark': active_tab === '{{ $loop -> index }}'
                         }"
-                        @click="active_tab = '{{ $loop -> index }}';">{{ $company -> item }} </a>
+                        @click="active_tab = '{{ $loop -> index }}'; document.querySelector('[data-company-div=\''+active_tab+'\']').querySelectorAll('.recipient')[0].click();">{{ $company -> item }}
+                    </a>
 
                 @endforeach
 
@@ -53,21 +54,20 @@
             } elseif ($company -> id == 3) {
                 $states = config('global.heritage_title_active_states');
             }
-
         @endphp
         {{-- blade-formatter-enable --}}
 
         <div class="p-8 pr-2 border"
-            data-id="company_div_{{ $company -> id }}"
-            x-data="{ active_sub_tab: '0' }"
+            data-id="company_div_{{ $company -> id }}"\
+            data-company-div="{{ $loop -> index }}"
             x-show="active_tab === '{{ $loop -> index }}'"
             x-transition>
 
             <div>
 
                 <div class="sm:hidden">
-                    <label for="tabs" class="sr-only">Select a tab</label>
-                    <select id="tabs" name="tabs"
+                    <label for="recipient_select" class="sr-only">Select a tab</label>
+                    <select id="recipient_select" name="recipient_select"
                         class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                         @change="active_sub_tab = $el.value">
 
@@ -98,31 +98,23 @@
 
                         <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
-                            {{-- blade-formatter-disable --}}
-                            @php
-                            $loop_count = '0';
-                            @endphp
-                            {{-- blade-formatter-enable --}}
-
                             @foreach ($settings -> where('category', 'recipient') as $recipient)
 
+                                {{-- blade-formatter-disable --}}
                                 @php
-                                    $recipient_companies = explode(',', $recipient -> company_ids);
+                                $recipient_companies = explode(',', $recipient -> company_ids);
                                 @endphp
+                                {{-- blade-formatter-enable --}}
 
                                 @if (in_array($company -> id, $recipient_companies))
 
-                                    <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
+                                    <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm recipient"
                                         data-id="recipient_button_{{ $recipient -> id }}"
                                         :class="{
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop_count }}',
-                                            'border-primary text-primary-dark': active_sub_tab === '{{ $loop_count }}'
+                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop -> index }}',
+                                            'border-primary text-primary-dark': active_sub_tab === '{{ $loop -> index }}'
                                         }"
-                                        @click="active_sub_tab = '{{ $loop_count }}';">{{ $recipient -> item }}</a>
-
-                                    @php
-                                        $loop_count += 1;
-                                    @endphp
+                                        @click="active_sub_tab = '{{ $loop -> index }}';">{{ $recipient -> item }}</a>
 
                                 @endif
 
@@ -146,11 +138,11 @@
 
                     <div x-show="active_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-8 pr-2" data-id="recipient_div_{{ $recipient -> id }}">
 
-                        <div x-data="{ active_sub_sub_tab: '0' }">
+                        <div>
 
                             <div class="sm:hidden">
-                                <label for="tabs" class="sr-only">Select a tab</label>
-                                <select id="tabs" name="tabs"
+                                <label for="state_select" class="sr-only">Select a tab</label>
+                                <select id="state_select" name="state_select"
                                     class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                                     @change="active_sub_tab = $el.value">
 
