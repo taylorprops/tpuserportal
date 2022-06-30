@@ -1,6 +1,6 @@
 {{-- blade-formatter-disable --}}
 @php
-$title = 'Schedule Checklist';
+$title = 'Marketing Checklist';
 $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
 @endphp
 {{-- blade-formatter-enable --}}
