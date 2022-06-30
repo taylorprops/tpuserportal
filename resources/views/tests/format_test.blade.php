@@ -42,7 +42,6 @@
 
     </div>
 
-
     @foreach ($settings -> where('category', 'company') as $company)
 
         {{-- blade-formatter-disable --}}
@@ -102,7 +101,6 @@
 
                 </div>
 
-
                 @foreach ($settings -> where('category', 'recipient') as $recipient)
 
                     {{-- blade-formatter-disable --}}
@@ -116,7 +114,6 @@
                         <div x-show="active_sub_tab === '{{ $loop -> index }}'" x-transition" class="p-8 pr-2" data-id="recipient_div_{{ $recipient -> id }}">
 
                             <div x-data="{ active_sub_sub_tab: '0' }">
-
                                 <div class="sm:hidden">
                                     <label for="tabs" class="sr-only">Select a tab</label>
                                     <select id="tabs" name="tabs"
@@ -157,7 +154,6 @@
                                     </div>
 
                                 </div>
-
 
                                 @foreach ($states as $state)
 
