@@ -24,17 +24,17 @@
         <div class="settings-options" data-category="{{ $category }}">
 
             @foreach ($settings -> where('category', $category) as $setting)
-                <div class="my-2 border-b settings-item" data-id="{{ $setting -> id }}" x-data="{ show_color_picker: false, show_companies: false }">
+                <div class="border-b settings-item px-2" data-id="{{ $setting -> id }}" x-data="{ show_color_picker: false, show_companies: false }">
 
                     <div class="flex justify-between items-center">
 
                         <div class="flex justify-start items-center">
 
-                            <div class="w-12">
+                            <div class="w-8">
                                 <button type="button" class="block setting-handle w-full text-center text-gray-500"><i class="fa-light fa-bars"></i></button>
                             </div>
 
-                            <div class="" x-data="{ locked: {{ $setting -> locked }} }">
+                            <div class="w-6" x-data="{ locked: {{ $setting -> locked }} }">
                                 <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1"
                                     @if (auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0; }" @endif><i
                                         class="fa-duotone fa-lock"></i></a>
@@ -44,7 +44,7 @@
                             </div>
 
                             @if ($setting -> has_color == true)
-                                <div class="pl-2 relative">
+                                <div class="relative px-2">
                                     <div class="w-8 h-8 border-4 rounded-md bg-{{ $setting -> color }}-500" @click="show_color_picker = ! show_color_picker"></div>
                                     <div class="absolute left-10 top-0 w-48 bg-white z-40 border-4 rounded-md p-4" x-show="show_color_picker" x-transition
                                         @click.outside="show_color_picker = false">
@@ -79,52 +79,56 @@
                                     </div>
                                 @endif
 
-                                @if ($setting -> category == 'recipient')
-                                    {{-- blade-formatter-disable --}}
-                                    @php
-                                        $value = '';
-                                        if($setting -> company_ids != '' ){
-
-                                            $companies = explode(',', $setting -> company_ids);
-
-                                            $value = collect($companies) -> map(function($comp) {
-                                                if($comp == '1') {
-                                                    $initials = 'TP';
-                                                } else if($comp == '2') {
-                                                    $initials = 'HF';
-                                                } else if($comp == '3') {
-                                                    $initials = 'HT';
-                                                }
-                                                return $initials;
-                                            });
-                                            $value = $value -> implode(', ');
-                                        }
-
-                                    @endphp
-                                    {{-- blade-formatter-enable --}}
-                                    <div class="ml-2">
-                                        <button type="button" class="button primary sm" @click="show_companies = !show_companies">{{ $value }}</button>
-                                    </div>
-                                @endif
-
                             </div>
 
                         </div>
 
-                        <div class="pr-4">
-                            @if ($setting -> locked == false)
-                                <button type="button" class="button danger md no-text"
-                                    @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
-                                    <i class="fa-duotone fa-xmark fa-xl"></i>
-                                </button>
+                        <div class="flex justify-end items-center">
+
+                            @if ($setting -> category == 'recipient')
+                                {{-- blade-formatter-disable --}}
+                                @php
+                                    $value = '';
+                                    if($setting -> company_ids != '' ){
+
+                                        $companies = explode(',', $setting -> company_ids);
+
+                                        $value = collect($companies) -> map(function($comp) {
+                                            if($comp == '1') {
+                                                $initials = 'TP';
+                                            } else if($comp == '2') {
+                                                $initials = 'HF';
+                                            } else if($comp == '3') {
+                                                $initials = 'HT';
+                                            }
+                                            return $initials;
+                                        });
+                                        $value = $value -> implode(', ');
+                                    }
+
+                                @endphp
+                                {{-- blade-formatter-enable --}}
+                                <div class="ml-2">
+                                    <button type="button" class="button primary sm" @click="show_companies = !show_companies">{{ $value }}</button>
+                                </div>
                             @endif
+
+                            <div class="px-2 w-10">
+                                @if ($setting -> locked == false)
+                                    <button type="button" class="button danger md no-text"
+                                        @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
+                                        <i class="fa-duotone fa-xmark fa-xl"></i>
+                                    </button>
+                                @endif
+                            </div>
+
                         </div>
 
                     </div>
 
                     @if ($setting -> category == 'recipient')
                         <div x-show="show_companies">
-                            <select class="form-element select md" name="companies[]" multiple x-ref="select">
+                            <select class="form-element select md" name="companies[]" multiple x-ref="select" data-label="Select Companies">
                                 @foreach ($settings -> where('category', 'company') as $company)
                                     <option value="{{ $company -> id }}">{{ $company -> item }}</option>
                                 @endforeach
