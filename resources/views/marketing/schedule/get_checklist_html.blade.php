@@ -57,7 +57,11 @@
         @endphp
         {{-- blade-formatter-enable --}}
 
-        <div x-show="active_tab === '{{ $loop -> index }}'" data-id="company_div_{{ $company -> id }}" x-transition" class="p-8 pr-2 border" x-data="{ active_sub_tab: '0' }">
+        <div class="p-8 pr-2 border"
+            data-id="company_div_{{ $company -> id }}"
+            x-data="{ active_sub_tab: '0' }"
+            x-show="active_tab === '{{ $loop -> index }}'"
+            x-transition>
 
             <div>
 
@@ -94,23 +98,31 @@
 
                         <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
+                            {{-- blade-formatter-disable --}}
+                            @php
+                            $loop_count = '0';
+                            @endphp
+                            {{-- blade-formatter-enable --}}
+
                             @foreach ($settings -> where('category', 'recipient') as $recipient)
 
-                                {{-- blade-formatter-disable --}}
                                 @php
-                                $recipient_companies = explode(',', $recipient -> company_ids);
+                                    $recipient_companies = explode(',', $recipient -> company_ids);
                                 @endphp
-                                {{-- blade-formatter-enable --}}
 
                                 @if (in_array($company -> id, $recipient_companies))
 
                                     <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
                                         data-id="recipient_button_{{ $recipient -> id }}"
                                         :class="{
-                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop -> index }}',
-                                            'border-primary text-primary-dark': active_sub_tab === '{{ $loop -> index }}'
+                                            'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_tab !== '{{ $loop_count }}',
+                                            'border-primary text-primary-dark': active_sub_tab === '{{ $loop_count }}'
                                         }"
-                                        @click="active_sub_tab = '{{ $loop -> index }}';">{{ $recipient -> item }}</a>
+                                        @click="active_sub_tab = '{{ $loop_count }}';">{{ $recipient -> item }}</a>
+
+                                    @php
+                                        $loop_count += 1;
+                                    @endphp
 
                                 @endif
 
