@@ -30,6 +30,8 @@ class BrightListingsZoho extends Command
     public function handle()
     {
 
+        ini_set('memory_limit', '-1');
+
         $select = ['ListingId', 'ListingKey', 'MlsStatus', 'BuyerAgentMlsId', 'ClosePrice', 'ListPrice', 'CloseDate', 'MLSListDate', 'City', 'County', 'PostalCode', 'StateOrProvince', 'FullStreetAddress', 'ListAgentMlsId'];
 
         $data = BrightListings::select($select) -> get() -> toArray();
