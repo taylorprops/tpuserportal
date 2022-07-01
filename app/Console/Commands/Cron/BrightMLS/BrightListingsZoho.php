@@ -34,7 +34,7 @@ class BrightListingsZoho extends Command
 
         Zoho::truncate();
 
-        BrightListings::select($select) -> chunk(1000, function ($listings) {
+        BrightListings::select($select) -> chunk(5000, function ($listings) {
             foreach ($listings -> toArray() as $listing) {
                 Zoho::insert($listing);
             }

@@ -13,7 +13,6 @@ class ScheduleChecklist extends Model
     protected $table = 'marketing_schedule_checklist';
     protected $guarded = [];
 
-
     public function company()
     {
         return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'company_id');
@@ -22,11 +21,6 @@ class ScheduleChecklist extends Model
     public function recipient()
     {
         return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'recipient_id');
-    }
-
-    public function section()
-    {
-        return $this -> hasOne(\App\Models\Marketing\Schedule\ScheduleSettings::class, 'id', 'section_id');
     }
 
 }

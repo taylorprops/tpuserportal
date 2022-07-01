@@ -36,7 +36,7 @@ class TestsController extends Controller
 
         $keys = BrightListingsZoho::select('ListingKey') -> get() -> pluck('ListingKey');
 
-        BrightListings::select($select) -> whereNotIn('ListingKey', $keys) -> chunk(100, function ($listings) {
+        BrightListings::select($select) -> chunk(100, function ($listings) {
             foreach ($listings -> toArray() as $listing) {
                 BrightListingsZoho::insert($listing);
             }

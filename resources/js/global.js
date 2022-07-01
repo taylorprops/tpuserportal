@@ -1000,7 +1000,7 @@ setInterval(() => {
         .catch(function (error) {
             console.log(error);
         });
-}, 2000);
+}, 10000);
 
 
 

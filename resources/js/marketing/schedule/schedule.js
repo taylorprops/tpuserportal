@@ -674,7 +674,25 @@ if (document.URL.match('marketing/schedule')) {
                     counter.classList.remove('hidden');
                 }
 
-            }
+            },
+
+            get_checklist(company_id, recipient_id, states) {
+
+                axios.get('/marketing/get_checklist', {
+                    params: {
+                        company_id: company_id,
+                        recipient_id: recipient_id,
+                        states: states
+                    },
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
 
         }
 

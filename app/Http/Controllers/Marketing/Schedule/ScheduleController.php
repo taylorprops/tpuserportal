@@ -9,6 +9,7 @@ use App\Models\BrightMLS\BrightOffices;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\Marketing\InHouseAddresses;
 use App\Models\Marketing\Schedule\Schedule;
+use App\Models\Marketing\Schedule\ScheduleChecklist;
 use App\Models\Marketing\Schedule\ScheduleNotes;
 use App\Models\Marketing\Schedule\ScheduleSettings;
 use App\Models\Marketing\Schedule\ScheduleUploads;
@@ -227,6 +228,21 @@ class ScheduleController extends Controller
             $upload -> event_id = $event_id;
             $upload -> save();
         }
+    }
+
+    public function get_checklist(Request $request)
+    {
+
+        $company_id = $request -> company_id;
+        $recipient_id = $request -> recipient_id;
+        $states = $request -> states;
+
+        $checklists = ScheduleChecklist::where('active', true)
+            -> where('company_id', $company_id)
+            -> orderBy('order')
+            -> get();
+
+        return view('/marketing/schedule/get_event_checklist_html', compact('checklists', 'recipient_id', 'states'));
     }
 
     public function update_status(Request $request)

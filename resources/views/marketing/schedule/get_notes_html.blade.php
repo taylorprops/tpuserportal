@@ -36,7 +36,7 @@
                             @if ($note -> read == 0)
 
                                 <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
-                                    @click="delete_note($el, {{ $note -> event_id }}, {{ $note -> id }})">Delete <i class="fa-duotone fa-times-circle  fa-lg ml-2"></i></button>
+                                    @click="delete_note($el, {{ $note -> event_id }}, {{ $note -> id }})">Delete <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
                             @else
                                 <span class="text-success"><i class="fal fa-check mr-2"></i> Read</span>
 

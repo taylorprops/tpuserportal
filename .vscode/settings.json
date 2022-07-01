@@ -393,5 +393,7 @@
     "html.format.wrapLineLength": 180,
     "bladeFormatter.format.wrapLineLength": 300,
     "scssFormatter.printWidth": 180,
-    "bladeFormatter.format.wrapAttributes": "preserve"
+    "bladeFormatter.format.wrapAttributes": "preserve",
+    "editor.padding.bottom": 0,
+    "editor.padding.top": 50
 }

@@ -47,7 +47,7 @@
         data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}"
         data-focus-id="{{ $event -> focus_id }}">
 
-        <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false }">
+        <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
                 @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif
@@ -118,7 +118,7 @@
                     @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
                         <div class="mx-1 pl-4">
                             <div class="relative" x-show="!show_notes">
-                                <button type="button" class="block w-full h-full" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes">
+                                <button type="button" class="block w-full h-full" @click.stop="get_notes({{ $event -> id }}, $refs.notes_div); show_notes = !show_notes; show_checklist = false;">
                                     <i class="fa-duotone fa-notes fa-2x text-{{ $event -> company -> color }}-700"></i>
                                 </button>
 
@@ -304,7 +304,7 @@
                         <div class="mx-2 w-1 border-r"></div>
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
-                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+                            @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
@@ -319,6 +319,9 @@
                             <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
                                 <div class="py-2" role="none">
+
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                        @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
 
                                     <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
                                         @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
@@ -341,6 +344,19 @@
                 @else
                     <div class="hidden edit-button"></div>
                 @endif
+
+            </div>
+
+            <div x-show="show_checklist" x-transition>
+
+                <div class="p-4 m-2 rounded-lg bg-{{ $event -> company -> color }}-50">
+
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
+                            @click="show_checklist = false;">Close Checklist <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
+                    </div>
+
+                </div>
 
             </div>
 
