@@ -6,6 +6,7 @@ use App\Classes\Zimbra;
 use App\Helpers\Helper;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\BrightMLS\BrightListings;
+use App\Models\BrightMLS\BrightListingsZoho;
 use App\Models\BrightMLS\BrightOffices;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
@@ -29,7 +30,16 @@ class TestsController extends Controller
     public function test(Request $request)
     {
 
-        dd(time(), time() * rand());
+        ini_set('memory_limit', '-1');
+
+        $select = ['ListingId', 'ListingKey', 'MlsStatus', 'BuyerAgentMlsId', 'ClosePrice', 'ListPrice', 'CloseDate', 'MLSListDate', 'City', 'County', 'PostalCode', 'StateOrProvince', 'FullStreetAddress', 'ListAgentMlsId'];
+
+        $data = BrightListings::select($select) -> get() -> toArray();
+
+        BrightListingsZoho::truncate();
+        foreach (array_chunk($data, 1000) as $t) {
+            BrightListingsZoho::insert($t);
+        }
 
     }
 

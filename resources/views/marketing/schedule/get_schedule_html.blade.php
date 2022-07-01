@@ -76,13 +76,11 @@
                             {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i class="fa-light fa-arrow-right mx-2"></i>
                             {{ $event -> recipient -> item }}
                         </div>
-
                         @if ($event -> sending_notification_sent == true)
                             <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent
                                 <i class="fa-light fa-check ml-2"></i>
                             </div>
                         @endif
-
                     </div>
 
                 </div>
@@ -97,7 +95,6 @@
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status"
                             @click.outside="show_edit_status = false;">
                             <div class="p-4" role="none">
-
                                 @foreach ($settings -> where('category', 'status') as $status)
                                     <div class="group flex justify-between items-center p-2 rounded-lg @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
                                         @click.stop="if({{ $event -> status_id }} != {{ $status -> id }}) { update_status($el, {{ $event -> id }}, {{ $status -> id }}); } show_edit_status = false;">
@@ -112,7 +109,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-
                             </div>
 
                         </div>
