@@ -53,7 +53,7 @@
                 @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif
                 id="event_div_{{ $event -> id }}">
 
-                <div class="flex flex-wrap justify-start items-center space-x-2 cursor-pointer @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
+                <div class="flex flex-wrap justify-start items-center space-x-2 @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
 
                     <div>
                         {{ $event -> event_date }}
@@ -209,7 +209,7 @@
                 </div>
 
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
-                    <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 bg-{{ $event -> company -> color }}-50">
+                    <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 {{-- bg-{{ $event -> company -> color }}-50 --}}">
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                             @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">

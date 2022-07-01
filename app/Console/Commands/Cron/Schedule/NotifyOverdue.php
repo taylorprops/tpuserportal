@@ -34,6 +34,7 @@ class NotifyOverdue extends Command
         $events = Schedule::where('event_date', '<', date('Y-m-d'))
             -> where('active', true)
             -> whereNotIn('status_id', ['33', '24'])
+            -> where('sending_notification_sent', false)
             -> with(['company', 'recipient', 'status'])
             -> get();
 
@@ -57,6 +58,9 @@ class NotifyOverdue extends Command
 
             Mail::to($tos)
                 -> send(new EmailGeneral($message));
+
+            $event -> sending_notification_sent = true;
+            $event -> save();
 
         }
     }
