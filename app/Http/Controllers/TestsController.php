@@ -30,16 +30,29 @@ class TestsController extends Controller
     public function test(Request $request)
     {
 
-        ini_set('memory_limit', '-1');
-
         $select = ['ListingId', 'ListingKey', 'MlsStatus', 'BuyerAgentMlsId', 'ClosePrice', 'ListPrice', 'CloseDate', 'MLSListDate', 'City', 'County', 'PostalCode', 'StateOrProvince', 'FullStreetAddress', 'ListAgentMlsId'];
 
-        $data = BrightListings::select($select) -> get() -> toArray();
-
         BrightListingsZoho::truncate();
-        foreach (array_chunk($data, 1000) as $t) {
-            BrightListingsZoho::insert($t);
-        }
+
+        $keys = BrightListingsZoho::select('ListingKey') -> get() -> pluck('ListingKey');
+
+        BrightListings::select($select) -> whereNotIn('ListingKey', $keys) -> chunk(100, function ($listings) {
+            foreach ($listings -> toArray() as $listing) {
+                BrightListingsZoho::insert($listing);
+            }
+        });
+
+        // $data = BrightListings::select($select) -> whereNotIn('ListingKey', $keys) -> limit(10000) -> get() -> toArray();
+
+        // foreach (array_chunk($data, 100) as $t) {
+        //     BrightListingsZoho::insert($t);
+        // }
+
+        // BrightListingsZoho::truncate();
+
+        // $data = BrightListings::select($select) -> limit(10000) -> get() -> toArray();
+
+        // BrightListingsZoho::insert($data);
 
     }
 

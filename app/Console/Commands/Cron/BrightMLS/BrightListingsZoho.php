@@ -3,7 +3,6 @@
 namespace App\Console\Commands\Cron\BrightMLS;
 
 use App\Models\BrightMLS\BrightListings;
-use App\Models\BrightMLS\BrightListingsZoho as Zoho;
 use Illuminate\Console\Command;
 
 class BrightListingsZoho extends Command
@@ -30,16 +29,15 @@ class BrightListingsZoho extends Command
     public function handle()
     {
 
-        ini_set('memory_limit', '-1');
-
         $select = ['ListingId', 'ListingKey', 'MlsStatus', 'BuyerAgentMlsId', 'ClosePrice', 'ListPrice', 'CloseDate', 'MLSListDate', 'City', 'County', 'PostalCode', 'StateOrProvince', 'FullStreetAddress', 'ListAgentMlsId'];
 
-        $data = BrightListings::select($select) -> get() -> toArray();
+        BrightListingsZoho::truncate();
 
-        Zoho::truncate();
-        foreach (array_chunk($data, 1000) as $t) {
-            BrightListingsZoho::insert($t);
-        }
+        BrightListings::select($select) -> chunk(100, function ($listings) {
+            foreach ($listings -> toArray() as $listing) {
+                BrightListingsZoho::insert($listing);
+            }
+        });
 
     }
 }
