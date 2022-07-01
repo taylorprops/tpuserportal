@@ -2,10 +2,14 @@
 
     {{-- blade-formatter-disable --}}
     @php
+    $checklist_recipient_ids = $checklist -> recipient_ids;
+    $checklist_states = $checklist -> states;
 
-    $checklist_recipient_ids = [$checklist -> recipient_ids];
-    $checklist_states = [$checklist -> states];
-    $states = [$states];
+    $checklist_recipient_ids = explode(',', $checklist_recipient_ids);
+    $checklist_states = explode(',', $checklist_states);
+    if(!is_array($states)) {
+        $states = explode(',', $states);
+    }
     $states_match = false;
     $states_diff = array_diff($checklist_states, $states);
 

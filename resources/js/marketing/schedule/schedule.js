@@ -678,6 +678,7 @@ if (document.URL.match('marketing/schedule')) {
 
             get_checklist(company_id, recipient_id, states) {
 
+                let scope = this;
                 axios.get('/marketing/get_checklist', {
                     params: {
                         company_id: company_id,
@@ -686,7 +687,7 @@ if (document.URL.match('marketing/schedule')) {
                     },
                 })
                     .then(function (response) {
-                        console.log(response);
+                        scope.$refs.schedule_checklist_div.innerHTML = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
