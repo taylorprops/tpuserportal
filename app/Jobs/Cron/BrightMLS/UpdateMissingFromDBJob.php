@@ -3,13 +3,12 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class UpdateMissingFromDBJob implements ShouldQueue
@@ -36,93 +35,93 @@ class UpdateMissingFromDBJob implements ShouldQueue
     public function handle()
     {
 
-        try {
+        // try {
 
-            $this -> queueProgress(0);
+        $this -> queueProgress(0);
 
-            ini_set('memory_limit', '-1');
+        ini_set('memory_limit', '-1');
 
-            $rets = Helper::rets_login();
+        $rets = Helper::rets_login();
 
-            $this -> queueData(['Logging into Rets'], true);
-            if($rets) {
+        $this -> queueData(['Logging into Rets'], true);
+        if ($rets) {
 
-                $this -> queueData(['Logged into Rets'], true);
-                $resource = "Property";
-                $class = "ALL";
+            $this -> queueData(['Logged into Rets'], true);
+            $resource = "Property";
+            $class = "ALL";
 
-                $query = 'MlsStatus=|200004325490,200004324452,200004324454,200004324453,200004325494';
+            $query = 'MlsStatus=|200004325490,200004324452,200004324454,200004324453,200004325494';
 
-                $results = $rets -> Search(
-                    $resource,
-                    $class,
-                    $query,
-                    [
-                        'Select' => config('global.bright_listings_columns')
-                    ]
-                );
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => config('global.bright_listings_columns'),
+                ]
+            );
 
-                $this -> queueData(['Bright Query Complete'], true);
-                $results = $results -> toArray();
+            $this -> queueData(['Bright Query Complete'], true);
+            $results = $results -> toArray();
 
-                $bright_results = [];
-                foreach($results as $result) {
-                    $bright_results[] = $result['ListingKey'];
-                }
+            $bright_results = [];
+            foreach ($results as $result) {
+                $bright_results[] = $result['ListingKey'];
+            }
 
-                $db_results = BrightListings::select('ListingKey')
+            $db_results = BrightListings::select('ListingKey')
                 -> whereIn('MlsStatus', ['active', 'active under contract', 'pending', 'temp off market', 'expired', 'canceled'])
                 -> get()
                 -> pluck('ListingKey')
                 -> toArray();
-                $this -> queueData(['db_results complete'], true);
+            $this -> queueData(['db_results complete'], true);
 
-                $missing_from_db = array_diff($bright_results, $db_results);
+            $missing_from_db = array_diff($bright_results, $db_results);
 
-                $this -> queueData(['Missing:' => count($missing_from_db)], true);
+            $this -> queueData(['Missing:' => count($missing_from_db)], true);
 
-                $query = 'ListingKey='.implode(',', $missing_from_db);
+            $query = 'ListingKey='.implode(',', $missing_from_db);
 
-                $results = $rets -> Search(
-                    $resource,
-                    $class,
-                    $query,
-                    [
-                        'Select' => config('global.bright_listings_columns')
-                    ]
-                );
+            $results = $rets -> Search(
+                $resource,
+                $class,
+                $query,
+                [
+                    'Select' => config('global.bright_listings_columns'),
+                ]
+            );
 
-                $this -> queueData(['Rets Query Complete'], true);
-                $results = $results -> toArray();
+            $this -> queueData(['Rets Query Complete'], true);
+            $results = $results -> toArray();
 
-                foreach($results as $listing) {
+            foreach ($results as $listing) {
 
-                    $data = [];
-                    foreach($listing as $key => $value) {
-                        if($value != '') {
-                            $data[$key] = $value;
-                        }
+                $data = [];
+                foreach ($listing as $key => $value) {
+                    if ($value != '') {
+                        $data[$key] = $value;
                     }
-
-                    BrightListings::firstOrCreate(
-                        ['ListingKey' => $listing['ListingKey']],
-                        $data
-                    );
-
                 }
 
+                BrightListings::firstOrCreate(
+                    ['ListingKey' => $listing['ListingKey']],
+                    $data
+                );
+
             }
-            $this -> queueData(['All Done'], true);
 
-            $this -> queueProgress(100);
-
-            return;
-
-        } catch (\Throwable $exception) {
-            $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(180);
-            return;
         }
+        $this -> queueData(['All Done'], true);
+
+        $this -> queueProgress(100);
+
+        return;
+
+        // } catch (\Throwable $exception) {
+        //     $this -> queueData(['Failed' => 'Retrying'], true);
+        //     $this -> release(180);
+        //     return;
+        // }
 
     }
 }
