@@ -61,8 +61,28 @@ class UpdateMissingFromDBJob implements ShouldQueue
                 ]
             );
 
-            $this -> queueData(['Bright Query Complete'], true);
-            $results = $results -> toArray();
+            if ($results) {
+                $results = $results -> toArray();
+                $this -> queueData(['Bright Query Complete'], true);
+            } else {
+                $this -> queueData(['Bright Query Failed, Retrying'], true);
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Select' => config('global.bright_listings_columns'),
+                    ]
+                );
+
+                if ($results) {
+                    $this -> queueData(['Bright Query Complete'], true);
+                } else {
+                    $this -> queueData(['Bright Query Failed, Quitting'], true);
+                    return false;
+                }
+
+            }
 
             $bright_results = [];
             foreach ($results as $result) {
