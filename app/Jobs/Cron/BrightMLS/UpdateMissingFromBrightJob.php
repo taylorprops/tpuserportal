@@ -101,6 +101,8 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             $results = $results -> toArray();
 
+            $this -> queueData(['Bright Query Complete'], true);
+
             foreach ($results as $listing) {
 
                 $data = [];
@@ -118,6 +120,7 @@ class UpdateMissingFromBrightJob implements ShouldQueue
             }
 
         }
+        $this -> queueData(['Done'], true);
 
         $this -> queueProgress(100);
 
