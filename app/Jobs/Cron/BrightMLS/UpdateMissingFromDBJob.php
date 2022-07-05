@@ -66,6 +66,7 @@ class UpdateMissingFromDBJob implements ShouldQueue
                 $this -> queueData(['Bright Query Complete'], true);
             } else {
                 $this -> queueData(['Bright Query Failed, Retrying'], true);
+                sleep(5);
                 $results = $rets -> Search(
                     $resource,
                     $class,
