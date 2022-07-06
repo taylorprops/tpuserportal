@@ -124,6 +124,8 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
         $this -> queueProgress(100);
 
+        $rets -> Disconnect();
+
         // } catch (\Throwable $exception) {
         //     $this -> queueData(['Failed' => 'Retrying'], true);
         //     $this -> release(180);
