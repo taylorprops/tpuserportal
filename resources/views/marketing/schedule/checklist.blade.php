@@ -26,7 +26,7 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
         </div>
 
         <x-modals.modal
-            :modalWidth="'w-full sm:w-11/12 md:w-1/2'"
+            :modalWidth="'w-full sm:w-11/12 md:w-3/4'"
             :modalTitle="'Add/Edit Item'"
             :modalId="'show_add_item_modal'"
             x-show="show_add_item_modal"
@@ -47,9 +47,11 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                             <div>
                                 <select class="form-element select md" name="company_id" x-ref="company_id" data-label="Company">
 
+
                                     @foreach ($settings -> where('category', 'company') as $setting)
 
                                         <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
+
 
                                     @endforeach
 
@@ -65,9 +67,11 @@ $breadcrumbs = [['Schedule', '/marketing/schedule'], [$title]];
                         <div>
                             <select class="form-element select md h-44" name="recipient_ids[]" x-ref="recipient_ids" multiple data-label="Recipients">
 
+
                                 @foreach ($settings -> where('category', 'recipient') as $setting)
 
                                     <option value="{{ $setting -> id }}">{{ $setting -> item }}</option>
+
 
                                 @endforeach
 
