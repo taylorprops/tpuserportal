@@ -15,8 +15,6 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 2;
-
     /**
      * Create a new job instance.
      *
