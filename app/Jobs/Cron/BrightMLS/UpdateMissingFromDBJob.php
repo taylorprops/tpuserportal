@@ -55,7 +55,8 @@ class UpdateMissingFromDBJob implements ShouldQueue
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns'),
+                    'Select' => 'ListingKey',
+                    // 'Select' => config('global.bright_listings_columns'),
                 ]
             );
 
