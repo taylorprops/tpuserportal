@@ -35,6 +35,8 @@ class ScheduleChecklistController extends Controller
             $item = ScheduleChecklist::find($request -> id);
         } else {
             $item = new ScheduleChecklist();
+            $max_order = ScheduleChecklist::max('order');
+            $item -> order = $max_order + 1;
         }
 
         $recipient_ids = implode(',', $request -> recipient_ids);
