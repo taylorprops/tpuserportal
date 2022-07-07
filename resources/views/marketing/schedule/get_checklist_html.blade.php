@@ -7,8 +7,8 @@
             class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
             @change="active_tab = $el.value">
 
-            @foreach ($settings -> where('category', 'company') as $company)
 
+            @foreach ($settings -> where('category', 'company') as $company)
                 <option value="{{ $loop -> index }}">{{ $company -> item }}</option>
 
             @endforeach
@@ -25,8 +25,8 @@
 
             <nav class="-mb-px flex items-center space-x-12" aria-label="Tabs">
 
-                @foreach ($settings -> where('category', 'company') as $company)
 
+                @foreach ($settings -> where('category', 'company') as $company)
                     <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-id="company_button_{{ $company -> id }}"
                         :class="{
                             'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_tab !== '{{ $loop -> index }}',
@@ -43,8 +43,8 @@
 
     </div>
 
-    @foreach ($settings -> where('category', 'company') as $company)
 
+    @foreach ($settings -> where('category', 'company') as $company)
         {{-- blade-formatter-disable --}}
         @php
             if ($company -> id == 1) {
@@ -71,20 +71,19 @@
                         class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                         @change="active_sub_tab = $el.value">
 
-                        @foreach ($settings -> where('category', 'recipient') as $recipient)
 
+                        @foreach ($settings -> where('category', 'recipient') as $recipient)
                             {{-- blade-formatter-disable --}}
                             @php
                             $recipient_companies = explode(',', $recipient -> company_ids);
                             @endphp
                             {{-- blade-formatter-enable --}}
 
-                            @if (in_array($company -> id, $recipient_companies))
 
+                            @if (in_array($company -> id, $recipient_companies))
                                 <option value="{{ $loop -> index }}">{{ $recipient -> item }}</option>
 
                             @endif
-
                         @endforeach
 
                     </select>
@@ -104,16 +103,16 @@
                             @endphp
                             {{-- blade-formatter-enable --}}
 
-                            @foreach ($settings -> where('category', 'recipient') as $recipient)
 
+                            @foreach ($settings -> where('category', 'recipient') as $recipient)
                                 {{-- blade-formatter-disable --}}
                                 @php
                                 $recipient_companies = explode(',', $recipient -> company_ids);
                                 @endphp
                                 {{-- blade-formatter-enable --}}
 
-                                @if (in_array($company -> id, $recipient_companies))
 
+                                @if (in_array($company -> id, $recipient_companies))
                                     {{-- blade-formatter-disable --}}
                                     @php
                                     $recipient_ids[] = $recipient -> id;
@@ -129,7 +128,6 @@
                                         @click="active_sub_tab = '{{ $loop -> index }}';">{{ $recipient -> item }}</a>
 
                                 @endif
-
                             @endforeach
 
                         </nav>
@@ -138,8 +136,8 @@
 
                 </div>
 
-                @foreach ($settings -> where('category', 'recipient') as $recipient)
 
+                @foreach ($settings -> where('category', 'recipient') as $recipient)
                     {{-- blade-formatter-disable --}}
                     @php
                     $recipient_companies = explode(',', $recipient -> company_ids);
@@ -156,8 +154,8 @@
                                     class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
                                     @change="active_sub_tab = $el.value">
 
-                                    @foreach ($states as $state)
 
+                                    @foreach ($states as $state)
                                         <option value="{{ $state }}" selected>{{ $state }}</option>
 
                                     @endforeach
@@ -173,8 +171,8 @@
 
                                     <nav class="-mb-px flex items-center space-x-8 overflow-x-auto" aria-label="Tabs">
 
-                                        @foreach ($states as $state)
 
+                                        @foreach ($states as $state)
                                             <a href="javascript:void(0)" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-id="state_{{ $state }}"
                                                 :class="{
                                                     'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': active_sub_sub_tab !==
@@ -191,8 +189,8 @@
 
                             </div>
 
-                            @foreach ($states as $state)
 
+                            @foreach ($states as $state)
                                 <div x-show="active_sub_sub_tab === '{{ $loop -> index }}'" x-transition" class="py-8">
 
                                     <a href="javascript:void(0)" class="button primary md"
@@ -205,12 +203,14 @@
 
                                         {{-- blade-formatter-disable --}}
 
+
                                         @foreach ($checklist -> where('company_id', $company -> id) as $item )
 
                                             @php
                                                 $states_array = explode(',', $item -> states);
                                                 $recipients_array = explode(',', $item -> recipient_ids);
                                             @endphp
+
 
                                             @if (in_array($state, $states_array) && in_array($recipient -> id, $recipients_array))
 
@@ -223,13 +223,18 @@
                                                             {!! $item -> data !!}
                                                         </div>
                                                     </div>
-                                                    <div class="flex items-center">
+                                                    <div class="flex items-center space-x-3">
                                                         <button class="button primary md"
                                                             @click="edit_item('{{ $item -> id }}', '{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}', '{{ json_encode($recipient_ids) }}')">
                                                             Edit <i class="fa-solid fa-edit ml-2"></i>
                                                         </button>
+                                                        <button class="button primary md"
+                                                            @click="clone_item('{{ $item -> company_id }}', '{{ $recipient -> id }}', '{{ $item -> recipient_ids }}', '{{ $state }}', '{{ $item -> states }}', `{{ $item -> data }}`, '{{ implode(',', $states) }}', '{{ json_encode($recipient_ids) }}')">
+                                                            Clone <i class="fa-duotone fa-clone ml-2"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
+
 
                                             @endif
 

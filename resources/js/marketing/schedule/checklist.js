@@ -131,6 +131,61 @@ if (document.URL.match(/checklist/)) {
 
             },
 
+            clone_item(company_id, recipient_id, recipient_ids, state, states, data, available_states, select_recipient_ids) {
+
+                let scope = this;
+                scope.show_add_item_modal = true;
+                scope.clear_form();
+                scope.show_delete = false;
+
+                scope.$refs.company_id.value = company_id;
+                scope.$refs.recipient_id.value = recipient_id;
+                scope.$refs.state.value = state;
+
+                let recipient_ids_select = scope.$refs.recipient_ids;
+                recipient_ids = recipient_ids.split(',');
+                for (let i = 0; i < recipient_ids_select.options.length; i++) {
+                    recipient_ids_select.options[i].selected = recipient_ids.indexOf(recipient_ids_select.options[i].value) >= 0;
+                }
+
+                let states_select = scope.$refs.states_select;
+                states = states.split(',');
+                available_states = available_states.split(',');
+
+                states_select.innerHTML = '';
+                available_states.forEach(function (state) {
+
+                    let option = document.createElement('option');
+                    option.value = state;
+                    option.text = state;
+                    if (states.includes(state)) {
+                        option.selected = true;
+                    }
+                    states_select.append(option);
+
+                });
+
+                Array.from(scope.$refs.recipient_ids.options).forEach(function (option) {
+                    option.classList.remove('hidden');
+                    if (!select_recipient_ids.includes(option.value)) {
+                        option.classList.add('hidden');
+                    }
+                });
+
+                tinymce.activeEditor.setContent(data);
+
+                let tiny_interval = window.setInterval(function () {
+                    if (tinymce.activeEditor.getContent() == '') {
+                        tinymce.activeEditor.setContent(data);
+                    } else {
+                        clearInterval(tiny_interval);
+                    }
+                }, 500);
+
+
+
+            },
+
             save_item(ele) {
 
                 let scope = this;
