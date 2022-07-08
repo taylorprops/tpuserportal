@@ -44,7 +44,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
-            if(!$rets) {
+            if (!$rets) {
                 sleep(5);
                 $this -> queueData(['Status 2:' => 'Attempting Login Again'], true);
                 $rets = Helper::rets_login();
@@ -70,7 +70,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
             return true;
 
-        } catch (\Throwable $exception) {
+        } catch (\Throwable$exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
             $this -> release(90);
             return;
@@ -149,7 +149,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 $MemberKey = $agent['MemberKey'];
                 unset($agent_details['MemberKey']);
 
-                if($agent['MemberEmail'] != 'qatestemail@mris.net') {
+                if ($agent['MemberEmail'] != 'qatestemail@mris.net') {
 
                     $add_agent = BrightAgentRoster::firstOrCreate(
                         ['MemberKey' => $MemberKey],
@@ -200,31 +200,33 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $this -> queueData(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
 
         if ($agents_in_bright_count != $agents_in_db_count) {
-            $deactivate_agents = [];
-            foreach ($agents_in_db as $agent) {
-                if (! in_array($agent, $agents_in_bright_array)) {
-                    $deactivate_agents[] = $agent;
-                }
-            }
+            // $deactivate_agents = [];
+            // foreach ($agents_in_db as $agent) {
+            //     if (! in_array($agent, $agents_in_bright_array)) {
+            //         $deactivate_agents[] = $agent;
+            //     }
+            // }
+            $deactivate_agents = array_diff($agents_in_db, $agents_in_bright_array);
 
             $this -> queueProgress(70);
 
             if (count($deactivate_agents) > 0) {
                 BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
-                -> update([
-                    'active' => 'no',
-                    'date_purged' => date('Y-m-d'),
-                ]);
+                    -> update([
+                        'active' => 'no',
+                        'date_purged' => date('Y-m-d'),
+                    ]);
             }
 
             $this -> queueProgress(75);
 
-            $missing_agents = [];
-            foreach ($agents_in_bright_array as $agent) {
-                if (! in_array($agent, $agents_in_db)) {
-                    $missing_agents[] = $agent;
-                }
-            }
+            // $missing_agents = [];
+            // foreach ($agents_in_bright_array as $agent) {
+            //     if (!in_array($agent, $agents_in_db)) {
+            //         $missing_agents[] = $agent;
+            //     }
+            // }
+            $missing_agents = array_diff($agents_in_bright_array, $agents_in_db);
 
             $this -> queueProgress(80);
 
@@ -271,21 +273,20 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
         // remove unwanted emails
         $reject_emails = ['yopmail.com', 'brightmls.com', 'mris.net'];
-        $agents = BrightAgentRoster::where(function($query) use ($reject_emails) {
-            foreach($reject_emails as $reject) {
+        $agents = BrightAgentRoster::where(function ($query) use ($reject_emails) {
+            foreach ($reject_emails as $reject) {
                 $query -> orWhere('MemberEmail', 'like', '%'.$reject.'%');
             }
         })
-        -> update([
-            'active' => 'no',
-            'date_purged' => date('Y-m-d')
-        ]);
+            -> update([
+                'active' => 'no',
+                'date_purged' => date('Y-m-d'),
+            ]);
 
         $agents_count_after_purge = BrightAgentRoster::get() -> count();
         $this -> queueData(['Emails purged', 'new count after purge' => $agents_count_after_purge], true);
         $this -> queueProgress(95);
 
     }
-
 
 }

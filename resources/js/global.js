@@ -308,7 +308,8 @@ window.text_editor = function (options) {
     }
     // options.content_style = 'body { font-size: .9rem; }',
     // options.content_css = '/css/tinymce.css';
-    options.content_style = "body { font-size: 12pt; font-family: Arial; }";
+    // options.content_style = "body { font-size: 12pt; font-family: Arial; }";
+    options.content_style = "body { font-family: Arial; }";
     // options.forced_root_block = false;
     options.branding = false;
     options.images_upload_handler = image_upload_handler;

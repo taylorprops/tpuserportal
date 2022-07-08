@@ -6,7 +6,6 @@ use App\Classes\Zimbra;
 use App\Helpers\Helper;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\BrightMLS\BrightListings;
-use App\Models\BrightMLS\BrightListingsZoho;
 use App\Models\BrightMLS\BrightOffices;
 use App\Models\DocManagement\Archives\Documents;
 use App\Models\DocManagement\Archives\Transactions;
@@ -30,29 +29,129 @@ class TestsController extends Controller
     public function test(Request $request)
     {
 
-        $select = ['ListingId', 'ListingKey', 'MlsStatus', 'BuyerAgentMlsId', 'ClosePrice', 'ListPrice', 'CloseDate', 'MLSListDate', 'City', 'County', 'PostalCode', 'StateOrProvince', 'FullStreetAddress', 'ListAgentMlsId'];
+        ini_set('memory_limit', '-1');
 
-        BrightListingsZoho::truncate();
+        $rets = Helper::rets_login();
 
-        $keys = BrightListingsZoho::select('ListingKey') -> get() -> pluck('ListingKey');
+        $resource = 'ActiveAgent';
+        $class = 'ActiveMember';
 
-        BrightListings::select($select) -> chunk(100, function ($listings) {
-            foreach ($listings -> toArray() as $listing) {
-                BrightListingsZoho::insert($listing);
+        $query = '(MemberStatus=|Active)';
+
+        $results = $rets -> Search(
+            $resource,
+            $class,
+            $query,
+            [
+                'Count' => '0',
+                'Select' => 'MemberKey',
+            ]
+        );
+
+        $agents_in_bright = $results -> toArray();
+        $agents_in_bright_count = count($agents_in_bright);
+        $agents_in_bright_array = [];
+        foreach ($agents_in_bright as $agent_in_bright) {
+            $agents_in_bright_array[] = (int) $agent_in_bright['MemberKey'];
+        }
+
+        // $this -> queueProgress(60);
+
+        $agents_in_db = BrightAgentRoster::where('active', 'yes') -> get() -> pluck('MemberKey') -> toArray();
+        $agents_in_db_count = count($agents_in_db);
+
+        // $this -> queueProgress(65);
+
+        dump(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
+
+        if ($agents_in_bright_count != $agents_in_db_count) {
+            // $deactivate_agents = [];
+            // foreach ($agents_in_db as $agent) {
+            //     if (! in_array($agent, $agents_in_bright_array)) {
+            //         $deactivate_agents[] = $agent;
+            //     }
+            // }
+            $deactivate_agents = array_diff($agents_in_db, $agents_in_bright_array);
+            // dd($deactivate_agents);
+
+            // $this -> queueProgress(70);
+
+            if (count($deactivate_agents) > 0) {
+                BrightAgentRoster::whereIn('MemberKey', $deactivate_agents)
+                    -> update([
+                        'active' => 'no',
+                        'date_purged' => date('Y-m-d'),
+                    ]);
             }
-        });
 
-        // $data = BrightListings::select($select) -> whereNotIn('ListingKey', $keys) -> limit(10000) -> get() -> toArray();
+            // $this -> queueProgress(75);
 
-        // foreach (array_chunk($data, 100) as $t) {
-        //     BrightListingsZoho::insert($t);
-        // }
+            // $missing_agents = [];
+            // foreach ($agents_in_bright_array as $agent) {
+            //     if (!in_array($agent, $agents_in_db)) {
+            //         $missing_agents[] = $agent;
+            //     }
+            // }
+            $missing_agents = array_diff($agents_in_bright_array, $agents_in_db);
+            dd($missing_agents);
+            // $this -> queueProgress(80);
 
-        // BrightListingsZoho::truncate();
+            if (count($missing_agents) > 0) {
+                $agents_in_db_string = implode(', ', $missing_agents);
 
-        // $data = BrightListings::select($select) -> limit(10000) -> get() -> toArray();
+                $query = '(MemberKey='.$agents_in_db_string.')';
 
-        // BrightListingsZoho::insert($data);
+                $results = $rets -> Search(
+                    $resource,
+                    $class,
+                    $query,
+                    [
+                        'Count' => 0,
+                        'Limit' => 1000,
+                    ]
+                );
+
+                $agents = $results -> toArray();
+
+                // $this -> queueProgress(85);
+
+                if (count($agents) > 0) {
+                    foreach ($agents as $agent) {
+                        $agent_details = array_filter($agent);
+                        $agent['active'] = 'yes';
+                        $MemberKey = $agent['MemberKey'];
+                        unset($agent_details['MemberKey']);
+
+                        $add_agent = BrightAgentRoster::firstOrCreate(
+                            ['MemberKey' => $MemberKey],
+                            $agent_details
+                        );
+
+                        $add_agent -> save();
+                    }
+                }
+            }
+        }
+
+        $agents_count = BrightAgentRoster::get() -> count();
+        dump(['Agents Removed', 'new count after' => $agents_count], true);
+        // $this -> queueProgress(90);
+
+        // remove unwanted emails
+        $reject_emails = ['yopmail.com', 'brightmls.com', 'mris.net'];
+        $agents = BrightAgentRoster::where(function ($query) use ($reject_emails) {
+            foreach ($reject_emails as $reject) {
+                $query -> orWhere('MemberEmail', 'like', '%'.$reject.'%');
+            }
+        })
+            -> update([
+                'active' => 'no',
+                'date_purged' => date('Y-m-d'),
+            ]);
+
+        $agents_count_after_purge = BrightAgentRoster::get() -> count();
+        dump(['Emails purged', 'new count after purge' => $agents_count_after_purge], true);
+        // $this -> queueProgress(95);
 
     }
 
@@ -507,7 +606,7 @@ class TestsController extends Controller
         $query = '(ModificationTimestamp='.$mod_time.'+)';
 
         if (Helper::access_protected_property($rets, 'rets_session_id') == '') {
-            // $this -> queueData(['login failed, retrying'], true);
+            dump(['login failed, retrying'], true);
             sleep(5);
             $rets = new \PHRETS\Session($rets_config);
             $connect = $rets -> Login();
@@ -575,13 +674,13 @@ class TestsController extends Controller
             //     ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'error' ) as error,
             //     ( select count(*) from archives.transactions where data_source = 'skyslope' and docs_added = 'no' ) as not_added"
             // );
-            // $this -> queueData([$stats], true);
+            dump([$stats], true);
 
             $data = '';
             foreach ($transactions as $transaction) {
                 $data .= "(listingGuid = '".$transaction -> listingGuid . "' and saleGuid = '".$transaction -> saleGuid . "') or ";
             }
-            // $this -> queueData([$data], true);
+            dump([$data], true);
             //$this -> queueData(['count' => count($transactions)], true);
 
             $auth = $this -> skyslope_auth();
