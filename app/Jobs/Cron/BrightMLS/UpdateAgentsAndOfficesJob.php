@@ -241,7 +241,6 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                     foreach ($agents as $agent) {
 
-                        $agent['active'] = 'yes';
                         $agent_details = array_filter($agent);
 
                         $MemberKey = $agent['MemberKey'];
@@ -251,6 +250,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                             ['MemberKey' => $MemberKey],
                             $agent_details
                         );
+                        $add_agent -> active = 'yes';
                         $add_agent -> save();
 
                     }
