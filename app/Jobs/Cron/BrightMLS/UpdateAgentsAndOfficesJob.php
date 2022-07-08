@@ -133,7 +133,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $agents = $results -> toArray();
         $total_found = count($agents);
 
-        $agents_count_before = BrightAgentRoster::get() -> count();
+        $agents_count_before = BrightAgentRoster::where('active', 'yes') -> get() -> count();
 
         if ($total_found > 0) {
             $progress = 20;
@@ -160,7 +160,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             }
         }
 
-        $agents_count_after = BrightAgentRoster::get() -> count();
+        $agents_count_after = BrightAgentRoster::where('active', 'yes') -> get() -> count();
         $this -> queueData(['Agents', 'agents count before' => $agents_count_before, 'agents count after' => $agents_count_after], true);
     }
 
@@ -250,12 +250,11 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 $this -> queueProgress(85);
 
                 if (count($agents) > 0) {
-                    $keys = [];
+
                     foreach ($agents as $agent) {
-                        $agent_details = array_filter($agent);
                         $agent['active'] = 'yes';
+                        $agent_details = array_filter($agent);
                         $MemberKey = $agent['MemberKey'];
-                        $keys[] = $MemberKey;
                         unset($agent_details['MemberKey']);
 
                         $add_agent = BrightAgentRoster::firstOrCreate(
@@ -265,7 +264,6 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                         $add_agent -> save();
                     }
-                    // $this -> queueData([$keys], true);
 
                     $this -> queueData(['Agents Added from Bright' => count($agents)], true);
 
