@@ -169,7 +169,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $resource = 'ActiveAgent';
         $class = 'ActiveMember';
 
-        $query = '(MemberStatus=|Active)';
+        $query = '(MemberStatus=|Active),~(MemberEmail=*yopmail.com*, *brightmls.com*, *mris.net*)';
 
         $results = $rets -> Search(
             $resource,
