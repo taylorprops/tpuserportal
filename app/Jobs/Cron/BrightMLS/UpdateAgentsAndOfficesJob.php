@@ -207,6 +207,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             //     }
             // }
             $deactivate_agents = array_diff($agents_in_db, $agents_in_bright_array);
+            $this -> queueData(['Agents to Deactivate' => count($deactivate_agents)], true);
 
             $this -> queueProgress(70);
 
@@ -227,6 +228,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             //     }
             // }
             $missing_agents = array_diff($agents_in_bright_array, $agents_in_db);
+            $this -> queueData(['Agents to Add' => count($missing_agents)], true);
 
             $this -> queueProgress(80);
 
@@ -246,6 +248,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 );
 
                 $agents = $results -> toArray();
+                $this -> queueData(['Agents Added from Bright' => count($agents)], true);
 
                 $this -> queueProgress(85);
 
@@ -268,7 +271,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         }
 
         $agents_count = BrightAgentRoster::get() -> count();
-        $this -> queueData(['Agents Removed', 'new count after' => $agents_count], true);
+        $this -> queueData(['Agents Removed and Added', 'new count after' => $agents_count], true);
         $this -> queueProgress(90);
 
         // remove unwanted emails
