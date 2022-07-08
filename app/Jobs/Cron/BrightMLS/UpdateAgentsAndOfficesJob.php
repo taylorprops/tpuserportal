@@ -71,9 +71,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             return true;
 
         } catch (\Throwable$exception) {
-            $this -> queueData(['Failed' => 'Retrying'], true);
-            $this -> release(90);
-            return;
+            $this -> queueData(['Failed'], true);
         }
 
     }
@@ -248,6 +246,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 );
 
                 $agents = $results -> toArray();
+
                 $this -> queueData(['Agents Added from Bright' => count($agents)], true);
 
                 $this -> queueProgress(85);
