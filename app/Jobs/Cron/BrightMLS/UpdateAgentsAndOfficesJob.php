@@ -271,7 +271,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             }
         }
 
-        $agents_count = BrightAgentRoster::get() -> count();
+        $agents_count = BrightAgentRoster::where('active', 'yes') -> get() -> count();
         $this -> queueData(['Agents Removed and Added', 'new count after' => $agents_count], true);
         $this -> queueProgress(90);
 
@@ -287,7 +287,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 'date_purged' => date('Y-m-d'),
             ]);
 
-        $agents_count_after_purge = BrightAgentRoster::get() -> count();
+        $agents_count_after_purge = BrightAgentRoster::where('active', 'yes') -> get() -> count();
         $this -> queueData(['Emails purged', 'new count after purge' => $agents_count_after_purge], true);
         $this -> queueProgress(95);
 
