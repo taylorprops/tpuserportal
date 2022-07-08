@@ -100,9 +100,7 @@ if (document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/save_item', formData)
                     .then(function (response) {
                         ele.innerHTML = button_html;
-                        console.log(scope.show_item_modal);
                         scope.show_item_modal = false;
-                        console.log(scope.show_item_modal);
                         scope.clear_form(form);
                         scope.get_schedule();
                         toastr.success('Item Successfully Added/Edited');
