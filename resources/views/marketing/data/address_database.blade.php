@@ -155,7 +155,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
 
                                         @foreach ($states as $state)
                                             {{-- blade-formatter-disable --}}
-@php
+                                            @php
                                                 $disabled_los = null;
                                                 if (!in_array($state, $states_loan_officers)) {
                                                     $disabled_los = true;
@@ -166,7 +166,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                 }
 
                                             @endphp
-{{-- blade-formatter-enable --}}
+                                            {{-- blade-formatter-enable --}}
 
                                             <div
                                                 class="state_div @if ($disabled_los) disabled_loan_officer @endif @if ($disabled_test_center) disabled_test_center @endif">
@@ -176,10 +176,14 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                     name="states[]"
                                                     value="{{ $state }}"
                                                     data-label="{{ $state }}"
+
+
                                                     @if ($state == 'MD') checked @endif
                                                     @click="location_data('{{ $state }}'); clear_results();">
 
                                             </div>
+
+
                                         @endforeach
 
                                     </div>
@@ -203,8 +207,6 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                     x-show="list_group != 'test_center_selected'">
 
                                     <div class="text-gray-500 mb-3">Counties</div>
-
-
                                     <div
                                         class="p-2 rounded bg-gray-50 w-96 min-h-150-px max-h-300-px overflow-y-auto">
 
@@ -276,8 +278,6 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                     </form>
 
                 </div>
-
-
                 <div class="col-span-1">
 
                     <div class="border-4 border-green-200 p-4 rounded-lg relative">
@@ -319,16 +319,18 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         <div class="mt-6">
                             <div class="mb-3 text-xl font-semibold">Recent Additions</div>
                             <div class="max-h-200-px overflow-y-auto">
+
+
                                 @foreach ($recently_added_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_added }}</div>
                                         <div>{{ $email -> added }}</div>
                                     </div>
+
+
                                 @endforeach
                             </div>
                         </div>
-
-
                     </div>
 
                     <div class="border-4 border-red-200 mt-12 p-4 rounded-lg relative">
@@ -359,16 +361,18 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         <div class="mt-6">
                             <div class="mb-3 text-xl font-semibold">Recent Purges</div>
                             <div class="max-h-200-px overflow-y-auto">
+
+
                                 @foreach ($purged_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_purged }}</div>
                                         <div>{{ $email -> purged }}</div>
                                     </div>
+
+
                                 @endforeach
                             </div>
                         </div>
-
-
                     </div>
 
                 </div>
