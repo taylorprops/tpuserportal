@@ -253,10 +253,12 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 $this -> queueProgress(85);
 
                 if (count($agents) > 0) {
+                    $keys = [];
                     foreach ($agents as $agent) {
                         $agent_details = array_filter($agent);
                         $agent['active'] = 'yes';
                         $MemberKey = $agent['MemberKey'];
+                        $keys[] = $MemberKey;
                         unset($agent_details['MemberKey']);
 
                         $add_agent = BrightAgentRoster::firstOrCreate(
@@ -266,6 +268,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                         $add_agent -> save();
                     }
+                    this -> queueData([$keys]);
                 }
             }
         }

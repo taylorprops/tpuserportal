@@ -93,7 +93,6 @@ class TestsController extends Controller
             //     }
             // }
             $missing_agents = array_diff($agents_in_bright_array, $agents_in_db);
-            dd($missing_agents);
             // $this -> queueProgress(80);
 
             if (count($missing_agents) > 0) {
@@ -120,8 +119,8 @@ class TestsController extends Controller
                         $agent_details = array_filter($agent);
                         $agent['active'] = 'yes';
                         $MemberKey = $agent['MemberKey'];
+                        dump($agent_details);
                         unset($agent_details['MemberKey']);
-
                         $add_agent = BrightAgentRoster::firstOrCreate(
                             ['MemberKey' => $MemberKey],
                             $agent_details
