@@ -22,6 +22,7 @@
 
         <div class="flex flex-wrap -mx-4 mb-2">
 
+
             @foreach ($metrics -> all() as $metric)
                 @include('queue-monitor::partials.metrics-card', [
                     'metric' => $metric,
@@ -61,7 +62,6 @@
                     <select name="queue" id="filter_queues" class="w-full p-2 bg-gray-200 border-2 border-gray-300 rounded">
                         <option value="all">All</option>
 
-
                         @foreach ($queues as $queue)
                             <option @if ($filters['queue'] === $queue) selected @endif value="{{ $queue }}">
                                 {{ __($queue) }}
@@ -96,6 +96,7 @@
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Job')</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Details')</th>
 
+
                     @if (config('queue-monitor.ui.show_custom_data'))
                         <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Custom Data')</th>
 
@@ -105,6 +106,7 @@
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Duration')</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Started')</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Error')</th>
+
 
                     @if (config('queue-monitor.ui.allow_deletion'))
                         <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Action')</th>
@@ -120,6 +122,7 @@
                     <tr class="font-sm leading-relaxed">
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+
 
                             @if (!$job -> isFinished())
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-blue-200 text-blue-800">
@@ -162,10 +165,11 @@
 
                         </td>
 
+
                         @if (config('queue-monitor.ui.show_custom_data'))
                             <td class="p-4 text-gray-800 border-b border-gray-200">
 
-                                <div class="w-96 h-32 text-xs p-1 border rounded overflow-auto">
+                                <div class="w-96 h-48 text-xs p-1 border rounded overflow-auto">
                                     <pre>
                                     {{ json_encode($job -> getData(), JSON_PRETTY_PRINT) }}
                                     </pre>
@@ -176,6 +180,7 @@
                         @endif
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+
 
                             @if ($job -> progress !== null)
                                 <div class="w-32">
@@ -205,6 +210,7 @@
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
+
                             @if ($job -> hasFailed() && $job -> exception_message !== null)
                                 <div class="w-64 h-32 text-xs p-1 border rounded">{{ $job -> exception_message }}</div>
                             @else
@@ -212,6 +218,7 @@
                             @endif
 
                         </td>
+
 
                         @if (config('queue-monitor.ui.allow_deletion'))
                             <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
@@ -269,7 +276,6 @@
                             <div>
                                 @lang('Showing')
 
-
                                 @if ($jobs -> total() > 0)
                                     <span class="font-medium">{{ $jobs -> firstItem() }}</span> @lang('to')
                                     <span class="font-medium">{{ $jobs -> lastItem() }}</span> @lang('of')
@@ -282,13 +288,11 @@
 
                                 <a class="py-2 px-4 mx-1 text-xs font-medium @if (!$jobs -> onFirstPage()) bg-gray-200 hover:bg-gray-300 cursor-pointer @else text-gray-600 bg-gray-100 cursor-not-allowed @endif rounded"
 
-
                                     @if (!$jobs -> onFirstPage()) href="{{ $jobs -> previousPageUrl() }}" @endif>
                                     @lang('Previous')
                                 </a>
 
                                 <a class="py-2 px-4 mx-1 text-xs font-medium @if ($jobs -> hasMorePages()) bg-gray-200 hover:bg-gray-300 cursor-pointer @else text-gray-600 bg-gray-100 cursor-not-allowed @endif rounded"
-
 
                                     @if ($jobs -> hasMorePages()) href="{{ $jobs -> url($jobs -> currentPage() + 1) }}" @endif>
                                     @lang('Next')
@@ -307,6 +311,7 @@
         </table>
 
     </div>
+
 
     @if (config('queue-monitor.ui.allow_purge'))
         <div class="mt-12">
