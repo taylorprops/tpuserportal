@@ -100,10 +100,17 @@ if (document.URL.match('marketing/schedule')) {
                     .then(function (response) {
                         ele.innerHTML = button_html;
                         toastr.success('Item Successfully Added');
-                        scope.get_schedule();
+                        console.log(scope.show_item_modal);
                         scope.show_item_modal = false;
+                        console.log(scope.show_item_modal);
                         scope.clear_form(form);
-                        document.querySelector('#event_div_' + event_id).click();
+                        scope.get_schedule();
+                        setTimeout(function () {
+                            if (event_id) {
+                                document.querySelector('#event_div_' + event_id).click();
+                            }
+                        }, 500);
+
                     })
                     .catch(function (error) {
                         display_errors(error, ele, button_html);
