@@ -86,6 +86,7 @@ if (document.URL.match('marketing/schedule')) {
             },
 
             save_item(ele) {
+
                 let scope = this;
 
                 let button_html = ele.innerHTML;
@@ -99,12 +100,12 @@ if (document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/save_item', formData)
                     .then(function (response) {
                         ele.innerHTML = button_html;
-                        toastr.success('Item Successfully Added');
                         console.log(scope.show_item_modal);
                         scope.show_item_modal = false;
                         console.log(scope.show_item_modal);
                         scope.clear_form(form);
                         scope.get_schedule();
+                        toastr.success('Item Successfully Added/Edited');
                         setTimeout(function () {
                             if (event_id) {
                                 document.querySelector('#event_div_' + event_id).click();
