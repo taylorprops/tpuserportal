@@ -245,12 +245,13 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                         $agent_details = array_filter($agent);
 
                         $MemberKey = $agent['MemberKey'];
-                        //unset($agent_details['MemberKey']);
+                        unset($agent_details['MemberKey']);
 
-                        $add_agent = BrightAgentRoster::firstOrCreate(
+                        $add_agent = BrightAgentRoster::firstOrNew(
                             ['MemberKey' => $MemberKey],
                             $agent_details
                         );
+                        $add_agent -> save();
 
                     }
 
