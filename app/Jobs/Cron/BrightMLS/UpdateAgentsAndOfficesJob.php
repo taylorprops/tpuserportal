@@ -265,7 +265,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                         $add_agent -> save();
                     }
-                    $this -> queueData([$keys]);
+                    // $this -> queueData([$keys], true);
 
                     $this -> queueData(['Agents Added from Bright' => count($agents)], true);
 
