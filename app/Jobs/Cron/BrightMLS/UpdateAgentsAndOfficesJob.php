@@ -247,8 +247,6 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                 $agents = $results -> toArray();
 
-                $this -> queueData(['Agents Added from Bright' => count($agents)], true);
-
                 $this -> queueProgress(85);
 
                 if (count($agents) > 0) {
@@ -267,7 +265,10 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
                         $add_agent -> save();
                     }
-                    this -> queueData([$keys]);
+                    $this -> queueData([$keys]);
+
+                    $this -> queueData(['Agents Added from Bright' => count($agents)], true);
+
                 }
             }
         }
