@@ -240,9 +240,10 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                 if (count($agents) > 0) {
 
                     foreach ($agents as $agent) {
+
                         $agent['active'] = 'yes';
                         $agent_details = array_filter($agent);
-                        $this -> queueData([$agent_details], true);
+
                         $MemberKey = $agent['MemberKey'];
                         unset($agent_details['MemberKey']);
 
@@ -251,7 +252,6 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                             $agent_details
                         );
 
-                        $add_agent -> save();
                     }
 
                     $this -> queueData(['Agents Added from Bright' => count($agents)], true);
