@@ -194,19 +194,13 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         $agents_in_db_count = count($agents_in_db);
 
         $this -> queueProgress(65);
-
         $this -> queueData(['Remove Agents', 'agents_in_bright_count' => $agents_in_bright_count, 'agents_in_db_count' => $agents_in_db_count], true);
 
         if ($agents_in_bright_count != $agents_in_db_count) {
-            // $deactivate_agents = [];
-            // foreach ($agents_in_db as $agent) {
-            //     if (! in_array($agent, $agents_in_bright_array)) {
-            //         $deactivate_agents[] = $agent;
-            //     }
-            // }
-            $deactivate_agents = array_diff($agents_in_db, $agents_in_bright_array);
-            $this -> queueData(['Agents to Deactivate' => count($deactivate_agents)], true);
 
+            $deactivate_agents = array_diff($agents_in_db, $agents_in_bright_array);
+
+            $this -> queueData(['Agents to Deactivate' => count($deactivate_agents)], true);
             $this -> queueProgress(70);
 
             if (count($deactivate_agents) > 0) {
@@ -219,15 +213,9 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
 
             $this -> queueProgress(75);
 
-            // $missing_agents = [];
-            // foreach ($agents_in_bright_array as $agent) {
-            //     if (!in_array($agent, $agents_in_db)) {
-            //         $missing_agents[] = $agent;
-            //     }
-            // }
             $missing_agents = array_diff($agents_in_bright_array, $agents_in_db);
-            $this -> queueData(['Agents to Add' => count($missing_agents)], true);
 
+            $this -> queueData(['Agents to Add' => count($missing_agents)], true);
             $this -> queueProgress(80);
 
             if (count($missing_agents) > 0) {
@@ -254,6 +242,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
                     foreach ($agents as $agent) {
                         $agent['active'] = 'yes';
                         $agent_details = array_filter($agent);
+                        $this -> queueData([$agent_details], true);
                         $MemberKey = $agent['MemberKey'];
                         unset($agent_details['MemberKey']);
 
@@ -272,6 +261,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
         }
 
         $agents_count = BrightAgentRoster::where('active', 'yes') -> get() -> count();
+
         $this -> queueData(['Agents Removed and Added', 'new count after' => $agents_count], true);
         $this -> queueProgress(90);
 
@@ -288,6 +278,7 @@ class UpdateAgentsAndOfficesJob implements ShouldQueue
             ]);
 
         $agents_count_after_purge = BrightAgentRoster::where('active', 'yes') -> get() -> count();
+
         $this -> queueData(['Emails purged', 'new count after purge' => $agents_count_after_purge], true);
         $this -> queueProgress(95);
 
