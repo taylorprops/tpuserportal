@@ -177,12 +177,10 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                     value="{{ $state }}"
                                                     data-label="{{ $state }}"
 
-
                                                     @if ($state == 'MD') checked @endif
                                                     @click="location_data('{{ $state }}'); clear_results();">
 
                                             </div>
-
 
                                         @endforeach
 
@@ -258,7 +256,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                         class="form-element input md"
                                         placeholder="Search..."
                                         data-label="Office Name"
-                                        @input.debounce.500ms="search_offices(); clear_results();"
+                                        @input.debounce.500ms="clear_results(); search_offices(); "
                                         :disabled="list_group == 'loan_officers' ? true : false"
                                         x-ref="office_name">
                                 </div>
@@ -320,13 +318,11 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             <div class="mb-3 text-xl font-semibold">Recent Additions</div>
                             <div class="max-h-200-px overflow-y-auto">
 
-
                                 @foreach ($recently_added_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_added }}</div>
                                         <div>{{ $email -> added }}</div>
                                     </div>
-
 
                                 @endforeach
                             </div>
@@ -362,13 +358,11 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             <div class="mb-3 text-xl font-semibold">Recent Purges</div>
                             <div class="max-h-200-px overflow-y-auto">
 
-
                                 @foreach ($purged_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_purged }}</div>
                                         <div>{{ $email -> purged }}</div>
                                     </div>
-
 
                                 @endforeach
                             </div>

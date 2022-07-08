@@ -3,20 +3,17 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use App\Models\BrightMLS\BrightAgentRoster;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class FindMissingAgentsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
-
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -47,7 +44,7 @@ class FindMissingAgentsJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
-            if(!$rets) {
+            if (!$rets) {
                 sleep(5);
                 $this -> queueData(['Status 2:' => 'Attempting Login Again'], true);
                 $rets = Helper::rets_login();
@@ -75,7 +72,7 @@ class FindMissingAgentsJob implements ShouldQueue
             $agents = $results -> toArray();
 
             $found_in_bright = [];
-            foreach($agents as $agent) {
+            foreach ($agents as $agent) {
                 $found_in_bright[] = $agent['MemberKey'];
             }
 
@@ -87,7 +84,7 @@ class FindMissingAgentsJob implements ShouldQueue
 
             $this -> queueData(['Missing From DB' => count($missing_from_db)], true);
 
-            if(count($missing_from_db) > 0) {
+            if (count($missing_from_db) > 0) {
 
                 $query = '(MemberKey='.implode(', ', $missing_from_db).')';
 
@@ -123,10 +120,10 @@ class FindMissingAgentsJob implements ShouldQueue
 
             $this -> queueData(['Missing From Bright' => count($missing_from_bright)], true);
 
-            if(count($missing_from_bright) > 0) {
+            if (count($missing_from_bright) > 0) {
 
                 BrightAgentRoster::whereIn('MemberKey', $missing_from_bright) -> update([
-                    'active' => 'no'
+                    'active' => 'no',
                 ]);
 
             }
@@ -137,7 +134,7 @@ class FindMissingAgentsJob implements ShouldQueue
 
             return true;
 
-        } catch (\Throwable $exception) {
+        } catch (\Throwable$exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
             $this -> release(90);
             return;

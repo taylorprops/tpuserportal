@@ -7,7 +7,6 @@ use App\Models\DocManagement\Resources\LocationData;
 use App\Models\OldDB\Agents;
 use App\Models\OldDB\SkySlope\Listings;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,8 +17,7 @@ class AddSkySlopeListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 3;
-    public $backoff = [10];
+    // public $backoff = [10];
 
     /**
      * Create a new job instance.

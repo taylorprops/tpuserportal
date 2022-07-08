@@ -3,20 +3,17 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class UpdateListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
-
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -44,7 +41,7 @@ class UpdateListingsJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
-            if($rets) {
+            if ($rets) {
 
                 $resource = "Property";
                 $class = "ALL";
@@ -63,10 +60,9 @@ class UpdateListingsJob implements ShouldQueue
                     $class,
                     $query,
                     [
-                        'Select' => config('global.bright_listings_columns')
+                        'Select' => config('global.bright_listings_columns'),
                     ]
                 );
-
 
                 $listings = $results -> toArray();
                 // echo count($listings);
@@ -74,11 +70,11 @@ class UpdateListingsJob implements ShouldQueue
 
                 $increment = 100 / count($listings);
                 $progress = 0;
-                foreach($listings as $listing) {
+                foreach ($listings as $listing) {
 
                     $data = [];
-                    foreach($listing as $key => $value) {
-                        if($value != '') {
+                    foreach ($listing as $key => $value) {
+                        if ($value != '') {
                             $data[$key] = $value;
                         }
                     }
@@ -97,14 +93,13 @@ class UpdateListingsJob implements ShouldQueue
 
                 $rets -> Disconnect();
 
-
                 return true;
 
             }
 
             return response() -> json(['failed' => 'login failed']);
 
-        } catch (\Throwable $exception) {
+        } catch (\Throwable$exception) {
             $this -> release(90);
             return;
         }

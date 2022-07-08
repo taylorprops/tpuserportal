@@ -3,20 +3,17 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class CancelListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
-
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -44,33 +41,33 @@ class CancelListingsJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
-            if($rets) {
+            if ($rets) {
 
                 $this -> queueData(['Status' => 'Logged into Rets'], true);
 
-                $statuses =['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING', 'EXPIRED'];
+                $statuses = ['ACTIVE UNDER CONTRACT', 'ACTIVE', 'TEMP OFF MARKET', 'PENDING', 'EXPIRED'];
 
                 $count_db_listings = BrightListings::select('ListingKey')
-                -> whereIn('MlsStatus', $statuses)
-                -> count();
+                    -> whereIn('MlsStatus', $statuses)
+                    -> count();
 
                 $this -> queueData(['All Active Count' => $count_db_listings], true);
 
                 $db_listings = BrightListings::select('ListingKey')
-                -> whereIn('MlsStatus', $statuses)
-                -> where('updated_at', '<', date('Y-m-d'))
-                -> limit(5000)
-                -> pluck('ListingKey')
-                -> toArray();
+                    -> whereIn('MlsStatus', $statuses)
+                    -> where('updated_at', '<', date('Y-m-d'))
+                    -> limit(5000)
+                    -> pluck('ListingKey')
+                    -> toArray();
 
                 $this -> queueData(['DB Listings' => count($db_listings)], true);
 
-                if(count($db_listings) > 0) {
+                if (count($db_listings) > 0) {
 
                     BrightListings::whereIn('ListingKey', $db_listings)
-                    -> update([
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
+                        -> update([
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
 
                     $this -> queueProgress(10);
 
@@ -84,7 +81,7 @@ class CancelListingsJob implements ShouldQueue
                         $class,
                         $query,
                         [
-                            'Select' => 'ListingKey'
+                            'Select' => 'ListingKey',
                         ]
                     );
 
@@ -93,7 +90,7 @@ class CancelListingsJob implements ShouldQueue
                     $bright_listings = $results -> toArray();
 
                     $ListingKeys = [];
-                    foreach($bright_listings as $listing) {
+                    foreach ($bright_listings as $listing) {
                         $ListingKeys[] = $listing['ListingKey'];
                     }
 
@@ -107,10 +104,10 @@ class CancelListingsJob implements ShouldQueue
                     $this -> queueData(['Found - '.count($missing) => $missing], true);
 
                     BrightListings::whereIn('ListingKey', $missing)
-                    -> update([
-                        'MlsStatus' => 'CANCELED',
-                        'ModificationTimestamp' => date('Y-m-d H:i:s')
-                    ]);
+                        -> update([
+                            'MlsStatus' => 'CANCELED',
+                            'ModificationTimestamp' => date('Y-m-d H:i:s'),
+                        ]);
 
                     $this -> queueProgress(90);
 
@@ -126,7 +123,7 @@ class CancelListingsJob implements ShouldQueue
 
             return response() -> json(['failed' => 'login failed']);
 
-        } catch (\Throwable $exception) {
+        } catch (\Throwable$exception) {
             $this -> queueData(['Failed' => 'Retrying'], true);
             $this -> release(90);
             return;

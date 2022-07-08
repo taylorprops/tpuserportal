@@ -5,7 +5,6 @@ namespace App\Jobs\Cron\Archives;
 use App\Models\DocManagement\Archives\Transactions;
 use App\Models\OldDB\Agents;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Request;
@@ -17,8 +16,7 @@ class GetTransactionsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
 
-    public $tries = 3;
-    public $backoff = [90];
+    // public $backoff = [90];
 
     /**
      * Create a new job instance.

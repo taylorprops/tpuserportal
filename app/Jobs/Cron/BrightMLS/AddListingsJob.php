@@ -3,22 +3,17 @@
 namespace App\Jobs\Cron\BrightMLS;
 
 use App\Helpers\Helper;
-use Illuminate\Bus\Queueable;
-use App\Mail\General\EmailGeneral;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
 use App\Models\BrightMLS\BrightListings;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class AddListingsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, IsMonitored;
-
-    public $tries = 3;
 
     /**
      * Create a new job instance.
@@ -46,7 +41,7 @@ class AddListingsJob implements ShouldQueue
 
             $rets = Helper::rets_login();
 
-            if($rets) {
+            if ($rets) {
 
                 $resource = "Property";
                 $class = "ALL";
@@ -55,7 +50,7 @@ class AddListingsJob implements ShouldQueue
 
                 $query = 'MLSListDate='.$start.'+';
                 $cols = config('global.bright_listings_columns');
-                if(!$cols) {
+                if (!$cols) {
                     throw new Exception('config global.bright_listings_columns not working');
                     return false;
                 }
@@ -65,34 +60,33 @@ class AddListingsJob implements ShouldQueue
                     $class,
                     $query,
                     [
-                        'Select' => $cols
+                        'Select' => $cols,
                     ]
                 );
-
 
                 $listings = $results -> toArray();
 
                 $this -> queueData(['Total:' => count($listings)], true);
 
-                if(count($listings) > 0) {
+                if (count($listings) > 0) {
 
                     $increment = 100 / count($listings);
                     $progress = 0;
                     $found = 0;
                     $not_found = 0;
 
-                    foreach($listings as $listing) {
+                    foreach ($listings as $listing) {
 
                         $data = [];
-                        foreach($listing as $key => $value) {
-                            if($value != '') {
+                        foreach ($listing as $key => $value) {
+                            if ($value != '') {
                                 $data[$key] = $value;
                             }
                         }
 
                         $bright = BrightListings::find($listing['ListingKey']);
 
-                        if(!$bright) {
+                        if (!$bright) {
                             $bright = BrightListings::insert($data);
                             $not_found += 1;
                         } else {
@@ -119,12 +113,10 @@ class AddListingsJob implements ShouldQueue
 
             return response() -> json(['failed' => 'login failed']);
 
-        } catch (\Throwable $exception) {
+        } catch (\Throwable$exception) {
             $this -> release(90);
             return;
         }
-
-
 
     }
 
