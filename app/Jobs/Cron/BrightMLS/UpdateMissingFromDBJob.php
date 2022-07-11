@@ -80,13 +80,14 @@ class UpdateMissingFromDBJob implements ShouldQueue
             $this -> queueData(['Missing:' => count($missing_from_db)], true);
 
             $query = 'ListingKey='.implode(',', $missing_from_db);
+            $columns = config('global.bright_listings_columns');
 
             $results = $rets -> Search(
                 $resource,
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns'),
+                    'Select' => $columns,
                 ]
             );
 

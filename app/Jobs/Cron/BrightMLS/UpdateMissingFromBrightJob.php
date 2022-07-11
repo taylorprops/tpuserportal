@@ -84,16 +84,17 @@ class UpdateMissingFromBrightJob implements ShouldQueue
                     'MlsStatus' => 'CANCELED',
                     'ModificationTimestamp' => date('Y-m-d H:i:s'),
                 ]);
-            $this -> queueData(['BrightListings Canceled Queried'], true);
+            $this -> queueData(['Bright Listings Canceled Queried'], true);
 
             $query = 'ListingKey='.implode(',', $missing_from_bright);
+            $columns = config('global.bright_listings_columns');
 
             $results = $rets -> Search(
                 $resource,
                 $class,
                 $query,
                 [
-                    'Select' => config('global.bright_listings_columns'),
+                    'Select' => $columns,
                 ]
             );
 
