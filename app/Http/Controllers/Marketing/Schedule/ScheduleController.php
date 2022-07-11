@@ -507,9 +507,9 @@ class ScheduleController extends Controller
             }
 
             $employees = [
-                ['Delia', 'Abrams', 'delia@taylorprops.com', '', '', ''],
-                ['Kyle', 'Abrams', 'kyle@taylorprops.com', '', '', ''],
-                ['Robb', 'Taylor', 'senorrobb@yahoo.com', '', '', ''],
+                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
+                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
+                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
             ];
 
             foreach ($employees as $employee) {
