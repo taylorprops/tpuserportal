@@ -8,6 +8,7 @@ use App\Mail\General\EmailGeneral;
 use App\Models\BrightMLS\BrightOffices;
 use App\Models\DocManagement\Resources\LocationData;
 use App\Models\Marketing\InHouseAddresses;
+use App\Models\Marketing\LoanOfficerAddresses;
 use App\Models\Marketing\Schedule\Schedule;
 use App\Models\Marketing\Schedule\ScheduleChecklist;
 use App\Models\Marketing\Schedule\ScheduleNotes;
@@ -27,6 +28,7 @@ class ScheduleController extends Controller
     private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
     private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
     private $agent_columns_psi = ['email', 'first_name', 'last_name'];
+    private $loan_officer_columns = ['email', 'first_name', 'last_name', 'county', 'city', 'state'];
 
     public function schedule(Request $request)
     {
@@ -450,6 +452,9 @@ class ScheduleController extends Controller
         }
 
         $file_name = 'agent_list_'.time().'.csv';
+        if ($recipient_id == '42' || $recipient_id == '43') {
+            $file_name = 'loan_officer_list_'.time().'.csv';
+        }
         $file = Storage::path('/tmp/'.$file_name);
         $handle = fopen($file, 'w');
 
@@ -490,6 +495,27 @@ class ScheduleController extends Controller
             foreach ($employees as $employee) {
                 fputcsv($handle, $employee, ',');
             }
+
+        } else if ($recipient_id == '42' || $recipient_id == '43' /* Loan Officers */) {
+
+            $loan_officers = LoanOfficerAddresses::select($this -> loan_officer_columns) -> where('active', 'yes')
+                -> get();
+
+            fputcsv($handle, $this -> loan_officer_columns, ',');
+            foreach ($loan_officers as $loan_officer) {
+                fputcsv($handle, $loan_officer -> toArray(), ',');
+            }
+
+            $employees = [
+                ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
+                ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
+                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
+            ];
+
+            foreach ($employees as $employee) {
+                fputcsv($handle, $employee, ',');
+            }
+
         } else {
 
             $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
