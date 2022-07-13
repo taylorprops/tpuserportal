@@ -20,6 +20,7 @@ if (document.URL.match('marketing/schedule')) {
             calendar_object: '',
             show_weekends: false,
             active_event: '',
+            show_export_modal: false,
 
             init() {
 
@@ -382,6 +383,25 @@ if (document.URL.match('marketing/schedule')) {
                     })
                     .catch(function (error) { });
 
+            },
+
+            export_html(id) {
+                let scope = this;
+                axios.get('/marketing/export', {
+                    params: {
+                        id: id
+                    },
+                })
+                    .then(function (response) {
+                        let html = response.data.html;
+                        if (html) {
+                            scope.show_export_modal = true;
+                            scope.$refs.html_textarea.value = html;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             get_email_list(ele) {

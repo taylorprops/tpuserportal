@@ -689,6 +689,18 @@ $breadcrumbs = [['Marketing', ''], [$title]];
 
         </x-modals.modal>
 
+        <x-modals.modal :modalWidth="'w-full sm:w-11/12 md:w-1/2 lg:w-1/3'"
+            :modalTitle="'Export HTML'"
+            :modalId="'show_export_modal'"
+            x-show="show_export_modal">
+
+            <div class="flex justify-end text-primary">
+                <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.html_textarea)">Copy HTML<i class="fa-duotone fa-clone ml-2"></i></a>
+            </div>
+            <textarea class="form-element md textarea h-64" x-ref="html_textarea"></textarea>
+
+        </x-modals.modal>
+
     </div>
 
 </x-app-layout>

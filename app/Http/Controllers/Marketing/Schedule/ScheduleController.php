@@ -643,6 +643,20 @@ class ScheduleController extends Controller
         return response() -> json(['id' => $clone_id]);
     }
 
+    public function export(Request $request)
+    {
+
+        $item = Schedule::with(['uploads' => function ($query) {
+            $query -> where('accepted_version', true);
+        }])
+            -> find($request -> id);
+
+        $html = $item -> uploads -> first() -> html;
+
+        return compact('html');
+
+    }
+
     public function get_notes(Request $request)
     {
         $notes = ScheduleNotes::where('event_id', $request -> event_id)

@@ -163,6 +163,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/get_notification_count', [ScheduleController::class, 'get_notification_count']) -> middleware(['in_house']);
     Route::get('/marketing/marketing_notes', [ScheduleController::class, 'marketing_notes']) -> middleware(['in_house']);
     Route::get('/marketing/get_checklist', [ScheduleController::class, 'get_checklist']) -> middleware(['in_house']);
+    Route::get('/marketing/export', [ScheduleController::class, 'export']) -> middleware(['in_house']);
 
     Route::get('/marketing/schedule_review', [ScheduleController::class, 'schedule_review']) -> middleware(['owner']);
     Route::post('/marketing/get_schedule_review', [ScheduleController::class, 'get_schedule_review']) -> middleware(['owner']);

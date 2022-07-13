@@ -233,8 +233,7 @@
 
                         <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
                             <div>
-                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i
-                                        class="fa-thin fa-link ml-2"></i></a>
+                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
                             </div>
 
                             <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -297,8 +296,7 @@
                                                         @focus="$el.select(); copy_text($el)">
                                                 </div>
                                                 <div class="w-8 border-l-2 bg-gray-50">
-                                                    <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i
-                                                            class="fa-duotone fa-clone"></i></a>
+                                                    <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
                                                 </div>
                                             </div>
 
@@ -333,6 +331,9 @@
                             <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
                                 <div class="py-2" role="none">
+
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                        @click="export_html({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-upload mr-2"></i> Export</a>
 
                                     <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
                                         @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
