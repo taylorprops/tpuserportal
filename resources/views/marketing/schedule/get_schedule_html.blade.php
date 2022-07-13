@@ -211,7 +211,7 @@
                 </div>
 
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
-                    <div class="flex justify-around flex-wrap whitespace-nowrap border-t p-2 {{-- bg-{{ $event -> company -> color }}-50 --}}">
+                    <div class="flex justify-around whitespace-nowrap border-t p-2 overflow-x-auto">
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                             @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
@@ -316,6 +316,7 @@
                             <div class="mx-2 w-1 border-r"></div>
 
                         @endif
+
                         <div class="relative inline-block" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
                             <div>
                                 <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
