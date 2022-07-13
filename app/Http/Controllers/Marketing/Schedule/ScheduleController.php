@@ -665,7 +665,12 @@ class ScheduleController extends Controller
 
         $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
 
-        $unsubscribe = '<table style="width: 600px; margin-left: auto; margin-right: auto"><tr><td style="padding: 10px;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px;text-align:center;">Unsubscribe</td></tr></table>';
+        $unsubscribe = '
+        <table style="width: 600px; margin-left: auto; margin-right: auto">
+            <tr>
+                <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px;">Unsubscribe</td>
+            </tr>
+        </table>';
 
         $html = preg_replace('/(<\/body>)/', '$1'.$unsubscribe, $html);
 
