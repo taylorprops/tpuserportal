@@ -652,6 +652,18 @@ class ScheduleController extends Controller
             -> find($request -> id);
 
         $html = $item -> uploads -> first() -> html;
+        $preview_text = $item -> preview_text;
+
+        $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
+        '.$preview_text.'
+        </div>
+        <div style="display: none; max-height: 0px; overflow: hidden;">
+        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+        </div>';
+
+        $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
 
         return compact('html');
 
