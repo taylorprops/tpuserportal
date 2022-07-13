@@ -1,4 +1,5 @@
 @foreach ($categories as $category)
+
     <div class="border rounded-md p-0" x-data="{ show_add_item: false }">
 
         <div class="bg-gray-50 text-lg p-4 rounded-t-md border-b-2">
@@ -15,8 +16,7 @@
                     <input type="text" class="form-element input md" x-ref="add_{{ $category }}_input">
                 </div>
                 <div class="ml-2">
-                    <button type="button" class="button primary md" @click="settings_save_add_item($el, '{{ $category }}', $refs.add_{{ $category }}_input)">Save <i
-                            class="fa-light fa-check ml-2"></i></button>
+                    <button type="button" class="button primary md" @click="settings_save_add_item($el, '{{ $category }}', $refs.add_{{ $category }}_input)">Save <i class="fa-light fa-check ml-2"></i></button>
                 </div>
             </div>
         </div>
@@ -35,11 +35,9 @@
                             </div>
 
                             <div class="w-6" x-data="{ locked: {{ $setting -> locked }} }">
-                                <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1"
-                                    @if (auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0; }" @endif><i
+                                <a href="javascript:void(0)" class="text-red-700/75" x-show="locked === 1" @if (auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 0, 'locked'); locked = 0; }" @endif><i
                                         class="fa-duotone fa-lock"></i></a>
-                                <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0"
-                                    @if (auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1; }" @endif><i
+                                <a href="javascript:void(0)" class="text-green-700/75" x-show="locked === 0" @if (auth() -> user() -> level == 'super_admin') @click="if(confirm('Are you sure you want change this?')) { settings_save_edit_item({{ $setting -> id }}, 1, 'locked'); locked = 1; }" @endif><i
                                         class="fa-duotone fa-lock-open"></i></a>
                             </div>
 
@@ -55,14 +53,18 @@
                                         @endphp
                                         {{-- blade-formatter-enable --}}
                                         <div class="grid grid-cols-4 gap-2">
+
                                             @foreach ($colors as $color)
                                                 <div class="bg-{{ $color }}-500 border-2 rounded-md cursor-pointer hover:bg-{{ $color }}-400 h-8 w-8"
                                                     @click="settings_save_edit_item({{ $setting -> id }}, '{{ $color }}', 'color'); show_color_picker = false;"></div>
+
                                             @endforeach
+
                                         </div>
 
                                     </div>
                                 </div>
+
                             @endif
 
                             <div class="px-2">{{ $setting -> id }}</div>
@@ -72,11 +74,14 @@
                                     <input type="text" class="editor-inline p-2 @if ($setting -> has_email == true) w-28 @endif" value="{{ $setting -> item }}"
                                         data-default-value="{{ $setting -> item }}" @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'item')">
                                 </div>
+
+
                                 @if ($setting -> has_email == true)
                                     <div class=" ml-2">
                                         <input type="text" class="editor-inline p-2 w-48" value="{{ $setting -> email }}" data-default-value="{{ $setting -> email }}"
                                             @blur="settings_save_edit_item({{ $setting -> id }}, $el.value, 'email')">
                                     </div>
+
                                 @endif
 
                             </div>
@@ -111,14 +116,18 @@
                                 <div class="ml-2">
                                     <button type="button" class="button primary sm" @click="show_companies = !show_companies">{{ $value }}</button>
                                 </div>
+
                             @endif
 
                             <div class="px-2 w-10">
+
+
                                 @if ($setting -> locked == false)
                                     <button type="button" class="button danger md no-text"
                                         @click="reassign_disabled = true; settings_show_delete_item('{{ $setting -> category }}', {{ $setting -> id }})">
                                         <i class="fa-duotone fa-xmark fa-xl"></i>
                                     </button>
+
                                 @endif
                             </div>
 
@@ -129,8 +138,11 @@
                     @if ($setting -> category == 'recipient')
                         <div x-show="show_companies">
                             <select class="form-element select md" name="companies[]" multiple x-ref="select" data-label="Select Companies">
+
+
                                 @foreach ($settings -> where('category', 'company') as $company)
                                     <option value="{{ $company -> id }}" @if (in_array($company -> id, $companies)) selected @endif>{{ $company -> item }}</option>
+
                                 @endforeach
                             </select>
                             <div class="flex justify-around p-2">
@@ -140,11 +152,15 @@
                                 </button>
                             </div>
                         </div>
+
                     @endif
 
                 </div>
+
             @endforeach
+
         </div>
 
     </div>
+
 @endforeach

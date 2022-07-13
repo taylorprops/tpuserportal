@@ -29,6 +29,7 @@
             </tr>
         </thead>
         <tbody>
+
             @foreach ($employees as $employee)
                 {{-- blade-formatter-disable --}}
                 @php
@@ -49,8 +50,7 @@
                         </div>
                     </td>
                     <td>
-                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i
-                                class="fal fa-arrow-right ml-2"></i></a>
+                        <a href="/employees/loan_officer/loan_officer_view/{{ $employee -> id }}" class="view-link button primary md">View <i class="fal fa-arrow-right ml-2"></i></a>
                     </td>
                     <td>{{ $employee -> last_name.', '.$employee -> first_name }}</td>
                     <td>{{ $emp_position }}</td>
@@ -58,6 +58,7 @@
                     <td>{{ $employee -> phone }}</td>
                     <td>{{ $licenses }}</td>
                     <td>
+
                         @if ($employee -> active == 'yes')
                             <div class="inline-block text-white py-2 px-4 rounded-lg bg-success">
                                 <i class="fal fa-check mr-2"></i> Yes
@@ -66,9 +67,11 @@
                             <div class="inline-block text-white py-2 px-4 rounded-lg bg-danger">
                                 <i class="fal fa-minus mr-2"></i> No
                             </div>
+
                         @endif
                     </td>
                 </tr>
+
             @endforeach
         </tbody>
 

@@ -22,8 +22,7 @@ $required = $attributes['class'] == 'required' ? true : false;
         <div class="file-input-div flex justify-start rounded-sm border border-gray-300 cursor-pointer {{ $required ? 'required' : '' }}">
 
             <span
-                class="{{ $classes }} mr-2 bg-{{ $buttonClass }} hover:bg-{{ $buttonClass }}-dark active:bg-{{ $buttonClass }}-dark focus:border-{{ $buttonClass }}-dark ring-{{ $buttonClass }}-dark inline-flex items-center border border-transparent rounded-sm-l font-semibold text-white focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150"><i
-                    class="fal fa-upload mr-2"></i> Select A File</span>
+                class="{{ $classes }} mr-2 bg-{{ $buttonClass }} hover:bg-{{ $buttonClass }}-dark active:bg-{{ $buttonClass }}-dark focus:border-{{ $buttonClass }}-dark ring-{{ $buttonClass }}-dark inline-flex items-center border border-transparent rounded-sm-l font-semibold text-white focus:outline-none focus:ring disabled:opacity-25 transition ease-in-out duration-150"><i class="fal fa-upload mr-2"></i> Select A File</span>
 
             <div class="file-names my-auto truncate"></div>
 
@@ -35,7 +34,4 @@ $required = $attributes['class'] == 'required' ? true : false;
             <span class="text-red-500 text-xs error-message h-4 inline-block absolute top-0"></span>
         </div>
     </label>
-
-
-
 </div>

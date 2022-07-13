@@ -226,8 +226,7 @@
 
                         <div class="mx-2 w-1 border-r"></div>
 
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i
-                                class="fa-thin fa-plus ml-2"></i></a>
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
@@ -310,13 +309,16 @@
 
                         <div class="mx-2 w-1 border-r"></div>
 
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el)">Get Email List <i
-                                class="fa-thin fa-download ml-2"></i></a>
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
                             @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
+
+                        <div class="mx-2 w-1 border-r"></div>
+
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="export_html({{ $event -> id }})">Export <i class="fa-thin fa-upload ml-2"></i></a>
 
                         <div class="mx-2 w-1 border-r"></div>
 
@@ -331,9 +333,6 @@
                             <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
                                 <div class="py-2" role="none">
-
-                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                        @click="export_html({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-upload mr-2"></i> Export</a>
 
                                     <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
                                         @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>

@@ -34,8 +34,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 x-show="list_type === 'addresses' || list_group == 'test_center_selected'">
                                 <div>
                                     <button type="button" class="button primary md"
-                                        @click="get_results()">Get Results <i
-                                            class="fa fa-share ml-2"></i></button>
+                                        @click="get_results()">Get Results <i class="fa fa-share ml-2"></i></button>
                                 </div>
                             </div>
 
@@ -44,18 +43,15 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                 <div>Get List For:</div>
                                 <div>
                                     <button type="button" class="button primary md"
-                                        @click="get_results('mailchimp')">MailChimp <i
-                                            class="fa fa-share ml-2"></i></button>
+                                        @click="get_results('mailchimp')">MailChimp <i class="fa fa-share ml-2"></i></button>
                                 </div>
                                 <div>
                                     <button type="button" class="button primary md"
-                                        @click="get_results('sendinblue')">Send In Blue <i
-                                            class="fa fa-share ml-2"></i></button>
+                                        @click="get_results('sendinblue')">Send In Blue <i class="fa fa-share ml-2"></i></button>
                                 </div>
                                 <div>
                                     <button type="button" class="button primary md"
-                                        @click="get_results('omnisend')">Omnisend <i
-                                            class="fa fa-share ml-2"></i></button>
+                                        @click="get_results('omnisend')">Omnisend <i class="fa fa-share ml-2"></i></button>
                                 </div>
 
                             </div>
@@ -177,10 +173,12 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                                                     value="{{ $state }}"
                                                     data-label="{{ $state }}"
 
+
                                                     @if ($state == 'MD') checked @endif
                                                     @click="location_data('{{ $state }}'); clear_results();">
 
                                             </div>
+
 
                                         @endforeach
 
@@ -318,11 +316,13 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                             <div class="mb-3 text-xl font-semibold">Recent Additions</div>
                             <div class="max-h-200-px overflow-y-auto">
 
+
                                 @foreach ($recently_added_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_added }}</div>
                                         <div>{{ $email -> added }}</div>
                                     </div>
+
 
                                 @endforeach
                             </div>
@@ -350,19 +350,20 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         </div>
 
                         <div class="mt-6 flex justify-around">
-                            <button type="button" class="button primary lg" @click="get_purged()"><i
-                                    class="fa fa-download mr-2"></i> Download Purged</button>
+                            <button type="button" class="button primary lg" @click="get_purged()"><i class="fa fa-download mr-2"></i> Download Purged</button>
                         </div>
 
                         <div class="mt-6">
                             <div class="mb-3 text-xl font-semibold">Recent Purges</div>
                             <div class="max-h-200-px overflow-y-auto">
 
+
                                 @foreach ($purged_emails as $email)
                                     <div class="p-2 mb-2  border-b grid grid-cols-2 text-sm">
                                         <div>{{ $email -> date_purged }}</div>
                                         <div>{{ $email -> purged }}</div>
                                     </div>
+
 
                                 @endforeach
                             </div>
