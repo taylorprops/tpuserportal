@@ -18,12 +18,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-
-
     <script src="https://kit.fontawesome.com/ff68a2cde5.js" crossorigin="anonymous"></script>
-
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
 
@@ -33,16 +28,13 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{ config('global.google_api_key') }}&libraries=places&outputFormat=json"></script>
 
     {{-- text editor --}}
-    <script src="//cdn.tiny.cloud/1/t3u7alod16y8nsqt07h4m5kwfw8ob9sxbvy2rlmrqo94zrui/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/t3u7alod16y8nsqt07h4m5kwfw8ob9sxbvy2rlmrqo94zrui/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js" referrerpolicy="origin"></script>
 
     <script defer src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
-
 </head>
 
 <body class="font-sans antialiased overflow-x-hidden"
@@ -84,8 +76,6 @@
                     <i class="fal fa-search absolute top-2 sm:top-2 right-3"></i>
                 </div>
             </div>
-
-
             <!-- Page Heading -->
             @if ($header != 'null')
                 <header>

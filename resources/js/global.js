@@ -308,10 +308,12 @@ window.text_editor = function (options) {
     }
     options.lists_indent_on_tab = true;
     // options.content_css = '/css/tinymce.css';
-    options.content_style = "body { font-family: Arial; } ul, ol { list-style: disc; margin-left: 25px  }";
+    options.content_style = "body { font-family: Arial; }";
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
     options.newline_behavior = 'linebreak';
+    options.fix_list_elements = true;
+    // options.forced_root_block = '<br>';
 
 
     tinymce.remove(options.selector);
