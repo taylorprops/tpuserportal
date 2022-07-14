@@ -215,7 +215,7 @@
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
                     <div class="flex justify-between items-center w-full">
 
-                        <div class="flex justify-between items-center whitespace-nowrap border-t p-2 overflow-x-auto w-full">
+                        <div class="flex justify-between items-center whitespace-nowrap p-2 overflow-x-auto w-full">
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                                 @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
                                 Edit <i class="fa-thin fa-edit ml-2"></i>
