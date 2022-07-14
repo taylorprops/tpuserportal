@@ -1,5 +1,4 @@
 @foreach ($events as $event)
-
     {{-- blade-formatter-disable --}}
 @php
         $accepted = null;
@@ -17,7 +16,7 @@
                     'preview_text' => $event -> preview_text,
                 ];
                 if ($upload -> accepted_version == true) {
-                    $accepted = $details;
+                    $accepted = 'yes';
                     $event_upload = $upload;
                 }
                 $versions[] = $details;
@@ -59,7 +58,8 @@
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
 
-                @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif
+                {{-- @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif --}}
+                @if ($accepted) @click.stop="show_view_div({{ $event -> id }}); active_event = {{ $event -> id }}" @endif
                 id="event_div_{{ $event -> id }}">
 
                 <div class="flex flex-wrap justify-start items-center space-x-2 @if ($past_due) text-red-600 @else text-{{ $event -> company -> color }}-700 @endif @if ($event -> status -> id == '24') opacity-40 @endif">
@@ -68,7 +68,6 @@
                         {{ $event -> event_date }}
                         @if ($past_due)
                             <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
-
                         @endif
 
                     </div>
@@ -90,7 +89,6 @@
                             <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent
                                 <i class="fa-light fa-check ml-2"></i>
                             </div>
-
                         @endif
                     </div>
 
@@ -120,7 +118,6 @@
                                             <i class="fa-light fa-check"></i>
                                         </div>
                                     </div>
-
                                 @endforeach
                             </div>
 
@@ -147,17 +144,15 @@
                             </div>
 
                         </div>
-
                     @endif
 
                     @if ($accepted)
                         <div class="pl-4">
                             <button type="button" id="view_{{ $event -> id }}" class="button primary sm px-1"
-                                @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}">View
+                                @click.stop="show_view_div({{ $event -> id }}); active_event = {{ $event -> id }}">View
                                 <i class="fa-solid fa-eye ml-2"></i>
                             </button>
                         </div>
-
                     @endif
 
                 </div>
@@ -218,29 +213,31 @@
 
                 </div>
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
-                    <div class="flex justify-around items-center whitespace-nowrap border-t p-2 overflow-x-auto">
+                    <div class="">
 
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
-                            @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
-                            Edit <i class="fa-thin fa-edit ml-2"></i>
-                        </a>
+                        <div class="flex justify-around items-center whitespace-nowrap border-t p-2">
 
-                        <div class="mx-2 w-1 h-4 border-r"></div>
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
+                                @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
+                                Edit <i class="fa-thin fa-edit ml-2"></i>
+                            </a>
 
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
+                            <div class="mx-2 w-1 h-4 border-r"></div>
 
-                        <div class="mx-2 w-1 h-4 border-r"></div>
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
-                        <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
-                            <div>
-                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
-                            </div>
+                            <div class="mx-2 w-1 h-4 border-r"></div>
 
-                            <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
-                                <div class="p-4" role="none">
+                            <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
+                                <div>
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
+                                </div>
 
-                                    {{-- blade-formatter-disable --}}
+                                <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_links">
+                                    <div class="p-4" role="none">
+
+                                        {{-- blade-formatter-disable --}}
                                         @php
                                         if ($company_id == '1') {
                                             $links = [
@@ -282,90 +279,102 @@
                                         }
                                     @endphp
                                     {{-- blade-formatter-enable --}}
-                                    @foreach ($links as $link)
-                                        <div class="flex justify-start items-center">
+                                        @foreach ($links as $link)
+                                            <div class="flex justify-start items-center">
 
-                                            <div class="w-36">
-                                                {{ $link['title'] }}
-                                            </div>
-                                            <div class="flex p-0 border-2 rounded-md w-full">
-                                                <div class="w-full">
-                                                    <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}"
-                                                        @focus="$el.select(); copy_text($el)">
+                                                <div class="w-36">
+                                                    {{ $link['title'] }}
                                                 </div>
-                                                <div class="w-8 border-l-2 bg-gray-50">
-                                                    <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                                <div class="flex p-0 border-2 rounded-md w-full">
+                                                    <div class="w-full">
+                                                        <input type="text" readonly class="w-full p-2" x-ref="link_{{ $loop -> index }}" value="{{ $link['url'] }}"
+                                                            @focus="$el.select(); copy_text($el)">
+                                                    </div>
+                                                    <div class="w-8 border-l-2 bg-gray-50">
+                                                        <a href="javascript:void(0)" class="block p-2" @click="copy_text($refs.link_{{ $loop -> index }})"><i class="fa-duotone fa-clone"></i></a>
+                                                    </div>
                                                 </div>
+
                                             </div>
+                                        @endforeach
 
-                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                    @endforeach
+                            <div class="mx-2 w-1 h-4 border-r"></div>
+
+                            <div class="flex items-center space-x-2">
+
+                                @php
+                                    if ($event -> medium -> id == '7' /* Emails */) {
+                                        $type = 'emails';
+                                        $text = 'Email';
+                                    } elseif ($event -> medium -> id == '44' /* Postcards */) {
+                                        $type = 'addresses';
+                                        $text = 'Address';
+                                    }
+                                @endphp
+
+                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_list($el, '{{ $type }}', document.getElementById('count_{{ $event -> id }}'))">Get {{ $text }} List <i class="fa-thin fa-download ml-2"></i></a>
+
+                                <div id="count_{{ $event -> id }}" class="hidden p-2 text-center rounded bg-{{ $event -> company -> color }}-100 text-{{ $event -> company -> color }}-700"></div>
+
+                            </div>
+
+                            <div class="mx-2 w-1 h-4 border-r"></div>
+
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
+                                @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
+
+                            <div class="mx-2 w-1 h-4 border-r"></div>
+
+                            @if ($accepted)
+                                <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="export_medium({{ $event -> id }})">Export <i class="fa-thin fa-upload ml-2"></i></a>
+
+                                <div class="mx-2 w-1 border-r"></div>
+                            @endif
+
+                            <div class="relative" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
+
+                                <div>
+                                    <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
+                                        <span class="sr-only">Open options</span>
+                                        <i class="fa-light fa-bars fa-xl"></i>
+                                    </button>
+                                </div>
+
+                                <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
+
+                                    <div class="py-2" role="none">
+
+                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+
+                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                            @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
+
+                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                            @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span
+                                                class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span>
+                                            View Versions</a>
+
+                                        <hr>
+
+                                        <a href="javascript:void(0)" class="block px-4 py-2 text-red-600 hover:text-red-500"
+                                            @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
+
+                                    </div>
 
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mx-2 w-1 h-4 border-r"></div>
-
-                        <div class="flex items-center space-x-2">
-
-                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el, document.getElementById('count_{{ $event -> id }}'))">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
-
-                            <div id="count_{{ $event -> id }}" class="hidden p-2 text-center rounded bg-{{ $event -> company -> color }}-100 text-{{ $event -> company -> color }}-700"></div>
-
-                        </div>
-
-                        <div class="mx-2 w-1 h-4 border-r"></div>
-
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
-                            @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
-
-                        <div class="mx-2 w-1 h-4 border-r"></div>
-
-                        @if ($accepted)
-                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="export_html({{ $event -> id }})">Export <i class="fa-thin fa-upload ml-2"></i></a>
-
-                            <div class="mx-2 w-1 border-r"></div>
-
-                        @endif
-
-                        <div class="relative inline-block" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
-                            <div>
-                                <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
-                                    <span class="sr-only">Open options</span>
-                                    <i class="fa-light fa-bars fa-xl"></i>
-                                </button>
-                            </div>
-
-                            <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
-                                <div class="py-2" role="none">
-
-                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                        @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
-
-                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                        @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
-
-                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                        @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span
-                                            class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span>
-                                        View Versions</a>
-
-                                    <hr>
-
-                                    <a href="javascript:void(0)" class="block px-4 py-2 text-red-600 hover:text-red-500"
-                                        @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
-
-                                </div>
-                            </div>
                         </div>
 
                     </div>
                 @else
                     <div class="hidden edit-button"></div>
-
                 @endif
 
             </div>
@@ -388,5 +397,4 @@
         </div>
 
     </div>
-
 @endforeach

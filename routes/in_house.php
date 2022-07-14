@@ -154,7 +154,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/reactivate_version', [ScheduleController::class, 'reactivate_version']) -> middleware(['in_house']);
     Route::post('/marketing/mark_version_accepted', [ScheduleController::class, 'mark_version_accepted']) -> middleware(['in_house']);
     Route::post('/marketing/send_email', [ScheduleController::class, 'send_email']) -> middleware(['in_house']);
-    Route::post('/marketing/get_email_list', [ScheduleController::class, 'get_email_list']) -> middleware(['in_house']);
+    Route::post('/marketing/get_list', [ScheduleController::class, 'get_list']) -> middleware(['in_house']);
     Route::post('/marketing/update_status', [ScheduleController::class, 'update_status']) -> middleware(['in_house']);
     Route::get('/marketing/get_notes', [ScheduleController::class, 'get_notes']) -> middleware(['in_house']);
     Route::post('/marketing/add_notes', [ScheduleController::class, 'add_notes']) -> middleware(['in_house']);
@@ -163,7 +163,8 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::get('/marketing/get_notification_count', [ScheduleController::class, 'get_notification_count']) -> middleware(['in_house']);
     Route::get('/marketing/marketing_notes', [ScheduleController::class, 'marketing_notes']) -> middleware(['in_house']);
     Route::get('/marketing/get_checklist', [ScheduleController::class, 'get_checklist']) -> middleware(['in_house']);
-    Route::get('/marketing/export', [ScheduleController::class, 'export']) -> middleware(['in_house']);
+    Route::get('/marketing/get_view_div_details', [ScheduleController::class, 'get_view_div_details']) -> middleware(['in_house']);
+    Route::get('/marketing/export_medium', [ScheduleController::class, 'export_medium']) -> middleware(['in_house']);
 
     Route::get('/marketing/schedule_review', [ScheduleController::class, 'schedule_review']) -> middleware(['owner']);
     Route::post('/marketing/get_schedule_review', [ScheduleController::class, 'get_schedule_review']) -> middleware(['owner']);

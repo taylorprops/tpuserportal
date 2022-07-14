@@ -117,32 +117,55 @@ if (document.URL.match('marketing/schedule')) {
                     });
             },
 
-            show_view_div(type, file, html, subject_line_a, subject_line_b, preview_text) {
+            show_view_div(id) {
+
                 let scope = this;
                 scope.show_calendar = false;
                 scope.show_file = false;
                 scope.show_html = false;
-                if (html) {
-                    scope.show_html = true;
-                    let details = ' \
-                    <span class="font-semibold">Subject Line 1:</span> '+ subject_line_a + '<br> \
-                    <span class="font-semibold">Subject Line 2:</span> '+ subject_line_b + '<br> \
-                    <span class="font-semibold">Preview Text:</span> '+ preview_text;
-                    scope.$refs.view_details_html.innerHTML = details;
-                    let iframe = document.querySelector('.view-accepted-iframe');
-                    iframe = iframe.contentWindow || (iframe.contentDocument.document || iframe.contentDocument);
-                    iframe.document.open();
-                    iframe.document.write(html);
-                    iframe.document.close();
-                } else {
-                    scope.show_file = true;
-                    scope.$refs.view_file.setAttribute('src', file);
-                    if (type == 'image') {
-                        scope.$refs.view_file.setAttribute('height', 'auto');
-                    } else if (type == 'pdf') {
-                        scope.$refs.view_file.setAttribute('height', '100vh');
-                    }
-                }
+
+                axios.get('/marketing/get_view_div_details', {
+                    params: {
+                        id: id
+                    },
+                })
+                    .then(function (response) {
+
+                        let file_type = response.data.uploads[0].file_type;
+                        let file_url = response.data.uploads[0].file_url;
+                        let html = response.data.uploads[0].html;
+                        let subject_line_a = response.data.subject_line_a;
+                        let subject_line_b = response.data.subject_line_b;
+                        let preview_text = response.data.preview_text;
+
+                        if (html) {
+
+                            scope.show_html = true;
+                            let details = ' \
+                            <span class="font-semibold">Subject Line 1:</span> '+ subject_line_a + '<br> \
+                            <span class="font-semibold">Subject Line 2:</span> '+ subject_line_b + '<br> \
+                            <span class="font-semibold">Preview Text:</span> '+ preview_text;
+                            scope.$refs.view_details_html.innerHTML = details;
+                            let iframe = document.querySelector('.view-accepted-iframe');
+                            iframe = iframe.contentWindow || (iframe.contentDocument.document || iframe.contentDocument);
+                            iframe.document.open();
+                            iframe.document.write(html);
+                            iframe.document.close();
+                        } else {
+                            scope.show_file = true;
+                            console.log(file_url);
+                            scope.$refs.view_file.setAttribute('src', file_url);
+                            if (file_type == 'image') {
+                                scope.$refs.view_file.setAttribute('height', 'auto');
+                            } else if (file_type == 'pdf') {
+                                scope.$refs.view_file.setAttribute('height', '100vh');
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             },
 
             hide_view_div() {
@@ -386,18 +409,25 @@ if (document.URL.match('marketing/schedule')) {
 
             },
 
-            export_html(id) {
+            export_medium(id) {
                 let scope = this;
-                axios.get('/marketing/export', {
+                axios.get('/marketing/export_medium', {
                     params: {
                         id: id
                     },
                 })
                     .then(function (response) {
-                        let html = response.data.html;
-                        if (html) {
-                            scope.show_export_modal = true;
-                            scope.$refs.html_textarea.value = html;
+                        if (response.data.html) {
+                            let html = response.data.html;
+                            if (html) {
+                                scope.show_export_modal = true;
+                                scope.$refs.html_textarea.value = html;
+                            }
+                        } else {
+                            window.open(
+                                response.data.file_url,
+                                '_blank'
+                            );
                         }
                     })
                     .catch(function (error) {
@@ -405,7 +435,7 @@ if (document.URL.match('marketing/schedule')) {
                     });
             },
 
-            get_email_list(ele, count_div) {
+            get_list(ele, type, count_div) {
 
                 let event_div = ele.closest('.event-div');
                 let states = event_div.getAttribute('data-state').split(',');
@@ -415,6 +445,9 @@ if (document.URL.match('marketing/schedule')) {
                 if (company_id == '3' || company_id == '2') {
                     sender = 'mailchimp';
                 }
+                if (type == 'addresses') {
+                    sender = '';
+                }
 
                 let button_html = ele.innerHTML;
                 show_loading_button(ele, 'Getting List ... ');
@@ -423,8 +456,9 @@ if (document.URL.match('marketing/schedule')) {
                 formData.append('states', states);
                 formData.append('sender', sender);
                 formData.append('recipient_id', recipient_id);
+                formData.append('type', type);
 
-                axios.post('/marketing/get_email_list', formData)
+                axios.post('/marketing/get_list', formData)
                     .then(function (response) {
                         ele.innerHTML = button_html;
                         count_div.classList.remove('hidden');

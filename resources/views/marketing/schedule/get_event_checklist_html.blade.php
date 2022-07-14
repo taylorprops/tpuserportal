@@ -10,22 +10,24 @@
     if(!is_array($states)) {
         $states = explode(',', $states);
     }
-    $states_match = false;
-    $states_diff = array_diff($checklist_states, $states);
-
+    $states_match = true;
+    foreach($states as $state) {
+        if(!in_array($state, $checklist_states)) {
+            $states_match = false;
+        }
+    }
     @endphp
     {{-- blade-formatter-enable --}}
-
-
-    @if (in_array($recipient_id, $checklist_recipient_ids))
-        @if (count($states_diff) == 0)
+    @if ($states_match == true)
+        @if (in_array($recipient_id, $checklist_recipient_ids))
+            {{-- @if (count($states_diff) == 0) --}}
             <div class="my-2 p-2 border-b">
                 {!! $checklist -> data !!}
             </div>
-        @else
-            There are different checklist requirements for the States that you have selected<br><br>
 
         @endif
-    @endif
+    @else
+        There are different checklist requirements for the States that you have selected<br><br>
 
+    @endif
 @endforeach

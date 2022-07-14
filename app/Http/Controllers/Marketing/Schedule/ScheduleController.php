@@ -26,6 +26,7 @@ class ScheduleController extends Controller
     private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
     private $agent_columns_send_in_blue = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'OfficeKey', 'OfficeMlsId'];
     private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
+    private $agent_columns_addresses = ['MemberFirstName', 'MemberLastName', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberType', 'OfficeKey'];
     private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
     private $agent_columns_psi = ['email', 'first_name', 'last_name'];
     private $loan_officer_columns = ['email', 'first_name', 'last_name', 'county', 'city', 'state'];
@@ -429,132 +430,169 @@ class ScheduleController extends Controller
             -> send(new EmailGeneral($message));
     }
 
-    public function get_email_list(Request $request)
+    public function get_list(Request $request)
     {
 
         $sender = $request -> sender;
         $recipient_id = $request -> recipient_id;
+        $type = $request -> type;
         $states = explode(',', $request -> states);
 
-        if ($sender == 'mailchimp') {
-            $this -> agent_columns = $this -> agent_columns_mail_chimp;
-            $employees = [
-                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', ''],
-                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', ''],
-            ];
-        } else if ($sender == 'sendinblue') {
-            $this -> agent_columns = $this -> agent_columns_send_in_blue;
-            $employees = [
-                ['delia@taylorprops.com', 'Delia', 'Abrams', '', ''],
-                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', ''],
-            ];
-        } else if ($sender == 'omnisend') {
-            $this -> agent_columns = $this -> agent_columns_omni_send;
-            $employees = [
-                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', '', ''],
-                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', ''],
-            ];
-        }
+        if ($type == 'emails') {
 
-        $file_name = 'agent_list_'.time().'.csv';
-        if ($recipient_id == '42' || $recipient_id == '43') {
-            $file_name = 'loan_officer_list_'.time().'.csv';
-        }
-        $file = Storage::path('/tmp/'.$file_name);
-        $handle = fopen($file, 'w');
-
-        if ($recipient_id == '13' /* 'In-House Agents' */) {
-
-            $this -> agent_columns = $this -> agent_columns_in_house;
-            $agents = InHouseAddresses::select($this -> agent_columns_in_house) -> get();
-
-            fputcsv($handle, $this -> agent_columns, ',');
-            foreach ($agents as $agent) {
-                fputcsv($handle, $agent -> toArray(), ',');
+            if ($sender == 'mailchimp') {
+                $this -> agent_columns = $this -> agent_columns_mail_chimp;
+                $employees = [
+                    ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', ''],
+                    ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', ''],
+                    ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', ''],
+                ];
+            } else if ($sender == 'sendinblue') {
+                $this -> agent_columns = $this -> agent_columns_send_in_blue;
+                $employees = [
+                    ['delia@taylorprops.com', 'Delia', 'Abrams', '', ''],
+                    ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', ''],
+                    ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', ''],
+                ];
+            } else if ($sender == 'omnisend') {
+                $this -> agent_columns = $this -> agent_columns_omni_send;
+                $employees = [
+                    ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', '', ''],
+                    ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', '', ''],
+                    ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', ''],
+                ];
             }
 
-            $employees = [
-                ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
-                ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
-                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
-            ];
-
-            foreach ($employees as $employee) {
-                fputcsv($handle, $employee, ',');
+            $file_name = 'agent_list_'.time().'.csv';
+            if ($recipient_id == '42' || $recipient_id == '43') {
+                $file_name = 'loan_officer_list_'.time().'.csv';
             }
-        } else if ($recipient_id == '12' /* PSI */) {
+            $file = Storage::path('/tmp/'.$file_name);
+            $handle = fopen($file, 'w');
 
-            $agents = TestCenterAddresses::select($this -> agent_columns_psi) -> get();
+            if ($recipient_id == '13' /* 'In-House Agents' */) {
 
-            fputcsv($handle, $this -> agent_columns_psi, ',');
-            foreach ($agents as $agent) {
-                fputcsv($handle, $agent -> toArray(), ',');
-            }
+                $this -> agent_columns = $this -> agent_columns_in_house;
+                $agents = InHouseAddresses::select($this -> agent_columns_in_house) -> get();
 
-            $employees = [
-                ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
-                ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
-                ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
-            ];
-
-            foreach ($employees as $employee) {
-                fputcsv($handle, $employee, ',');
-            }
-
-        } else if ($recipient_id == '42' || $recipient_id == '43' /* Loan Officers */) {
-
-            $loan_officers = LoanOfficerAddresses::select($this -> loan_officer_columns) -> where('active', 'yes')
-                -> get();
-
-            fputcsv($handle, $this -> loan_officer_columns, ',');
-            foreach ($loan_officers as $loan_officer) {
-                fputcsv($handle, $loan_officer -> toArray(), ',');
-            }
-
-            $employees = [
-                ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
-                ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
-                ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
-            ];
-
-            foreach ($employees as $employee) {
-                fputcsv($handle, $employee, ',');
-            }
-
-        } else {
-
-            $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
-                -> whereIn('OfficeStateOrProvince', $states)
-                -> whereHas('agents', function (Builder $query) {
-                    $query -> where('MemberType', 'Agent')
-                        -> where('MemberEmail', '!=', '')
-                        -> whereNotNull('MemberEmail');
-                })
-                -> with(['agents' => function ($query) {
-                    $query -> where('MemberType', 'Agent')
-                        -> where('MemberEmail', '!=', '')
-                        -> whereNotNull('MemberEmail')
-                        -> select($this -> agent_columns);
-                }])
-                -> get();
-
-            fputcsv($handle, $this -> agent_columns, ',');
-            foreach ($offices as $office) {
-                foreach ($office -> agents as $agent) {
+                fputcsv($handle, $this -> agent_columns, ',');
+                foreach ($agents as $agent) {
                     fputcsv($handle, $agent -> toArray(), ',');
+                }
+
+                $employees = [
+                    ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
+                    ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
+                    ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
+                ];
+
+                foreach ($employees as $employee) {
+                    fputcsv($handle, $employee, ',');
+                }
+            } else if ($recipient_id == '12' /* PSI */) {
+
+                $agents = TestCenterAddresses::select($this -> agent_columns_psi) -> get();
+
+                fputcsv($handle, $this -> agent_columns_psi, ',');
+                foreach ($agents as $agent) {
+                    fputcsv($handle, $agent -> toArray(), ',');
+                }
+
+                $employees = [
+                    ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
+                    ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
+                    ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
+                ];
+
+                foreach ($employees as $employee) {
+                    fputcsv($handle, $employee, ',');
+                }
+
+            } else if ($recipient_id == '42' || $recipient_id == '43' /* Loan Officers */) {
+
+                $loan_officers = LoanOfficerAddresses::select($this -> loan_officer_columns) -> where('active', 'yes')
+                    -> get();
+
+                fputcsv($handle, $this -> loan_officer_columns, ',');
+                foreach ($loan_officers as $loan_officer) {
+                    fputcsv($handle, $loan_officer -> toArray(), ',');
+                }
+
+                $employees = [
+                    ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
+                    ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
+                    ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
+                ];
+
+                foreach ($employees as $employee) {
+                    fputcsv($handle, $employee, ',');
+                }
+
+            } else {
+
+                $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+                    -> whereIn('OfficeStateOrProvince', $states)
+                    -> whereHas('agents', function (Builder $query) {
+                        $query -> where('MemberType', 'Agent')
+                            -> where('MemberEmail', '!=', '')
+                            -> whereNotNull('MemberEmail');
+                    })
+                    -> with(['agents' => function ($query) {
+                        $query -> where('MemberType', 'Agent')
+                            -> where('MemberEmail', '!=', '')
+                            -> whereNotNull('MemberEmail')
+                            -> select($this -> agent_columns);
+                    }])
+                    -> get();
+
+                fputcsv($handle, $this -> agent_columns, ',');
+                foreach ($offices as $office) {
+                    foreach ($office -> agents as $agent) {
+                        fputcsv($handle, $agent -> toArray(), ',');
+                    }
+                }
+
+                $employees = [
+                    ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
+                    ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
+                    ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
+                ];
+
+                foreach ($employees as $employee) {
+                    fputcsv($handle, $employee, ',');
                 }
             }
 
-            foreach ($employees as $employee) {
-                fputcsv($handle, $employee, ',');
+        } else if ($type == 'addresses') {
+
+            $file_name = 'agent_address_list_'.time().'.csv';
+            $file = Storage::path('/tmp/'.$file_name);
+            $handle = fopen($file, 'w');
+
+            $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+                -> whereIn('OfficeStateOrProvince', $states)
+                -> with(['agents' => function ($query) {
+                    $query -> where('MemberType', 'Agent')
+                        -> select($this -> agent_columns_addresses);
+                }])
+                -> get();
+
+            fputcsv($handle, $this -> agent_columns_addresses, ',');
+
+            foreach ($offices as $office) {
+                if (count($office -> agents) > 0) {
+                    foreach ($office -> agents as $agent) {
+                        if ($agent -> MemberAddress1 != '') {
+                            fputcsv($handle, $agent -> toArray(), ',');
+                        }
+                    }
+                }
             }
+
         }
 
         $file_location = '/storage/tmp/'.$file_name;
-        $count = count(file(Storage::path('/tmp/'.$file_name)));
+        $count = count(file(Storage::path('/tmp/'.$file_name))) - 1;
 
         return response() -> json([
             'count' => $count,
@@ -655,7 +693,7 @@ class ScheduleController extends Controller
         return response() -> json(['id' => $clone_id]);
     }
 
-    public function export(Request $request)
+    public function export_medium(Request $request)
     {
 
         $item = Schedule::with(['uploads' => function ($query) {
@@ -664,30 +702,50 @@ class ScheduleController extends Controller
             -> find($request -> id);
 
         $html = $item -> uploads -> first() -> html;
-        $preview_text = $item -> preview_text;
+        $file_url = $item -> uploads -> first() -> file_url;
 
-        $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
-        '.$preview_text.'
-        </div>
-        <div style="display: none; max-height: 0px; overflow: hidden;">
-        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
-        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
-        &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
-        </div>';
+        if ($html != '') {
 
-        $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
+            $preview_text = $item -> preview_text;
 
-        $unsubscribe = '
-        <table style="width: 600px; margin-left: auto; margin-right: auto">
-            <tr>
-                <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px; font-family: Arial">Unsubscribe</td>
-            </tr>
-        </table>';
+            $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
+            '.$preview_text.'
+            </div>
+            <div style="display: none; max-height: 0px; overflow: hidden;">
+            &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+            &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+            &#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+            </div>';
 
-        $tracking_code = $item -> tracking_code;
-        $html = preg_replace('/(<\/body>)/', $unsubscribe.$tracking_code.'$1', $html);
+            $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
 
-        return compact('html');
+            $unsubscribe = '
+            <table style="width: 600px; margin-left: auto; margin-right: auto">
+                <tr>
+                    <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px; font-family: Arial">Unsubscribe</td>
+                </tr>
+            </table>';
+
+            $tracking_code = $item -> tracking_code;
+            $html = preg_replace('/(<\/body>)/', $unsubscribe.$tracking_code.'$1', $html);
+
+            return compact('html');
+
+        } else if ($file_url != '') {
+            return compact('file_url');
+        }
+
+    }
+
+    public function get_view_div_details(Request $request)
+    {
+
+        $event = Schedule::with(['uploads' => function ($query) {
+            $query -> where('accepted_version', true) -> first();
+        }])
+            -> find($request -> id) -> toJson();
+
+        return $event;
 
     }
 
