@@ -163,6 +163,7 @@ class ScheduleController extends Controller
         $subject_line_a = $request -> subject_line_a;
         $subject_line_b = $request -> subject_line_b;
         $preview_text = $request -> preview_text;
+        $tracking_code = $request -> tracking_code;
         $focus_id = $request -> focus_id;
         $goal_id = $request -> goal_id;
 
@@ -190,6 +191,7 @@ class ScheduleController extends Controller
         $event -> subject_line_a = $subject_line_a;
         $event -> subject_line_b = $subject_line_b;
         $event -> preview_text = $preview_text;
+        $event -> tracking_code = $tracking_code;
         $event -> focus_id = $focus_id;
         $event -> goal_id = $goal_id;
 

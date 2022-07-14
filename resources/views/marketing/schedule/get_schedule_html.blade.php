@@ -39,13 +39,20 @@
     {{-- blade-formatter-enable --}}
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
-
-        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' :
-            'ring-transparent'" id="event_{{ $event -> id }}"
-        data-id="{{ $event -> id }}" data-event-date="{{ $event -> event_date }}" data-state="{{ $event -> state }}"
-        data-status-id="{{ $event -> status_id }}" data-recipient-id="{{ $event -> recipient_id }}" data-company-id="{{ $event -> company_id }}"
-        data-medium-id="{{ $event -> medium_id }}" data-description="{{ $event -> description }}" data-subject-line-a="{{ $event -> subject_line_a }}"
-        data-subject-line-b="{{ $event -> subject_line_b }}" data-preview-text="{{ $event -> preview_text }}" data-goal-id="{{ $event -> goal_id }}"
+        :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'" id="event_{{ $event -> id }}"
+        data-id="{{ $event -> id }}"
+        data-event-date="{{ $event -> event_date }}"
+        data-state="{{ $event -> state }}"
+        data-status-id="{{ $event -> status_id }}"
+        data-recipient-id="{{ $event -> recipient_id }}"
+        data-company-id="{{ $event -> company_id }}"
+        data-medium-id="{{ $event -> medium_id }}"
+        data-description="{{ $event -> description }}"
+        data-subject-line-a="{{ $event -> subject_line_a }}"
+        data-subject-line-b="{{ $event -> subject_line_b }}"
+        data-preview-text="{{ $event -> preview_text }}"
+        data-tracking-code="{{ $event -> tracking_code }}"
+        data-goal-id="{{ $event -> goal_id }}"
         data-focus-id="{{ $event -> focus_id }}">
 
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }">

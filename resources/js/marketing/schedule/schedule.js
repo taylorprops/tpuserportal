@@ -178,6 +178,7 @@ if (document.URL.match('marketing/schedule')) {
                 scope.$refs.subject_line_a.value = event_div.getAttribute('data-subject-line-a');
                 scope.$refs.subject_line_b.value = event_div.getAttribute('data-subject-line-b');
                 scope.$refs.preview_text.value = event_div.getAttribute('data-preview-text');
+                scope.$refs.tracking_code.value = event_div.getAttribute('data-tracking-code');
                 scope.$refs.goal_id.value = event_div.getAttribute('data-goal-id');
                 scope.$refs.focus_id.value = event_div.getAttribute('data-focus-id');
                 scope.show_email_options = false;
