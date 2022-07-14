@@ -311,8 +311,8 @@ window.text_editor = function (options) {
     options.content_style = "body { font-family: Arial; }";
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
-    options.newline_behavior = 'linebreak';
-    options.fix_list_elements = true;
+    // options.newline_behavior = 'linebreak';
+    // options.fix_list_elements = true;
     // options.forced_root_block = '<br>';
 
 

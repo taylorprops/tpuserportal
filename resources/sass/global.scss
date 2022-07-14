@@ -25,6 +25,10 @@ a.default {
     display: none !important;
 }
 
+ul {
+    @apply list-disc list-inside;
+}
+
 .resizers {
     width: 100%;
     height: 100%;
