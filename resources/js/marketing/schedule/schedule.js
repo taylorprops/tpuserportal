@@ -54,8 +54,8 @@ if (document.URL.match('marketing/schedule')) {
                                 height: '200',
                                 menubar: 'tools edit format table',
                                 statusbar: false,
-                                plugins: 'image table code autoresize',
-                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | align outdent indent |',
+                                plugins: 'image table code autoresize list',
+                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | bullist numlist | align outdent indent |',
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                                 relative_urls: false,
                                 document_base_url: location.hostname

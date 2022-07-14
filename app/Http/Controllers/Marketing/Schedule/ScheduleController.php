@@ -696,17 +696,17 @@ class ScheduleController extends Controller
     public function export_medium(Request $request)
     {
 
-        $item = Schedule::with(['uploads' => function ($query) {
+        $event = Schedule::with(['uploads' => function ($query) {
             $query -> where('accepted_version', true);
         }])
             -> find($request -> id);
 
-        $html = $item -> uploads -> first() -> html;
-        $file_url = $item -> uploads -> first() -> file_url;
+        $html = $event -> uploads -> first() -> html;
+        $file_url = $event -> uploads -> first() -> file_url;
 
         if ($html != '') {
 
-            $preview_text = $item -> preview_text;
+            $preview_text = $event -> preview_text;
 
             $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
             '.$preview_text.'
@@ -719,14 +719,17 @@ class ScheduleController extends Controller
 
             $html = preg_replace('/(<body\s.*>)/', '$1'.$preview_html, $html);
 
-            $unsubscribe = '
-            <table style="width: 600px; margin-left: auto; margin-right: auto">
-                <tr>
-                    <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px; font-family: Arial">Unsubscribe</td>
-                </tr>
-            </table>';
+            $unsubscribe = '';
+            if ($event -> recipient_id != '13') {
+                $unsubscribe = '
+                <table style="width: 600px; margin-left: auto; margin-right: auto">
+                    <tr>
+                        <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px; font-family: Arial">Unsubscribe</td>
+                    </tr>
+                </table>';
+            }
 
-            $tracking_code = $item -> tracking_code;
+            $tracking_code = $event -> tracking_code;
             $html = preg_replace('/(<\/body>)/', $unsubscribe.$tracking_code.'$1', $html);
 
             return compact('html');

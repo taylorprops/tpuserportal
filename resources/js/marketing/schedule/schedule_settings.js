@@ -61,7 +61,9 @@ if (document.URL.match('marketing/schedule_settings')) {
                 let scope = this;
                 let formData = new FormData();
 
-                value = [...ele.selectedOptions].map(o => o.value);
+                if (field == 'company_ids') {
+                    value = [...ele.selectedOptions].map(o => o.value);
+                }
 
                 formData.append('id', id);
                 formData.append('value', value);
