@@ -213,10 +213,9 @@
 
                 </div>
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
-                    <div class="">
+                    <div class="flex justify-between items-center w-full">
 
-                        <div class="flex justify-around items-center whitespace-nowrap border-t p-2">
-
+                        <div class="flex justify-between items-center whitespace-nowrap border-t p-2 overflow-x-auto w-full">
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                                 @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
                                 Edit <i class="fa-thin fa-edit ml-2"></i>
@@ -238,47 +237,47 @@
                                     <div class="p-4" role="none">
 
                                         {{-- blade-formatter-disable --}}
-                                        @php
-                                        if ($company_id == '1') {
-                                            $links = [
-                                                [
-                                                    'title' => 'Standard',
-                                                    'url' => 'https://taylorprops.com/careers?email=%%Email%%&utm_campaign='.$event -> uuid,
-                                                ],
-                                                /* [
-                                                    'title' => 'Technology',
-                                                    'url' => 'https://taylorprops.com/careers#tech?email=%%Email%%&utm_campaign='.$event -> uuid,
-                                                ],
-                                                [
-                                                    'title' => 'Join Now',
-                                                    'url' => 'https://taylorprops.com/careers#join?email=%%Email%%&utm_campaign='.$event -> uuid,
-                                                ], */
-                                            ];
-                                        } elseif ($company_id == '3') {
-                                            $links = [
-                                                [
-                                                    'title' => 'Standard',
-                                                    'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
-                                                ],
-                                                [
-                                                    'title' => 'Instant Quote',
-                                                    'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
-                                                ],
-                                            ];
-                                        } elseif ($company_id == '2') {
-                                            $links = [
-                                                [
-                                                    'title' => 'Loan Officer Jobs',
-                                                    'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=%%Email%%&utm_campaign='.$event -> uuid,
-                                                ],
-                                                [
-                                                    'title' => 'Agents',
-                                                    'url' => 'https://heritagefinancial.com/?email=%%Email%%&utm_campaign='.$event -> uuid,
-                                                ],
-                                            ];
-                                        }
-                                    @endphp
-                                    {{-- blade-formatter-enable --}}
+                                            @php
+                                            if ($company_id == '1') {
+                                                $links = [
+                                                    [
+                                                        'title' => 'Standard',
+                                                        'url' => 'https://taylorprops.com/careers?email=%%Email%%&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                    /* [
+                                                        'title' => 'Technology',
+                                                        'url' => 'https://taylorprops.com/careers#tech?email=%%Email%%&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                    [
+                                                        'title' => 'Join Now',
+                                                        'url' => 'https://taylorprops.com/careers#join?email=%%Email%%&utm_campaign='.$event -> uuid,
+                                                    ], */
+                                                ];
+                                            } elseif ($company_id == '3') {
+                                                $links = [
+                                                    [
+                                                        'title' => 'Standard',
+                                                        'url' => 'https://heritagetitle.com?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                    [
+                                                        'title' => 'Instant Quote',
+                                                        'url' => 'https://heritagetitle.com/real-estate-title-and-escrow-services?email=*|EMAIL|*&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                ];
+                                            } elseif ($company_id == '2') {
+                                                $links = [
+                                                    [
+                                                        'title' => 'Loan Officer Jobs',
+                                                        'url' => 'https://heritagefinancial.com/jobs/loan-officer?email=%%Email%%&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                    [
+                                                        'title' => 'Agents',
+                                                        'url' => 'https://heritagefinancial.com/?email=%%Email%%&utm_campaign='.$event -> uuid,
+                                                    ],
+                                                ];
+                                            }
+                                        @endphp
+                                        {{-- blade-formatter-enable --}}
                                         @foreach ($links as $link)
                                             <div class="flex justify-start items-center">
 
@@ -335,66 +334,67 @@
                                 <div class="mx-2 w-1 border-r"></div>
                             @endif
 
-                            <div class="relative" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
+                        </div>
+                        <div class="relative mr-4" x-data="{ show_dropdown: false }" @click.outside="show_dropdown = false">
 
-                                <div>
-                                    <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
-                                        <span class="sr-only">Open options</span>
-                                        <i class="fa-light fa-bars fa-xl"></i>
-                                    </button>
-                                </div>
-
-                                <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                    role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
-
-                                    <div class="py-2" role="none">
-
-                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                            @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
-
-                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                            @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
-
-                                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
-                                            @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span
-                                                class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span>
-                                            View Versions</a>
-
-                                        <hr>
-
-                                        <a href="javascript:void(0)" class="block px-4 py-2 text-red-600 hover:text-red-500"
-                                            @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
-
-                                    </div>
-
-                                </div>
+                            <div>
+                                <button type="button" class="block text-gray-400 hover:text-gray-600" aria-expanded="true" aria-haspopup="true" @click="show_dropdown = true">
+                                    <span class="sr-only">Open options</span>
+                                    <i class="fa-light fa-bars fa-xl"></i>
+                                </button>
                             </div>
 
+                            <div class="origin-top-right absolute right-0 z-100 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_dropdown">
+
+                                <div class="py-2" role="none">
+
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                        @click="show_email($el, {{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-envelope mr-2"></i> Email</a>
+
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                        @click="clone({{ $event -> id }}); show_dropdown = false;"><i class="fa-thin fa-clone mr-2"></i> Clone</a>
+
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light hover:bg-gray-50 block px-4 py-2" role="menuitem"
+                                        @click="show_versions({{ $event -> id }}); show_dropdown = false;"><span
+                                            class="bg-blue-100 text-primary inline-flex items-center px-1.5 py-0.5 mr-2 rounded-full text-xs font-medium">{{ count($versions) }}</span>
+                                        View Versions</a>
+
+                                    <hr>
+
+                                    <a href="javascript:void(0)" class="block px-4 py-2 text-red-600 hover:text-red-500"
+                                        @click="show_delete_event({{ $event -> id }}, $el);  show_dropdown = false;"><i class="fa-duotone fa-trash mr-2"></i> Delete</a>
+
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
-                @else
-                    <div class="hidden edit-button"></div>
-                @endif
 
             </div>
+        @else
+            <div class="hidden edit-button"></div>
+@endif
 
-            <div x-show="show_checklist" x-transition>
+</div>
 
-                <div class="p-4 m-2 rounded-lg bg-{{ $event -> company -> color }}-50">
+<div x-show="show_checklist" x-transition>
 
-                    <div class="flex justify-end">
-                        <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
-                            @click="show_checklist = false;">Close Checklist <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
-                    </div>
+    <div class="p-4 m-2 rounded-lg bg-{{ $event -> company -> color }}-50">
 
-                    <div x-ref="schedule_checklist_div"></div>
-
-                </div>
-
-            </div>
-
+        <div class="flex justify-end">
+            <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
+                @click="show_checklist = false;">Close Checklist <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
         </div>
 
+        <div x-ref="schedule_checklist_div"></div>
+
     </div>
+
+</div>
+
+</div>
+
+</div>
 @endforeach
