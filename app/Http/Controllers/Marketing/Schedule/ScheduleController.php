@@ -546,8 +546,12 @@ class ScheduleController extends Controller
         }
 
         $file_location = '/storage/tmp/'.$file_name;
+        $count = count(file(Storage::path('/tmp/'.$file_name)));
 
-        return $file_location;
+        return response() -> json([
+            'count' => $count,
+            'location' => $file_location,
+        ]);
     }
 
     public function calendar_get_events(Request $request)
@@ -668,7 +672,7 @@ class ScheduleController extends Controller
         $unsubscribe = '
         <table style="width: 600px; margin-left: auto; margin-right: auto">
             <tr>
-                <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px;">Unsubscribe</td>
+                <td style="padding: 10px; text-align:center;"><a href="tag://%%unsubscribe%%" style="color: #717171; font-size: 11px; font-family: Arial">Unsubscribe</td>
             </tr>
         </table>';
 

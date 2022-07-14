@@ -51,6 +51,7 @@
         <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
+
                 @if ($accepted) @click.stop="show_view_div('{{ $accepted['file_type'] ?? null }}', '{{ $accepted['file_url'] ?? null }}', `{{ $accepted['html'] ?? null }}`, `{{ $accepted['subject_line_a'] ?? null }}`, `{{ $accepted['subject_line_b'] ?? null }}`, `{{ $accepted['preview_text'] ?? null }}`); active_event = {{ $event -> id }}" @endif
                 id="event_div_{{ $event -> id }}">
 
@@ -58,7 +59,6 @@
 
                     <div>
                         {{ $event -> event_date }}
-
                         @if ($past_due)
                             <br><i class="fa-solid fa-exclamation-triangle"></i> Past Due
 
@@ -78,6 +78,7 @@
                             {{ \App\Helpers\Helper::get_initials($event -> company -> item) }} <i class="fa-light fa-arrow-right mx-2"></i>
                             {{ $event -> recipient -> item }}
                         </div>
+
                         @if ($event -> sending_notification_sent == true)
                             <div class="inline-block bg-white p-1 mt-1 rounded-lg text-{{ $event -> company -> color }}-700 font-semibold">Notification Sent
                                 <i class="fa-light fa-check ml-2"></i>
@@ -98,6 +99,7 @@
                             role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" x-show="show_edit_status"
                             @click.outside="show_edit_status = false;">
                             <div class="p-4" role="none">
+
                                 @foreach ($settings -> where('category', 'status') as $status)
                                     <div class="group flex justify-between items-center p-2 rounded-lg @if ($event -> status -> id != $status -> id) cursor-pointer hover:bg-green-600/75 hover:text-white @endif"
                                         @click.stop="if({{ $event -> status_id }} != {{ $status -> id }}) { update_status($el, {{ $event -> id }}, {{ $status -> id }}); } show_edit_status = false;">
@@ -118,7 +120,6 @@
                         </div>
 
                     </div>
-
                     @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
                         <div class="mx-1 pl-4">
                             <div class="relative" x-show="!show_notes">
@@ -209,20 +210,19 @@
                     </div>
 
                 </div>
-
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
-                    <div class="flex justify-around whitespace-nowrap border-t p-2 overflow-x-auto">
+                    <div class="flex justify-around items-center whitespace-nowrap border-t p-2 overflow-x-auto">
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                             @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
                             Edit <i class="fa-thin fa-edit ml-2"></i>
                         </a>
 
-                        <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 h-4 border-r"></div>
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
-                        <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 h-4 border-r"></div>
 
                         <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
                             <div>
@@ -275,7 +275,6 @@
                                         }
                                     @endphp
                                     {{-- blade-formatter-enable --}}
-
                                     @foreach ($links as $link)
                                         <div class="flex justify-start items-center">
 
@@ -300,16 +299,23 @@
                             </div>
                         </div>
 
-                        <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 h-4 border-r"></div>
 
-                        <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el)">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
+                        <div class="flex items-center space-x-2">
 
-                        <div class="mx-2 w-1 border-r"></div>
+                            <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="get_email_list($el, document.getElementById('count_{{ $event -> id }}'))">Get Email List <i class="fa-thin fa-download ml-2"></i></a>
+
+                            <div id="count_{{ $event -> id }}" class="hidden p-2 text-center rounded bg-{{ $event -> company -> color }}-100 text-{{ $event -> company -> color }}-700"></div>
+
+                        </div>
+
+                        <div class="mx-2 w-1 h-4 border-r"></div>
 
                         <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
                             @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
 
-                        <div class="mx-2 w-1 border-r"></div>
+                        <div class="mx-2 w-1 h-4 border-r"></div>
+
                         @if ($accepted)
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="export_html({{ $event -> id }})">Export <i class="fa-thin fa-upload ml-2"></i></a>
 

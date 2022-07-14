@@ -404,7 +404,7 @@ if (document.URL.match('marketing/schedule')) {
                     });
             },
 
-            get_email_list(ele) {
+            get_email_list(ele, count_div) {
 
                 let event_div = ele.closest('.event-div');
                 let states = event_div.getAttribute('data-state').split(',');
@@ -426,7 +426,9 @@ if (document.URL.match('marketing/schedule')) {
                 axios.post('/marketing/get_email_list', formData)
                     .then(function (response) {
                         ele.innerHTML = button_html;
-                        window.location = response.data;
+                        count_div.classList.remove('hidden');
+                        count_div.innerText = response.data.count;
+                        window.location = response.data.location;
                         toastr.success('List Successfully Downloaded');
                     })
                     .catch(function (error) {
