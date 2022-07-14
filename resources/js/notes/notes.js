@@ -71,7 +71,7 @@ window.notes = function (note_type) {
                 inline: true,
                 menubar: '',
                 statusbar: false,
-                plugins: 'image table code hr autoresize paste lists',
+                plugins: ['image', 'table', 'code', 'hr', 'autoresize', 'paste', 'lists', 'advlist'],
                 toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | | bullist numlist | align outdent indent |  numlist bullist checklist | image | formatselect fontselect fontsizeselect | paste | code |',
                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                 relative_urls: false,
