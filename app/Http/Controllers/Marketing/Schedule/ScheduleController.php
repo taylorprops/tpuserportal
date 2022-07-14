@@ -684,7 +684,8 @@ class ScheduleController extends Controller
             </tr>
         </table>';
 
-        $html = preg_replace('/(<\/body>)/', '$1'.$unsubscribe, $html);
+        $tracking_code = $item -> tracking_code;
+        $html = preg_replace('/(<\/body>)/', $unsubscribe.$tracking_code.'$1', $html);
 
         return compact('html');
 
