@@ -42,24 +42,30 @@ class ScheduleController extends Controller
     public function get_schedule(Request $request)
     {
 
+        $search_event_id = $request -> search_event_id;
         $company_id = $request -> company_id;
         $recipient_id = $request -> recipient_id;
         $medium_id = $request -> medium_id;
         $status_id = $request -> status_id;
 
         $events = Schedule::where('active', true)
-            -> where(function ($query) use ($company_id, $recipient_id, $medium_id, $status_id) {
-                if ($company_id) {
-                    $query -> where('company_id', $company_id);
-                }
-                if ($recipient_id) {
-                    $query -> where('recipient_id', $recipient_id);
-                }
-                if ($medium_id) {
-                    $query -> where('medium_id', $medium_id);
-                }
-                if ($status_id) {
-                    $query -> where('status_id', $status_id);
+            -> where(function ($query) use ($search_event_id, $company_id, $recipient_id, $medium_id, $status_id) {
+
+                if ($search_event_id) {
+                    $query -> where('id', 'like', '%'.$search_event_id.'%');
+                } else {
+                    if ($company_id) {
+                        $query -> where('company_id', $company_id);
+                    }
+                    if ($recipient_id) {
+                        $query -> where('recipient_id', $recipient_id);
+                    }
+                    if ($medium_id) {
+                        $query -> where('medium_id', $medium_id);
+                    }
+                    if ($status_id) {
+                        $query -> where('status_id', $status_id);
+                    }
                 }
             })
             -> with(['company', 'notes', 'medium', 'recipient', 'status', 'uploads' => function ($query) {
