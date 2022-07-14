@@ -87,7 +87,7 @@ window.email_list = function () {
                 menubar: '',
                 statusbar: false,
                 plugins: 'image table code autoresize',
-                toolbar: 'undo redo | table | bold italic underline | forecolor backcolor | align outdent indent |  numlist bullist checklist | image |     formatselect fontselect fontsizeselect | code |',
+                toolbar: 'undo redo | table | bold italic underline | forecolor backcolor | align outdent indent |  numlist | image |     formatselect fontselect fontsizeselect | code |',
                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                 relative_urls: false,
                 document_base_url: location.hostname,

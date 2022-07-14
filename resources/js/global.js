@@ -306,13 +306,12 @@ window.text_editor = function (options) {
     if (options.selector == '') {
         options.selector = '.text-editor';
     }
-    // options.content_style = 'body { font-size: .9rem; }',
+    options.lists_indent_on_tab = true;
     // options.content_css = '/css/tinymce.css';
-    // options.content_style = "body { font-size: 12pt; font-family: Arial; }";
-    options.content_style = "body { font-family: Arial; }";
-    // options.forced_root_block = false;
+    options.content_style = "body { font-family: Arial; } ul, ol { list-style: disc; margin-left: 25px  }";
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
+    options.newline_behavior = 'linebreak';
 
 
     tinymce.remove(options.selector);

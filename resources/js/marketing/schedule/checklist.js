@@ -249,7 +249,7 @@ if (document.URL.match(/checklist/)) {
                     menubar: '',
                     statusbar: false,
                     plugins: 'image table code hr autoresize paste lists',
-                    toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | bullist numlist | align outdent indent | image | formatselect fontselect fontsizeselect | paste | code |',
+                    toolbar: 'undo redo | table | bold italic underline hr | forecolor backcolor | numlist | align outdent indent | image | formatselect fontselect fontsizeselect | paste | code |',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                     relative_urls: false,
                     document_base_url: location.hostname,
