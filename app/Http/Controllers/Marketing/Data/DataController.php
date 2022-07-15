@@ -291,7 +291,7 @@ class DataController extends Controller
         if ($office_codes) {
             $offices = BrightOffices::whereIn('OfficeMlsId', $office_codes)
                 -> whereHas('agents', function (Builder $query) use ($list_type) {
-                    $query -> where('MemberType', 'Agent');
+                    $query -> where('MemberType', 'Agent') -> where('active', 'yes');
                     if ($list_type == 'email') {
                         $query -> where('MemberEmail', '!=', '')
                             -> whereNotNull('MemberEmail');
@@ -332,7 +332,7 @@ class DataController extends Controller
                     }
                 })
                 -> whereHas('agents', function (Builder $query) use ($list_type) {
-                    $query -> where('MemberType', 'Agent');
+                    $query -> where('MemberType', 'Agent') -> where('active', 'yes');
                     if ($list_type == 'email') {
                         $query -> where('MemberEmail', '!=', '')
                             -> whereNotNull('MemberEmail');
@@ -342,7 +342,7 @@ class DataController extends Controller
                     }
                 })
                 -> with(['agents' => function ($query) use ($list_type) {
-                    $query -> where('MemberType', 'Agent');
+                    $query -> where('MemberType', 'Agent') -> where('active', 'yes');
                     if ($list_type == 'email') {
                         $query -> where('MemberEmail', '!=', '')
                             -> whereNotNull('MemberEmail');
