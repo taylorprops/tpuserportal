@@ -540,16 +540,17 @@ class ScheduleController extends Controller
                     -> whereIn('OfficeStateOrProvince', $states)
                     -> whereHas('agents', function (Builder $query) {
                         $query -> where('MemberType', 'Agent')
+                            -> where('active', 'yes')
                             -> where('MemberEmail', '!=', '')
                             -> whereNotNull('MemberEmail');
                     })
                     -> with(['agents' => function ($query) {
                         $query -> where('MemberType', 'Agent')
+                            -> where('active', 'yes')
                             -> where('MemberEmail', '!=', '')
                             -> whereNotNull('MemberEmail')
                             -> select($this -> agent_columns);
                     }])
-                    -> where('active', 'yes')
                     -> get();
 
                 fputcsv($handle, $this -> agent_columns, ',');
@@ -581,6 +582,7 @@ class ScheduleController extends Controller
                 -> whereIn('OfficeStateOrProvince', $states)
                 -> with(['agents' => function ($query) {
                     $query -> where('MemberType', 'Agent')
+                        -> where('active', 'yes')
                         -> select($this -> agent_columns_addresses);
                 }])
                 -> get();
