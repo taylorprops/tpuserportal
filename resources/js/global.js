@@ -303,6 +303,8 @@ window.remove_form_errors = function (event = null) {
 
 window.text_editor = function (options) {
 
+    const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
+
     if (options.selector == '') {
         options.selector = '.text-editor';
     }
@@ -311,9 +313,11 @@ window.text_editor = function (options) {
     options.content_style = "body { font-family: Arial; }";
     options.branding = false;
     options.images_upload_handler = image_upload_handler;
-    // options.newline_behavior = 'linebreak';
+    // options.newline_behavior = 'invert';
     // options.fix_list_elements = true;
     // options.forced_root_block = '<br>';
+    options.toolbar_sticky = true;
+    options.toolbar_sticky_offset = isSmallScreen ? 102 : 108;
 
 
     tinymce.remove(options.selector);

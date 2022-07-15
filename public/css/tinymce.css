@@ -1,4 +1,4 @@
-ul {
-    margin-left: 45px;
-    list-style: disc;
+p {
+    margin: 0 !important;
+    line-height: 0%;
 }
