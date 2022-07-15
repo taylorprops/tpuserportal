@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Classes\Zimbra;
 use App\Helpers\Helper;
+use App\Mail\General\EmailGeneral;
 use App\Models\BrightMLS\BrightAgentRoster;
 use App\Models\BrightMLS\BrightListings;
 use App\Models\BrightMLS\BrightOffices;
@@ -12,6 +13,7 @@ use App\Models\DocManagement\Archives\Transactions;
 use App\Models\Employees\Agents;
 use App\Models\Employees\Mortgage as LoanOfficersNew;
 use App\Models\Marketing\LoanOfficerAddresses;
+use App\Models\Marketing\Schedule\Schedule;
 use App\Models\OldDB\Company\BillingInvoicesItems;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -19,6 +21,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -29,7 +32,49 @@ class TestsController extends Controller
     public function test(Request $request)
     {
 
-        dd(config('global.bright_listings_columns'));
+        $items = Schedule::where('status_id', '38')
+            -> where('active', true)
+            -> with(['company', 'recipient'])
+            -> get();
+
+        $to = 'miketaylor0101@gmail.com';
+        $subject = 'You Have '.count($items).' Emails That Need Review';
+        $body = 'You have '.count($items).' emails that need review<br><br>';
+
+        $body .= '
+        <table border="1" cellpadding="3">
+            <tr>
+                <th>Send Date</th>
+                <th>ID</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Description</th>
+                <th></th>
+            </tr>';
+
+        foreach ($items as $item) {
+            $body .= '
+            <tr>
+                <td>'.$item -> event_date.'</td>
+                <td>'.$item -> id.'</td>
+                <td>'.$item -> company -> item.'</td>
+                <td>'.$item -> recipient -> item.'</td>
+                <td>'.$item -> description.'</td>
+                <td><a href="https://tpuserportal.com/marketing/schedule?view='.$item -> id.'" target="_blank">View</a></td>
+            </tr>';
+        }
+        $body .= '</table>';
+
+        $message = [
+            'company' => 'Taylor Properties',
+            'subject' => $subject,
+            'from' => ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'],
+            'body' => $body,
+            'attachments' => null,
+        ];
+
+        Mail::to([$to])
+            -> send(new EmailGeneral($message));
 
     }
 

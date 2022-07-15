@@ -37,7 +37,7 @@
     @endphp
     {{-- blade-formatter-enable --}}
 
-    <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
+    <div id="event_{{ $event -> id }}" class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
         x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }"
         :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'" id="event_{{ $event -> id }}"
         data-id="{{ $event -> id }}"

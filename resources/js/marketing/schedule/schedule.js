@@ -24,11 +24,12 @@ if (document.URL.match('marketing/schedule')) {
 
             init() {
 
-                this.get_schedule();
+                let view_id = global_get_url_parameters('view') || null;
+                this.get_schedule(null, view_id);
 
             },
 
-            get_schedule(id = null) {
+            get_schedule(id = null, view_id = null) {
 
                 let scope = this;
                 let form = scope.$refs.filter_form;
@@ -45,28 +46,20 @@ if (document.URL.match('marketing/schedule')) {
                                 event_div.querySelector('.edit-button').click();
                             }, 500);
                         }
+
                         setTimeout(function () {
                             tippy('[data-tippy-content]', {
                                 allowHTML: true,
                             });
                             let options = {
                                 selector: '.add-notes',
-                                height: '200',
-
-                                // menubar: 'tools edit format table',
-                                // statusbar: false,
-                                // plugins: 'image table code autoresize list',
-                                // toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | numlist | align outdent indent |',
-                                // table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-                                // relative_urls: false,
-                                // document_base_url: location.hostname
+                                height: '300',
                                 statusbar: false,
                                 menubar: false,
-                                // quickbars_selection_toolbar: 'bold italic link bullist numlist',
                                 plugins: [
                                     'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
                                     'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                    'insertdatetime', 'media', 'table', 'autoresize', 'hr'
+                                    'insertdatetime', 'media', 'table', 'autoresize'
                                 ],
                                 toolbar: 'undo redo bold italic hr | forecolor backcolor | image | bullist numlist outdent indent',
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
@@ -74,6 +67,13 @@ if (document.URL.match('marketing/schedule')) {
                                 document_base_url: location.hostname,
                             }
                             text_editor(options);
+
+                            if (view_id) {
+                                scope.show_view_div(view_id);
+                                scope.active_event = view_id;
+                                document.getElementById('event_' + view_id).previousSibling.previousSibling.scrollIntoView({ behavior: "smooth", block: "start" });
+                            }
+
                         }, 500);
                     })
                     .catch(function (error) {
