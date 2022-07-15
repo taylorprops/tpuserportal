@@ -446,6 +446,7 @@ class ScheduleController extends Controller
                     ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', ''],
                     ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', ''],
                     ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', ''],
+                    ['miketaylor0101@gmail.com', 'Mike', 'Taylor', '', '', '', ''],
                 ];
             } else if ($sender == 'sendinblue') {
                 $this -> agent_columns = $this -> agent_columns_send_in_blue;
@@ -453,6 +454,7 @@ class ScheduleController extends Controller
                     ['delia@taylorprops.com', 'Delia', 'Abrams', '', ''],
                     ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', ''],
                     ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', ''],
+                    ['miketaylor0101@gmail.com', 'Mike', 'Taylor', '', ''],
                 ];
             } else if ($sender == 'omnisend') {
                 $this -> agent_columns = $this -> agent_columns_omni_send;
@@ -460,6 +462,7 @@ class ScheduleController extends Controller
                     ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', '', '', ''],
                     ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', '', '', ''],
                     ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', '', '', ''],
+                    ['miketaylor0101@gmail.com', 'Mike', 'Taylor', '', '', '', '', ''],
                 ];
             }
 
@@ -484,6 +487,7 @@ class ScheduleController extends Controller
                     ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
                     ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
                     ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
+                    ['Mike', 'Taylor', '', '', '', '', 'miketaylor0101@gmail.com', '', '', ''],
                 ];
 
                 foreach ($employees as $employee) {
@@ -502,6 +506,7 @@ class ScheduleController extends Controller
                     ['Delia', 'Abrams', '', '', '', '', 'delia@taylorprops.com', '', '', ''],
                     ['Kyle', 'Abrams', '', '', '', '', 'kyle@taylorprops.com', '', '', ''],
                     ['Robb', 'Taylor', '', '', '', '', 'senorrobb@yahoo.com', '', '', ''],
+                    ['Mike', 'Taylor', '', '', '', '', 'miketaylor0101@gmail.com', '', '', ''],
                 ];
 
                 foreach ($employees as $employee) {
@@ -522,6 +527,7 @@ class ScheduleController extends Controller
                     ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
                     ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
                     ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
+                    ['miketaylor0101@gmail.com', 'Mike', 'Taylor', '', '', ''],
                 ];
 
                 foreach ($employees as $employee) {
@@ -556,6 +562,7 @@ class ScheduleController extends Controller
                     ['delia@taylorprops.com', 'Delia', 'Abrams', '', '', ''],
                     ['kyle@taylorprops.com', 'Kyle', 'Abrams', '', '', ''],
                     ['senorrobb@yahoo.com', 'Robb', 'Taylor', '', '', ''],
+                    ['miketaylor0101@gmail.com', 'Mike', 'Taylor', '', '', ''],
                 ];
 
                 foreach ($employees as $employee) {
