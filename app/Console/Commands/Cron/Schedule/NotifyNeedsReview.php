@@ -37,7 +37,7 @@ class NotifyNeedsReview extends Command
             -> get();
 
         $to = 'senorrobb@yahoo.com';
-        // $to = 'miketaylor0101@gmail.com';
+        $cc = ['miketaylor0101@gmail.com'];
         $subject = 'You Have '.count($items).' Emails That Need Review';
         $body = 'You have '.count($items).' emails that need review<br><br>';
 
@@ -74,6 +74,7 @@ class NotifyNeedsReview extends Command
         ];
 
         Mail::to([$to])
+            -> cc($cc)
             -> send(new EmailGeneral($message));
 
     }

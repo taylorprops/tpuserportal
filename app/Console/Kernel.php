@@ -99,6 +99,12 @@ class Kernel extends ConsoleKernel
             -> everyThreeHours()
             -> environments('production');
 
+        // Schedule - Notify Robb if there are emails that need review
+        $schedule -> command('schedule:notify_needs_review')
+            -> timezone('America/New_York')
+            -> twiceDaily(10, 17)
+            -> environments('production');
+
         // %%% TEMP %%% //
 
         // add bright fields
