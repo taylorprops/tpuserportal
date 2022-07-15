@@ -50,15 +50,28 @@ if (document.URL.match('marketing/schedule')) {
                                 allowHTML: true,
                             });
                             let options = {
-                                selector: '.editor-inline',
+                                selector: '.add-notes',
                                 height: '200',
-                                menubar: 'tools edit format table',
+
+                                // menubar: 'tools edit format table',
+                                // statusbar: false,
+                                // plugins: 'image table code autoresize list',
+                                // toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | numlist | align outdent indent |',
+                                // table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+                                // relative_urls: false,
+                                // document_base_url: location.hostname
                                 statusbar: false,
-                                plugins: 'image table code autoresize list',
-                                toolbar: 'image | undo redo | styleselect | bold italic | forecolor backcolor | numlist | align outdent indent |',
+                                menubar: false,
+                                // quickbars_selection_toolbar: 'bold italic link bullist numlist',
+                                plugins: [
+                                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                    'insertdatetime', 'media', 'table', 'autoresize', 'hr'
+                                ],
+                                toolbar: 'undo redo bold italic hr | forecolor backcolor | image | bullist numlist outdent indent',
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                                 relative_urls: false,
-                                document_base_url: location.hostname
+                                document_base_url: location.hostname,
                             }
                             text_editor(options);
                         }, 500);

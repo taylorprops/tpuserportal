@@ -317,7 +317,7 @@ window.text_editor = function (options) {
     // options.fix_list_elements = true;
     // options.forced_root_block = '<br>';
     options.toolbar_sticky = true;
-    options.toolbar_sticky_offset = isSmallScreen ? 102 : 108;
+    // options.toolbar_sticky_offset = isSmallScreen ? 102 : 108;
 
 
     tinymce.remove(options.selector);

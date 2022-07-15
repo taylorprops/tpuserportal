@@ -69,8 +69,6 @@ window.notes = function (note_type) {
                 height: 900,
                 width: '100%',
                 statusbar: false,
-                skin: 'small',
-                icons: 'small',
                 quickbars_selection_toolbar: 'bold italic link bullist numlist',
                 plugins: [
                     'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',

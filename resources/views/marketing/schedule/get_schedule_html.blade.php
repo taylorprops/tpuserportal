@@ -1,43 +1,44 @@
 @foreach ($events as $event)
     {{-- blade-formatter-disable --}}
-@php
-        $accepted = null;
-        $versions = [];
-        if ($event -> uploads) {
-            $event_upload = null;
-            foreach ($event -> uploads as $upload) {
-                $details = [
-                    'file_id' => $upload -> id,
-                    'file_type' => $upload -> file_type,
-                    'file_url' => $upload -> file_url,
-                    'html' => $upload -> html,
-                    'subject_line_a' => $event -> subject_line_a,
-                    'subject_line_b' => $event -> subject_line_b,
-                    'preview_text' => $event -> preview_text,
-                ];
-                if ($upload -> accepted_version == true) {
-                    $accepted = 'yes';
-                    $event_upload = $upload;
-                }
-                $versions[] = $details;
+    @php
+    $accepted = null;
+    $versions = [];
+    if ($event -> uploads) {
+        $event_upload = null;
+        foreach ($event -> uploads as $upload) {
+            $details = [
+                'file_id' => $upload -> id,
+                'file_type' => $upload -> file_type,
+                'file_url' => $upload -> file_url,
+                'html' => $upload -> html,
+                'subject_line_a' => $event -> subject_line_a,
+                'subject_line_b' => $event -> subject_line_b,
+                'preview_text' => $event -> preview_text,
+            ];
+            if ($upload -> accepted_version == true) {
+                $accepted = 'yes';
+                $event_upload = $upload;
             }
+            $versions[] = $details;
         }
+    }
 
-        $company_id = $event -> company -> id;
+    $company_id = $event -> company -> id;
 
-        $past_due = null;
-        if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
-            $past_due = 'past_due';
-        }
-        if ($event -> notes) {
-            $notes = $event -> notes;
-            $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
-        }
+    $past_due = null;
+    if ($event -> event_date < date('Y-m-d') && $event -> status -> id != '24') {
+        $past_due = 'past_due';
+    }
+    if ($event -> notes) {
+        $notes = $event -> notes;
+        $count_unread = count($notes -> where('read', false) -> where('user_id', '!=', auth() -> user() -> id));
+    }
 
     @endphp
     {{-- blade-formatter-enable --}}
 
     <div class="event-div w-98-perc mx-auto mb-6 text-sm rounded border border-{{ $event -> company -> color }}-200 ring-8 @if ($loop -> first) mt-6 @endif @if ($past_due) past-due @endif"
+        x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }"
         :class="active_event == {{ $event -> id }} ? 'ring-{{ $event -> company -> color }}-400' : 'ring-transparent'" id="event_{{ $event -> id }}"
         data-id="{{ $event -> id }}"
         data-event-date="{{ $event -> event_date }}"
@@ -54,7 +55,7 @@
         data-goal-id="{{ $event -> goal_id }}"
         data-focus-id="{{ $event -> focus_id }}">
 
-        <div class="flex flex-col text-xs" x-data="{ show_edit_status: false, show_notes: false, show_add_notes: false, show_checklist: false }">
+        <div class="flex flex-col text-xs">
 
             <div class="relative flex justify-between items-center flex-wrap font-semibold bg-{{ $event -> company -> color }}-100 p-2 rounded-t"
 
@@ -178,7 +179,7 @@
                     <div class="max-w-700-px mx-auto" x-show="show_add_notes" x-transition>
                         <form x-ref="add_notes_form">
                             <div>
-                                <input class="editor-inline" name="notes" placeholder="Enter Notes" x-ref="notes">
+                                <input class="add-notes" name="notes" placeholder="Enter Notes" x-ref="notes">
                             </div>
                             <div class="flex justify-around my-3">
                                 <button type="button" class="button primary md"
@@ -371,30 +372,26 @@
                         </div>
 
                     </div>
-
+                @else
+                    <div class="hidden edit-button"></div>
+                @endif
             </div>
-        @else
-            <div class="hidden edit-button"></div>
-@endif
-
-</div>
-
-<div x-show="show_checklist" x-transition>
-
-    <div class="p-4 m-2 rounded-lg bg-{{ $event -> company -> color }}-50">
-
-        <div class="flex justify-end">
-            <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
-                @click="show_checklist = false;">Close Checklist <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
         </div>
 
-        <div x-ref="schedule_checklist_div"></div>
+        <div x-show="show_checklist" x-transition>
+
+            <div class="p-4 m-2 rounded-lg bg-{{ $event -> company -> color }}-50">
+
+                <div class="flex justify-end">
+                    <button type="button" class="bg-red-100 text-red-500 hover:text-red-600 p-1 pl-2 flex items-center rounded-full"
+                        @click="show_checklist = false;">Close Checklist <i class="fa-duotone fa-times-circle fa-lg ml-2"></i></button>
+                </div>
+
+                <div x-ref="schedule_checklist_div"></div>
+
+            </div>
+
+        </div>
 
     </div>
-
-</div>
-
-</div>
-
-</div>
 @endforeach
