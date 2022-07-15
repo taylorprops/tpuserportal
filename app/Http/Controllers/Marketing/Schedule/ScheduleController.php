@@ -549,6 +549,7 @@ class ScheduleController extends Controller
                             -> whereNotNull('MemberEmail')
                             -> select($this -> agent_columns);
                     }])
+                    -> where('active', 'yes')
                     -> get();
 
                 fputcsv($handle, $this -> agent_columns, ',');
