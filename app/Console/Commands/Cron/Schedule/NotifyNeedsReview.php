@@ -36,46 +36,50 @@ class NotifyNeedsReview extends Command
             -> with(['company', 'recipient'])
             -> get();
 
-        $to = 'senorrobb@yahoo.com';
-        $cc = ['miketaylor0101@gmail.com'];
-        $subject = 'You Have '.count($items).' Emails That Need Review';
-        $body = 'You have '.count($items).' emails that need review<br><br>';
+        if (count($items) > 0) {
 
-        $body .= '
-        <table border="1" cellpadding="3">
-            <tr>
-                <th>Send Date</th>
-                <th>ID</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Description</th>
-                <th></th>
-            </tr>';
+            $to = 'senorrobb@yahoo.com';
+            $cc = ['miketaylor0101@gmail.com'];
+            $subject = 'You Have '.count($items).' Emails That Need Review';
+            $body = 'You have '.count($items).' emails that need review<br><br>';
 
-        foreach ($items as $item) {
             $body .= '
-            <tr>
-                <td>'.$item -> event_date.'</td>
-                <td>'.$item -> id.'</td>
-                <td>'.$item -> company -> item.'</td>
-                <td>'.$item -> recipient -> item.'</td>
-                <td>'.$item -> description.'</td>
-                <td><a href="https://tpuserportal.com/marketing/schedule?view='.$item -> id.'" target="_blank">View</a></td>
-            </tr>';
+            <table border="1" cellpadding="3">
+                <tr>
+                    <th>Send Date</th>
+                    <th>ID</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>';
+
+            foreach ($items as $item) {
+                $body .= '
+                <tr>
+                    <td>'.$item -> event_date.'</td>
+                    <td>'.$item -> id.'</td>
+                    <td>'.$item -> company -> item.'</td>
+                    <td>'.$item -> recipient -> item.'</td>
+                    <td>'.$item -> description.'</td>
+                    <td><a href="https://tpuserportal.com/marketing/schedule?view='.$item -> id.'" target="_blank">View</a></td>
+                </tr>';
+            }
+            $body .= '</table>';
+
+            $message = [
+                'company' => 'Taylor Properties',
+                'subject' => $subject,
+                'from' => ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'],
+                'body' => $body,
+                'attachments' => null,
+            ];
+
+            Mail::to([$to])
+                -> cc($cc)
+                -> send(new EmailGeneral($message));
+
         }
-        $body .= '</table>';
-
-        $message = [
-            'company' => 'Taylor Properties',
-            'subject' => $subject,
-            'from' => ['email' => 'mike@taylorprops.com', 'name' => 'Mike Taylor'],
-            'body' => $body,
-            'attachments' => null,
-        ];
-
-        Mail::to([$to])
-            -> cc($cc)
-            -> send(new EmailGeneral($message));
 
     }
 }
