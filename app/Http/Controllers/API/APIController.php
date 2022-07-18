@@ -36,7 +36,7 @@ class APIController extends Controller
         }
 
         $loan_status_detailed = $request -> loan_status;
-        $ignore_statuses = ['Lead', 'Prospect', 'Pre Qualify', 'Pre Approval', 'Application Taken', 'Registered', 'Broker Initial Submission'];
+        $ignore_statuses = ['Lead', 'Prospect', 'Pre Qualify', 'Pre Approval', 'Registered', 'Broker Initial Submission'];
 
         if (!in_array($loan_status_detailed, $ignore_statuses)) {
             $action = $request -> action ?? null;
