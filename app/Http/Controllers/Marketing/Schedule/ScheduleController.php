@@ -640,6 +640,18 @@ class ScheduleController extends Controller
 
     }
 
+    public function rename_dynamic_fields($text)
+    {
+
+        $text = str_replace('{{ contact.EMAIL }}', '%%Email%%', $text);
+        $text = str_replace('[[contact.email]]', '%%Email%%', $text);
+        $text = str_replace('[First Name]', '%%First_Name%%', $text);
+        $text = str_replace('{First Name}', '%%First_Name%%', $text);
+
+        return $text;
+
+    }
+
     public function calendar_get_events(Request $request)
     {
 
@@ -746,7 +758,9 @@ class ScheduleController extends Controller
 
         if ($html != '') {
 
-            $preview_text = $event -> preview_text;
+            $html = $this -> rename_dynamic_fields($html);
+
+            $preview_text = $this -> rename_dynamic_fields($event -> preview_text);
 
             $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
             '.$preview_text.'

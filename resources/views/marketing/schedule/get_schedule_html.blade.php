@@ -230,7 +230,7 @@
 
                             <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
                                 <div>
-                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = true">Links <i class="fa-thin fa-link ml-2"></i></a>
+                                    <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="show_links = ! show_links">Links <i class="fa-thin fa-link ml-2"></i></a>
                                 </div>
 
                                 <div class="origin-top-left absolute -left-64 z-100 mt-2 w-600-px border-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
