@@ -216,17 +216,17 @@
                 @if (auth() -> user() -> level == 'super_admin' || auth() -> user() -> level == 'owner' || auth() -> user() -> level == 'marketing')
                     <div class="flex justify-between items-center w-full">
 
-                        <div class="flex justify-between items-center whitespace-nowrap p-2 overflow-x-auto w-full">
+                        <div class="flex justify-between items-center whitespace-nowrap p-2 flex-wrap w-full">
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light edit-button"
                                 @click="edit_item($el); show_item_modal = true; add_event = false; edit_event = true;" data-id="{{ $event -> id }}">
                                 Edit <i class="fa-thin fa-edit ml-2"></i>
                             </a>
 
-                            <div class="mx-2 w-1 h-4 border-r"></div>
+                            <div class="w-1 h-4 border-r"></div>
 
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="add_version({{ $event -> id }})">Add Version <i class="fa-thin fa-plus ml-2"></i></a>
 
-                            <div class="mx-2 w-1 h-4 border-r"></div>
+                            <div class="w-1 h-4 border-r"></div>
 
                             <div class="relative inline-block text-left" x-data="{ show_links: false }" @click.outside="show_links = false">
                                 <div>
@@ -302,7 +302,7 @@
                                 </div>
                             </div>
 
-                            <div class="mx-2 w-1 h-4 border-r"></div>
+                            <div class="w-1 h-4 border-r"></div>
 
                             <div class="flex items-center space-x-2">
 
@@ -322,17 +322,17 @@
 
                             </div>
 
-                            <div class="mx-2 w-1 h-4 border-r"></div>
+                            <div class="w-1 h-4 border-r"></div>
 
                             <a href="javascript:void(0)" class="text-primary hover:text-primary-light" role="menuitem"
                                 @click="show_checklist = !show_checklist; get_checklist('{{ $event -> company_id }}', '{{ $event -> recipient_id }}', '{{ $event -> state }}');"><i class="fa-thin fa-list-check mr-2"></i> Checklist</a>
 
-                            <div class="mx-2 w-1 h-4 border-r"></div>
+                            <div class="w-1 h-4 border-r"></div>
 
                             @if ($accepted)
                                 <a href="javascript:void(0)" class="text-primary hover:text-primary-light" @click="export_medium({{ $event -> id }})">Export <i class="fa-thin fa-upload ml-2"></i></a>
 
-                                <div class="mx-2 w-1 border-r"></div>
+                                <div class="w-1 border-r"></div>
                             @endif
 
                         </div>
