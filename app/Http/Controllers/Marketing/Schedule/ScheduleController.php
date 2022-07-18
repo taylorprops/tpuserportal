@@ -478,7 +478,9 @@ class ScheduleController extends Controller
                 $this -> agent_columns = $this -> agent_columns_in_house;
                 $agents = InHouseAddresses::select($this -> agent_columns_in_house) -> get();
 
-                fputcsv($handle, $this -> agent_columns, ',');
+                $header_columns = $this -> rename_columns($this -> agent_columns);
+                fputcsv($handle, $header_columns, ',');
+
                 foreach ($agents as $agent) {
                     fputcsv($handle, $agent -> toArray(), ',');
                 }
@@ -497,7 +499,9 @@ class ScheduleController extends Controller
 
                 $agents = TestCenterAddresses::select($this -> agent_columns_psi) -> get();
 
-                fputcsv($handle, $this -> agent_columns_psi, ',');
+                $header_columns = $this -> rename_columns($this -> agent_columns_psi);
+                fputcsv($handle, $header_columns, ',');
+
                 foreach ($agents as $agent) {
                     fputcsv($handle, $agent -> toArray(), ',');
                 }
@@ -518,7 +522,9 @@ class ScheduleController extends Controller
                 $loan_officers = LoanOfficerAddresses::select($this -> loan_officer_columns) -> where('active', 'yes')
                     -> get();
 
-                fputcsv($handle, $this -> loan_officer_columns, ',');
+                $header_columns = $this -> rename_columns($this -> loan_officer_columns);
+                fputcsv($handle, $header_columns, ',');
+
                 foreach ($loan_officers as $loan_officer) {
                     fputcsv($handle, $loan_officer -> toArray(), ',');
                 }
@@ -553,7 +559,9 @@ class ScheduleController extends Controller
                     }])
                     -> get();
 
-                fputcsv($handle, $this -> agent_columns, ',');
+                $header_columns = $this -> rename_columns($this -> agent_columns);
+                fputcsv($handle, $header_columns, ',');
+
                 foreach ($offices as $office) {
                     foreach ($office -> agents as $agent) {
                         fputcsv($handle, $agent -> toArray(), ',');
@@ -587,7 +595,8 @@ class ScheduleController extends Controller
                 }])
                 -> get();
 
-            fputcsv($handle, $this -> agent_columns_addresses, ',');
+            $header_columns = $this -> rename_columns($this -> agent_columns_addresses);
+            fputcsv($handle, $header_columns, ',');
 
             foreach ($offices as $office) {
                 if (count($office -> agents) > 0) {
@@ -608,6 +617,25 @@ class ScheduleController extends Controller
             'count' => $count,
             'location' => $file_location,
         ]);
+    }
+
+    public function rename_columns($columns)
+    {
+
+        $new_columns = [];
+        foreach ($columns as $column) {
+            if ($column == 'MemberFirstName' || $column == 'first_name') {
+                $new_columns[] = 'First_Name';
+            } else if ($column == 'MemberLastName' || $column == 'last_name') {
+                $new_columns[] = 'Last_Name';
+            } else if ($column == 'MemberEmail' || $column == 'email') {
+                $new_columns[] = 'Email';
+            } else {
+                $new_columns[] = $column;
+            }
+        }
+        return $new_columns;
+
     }
 
     public function calendar_get_events(Request $request)
