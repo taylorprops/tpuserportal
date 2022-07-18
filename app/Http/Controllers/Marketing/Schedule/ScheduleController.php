@@ -644,6 +644,8 @@ class ScheduleController extends Controller
     {
 
         $text = str_replace('{{ contact.EMAIL }}', '%%Email%%', $text);
+        $text = str_replace('{{contact.EMAIL}}', '%%Email%%', $text);
+        $text = str_replace('{{%20contact.EMAIL%20}}', '%%Email%%', $text);
         $text = str_replace('[[contact.email]]', '%%Email%%', $text);
         $text = str_replace('[First Name]', '%%First_Name%%', $text);
         $text = str_replace('{First Name}', '%%First_Name%%', $text);
