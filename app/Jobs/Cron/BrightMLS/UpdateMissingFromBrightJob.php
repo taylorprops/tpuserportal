@@ -88,6 +88,9 @@ class UpdateMissingFromBrightJob implements ShouldQueue
 
             $query = 'ListingKey='.implode(',', $missing_from_bright);
             $columns = config('global.bright_listings_columns');
+            if (!$columns || $columns == '') {
+                $columns = 'Appliances, AssociationFee, AssociationFeeFrequency, AssociationYN, AttachedGarageYN, BasementFinishedPercent, BasementYN, BathroomsTotalInteger, BedroomsTotal, BuyerAgentEmail, BuyerAgentFirstName, BuyerAgentFullName, BuyerAgentLastName, BuyerAgentMlsId, BuyerAgentPreferredPhone, BuyerAgentTeamLeadAgentName, BuyerOfficeMlsId, BuyerOfficeName, BuyerTeamName, City, CloseDate, ClosePrice, CondoYN, Cooling, County, ElementarySchool, FireplaceYN, FullStreetAddress, GarageYN, Heating, HighSchool, Latitude, LeaseAmount, ListAgentEmail, ListAgentFirstName, ListAgentLastName, ListAgentMlsId, ListAgentPreferredPhone, ListAgentTeamLeadAgentName, ListingId, ListingKey, ListingSourceRecordKey, ListingTaxID, ListOfficeMlsId, ListOfficeName, ListPictureURL, ListPrice, ListTeamName, LivingArea, Longitude, LotSizeAcres, LotSizeSquareFeet, MajorChangeTimestamp,ModificationTimestamp, MiddleOrJuniorSchool, MLSListDate, MlsStatus, NewConstructionYN, Pool, PostalCode, PropertySubType, PropertyType, PublicRemarks, PurchaseContractDate, RealEstateOwnedYN, SaleType, ShortSale, StateOrProvince, StreetDirPrefix, StreetDirSuffix, StreetName, StreetNumber, StreetSuffix, StreetSuffixModifier, StructureDesignType, SubdivisionName, TotalPhotos, UnitBuildingType, UnitNumber, YearBuilt';
+            }
 
             $results = $rets -> Search(
                 $resource,
