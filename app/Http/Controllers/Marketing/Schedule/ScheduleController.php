@@ -640,15 +640,21 @@ class ScheduleController extends Controller
 
     }
 
-    public function rename_dynamic_fields($text)
+    public function rename_dynamic_fields_and_text($text)
     {
 
-        $text = str_replace('{{ contact.EMAIL }}', '%%Email%%', $text);
-        $text = str_replace('{{contact.EMAIL}}', '%%Email%%', $text);
-        $text = str_replace('{{%20contact.EMAIL%20}}', '%%Email%%', $text);
+        // $text = str_replace('{{ contact.EMAIL }}', '%%Email%%', $text);
+        // $text = str_replace('{{contact.EMAIL}}', '%%Email%%', $text);
+        // $text = str_replace('{{%20contact.EMAIL%20}}', '%%Email%%', $text);
+        $text = preg_replace('/\{\{[\s]*contact.EMAIL[\s]*\}\}/', '%%Email%%', $text);
         $text = str_replace('[[contact.email]]', '%%Email%%', $text);
         $text = str_replace('[First Name]', '%%First_Name%%', $text);
         $text = str_replace('{First Name}', '%%First_Name%%', $text);
+
+        $text = preg_replace('/[(]*866[)]*(\s|\-|\.)913[-\s\.]*4095/', '(800) 544-0286', $text); // HT
+        $text = preg_replace('/[(]*800[)]*(\s|\-|\.)351[-\s\.]*5755/', '(800) 498-3199', $text); // HF
+        $text = preg_replace('/[(]*301[)]*(\s|\-|\.)970[-\s\.]*2447/', '(800) 277-3588', $text); // TP
+        $text = preg_replace('/[(]*800[)]*(\s|\-|\.)590[-\s\.]*0925/', '(800) 277-3588', $text); // TP
 
         return $text;
 
@@ -760,9 +766,9 @@ class ScheduleController extends Controller
 
         if ($html != '') {
 
-            $html = $this -> rename_dynamic_fields($html);
+            $html = $this -> rename_dynamic_fields_and_text($html);
 
-            $preview_text = $this -> rename_dynamic_fields($event -> preview_text);
+            $preview_text = $this -> rename_dynamic_fields_and_text($event -> preview_text);
 
             $preview_html = '<div style="display: none; max-height: 0px; overflow: hidden;">
             '.$preview_text.'
