@@ -23,10 +23,10 @@ use Illuminate\Support\Facades\Storage;
 class ScheduleController extends Controller
 {
 
-    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
-    private $agent_columns_send_in_blue = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'OfficeKey', 'OfficeMlsId'];
-    private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId'];
-    private $agent_columns_addresses = ['MemberFirstName', 'MemberLastName', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberType', 'OfficeKey'];
+    private $agent_columns_mail_chimp = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberState', 'OfficeKey', 'OfficeMlsId', 'OfficeName'];
+    private $agent_columns_send_in_blue = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'OfficeKey', 'OfficeMlsId', 'OfficeName'];
+    private $agent_columns_omni_send = ['MemberEmail', 'MemberFirstName', 'MemberLastName', 'MemberCity', 'MemberCountry', 'MemberState', 'OfficeKey', 'OfficeMlsId', 'OfficeName'];
+    private $agent_columns_addresses = ['MemberFirstName', 'MemberLastName', 'MemberAddress1', 'MemberCity', 'MemberState', 'MemberPostalCode', 'MemberType', 'OfficeKey', 'OfficeName'];
     private $agent_columns_in_house = ['first_name', 'last_name', 'street', 'city', 'state', 'zip', 'email', 'cell_phone', 'company', 'start_date'];
     private $agent_columns_psi = ['email', 'first_name', 'last_name'];
     private $loan_officer_columns = ['email', 'first_name', 'last_name', 'county', 'city', 'state'];
@@ -630,6 +630,8 @@ class ScheduleController extends Controller
                 $new_columns[] = 'Last_Name';
             } else if ($column == 'MemberEmail' || $column == 'email') {
                 $new_columns[] = 'Email';
+            } else if ($column == 'OfficeName') {
+                $new_columns[] = 'Company';
             } else {
                 $new_columns[] = $column;
             }
