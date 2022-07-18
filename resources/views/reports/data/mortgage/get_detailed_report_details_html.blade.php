@@ -65,25 +65,25 @@ foreach ($loans as $loan) {
         $amount_reverse_loans += $loan_amount;
     }
 
-    if ($loan -> loan_purpose == 'purchase') {
+    if ($loan -> loan_purpose == 'Purchase') {
         $count_purchase_loans += 1;
         $amount_purchase_loans += $loan_amount;
     }
 
-    if ($loan -> loan_purpose == 'refi') {
+    if (preg_match('/refinance/i', $loan -> loan_purpose)) {
         $count_refi_loans += 1;
         $amount_refi_loans += $loan_amount;
     }
 }
 
-$percent_fha_loans = round($count_fha_loans / $count_total_loans, 2);
-$percent_va_loans = round($count_va_loans / $count_total_loans, 2);
-$percent_usda_loans = round($count_usda_loans / $count_total_loans, 2);
-$percent_conventional_loans = round($count_conventional_loans / $count_total_loans, 2);
-$percent_reverse_loans = round($count_reverse_loans / $count_total_loans, 2);
-$percent_purchase_loans = round($count_purchase_loans / $count_total_loans, 2);
-$percent_refi_loans = round($count_refi_loans / $count_total_loans, 2);
-$percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2);
+$percent_fha_loans = round($count_fha_loans / $count_total_loans, 2) * 100;
+$percent_va_loans = round($count_va_loans / $count_total_loans, 2) * 100;
+$percent_usda_loans = round($count_usda_loans / $count_total_loans, 2) * 100;
+$percent_conventional_loans = round($count_conventional_loans / $count_total_loans, 2) * 100;
+$percent_reverse_loans = round($count_reverse_loans / $count_total_loans, 2) * 100;
+$percent_purchase_loans = round($count_purchase_loans / $count_total_loans, 2) * 100;
+$percent_refi_loans = round($count_refi_loans / $count_total_loans, 2) * 100;
+$percent_total_gov_loans = round($count_total_gov_loans / $count_total_loans, 2) * 100;
 
 @endphp
 {{-- blade-formatter-enable --}}
