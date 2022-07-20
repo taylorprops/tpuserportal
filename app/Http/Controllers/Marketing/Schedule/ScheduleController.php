@@ -48,9 +48,10 @@ class ScheduleController extends Controller
         $recipient_id = $request -> recipient_id;
         $medium_id = $request -> medium_id;
         $status_id = $request -> status_id;
+        $show_completed = $request -> show_completed;
 
         $events = Schedule::where('active', true)
-            -> where(function ($query) use ($search_event_id, $company_id, $recipient_id, $medium_id, $status_id) {
+            -> where(function ($query) use ($search_event_id, $company_id, $recipient_id, $medium_id, $status_id, $show_completed) {
 
                 if ($search_event_id) {
                     $query -> where('id', 'like', '%'.$search_event_id.'%');
@@ -66,6 +67,10 @@ class ScheduleController extends Controller
                     }
                     if ($status_id) {
                         $query -> where('status_id', $status_id);
+                    } else {
+                        if ($show_completed == 'false') {
+                            $query -> whereNot('status_id', '24');
+                        }
                     }
                 }
             })

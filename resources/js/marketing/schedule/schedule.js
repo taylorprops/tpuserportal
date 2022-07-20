@@ -34,6 +34,9 @@ if (document.URL.match('marketing/schedule')) {
                 let scope = this;
                 let form = scope.$refs.filter_form;
                 let formData = new FormData(form);
+                let show_completed = scope.$refs.show_completed.checked;
+
+                formData.append('show_completed', show_completed);
 
                 axios.post('/marketing/get_schedule', formData)
                     .then(function (response) {

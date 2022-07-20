@@ -19,7 +19,7 @@ $breadcrumbs = [['Marketing', ''], [$title]];
 
             <form x-ref="filter_form">
 
-                <div class="flex items-center justify-start space-x-4">
+                <div class="flex items-center space-x-8 flex-wrap">
 
                     <div>
                         <button type="button"
@@ -29,34 +29,41 @@ $breadcrumbs = [['Marketing', ''], [$title]];
                         </button>
                     </div>
 
-                    <div class="my-6 flex items-end justify-start space-x-4 border p-2 rounded bg-gray-50">
+                    <div class="flex items-center justify-start space-x-4">
 
-                        <div class="w-24">
-                            <input type="text" name="search_event_id" class="form-element input sm" @keyup="get_schedule()" data-label="ID" placeholder="Enter ID">
-                        </div>
+                        <div class="my-6 flex items-end justify-start space-x-4 border p-2 rounded bg-gray-50">
 
-                        @foreach (['company', 'recipient', 'medium', 'status'] as $item)
-
-                            <div>
-                                <select class="form-element select sm"
-                                    data-label="{{ ucwords($item) }}"
-                                    name="{{ $item }}_id"
-                                    @change="get_schedule()">
-                                    <option value="">All</option>
-                                    @foreach ($settings -> where('category', $item) as $setting)
-
-                                        <option value="{{ $setting -> id }}">{{ $setting -> item }}
-                                    @endforeach
-
-                                </select>
+                            <div class="w-24">
+                                <input type="text" name="search_event_id" class="form-element input sm" @keyup="get_schedule()" data-label="ID" placeholder="Enter ID">
                             </div>
 
-                        @endforeach
+                            @foreach (['company', 'recipient', 'medium', 'status'] as $item)
 
-                        <div>
-                            <button type="button"
-                                class="button primary sm"
-                                @click="$refs.filter_form.reset(); get_schedule()">Clear</button>
+                                <div>
+                                    <select class="form-element select sm"
+                                        data-label="{{ ucwords($item) }}"
+                                        name="{{ $item }}_id"
+                                        @change="get_schedule()">
+                                        <option value="">All</option>
+                                        @foreach ($settings -> where('category', $item) as $setting)
+                                            <option value="{{ $setting -> id }}">{{ $setting -> item }}
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            @endforeach
+
+                            <div>
+
+                                <div>
+                                    <input type="checkbox" class="form-element checkbox md" name="show_completed" x-ref="show_completed" data-label="Show Completed" @change="get_schedule()">
+                                </div>
+
+                                <button type="button"
+                                    class="button primary sm"
+                                    @click="$refs.filter_form.reset(); get_schedule()">Clear</button>
+                            </div>
+
                         </div>
 
                     </div>
