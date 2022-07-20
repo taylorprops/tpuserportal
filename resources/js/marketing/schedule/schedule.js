@@ -185,7 +185,9 @@ if (document.URL.match('marketing/schedule')) {
                 this.show_calendar = true;
                 this.show_file = false;
                 this.show_html = false;
-                // this.active_event = '';
+                setTimeout(function () {
+                    document.querySelector('.fc-dayGridMonth-button').click();
+                }, 100);
             },
 
             edit_item(ele) {
