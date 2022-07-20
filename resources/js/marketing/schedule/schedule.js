@@ -60,9 +60,7 @@ if (document.URL.match('marketing/schedule')) {
                                 statusbar: false,
                                 menubar: false,
                                 plugins: [
-                                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                    'insertdatetime', 'media', 'table', 'autoresize'
+                                    'advlist', 'autolink', 'lists', 'image', 'visualblocks', 'code', 'fullscreen', 'media', 'table', 'autoresize'
                                 ],
                                 toolbar: 'undo redo bold italic hr | forecolor backcolor | image | bullist numlist outdent indent',
                                 table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',

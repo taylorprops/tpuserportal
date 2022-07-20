@@ -25,7 +25,7 @@ Route::middleware(['auth', 'web']) -> group(function () {
     /***** file upload ******/
     Route::post('/filepond_upload', [FilepondUploadController::class, 'upload']) -> middleware(['all']);
     /***** tinymce file upload ******/
-    Route::post('/text_editor/file_upload', [FileUploadController::class, 'file_upload']) -> middleware(['all']);
+    Route::post('/text_editor/file_upload', [FileUploadController::class, 'file_upload']);
 
     /***** Employee Profile ******/
     Route::get('/employees/profile', [EmployeesController::class, 'profile']) -> middleware(['all']);
