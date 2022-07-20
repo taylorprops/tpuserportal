@@ -82,7 +82,7 @@
                     <div class="flex space-x-4">
 
                         @if ($event -> sending_notification_sent == true)
-                            <span class="fa-stack">
+                            <span class="fa-stack" data-tippy-content="Notification Sent">
                                 <i class="fa-solid fa-bell fa-stack-2x"></i>
                                 <i class="fa-solid fa-check fa-stack-1x fa-inverse"></i>
                             </span>
