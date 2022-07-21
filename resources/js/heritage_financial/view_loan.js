@@ -1,7 +1,7 @@
-if(document.URL.match(/view_loan/)) {
+if (document.URL.match(/view_loan/)) {
 
 
-    window.loan = function(uuid, active_tab, loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
+    window.loan = function (uuid, active_tab, loan_officer_1_commission_type, loan_officer_2_commission_type, loan_amount, points_charged, manager_bonus, loan_officer_1_loan_amount_percent, loan_officer_2_loan_amount_percent) {
 
         return {
 
@@ -38,9 +38,9 @@ if(document.URL.match(/view_loan/)) {
             },
             trigger_total() {
                 let scope = this;
-                ['keyup', 'blur'].forEach(function(event) {
-                    document.querySelectorAll('.commission-input').forEach(function(input) {
-                        input.addEventListener(event, function(e) {
+                ['keyup', 'blur'].forEach(function (event) {
+                    document.querySelectorAll('.commission-input').forEach(function (input) {
+                        input.addEventListener(event, function (e) {
                             scope.total_commission();
                         });
                     });
@@ -51,8 +51,8 @@ if(document.URL.match(/view_loan/)) {
                 let scope = this;
 
                 let checks_in_total = 0;
-                document.querySelectorAll('[name="check_in_amount[]"]').forEach(function(amount) {
-                    if(amount.value != '') {
+                document.querySelectorAll('[name="check_in_amount[]"]').forEach(function (amount) {
+                    if (amount.value != '') {
                         let value = parseFloat(amount.value.replace(/[,\$]/g, ''));
                         checks_in_total += parseFloat(value);
                     }
@@ -60,8 +60,8 @@ if(document.URL.match(/view_loan/)) {
 
                 let net_commission_amount_ele = document.querySelector('.net-commission-amount');
                 let deductions_total = 0;
-                document.querySelectorAll('[name="amount[]"]').forEach(function(amount) {
-                    if(amount.value != '') {
+                document.querySelectorAll('[name="amount[]"]').forEach(function (amount) {
+                    if (amount.value != '') {
                         let value = parseFloat(amount.value.replace(/[,\$]/g, ''));
                         deductions_total += parseFloat(value);
                     }
@@ -69,109 +69,109 @@ if(document.URL.match(/view_loan/)) {
                 let net_commission_amount = checks_in_total - deductions_total;
 
                 net_commission_amount_ele.innerText = global_format_number_with_decimals(net_commission_amount.toString());
-                document.querySelectorAll('.net-commission-amount').forEach(function(ele) {
+                document.querySelectorAll('.net-commission-amount').forEach(function (ele) {
                     ele.innerText = global_format_number_with_decimals(net_commission_amount.toString());
                 });
 
 
                 let los = document.querySelector('#loan_officer_2_commission') ? ['1', '2'] : ['1'];
 
-                los.forEach(function(index) {
+                los.forEach(function (index) {
 
                     let commission_type = index === '1' ? scope.loan_officer_1_commission_type : scope.loan_officer_2_commission_type;
                     let loan_officer_commission = '';
                     let loan_officer_loan_amount_percent = index === '1' ? scope.loan_officer_1_loan_amount_percent : scope.loan_officer_2_loan_amount_percent;
 
-                    if(commission_type == 'commission') {
+                    if (commission_type == 'commission') {
 
-                        let loan_officer_commission_percent = document.querySelector('[name="loan_officer_'+index+'_commission_percent"]').value;
+                        let loan_officer_commission_percent = document.querySelector('[name="loan_officer_' + index + '_commission_percent"]').value;
                         loan_officer_commission = (loan_officer_commission_percent / 100) * net_commission_amount;
 
-                    } else if(commission_type == 'loan_amount') {
+                    } else if (commission_type == 'loan_amount') {
 
                         let alert_icon, alert_text, details;
 
                         let points = parseFloat(scope.points_charged);
 
-                        if(points < 2.5) {
+                        if (points < 2.5) {
 
                             let commission_deduction = (2.5 - points).toFixed(3) / 2;
                             let commission_deduction_adjusted = (parseFloat(loan_officer_loan_amount_percent) - commission_deduction).toFixed(3);
 
-                            document.querySelector('[name="loan_officer_'+index+'_loan_amount_percent"]').value = commission_deduction_adjusted;
+                            document.querySelector('[name="loan_officer_' + index + '_loan_amount_percent"]').value = commission_deduction_adjusted;
 
                             loan_officer_commission = (commission_deduction_adjusted * loan_amount) / 100;
 
                             alert_icon = '<i class="fad fa-exclamation-circle fa-2x mr-3"></i>';
-                            alert_text = 'Commission is <span class="text-red-800">'+points.toFixed(2)+' basis points</span> - less than 2.5.';
-                            details = '2.5 - '+points.toFixed(3)+' = '+(2.5 - points).toFixed(3)+' / 2 = '+commission_deduction+'<br> \
-                                '+loan_officer_loan_amount_percent+' - '+commission_deduction+' = '+commission_deduction_adjusted+'<br> \
-                                <span>'+commission_deduction_adjusted+'% of <span ml-3">'+global_format_number_with_decimals(loan_amount.toString())+'</span> = <span class="text-lg font-bold">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span></span>';
+                            alert_text = 'Commission is <span class="text-red-800">' + points.toFixed(2) + ' basis points</span> - less than 2.5.';
+                            details = '2.5 - ' + points.toFixed(3) + ' = ' + (2.5 - points).toFixed(3) + ' / 2 = ' + commission_deduction + '<br> \
+                                '+ loan_officer_loan_amount_percent + ' - ' + commission_deduction + ' = ' + commission_deduction_adjusted + '<br> \
+                                <span>'+ commission_deduction_adjusted + '% of <span ml-3">' + global_format_number_with_decimals(loan_amount.toString()) + '</span> = <span class="text-lg font-bold">' + global_format_number_with_decimals(loan_officer_commission.toString()) + '</span></span>';
 
                         } else {
 
-                            document.querySelector('[name="loan_officer_'+index+'_loan_amount_percent"]').value = loan_officer_loan_amount_percent;
+                            document.querySelector('[name="loan_officer_' + index + '_loan_amount_percent"]').value = loan_officer_loan_amount_percent;
 
                             loan_officer_commission = (parseFloat(loan_officer_loan_amount_percent) * loan_amount) / 100;
 
                             alert_icon = null;
                             alert_text = null;
-                            details = loan_officer_loan_amount_percent+'% <span class="ml-4">of</span> <span class="ml-4">'+global_format_number_with_decimals(loan_amount.toString())+'</span> <span class="ml-4">=</span> <span class="text-lg font-bold ml-4">'+global_format_number_with_decimals(loan_officer_commission.toString())+'</span>';
+                            details = loan_officer_loan_amount_percent + '% <span class="ml-4">of</span> <span class="ml-4">' + global_format_number_with_decimals(loan_amount.toString()) + '</span> <span class="ml-4">=</span> <span class="text-lg font-bold ml-4">' + global_format_number_with_decimals(loan_officer_commission.toString()) + '</span>';
 
                         }
 
 
-                        if(alert_icon) {
-                            document.querySelector('#loan_officer_'+index+'_loan_amount_alert_icon').innerHTML = alert_icon;
-                            document.querySelector('#loan_officer_'+index+'_loan_amount_alert_text').innerHTML = alert_text;
+                        if (alert_icon) {
+                            document.querySelector('#loan_officer_' + index + '_loan_amount_alert_icon').innerHTML = alert_icon;
+                            document.querySelector('#loan_officer_' + index + '_loan_amount_alert_text').innerHTML = alert_text;
                             scope.show_alert = true;
                         } else {
                             scope.show_alert = false;
                         }
 
-                        document.querySelectorAll('.loan-officer-'+index+'-loan-amount-details').forEach(function(ele) {
+                        document.querySelectorAll('.loan-officer-' + index + '-loan-amount-details').forEach(function (ele) {
                             ele.innerHTML = details;
                         });
 
                     }
 
                     let loan_officer_deductions_total = 0;
-                    let deduction_container = document.querySelector('.loan-officer-'+index+'-deductions');
-                    deduction_container.querySelectorAll('[name="loan_officer_deduction_amount[]"]').forEach(function(amount) {
-                        if(amount.value != '') {
+                    let deduction_container = document.querySelector('.loan-officer-' + index + '-deductions');
+                    deduction_container.querySelectorAll('[name="loan_officer_deduction_amount[]"]').forEach(function (amount) {
+                        if (amount.value != '') {
                             let value = parseFloat(amount.value.replace(/[,\$]/g, ''));
                             loan_officer_deductions_total += parseFloat(value);
                         }
                     });
 
-                    document.querySelectorAll('.loan-officer-'+index+'-commission-amount').forEach(function(span) {
+                    document.querySelectorAll('.loan-officer-' + index + '-commission-amount').forEach(function (span) {
                         span.innerHTML = global_format_number_with_decimals(loan_officer_commission.toString());
                     });
 
-                    if(index === '1') {
+                    if (index === '1') {
                         scope.loan_officer_1_commission_amount = loan_officer_commission;
                     }
 
                     loan_officer_commission = (loan_officer_commission - loan_officer_deductions_total).toFixed(2);
 
-                    document.querySelectorAll('.loan-officer-'+index+'-commission-amount-ele').forEach(function(ele) {
+                    document.querySelectorAll('.loan-officer-' + index + '-commission-amount-ele').forEach(function (ele) {
                         ele.innerText = global_format_number_with_decimals(loan_officer_commission.toString());
                     });
 
-                    document.querySelector('#loan_officer_'+index+'_commission_amount').value = loan_officer_commission;
+                    document.querySelector('#loan_officer_' + index + '_commission_amount').value = loan_officer_commission;
 
 
-                    let manager_bonus_amount = (parseFloat(scope.manager_bonus) / 100)  * net_commission_amount;
+                    let manager_bonus_amount = (parseFloat(scope.manager_bonus) / 100) * net_commission_amount;
 
                     document.querySelector('#manager_bonus').value = manager_bonus_amount.toFixed(2);
-                    document.querySelectorAll('.manager-commission-amount-ele').forEach(function(ele) {
+                    document.querySelectorAll('.manager-commission-amount-ele').forEach(function (ele) {
                         ele.innerHTML = global_format_number_with_decimals(manager_bonus_amount.toString());
                     });
 
 
                     let commissions_paid_total = 0;
-                    document.querySelectorAll('.commission-paid-out').forEach(function(amount) {
-                        if(amount.value != '') {
+                    document.querySelectorAll('.commission-paid-out').forEach(function (amount) {
+                        if (amount.value != '') {
                             let value = amount.value.replace(/[,\$]/g, '');
                             amount = parseFloat(value);
                             commissions_paid_total += amount;
@@ -181,16 +181,17 @@ if(document.URL.match(/view_loan/)) {
                     let company_commission = (net_commission_amount - (commissions_paid_total)).toFixed(2);
 
                     document.querySelector('#company_commission').value = company_commission;
-                    document.querySelectorAll('.company-commission-amount').forEach(function(span) {
+                    document.querySelectorAll('.company-commission-amount').forEach(function (span) {
                         span.innerHTML = global_format_number_with_decimals(company_commission.toString());
                     });
 
                 });
 
-                if(document.querySelectorAll('.deduction').length > 0) {
+                if (document.querySelectorAll('.deduction').length > 0) {
 
                     document.querySelector('.deductions-out-div').innerHTML = '';
                     document.querySelector('.deductions-out-div-print').innerHTML = '';
+                    document.querySelector('.paid-to-company-print').innerHTML = '';
 
                     let deduction_html_print = ' \
                     <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px"> \
@@ -198,7 +199,9 @@ if(document.URL.match(/view_loan/)) {
                             <th align="left">Other</th> \
                         </tr>';
 
-                    document.querySelectorAll('.deduction').forEach(function(deduction) {
+                    let paid_to_company_html_print = '';
+
+                    document.querySelectorAll('.deduction').forEach(function (deduction) {
 
                         let amount = deduction.querySelector('[name="amount[]"]');
                         let description = deduction.querySelector('[name="description[]"]');
@@ -206,36 +209,46 @@ if(document.URL.match(/view_loan/)) {
                         let paid_to_value = paid_to.options[paid_to.selectedIndex].value;
                         let paid_to_other = deduction.querySelector('[name="paid_to_other[]"]');
 
-                        if(paid_to_value != 'Company' && paid_to_other.value != 'Company') {
+                        let paid_to_name = paid_to.options[paid_to.selectedIndex].text;
+                        if (paid_to_value == 'Other') {
+                            paid_to_name = paid_to_other.value;
+                        }
 
-                            let paid_to_name = paid_to.options[paid_to.selectedIndex].text;
-                            if(paid_to_value == 'Other') {
-                                paid_to_name = paid_to_other.value;
-                            }
+                        if (paid_to_value != 'Company' && paid_to_other.value != 'Company') {
+
+
                             let deduction_html = ' \
                             <div class="col-span-2 border-b border-white py-2"> \
                                 <div class="grid grid-cols-3"> \
                                     <div class="col-span-2"> \
-                                        '+paid_to_name+' \
+                                        '+ paid_to_name + ' \
                                     </div> \
                                     <div> \
-                                        '+global_format_number_with_decimals(amount.value.toString())+' \
+                                        '+ global_format_number_with_decimals(amount.value.toString()) + ' \
                                     </div> \
                                 </div> \
-                                <div class="text-sm text-gray-500">'+description.value+'</div> \
+                                <div class="text-sm text-gray-500">'+ description.value + '</div> \
                             </div> \
                             ';
                             document.querySelector('.deductions-out-div').insertAdjacentHTML('beforeend', deduction_html);
 
                             deduction_html_print += ' \
                             <tr> \
-                                <td style="padding-right: 10px">'+paid_to_name+'</td> \
-                                <td style="padding-right: 10px">'+global_format_number_with_decimals(amount.value.toString())+'</td> \
-                                <td>'+description.value+'</td> \
+                                <td style="padding-right: 10px">'+ paid_to_name + '</td> \
+                                <td style="padding-right: 10px">'+ global_format_number_with_decimals(amount.value.toString()) + '</td> \
+                                <td>'+ description.value + '</td> \
                             </tr>';
 
-                        } else if(paid_to_value == 'Company' && description.value == 'Processing Fee') {
-                            document.querySelector('.processing-fee').innerHTML = '$'+amount.value;
+                        } else if (paid_to_value == 'Company') {
+                            if (description.value == 'Processing Fee') {
+                                document.querySelector('.processing-fee').innerHTML = '$' + amount.value;
+                            } else {
+                                paid_to_company_html_print += ' \
+                                <tr> \
+                                    <td>'+ description.value + ':</td> \
+                                    <td style="padding-right: 10px">'+ global_format_number_with_decimals(amount.value.toString()) + '</td> \
+                                </tr>';
+                            }
                         }
 
                     });
@@ -243,6 +256,7 @@ if(document.URL.match(/view_loan/)) {
                     deduction_html_print += '</table>';
 
                     document.querySelector('.deductions-out-div-print').insertAdjacentHTML('beforeend', deduction_html_print);
+                    this.$refs.paid_to_company.insertAdjacentHTML('beforeend', paid_to_company_html_print);
 
                 }
 
@@ -263,23 +277,23 @@ if(document.URL.match(/view_loan/)) {
                 let orig_uuid = document.querySelector('[name="uuid"]').value;
 
                 axios.post('/heritage_financial/save_details', formData)
-                .then(function (response) {
+                    .then(function (response) {
 
-                    ele.innerHTML = button_html;
-                    toastr.success('Loan Details successfully saved');
+                        ele.innerHTML = button_html;
+                        toastr.success('Loan Details successfully saved');
 
-                    setTimeout(function() {
-                        if(orig_uuid != '') {
-                            window.location = document.URL;
-                        } else {
-                            window.location = document.URL+'/'+response.data.uuid;
-                        }
-                    }, 500);
+                        setTimeout(function () {
+                            if (orig_uuid != '') {
+                                window.location = document.URL;
+                            } else {
+                                window.location = document.URL + '/' + response.data.uuid;
+                            }
+                        }, 500);
 
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
 
             },
             save_commission(ele, user) {
@@ -290,7 +304,7 @@ if(document.URL.match(/view_loan/)) {
                 remove_form_errors();
 
                 let form = '';
-                if(user == 'lo') {
+                if (user == 'lo') {
                     form = document.querySelector('#commission_form_lo');
                 } else {
                     form = document.querySelector('#commission_form');
@@ -298,14 +312,14 @@ if(document.URL.match(/view_loan/)) {
                 let formData = new FormData(form);
 
                 axios.post('/heritage_financial/save_commission', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    toastr.success('Loan Commission successfully saved');
-                    scope.get_changes();
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        toastr.success('Loan Commission successfully saved');
+                        scope.get_changes();
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
 
             },
             save_time_line(ele) {
@@ -319,27 +333,27 @@ if(document.URL.match(/view_loan/)) {
                 let formData = new FormData(form);
 
                 axios.post('/heritage_financial/save_time_line', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    toastr.success('Timeline Successfully Saved');
-                    scope.get_changes();
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        toastr.success('Timeline Successfully Saved');
+                        scope.get_changes();
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
             set_checks_in_amount() {
 
                 let show_total = document.querySelectorAll('.checks-in-amount');
                 let checks_in_total = 0;
-                document.querySelectorAll('[name="check_in_amount[]"]').forEach(function(amount) {
-                    if(amount.value != '') {
+                document.querySelectorAll('[name="check_in_amount[]"]').forEach(function (amount) {
+                    if (amount.value != '') {
                         let value = amount.value.replace(/[,\$]/g, '');
                         amount = parseFloat(value);
                         checks_in_total += amount;
                     }
                 });
-                show_total.forEach(function(ele) {
+                show_total.forEach(function (ele) {
                     ele.innerText = global_format_number_with_decimals(checks_in_total.toString());
                 });
 
@@ -350,26 +364,26 @@ if(document.URL.match(/view_loan/)) {
                 let deductions_total = 0;
                 let deductions_checks_in = document.querySelector('.deductions-checks-in');
 
-                document.querySelectorAll('[name="amount[]"]').forEach(function(amount) {
-                    if(amount.value != '') {
+                document.querySelectorAll('[name="amount[]"]').forEach(function (amount) {
+                    if (amount.value != '') {
                         let value = amount.value.replace(/[,\$]/g, '');
                         amount = parseFloat(value);
                         deductions_total += amount;
                     }
                 });
-                deductions_eles.forEach(function(ele) {
+                deductions_eles.forEach(function (ele) {
                     ele.innerText = global_format_number_with_decimals(deductions_total.toString());
                 });
 
-                document.querySelectorAll('.deduction').forEach(function(deduction) {
+                document.querySelectorAll('.deduction').forEach(function (deduction) {
                     let amount = deduction.querySelector('[name="amount[]"]').value;
                     let description = deduction.querySelector('[name="description[]"]').value;
                     //let paid_to = deduction.querySelector('[name="paid_to_other[]"]').value;
-                    if(amount != '') {
+                    if (amount != '') {
                         let deduction_html = ' \
                         <div class="grid grid-cols-2 py-2"> \
-                        <div class="">'+description+'</div> \
-                        <div class="text-right">$'+amount+'</div> \
+                        <div class="">'+ description + '</div> \
+                        <div class="text-right">$'+ amount + '</div> \
                         </div> \
                         ';
                         deductions_checks_in.innerHTML += deduction_html;
@@ -380,8 +394,8 @@ if(document.URL.match(/view_loan/)) {
             set_commissions_paid_amount() {
                 let show_total = document.querySelector('#commissions_paid_amount');
                 let commissions_paid_total = 0;
-                document.querySelectorAll('.commission-paid-out').forEach(function(amount) {
-                    if(amount.value != '') {
+                document.querySelectorAll('.commission-paid-out').forEach(function (amount) {
+                    if (amount.value != '') {
                         let value = amount.value.replace(/[,\$]/g, '');
                         amount = parseFloat(value);
                         commissions_paid_total += amount;
@@ -412,15 +426,15 @@ if(document.URL.match(/view_loan/)) {
             add_loan_officer_deduction(index) {
                 let deduction = document.querySelector('#loan_officer_deduction_template').innerHTML;
                 deduction = deduction.replace(/%%index%%/g, index);
-                document.querySelector('.loan-officer-'+index+'-deductions').insertAdjacentHTML('beforeend', deduction);
-                document.querySelector('.loan-officer-'+index+'-deductions').lastElementChild.getElementsByTagName('input')[0].select();
+                document.querySelector('.loan-officer-' + index + '-deductions').insertAdjacentHTML('beforeend', deduction);
+                document.querySelector('.loan-officer-' + index + '-deductions').lastElementChild.getElementsByTagName('input')[0].select();
                 this.focus_money();
                 global_format_money();
                 numbers_only();
                 this.trigger_total();
             },
             run_show_delete_check_in() {
-                if(document.querySelectorAll('.check-in').length > 1) {
+                if (document.querySelectorAll('.check-in').length > 1) {
                     this.show_delete_check_in = true;
                 } else {
                     this.show_delete_check_in = false;
@@ -428,8 +442,8 @@ if(document.URL.match(/view_loan/)) {
             },
 
             focus_money() {
-                document.querySelectorAll('.money-decimal').forEach(function(input) {
-                    input.addEventListener('focus', function() {
+                document.querySelectorAll('.money-decimal').forEach(function (input) {
+                    input.addEventListener('focus', function () {
                         this.select();
                     });
                 });
@@ -438,7 +452,7 @@ if(document.URL.match(/view_loan/)) {
             require_title(status) {
                 this.$refs.title_company.classList.remove('required');
                 this.$refs.title_company_select.classList.remove('required');
-                if(status == 'Closed') {
+                if (status == 'Closed') {
                     this.$refs.title_company.classList.add('required');
                     this.$refs.title_company_select.classList.add('required');
                 }
@@ -446,7 +460,7 @@ if(document.URL.match(/view_loan/)) {
 
             require_close_date(status) {
                 this.$refs.settlement_date.classList.remove('required');
-                if(status == 'Closed' || status == 'Cancelled') {
+                if (status == 'Closed' || status == 'Cancelled') {
                     this.$refs.settlement_date.classList.add('required');
                 }
             },
@@ -486,52 +500,52 @@ if(document.URL.match(/view_loan/)) {
                 formData.append('_token', document.querySelector('[name="csrf-token"]').getAttribute('content'));
 
                 axios.post('/heritage_financial/loans/get_docs', formData, axios_options)
-                .then(function (response) {
+                    .then(function (response) {
 
-                    document.querySelector('.docs-div').innerHTML = '';
-                    document.querySelector('.deleted-docs-div').innerHTML = '';
-                    scope.show_deleted_docs_div = false;
-                    scope.show_deleted = false;
-                    document.querySelector('#check_all').checked = false;
-                    document.querySelector('#check_all_deleted').checked = false;
+                        document.querySelector('.docs-div').innerHTML = '';
+                        document.querySelector('.deleted-docs-div').innerHTML = '';
+                        scope.show_deleted_docs_div = false;
+                        scope.show_deleted = false;
+                        document.querySelector('#check_all').checked = false;
+                        document.querySelector('#check_all_deleted').checked = false;
 
-                    if(response.data.docs.length > 0) {
+                        if (response.data.docs.length > 0) {
 
-                        response.data.docs.forEach(function(doc) {
+                            response.data.docs.forEach(function (doc) {
 
-                            if(doc.trashed === true) {
-                                scope.show_deleted_docs_div = true;
-                            }
+                                if (doc.trashed === true) {
+                                    scope.show_deleted_docs_div = true;
+                                }
 
-                            let div = doc.trashed === false ? 'docs-div': 'deleted-docs-div';
-                            let input_class = doc.trashed === false ? 'doc-input': 'deleted-doc-input';
+                                let div = doc.trashed === false ? 'docs-div' : 'deleted-docs-div';
+                                let input_class = doc.trashed === false ? 'doc-input' : 'deleted-doc-input';
 
-                            let html = '<div id="doc_'+doc.id+'">'+document.querySelector('#doc_template').innerHTML+'</div>';
-                            html = html.replace(/%%doc_id%%/g, doc.id);
-                            html = html.replace(/%%file_name%%/g, doc.file_name);
-                            html = html.replace(/%%url%%/g, doc.file_location_url);
-                            html = html.replace(/%%file_size%%/g, doc.file_size);
-                            html = html.replace(/%%created%%/g, doc.created);
-                            html = html.replace(/%%input_class%%/g, input_class);
+                                let html = '<div id="doc_' + doc.id + '">' + document.querySelector('#doc_template').innerHTML + '</div>';
+                                html = html.replace(/%%doc_id%%/g, doc.id);
+                                html = html.replace(/%%file_name%%/g, doc.file_name);
+                                html = html.replace(/%%url%%/g, doc.file_location_url);
+                                html = html.replace(/%%file_size%%/g, doc.file_size);
+                                html = html.replace(/%%created%%/g, doc.created);
+                                html = html.replace(/%%input_class%%/g, input_class);
 
 
-                            document.querySelector('.'+div).insertAdjacentHTML('beforeend', html);
+                                document.querySelector('.' + div).insertAdjacentHTML('beforeend', html);
 
-                            let button = '.restore-button';
-                            if(doc.trashed === true) {
-                                button = '.delete-button';
-                            }
+                                let button = '.restore-button';
+                                if (doc.trashed === true) {
+                                    button = '.delete-button';
+                                }
 
-                            setTimeout(function() {
-                                document.querySelector('#doc_'+doc.id).querySelector(button).remove();
-                            }, 100);
+                                setTimeout(function () {
+                                    document.querySelector('#doc_' + doc.id).querySelector(button).remove();
+                                }, 100);
 
-                        });
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                            });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
             },
             delete_docs(id = null) {
@@ -540,25 +554,25 @@ if(document.URL.match(/view_loan/)) {
                 let s = id ? '' : 's';
 
                 let ids = [];
-                if(id) {
+                if (id) {
                     ids.push(id);
                 } else {
-                    document.querySelectorAll('.doc-input:checked').forEach(function(input) {
+                    document.querySelectorAll('.doc-input:checked').forEach(function (input) {
                         ids.push(input.value);
                     });
                 }
 
-                if(confirm('Are you sure you want to delete '+confirm_text+'?')) {
+                if (confirm('Are you sure you want to delete ' + confirm_text + '?')) {
                     let scope = this;
                     let formData = new FormData();
                     formData.append('ids', ids);
                     axios.post('/heritage_financial/loans/delete_docs', formData)
-                    .then(function (response) {
-                        scope.get_docs();
-                        toastr.success('Document'+s+' deleted successfully.');
-                    })
-                    .catch(function (error) {
-                    });
+                        .then(function (response) {
+                            scope.get_docs();
+                            toastr.success('Document' + s + ' deleted successfully.');
+                        })
+                        .catch(function (error) {
+                        });
                 }
             },
 
@@ -567,10 +581,10 @@ if(document.URL.match(/view_loan/)) {
                 let s = id ? '' : 's';
 
                 let ids = [];
-                if(id) {
+                if (id) {
                     ids.push(id);
                 } else {
-                    document.querySelectorAll('.deleted-doc-input:checked').forEach(function(input) {
+                    document.querySelectorAll('.deleted-doc-input:checked').forEach(function (input) {
                         ids.push(input.value);
                     });
                 }
@@ -579,12 +593,12 @@ if(document.URL.match(/view_loan/)) {
                 let formData = new FormData();
                 formData.append('ids', ids);
                 axios.post('/heritage_financial/loans/restore_docs', formData)
-                .then(function (response) {
-                    scope.get_docs();
-                    toastr.success('Document'+s+' restored successfully.');
-                })
-                .catch(function (error) {
-                });
+                    .then(function (response) {
+                        scope.get_docs();
+                        toastr.success('Document' + s + ' restored successfully.');
+                    })
+                    .catch(function (error) {
+                    });
             },
 
             check_all(deleted) {
@@ -605,14 +619,14 @@ if(document.URL.match(/view_loan/)) {
                 let bulk_options = !deleted ? this.$refs.bulk_options : this.$refs.bulk_options_deleted;
 
                 document.querySelectorAll(inputs).forEach(function (input) {
-                    if(input.checked === true) {
+                    if (input.checked === true) {
                         checked = true;
                     }
                 });
 
 
-                bulk_options.querySelectorAll('button').forEach(function(button) {
-                    if(checked === true) {
+                bulk_options.querySelectorAll('button').forEach(function (button) {
+                    if (checked === true) {
                         button.removeAttribute('disabled');
                     } else {
                         button.setAttribute('disabled', 'disabled');
@@ -628,12 +642,12 @@ if(document.URL.match(/view_loan/)) {
                         print: false
                     },
                 })
-                .then(function (response) {
-                    scope.$refs.notes_div.innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        scope.$refs.notes_div.innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
                 axios.get('/heritage_financial/get_notes', {
                     params: {
@@ -641,12 +655,12 @@ if(document.URL.match(/view_loan/)) {
                         print: true
                     },
                 })
-                .then(function (response) {
-                    scope.$refs.notes_div_print.innerHTML = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        scope.$refs.notes_div_print.innerHTML = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             add_notes(ele) {
@@ -661,15 +675,15 @@ if(document.URL.match(/view_loan/)) {
                 formData.append('uuid', uuid);
 
                 axios.post('/heritage_financial/add_notes', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes();
-                    scope.show_add_notes = false;
-                    toastr.success('Note Saved');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes();
+                        scope.show_add_notes = false;
+                        toastr.success('Note Saved');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             delete_note(ele, id) {
@@ -682,14 +696,14 @@ if(document.URL.match(/view_loan/)) {
                 formData.append('id', id);
 
                 axios.post('/heritage_financial/delete_note', formData)
-                .then(function (response) {
-                    ele.innerHTML = button_html;
-                    scope.get_notes();
-                    toastr.success('Note Deleted');
-                })
-                .catch(function (error) {
-                    display_errors(error, ele, button_html);
-                });
+                    .then(function (response) {
+                        ele.innerHTML = button_html;
+                        scope.get_notes();
+                        toastr.success('Note Deleted');
+                    })
+                    .catch(function (error) {
+                        display_errors(error, ele, button_html);
+                    });
             },
 
             print_checks_out() {
@@ -704,19 +718,19 @@ if(document.URL.match(/view_loan/)) {
 
                 let scope = this;
 
-                if(scope.$refs.changes_div) {
+                if (scope.$refs.changes_div) {
 
                     axios.get('/heritage_financial/loans/get_changes', {
                         params: {
                             uuid: uuid
                         },
                     })
-                    .then(function (response) {
-                        scope.$refs.changes_div.innerHTML = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                        .then(function (response) {
+                            scope.$refs.changes_div.innerHTML = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
 
                 }
 

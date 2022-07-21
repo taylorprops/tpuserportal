@@ -41,8 +41,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
         '{{ $loan_officer_2 -> loan_amount_percent ?? null }}')">
 
         <div class="max-w-1400-px mx-auto pt-8 md:pt-12 lg:pt-16 px-4">
-
-
             <div class="sm:hidden">
                 @if($loan)
                 <label for="tabs" class="sr-only">Select a tab</label>
@@ -700,8 +698,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                     </div>
 
                 @endif
-
-
                 <div x-show="active_tab === '3'" x-transition class="pt-4 sm:pt-12">
 
                     {{-- if Loan Officer --}}
@@ -950,8 +946,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                             <div class="col-span-7 lg:col-span-5">
 
                                 <form id="commission_form">
-
-
                                     <div class="flex justify-start items-center">
 
                                         <div class="font-medium text-xl">Checks In</div>
@@ -1234,8 +1228,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                     <div class="grid grid-cols-5 mt-6 gap-8">
 
                                         <div class="col-span-4">
-
-
                                             {{-- blade-formatter-disable --}}
                                             @php
                                             $los = ['1'];
@@ -1333,8 +1325,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                             </a>
                                                             @endif
                                                         </nav>
-
-
                                                         <div class="mt-6">
 
                                                             <div x-show="active_commission_tab === '1'" x-transition>
@@ -1369,14 +1359,10 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                                             name="loan_officer_{{ $index }}_commission_percent"
                                                                             data-label=""
                                                                             value="{{ $commission_percent }}">
-
-
                                                                         </div>
                                                                         @endif
 
                                                                         <div><i class="fal fa-percentage ml-1 fa-lg text-gray-500"></i></div>
-
-
                                                                         <div class="ml-4">
                                                                             of
                                                                         </div>
@@ -1515,8 +1501,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                 </div>
 
                                             @endforeach
-
-
                                             <div class="p-4 border rounded-md @if(auth() -> user() -> level != 'manager' && auth() -> user() -> level != 'super_admin') hidden @endif"
                                             x-data="{ show_details: false }">
 
@@ -1584,8 +1568,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                 </div>
 
                                             </div>
-
-
                                         </div>
 
                                         <div class="col-span-1 ml-8 whitespace-nowrap place-self-end w-full">
@@ -1617,8 +1599,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                         </div>
 
                                     </div>
-
-
                                     @if(auth() -> user() -> level != 'loan_officer')
 
                                         <hr class="bg-gray-300 my-6">
@@ -1628,15 +1608,9 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                         </div>
 
                                         <input type="hidden" name="uuid" value="{{ $loan -> uuid ?? null }}">
-
-
                                     @endif
 
                                 </form>
-
-
-
-
                             </div>
 
                             <div class="col-span-7 lg:col-span-2">
@@ -1767,7 +1741,10 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
 
                                         <hr>
 
-                                        <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px">
+                                        <table style="font-family:Arial, Helvetica, sans-serif; margin-top: 20px" x-ref="paid_to_company">
+                                            <tr>
+                                                <th align="left">Paid To Company</th>
+                                            </tr>
                                             <tr>
                                                 <td>Processing Fee:</td>
                                                 <td>
@@ -1781,6 +1758,8 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                                 </td>
                                             </tr>
                                         </table>
+
+                                        <div class="paid-to-company-print"></div>
 
                                         <hr>
 
@@ -1796,8 +1775,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                                         </table>
 
                                     </div>
-
-
                                     <div class="max-w-600-px mt-20">
 
                                         <div class="flex justify-between">
@@ -1843,11 +1820,7 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
                         </div>
 
                     </div>
-
-
                 </div>
-
-
                 <div x-show="active_tab === '4'" x-transition class="pt-4 sm:pt-12">
 
                     <div class="">
@@ -1923,8 +1896,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
             </div>
 
         </div>
-
-
         <template id="doc_template">
 
             <div class="flex justify-start items-center border-b mb-4 pb-2">
@@ -2052,8 +2023,6 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
             </div>
 
         </template>
-
-
         <template id="loan_officer_deduction_template">
 
             <div class="flex justify-between items-end loan-officer-%%index%%-deduction">
@@ -2091,6 +2060,4 @@ $disabled = $loan && $loan -> lending_pad_loan_number != '' ? 'disabled' : '';
         </template>
 
     </div>
-
-
 </x-app-layout>

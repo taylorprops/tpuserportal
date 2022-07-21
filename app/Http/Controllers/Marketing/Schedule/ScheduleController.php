@@ -435,6 +435,61 @@ class ScheduleController extends Controller
             -> send(new EmailGeneral($message));
     }
 
+    public function get_list_hubspot_agents(Request $request)
+    {
+
+        $sender = $request -> sender;
+        $recipient_id = $request -> recipient_id;
+        $states = explode(',', $request -> states);
+
+        $columns = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Company', 'Office Address', 'Office City', 'Office State', 'Office Zip'];
+
+        $offices = BrightOffices::select(['OfficeKey', 'OfficeMlsId', 'OfficeName', 'OfficeAddress1', 'OfficeCity', 'OfficeStateOrProvince', 'OfficePostalCode'])
+            -> whereIn('OfficeStateOrProvince', $states)
+            -> whereHas('agents', function (Builder $query) {
+                $query -> where('MemberType', 'Agent')
+                    -> where('active', 'yes')
+                    -> whereNotNull('MemberEmail');
+            })
+            -> with(['agents' => function ($query) {
+                $query -> where('MemberType', 'Agent')
+                    -> where('active', 'yes')
+                    -> whereNotNull('MemberEmail')
+                    -> select(['MemberKey', 'MemberFirstName', 'MemberLastName', 'MemberEmail', 'MemberPreferredPhone', 'OfficeKey']);
+            }])
+            -> get();
+
+        $file_name = 'agent_list_'.time().'.csv';
+        $file = Storage::path('/tmp/'.$file_name);
+        $handle = fopen($file, 'w');
+
+        fputcsv($handle, $columns, ',');
+
+        foreach ($offices as $office) {
+            foreach ($office -> agents as $agent) {
+                $data = $agent -> makeHidden(['OfficeKey']) -> toArray();
+                $data['OfficeName'] = $office -> OfficeName;
+                $data['OfficeAddress1'] = $office -> OfficeAddress1;
+                $data['OfficeCity'] = $office -> OfficeCity;
+                $data['OfficeStateOrProvince'] = $office -> OfficeStateOrProvince;
+                $data['OfficePostalCode'] = $office -> OfficePostalCode;
+                fputcsv($handle, $data, ',');
+            }
+        }
+
+        $employees = [
+            ['1', 'Delia', 'Abrams', 'delia@taylorprops.com', '', '', '', '', '', '', ''],
+            ['2', 'Kyle', 'Abrams', 'kyle@taylorprops.com', '', '', '', '', '', '', ''],
+            ['3', 'Robb', 'Taylor', 'senorrobb@yahoo.com', '', '', '', '', '', '', ''],
+            ['4', 'Mike', 'Taylor', 'miketaylor0101@gmail.com', '', '', '', '', '', '', ''],
+        ];
+
+        foreach ($employees as $employee) {
+            fputcsv($handle, $employee, ',');
+        }
+
+    }
+
     public function get_list(Request $request)
     {
 

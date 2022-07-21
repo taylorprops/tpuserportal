@@ -154,7 +154,10 @@ Route::middleware(['auth', 'web']) -> group(function () {
     Route::post('/marketing/reactivate_version', [ScheduleController::class, 'reactivate_version']) -> middleware(['in_house']);
     Route::post('/marketing/mark_version_accepted', [ScheduleController::class, 'mark_version_accepted']) -> middleware(['in_house']);
     Route::post('/marketing/send_email', [ScheduleController::class, 'send_email']) -> middleware(['in_house']);
+
     Route::post('/marketing/get_list', [ScheduleController::class, 'get_list']) -> middleware(['in_house']);
+    Route::get('/marketing/get_list_hubspot_agents', [ScheduleController::class, 'get_list_hubspot_agents']) -> middleware(['in_house']);
+
     Route::post('/marketing/update_status', [ScheduleController::class, 'update_status']) -> middleware(['in_house']);
     Route::get('/marketing/get_notes', [ScheduleController::class, 'get_notes']) -> middleware(['in_house']);
     Route::post('/marketing/add_notes', [ScheduleController::class, 'add_notes']) -> middleware(['in_house']);
